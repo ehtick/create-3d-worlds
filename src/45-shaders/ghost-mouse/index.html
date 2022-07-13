@@ -8,7 +8,6 @@
 </head>
 <body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/88/three.min.js"></script>
 <script id="vertexShader" type="x-shader/x-vertex">
     void main() {
         gl_Position = vec4( position, 1.0 );
@@ -116,6 +115,7 @@ vec3 blur(sampler2D sp, vec2 uv, vec2 scale) {
 
 <div id="container" touch-action="none"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/101/three.min.js"></script>
 <script  src="./script.js"></script>
 
 </body>

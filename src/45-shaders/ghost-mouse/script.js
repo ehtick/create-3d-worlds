@@ -1,58 +1,55 @@
+/* global THREE */
+
 let container
 let camera, scene, renderer
 let uniforms
 
-init()
-animate()
+container = document.getElementById('container')
 
-function init() {
-  container = document.getElementById('container')
+camera = new THREE.Camera()
+camera.position.z = 1
 
-  camera = new THREE.Camera()
-  camera.position.z = 1
+scene = new THREE.Scene()
 
-  scene = new THREE.Scene()
+const geometry = new THREE.PlaneBufferGeometry(2, 2)
 
-  const geometry = new THREE.PlaneBufferGeometry(2, 2)
+let rtTexture = new THREE.WebGLRenderTarget(window.innerWidth * .2, window.innerHeight * .2)
+let rtTexture2 = new THREE.WebGLRenderTarget(window.innerWidth * .2, window.innerHeight * .2)
 
-  rtTexture = new THREE.WebGLRenderTarget(window.innerWidth * .2, window.innerHeight * .2)
-  rtTexture2 = new THREE.WebGLRenderTarget(window.innerWidth * .2, window.innerHeight * .2)
-
-  uniforms = {
-    u_time: { type: 'f', value: 1.0 },
-    u_resolution: { type: 'v2', value: new THREE.Vector2() },
-    u_buffer: { type: 't', value: rtTexture.texture },
-    u_mouse: { type: 'v2', value: new THREE.Vector2() },
-    u_renderpass: { type: 'b', value: false }
-  }
-
-  const material = new THREE.ShaderMaterial({
-    uniforms,
-    vertexShader: document.getElementById('vertexShader').textContent,
-    fragmentShader: document.getElementById('fragmentShader').textContent
-  })
-
-  material.extensions.derivatives = true
-
-  const mesh = new THREE.Mesh(geometry, material)
-  scene.add(mesh)
-
-  renderer = new THREE.WebGLRenderer()
-  renderer.setPixelRatio(window.devicePixelRatio)
-
-  container.appendChild(renderer.domElement)
-
-  onWindowResize()
-  window.addEventListener('resize', onWindowResize, false)
-
-  document.addEventListener('pointermove', e => {
-    const ratio = window.innerHeight / window.innerWidth
-    uniforms.u_mouse.value.x = (e.pageX - window.innerWidth / 2) / window.innerWidth / ratio
-    uniforms.u_mouse.value.y = (e.pageY - window.innerHeight / 2) / window.innerHeight * -1
-
-    e.preventDefault()
-  })
+uniforms = {
+  u_time: { type: 'f', value: 1.0 },
+  u_resolution: { type: 'v2', value: new THREE.Vector2() },
+  u_buffer: { type: 't', value: rtTexture.texture },
+  u_mouse: { type: 'v2', value: new THREE.Vector2() },
+  u_renderpass: { type: 'b', value: false }
 }
+
+const material = new THREE.ShaderMaterial({
+  uniforms,
+  vertexShader: document.getElementById('vertexShader').textContent,
+  fragmentShader: document.getElementById('fragmentShader').textContent
+})
+
+material.extensions.derivatives = true
+
+const mesh = new THREE.Mesh(geometry, material)
+scene.add(mesh)
+
+renderer = new THREE.WebGLRenderer()
+renderer.setPixelRatio(window.devicePixelRatio)
+
+container.appendChild(renderer.domElement)
+
+onWindowResize()
+window.addEventListener('resize', onWindowResize, false)
+
+document.addEventListener('pointermove', e => {
+  const ratio = window.innerHeight / window.innerWidth
+  uniforms.u_mouse.value.x = (e.pageX - window.innerWidth / 2) / window.innerWidth / ratio
+  uniforms.u_mouse.value.y = (e.pageY - window.innerHeight / 2) / window.innerHeight * -1
+
+  e.preventDefault()
+})
 
 function onWindowResize(event) {
   renderer.setSize(window.innerWidth, window.innerHeight)
@@ -61,11 +58,6 @@ function onWindowResize(event) {
 
   rtTexture = new THREE.WebGLRenderTarget(window.innerWidth * .2, window.innerHeight * .2)
   rtTexture2 = new THREE.WebGLRenderTarget(window.innerWidth * .2, window.innerHeight * .2)
-}
-
-function animate(delta) {
-  requestAnimationFrame(animate)
-  render(delta)
 }
 
 function renderTexture() {
@@ -93,3 +85,8 @@ function render(delta) {
   renderer.render(scene, camera)
   renderTexture()
 }
+
+void function animate(delta) {
+  requestAnimationFrame(animate)
+  render(delta)
+}()
