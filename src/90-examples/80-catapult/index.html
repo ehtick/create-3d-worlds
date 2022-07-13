@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Catapult</title>
+  <link rel="stylesheet" href="main.css">
+
+</head>
+
+<body>
+  <!-- https://github.com/Sina-Ghiasi/Three.js-Catapult-Game -->
+
+  <div id="instruction">
+    <br>
+    Space: start<br>
+    A: shoot <br>
+    C: change the camera<br>
+    <p id="loading" class="animate">Loading</p>
+  </div>
+  <div id="power"></div>
+  <div id="game"></div>
+
+  <script>
+    window.addEventListener("load", () => {
+      document.getElementById("loading").innerHTML = "ready to go !"
+    })
+  </script>
+  <script src="lib/Cannon.js"></script>
+  <script src="main.js" type="module"></script>
+
+</body>
+
+</html>
