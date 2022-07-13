@@ -43,10 +43,8 @@ live-server
   - infinite zoom https://codepen.io/shubniggurath/details/JMzQRw
   - water https://codepen.io/knoland/pen/XKxrJb
   - shape https://codepen.io/PapaDong/details/zYxOXbV
-  - lava https://codepen.io/BrendonC/pen/wEmWaP
   - crna masa https://codepen.io/eroxburgh/details/ZEpeerV
   - gpu particles https://codepen.io/timseverien/pen/rWdJZY
-  - kocke https://threejs.org/examples/webgl_shader2.html
   - tekst https://codingxr.com/articles/shaders-in-threejs/ i primer https://static.markhorgan.com/three-js-shaders/
 
 - [ ] 3d vozilo https://tomo0613.itch.io/offroadjs
