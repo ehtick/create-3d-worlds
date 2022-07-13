@@ -65,7 +65,6 @@ const material = new THREE.ShaderMaterial({
   flatShading: false
 })
 
-// let geometry = new THREE.SphereGeometry(50, 32, 32);
 const geometry = new THREE.PlaneGeometry(400, 300, 600, 600)
 
 const sphere = new THREE.Mesh(geometry, material)
@@ -91,7 +90,6 @@ let time = 0
 function render(delta) {
   uniforms.time.value = time
   time += 0.025
-  // sphere.rotation.z += 0.001;
   uniforms.resolution.value.x = window.innerWidth
   uniforms.resolution.value.y = window.innerHeight
   requestAnimationFrame(render)

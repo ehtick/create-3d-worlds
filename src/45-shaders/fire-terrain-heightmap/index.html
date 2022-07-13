@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>CodePen - ThreeJS Height map vertex shader</title>
 </head>
+
 <body>
-<!-- partial:index.partial.html -->
-<script id="vertex" type="shader">
+
+  <script id="vertex" type="shader">
   varying vec3 vNormal;
   varying vec3 light;
   
@@ -33,8 +35,7 @@
   }
 </script>
 
-
-<script id="fragment" type="shader">
+  <script id="fragment" type="shader">
   varying vec3 vNormal;
   
   uniform float time;
@@ -49,8 +50,10 @@
     gl_FragColor = vec4(vec3(dotProduct) * color, 1.0);
   }
 </script>
-<!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js'></script><script  src="./script.js"></script>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js'></script>
+  <script src="./script.js"></script>
 
 </body>
+
 </html>
