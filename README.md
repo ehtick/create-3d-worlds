@@ -19,33 +19,12 @@ live-server
   - [x] ispratiti tutorijal https://r105.threejsfundamentals.org/threejs/lessons/threejs-game.html
   - [ ] uskladiti animacije sa mrdanjem igrača
     - [ ] mrdati igrača napred za neke napade
-    - [ ] onemogućiti mrdanje u skoku
-
-- Simon dev
-  - [x] 3rd person camera https://youtu.be/UuNPHOJ_V5o
-  - [x] Particle system https://youtu.be/OFqENgtqRAY
-  - [x] RPG game https://youtu.be/SBfZAVzbhCg
+    - [ ] onemogućiti mrdanje u skoku?
 
 - Shaders
   - [x] shaders https://youtu.be/C8Cuwq1eqDw
   - [x] shaders https://youtu.be/uwzEqeMd7uQ
   - [ ] The Book of Shaders https://thebookofshaders.com/
-  - https://www.shadertoy.com/
-  https://jsfiddle.net/psyrendust/ga13okzz/
-  https://jsfiddle.net/greggman/5yow41rq/1/
-  https://codepen.io/Yakudoo/pen/rJjOJx
-  - raindrop https://codepen.io/stefanweck/pen/Vbgeax
-  - raging sea https://codepen.io/aderaaij/pen/XWpMONO
-  - gas https://codepen.io/PavelDoGreat/pen/zdWzEL
-  - ghost mouse https://codepen.io/shubniggurath/pen/LrXQBe
-  - primordial soup https://codepen.io/shubniggurath/pen/NXGbBo
-  - black hole https://codepen.io/darrylhuffman/pen/gRZrpv
-  - infinite zoom https://codepen.io/shubniggurath/details/JMzQRw
-  - water https://codepen.io/knoland/pen/XKxrJb
-  - shape https://codepen.io/PapaDong/details/zYxOXbV
-  - crna masa https://codepen.io/eroxburgh/details/ZEpeerV
-  - gpu particles https://codepen.io/timseverien/pen/rWdJZY
-  - tekst https://codingxr.com/articles/shaders-in-threejs/ i primer https://static.markhorgan.com/three-js-shaders/
 
 - [ ] 3d vozilo https://tomo0613.itch.io/offroadjs
 - [ ] 3D vozila + 3D spomenici https://github.com/swift502/Sketchbook

@@ -1,3 +1,5 @@
+// https://github.com/NikLever/GLSLfromScratch
+
 THREE.ShaderChunk.simple_lambert_vertex = /* glsl */`
 	#include <beginnormal_vertex>
 	#include <defaultnormal_vertex>
