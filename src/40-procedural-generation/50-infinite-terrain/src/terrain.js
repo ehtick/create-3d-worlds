@@ -29,9 +29,9 @@ export const terrain = (function() {
   const _SNOW = new THREE.Color(0xFFFFFF)
   const _FOREST_BOREAL = new THREE.Color(0x29c100)
 
-  const _MIN_CELL_SIZE = 500
-  const _FIXED_GRID_SIZE = 10
-  const _MIN_CELL_RESOLUTION = 64
+  const _MIN_CELL_SIZE = 100
+  const _FIXED_GRID_SIZE = 2
+  const _MIN_CELL_RESOLUTION = 16
 
   // Cross-blended Hypsometric Tints
   // http://www.shadedrelief.com/hypso/hypso.html
@@ -39,22 +39,23 @@ export const terrain = (function() {
     constructor(params) {
       const _colourLerp = (t, p0, p1) => {
         const c = p0.clone()
-
         return c.lerpHSL(p1, t)
       }
+
       this._colourSpline = [
         new spline.LinearSpline(_colourLerp),
         new spline.LinearSpline(_colourLerp)
       ]
+
       // Arid
-      this._colourSpline[0].AddPoint(0.0, new THREE.Color(0xb7a67d))
+      this._colourSpline[0].AddPoint(0, new THREE.Color(0xb7a67d))
       this._colourSpline[0].AddPoint(0.5, new THREE.Color(0xf1e1bc))
-      this._colourSpline[0].AddPoint(1.0, _SNOW)
+      this._colourSpline[0].AddPoint(1, _SNOW)
 
       // Humid
-      this._colourSpline[1].AddPoint(0.0, _FOREST_BOREAL)
+      this._colourSpline[1].AddPoint(0, _FOREST_BOREAL)
       this._colourSpline[1].AddPoint(0.5, new THREE.Color(0xcee59c))
-      this._colourSpline[1].AddPoint(1.0, _SNOW)
+      this._colourSpline[1].AddPoint(1, _SNOW)
 
       this._params = params
     }
@@ -182,9 +183,7 @@ export const terrain = (function() {
         c = new TerrainChunk(params)
 
       c.Hide()
-
       this._queued.push(c)
-
       return c
     }
 
@@ -283,16 +282,14 @@ export const terrain = (function() {
         persistence: 0.707,
         lacunarity: 1.8,
         exponentiation: 4.5,
-        height: 300.0,
-        scale: 1100.0,
+        height: 300,
+        scale: 500,
         noiseType: 'simplex',
         seed: 1
       }
-
       this._noise = new noise.Noise(params.noise)
-
       params.heightmap = {
-        height: 16,
+        height: 8,
       }
     }
 
@@ -300,12 +297,11 @@ export const terrain = (function() {
       params.biomes = {
         octaves: 2,
         persistence: 0.5,
-        lacunarity: 2.0,
+        lacunarity: 2,
         exponentiation: 3.9,
-        scale: 2048.0,
+        scale: 1024,
         noiseType: 'simplex',
         seed: 2,
-        exponentiation: 1,
         height: 1
       }
 
@@ -423,7 +419,6 @@ export const terrain = (function() {
         }
 
       const difference = utils.DictDifference(keys, this._chunks)
-      const recycle = Object.values(utils.DictDifference(this._chunks, keys))
 
       for (const k in difference) {
         if (k in this._chunks)
