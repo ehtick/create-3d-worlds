@@ -1,15 +1,15 @@
 // https://github.com/simondevyoutube/ProceduralTerrain_Part3
 
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.112.1/build/three.module.js'
-import { game } from './game.js'
-import { terrain } from './terrain.js'
+import { Game } from './game.js'
+import { TerrainChunkManager } from './terrain.js'
 
-class ProceduralTerrain_Demo extends game.Game {
+class ProceduralTerrain_Demo extends Game {
   _OnInitialize() {
     this._userCamera = new THREE.Object3D()
     this._userCamera.position.set(475, 75, 900)
 
-    this._entities._terrain = new terrain.TerrainChunkManager({
+    this._entities._terrain = new TerrainChunkManager({
       camera: this._userCamera,
       scene: this._graphics.Scene,
     })
