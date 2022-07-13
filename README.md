@@ -29,8 +29,6 @@ live-server
 - Shaders
   - [x] shaders https://youtu.be/C8Cuwq1eqDw
   - [x] shaders https://youtu.be/uwzEqeMd7uQ
-  - tekst https://codingxr.com/articles/shaders-in-threejs/ 
-    i primer https://static.markhorgan.com/three-js-shaders/
   - [ ] The Book of Shaders https://thebookofshaders.com/
   - https://www.shadertoy.com/
   https://jsfiddle.net/psyrendust/ga13okzz/
@@ -48,8 +46,8 @@ live-server
   - lava https://codepen.io/BrendonC/pen/wEmWaP
   - crna masa https://codepen.io/eroxburgh/details/ZEpeerV
   - gpu particles https://codepen.io/timseverien/pen/rWdJZY
-  - lava https://threejs.org/examples/webgl_shader_lava.html
   - kocke https://threejs.org/examples/webgl_shader2.html
+  - tekst https://codingxr.com/articles/shaders-in-threejs/ i primer https://static.markhorgan.com/three-js-shaders/
 
 - [ ] 3d vozilo https://tomo0613.itch.io/offroadjs
 - [ ] 3D vozila + 3D spomenici https://github.com/swift502/Sketchbook

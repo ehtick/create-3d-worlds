@@ -1,3 +1,4 @@
+// https://threejs.org/examples/webgl_shader_lava.html
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
 const textureLoader = new THREE.TextureLoader()
