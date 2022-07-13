@@ -1,5 +1,4 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.112.1/build/three.module.js'
-import Stats from 'https://cdn.jsdelivr.net/npm/three@0.112.1/examples/jsm/libs/stats.module.js'
 import { WEBGL } from 'https://cdn.jsdelivr.net/npm/three@0.112.1/examples/jsm/WebGL.js'
 
 class Graphics {
@@ -15,8 +14,6 @@ class Graphics {
 
     const target = document.getElementById('target')
     target.appendChild(this._threejs.domElement)
-
-    this._stats = new Stats()
 
     const fov = 60
     const aspect = 1920 / 1080
@@ -57,7 +54,6 @@ class Graphics {
 
   Render() {
     this._threejs.render(this._scene, this._camera)
-    this._stats.update()
   }
 }
 

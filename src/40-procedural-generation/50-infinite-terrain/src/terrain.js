@@ -1,10 +1,10 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.112.1/build/three.module.js'
 
-import { math } from './math.js'
-import { noise } from './noise.js'
-import { quadtree } from './quadtree.js'
-import { spline } from './spline.js'
-import { utils } from './utils.js'
+import math from './math.js'
+import { Noise } from './noise.js'
+import { QuadTree } from './quadtree.js'
+import { LinearSpline } from './spline.js'
+import utils from './utils.js'
 
 class HeightGenerator {
   constructor(generator, position, minRadius, maxRadius) {
@@ -41,8 +41,8 @@ class HyposemetricTints {
     }
 
     this._colourSpline = [
-      new spline.LinearSpline(_colourLerp),
-      new spline.LinearSpline(_colourLerp)
+      new LinearSpline(_colourLerp),
+      new LinearSpline(_colourLerp)
     ]
 
     // Arid
@@ -92,7 +92,6 @@ class TerrainChunk {
 
   _Init(params) {
     const size = new THREE.Vector3(params.width, 0, params.width)
-
     this._plane = new THREE.Mesh(
       new THREE.PlaneGeometry(size.x, size.z, params.resolution, params.resolution),
       params.material)
@@ -285,7 +284,7 @@ class TerrainChunkManager {
       noiseType: 'simplex',
       seed: 1
     }
-    this._noise = new noise.Noise(params.noise)
+    this._noise = new Noise(params.noise)
     params.heightmap = {
       height: 8,
     }
@@ -303,7 +302,7 @@ class TerrainChunkManager {
       height: 1
     }
 
-    this._biomes = new noise.Noise(params.biomes)
+    this._biomes = new Noise(params.biomes)
   }
 
   _InitTerrain(params) {
@@ -353,7 +352,7 @@ class TerrainChunkManager {
       return c.position[0] + '/' + c.position[1] + ' [' + c.dimensions[0] + ']'
     }
 
-    const q = new quadtree.QuadTree({
+    const q = new QuadTree({
       min: new THREE.Vector2(-32000, -32000),
       max: new THREE.Vector2(32000, 32000),
     })

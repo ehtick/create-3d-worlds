@@ -1,21 +1,18 @@
-export const utils = (function() {
-  return {
-    DictIntersection: function(dictA, dictB) {
-      const intersection = {};
-      for (let k in dictB) {
-        if (k in dictA) {
-          intersection[k] = dictA[k];
-        }
-      }
-      return intersection
-    },
+export default {
+  DictIntersection(dictA, dictB) {
+    const intersection = {}
+    for (const k in dictB)
+      if (k in dictA)
+        intersection[k] = dictA[k]
 
-    DictDifference: function(dictA, dictB) {
-      const diff = {...dictA};
-      for (let k in dictB) {
-        delete diff[k];
-      }
-      return diff;
-    }
-  };
-})();
+    return intersection
+  },
+
+  DictDifference(dictA, dictB) {
+    const diff = { ...dictA }
+    for (const k in dictB)
+      delete diff[k]
+
+    return diff
+  }
+}
