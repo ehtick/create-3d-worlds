@@ -19,7 +19,6 @@ const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
 onWindowResize()
-window.addEventListener('resize', onWindowResize, false)
 
 function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight)
@@ -29,10 +28,8 @@ function onWindowResize() {
 
 void function animate(delta) {
   requestAnimationFrame(animate)
-  render(delta)
-}()
-
-function render(delta) {
   uniforms.u_time.value = delta * 0.0005
   renderer.render(scene, camera)
-}
+}()
+
+window.addEventListener('resize', onWindowResize, false)
