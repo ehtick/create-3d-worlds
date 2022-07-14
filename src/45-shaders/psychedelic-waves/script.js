@@ -1,6 +1,14 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 // import { camera, scene, renderer } from '/utils/scene.js'
 
+const parameters = {
+  speed: .2,
+  hue: .5,
+  hueVariation: 1,
+  gradient: .3,
+  density: .5,
+  displacement: .66 }
+
 class World {
   constructor(width, height) {
 
@@ -66,11 +74,6 @@ class World {
     requestAnimationFrame(this.loop.bind(this))
   }
 
-  updateSize(w, h) {
-    this.renderer.setSize(w, h)
-    this.camera.aspect = w / h
-    this.camera.updateProjectionMatrix()
-  }
   mouseMove(mousePos) {
     this.targetMousePos.x = mousePos.px
     this.targetMousePos.y = mousePos.py
@@ -82,24 +85,10 @@ document.addEventListener('DOMContentLoaded', domIsReady)
 const mousePos = { x: 0, y: 0, px: 0, py: 0 }
 let world
 
-const parameters = {
-  speed: .2,
-  hue: .5,
-  hueVariation: 1,
-  gradient: .3,
-  density: .5,
-  displacement: .66 }
-
 function domIsReady() {
   world = new World(window.innerWidth, window.innerHeight)
-  window.addEventListener('resize', handleWindowResize, false)
   document.addEventListener('mousemove', handleMouseMove, false)
-  handleWindowResize()
   world.loop()
-}
-
-function handleWindowResize() {
-  world.updateSize(window.innerWidth, window.innerHeight)
 }
 
 function handleMouseMove(e) {
