@@ -156,31 +156,16 @@ export const fragmentShader = /* glsl */`
     elevation += displacement * 4.0;
     elevation *= 2.0 + cnoise( vec2( t + vUv.y * 1.0, t + .5)) * 2.0 ;
     
-    //elevation += cnoise ( vec2 (elevation * .1, t * 3.0) );
-
     float light = .9 + fract(elevation) ;
     light *= .9 + (1.0 - (displacement * displacement)) * .1;
     elevation = floor(elevation);
-    //elevation += uGradient * .25;
-
+    
     float hue =  uHue + shadow * .1 + cnoise( vec2( elevation * .10, .1 + t)) * uHueVariation;
     float saturation = .6;;
     float brightness =  - (1.0 - shadow) * .1 + .5  - smoothstep( 0.0, .9,  cnoise( vec2( elevation * .5, .4 + t * 5.0)) ) * .1;
 
-
     vec3 hslCol = vec3( hue, saturation, brightness);
     vec3 col = hsl2rgb(hslCol) * vec3(light, 1.0, 1.0);
-    
-    
-    /* circle:
-    float d = length(vUv- vec2(.5,.5));
-    float radius = .1;// + (t * .1);
-    float stroke = 0.001;
-    float smoothing = .0005;
-    d = smoothstep(radius, radius+smoothing, d) - smoothstep(radius+stroke, radius+stroke+smoothing, d);
-    
-    col += d;// * 10.0;
-    */
     
     gl_FragColor = vec4(col, 1.);
   }

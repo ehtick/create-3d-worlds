@@ -1,5 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
+import { vertexShader, fragmentShader } from './shader.js'
 
 const controls = createOrbitControls()
 camera.position.set(1, 1, 1)
@@ -18,9 +19,8 @@ scene.background = new THREE.Color(param.fogColor)
 const waterGeometry = new THREE.PlaneGeometry(12, 12, 512, 512)
 
 const waterMaterial = new THREE.ShaderMaterial({
-  vertexShader: document.getElementById('vertexShader').textContent,
-  fragmentShader: document.getElementById('fragmentShader').textContent,
-  transparent: true,
+  vertexShader,
+  fragmentShader,
   fog: true,
   uniforms: {
     uTime: { value: 0 },
@@ -38,7 +38,6 @@ const waterMaterial = new THREE.ShaderMaterial({
     uSurfaceColor: { value: new THREE.Color(param.waveSurfaceColor) },
     uColorOffset: { value: 0.08 },
     uColorMultiplier: { value: 5 },
-
     // Fog, contains fogColor, fogDensity, fogFar and fogNear
     ...THREE.UniformsLib.fog }
 })
