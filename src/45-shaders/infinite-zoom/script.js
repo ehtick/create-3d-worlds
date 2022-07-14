@@ -1,6 +1,7 @@
 // https://codepen.io/shubniggurath/pen/JMzQRw
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { camera, scene, renderer } from '/utils/scene.js'
+import { vertexShader, fragmentShader } from './shader.js'
 
 const geometry = new THREE.PlaneBufferGeometry(2, 2)
 
@@ -11,8 +12,9 @@ const uniforms = {
 
 const material = new THREE.ShaderMaterial({
   uniforms,
-  vertexShader: document.getElementById('vertexShader').textContent,
-  fragmentShader: document.getElementById('fragmentShader').textContent })
+  vertexShader,
+  fragmentShader
+})
 
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
