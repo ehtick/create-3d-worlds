@@ -1,38 +1,21 @@
-/* global THREE */
-import { vertexShader, fragmentShader } from './shader.js'
+import * as THREE from '/node_modules/three127/build/three.module.js'
+import { camera, scene, renderer } from '/utils/scene.js'
+import { material } from '/utils/shaders/wood.js'
 
-const scene = new THREE.Scene()
-const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10)
-const clock = new THREE.Clock()
+camera.position.z = 400
 
-const renderer = new THREE.WebGLRenderer()
-renderer.setSize(window.innerWidth, window.innerHeight)
-document.body.appendChild(renderer.domElement)
+const geometry = new THREE.BoxGeometry(200, 200, 200)
+const mesh = new THREE.Mesh(geometry, material)
+scene.add(mesh)
 
-const uniforms = {}
-uniforms.u_time = { value: 0.0 }
-uniforms.u_resolution = { value: new THREE.Vector2() }
-uniforms.u_LightColor = { value: new THREE.Color(0xbb905d) }
-uniforms.u_DarkColor = { value: new THREE.Color(0x7d490b) }
-uniforms.u_Frequency = { value: 2.0 }
-uniforms.u_NoiseScale = { value: 6.0 }
-uniforms.u_RingScale = { value: 0.6 }
-uniforms.u_Contrast = { value: 4.0 }
+const light = new THREE.AmbientLight(0x404040)
+scene.add(light)
 
-const geometry = new THREE.PlaneGeometry(2, 2)
-const material = new THREE.ShaderMaterial({
-  uniforms,
-  vertexShader,
-  fragmentShader
-})
-
-const plane = new THREE.Mesh(geometry, material)
-scene.add(plane)
-
-camera.position.z = 1
+/* LOOP */
 
 void function animate() {
   requestAnimationFrame(animate)
-  uniforms.u_time.value += clock.getDelta()
+  mesh.rotation.x += 0.005
+  mesh.rotation.y += 0.01
   renderer.render(scene, camera)
 }()

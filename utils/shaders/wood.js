@@ -1,3 +1,6 @@
+// https://2pha.com/demos/threejs/shaders/wood_grain.html
+import * as THREE from '/node_modules/three127/build/three.module.js'
+
 export const vertexShader = /* glsl */`
   uniform float scale;
   varying vec3 vPosition;
@@ -117,3 +120,18 @@ export const fragmentShader = /* glsl */`
     gl_FragColor = vec4(base, 1.0);
   }
 `
+
+const uniforms = {
+  scale: { type: 'f', value: 1.038 },
+  frequency: { type: 'f', value: 7.6 },
+  noiseScale: { type: 'f', value: 6.4 },
+  ringScale: { type: 'f', value: 0.6 },
+  color1: { type: 'c', value: new THREE.Color(0x7d490b) },
+  color2: { type: 'c', value: new THREE.Color(0xbb905d) }
+}
+
+export const material = new THREE.ShaderMaterial({
+  uniforms,
+  vertexShader,
+  fragmentShader
+})
