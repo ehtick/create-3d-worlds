@@ -1,5 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene, camera, renderer } from '/utils/scene.js'
+import { vertexShader, fragmentShader } from './shader.js'
 
 const parameters = {
   speed: .2,
@@ -13,8 +14,8 @@ const parameters = {
 let time = 0
 
 const material = new THREE.RawShaderMaterial({
-  vertexShader: document.getElementById('vertexShader').textContent,
-  fragmentShader: document.getElementById('fragmentShader').textContent,
+  vertexShader,
+  fragmentShader,
   uniforms: {
     uTime: { type: 'f', value: 0 },
     uHue: { type: 'f', value: .5 },
