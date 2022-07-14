@@ -1,6 +1,7 @@
 // https://2pha.com/demos/threejs/shaders/wood_grain.html
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { camera, scene, renderer } from '/utils/scene.js'
+import { vertexShader, fragmentShader } from './shader.js'
 
 camera.position.z = 400
 const uniforms = {
@@ -11,8 +12,6 @@ const uniforms = {
   color1: { type: 'c', value: new THREE.Color(0x703600) },
   color2: { type: 'c', value: new THREE.Color(0xea8021) }
 }
-const vertexShader = document.getElementById('vertexShader').text
-const fragmentShader = document.getElementById('fragmentShader').text
 const material = new THREE.ShaderMaterial(
   {
     uniforms,
@@ -27,9 +26,7 @@ scene.add(mesh)
 const light = new THREE.AmbientLight(0x404040)
 scene.add(light)
 
-const directionalLight = new THREE.DirectionalLight(0xffffff)
-directionalLight.position.set(1, 1, 1).normalize()
-scene.add(directionalLight)
+/* LOOP */
 
 void function animate() {
   requestAnimationFrame(animate)
