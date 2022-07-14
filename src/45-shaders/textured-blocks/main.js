@@ -12,7 +12,7 @@ const uniforms1 = {
 
 const uniforms2 = {
   'time': { value: 1.0 },
-  'colorTexture': { value: new THREE.TextureLoader().load('textures/disturb.jpg') }
+  'colorTexture': { value: new THREE.TextureLoader().load('/assets/textures/marble.jpg') }
 }
 
 uniforms2.colorTexture.value.wrapS = uniforms2.colorTexture.value.wrapT = THREE.RepeatWrapping

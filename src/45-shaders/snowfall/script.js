@@ -1,9 +1,11 @@
+// https://codepen.io/shubniggurath/pen/WgJZJo
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { camera, scene, renderer } from '/utils/scene.js'
+import { vertexShader, fragmentShader } from './shader.js'
 
 const loader = new THREE.TextureLoader()
 
-const texture = await loader.loadAsync('noise.png')
+const texture = await loader.loadAsync('/assets/images/noise.png')
 texture.wrapS = THREE.RepeatWrapping
 texture.wrapT = THREE.RepeatWrapping
 
@@ -20,8 +22,9 @@ uniforms.u_resolution.value.y = renderer.domElement.height
 
 const material = new THREE.ShaderMaterial({
   uniforms,
-  vertexShader: document.getElementById('vertexShader').textContent,
-  fragmentShader: document.getElementById('fragmentShader').textContent })
+  vertexShader,
+  fragmentShader
+})
 
 material.extensions.derivatives = true
 
