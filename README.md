@@ -25,6 +25,9 @@ live-server
   - [x] shaders https://youtu.be/C8Cuwq1eqDw
   - [x] shaders https://youtu.be/uwzEqeMd7uQ
   - [ ] The Book of Shaders https://thebookofshaders.com/
+  https://2pha.com/demos/threejs/shaders/wood_grain.html
+  https://2pha.com/demos/threejs/shaders/perlin_noise_3d_vertex.html
+  https://2pha.com/demos/threejs/shaders/voronoi_with_borders.html
 
 - [ ] 3d vozilo https://tomo0613.itch.io/offroadjs
 - [ ] 3D vozila + 3D spomenici https://github.com/swift502/Sketchbook
