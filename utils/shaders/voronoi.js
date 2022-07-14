@@ -1,3 +1,7 @@
+// Created by Inigo Quilez http://www.iquilezles.org/www/articles/voronoilines/voronoilines.htm
+// Altered for a Three.js by Chris Brown - blog.2pha.com
+import * as THREE from '/node_modules/three127/build/three.module.js'
+
 export const vertexShader = /* glsl */`
   varying vec2 vUv;
   void main() {
@@ -7,8 +11,6 @@ export const vertexShader = /* glsl */`
 `
 
 export const fragmentShader = /* glsl */`
-  // Created by Inigo Quilez http://www.iquilezles.org/www/articles/voronoilines/voronoilines.htm
-  // Altered for a Three.js by Chris Brown - blog.2pha.com
   varying vec2 vUv;
   uniform vec3 color;
   uniform vec3 borderColor;
@@ -74,3 +76,17 @@ export const fragmentShader = /* glsl */`
     gl_FragColor = vec4(col, 1.0);
   }
 `
+
+const uniforms = {
+  amount: { type: 'f', value: 1.0 },
+  color: { type: 'c', value: new THREE.Color(0xffffff) },
+  borderColor: { type: 'c', value: new THREE.Color(0x000000) },
+  borderWidth: { type: 'f', value: 10.0 },
+  blur: { type: 'f', value: 0.0 }
+}
+
+export const material = new THREE.ShaderMaterial({
+  uniforms,
+  vertexShader,
+  fragmentShader
+})

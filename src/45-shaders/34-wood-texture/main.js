@@ -2,9 +2,9 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 import { camera, scene, renderer } from '/utils/scene.js'
 import { material } from '/utils/shaders/wood.js'
 
-camera.position.z = 400
+camera.position.set(0, 0, 2)
 
-const geometry = new THREE.BoxGeometry(200, 200, 200)
+const geometry = new THREE.BoxGeometry()
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
