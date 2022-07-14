@@ -1,6 +1,7 @@
 // https://2pha.com/demos/threejs/shaders/perlin_noise_3d_vertex.html
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { camera, scene, renderer } from '/utils/scene.js'
+import { vertexShader, fragmentShader } from './shader.js'
 
 camera.position.z = 400
 
@@ -8,8 +9,6 @@ const uniforms = {
   scale: { type: 'f', value: 10.0 },
   displacement: { type: 'f', value: 20.0 }
 }
-const vertexShader = document.getElementById('vertexShader').text
-const fragmentShader = document.getElementById('fragmentShader').text
 const material = new THREE.ShaderMaterial(
   {
     uniforms,
