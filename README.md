@@ -38,6 +38,7 @@ live-server
 - [ ] pathfinding https://github.com/NikLever/ThreeJS-PathFinding-Examples
 - [ ] vozilo joystick https://codepen.io/nik-lever/pen/BaaEmRm
 - [ ] pregledati primere, žvakati mini-rpg, čistka
+- [ ] napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
 
 - [x] ažurirati verziju (na 119)
 - [x] ažurirati verziju (na 127)
