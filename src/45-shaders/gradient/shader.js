@@ -5,7 +5,7 @@ const fragmentShader = /* glsl */`
 
   void main() {
     vec2 pos = gl_FragCoord.xy / resolution.xy; // normalize coordinates to -1 to 1
-    gl_FragColor = vec4(1.0, pos.x, pos.y, 1.0);   // create gradient
+    gl_FragColor = vec4(1.0-pos.y, 1.0-pos.y, 1.0, 1.0);   // create gradient
   }
 `
 

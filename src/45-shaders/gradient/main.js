@@ -10,5 +10,10 @@ scene.add(plane)
 
 void function render() {
   requestAnimationFrame(render)
+
+  // update on resize
+  material.uniforms.resolution.value.x = window.innerWidth
+  material.uniforms.resolution.value.y = window.innerHeight
+
   renderer.render(scene, camera)
 }()
