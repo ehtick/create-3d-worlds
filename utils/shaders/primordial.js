@@ -1,10 +1,12 @@
-export const vertexShader = /* glsl */`
+// By Liam Egan 2018 https://codepen.io/shubniggurath/pen/NXGbBo
+import * as THREE from '/node_modules/three127/build/three.module.js'
+
+const vertexShader = /* glsl */`
   void main() {
     gl_Position = vec4( position, 1.0 );
   }
 `
-// By Liam Egan 2018
-export const fragmentShader = /* glsl */`
+const fragmentShader = /* glsl */`
   uniform vec2 u_resolution;
   uniform float u_time;
   uniform bool u_complex;
@@ -115,3 +117,17 @@ export const fragmentShader = /* glsl */`
     gl_FragColor = vec4(-colour + (abs(colour) * .5), 1.);
   }
 `
+
+const uniforms = {
+  u_time: { type: 'f', value: 2001.0 },
+  u_resolution: { type: 'v2', value: new THREE.Vector2() },
+}
+
+uniforms.u_resolution.value.x = window.innerWidth
+uniforms.u_resolution.value.y = window.innerHeight
+
+export const material = new THREE.ShaderMaterial({
+  uniforms,
+  vertexShader,
+  fragmentShader
+})

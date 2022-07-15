@@ -1,10 +1,19 @@
-export const vertexShader = /* glsl */`
+// https://codepen.io/shubniggurath/pen/WgJZJo
+import * as THREE from '/node_modules/three127/build/three.module.js'
+
+const loader = new THREE.TextureLoader()
+
+const texture = await loader.loadAsync('/assets/images/noise.png')
+texture.wrapS = THREE.RepeatWrapping
+texture.wrapT = THREE.RepeatWrapping
+
+const vertexShader = /* glsl */`
   void main() {
     gl_Position = vec4( position, 1.0 );
   }
 `
 
-export const fragmentShader = /* glsl */`
+const fragmentShader = /* glsl */`
   uniform vec2 u_resolution;
   uniform vec2 u_mouse;
   uniform float u_time;
@@ -144,3 +153,18 @@ export const fragmentShader = /* glsl */`
     gl_FragColor = vec4(clamp(colour * 20., 0., 1.),1.0);
   }
 `
+
+const uniforms = {
+  u_time: { type: 'f', value: 1.0 },
+  u_resolution: { type: 'v2', value: new THREE.Vector2() },
+  u_noise: { type: 't', value: texture },
+}
+
+uniforms.u_resolution.value.x = window.innerWidth
+uniforms.u_resolution.value.y = window.innerHeight
+
+export const material = new THREE.ShaderMaterial({
+  uniforms,
+  vertexShader,
+  fragmentShader
+})
