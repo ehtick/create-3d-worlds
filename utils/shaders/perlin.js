@@ -1,20 +1,18 @@
-export const vertexShader = /* glsl */`
+// https://2pha.com/demos/threejs/shaders/perlin_noise_3d_vertex.html
+import * as THREE from '/node_modules/three127/build/three.module.js'
+
+// GLSL textureless classic 3D noise "cnoise",
+// with an RSL-style periodic variant "pnoise".
+// Author:  Stefan Gustavson (stefan.gustavson@liu.se)
+// Version: 2011-10-11
+// Copyright (c) 2011 Stefan Gustavson. All rights reserved.
+// MIT license. https://github.com/ashima/webgl-noise
+
+const vertexShader = /* glsl */`
   uniform float scale;
   uniform float displacement;
   // send noise value to fragment with vNoise.
   varying float vNoise;
-
-  // GLSL textureless classic 3D noise "cnoise",
-  // with an RSL-style periodic variant "pnoise".
-  // Author:  Stefan Gustavson (stefan.gustavson@liu.se)
-  // Version: 2011-10-11
-  //
-  // Many thanks to Ian McEwan of Ashima Arts for the
-  // ideas for permutation and gradient selection.
-  //
-  // Copyright (c) 2011 Stefan Gustavson. All rights reserved.
-  // Distributed under the MIT license. See LICENSE file.
-  // https://github.com/ashima/webgl-noise
 
   vec3 mod289(vec3 x)
   {
@@ -117,9 +115,21 @@ export const vertexShader = /* glsl */`
   }
 `
 
-export const fragmentShader = /* glsl */`
+const fragmentShader = /* glsl */`
   varying float vNoise;
   void main() {
     gl_FragColor = vec4(vec3(1.0) * vNoise, 1.0);
   }
 `
+
+const uniforms = {
+  scale: { type: 'f', value: 10.0 },
+  displacement: { type: 'f', value: 20.0 }
+}
+
+export const material = new THREE.ShaderMaterial(
+  {
+    uniforms,
+    vertexShader,
+    fragmentShader,
+  })

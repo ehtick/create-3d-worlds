@@ -1,3 +1,5 @@
+import * as THREE from '/node_modules/three127/build/three.module.js'
+
 const vertexShader = /* glsl */`
   varying vec2 vUv;
   void main() {	

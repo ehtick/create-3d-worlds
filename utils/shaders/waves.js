@@ -1,4 +1,7 @@
-export const vertexShader = /* glsl */`
+// https://codepen.io/Sanjeet-Nishad/full/oNZgGjw
+import * as THREE from '/node_modules/three127/build/three.module.js'
+
+const vertexShader = /* glsl */`
   #include <fog_pars_vertex>
 
   uniform float uTime;
@@ -120,7 +123,7 @@ export const vertexShader = /* glsl */`
   }
 `
 
-export const fragmentShader = /* glsl */`
+const fragmentShader = /* glsl */`
   #include <fog_pars_fragment>
   precision mediump float;
   uniform vec3 uDepthColor;
@@ -138,3 +141,27 @@ export const fragmentShader = /* glsl */`
     #include <fog_fragment>
   }
 `
+
+export const material = new THREE.ShaderMaterial({
+  vertexShader,
+  fragmentShader,
+  fog: true,
+  uniforms: {
+    uTime: { value: 0 },
+    uMouse: { value: new THREE.Vector2() },
+    uBigWavesElevation: { value: 0.2 },
+    uBigWavesFrequency: { value: new THREE.Vector2(4, 2) },
+    uBigWaveSpeed: { value: 0.75 },
+    // Small Waves
+    uSmallWavesElevation: { value: 0.15 },
+    uSmallWavesFrequency: { value: 3 },
+    uSmallWavesSpeed: { value: 0.2 },
+    uSmallWavesIterations: { value: 4 },
+    // Color
+    uDepthColor: { value: new THREE.Color('#1e4d40') },
+    uSurfaceColor: { value: new THREE.Color('#4d9aaa') },
+    uColorOffset: { value: 0.08 },
+    uColorMultiplier: { value: 5 },
+    // Fog, contains fogColor, fogDensity, fogFar and fogNear
+    ...THREE.UniformsLib.fog }
+})

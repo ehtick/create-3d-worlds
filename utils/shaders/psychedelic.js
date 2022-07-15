@@ -1,4 +1,7 @@
-export const vertexShader = /* glsl */`
+// https://codepen.io/Yakudoo/pen/rJjOJx
+import * as THREE from '/node_modules/three127/build/three.module.js'
+
+const vertexShader = /* glsl */`
   // attributes of our mesh
 	attribute vec3 position;
 	attribute vec2 uv;
@@ -22,7 +25,7 @@ export const vertexShader = /* glsl */`
 	}
 `
 
-export const fragmentShader = /* glsl */`
+const fragmentShader = /* glsl */`
 	precision highp float;
 
   uniform float uTime;
@@ -170,3 +173,18 @@ export const fragmentShader = /* glsl */`
     gl_FragColor = vec4(col, 1.);
   }
 `
+
+const uniforms = {
+  uTime: { type: 'f', value: 0 },
+  uHue: { type: 'f', value: .5 },
+  uHueVariation: { type: 'f', value: 1 },
+  uGradient: { type: 'f', value: 1 },
+  uDensity: { type: 'f', value: 1 },
+  uDisplacement: { type: 'f', value: 1 },
+}
+
+export const material = new THREE.RawShaderMaterial({
+  vertexShader,
+  fragmentShader,
+  uniforms
+})
