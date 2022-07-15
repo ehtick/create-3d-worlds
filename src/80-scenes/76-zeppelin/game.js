@@ -1,5 +1,5 @@
 import { camera, scene, renderer, addUIControls } from '/utils/scene.js'
-import { createHillyTerrain } from '/utils/ground/createHillyTerrain.js'
+import { createHillyTerrain } from '/utils/terrain/createHillyTerrain.js'
 import { createSkySphere } from '/utils/geometry.js'
 import { createSunLight } from '/utils/light.js'
 import { createWater } from '/utils/ground.js'

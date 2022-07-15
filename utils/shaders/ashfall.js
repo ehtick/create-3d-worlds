@@ -3,7 +3,7 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 
 const loader = new THREE.TextureLoader()
 
-const texture = await loader.loadAsync('/assets/images/noise.png')
+const texture = await loader.load('/assets/images/noise.png')
 texture.wrapS = THREE.RepeatWrapping
 texture.wrapT = THREE.RepeatWrapping
 

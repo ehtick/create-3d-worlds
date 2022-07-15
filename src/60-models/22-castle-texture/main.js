@@ -1,6 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
-import { createHillyTerrain } from '/utils/ground/createHillyTerrain.js'
+import { createHillyTerrain } from '/utils/terrain/createHillyTerrain.js'
 import { createWater } from '/utils/ground.js'
 import { createTreesOnTerrain } from '/utils/trees.js'
 import { addTexture, getHeight } from '/utils/helpers.js'

@@ -1,5 +1,5 @@
 import { createWorldScene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import terrainFromHeightmap from '/utils/ground/terrainFromHeightmap.js'
+import terrainFromHeightmap from '/utils/terrain/terrainFromHeightmap.js'
 
 const scene = createWorldScene({ color: 0x6666ff })
 

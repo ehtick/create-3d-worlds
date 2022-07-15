@@ -4,7 +4,7 @@ import { OrbitControls } from '/node_modules/three127/examples/jsm/controls/Orbi
 import { scene, renderer, camera, clock } from '/utils/scene.js'
 import { createSunLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
-import { createGround, rotateGround } from '/utils/ground/cylinder-ground.js'
+import { createGround, rotateGround } from '/utils/terrain/cylinder-ground.js'
 import { updatePlane, normalizePlane } from './utils/airplane.js'
 
 scene.fog = new THREE.Fog(0xE5C5AB, 200, 950)
