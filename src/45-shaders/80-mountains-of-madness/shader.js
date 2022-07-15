@@ -1,42 +1,38 @@
-export const vertexShader = /* glsl */`
+// https://codepen.io/shubniggurath/pen/gzjzom
+import * as THREE from '/node_modules/three127/build/three.module.js'
+
+const vertexShader = /* glsl */`
   void main() {
     gl_Position = vec4( position, 1.0 );
   }
 `
 
-export const fragmentShader = /* glsl */`
-    uniform vec2 u_resolution;
-    uniform float u_time;
-    uniform vec2 u_mouse;
-  
-    const int octaves = 2;
-    const float seed = 43758.5453123;
-    const float seed2 = 73156.8473192;
-    // Epsilon value, used for normal gradient generation
-    const float eps = 0.0015;
-  
-    const vec3 ambientLight = 0.99 * vec3(1.0, 1.0, 1.0);
-    const vec3 light1Pos = vec3(10., 5.0, -25.0);
-    const vec3 light1Intensity = vec3(0.35);
-    const vec3 light2Pos = vec3(-20., -25.0, 85.0);
-    const vec3 light2Intensity = vec3(0.2);
-  
-    const vec3 colour_fog = vec3(.1, .1, .15);
-  
-    // movement variables
-    vec3 movement = vec3(.0);
+const fragmentShader = /* glsl */`
+  uniform vec2 u_resolution;
+  uniform float u_time;
+  uniform vec2 u_mouse;
 
-    // Gloable variables for the raymarching algorithm.
-    // const int maxIterations = 1024;
-    // const int maxIterationsShad = 16;
-    // const float stepScale = .2;
-    // const float stopThreshold = 0.01;
-    const int maxIterations = 256;
-    const int maxIterationsShad = 16;
-    const float stepScale = .5;
-    const float stopThreshold = 0.01;
-  
-  
+  const int octaves = 2;
+  const float seed = 43758.5453123;
+  const float seed2 = 73156.8473192;
+  // Epsilon value, used for normal gradient generation
+  const float eps = 0.0015;
+
+  const vec3 ambientLight = 0.99 * vec3(1.0, 1.0, 1.0);
+  const vec3 light1Pos = vec3(10., 5.0, -25.0);
+  const vec3 light1Intensity = vec3(0.35);
+  const vec3 light2Pos = vec3(-20., -25.0, 85.0);
+  const vec3 light2Intensity = vec3(0.2);
+
+  const vec3 colour_fog = vec3(.1, .1, .15);
+
+  // movement variables
+  vec3 movement = vec3(.0);
+  const int maxIterations = 256;
+  const int maxIterationsShad = 16;
+  const float stepScale = .5;
+  const float stopThreshold = 0.01;
+
   float offset;
   
   mat2 rot2( float a ){ vec2 v = sin(vec2(1.570796, 0) + a);	return mat2(v, -v.y, v.x); }
@@ -53,7 +49,6 @@ export const fragmentShader = /* glsl */`
                   oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,
                   0.0,                                0.0,                                0.0,                                1.0);
   }
-  
   
   float length2( vec2 p )
   {
@@ -182,18 +177,12 @@ export const fragmentShader = /* glsl */`
     return rayDepth;
   }
   
-  
   // The bump mapping function that gives the surface its bumpiness. Here, we're using two layers of a cheap 3D noise function. "Cheap" is a relative
   // term, hence only two layers. Four layers of Perlin noise would be much nicer, but that can be achieved using textures, which I'll get to soon. 
   // I've provided an example on my site that uses a 3D Voronoi function which is nicer still.
   float bumpFunction(in vec3 p){
-
     return triNoise3d(p * 4., 0.05);
-
-    // return texture2D(u_noise, p.xz).x * texture2D(u_noise, p.zy).x;
-
   }
-
 
   // Bump mapping uses similar techniques to those used when obtaining the surface normal. Use the surface point "p" and epsilon value "eps" to obtain 
   // the gradient along each of the individual axes (f(p.x+eps)-f(p.x), etc). That should give you a scaled representation of (df/dx, df/dy, df/dz), 
@@ -234,7 +223,6 @@ export const fragmentShader = /* glsl */`
    * This stuff is way way better than the model I was using.
    * Courtesy Shane Warne
    * Reference: http://raymarching.com/
-   * -------------------------------------
    * */
   
   // Lighting.
@@ -277,83 +265,73 @@ export const fragmentShader = /* glsl */`
     sceneColor = mix(sceneColor, colour_fog, 1.-sceneAtten*sceneAtten); // fog
     
     return sceneColor;
-
   }
 
-    void main() {
-      
-      // Setting up our screen coordinates.
-      vec2 aspect = vec2(u_resolution.x/u_resolution.y, 1.0); //
-      vec2 uv = (2.0*gl_FragCoord.xy/u_resolution.xy - 1.0)*aspect;
-      
-      // This just gives us a touch of fisheye
-      // uv *= 1. + dot(uv, uv) * 0.4;
-      
-      // movement
-      movement = camPath(u_time * 2.5);
-      
-      // The sin in here is to make it look like a walk.
-      vec3 lookAt = vec3(-0., 0.2, 1.);  // This is the point you look towards, or at, if you prefer.
-      vec3 camera_position = vec3(0., 0., -1.0); // This is the point you look from, or camera you look at the scene through. Whichever way you wish to look at it.
-      camera_position.y += abs(sin(u_time * 10.)) * .02;
-      
-      lookAt += camPath(u_time * 2.5 + 1. + sin(u_time) * 2.);
-      // lookAt.z += sin(u_time / 10.) * .5;
-      // lookAt.x += cos(u_time / 10.) * .5;
-      camera_position += movement;
-      
-      vec3 forward = normalize(lookAt-camera_position); // Forward vector.
-      vec3 right = normalize(vec3(forward.z, 0., -forward.x )); // Right vector... or is it left? Either way, so long as the correct-facing up-vector is produced.
-      vec3 up = normalize(cross(forward,right)); // Cross product the two vectors above to get the up vector.
+  void main() {
+    // Setting up our screen coordinates.
+    vec2 aspect = vec2(u_resolution.x/u_resolution.y, 1.0); //
+    vec2 uv = (2.0*gl_FragCoord.xy/u_resolution.xy - 1.0)*aspect;
+    
+    // This just gives us a touch of fisheye
+    // uv *= 1. + dot(uv, uv) * 0.4;
+    
+    // movement
+    movement = camPath(u_time * 2.5);
+    
+    // The sin in here is to make it look like a walk.
+    vec3 lookAt = vec3(-0., 0.2, 1.);  // This is the point you look towards, or at, if you prefer.
+    vec3 camera_position = vec3(0., 0., -1.0); // This is the point you look from, or camera you look at the scene through. Whichever way you wish to look at it.
+    camera_position.y += abs(sin(u_time * 10.)) * .02;
+    
+    lookAt += camPath(u_time * 2.5 + 1. + sin(u_time) * 2.);
+    // lookAt.z += sin(u_time / 10.) * .5;
+    // lookAt.x += cos(u_time / 10.) * .5;
+    camera_position += movement;
+    
+    vec3 forward = normalize(lookAt-camera_position); // Forward vector.
+    vec3 right = normalize(vec3(forward.z, 0., -forward.x )); // Right vector... or is it left? Either way, so long as the correct-facing up-vector is produced.
+    vec3 up = normalize(cross(forward,right)); // Cross product the two vectors above to get the up vector.
 
-      // FOV - Field of view.
-      float FOV = 0.4;
+    // FOV - Field of view.
+    float FOV = 0.4;
 
-      // ro - Ray origin.
-      vec3 ro = camera_position; 
-      // rd - Ray direction.
-      vec3 rd = normalize(forward + FOV*uv.x*right + FOV*uv.y*up);
-      
-      rd.xy = rot2( camPath(lookAt.z).x * .1 )*rd.xy;
-      
-      // Ray marching.
-      const float clipNear = 0.0;
-      const float clipFar = 32.0;
-      float field = 0.;
-      float dist = rayMarching(ro, rd, clipNear, clipFar, field );
-      if ( dist >= clipFar ) {
-        gl_FragColor = vec4(colour_fog, 1.0);
-      } else {
-        // sp - Surface position. If we've made it this far, we've hit something.
-        vec3 sp = ro + rd*dist;
+    // ro - Ray origin.
+    vec3 ro = camera_position; 
+    // rd - Ray direction.
+    vec3 rd = normalize(forward + FOV*uv.x*right + FOV*uv.y*up);
+    
+    rd.xy = rot2( camPath(lookAt.z).x * .1 )*rd.xy;
+    
+    // Ray marching.
+    const float clipNear = 0.0;
+    const float clipFar = 32.0;
+    float field = 0.;
+    float dist = rayMarching(ro, rd, clipNear, clipFar, field );
+    if ( dist >= clipFar ) {
+      gl_FragColor = vec4(colour_fog, 1.0);
+    } else {
+      // sp - Surface position. If we've made it this far, we've hit something.
+      vec3 sp = ro + rd*dist;
 
-        // Light the pixel that corresponds to the surface position. The last entry indicates that it's not a reflection pass
-        // which we're not up to yet.
-        vec3 sceneColor = lighting( sp, camera_position, 0, dist, field, rd);
+      // Light the pixel that corresponds to the surface position. The last entry indicates that it's not a reflection pass
+      // which we're not up to yet.
+      vec3 sceneColor = lighting( sp, camera_position, 0, dist, field, rd);
 
-
-        // Clamping the lit pixel, then put it on the screen.
-        gl_FragColor = vec4(clamp(sceneColor, 0.0, 1.0), 1.0);
-      }
-      
-      
-
-      // gl_FragColor.rgb *= mat3(
-      //   .3, 0.3, 0.2,
-      //   0., .8, 0.,
-      //   0.1, 0.1 - .2 * sin(u_time * .3), .8 + .2 * sin(u_time * .2)
-      // );
-      
-      // gl_FragColor.rgb *= mat3(
-      //   u_mouse.x + 1., 0., 0.,
-      //   0., u_mouse.x + 1., 0.,
-      //   0., 0., u_mouse.x + 1.
-      // );
-      
-      // gl_FragColor.rgb *= mat3(
-      //   1., 0., u_mouse.x,
-      //   0., 1., 0.,
-      //   u_mouse.x, 0., 1.
-      // );
+      // Clamping the lit pixel, then put it on the screen.
+      gl_FragColor = vec4(clamp(sceneColor, 0.0, 1.0), 1.0);
     }
+  }
 `
+
+const uniforms = {
+  u_time: { type: 'f', value: 1.0 },
+  u_resolution: { type: 'v2', value: new THREE.Vector2() },
+}
+uniforms.u_resolution.value.x = window.innerWidth
+uniforms.u_resolution.value.y = window.innerHeight
+
+export const material = new THREE.ShaderMaterial({
+  uniforms,
+  vertexShader,
+  fragmentShader
+})
