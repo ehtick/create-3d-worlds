@@ -4,8 +4,8 @@ const fragmentShader = /* glsl */`
   uniform vec2 resolution; // Uniform variables must be declared here first
 
   void main() {
-    vec2 pos = gl_FragCoord.xy / resolution.xy; // normalize coordinates to -1 to 1
-    gl_FragColor = vec4(1.0-pos.y, 1.0-pos.y, 1.0, 1.0);   // create gradient
+    vec2 coord = gl_FragCoord.xy / resolution.xy; // normalize coordinates -1 to 1
+    gl_FragColor = vec4(1.0 - coord.y, 1.0 - coord.y, 1.0, 1.0); // create gradient
   }
 `
 
