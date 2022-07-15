@@ -39,6 +39,7 @@ live-server
 - [ ] vozilo joystick https://codepen.io/nik-lever/pen/BaaEmRm
 - [ ] pregledati primere, žvakati mini-rpg, čistka
 - [ ] napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
+- free texture sa normalMaps https://opengameart.org/content/50-free-textures-4-normalmaps
 
 - [x] ažurirati verziju (na 119)
 - [x] ažurirati verziju (na 127)
