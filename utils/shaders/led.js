@@ -1,3 +1,5 @@
+import * as THREE from '/node_modules/three127/build/three.module.js'
+
 export const vertexShader = /* glsl */`
   varying vec2 vUv;
 
@@ -9,28 +11,7 @@ export const vertexShader = /* glsl */`
   }
 `
 
-export const fragmentShaderMarble = /* glsl */`
-  uniform float time;
-  uniform sampler2D colorTexture;
-  varying vec2 vUv;
-
-  void main( void ) {
-    vec2 position = - 1.0 + 2.0 * vUv;
-    float a = atan( position.y, position.x );
-    float r = sqrt( dot( position, position ) );
-
-    vec2 uv;
-    uv.x = cos( a ) / r;
-    uv.y = sin( a ) / r;
-    uv /= 10.0;
-    uv += time * 0.05;
-
-    vec3 color = texture2D( colorTexture, uv ).rgb;
-    gl_FragColor = vec4( color * r * 1.5, 1.0 );
-  }
-`
-
-export const fragmentShaderLed = /* glsl */`
+export const fragmentShader = /* glsl */`
   uniform float time;
   varying vec2 vUv;
 
@@ -45,3 +26,13 @@ export const fragmentShaderLed = /* glsl */`
     gl_FragColor = vec4( vec3( color, color * 0.5, sin( color + time / 3.0 ) * 0.75 ), 1.0 );
   }
 `
+
+const uniforms = {
+  time: { value: 1.0 }
+}
+
+export const material = new THREE.ShaderMaterial({
+  uniforms,
+  vertexShader,
+  fragmentShader
+})
