@@ -1,3 +1,4 @@
+// https://threejs.org/examples/webgl_shader2.html
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
 export const vertexShader = /* glsl */`

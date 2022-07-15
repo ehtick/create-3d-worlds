@@ -4,7 +4,7 @@ import { material, uniforms } from '/utils/shaders/lava.js'
 
 createOrbitControls()
 
-const geometry = new THREE.SphereGeometry(1, 32, 32)
+const geometry = new THREE.SphereGeometry()
 const mesh = new THREE.Mesh(geometry, material)
 
 scene.add(mesh)
