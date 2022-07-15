@@ -1,27 +1,16 @@
+// https://stemkoski.github.io/Three.js/Shader-Heightmap-Textures.html
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
 const loader = new THREE.TextureLoader()
+const oceanTexture = loader.load('/assets/textures/dirt-512.jpg')
+const sandyTexture = loader.load('/assets/textures/sand-512.jpg')
+const grassTexture = loader.load('/assets/textures/grass-512.jpg')
+const rockyTexture = loader.load('/assets/textures/rock-512.jpg')
+const snowyTexture = loader.load('/assets/textures/snow-512.jpg')
 
-export default function(src) {
-  const oceanTexture = loader.load('/assets/textures/dirt-512.jpg')
-  const sandyTexture = loader.load('/assets/textures/sand-512.jpg')
-  const grassTexture = loader.load('/assets/textures/grass-512.jpg')
-  const rockyTexture = loader.load('/assets/textures/rock-512.jpg')
-  const snowyTexture = loader.load('/assets/textures/snow-512.jpg')
+oceanTexture.wrapS = oceanTexture.wrapT = sandyTexture.wrapS = sandyTexture.wrapT = grassTexture.wrapS = grassTexture.wrapT = rockyTexture.wrapS = rockyTexture.wrapT = snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping
 
-  oceanTexture.wrapS = oceanTexture.wrapT = sandyTexture.wrapS = sandyTexture.wrapT = grassTexture.wrapS = grassTexture.wrapT = rockyTexture.wrapS = rockyTexture.wrapT = snowyTexture.wrapS = snowyTexture.wrapT = THREE.RepeatWrapping
-
-  const uniforms = {
-    bumpTexture: { type: 't', value: loader.load(src) },
-    bumpScale: { type: 'f', value: 300.0 },
-    oceanTexture: { type: 't', value: oceanTexture },
-    sandyTexture: { type: 't', value: sandyTexture },
-    grassTexture: { type: 't', value: grassTexture },
-    rockyTexture: { type: 't', value: rockyTexture },
-    snowyTexture: { type: 't', value: snowyTexture },
-  }
-
-  const vertexShader = `
+const vertexShader = /* glsl */`
 	uniform sampler2D bumpTexture;
 	uniform float bumpScale;
 
@@ -40,7 +29,7 @@ export default function(src) {
 	}
 `
 
-  const fragmentShader = `
+const fragmentShader = /* glsl */`
 	uniform sampler2D oceanTexture;
 	uniform sampler2D sandyTexture;
 	uniform sampler2D grassTexture;
@@ -61,16 +50,18 @@ export default function(src) {
 	}
 `
 
-  const material = new THREE.ShaderMaterial(
-    {
-      uniforms,
-      vertexShader,
-      fragmentShader,
-    })
-
-  const geometry = new THREE.PlaneGeometry(1000, 1000, 100, 100)
-  geometry.rotateX(-Math.PI / 2)
-  const mesh = new THREE.Mesh(geometry, material)
-  mesh.position.y = -60
-  return mesh
+const uniforms = {
+  // bumpTexture: { type: 't', value: loader.load(src) },
+  bumpScale: { type: 'f', value: 300.0 },
+  oceanTexture: { type: 't', value: oceanTexture },
+  sandyTexture: { type: 't', value: sandyTexture },
+  grassTexture: { type: 't', value: grassTexture },
+  rockyTexture: { type: 't', value: rockyTexture },
+  snowyTexture: { type: 't', value: snowyTexture },
 }
+
+export const material = new THREE.ShaderMaterial({
+  uniforms,
+  vertexShader,
+  fragmentShader
+})
