@@ -1,7 +1,7 @@
 export default class JoyStick {
-  constructor({ onMove, maxRadius = 40, rotationDamping = 0.06, moveDamping = 0.01 } = {}) {
+  constructor({ onMove, maxRadius = 40 } = {}) {
     const circle = document.createElement('div')
-    circle.style.cssText = 'position:absolute; bottom:35px; width:80px; height:80px; background:rgba(126, 126, 126, 0.5); border:#444 solid medium; border-radius:50%; left:50%; transform:translateX(-50%);'
+    circle.style.cssText = 'position:absolute; bottom:35px; width:80px; height:80px; background:rgba(126, 126, 126, 0.5); border:#fff solid medium; border-radius:50%; left:50%; transform:translateX(-50%);'
     const thumb = document.createElement('div')
     thumb.style.cssText = 'position: absolute; left: 20px; top: 20px; width: 40px; height: 40px; border-radius: 50%; background: #fff;'
     circle.appendChild(thumb)
@@ -11,17 +11,16 @@ export default class JoyStick {
     this.maxRadiusSquared = this.maxRadius * this.maxRadius
     this.onMove = onMove
     this.origin = { left: this.domElement.offsetLeft, top: this.domElement.offsetTop }
-    this.rotationDamping = rotationDamping
-    this.moveDamping = moveDamping
-    if (this.domElement != undefined) {
+
+    if (this.domElement) {
       const joystick = this
       if ('ontouchstart' in window)
         this.domElement.addEventListener('touchstart', evt => {
-          evt.preventDefault(); joystick.tap(evt)
+          joystick.tap(evt)
         })
-			 else
+      else
         this.domElement.addEventListener('mousedown', evt => {
-          evt.preventDefault(); joystick.tap(evt)
+          joystick.tap(evt)
         })
 
     }
@@ -39,18 +38,18 @@ export default class JoyStick {
     this.offset = this.getMousePosition(evt)
     const joystick = this
     if ('ontouchstart' in window) {
-      document.ontouchmove = function(evt) {
-        evt.preventDefault(); joystick.move(evt)
+      document.ontouchmove = function (evt) {
+        joystick.move(evt)
       }
-      document.ontouchend = function(evt) {
-        evt.preventDefault(); joystick.up(evt)
+      document.ontouchend = function (evt) {
+        joystick.up(evt)
       }
     } else {
-      document.onmousemove = function(evt) {
-        evt.preventDefault(); joystick.move(evt)
+      document.onmousemove = function (evt) {
+        joystick.move(evt)
       }
-      document.onmouseup = function(evt) {
-        evt.preventDefault(); joystick.up(evt)
+      document.onmouseup = function (evt) {
+        joystick.up(evt)
       }
     }
   }
@@ -72,6 +71,7 @@ export default class JoyStick {
       left *= this.maxRadius
       top *= this.maxRadius
     }
+
     // set the element's new position:
     this.domElement.style.top = `${top + this.domElement.clientHeight / 2}px`
     this.domElement.style.left = `${left + this.domElement.clientWidth / 2}px`
@@ -79,10 +79,10 @@ export default class JoyStick {
     const forward = -(top - this.origin.top + this.domElement.clientHeight / 2) / this.maxRadius
     const turn = (left - this.origin.left + this.domElement.clientWidth / 2) / this.maxRadius
 
-    if (this.onMove != undefined) this.onMove(forward, turn)
+    if (this.onMove) this.onMove(forward, turn)
   }
 
-  up(evt) {
+  up() {
     if ('ontouchstart' in window) {
       document.ontouchmove = null
       document.touchend = null

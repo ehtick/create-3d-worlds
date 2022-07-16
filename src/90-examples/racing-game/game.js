@@ -1,7 +1,7 @@
 /* global THREE, CANNON */
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSunLight } from '/utils/light.js'
-import JoyStick from './JoyStick.js'
+import JoyStick from '/classes/JoyStick.js'
 import { createWorld, createVehicle, updateDrive, updateWheels } from './phy-utils.js'
 
 const loader = new THREE.FBXLoader()

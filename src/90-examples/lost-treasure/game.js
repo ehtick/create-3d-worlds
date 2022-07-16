@@ -3,7 +3,7 @@ import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
 import { hemLight, dirLight } from '/utils/light.js'
 import keyboard from '/classes/Keyboard.js'
-import JoyStick from './JoyStick.js'
+import JoyStick from '/classes/JoyStick.js'
 
 hemLight()
 dirLight()

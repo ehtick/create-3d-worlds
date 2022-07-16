@@ -13,21 +13,12 @@ live-server
 
 ### General
 
-- [ ] Konačni automat
-  - [x] nakačiti kachujin na konačni automat
-  - [x] dodati kapuera animacije, bez mrdanja igrača
-  - [x] ispratiti tutorijal https://r105.threejsfundamentals.org/threejs/lessons/threejs-game.html
-  - [ ] uskladiti animacije sa mrdanjem igrača
-    - [ ] mrdati igrača napred za neke napade
-    - [ ] onemogućiti mrdanje u skoku?
-
 - Shaders
   - [x] shaders https://youtu.be/C8Cuwq1eqDw
   - [x] shaders https://youtu.be/uwzEqeMd7uQ
   - [ ] The Book of Shaders https://thebookofshaders.com/
 
 - [ ] pokušati prebaciti teren iz MMO u RPG
-- reuse JoyStick class
 - [ ] 3d vozilo https://tomo0613.itch.io/offroadjs
 - [ ] 3D vozila + 3D spomenici https://github.com/swift502/Sketchbook
 - [ ] boids https://threejs.org/examples/webgl_gpgpu_birds.html
@@ -42,6 +33,14 @@ live-server
 - [ ] pregledati primere, žvakati mini-rpg, čistka
 - [ ] napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
 - free texture sa normalMaps https://opengameart.org/content/50-free-textures-4-normalmaps
+
+- [ ] Konačni automat
+  - [x] nakačiti kachujin na konačni automat
+  - [x] dodati kapuera animacije, bez mrdanja igrača
+  - [x] ispratiti tutorijal https://r105.threejsfundamentals.org/threejs/lessons/threejs-game.html
+  - [ ] uskladiti animacije sa mrdanjem igrača
+    - [ ] mrdati igrača napred za neke napade
+    - [ ] onemogućiti mrdanje u skoku?
 
 - [x] ažurirati verziju (na 119)
 - [x] ažurirati verziju (na 127)
