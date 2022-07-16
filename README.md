@@ -18,10 +18,10 @@ live-server
   - [x] shaders https://youtu.be/uwzEqeMd7uQ
   - [ ] The Book of Shaders https://thebookofshaders.com/
 
-- [ ] 3D vozila + 3D spomenici https://github.com/swift502/Sketchbook
 - [ ] boids https://threejs.org/examples/webgl_gpgpu_birds.html
 - [ ] model gleda kursor https://tympanus.net/codrops/2019/10/14/how-to-create-an-interactive-3d-character-with-three-js/
 - [ ] model simplifier https://codepen.io/nik-lever/pen/dymoKmz
+  i exporter https://threejs.org/examples/misc_exporter_gltf
 - [ ] integrisati ucimo-razvoj-igara
 - [ ] pogledati igrice-primeri
 - [ ] probati storybook https://github.com/jasonsturges/storybook-for-threejs
