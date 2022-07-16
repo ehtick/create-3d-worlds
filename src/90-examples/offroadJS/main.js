@@ -12,7 +12,7 @@ const worldStep = 1 / 60
 const gWorld = new CANNON.World()
 const gScene = new THREE.Scene()
 const gRenderer = new THREE.WebGLRenderer(/* {antialias: true}*/)
-const gCamera = new THREE.PerspectiveCamera(50, getAspectRatio(), 0.1, 1000)
+const gCamera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000)
 let pause = false
 // omogućiti gama za ovu scenu gRenderer.gammaOutput = true
 
@@ -32,141 +32,73 @@ document.body.appendChild(gRenderer.domElement)
 
 const vehicleInitialPosition = new THREE.Vector3(70, 2, 60)
 const vehicleInitialRotation = new THREE.Quaternion().setFromAxisAngle(new CANNON.Vec3(0, -1, 0), -Math.PI / 2)
-let resetVehicle = () => {};
+let resetVehicle = () => {}
 
-(async function init() {
-  utils.loadResource('model/skybox.jpg').then(cubeTexture => {
-    const skyBox = new THREE.CubeTexture(utils.sliceCubeTexture(cubeTexture))
-    skyBox.needsUpdate = true
-    gScene.background = skyBox
-  })
+utils.loadResource('model/skybox.jpg').then(cubeTexture => {
+  const skyBox = new THREE.CubeTexture(utils.sliceCubeTexture(cubeTexture))
+  skyBox.needsUpdate = true
+  gScene.background = skyBox
+})
 
-  const [wheelGLTF, chassisGLTF, terrainGLB] = await Promise.all([
-    utils.loadResource('model/lowPoly_car_wheel.gltf'),
-    utils.loadResource('model/mg.gltf'),
-    utils.loadResource('model/terrain.glb'),
-  ])
+const [wheelGLTF, chassisGLTF, terrainGLB] = await Promise.all([
+  utils.loadResource('model/lowPoly_car_wheel.gltf'),
+  utils.loadResource('model/mg.gltf'),
+  utils.loadResource('model/terrain.glb'),
+])
 
-  const terrain = terrainGLB.scene
+const terrain = terrainGLB.scene
 
-  gScene.add(terrain)
-  const heightField = generateTerrain()
-  // const heightField = await generateHeightfieldFromMesh(terrain, 1.475);
-  gWorld.addBody(heightField)
+gScene.add(terrain)
+const heightField = generateTerrain()
+gWorld.addBody(heightField)
 
-  const wheel = wheelGLTF.scene
-  const chassis = chassisGLTF.scene
+const wheel = wheelGLTF.scene
+const chassis = chassisGLTF.scene
 
-  setMaterials(wheel, chassis)
-  chassis.scale.set(0.7, 0.7, 0.7)
+chassis.scale.set(0.7, 0.7, 0.7)
 
-  const meshes = {
-    wheel_front_r: wheel,
-    wheel_front_l: wheel.clone(),
-    wheel_rear_r: wheel.clone(),
-    wheel_rear_l: wheel.clone(),
-    chassis,
-  }
-
-  const vehicle = createVehicle()
-  vehicle.addToWorld(gWorld, meshes)
-
-  resetVehicle = () => {
-    vehicle.chassisBody.position.copy(vehicleInitialPosition)
-    vehicle.chassisBody.quaternion.copy(vehicleInitialRotation)
-    vehicle.chassisBody.velocity.set(0, 0, 0)
-    vehicle.chassisBody.angularVelocity.set(0, 0, 0)
-  }
-  resetVehicle()
-
-  Object.keys(meshes).forEach(meshName => {
-    // mirror meshes suffixed with '_r'
-    if (meshName.endsWith('_r'))
-      ['x', 'y', 'z'].forEach(axis => {
-        meshes[meshName].scale[axis] *= -1
-      })
-    gScene.add(meshes[meshName])
-  })
-
-  cameraHelper.init(gCamera, chassis)
-
-  render()
-})()
-
-function updatePhysics() {
-  gWorld.step(worldStep)
+const meshes = {
+  wheel_front_r: wheel,
+  wheel_front_l: wheel.clone(),
+  wheel_rear_r: wheel.clone(),
+  wheel_rear_l: wheel.clone(),
+  chassis,
 }
 
-function render() {
+const vehicle = createVehicle()
+vehicle.addToWorld(gWorld, meshes)
+
+resetVehicle = () => {
+  vehicle.chassisBody.position.copy(vehicleInitialPosition)
+  vehicle.chassisBody.quaternion.copy(vehicleInitialRotation)
+  vehicle.chassisBody.velocity.set(0, 0, 0)
+  vehicle.chassisBody.angularVelocity.set(0, 0, 0)
+}
+resetVehicle()
+
+Object.keys(meshes).forEach(meshName => {
+  // mirror meshes suffixed with '_r'
+  if (meshName.endsWith('_r'))
+    ['x', 'y', 'z'].forEach(axis => {
+      meshes[meshName].scale[axis] *= -1
+    })
+  gScene.add(meshes[meshName])
+})
+
+cameraHelper.init(gCamera, chassis)
+
+/* LOOP */
+
+void function render() {
   if (pause) return
 
-  updatePhysics()
+  gWorld.step(worldStep)
   cameraHelper.update()
   gRenderer.render(gScene, gCamera)
   requestAnimationFrame(render)
-}
+}()
 
-function setMaterials(wheel, chassis) {
-  const baseMaterial = new THREE.MeshLambertMaterial({ color: 0x111111 })
-  const fenderMaterial = new THREE.MeshBasicMaterial({ color: 0x050505 })
-  const grillMaterial = new THREE.MeshBasicMaterial({ color: 0x222222 })
-  const chromeMaterial = new THREE.MeshPhongMaterial({ color: 0xCCCCCC })
-  const glassMaterial = new THREE.MeshPhongMaterial({ color: 0x1155FF })
-  const tailLightMaterial = new THREE.MeshPhongMaterial({ color: 0x550000 })
-  const headLightMaterial = new THREE.MeshPhongMaterial({ color: 0xFFFFBB })
-  const wheelMaterial = new THREE.MeshBasicMaterial()
-  wheelMaterial.alphaTest = 0.5
-  wheelMaterial.skinning = true
-
-  wheel.traverse(childMesh => {
-    if (childMesh.material) {
-      wheelMaterial.map = childMesh.material.map
-
-      childMesh.material = wheelMaterial
-      childMesh.material.needsUpdate = true
-    }
-  })
-
-  chassis.traverse(childMesh => {
-    if (childMesh.material)
-      childMesh.material = getChassisMaterialByPartName(childMesh.name)
-
-  })
-
-  function getChassisMaterialByPartName(partName) {
-    switch (partName) {
-      case 'front_bumper':
-      case 'rear_bumper':
-      case 'front_fender':
-      case 'rear_fender':
-        return fenderMaterial
-      case 'grill':
-        return grillMaterial
-      case 'brushGuard':
-        return chromeMaterial
-      case 'glass':
-        return glassMaterial
-      case 'tail_lights':
-        return tailLightMaterial
-      case 'head_lights':
-        return headLightMaterial
-      default:
-        return baseMaterial
-    };
-  }
-}
-
-function getAspectRatio() {
-  return window.innerWidth / window.innerHeight
-}
-
-function windowResizeHandler() {
-  gCamera.aspect = getAspectRatio()
-  gCamera.updateProjectionMatrix()
-  gRenderer.setSize(window.innerWidth, window.innerHeight)
-}
-
-window.onresize = utils.debounce(windowResizeHandler, 500)
+/* EVENTS */
 
 const instructionsContainer = document.getElementById('instructions-container')
 const instructionsCloseButton = document.getElementById('instructions-close-button')
