@@ -18,8 +18,6 @@ live-server
   - [x] shaders https://youtu.be/uwzEqeMd7uQ
   - [ ] The Book of Shaders https://thebookofshaders.com/
 
-- [ ] pokušati prebaciti teren iz MMO u RPG
-- [ ] 3d vozilo https://tomo0613.itch.io/offroadjs
 - [ ] 3D vozila + 3D spomenici https://github.com/swift502/Sketchbook
 - [ ] boids https://threejs.org/examples/webgl_gpgpu_birds.html
 - [ ] model gleda kursor https://tympanus.net/codrops/2019/10/14/how-to-create-an-interactive-3d-character-with-three-js/
@@ -33,6 +31,7 @@ live-server
 - [ ] pregledati primere, žvakati mini-rpg, čistka
 - [ ] napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
 - free texture sa normalMaps https://opengameart.org/content/50-free-textures-4-normalmaps
+- [ ] pokušati prebaciti teren iz MMO u RPG
 
 - [ ] Konačni automat
   - [x] nakačiti kachujin na konačni automat
