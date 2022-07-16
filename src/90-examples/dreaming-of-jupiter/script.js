@@ -1,13 +1,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { camera, scene, renderer } from '/utils/scene.js'
 
-let planet,
-  moon,
-  sphereBg,
-  terrainGeometry,
-  pointLight1,
-  terrain,
-  frame = 0,
+let frame = 0,
   cameraDx = 0.05,
   count = 0,
   t = 0
@@ -26,7 +20,7 @@ scene.fog = new THREE.Fog('#3c1e02', 0.5, 50)
 
 camera.position.set(0, 1, 32)
 
-pointLight1 = new THREE.PointLight('#ffffff', 1, 0)
+const pointLight1 = new THREE.PointLight('#ffffff', 1, 0)
 pointLight1.position.set(0, 30, 30)
 scene.add(pointLight1)
 
@@ -40,7 +34,7 @@ const planetMaterial = new THREE.MeshLambertMaterial({
   map: texturePlanet,
   fog: false
 })
-planet = new THREE.Mesh(planetGeometry, planetMaterial)
+const planet = new THREE.Mesh(planetGeometry, planetMaterial)
 planet.position.set(0, 8, -30)
 scene.add(planet)
 
@@ -52,7 +46,7 @@ const moonMaterial = new THREE.MeshPhongMaterial({
   map: textureMoon,
   fog: false
 })
-moon = new THREE.Mesh(moonGeometry, moonMaterial)
+const moon = new THREE.Mesh(moonGeometry, moonMaterial)
 moon.position.set(0, 8, 0)
 scene.add(moon)
 
@@ -65,19 +59,19 @@ const materialSphereBg = new THREE.MeshBasicMaterial({
   map: textureSphereBg,
   fog: false
 })
-sphereBg = new THREE.Mesh(geometrySphereBg, materialSphereBg)
+const sphereBg = new THREE.Mesh(geometrySphereBg, materialSphereBg)
 sphereBg.position.set(0, 50, 0)
 scene.add(sphereBg)
 
 // Terrain
 const textureTerrain = loader.load()
 textureTerrain.rotation = THREE.MathUtils.degToRad(5)
-terrainGeometry = new THREE.PlaneBufferGeometry(70, 70, 20, 20)
+const terrainGeometry = new THREE.PlaneBufferGeometry(70, 70, 20, 20)
 const terrainMaterial = new THREE.MeshBasicMaterial({
   map: textureTerrain,
   fog: true
 })
-terrain = new THREE.Mesh(terrainGeometry, terrainMaterial)
+const terrain = new THREE.Mesh(terrainGeometry, terrainMaterial)
 terrain.rotation.x = -0.47 * Math.PI
 terrain.rotation.z = THREE.Math.degToRad(90)
 scene.add(terrain)
@@ -126,13 +120,14 @@ const lines = new THREE.LineSegments(linesGeometry, starsMaterial)
 linesGeometry.getAttribute('position').setUsage(THREE.DynamicDrawUsage)
 scene.add(lines)
 
+/* LOOP */
+
 void function animate() {
   planet.rotation.y += 0.002
   sphereBg.rotation.x += 0.002
   sphereBg.rotation.y += 0.002
   sphereBg.rotation.z += 0.002
 
-  // Moon Animation
   moon.rotation.y -= 0.007
   moon.rotation.x -= 0.007
   moon.position.x = 15 * Math.cos(t) + 0
@@ -165,7 +160,6 @@ void function animate() {
     }
   }
 
-  // Camera Movement
   camera.position.x += cameraDx
   camera.position.y = -1.2 * (1 - Math.abs(frame / 2000 - 0.5) / 0.5)
   camera.lookAt(0, 0, 0)
