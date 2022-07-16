@@ -1,11 +1,12 @@
-let renderer,
-  camera,
-  planet,
+import * as THREE from '/node_modules/three127/build/three.module.js'
+import { camera, scene, renderer } from '/utils/scene.js'
+
+let planet,
   moon,
   sphereBg,
   terrainGeometry,
-  container = document.getElementById('canvas_container'),
-  timeout_Debounce,
+  pointLight1,
+  terrain,
   frame = 0,
   cameraDx = 0.05,
   count = 0,
@@ -20,127 +21,112 @@ const l_positionAttr = linesGeometry.getAttribute('position')
 const l_vertex_Array = linesGeometry.getAttribute('position').array
 const l_velocity_Array = linesGeometry.getAttribute('velocity').array
 
-init()
-animate()
+scene.background = new THREE.Color('#000000')
+scene.fog = new THREE.Fog('#3c1e02', 0.5, 50)
 
-function init() {
-  scene = new THREE.Scene()
-  scene.background = new THREE.Color('#000000')
-  scene.fog = new THREE.Fog('#3c1e02', 0.5, 50)
+camera.position.set(0, 1, 32)
 
-  camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.01, 1000)
-  camera.position.set(0, 1, 32)
+pointLight1 = new THREE.PointLight('#ffffff', 1, 0)
+pointLight1.position.set(0, 30, 30)
+scene.add(pointLight1)
 
-  pointLight1 = new THREE.PointLight('#ffffff', 1, 0)
-  pointLight1.position.set(0, 30, 30)
-  scene.add(pointLight1)
+const loader = new THREE.TextureLoader()
 
-  renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    alpha: true
-  })
-  renderer.setSize(container.clientWidth, container.clientHeight)
-  renderer.setPixelRatio(window.devicePixelRatio)
-  container.appendChild(renderer.domElement)
+// Planet
+const texturePlanet = loader.load('https://i.ibb.co/h94JBXy/saturn3-ljge5g.jpg')
+texturePlanet.anisotropy = 16
+const planetGeometry = new THREE.SphereBufferGeometry(10, 50, 50)
+const planetMaterial = new THREE.MeshLambertMaterial({
+  map: texturePlanet,
+  fog: false
+})
+planet = new THREE.Mesh(planetGeometry, planetMaterial)
+planet.position.set(0, 8, -30)
+scene.add(planet)
 
-  const loader = new THREE.TextureLoader()
+// Moon
+const textureMoon = loader.load('https://i.ibb.co/64zn361/moon-ndengb.jpg')
+textureMoon.anisotropy = 16
+const moonGeometry = new THREE.SphereBufferGeometry(2, 32, 32)
+const moonMaterial = new THREE.MeshPhongMaterial({
+  map: textureMoon,
+  fog: false
+})
+moon = new THREE.Mesh(moonGeometry, moonMaterial)
+moon.position.set(0, 8, 0)
+scene.add(moon)
 
-  // Planet
-  const texturePlanet = loader.load('https://i.ibb.co/h94JBXy/saturn3-ljge5g.jpg')
-  texturePlanet.anisotropy = 16
-  const planetGeometry = new THREE.SphereBufferGeometry(10, 50, 50)
-  const planetMaterial = new THREE.MeshLambertMaterial({
-    map: texturePlanet,
+// Sphere Background
+const textureSphereBg = loader.load('https://i.ibb.co/JCsHJpp/stars2-qx9prz.jpg')
+textureSphereBg.anisotropy = 16
+const geometrySphereBg = new THREE.SphereBufferGeometry(150, 32, 32)
+const materialSphereBg = new THREE.MeshBasicMaterial({
+  side: THREE.BackSide,
+  map: textureSphereBg,
+  fog: false
+})
+sphereBg = new THREE.Mesh(geometrySphereBg, materialSphereBg)
+sphereBg.position.set(0, 50, 0)
+scene.add(sphereBg)
+
+// Terrain
+const textureTerrain = loader.load()
+textureTerrain.rotation = THREE.MathUtils.degToRad(5)
+terrainGeometry = new THREE.PlaneBufferGeometry(70, 70, 20, 20)
+const terrainMaterial = new THREE.MeshBasicMaterial({
+  map: textureTerrain,
+  fog: true
+})
+terrain = new THREE.Mesh(terrainGeometry, terrainMaterial)
+terrain.rotation.x = -0.47 * Math.PI
+terrain.rotation.z = THREE.Math.degToRad(90)
+scene.add(terrain)
+
+const t_vertex_Array = terrainGeometry.getAttribute('position').array
+terrainGeometry.getAttribute('position').setUsage(THREE.DynamicDrawUsage)
+
+terrainGeometry.setAttribute('myZ', new THREE.BufferAttribute(new Float32Array(t_vertex_Array.length / 3), 1))
+const t_myZ_Array = terrainGeometry.getAttribute('myZ').array
+
+for (let i = 0; i < t_vertex_Array.length; i++)
+  t_myZ_Array[i] = THREE.MathUtils.randInt(0, 5)
+
+// Terain Lines
+const terrain_line = new THREE.LineSegments(
+  terrainGeometry,
+  new THREE.LineBasicMaterial({
+    color: '#fff',
     fog: false
   })
-  planet = new THREE.Mesh(planetGeometry, planetMaterial)
-  planet.position.set(0, 8, -30)
-  scene.add(planet)
+)
+terrain_line.rotation.x = -0.47 * Math.PI
+terrain_line.rotation.z = THREE.Math.degToRad(90)
+scene.add(terrain_line)
 
-  // Moon
-  const textureMoon = loader.load('https://i.ibb.co/64zn361/moon-ndengb.jpg')
-  textureMoon.anisotropy = 16
-  const moonGeometry = new THREE.SphereBufferGeometry(2, 32, 32)
-  const moonMaterial = new THREE.MeshPhongMaterial({
-    map: textureMoon,
-    fog: false
-  })
-  moon = new THREE.Mesh(moonGeometry, moonMaterial)
-  moon.position.set(0, 8, 0)
-  scene.add(moon)
+//  Stars
+for (let i = 0; i < lineTotal; i++) {
+  let x = THREE.MathUtils.randInt(-100, 100)
+  const y = THREE.MathUtils.randInt(10, 40)
+  if (x < 7 && x > -7 && y < 20) x += 14
+  const z = THREE.MathUtils.randInt(0, -300)
 
-  // Sphere Background
-  const textureSphereBg = loader.load('https://i.ibb.co/JCsHJpp/stars2-qx9prz.jpg')
-  textureSphereBg.anisotropy = 16
-  const geometrySphereBg = new THREE.SphereBufferGeometry(150, 32, 32)
-  const materialSphereBg = new THREE.MeshBasicMaterial({
-    side: THREE.BackSide,
-    map: textureSphereBg,
-    fog: false
-  })
-  sphereBg = new THREE.Mesh(geometrySphereBg, materialSphereBg)
-  sphereBg.position.set(0, 50, 0)
-  scene.add(sphereBg)
+  l_vertex_Array[6 * i + 0] = l_vertex_Array[6 * i + 3] = x
+  l_vertex_Array[6 * i + 1] = l_vertex_Array[6 * i + 4] = y
+  l_vertex_Array[6 * i + 2] = l_vertex_Array[6 * i + 5] = z
 
-  // Terrain
-  const textureTerrain = loader.load()
-  textureTerrain.rotation = THREE.MathUtils.degToRad(5)
-  terrainGeometry = new THREE.PlaneBufferGeometry(70, 70, 20, 20)
-  const terrainMaterial = new THREE.MeshBasicMaterial({
-    map: textureTerrain,
-    fog: true
-  })
-  terrain = new THREE.Mesh(terrainGeometry, terrainMaterial)
-  terrain.rotation.x = -0.47 * Math.PI
-  terrain.rotation.z = THREE.Math.degToRad(90)
-  scene.add(terrain)
-
-  const t_vertex_Array = terrainGeometry.getAttribute('position').array
-  terrainGeometry.getAttribute('position').setUsage(THREE.DynamicDrawUsage)
-
-  terrainGeometry.setAttribute('myZ', new THREE.BufferAttribute(new Float32Array(t_vertex_Array.length / 3), 1))
-  const t_myZ_Array = terrainGeometry.getAttribute('myZ').array
-
-  for (let i = 0; i < t_vertex_Array.length; i++)
-    t_myZ_Array[i] = THREE.MathUtils.randInt(0, 5)
-
-  // Terain Lines
-  const terrain_line = new THREE.LineSegments(
-    terrainGeometry,
-    new THREE.LineBasicMaterial({
-      color: '#fff',
-      fog: false
-    })
-  )
-  terrain_line.rotation.x = -0.47 * Math.PI
-  terrain_line.rotation.z = THREE.Math.degToRad(90)
-  scene.add(terrain_line)
-
-  //  Stars
-  for (let i = 0; i < lineTotal; i++) {
-    let x = THREE.MathUtils.randInt(-100, 100)
-    const y = THREE.MathUtils.randInt(10, 40)
-    if (x < 7 && x > -7 && y < 20) x += 14
-    const z = THREE.MathUtils.randInt(0, -300)
-
-    l_vertex_Array[6 * i + 0] = l_vertex_Array[6 * i + 3] = x
-    l_vertex_Array[6 * i + 1] = l_vertex_Array[6 * i + 4] = y
-    l_vertex_Array[6 * i + 2] = l_vertex_Array[6 * i + 5] = z
-
-    l_velocity_Array[2 * i] = l_velocity_Array[2 * i + 1] = 0
-  }
-  const starsMaterial = new THREE.LineBasicMaterial({
-    color: '#ffffff',
-    transparent: true,
-    opacity: 0.5,
-    fog: false
-  })
-  const lines = new THREE.LineSegments(linesGeometry, starsMaterial)
-  linesGeometry.getAttribute('position').setUsage(THREE.DynamicDrawUsage)
-  scene.add(lines)
+  l_velocity_Array[2 * i] = l_velocity_Array[2 * i + 1] = 0
 }
+const starsMaterial = new THREE.LineBasicMaterial({
+  color: '#ffffff',
+  transparent: true,
+  opacity: 0.5,
+  fog: false
+})
+const lines = new THREE.LineSegments(linesGeometry, starsMaterial)
+linesGeometry.getAttribute('position').setUsage(THREE.DynamicDrawUsage)
+scene.add(lines)
 
-function animate() {
+void function animate() {
   planet.rotation.y += 0.002
   sphereBg.rotation.x += 0.002
   sphereBg.rotation.y += 0.002
@@ -192,31 +178,4 @@ function animate() {
   terrainGeometry.attributes.position.needsUpdate = true
   renderer.render(scene, camera)
   requestAnimationFrame(animate)
-}
-
-/*     Resize     */
-window.addEventListener('resize', () => {
-  clearTimeout(timeout_Debounce)
-  timeout_Debounce = setTimeout(onWindowResize, 80)
-})
-function onWindowResize() {
-  camera.aspect = container.clientWidth / container.clientHeight
-  camera.updateProjectionMatrix()
-  renderer.setSize(container.clientWidth, container.clientHeight)
-}
-
-/*     Fullscreen btn     */
-let fullscreen
-const fsEnter = document.getElementById('fullscr')
-fsEnter.addEventListener('click', e => {
-  e.preventDefault()
-  if (!fullscreen) {
-    fullscreen = true
-    document.documentElement.requestFullscreen()
-    fsEnter.innerHTML = 'Exit Fullscreen'
-  } else {
-    fullscreen = false
-    document.exitFullscreen()
-    fsEnter.innerHTML = 'Go Fullscreen'
-  }
-})
+}()
