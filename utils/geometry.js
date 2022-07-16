@@ -1,6 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { randomInRange, randomNuance } from './helpers.js'
-import { material as skyMaterial } from '/utils/shaders/gradient.js'
+import { material as skyMaterial } from '/utils/shaders/gradient-sky.js'
 
 const loader = new THREE.TextureLoader()
 

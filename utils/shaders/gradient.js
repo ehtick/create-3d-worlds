@@ -1,24 +1,13 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
-const vertexShader = /* glsl */`
-  varying vec3 vWorldPosition;
-  void main() {
-    vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
-    vWorldPosition = worldPosition.xyz;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-  }
-`
-
 const fragmentShader = /* glsl */`
+  uniform vec2 resolution; // uniform variables must be declared here
   uniform vec3 topColor;
   uniform vec3 bottomColor;
-  uniform float offset;
-  uniform float exponent;
-  varying vec3 vWorldPosition;
+
   void main() {
-    float height = normalize( vWorldPosition + offset ).y;
-    float weight = pow( max( height , 0.0), exponent );
-    vec3 rgb = mix( bottomColor, topColor, weight );
+    vec2 coord = gl_FragCoord.xy / resolution.xy; // normalize coordinates
+    vec3 rgb = mix( bottomColor, topColor, coord.y );
     gl_FragColor = vec4( rgb, 1.0 );
   }
 `
@@ -26,13 +15,7 @@ const fragmentShader = /* glsl */`
 const uniforms = {
   topColor: { value: new THREE.Color(0x0077ff) },
   bottomColor: { value: new THREE.Color(0xffffff) },
-  offset: { value: 33 },
-  exponent: { value: 0.6 }
+  resolution: { type: 'v2', value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
 }
 
-export const material = new THREE.ShaderMaterial({
-  uniforms,
-  vertexShader,
-  fragmentShader,
-  side: THREE.DoubleSide,
-})
+export const material = new THREE.ShaderMaterial({ uniforms, fragmentShader })

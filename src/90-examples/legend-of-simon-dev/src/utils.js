@@ -15,7 +15,7 @@ import { BasicCharacterController } from './player-entity.js'
 import EquipWeapon from './equip-weapon-component.js'
 import { InventoryController, InventoryItem } from './inventory-controller.js'
 import QuestComponent from './quest-component.js'
-import { material as skyMaterial } from '/utils/shaders/gradient.js'
+import { material as skyMaterial } from '/utils/shaders/gradient-sky.js'
 
 export function addSky(scene) {
   const hemiLight = new THREE.HemisphereLight(0xFFFFFF, 0xFFFFFFF, 0.6)
