@@ -16,16 +16,18 @@ const fragmentShader = /* glsl */`
   uniform float exponent;
   varying vec3 vWorldPosition;
   void main() {
-    float h = normalize( vWorldPosition + offset ).y;
-    gl_FragColor = vec4( mix( bottomColor, topColor, max( pow( max( h , 0.0), exponent ), 0.0 ) ), 1.0 );
+    float height = normalize( vWorldPosition + offset ).y;
+    float factor = pow( max( height , 0.0), exponent );
+    vec3 rgb = mix( bottomColor, topColor, max( factor, 0.0 ) );
+    gl_FragColor = vec4( rgb, 1.0 );
   }
 `
 
 const uniforms = {
-  'topColor': { value: new THREE.Color(0x0077ff) },
-  'bottomColor': { value: new THREE.Color(0xffffff) },
-  'offset': { value: 33 },
-  'exponent': { value: 0.6 }
+  topColor: { value: new THREE.Color(0x0077ff) },
+  bottomColor: { value: new THREE.Color(0xffffff) },
+  offset: { value: 33 },
+  exponent: { value: 0.6 }
 }
 
 export const material = new THREE.ShaderMaterial({

@@ -1,7 +1,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
 const fragmentShader = /* glsl */`
-  uniform vec2 resolution; // Uniform variables must be declared here first
+  uniform vec2 resolution; // uniform variables must be declared here
 
   void main() {
     vec2 coord = gl_FragCoord.xy / resolution.xy; // normalize coordinates -1 to 1
