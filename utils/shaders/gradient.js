@@ -17,8 +17,8 @@ const fragmentShader = /* glsl */`
   varying vec3 vWorldPosition;
   void main() {
     float height = normalize( vWorldPosition + offset ).y;
-    float factor = pow( max( height , 0.0), exponent );
-    vec3 rgb = mix( bottomColor, topColor, max( factor, 0.0 ) );
+    float weight = pow( max( height , 0.0), exponent );
+    vec3 rgb = mix( bottomColor, topColor, weight );
     gl_FragColor = vec4( rgb, 1.0 );
   }
 `
