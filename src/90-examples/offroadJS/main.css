@@ -45,7 +45,7 @@ canvas {
     margin-bottom: 2em;
 }
 
-#instructions-close-button {
+#close-button {
     position: absolute;
     top: 0;
     right: 0;

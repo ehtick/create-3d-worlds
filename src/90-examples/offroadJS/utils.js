@@ -31,7 +31,6 @@ function loadResource(url) {
       console.error('Failed to load resource: ' + e.target.src)
       reject(e)
     }
-
     loader.load(url, onLoad, onProgress, onError)
   })
 }

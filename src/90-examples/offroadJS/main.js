@@ -6,29 +6,25 @@ import createVehicle from './raycastVehicle.js'
 import { generateTerrain } from './terrainHelper.js'
 import { cameraHelper } from './cameraHelper.js'
 
-const gravity = [0, -10, 0]
-const worldStep = 1 / 60
-
-const gWorld = new CANNON.World()
-const gScene = new THREE.Scene()
-const gRenderer = new THREE.WebGLRenderer(/* {antialias: true}*/)
-const gCamera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000)
+const world = new CANNON.World()
+const scene = new THREE.Scene()
+const renderer = new THREE.WebGLRenderer(/* {antialias: true}*/)
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000)
 let pause = false
-// omogućiti gama za ovu scenu gRenderer.gammaOutput = true
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
 const sunLight = new THREE.DirectionalLight(0xf5f4d3, 0.9)
 sunLight.position.set(-1, 100, -1).normalize()
-gScene.add(ambientLight)
-gScene.add(sunLight)
+scene.add(ambientLight)
+scene.add(sunLight)
 
-gWorld.broadphase = new CANNON.SAPBroadphase(gWorld)
-gWorld.gravity.set(...gravity)
-gWorld.defaultContactMaterial.friction = 0.001
+world.broadphase = new CANNON.SAPBroadphase(world)
+world.gravity.set(0, -10, 0)
+world.defaultContactMaterial.friction = 0.001
 
-gRenderer.setPixelRatio(window.devicePixelRatio)
-gRenderer.setSize(window.innerWidth, window.innerHeight)
-document.body.appendChild(gRenderer.domElement)
+renderer.setPixelRatio(window.devicePixelRatio)
+renderer.setSize(window.innerWidth, window.innerHeight)
+document.body.appendChild(renderer.domElement)
 
 const vehicleInitialPosition = new THREE.Vector3(70, 2, 60)
 const vehicleInitialRotation = new THREE.Quaternion().setFromAxisAngle(new CANNON.Vec3(0, -1, 0), -Math.PI / 2)
@@ -37,7 +33,7 @@ let resetVehicle = () => {}
 utils.loadResource('model/skybox.jpg').then(cubeTexture => {
   const skyBox = new THREE.CubeTexture(utils.sliceCubeTexture(cubeTexture))
   skyBox.needsUpdate = true
-  gScene.background = skyBox
+  scene.background = skyBox
 })
 
 const [wheelGLTF, chassisGLTF, terrainGLB] = await Promise.all([
@@ -48,13 +44,12 @@ const [wheelGLTF, chassisGLTF, terrainGLB] = await Promise.all([
 
 const terrain = terrainGLB.scene
 
-gScene.add(terrain)
+scene.add(terrain)
 const heightField = generateTerrain()
-gWorld.addBody(heightField)
+world.addBody(heightField)
 
 const wheel = wheelGLTF.scene
 const chassis = chassisGLTF.scene
-
 chassis.scale.set(0.7, 0.7, 0.7)
 
 const meshes = {
@@ -66,7 +61,7 @@ const meshes = {
 }
 
 const vehicle = createVehicle()
-vehicle.addToWorld(gWorld, meshes)
+vehicle.addToWorld(world, meshes)
 
 resetVehicle = () => {
   vehicle.chassisBody.position.copy(vehicleInitialPosition)
@@ -82,26 +77,25 @@ Object.keys(meshes).forEach(meshName => {
     ['x', 'y', 'z'].forEach(axis => {
       meshes[meshName].scale[axis] *= -1
     })
-  gScene.add(meshes[meshName])
+  scene.add(meshes[meshName])
 })
 
-cameraHelper.init(gCamera, chassis)
+cameraHelper.init(camera, chassis)
 
 /* LOOP */
 
 void function render() {
+  requestAnimationFrame(render)
   if (pause) return
 
-  gWorld.step(worldStep)
+  world.step(1 / 60)
   cameraHelper.update()
-  gRenderer.render(gScene, gCamera)
-  requestAnimationFrame(render)
+  renderer.render(scene, camera)
 }()
 
 /* EVENTS */
 
-const instructionsContainer = document.getElementById('instructions-container')
-const instructionsCloseButton = document.getElementById('instructions-close-button')
+const instructions = document.getElementById('instructions-container')
 
 window.addEventListener('keyup', e => {
   switch (e.key.toUpperCase()) {
@@ -110,26 +104,16 @@ window.addEventListener('keyup', e => {
       break
     case 'P':
       pause = !pause
-      if (pause)
-        console.info('Pause')
-      else
-        render()
       break
     case 'R':
       resetVehicle()
       break
     case 'ESCAPE':
-      instructionsContainer.classList.toggle('hidden')
+      instructions.classList.toggle('hidden')
       break
   }
 })
 
-instructionsCloseButton.addEventListener('click', () => {
-  instructionsContainer.classList.add('hidden')
-})
-
-instructionsContainer.addEventListener('mousedown', e => {
-  console.log('instructions mousedown')
-  e.stopImmediatePropagation
-  e.stopPropagation
+document.getElementById('close-button').addEventListener('click', () => {
+  instructions.classList.add('hidden')
 })
