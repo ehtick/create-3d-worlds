@@ -88,13 +88,11 @@ function loadAssets() {
           car.chassis = child
           followCam.parent = child
           sun.target = child
-        } else if (child.name.includes('Bonnet'))
-          child.visible = false // if true looks armored
-        else if (child.name.includes('Wheel') && child.children.length) {
+        } else if (child.name.includes('Wheel') && child.children.length) {
           car.wheel.push(child)
           child.parent = scene
           child.visible = false
-        } else if (child.name.includes('Xtra') || child.name.includes('Proxy'))
+        } else if (child.name.includes('Bonnet') || child.name.includes('Xtra') || child.name.includes('Proxy'))
           child.visible = false
       } else
       if (child.name.includes('Checkpoint'))
@@ -104,6 +102,8 @@ function loadAssets() {
     assets = object
   })
 }
+
+// TODO: učitati šasiju i točkove zasebno
 
 function customiseCar() {
   car.selected.wheel = car.wheel[0]
