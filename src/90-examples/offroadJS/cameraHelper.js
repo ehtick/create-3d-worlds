@@ -1,31 +1,27 @@
+import * as THREE from '/node_modules/three127/build/three.module.js'
+
 export const cameraHelper = {
-  init: initCameraHelper,
+  init,
   switch: () => {},
   update: () => {},
 }
 
-function initCameraHelper(camera, target, controllerScope) {
-  new THREE.OrbitControls(camera, controllerScope)
-
+function init(camera, target) {
   let cameraId = 0
-
   cameraHelper.switch = () => {
     switch (cameraId++) {
       case 0:
         console.info('Chase camera')
-
         target.remove(camera)
         camera.fov = 50
         cameraHelper.update = initChaseCamera(camera, target)
         break
       case 1:
         console.info('Static camera')
-
         cameraHelper.update = () => camera.lookAt(target.position)
         break
       case 2:
         console.info('Hood camera')
-
         target.add(camera)
         camera.position.set(0, 1.5, 0)
         camera.rotation.set(0, 0, 0)
@@ -37,7 +33,6 @@ function initCameraHelper(camera, target, controllerScope) {
         cameraHelper.switch()
     }
   }
-
   cameraHelper.switch()
 }
 

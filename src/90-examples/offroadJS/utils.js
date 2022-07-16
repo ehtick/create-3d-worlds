@@ -1,3 +1,6 @@
+import * as THREE from '/node_modules/three127/build/three.module.js'
+import { GLTFLoader } from '/node_modules/three127/examples/jsm/loaders/GLTFLoader.js'
+
 export {
   loadResource,
   sliceCubeTexture,
@@ -15,7 +18,7 @@ function loadResource(url) {
       break
     case 'glb':
     case 'gltf':
-      loader = new THREE.GLTFLoader()
+      loader = new GLTFLoader()
       break
     default:
       return Promise.reject(new Error(`unknown resource type [${extension}]`))

@@ -1,4 +1,5 @@
 /* global CANNON */
+import * as THREE from '/node_modules/three127/build/three.module.js'
 
 import controllerSocketHandler from './socketHandler.js'
 

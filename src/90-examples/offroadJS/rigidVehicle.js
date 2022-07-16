@@ -1,4 +1,5 @@
 /* global CANNON */
+import * as THREE from '/node_modules/three127/build/three.module.js'
 
 // view-source:http://schteppe.github.io/cannon.js/demos/rigidVehicle.html
 export class RigidVehicle {
@@ -90,7 +91,6 @@ export default function createVehicle() {
     return new CANNON.Body({ mass: 1, material: wheelMaterial, shape: wheelShape, angularDamping: 0.4 })
   }
 
-  //
   vehicle.addWheel({
     body: createWheelBody(),
     position: new CANNON.Vec3(-1.2, height, -axisWidth / 2),
