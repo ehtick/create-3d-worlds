@@ -1,3 +1,5 @@
+/* global CANNON */
+
 import terrainHeightMap from './terrainHeightMap.js'
 
 const groundMaterial = new CANNON.Material('groundMaterial')

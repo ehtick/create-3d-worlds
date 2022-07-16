@@ -1,3 +1,5 @@
+/* global CANNON */
+
 import controllerSocketHandler from './socketHandler.js'
 
 export default function createVehicle() {
