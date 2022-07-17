@@ -1,11 +1,10 @@
 const canvas = document.getElementById('canvas')
-canvas.height = window.innerHeight || canvas.height
-canvas.width = document.body.clientWidth || canvas.width
+canvas.height = window.innerHeight
+canvas.width = document.body.clientWidth
 canvas.style.backgroundColor = 'black'
 
 const ctx = canvas.getContext('2d')
-ctx.strokeStyle='lightgray'
-ctx.fillStyle='lightgray'
+ctx.strokeStyle = ctx.fillStyle = 'lightgray'
 ctx.lineWidth = 3
 
 class Arc {
@@ -31,9 +30,10 @@ class Arc {
 }
 
 const arcs = []
-for (let i = 0; i < Math.PI * 2; i+= Math.PI / 4) {
+for (let i = 0; i < Math.PI * 2; i += Math.PI / 4) {
   arcs.push(new Arc(0 + i, Math.PI / 8 + i))
   arcs.push(new Arc(0 + i, Math.PI / 8 + i, 250, false))
+  arcs.push(new Arc(0 + i, Math.PI / 8 + i, 300))
 }
 
 /** FUNCTIONS **/
@@ -44,20 +44,14 @@ const drawCircle = () => {
   ctx.fill()
 }
 
-const render = () => {
-  ctx.translate(canvas.width / 2, canvas.height / 2)
-  drawCircle()
+/** LOOP **/
 
-  arcs.map(a => a.render())
-
-  ctx.setTransform(1, 0, 0, 1, 0, 0)  // vraca matricu
-}
-
-const loop = () => {
+void function loop() {
   window.requestAnimationFrame(loop)
   arcs.map(a => a.update())
   ctx.clearRect(0, 0, canvas.width, canvas.height)
-  render()
-}
-
-loop()
+  ctx.translate(canvas.width / 2, canvas.height / 2)
+  drawCircle()
+  arcs.map(a => a.render())
+  ctx.setTransform(1, 0, 0, 1, 0, 0)  // vraca matricu
+}()
