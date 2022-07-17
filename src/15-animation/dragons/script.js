@@ -6,22 +6,24 @@ canvas.width = innerWidth
 canvas.height = innerHeight
 const context = canvas.getContext('2d')
 
-const cw = canvas.width,
-  ch = canvas.height,
-  dragons = [],
-  shape = []
-
 let pfloat = 0,
   wingPerpendicular
+
+const cw = canvas.width,
+  ch = canvas.height,
+  dragons = []
+
+// the shape of the dragon, converted from canvas SVG image
+const shape = '! ((&(&*$($,&.)/-.0,4%3"7$;(@/EAA<?:<9;;88573729/7,6(8&;'.split('').map(char => char.charCodeAt(0) - 32)
 
 const dragon = function(index) {
   // Размер доакона scale = 0.2
   let scale = 0.17 + index * index / 49,
     gx = random() * cw / scale,
     gy = ch / scale,
-    lim = 300, // это встроено, ничего хорошего!
+    lim = 300,
     speed = 3 + random() * 5,
-    direction = PI, // 0, //random() * PI * 2, //random(0,TAU),
+    direction = PI, // random() * PI * 2
     direction1 = direction,
     spine = []
 
@@ -37,7 +39,6 @@ const dragon = function(index) {
       direction -= (direction - direction1) * .1
     }
 
-    // двигать дракона вперед
     gx += sin(direction) * speed
     gy += cos(direction) * speed
 
@@ -46,20 +47,22 @@ const dragon = function(index) {
     // the rest of the chain of points following each other in turn
 
     for (let i = 0; i < 70; i++)
-      if (i) {
+      if (i === 0)
+        // first point in spine
+        spine[i] = { x: gx, y: gy, px: 0, py: 0 }
+      else {
         if (!pfloat) spine[i] = { x: gx, y: gy }
         const p = spine[i - 1],
           dx = spine[i].x - p.x,
           dy = spine[i].y - p.y,
           d = Math.sqrt(dx * dx + dy * dy),
           perpendicular = Math.atan(dy / dx) + PI / 2 + (dx < 0 ? PI : 0)
-          // make each point chase the previous, but never get too close
+        // make each point chase the previous, but never get too close
+        let mod = 0
         if (d > 4)
-          var mod = .5
+          mod = .5
         else if (d > 2)
           mod = (d - 2) / 4
-        else
-          mod = 0
 
         spine[i].x -= dx * mod
         spine[i].y -= dy * mod
@@ -67,19 +70,16 @@ const dragon = function(index) {
         spine[i].px = cos(perpendicular)
         spine[i].py = sin(perpendicular)
 
-        if (i == 20)  // average point in the middle of the wings so the wings remain symmetrical
+        if (i === 20)  // average point in the middle of the wings so the wings remain symmetrical
           wingPerpendicular = perpendicular
-
-      } else
-        // i is 0 - first point in spine
-        spine[i] = { x: gx, y: gy, px: 0, py: 0 }
+      }
 
     // map the dragon to the spine
-    // the x co-ordinates of each point of the dragon shape are honoured
-    // the y co-ordinates of each point of the dragon are mapped to the spine
+    // the x coordinates of each point of the dragon shape are honoured
+    // the y coordinates of each point of the dragon are mapped to the spine
     context.moveTo(spine[0].x, spine[0].y)
 
-    for (let i = 0; i < 154; i += 2) { // shape.length * 2 - it's symmetrical, so draw up one side and back down the other
+    for (let i = 0; i < 154; i += 2) { // shape.length * 2 - it's symmetrical
       if (i < 77) { // shape.length
         // draw the one half from nose to tail
         var index = i // even index is x, odd (index + 1) is y of each coordinate
@@ -114,11 +114,6 @@ const dragon = function(index) {
     context.fill()
   }
 }
-
-// the shape of the dragon, converted from canvas SVG image
-'! ((&(&*$($,&.)/-.0,4%3"7$;(@/EAA<?:<9;;88573729/7,6(8&;'.split('').map((canvas, i) => {
-  shape[i] = canvas.charCodeAt(0) - 32
-})
 
 /* LOOP */
 
