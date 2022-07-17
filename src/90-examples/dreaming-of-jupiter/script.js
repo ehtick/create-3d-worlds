@@ -1,124 +1,171 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { camera, scene, renderer } from '/utils/scene.js'
 
-let frame = 0,
-  cameraDx = 0.05,
-  count = 0,
-  t = 0
-
-/*   Lines values  */
-const lineTotal = 1000
-const linesGeometry = new THREE.BufferGeometry()
-linesGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(6 * lineTotal), 3))
-linesGeometry.setAttribute('velocity', new THREE.BufferAttribute(new Float32Array(2 * lineTotal), 1))
-const l_positionAttr = linesGeometry.getAttribute('position')
-const l_vertex_Array = linesGeometry.getAttribute('position').array
-const l_velocity_Array = linesGeometry.getAttribute('velocity').array
-
-scene.background = new THREE.Color('#000000')
-scene.fog = new THREE.Fog('#3c1e02', 0.5, 50)
-
-camera.position.set(0, 1, 32)
-
-const pointLight1 = new THREE.PointLight('#ffffff', 1, 0)
-pointLight1.position.set(0, 30, 30)
-scene.add(pointLight1)
-
 const loader = new THREE.TextureLoader()
 
-// Planet
-const texturePlanet = loader.load('https://i.ibb.co/h94JBXy/saturn3-ljge5g.jpg')
-texturePlanet.anisotropy = 16
-const planetGeometry = new THREE.SphereBufferGeometry(10, 50, 50)
-const planetMaterial = new THREE.MeshLambertMaterial({
-  map: texturePlanet,
-  fog: false
-})
-const planet = new THREE.Mesh(planetGeometry, planetMaterial)
-planet.position.set(0, 8, -30)
+const totalStars = 1000
+let count = 0,
+  t = 0
+
+scene.fog = new THREE.Fog('#3c1e02', 0.5, 50)
+camera.position.set(0, 1, 32)
+
+const light = new THREE.PointLight('#ffffff', 1, 0)
+light.position.set(0, 30, 30)
+scene.add(light)
+
+const planet = createPlanet()
 scene.add(planet)
 
-// Moon
-const textureMoon = loader.load('https://i.ibb.co/64zn361/moon-ndengb.jpg')
-textureMoon.anisotropy = 16
-const moonGeometry = new THREE.SphereBufferGeometry(2, 32, 32)
-const moonMaterial = new THREE.MeshPhongMaterial({
-  map: textureMoon,
-  fog: false
-})
-const moon = new THREE.Mesh(moonGeometry, moonMaterial)
-moon.position.set(0, 8, 0)
+const moon = createMoon()
 scene.add(moon)
 
-// Sphere Background
-const textureSphereBg = loader.load('https://i.ibb.co/JCsHJpp/stars2-qx9prz.jpg')
-textureSphereBg.anisotropy = 16
-const geometrySphereBg = new THREE.SphereBufferGeometry(150, 32, 32)
-const materialSphereBg = new THREE.MeshBasicMaterial({
-  side: THREE.BackSide,
-  map: textureSphereBg,
-  fog: false
-})
-const sphereBg = new THREE.Mesh(geometrySphereBg, materialSphereBg)
-sphereBg.position.set(0, 50, 0)
+const sphereBg = createBgSphere()
 scene.add(sphereBg)
 
 // Terrain
-const textureTerrain = loader.load()
-textureTerrain.rotation = THREE.MathUtils.degToRad(5)
-const terrainGeometry = new THREE.PlaneBufferGeometry(70, 70, 20, 20)
-const terrainMaterial = new THREE.MeshBasicMaterial({
-  map: textureTerrain,
-  fog: true
-})
-const terrain = new THREE.Mesh(terrainGeometry, terrainMaterial)
-terrain.rotation.x = -0.47 * Math.PI
-terrain.rotation.z = THREE.Math.degToRad(90)
+const terrain = createTerrain()
 scene.add(terrain)
 
-const t_vertex_Array = terrainGeometry.getAttribute('position').array
-terrainGeometry.getAttribute('position').setUsage(THREE.DynamicDrawUsage)
+const terrainLines = createTerrainLines(terrain.geometry)
+scene.add(terrainLines)
 
-terrainGeometry.setAttribute('myZ', new THREE.BufferAttribute(new Float32Array(t_vertex_Array.length / 3), 1))
-const t_myZ_Array = terrainGeometry.getAttribute('myZ').array
+const stars = createStars()
+scene.add(stars)
 
-for (let i = 0; i < t_vertex_Array.length; i++)
-  t_myZ_Array[i] = THREE.MathUtils.randInt(0, 5)
+/* FUNCTIONS */
 
-// Terain Lines
-const terrain_line = new THREE.LineSegments(
-  terrainGeometry,
-  new THREE.LineBasicMaterial({
-    color: '#fff',
+function createTerrainLines(geometry) {
+  const positionArray = geometry.getAttribute('position').array
+  geometry.setAttribute('myZ', new THREE.BufferAttribute(new Float32Array(positionArray.length / 3), 1))
+  const myZArray = geometry.getAttribute('myZ').array
+
+  for (let i = 0; i < positionArray.length; i++)
+    myZArray[i] = THREE.MathUtils.randInt(0, 5)
+
+  const lineSegments = new THREE.LineSegments(
+    geometry,
+    new THREE.LineBasicMaterial({
+      color: '#fff',
+      fog: false
+    })
+  )
+  lineSegments.rotation.x = -0.47 * Math.PI
+  lineSegments.rotation.z = THREE.Math.degToRad(90)
+  return lineSegments
+}
+
+function createTerrain() {
+  const texture = loader.load()
+  texture.rotation = THREE.MathUtils.degToRad(5)
+  const geometry = new THREE.PlaneBufferGeometry(70, 70, 20, 20)
+  const material = new THREE.MeshBasicMaterial({
+    map: texture,
+    // wireframe: true,
+    fog: true
+  })
+  const terrain = new THREE.Mesh(geometry, material)
+  terrain.rotation.x = -0.47 * Math.PI
+  terrain.rotation.z = THREE.Math.degToRad(90)
+  return terrain
+}
+
+function createBgSphere() {
+  const texture = loader.load('images/cosmos.jpg')
+  const geometry = new THREE.SphereBufferGeometry(150, 32, 32)
+  const material = new THREE.MeshBasicMaterial({
+    side: THREE.BackSide,
+    map: texture,
+    fog: false,
+  })
+  const sphereBg = new THREE.Mesh(geometry, material)
+  sphereBg.position.set(0, 50, 0)
+  return sphereBg
+}
+
+function createPlanet() {
+  const texturePlanet = loader.load('images/saturn-texture.jpg')
+  texturePlanet.anisotropy = 16
+  const planetGeometry = new THREE.SphereBufferGeometry(10, 50, 50)
+  const planetMaterial = new THREE.MeshLambertMaterial({
+    map: texturePlanet,
     fog: false
   })
-)
-terrain_line.rotation.x = -0.47 * Math.PI
-terrain_line.rotation.z = THREE.Math.degToRad(90)
-scene.add(terrain_line)
-
-//  Stars
-for (let i = 0; i < lineTotal; i++) {
-  let x = THREE.MathUtils.randInt(-100, 100)
-  const y = THREE.MathUtils.randInt(10, 40)
-  if (x < 7 && x > -7 && y < 20) x += 14
-  const z = THREE.MathUtils.randInt(0, -300)
-
-  l_vertex_Array[6 * i + 0] = l_vertex_Array[6 * i + 3] = x
-  l_vertex_Array[6 * i + 1] = l_vertex_Array[6 * i + 4] = y
-  l_vertex_Array[6 * i + 2] = l_vertex_Array[6 * i + 5] = z
-
-  l_velocity_Array[2 * i] = l_velocity_Array[2 * i + 1] = 0
+  const planet = new THREE.Mesh(planetGeometry, planetMaterial)
+  planet.position.set(0, 8, -30)
+  return planet
 }
-const starsMaterial = new THREE.LineBasicMaterial({
-  color: '#ffffff',
-  transparent: true,
-  opacity: 0.5,
-  fog: false
-})
-const lines = new THREE.LineSegments(linesGeometry, starsMaterial)
-linesGeometry.getAttribute('position').setUsage(THREE.DynamicDrawUsage)
-scene.add(lines)
+
+function createMoon() {
+  const textureMoon = loader.load('images/moon-texture.jpg')
+  textureMoon.anisotropy = 16
+  const moonGeometry = new THREE.SphereBufferGeometry(2, 32, 32)
+  const moonMaterial = new THREE.MeshPhongMaterial({
+    map: textureMoon,
+    fog: false
+  })
+  const moon = new THREE.Mesh(moonGeometry, moonMaterial)
+  moon.position.set(0, 8, 0)
+  return moon
+}
+
+function createStars() {
+  const geometry = new THREE.BufferGeometry()
+  geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(6 * totalStars), 3))
+  geometry.setAttribute('velocity', new THREE.BufferAttribute(new Float32Array(2 * totalStars), 1))
+
+  const positionArray = geometry.getAttribute('position').array
+  const velocityArray = geometry.getAttribute('velocity').array
+
+  for (let i = 0; i < totalStars; i++) {
+    let x = THREE.MathUtils.randInt(-100, 100)
+    const y = THREE.MathUtils.randInt(10, 40)
+    if (x < 7 && x > -7 && y < 20) x += 14
+    const z = THREE.MathUtils.randInt(0, -300)
+    positionArray[6 * i + 0] = positionArray[6 * i + 3] = x
+    positionArray[6 * i + 1] = positionArray[6 * i + 4] = y
+    positionArray[6 * i + 2] = positionArray[6 * i + 5] = z
+    velocityArray[2 * i] = velocityArray[2 * i + 1] = 0
+  }
+  const material = new THREE.LineBasicMaterial({
+    color: 0xffffff,
+    transparent: true,
+    opacity: 0.5,
+    fog: false
+  })
+  const stars = new THREE.LineSegments(geometry, material)
+  geometry.getAttribute('position').setUsage(THREE.DynamicDrawUsage)
+  return stars
+}
+
+function updateStars(geometry) {
+  const velocityArray = geometry.getAttribute('velocity').array
+  const positionArray = geometry.getAttribute('position').array
+  for (let i = 0; i < totalStars; i++) {
+    velocityArray[2 * i] += 0.0049
+    velocityArray[2 * i + 1] += 0.005
+    positionArray[6 * i + 2] += velocityArray[2 * i]
+    positionArray[6 * i + 5] += velocityArray[2 * i + 1]
+
+    if (positionArray[6 * i + 2] > 50) {
+      positionArray[6 * i + 2] = positionArray[6 * i + 5] = THREE.MathUtils.randInt(-200, 10)
+      velocityArray[2 * i] = 0
+      velocityArray[2 * i + 1] = 0
+    }
+  }
+}
+
+function updateTerrain(terrainGeometry) {
+  const positionArray = terrainGeometry.getAttribute('position').array
+  const myZArray = terrainGeometry.getAttribute('myZ').array
+
+  for (let i = 0; i < positionArray.length; i++)
+    if (i >= 210 && i <= 250) positionArray[i * 3 + 2] = 0
+    else {
+      positionArray[i * 3 + 2] = Math.sin((i + count * 0.0003)) * (myZArray[i] - (myZArray[i] * 0.5))
+      count += 0.1
+    }
+}
 
 /* LOOP */
 
@@ -134,42 +181,11 @@ void function animate() {
   moon.position.z = 20 * Math.sin(t) - 35
   t += 0.015
 
-  // Terrain Animation
-  const t_vertex_Array = terrainGeometry.getAttribute('position').array
-  const t_myZ_Array = terrainGeometry.getAttribute('myZ').array
+  updateTerrain(terrain.geometry)
+  updateStars(stars.geometry)
 
-  for (let i = 0; i < t_vertex_Array.length; i++)
-    if (i >= 210 && i <= 250) t_vertex_Array[i * 3 + 2] = 0
-    else {
-      t_vertex_Array[i * 3 + 2] = Math.sin((i + count * 0.0003)) * (t_myZ_Array[i] - (t_myZ_Array[i] * 0.5))
-      count += 0.1
-    }
-
-  //   Stars Animation
-  for (let i = 0; i < lineTotal; i++) {
-    l_velocity_Array[2 * i] += 0.0049
-    l_velocity_Array[2 * i + 1] += 0.005
-
-    l_vertex_Array[6 * i + 2] += l_velocity_Array[2 * i]
-    l_vertex_Array[6 * i + 5] += l_velocity_Array[2 * i + 1]
-
-    if (l_vertex_Array[6 * i + 2] > 50) {
-      l_vertex_Array[6 * i + 2] = l_vertex_Array[6 * i + 5] = THREE.MathUtils.randInt(-200, 10)
-      l_velocity_Array[2 * i] = 0
-      l_velocity_Array[2 * i + 1] = 0
-    }
-  }
-
-  camera.position.x += cameraDx
-  camera.position.y = -1.2 * (1 - Math.abs(frame / 2000 - 0.5) / 0.5)
-  camera.lookAt(0, 0, 0)
-  frame += 8
-  if (frame > 2000) frame = 0
-  if (camera.position.x > 18) cameraDx = -cameraDx
-  if (camera.position.x < -18) cameraDx = Math.abs(cameraDx)
-
-  l_positionAttr.needsUpdate = true
-  terrainGeometry.attributes.position.needsUpdate = true
+  stars.geometry.getAttribute('position').needsUpdate = true
+  terrain.geometry.attributes.position.needsUpdate = true
   renderer.render(scene, camera)
   requestAnimationFrame(animate)
 }()
