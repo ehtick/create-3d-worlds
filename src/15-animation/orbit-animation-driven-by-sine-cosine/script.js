@@ -5,7 +5,7 @@ let canvasWrapper = document.querySelector('.canvas-wrapper'),
   ctx2 = trials_sine.getContext('2d'),
   trials_cosine = document.querySelector('.cosine'),
   ctx3 = trials_cosine.getContext('2d'),
-  speed = 0.05,
+  speed = 0.03,
   ellipse = 1.3,
   tick = 0,
   height = 300,
@@ -55,19 +55,18 @@ function draw() {
 
   /* Draw Cosine driven dot: x-axis */
   ctx.strokeStyle = '#afa'
-  if (showGuideCircles) {
-    // Circle
-    ctx.setLineDash([0])
-    ctx.beginPath()
-    ctx.arc(px + ox, oy, smallRadius, 0, PIx2, false)
-    ctx.stroke()
-    // Line
-    ctx.setLineDash([1, 3])
-    ctx.beginPath()
-    ctx.moveTo(px + ox, oy - radius)
-    ctx.lineTo(px + ox, oy + radius)
-    ctx.stroke()
-  }
+  // Circle
+  ctx.setLineDash([0])
+  ctx.beginPath()
+  ctx.arc(px + ox, oy, smallRadius, 0, PIx2, false)
+  ctx.stroke()
+  // Line
+  ctx.setLineDash([1, 3])
+  ctx.beginPath()
+  ctx.moveTo(px + ox, oy - radius)
+  ctx.lineTo(px + ox, oy + radius)
+  ctx.stroke()
+
   /* Draw Cosine curve */
   const cosineData = ctx3.getImageData(0, 0, width, height)
   ctx3.putImageData(cosineData, 0, -1)
@@ -75,19 +74,17 @@ function draw() {
 
   /* Draw Sine driven dot: y-axis */
   ctx.strokeStyle = '#aaf'
-  if (showGuideCircles) {
-    // Circle
-    ctx.setLineDash([0])
-    ctx.beginPath()
-    ctx.arc(ox, py + oy, smallRadius, 0, PIx2, false)
-    ctx.stroke()
-    // Line
-    ctx.setLineDash([2, 3])
-    ctx.beginPath()
-    ctx.moveTo(ox - (radius * ellipse), py + oy)
-    ctx.lineTo(ox + (radius * ellipse), py + oy)
-    ctx.stroke()
-  }
+  // Circle
+  ctx.setLineDash([0])
+  ctx.beginPath()
+  ctx.arc(ox, py + oy, smallRadius, 0, PIx2, false)
+  ctx.stroke()
+  // Line
+  ctx.setLineDash([2, 3])
+  ctx.beginPath()
+  ctx.moveTo(ox - (radius * ellipse), py + oy)
+  ctx.lineTo(ox + (radius * ellipse), py + oy)
+  ctx.stroke()
   /* Draw Sine curve */
   const sineData = ctx2.getImageData(0, 0, width, height)
   ctx2.putImageData(sineData, -1, 0)
@@ -107,8 +104,7 @@ let speedSelect = document.querySelector('#speed'),
   ellipseSelect = document.querySelector('#ellipse'),
   speedLabel = document.querySelector('#speed-label'),
   ellipseLabel = document.querySelector('#ellipse-label'),
-  showCurves = true,
-  showGuideCircles = true
+  showCurves = true
 
 function setSpeedLabel() {
   speedLabel.innerHTML = 'Speed (' + (speed * 100).toFixed(1) + ')'
@@ -140,7 +136,6 @@ ellipseSelect.oninput = function(e) {
 document.querySelector('.cross').addEventListener('click', () => {
   updateCurves()
 })
-document.querySelector('.circle').addEventListener('click', () => showGuideCircles = !showGuideCircles)
 
 setSpeedLabel()
 setEllipseLabel()
