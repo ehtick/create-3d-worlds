@@ -1,4 +1,4 @@
-// https://codepen.io/shubniggurath/pen/oPGyQw
+// https://codepen.io/AixDen/pen/mdVXeaP
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
 const loader = new THREE.TextureLoader()

@@ -1,6 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { material } from './shader.js'
+import { material } from '/utils/shaders/fractal-planet.js'
 
 createOrbitControls()
 const start = Date.now()

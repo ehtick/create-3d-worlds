@@ -16,8 +16,8 @@ let tick = 0
 void function animate() {
   requestAnimationFrame(animate)
   tick += 0.03
-  const px = Math.cos(tick) * orbitRadius
-  const py = Math.sin(tick) * orbitRadius
+  const px = Math.cos(tick) * orbitRadius // add percent to ellipse
+  const py = Math.sin(tick) * orbitRadius // add percent to ellipse
   // draw
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   ctx.fillStyle = '#d63'
