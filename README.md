@@ -18,12 +18,9 @@ live-server
   - [x] shaders https://youtu.be/uwzEqeMd7uQ
   - [ ] The Book of Shaders https://thebookofshaders.com/
 
-- [ ] boids https://threejs.org/examples/webgl_gpgpu_birds.html
-- [ ] model gleda kursor https://tympanus.net/codrops/2019/10/14/how-to-create-an-interactive-3d-character-with-three-js/
 - [ ] model simplifier https://codepen.io/nik-lever/pen/dymoKmz
   i exporter https://threejs.org/examples/misc_exporter_gltf
-- [ ] integrisati ucimo-razvoj-igara
-- [ ] pogledati igrice-primeri
+- https://github.com/skolakoda/teorija-razvoja-igara
 - [ ] probati storybook https://github.com/jasonsturges/storybook-for-threejs
 - [ ] pathfinding https://github.com/NikLever/three-pathfinding
 - [ ] pathfinding https://github.com/NikLever/ThreeJS-PathFinding-Examples
@@ -32,6 +29,8 @@ live-server
 - [ ] napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
 - free texture sa normalMaps https://opengameart.org/content/50-free-textures-4-normalmaps
 - [ ] pokušati prebaciti teren iz MMO u RPG
+- [ ] model gleda kursor https://tympanus.net/codrops/2019/10/14/how-to-create-an-interactive-3d-character-with-three-js/
+- [ ] napraviti sletanje na mesec 3d
 
 - [ ] Konačni automat
   - [x] nakačiti kachujin na konačni automat
