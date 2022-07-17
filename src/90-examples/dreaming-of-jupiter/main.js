@@ -7,7 +7,6 @@ const totalStars = 1000
 let count = 0,
   t = 0
 
-scene.fog = new THREE.Fog('#3c1e02', 0.5, 50)
 camera.position.set(0, 1, 32)
 
 const light = new THREE.PointLight('#ffffff', 1, 0)
@@ -23,7 +22,6 @@ scene.add(moon)
 const sphereBg = createBgSphere()
 scene.add(sphereBg)
 
-// Terrain
 const terrain = createTerrain()
 scene.add(terrain)
 
@@ -57,12 +55,9 @@ function createTerrainLines(geometry) {
 
 function createTerrain() {
   const texture = loader.load()
-  texture.rotation = THREE.MathUtils.degToRad(5)
   const geometry = new THREE.PlaneBufferGeometry(70, 70, 20, 20)
   const material = new THREE.MeshBasicMaterial({
     map: texture,
-    // wireframe: true,
-    fog: true
   })
   const terrain = new THREE.Mesh(geometry, material)
   terrain.rotation.x = -0.47 * Math.PI
@@ -76,7 +71,6 @@ function createBgSphere() {
   const material = new THREE.MeshBasicMaterial({
     side: THREE.BackSide,
     map: texture,
-    fog: false,
   })
   const sphereBg = new THREE.Mesh(geometry, material)
   sphereBg.position.set(0, 50, 0)
@@ -89,7 +83,6 @@ function createPlanet() {
   const planetGeometry = new THREE.SphereBufferGeometry(10, 50, 50)
   const planetMaterial = new THREE.MeshLambertMaterial({
     map: texturePlanet,
-    fog: false
   })
   const planet = new THREE.Mesh(planetGeometry, planetMaterial)
   planet.position.set(0, 8, -30)
@@ -102,7 +95,6 @@ function createMoon() {
   const moonGeometry = new THREE.SphereBufferGeometry(2, 32, 32)
   const moonMaterial = new THREE.MeshPhongMaterial({
     map: textureMoon,
-    fog: false
   })
   const moon = new THREE.Mesh(moonGeometry, moonMaterial)
   moon.position.set(0, 8, 0)
@@ -170,6 +162,8 @@ function updateTerrain(terrainGeometry) {
 /* LOOP */
 
 void function animate() {
+  requestAnimationFrame(animate)
+
   planet.rotation.y += 0.002
   sphereBg.rotation.x += 0.002
   sphereBg.rotation.y += 0.002
@@ -179,13 +173,12 @@ void function animate() {
   moon.rotation.x -= 0.007
   moon.position.x = 15 * Math.cos(t) + 0
   moon.position.z = 20 * Math.sin(t) - 35
-  t += 0.015
 
   updateTerrain(terrain.geometry)
-  updateStars(stars.geometry)
-
-  stars.geometry.getAttribute('position').needsUpdate = true
   terrain.geometry.attributes.position.needsUpdate = true
+  updateStars(stars.geometry)
+  stars.geometry.getAttribute('position').needsUpdate = true
+
+  t += 0.015
   renderer.render(scene, camera)
-  requestAnimationFrame(animate)
 }()
