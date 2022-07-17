@@ -1,3 +1,5 @@
+// https://codepen.io/_helmut/pen/wvGYYEx
+
 const canvas = document.querySelector('canvas')
 const gui = new dat.GUI()
 
@@ -6,14 +8,14 @@ canvas.height = window.innerHeight
 
 class Wave {
   constructor(
-    canv,
+    canvas,
     maxAmplitude = 100,
     length = 100,
     frequency = 8,
     bgOpacity = 0.03,
     y,
   ) {
-    this.canvas = canv
+    this.canvas = canvas
     this.ctx = this.canvas.getContext('2d')
     this.maxAmplitude = maxAmplitude
     this.amplitude = 0
