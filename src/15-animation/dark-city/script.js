@@ -1,6 +1,6 @@
 const w = window.innerWidth
 const h = window.innerHeight
-const boxes = []
+const buildings = []
 
 const renderer = new THREE.WebGLRenderer({ antialias: true })
 renderer.setPixelRatio(window.devicePixelRatio)
@@ -40,7 +40,6 @@ const plane = new THREE.Mesh(planeGeometry, planeMaterial)
 plane.rotation.x = Math.PI / 2
 scene.add(plane)
 
-// box
 const geometry = new THREE.BoxGeometry(10, 10, 10)
 for (let i = 0; i < 100; i++) {
   const material = new THREE.MeshPhongMaterial({
@@ -48,13 +47,15 @@ for (let i = 0; i < 100; i++) {
         0],
     shading: THREE.FlatShading
   })
-  boxes.push(new THREE.Mesh(geometry, material))
-  scene.add(boxes[i])
+  buildings.push(new THREE.Mesh(geometry, material))
+  scene.add(buildings[i])
 }
 
+/* FUNCTIONS */
+
 function grow() {
-  boxes.forEach(box => {
-    const t = Math.random() * 0.6 + 0.3
+  buildings.forEach(box => {
+    const t = Math.random() * 2 + 1
     TweenMax.to(box.scale, t, {
       x: 1 + Math.random() * 3,
       y: 1 + Math.random() * 20 + (Math.random() < 0.1 ? 15 : 0),
@@ -80,15 +81,17 @@ function grow() {
       camera.lookAt(scene.position)
     }
   })
-
-  TweenMax.to(window, 3.5, {
-    onComplete: grow
-  })
 }
 
 grow()
+
+/* LOOP */
 
 void function animate() {
   requestAnimationFrame(animate)
   renderer.render(scene, camera)
 }()
+
+/* EVENTS */
+
+document.addEventListener('click', grow)
