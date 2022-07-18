@@ -11,9 +11,7 @@ import { InventoryDatabaseController } from './inventory-controller.js'
 import { SpatialHashGrid } from '../shared/spatial-hash-grid.mjs'
 import { defs } from '../shared/defs.mjs'
 import { ThreeJSController } from './threejs_component.js'
-// import { scene, camera, renderer } from '/utils/scene.js'
-
-let scene_, camera_, threejs_, previousRAF_
+import { scene, camera, renderer, clock } from '/utils/scene.js'
 
 const grid_ = new SpatialHashGrid(
   [[-1000, -1000], [1000, 1000]], [100, 100])
@@ -23,8 +21,6 @@ const entityManager_ = new EntityManager()
 function OnGameStarted_() {
   LoadControllers_()
   LoadPlayer_()
-
-  previousRAF_ = null
   loop()
 }
 
@@ -32,11 +28,6 @@ function LoadControllers_() {
   const threejs = new entity.Entity()
   threejs.AddComponent(new ThreeJSController())
   entityManager_.Add(threejs)
-
-  // Hack
-  scene_ = threejs.GetComponent('ThreeJSController').scene_
-  camera_ = threejs.GetComponent('ThreeJSController').camera_
-  threejs_ = threejs.GetComponent('ThreeJSController').threejs_
 
   const ui = new entity.Entity()
   ui.AddComponent(new UIController())
@@ -48,9 +39,9 @@ function LoadControllers_() {
 
   const t = new entity.Entity()
   t.AddComponent(new TerrainChunkManager({
-    scene: scene_,
+    scene,
     target: 'player',
-    threejs: threejs_,
+    threejs: renderer,
   }))
   entityManager_.Add(t, 'terrain')
 
@@ -60,7 +51,7 @@ function LoadControllers_() {
 
   const scenery = new entity.Entity()
   scenery.AddComponent(new SceneryController({
-    scene: scene_,
+    scene,
     grid: grid_,
   }))
   entityManager_.Add(scenery, 'scenery')
@@ -68,13 +59,13 @@ function LoadControllers_() {
   const spawner = new entity.Entity()
   spawner.AddComponent(new PlayerSpawner({
     grid: grid_,
-    scene: scene_,
-    camera: camera_,
+    scene,
+    camera,
   }))
   spawner.AddComponent(new NetworkEntitySpawner({
     grid: grid_,
-    scene: scene_,
-    camera: camera_,
+    scene,
+    camera,
   }))
   entityManager_.Add(spawner, 'spawners')
 
@@ -86,14 +77,13 @@ function LoadControllers_() {
   for (const k in defs.WEAPONS_DATA)
     database.GetComponent('InventoryDatabaseController').AddItem(
       k, defs.WEAPONS_DATA[k])
-
 }
 
 function LoadPlayer_() {
   const levelUpSpawner = new entity.Entity()
   levelUpSpawner.AddComponent(new LevelUpComponentSpawner({
-    camera: camera_,
-    scene: scene_,
+    camera,
+    scene,
   }))
   entityManager_.Add(levelUpSpawner, 'level-up-spawner')
 }
@@ -101,18 +91,10 @@ function LoadPlayer_() {
 /* LOOP */
 
 function loop() {
-  requestAnimationFrame(t => {
-    if (previousRAF_ === null)
-      previousRAF_ = t
-
-    threejs_.render(scene_, camera_)
-    const timeElapsed = t - previousRAF_
-    const timeElapsedS = Math.min(1.0 / 30.0, timeElapsed * 0.001)
-    entityManager_.Update(timeElapsedS)
-
-    previousRAF_ = t
-    setTimeout(loop, 1)
-  })
+  requestAnimationFrame(loop)
+  const deltaTime = clock.getDelta()
+  entityManager_.Update(deltaTime)
+  renderer.render(scene, camera)
 }
 
 /* EVENTS */
