@@ -1,5 +1,5 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js'
-import { PointerLockControls } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/controls/PointerLockControls.js'
+import * as THREE from '/node_modules/three127/build/three.module.js'
+import { PointerLockControls } from '/node_modules/three127/examples/jsm/controls/PointerLockControls.js'
 
 export const controls = (function() {
   return {

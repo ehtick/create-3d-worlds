@@ -1,4 +1,4 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js'
+import * as THREE from '/node_modules/three127/build/three.module.js'
 import { Sky } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/objects/Sky.js'
 
 export const sky = (function() {
