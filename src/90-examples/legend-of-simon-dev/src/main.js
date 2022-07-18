@@ -24,7 +24,7 @@ scene.add(plane)
 const entityManager = new EntityManager()
 const grid = new SpatialHashGrid([[-1000, -1000], [1000, 1000]], [100, 100])
 
-loadTrees(scene, grid, entityManager)
+// loadTrees(scene, grid, entityManager)
 loadClouds(scene, entityManager)
 
 addSky(scene)
