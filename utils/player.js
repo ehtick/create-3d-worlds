@@ -59,6 +59,18 @@ export function handleInput(mesh, deltaTime, speed = 4, maxJumpImpulse = speed *
 
 }
 
+export function moveCamera(camera, delta) {
+  const step = 5 * delta // pixels per second
+  const angle = Math.PI / 4 * delta // radians per second
+
+  if (keyboard.left) camera.rotateY(angle)
+  if (keyboard.right) camera.rotateY(-angle)
+  if (keyboard.up) camera.translateZ(-step)
+  if (keyboard.down) camera.translateZ(step)
+  if (keyboard.pressed.KeyQ) camera.translateX(-step)
+  if (keyboard.pressed.KeyE) camera.translateX(step)
+}
+
 /* EVENTS */
 
 window.addEventListener('keyup', e => {
