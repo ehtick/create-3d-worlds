@@ -1,5 +1,4 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js'
-import { GUI } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/libs/dat.gui.module.js'
 import { controls } from './controls.js'
 import { Game } from './game.js'
 import { terrain } from './terrain.js'
@@ -8,8 +7,6 @@ import { scene, camera, renderer } from '/utils/scene.js'
 class ProceduralTerrain_Demo extends Game {
 
   _OnInitialize() {
-    this._CreateGUI()
-
     camera.position.set(357183.28155512916, -19402.113225302386, -182320.80530987142)
     camera.quaternion.set(0.2511776691104541, 0.6998229958650649, -0.48248862753627253, 0.46299274000447177)
 
@@ -17,27 +14,18 @@ class ProceduralTerrain_Demo extends Game {
       camera,
       scene,
       scattering: this.graphics_._depthPass,
-      gui: this._gui,
-      game: this }), 1.0)
+      game: this,
+    }), 1.0)
 
     this._AddEntity('_controls', new controls.FPSControls({
       camera,
       scene,
       domElement: renderer.domElement,
-      gui: this._gui
     }), 0.0)
 
     this._totalTime = 0
 
     this._LoadBackground()
-  }
-
-  _CreateGUI() {
-    this._guiParams = {
-      general: {
-      },
-    }
-    this._gui = new GUI()
   }
 
   _LoadBackground() {
