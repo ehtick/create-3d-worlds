@@ -11,6 +11,7 @@ import { InventoryDatabaseController } from './inventory-controller.js'
 import { SpatialHashGrid } from '../shared/spatial-hash-grid.mjs'
 import { defs } from '../shared/defs.mjs'
 import { ThreeJSController } from './threejs_component.js'
+// import { scene, camera, renderer } from '/utils/scene.js'
 
 let scene_, camera_, threejs_, previousRAF_
 
