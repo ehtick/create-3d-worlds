@@ -1,5 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { PointerLockControls } from '/node_modules/three127/examples/jsm/controls/PointerLockControls.js'
+import { scene } from '/utils/scene.js'
 
 export const controls = (function() {
   return {
@@ -32,7 +33,7 @@ export const controls = (function() {
 
         this._controls = new PointerLockControls(
           params.camera, document.body)
-        params.scene.add(this._controls.getObject())
+        scene.add(this._controls.getObject())
 
         document.addEventListener('keydown', e => this._onKeyDown(e), false)
         document.addEventListener('keyup', e => this._onKeyUp(e), false)

@@ -1,4 +1,5 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
+import { scene } from '/utils/scene.js'
 
 import { math } from './math.js'
 import { noise } from './noise.js'
@@ -247,13 +248,12 @@ export const terrain = (function() {
   }
 
   class TerrainChunkManager {
-    constructor(params) {
-      this._Init(params)
+    constructor(userCamera) {
+      this._Init()
+      this._userCamera = userCamera
     }
 
-    _Init(params) {
-      this._params = params
-
+    _Init() {
       this._material = new THREE.MeshStandardMaterial({
         wireframe: false,
         wireframeLinewidth: 1,
@@ -263,12 +263,12 @@ export const terrain = (function() {
       })
       this._builder = new TerrainChunkRebuilder()
 
-      this._InitNoise(params)
-      this._InitBiomes(params)
-      this._InitTerrain(params)
+      this._InitNoise()
+      this._InitBiomes()
+      this._InitTerrain()
     }
 
-    _InitNoise(params) {
+    _InitNoise() {
       const noiseParams = {
         octaves: 6,
         persistence: 0.707,
@@ -279,11 +279,10 @@ export const terrain = (function() {
         noiseType: 'simplex',
         seed: 1
       }
-
       this._noise = new noise.Noise(noiseParams)
     }
 
-    _InitBiomes(params) {
+    _InitBiomes() {
       const noiseParams = {
         octaves: 2,
         persistence: 0.5,
@@ -295,16 +294,13 @@ export const terrain = (function() {
         exponentiation: 1,
         height: 1
       }
-
       this._biomes = new noise.Noise(noiseParams)
     }
 
-    _InitTerrain(params) {
+    _InitTerrain() {
       this._group = new THREE.Group()
-      params.scene.add(this._group)
-
+      scene.add(this._group)
       this._chunks = {}
-      this._params = params
     }
 
     _CellIndex(p) {
@@ -346,7 +342,7 @@ export const terrain = (function() {
         min: new THREE.Vector2(-32000, -32000),
         max: new THREE.Vector2(32000, 32000),
       })
-      q.Insert(this._params.camera.position)
+      q.Insert(this._userCamera.position)
 
       const children = q.GetChildren()
 
@@ -393,7 +389,7 @@ export const terrain = (function() {
         return xc + '/' + zc
       }
 
-      const [xc, zc] = this._CellIndex(this._params.camera.position)
+      const [xc, zc] = this._CellIndex(this._userCamera.position)
 
       const keys = {}
 
@@ -428,7 +424,7 @@ export const terrain = (function() {
       }
 
       // Check the camera's position.
-      const [xc, zc] = this._CellIndex(this._params.camera.position)
+      const [xc, zc] = this._CellIndex(this._userCamera.position)
       const newChunkKey = _Key(xc, zc)
 
       // We're still in the bounds of the previous chunk of terrain.
