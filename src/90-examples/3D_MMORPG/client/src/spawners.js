@@ -17,26 +17,19 @@ import { blood_effect } from './blood-effect.js'
 import { scene, camera } from '/utils/scene.js'
 
 class PlayerSpawner extends entity.Component {
-  constructor(params) {
+  constructor({ grid }) {
     super()
-    this.params_ = params
+    this.params_ = { grid }
   }
 
-  Spawn(playerParams) {
-    const params = {
-      camera,
-      scene,
-      desc: playerParams,
-    }
-
+  Spawn(desc) {
     const player = new entity.Entity()
-    player.Account = playerParams.account
-    player.AddComponent(new BasicCharacterControllerInput(params))
-    player.AddComponent(new BasicCharacterController(params))
-    player.AddComponent(
-      new EquipWeapon({ desc: playerParams }))
-    player.AddComponent(new UIInventoryController(params))
-    player.AddComponent(new InventoryController(params))
+    player.Account = desc.account
+    player.AddComponent(new BasicCharacterControllerInput())
+    player.AddComponent(new BasicCharacterController({ desc }))
+    player.AddComponent(new EquipWeapon({ desc }))
+    player.AddComponent(new UIInventoryController())
+    player.AddComponent(new InventoryController())
     player.AddComponent(new HealthComponent({
       updateUI: true,
       health: 1,
@@ -47,13 +40,11 @@ class PlayerSpawner extends entity.Component {
       curl: 1,
       experience: 1,
       level: 1,
-      desc: playerParams,
+      desc,
     }))
     player.AddComponent(
-      new SpatialGridController(
-        { grid: this.params_.grid }))
-    player.AddComponent(
-      new attack_controller.AttackController())
+      new SpatialGridController({ grid: this.params_.grid }))
+    player.AddComponent(new attack_controller.AttackController())
     player.AddComponent(
       new ThirdPersonCamera({
         camera,
@@ -68,9 +59,8 @@ class PlayerSpawner extends entity.Component {
       camera,
       scene,
     }))
-    if (playerParams.character.class == 'sorceror')
-      player.AddComponent(
-        new SorcerorEffect(params))
+    if (desc.character.class == 'sorceror')
+      player.AddComponent(new SorcerorEffect())
 
     this.Manager.Add(player, 'player')
 

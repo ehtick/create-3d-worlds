@@ -5,13 +5,12 @@ import { entity } from './entity.js'
 import { defs } from '../shared/defs.mjs'
 
 export class EquipWeapon extends entity.Component {
-  constructor(params) {
+  constructor({ desc }) {
     super()
-    this.params_ = params
     this.target_ = null
     this.name_ = null
 
-    const classType = this.params_.desc.character.class
+    const classType = desc.character.class
     const modelData = defs.CHARACTER_MODELS[classType]
     this.anchor_ = modelData.anchors.rightHand
   }
@@ -53,7 +52,6 @@ export class EquipWeapon extends entity.Component {
       this._LoadModels(item, () => {
         this._AttachTarget()
       })
-
   }
 
   _UnloadModels() {
@@ -70,10 +68,7 @@ export class EquipWeapon extends entity.Component {
     loader.load(item.renderParams.name + '.fbx', fbx => {
       this.target_ = fbx
       this.target_.scale.setScalar(item.renderParams.scale)
-      // this.target_.rotateY(Math.PI);
       this.target_.rotateX(Math.PI / 2)
-      // this.target_.rotateY(-1);
-
       this.target_.traverse(c => {
         c.castShadow = true
         c.receiveShadow = true
@@ -99,7 +94,6 @@ export class EquipWeapon extends entity.Component {
           c.material = newMaterials[0]
         else
           c.material = newMaterials
-
       })
 
       cb()

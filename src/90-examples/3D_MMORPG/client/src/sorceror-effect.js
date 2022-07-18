@@ -48,9 +48,8 @@ class SorcerorEffectEmitter extends ParticleEmitter {
 };
 
 export class SorcerorEffect extends entity.Component {
-  constructor(params) {
+  constructor() {
     super()
-    this.params_ = params
     this.particles_ = new ParticleSystem({
       texture: './resources/textures/fire.png',
     })
