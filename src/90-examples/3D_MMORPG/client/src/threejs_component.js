@@ -79,7 +79,6 @@ export class ThreeJSController extends entity.Component {
     this.threejs_ = renderer
     renderer.outputEncoding = THREE.sRGBEncoding
     renderer.gammaFactor = 2.2
-    renderer.domElement.id = 'threejs'
 
     this.camera_ = camera
     this.camera_.position.set(25, 10, 25)

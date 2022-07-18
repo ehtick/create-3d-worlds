@@ -10,6 +10,7 @@ import { utils } from './utils.js'
 import { terrain_constants } from '../shared/terrain-constants.mjs'
 import { terrain_height } from '../shared/terrain-height.mjs'
 import { noise } from '../shared/noise.mjs'
+import { scene, camera, renderer } from '/utils/scene.js'
 
 export class TerrainChunkManager extends entity.Component {
   constructor(params) {
@@ -125,7 +126,7 @@ export class TerrainChunkManager extends entity.Component {
 
   _InitTerrain(params) {
     this._groups = [...new Array(6)].map(_ => new THREE.Group())
-    params.scene.add(...this._groups)
+    scene.add(...this._groups)
 
     this._chunks = {}
     this._params = params
