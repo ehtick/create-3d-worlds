@@ -10,17 +10,16 @@ import { utils } from './utils.js'
 import { terrain_constants } from '../shared/terrain-constants.mjs'
 import { terrain_height } from '../shared/terrain-height.mjs'
 import { noise } from '../shared/noise.mjs'
-import { scene, camera, renderer } from '/utils/scene.js'
+import { scene } from '/utils/scene.js'
 
 export class TerrainChunkManager extends entity.Component {
-  constructor(params) {
+  constructor({ target }) {
     super()
-    this._Init(params)
+    this._target = target
+    this._Init()
   }
 
-  _Init(params) {
-    this._params = params
-
+  _Init() {
     const loader = new THREE.TextureLoader()
 
     const noiseTexture = loader.load('./resources/terrain/simplex-noise.png')
@@ -87,8 +86,8 @@ export class TerrainChunkManager extends entity.Component {
     this._builder = new TerrainChunkRebuilder_Threaded()
 
     this._InitNoise()
-    this._InitBiomes(params)
-    this._InitTerrain(params)
+    this._InitBiomes()
+    this._InitTerrain()
   }
 
   _InitNoise() {
@@ -124,12 +123,11 @@ export class TerrainChunkManager extends entity.Component {
     this._colourNoiseParams = colourParams
   }
 
-  _InitTerrain(params) {
+  _InitTerrain() {
     this._groups = [...new Array(6)].map(_ => new THREE.Group())
     scene.add(...this._groups)
 
     this._chunks = {}
-    this._params = params
   }
 
   _CreateTerrainChunk(group, groupTransform, offset, width, resolution) {
@@ -171,7 +169,7 @@ export class TerrainChunkManager extends entity.Component {
   }
 
   Update(_) {
-    const target = this.FindEntity(this._params.target)
+    const target = this.FindEntity(this._target)
     if (!target)
       return
 
@@ -225,7 +223,6 @@ export class TerrainChunkManager extends entity.Component {
     const recycle = Object.values(utils.DictDifference(this._chunks, newTerrainChunks))
 
     this._builder.RetireChunks(recycle)
-
     newTerrainChunks = intersection
 
     for (const k in difference) {

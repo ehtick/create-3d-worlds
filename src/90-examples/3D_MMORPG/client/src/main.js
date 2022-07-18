@@ -38,11 +38,7 @@ function LoadControllers_() {
   entityManager_.Add(network, 'network')
 
   const t = new entity.Entity()
-  t.AddComponent(new TerrainChunkManager({
-    scene,
-    target: 'player',
-    threejs: renderer,
-  }))
+  t.AddComponent(new TerrainChunkManager({ target: 'player' }))
   entityManager_.Add(t, 'terrain')
 
   const l = new entity.Entity()
