@@ -119,7 +119,7 @@ export const controls = (function() {
           document.addEventListener('mozpointerlockerror', lockError, false)
           document.addEventListener('webkitpointerlockerror', lockError, false)
 
-          document.getElementById('target').addEventListener('click', event => {
+          document.getElementById('container').addEventListener('click', event => {
             document.body.requestPointerLock = (
               document.body.requestPointerLock ||
                 document.body.mozRequestPointerLock ||
