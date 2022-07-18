@@ -120,7 +120,7 @@ class TerrainChunk {
   }
 
   *_Rebuild() {
-    const NUM_STEPS = 2000
+    const NUM_STEPS = 5000
     const colors = []
     const { offset } = this._params
     let count = 0
