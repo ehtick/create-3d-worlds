@@ -25,9 +25,8 @@ const entityManager = new EntityManager()
 const grid = new SpatialHashGrid([[-1000, -1000], [1000, 1000]], [100, 100])
 
 // loadTrees(scene, grid, entityManager)
-loadClouds(scene, entityManager)
-
-addSky(scene)
+// loadClouds(scene, entityManager)
+// addSky(scene)
 
 const ui = new entity.Entity()
 ui.AddComponent(new UIController())

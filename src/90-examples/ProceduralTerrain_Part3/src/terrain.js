@@ -4,7 +4,7 @@ import { math } from './math.js'
 import { noise } from './noise.js'
 import { quadtree } from './quadtree.js'
 import { spline } from './spline.js'
-import { utils } from './utils.js'
+import { utils } from './terrain-utils.js'
 
 export const terrain = (function() {
 
