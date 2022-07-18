@@ -76,14 +76,10 @@ export class ThreeJSController extends entity.Component {
         varying vec3 vWorldPosition;
       #endif`
 
-    this.threejs_ = renderer
     renderer.outputEncoding = THREE.sRGBEncoding
     renderer.gammaFactor = 2.2
 
-    this.camera_ = camera
-    this.camera_.position.set(25, 10, 25)
-
-    this.scene_ = scene
+    camera.position.set(25, 10, 25)
     scene.fog = new THREE.FogExp2(0x89b2eb, 0.00002)
 
     const light = new THREE.DirectionalLight(0x8088b3, 0.7)

@@ -201,7 +201,6 @@ class ParticleSystem {
       vertexColors: true
     })
 
-    this.camera_ = camera
     this.particles_ = []
 
     this.geometry_ = new THREE.BufferGeometry()
@@ -277,8 +276,8 @@ class ParticleSystem {
     this.particles_ = this.emitters_.map(e => e.particles_)
     this.particles_ = this.particles_.flat()
     this.particles_.sort((a, b) => {
-      const d1 = this.camera_.position.distanceTo(a.position)
-      const d2 = this.camera_.position.distanceTo(b.position)
+      const d1 = camera.position.distanceTo(a.position)
+      const d2 = camera.position.distanceTo(b.position)
 
       if (d1 > d2)
         return -1
