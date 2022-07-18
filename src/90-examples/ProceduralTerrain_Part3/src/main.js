@@ -2,7 +2,6 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 import { GUI } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/libs/dat.gui.module.js'
 import { controls } from './controls.js'
 import { game } from './game.js'
-import { sky } from './sky.js'
 import { terrain } from './terrain.js'
 
 class ProceduralTerrain_Demo extends game.Game {
@@ -14,13 +13,6 @@ class ProceduralTerrain_Demo extends game.Game {
 
     this._entities._terrain = new terrain.TerrainChunkManager({
       camera: this._userCamera,
-      scene: this._graphics.Scene,
-      gui: this._gui,
-      guiParams: this._guiParams,
-    })
-
-    this._entities._sky = new sky.TerrainSky({
-      camera: this._graphics.Camera,
       scene: this._graphics.Scene,
       gui: this._gui,
       guiParams: this._guiParams,
