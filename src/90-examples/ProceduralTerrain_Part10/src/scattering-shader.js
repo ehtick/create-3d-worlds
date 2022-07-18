@@ -440,27 +440,44 @@ const fragmentShader = /* glsl */`
   }
   `
 
+const uniforms = {
+  cameraNear: { value: null },
+  cameraFar: { value: null },
+  cameraPosition: { value: null },
+  cameraForward: { value: null },
+  tDiffuse: { value: null },
+  tDepth: { value: null },
+  inverseProjection: { value: null },
+  inverseView: { value: null },
+  planetPosition: { value: null },
+  planetRadius: { value: null },
+  atmosphereRadius: { value: null },
+  logDepthBufFC: { value: null },
+}
+
 const material = new THREE.ShaderMaterial({
   vertexShader,
   fragmentShader,
-  uniforms: {
-    cameraNear: { value: null },
-    cameraFar: { value: null },
-    cameraPosition: { value: null },
-    cameraForward: { value: null },
-    tDiffuse: { value: null },
-    tDepth: { value: null },
-    inverseProjection: { value: null },
-    inverseView: { value: null },
-    planetPosition: { value: null },
-    planetRadius: { value: null },
-    atmosphereRadius: { value: null },
-    logDepthBufFC: { value: null },
-  }
+  uniforms
 })
 
+function updateUniforms(camera, target) {
+  const forward = new THREE.Vector3()
+  camera.getWorldDirection(forward)
+
+  uniforms.inverseProjection.value = camera.projectionMatrixInverse
+  uniforms.inverseView.value = camera.matrixWorld
+  uniforms.tDiffuse.value = target.texture
+  uniforms.tDepth.value = target.depthTexture
+  uniforms.cameraNear.value = camera.near
+  uniforms.cameraFar.value = camera.far
+  uniforms.cameraPosition.value = camera.position
+  uniforms.cameraForward.value = forward
+  uniforms.planetPosition.value = new THREE.Vector3(0, 0, 0)
+  material.uniformsNeedUpdate = true
+}
+
 export {
-  vertexShader,
-  fragmentShader,
   material,
+  updateUniforms,
 }

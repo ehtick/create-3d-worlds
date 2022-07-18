@@ -4,9 +4,8 @@ import { ShaderPass } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/js
 import { FXAAShader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/shaders/FXAAShader.js'
 import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/postprocessing/EffectComposer.js'
 
-import { material as shaderMaterial } from './scattering-shader.js'
+import { material as shaderMaterial, updateUniforms } from './scattering-shader.js'
 import { scene, camera, renderer } from '/utils/scene.js'
-import { createSunLight } from '/utils/light.js'
 
 export class Graphics {
   Initialize() {
@@ -40,8 +39,6 @@ export class Graphics {
     const postQuad = new THREE.Mesh(postPlane, shaderMaterial)
     this._postScene = new THREE.Scene()
     this._postScene.add(postQuad)
-
-    scene.add(createSunLight())
   }
 
   Render() {
@@ -50,20 +47,7 @@ export class Graphics {
     renderer.render(scene, camera)
     renderer.setRenderTarget(null)
 
-    const forward = new THREE.Vector3()
-    camera.getWorldDirection(forward)
-
-    shaderMaterial.uniforms.inverseProjection.value = camera.projectionMatrixInverse
-    shaderMaterial.uniforms.inverseView.value = camera.matrixWorld
-    shaderMaterial.uniforms.tDiffuse.value = this._target.texture
-    shaderMaterial.uniforms.tDepth.value = this._target.depthTexture
-    shaderMaterial.uniforms.cameraNear.value = camera.near
-    shaderMaterial.uniforms.cameraFar.value = camera.far
-    shaderMaterial.uniforms.cameraPosition.value = camera.position
-    shaderMaterial.uniforms.cameraForward.value = forward
-    shaderMaterial.uniforms.planetPosition.value = new THREE.Vector3(0, 0, 0)
-    shaderMaterial.uniformsNeedUpdate = true
-
+    updateUniforms(camera, this._target)
     renderer.render(this._postScene, this._postCamera)
   }
 }

@@ -1,6 +1,13 @@
-export const terrain_shader = (function() {
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js'
+import { camera } from '/utils/scene.js'
 
-  const _VS = `#version 300 es
+const loader = new THREE.TextureLoader()
+
+const noiseTexture = loader.load('./resources/simplex-noise.png')
+noiseTexture.wrapS = THREE.RepeatWrapping
+noiseTexture.wrapT = THREE.RepeatWrapping
+
+const vertexShader = /* glsl */`#version 300 es
 
 precision highp float;
 
@@ -50,10 +57,9 @@ void main(){
 
   vFragDepth = 1.0 + gl_Position.w;
 }
-  `;
-  
+`
 
-  const _PS = `#version 300 es
+const fragmentShader = /* glsl */`#version 300 es
 
 precision highp float;
 precision highp int;
@@ -109,10 +115,6 @@ vec4 _ComputeLighting(vec3 worldSpaceNormal, vec3 sunDir, vec3 viewDirection) {
   
   lighting += _CalculateLighting(
       sunDir, vec3(1.0, 1.0, 1.0), worldSpaceNormal, viewDirection);
-  // lighting += _CalculateLighting(
-  //     vec3(0, 1, 0), vec3(0.25, 0.25, 0.25), worldSpaceNormal, viewDirection);
-
-  // lighting += vec4(0.15, 0.15, 0.15, 0.0);
   
   return lighting;
 }
@@ -268,21 +270,29 @@ void main() {
 
   vec4 lighting = _ComputeLighting(worldSpaceNormal, sunDir, -eyeDirection);
   vec3 finalColour = mix(vec3(1.0, 1.0, 1.0), vColor.xyz, 0.25) * diffuse + lighting.w * 0.1;
-  // vec3 finalColour = mix(vec3(1.0, 1.0, 1.0), vColor.xyz, 0.25);
 
   finalColour *= lighting.xyz;
   finalColour = lighting.xyz;
-  // finalColour = vColor.xyz;
 
   out_FragColor = vec4(finalColour, 1);
   gl_FragDepth = log2(vFragDepth) * logDepthBufFC * 0.5;
 }
+`
 
-  `;
-  
-  return {
-    VS: _VS,
-    PS: _PS,
-  };
-})();
-  
+export const material = new THREE.RawShaderMaterial({
+  uniforms: {
+    diffuseMap: {
+    },
+    normalMap: {
+    },
+    noiseMap: {
+      value: noiseTexture
+    },
+    logDepthBufFC: {
+      value: 2.0 / (Math.log(camera.far + 1.0) / Math.LN2),
+    }
+  },
+  vertexShader,
+  fragmentShader,
+  side: THREE.FrontSide
+})

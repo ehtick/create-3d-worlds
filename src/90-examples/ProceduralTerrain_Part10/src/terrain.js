@@ -2,13 +2,13 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.mod
 
 import { noise } from './noise.js'
 import { quadtree } from './quadtree.js'
-import { terrain_shader } from './terrain-shader.js'
 import { terrain_builder_threaded } from './terrain-builder-threaded.js'
 import { terrain_constants } from './terrain-constants.js'
 import { texture_splatter } from './texture-splatter.js'
 import { utils } from './utils.js'
 import { scene } from '/utils/scene.js'
-import { material as shaderMaterial } from './scattering-shader.js'
+import { material } from './terrain-shader.js'
+import { material as scatteringMaterial } from './scattering-shader.js'
 
 export const terrain = (function() {
 
@@ -20,38 +20,10 @@ export const terrain = (function() {
     _Init(params) {
       this.params_ = params
       this.builder_ = new terrain_builder_threaded.TerrainChunkRebuilder_Threaded()
-      // this.builder_ = new terrainbuilder_.TerrainChunkRebuilder();
 
-      this.LoadTextures_()
       this.InitNoise_(params)
       this.InitBiomes_(params)
       this.InitTerrain_(params)
-    }
-
-    LoadTextures_() {
-      const loader = new THREE.TextureLoader()
-
-      const noiseTexture = loader.load('./resources/simplex-noise.png')
-      noiseTexture.wrapS = THREE.RepeatWrapping
-      noiseTexture.wrapT = THREE.RepeatWrapping
-
-      this.material_ = new THREE.RawShaderMaterial({
-        uniforms: {
-          diffuseMap: {
-          },
-          normalMap: {
-          },
-          noiseMap: {
-            value: noiseTexture
-          },
-          logDepthBufFC: {
-            value: 2.0 / (Math.log(this.params_.camera.far + 1.0) / Math.LN2),
-          }
-        },
-        vertexShader: terrain_shader.VS,
-        fragmentShader: terrain_shader.PS,
-        side: THREE.FrontSide
-      })
     }
 
     InitNoise_() {
@@ -110,7 +82,7 @@ export const terrain = (function() {
       const params = {
         group,
         transform: groupTransform,
-        material: this.material_,
+        material,
         width,
         offset,
         origin: cameraPosition.clone(),
@@ -156,8 +128,8 @@ export const terrain = (function() {
       for (const c of this.builder_.old_)
         c.chunk.Update(this.params_.camera.position)
 
-      shaderMaterial.uniforms.planetRadius.value = terrain_constants.PLANET_RADIUS
-      shaderMaterial.uniforms.atmosphereRadius.value = terrain_constants.PLANET_RADIUS * 1.01
+      scatteringMaterial.uniforms.planetRadius.value = terrain_constants.PLANET_RADIUS
+      scatteringMaterial.uniforms.atmosphereRadius.value = terrain_constants.PLANET_RADIUS * 1.01
     }
 
     UpdateVisibleChunks_Quadtree_(cameraPosition) {
@@ -239,7 +211,6 @@ export const terrain = (function() {
 
       for (const k in difference) {
         const [xp, yp, zp] = difference[k].position
-
         const offset = new THREE.Vector3(xp, yp, zp)
         newTerrainChunks[k] = {
           position: [xp, zp],
