@@ -25,17 +25,9 @@ export const terrain = (function() {
     }
   }
 
-  const _WHITE = new THREE.Color(0x808080)
   const _OCEAN = new THREE.Color(0xd9d592)
-  const _BEACH = new THREE.Color(0xd9d592)
   const _SNOW = new THREE.Color(0xFFFFFF)
-  const _FOREST_TROPICAL = new THREE.Color(0x4f9f0f)
-  const _FOREST_TEMPERATE = new THREE.Color(0x2b960e)
   const _FOREST_BOREAL = new THREE.Color(0x29c100)
-
-  const _GREEN = new THREE.Color(0x80FF80)
-  const _RED = new THREE.Color(0xFF8080)
-  const _BLACK = new THREE.Color(0x000000)
 
   const _MIN_CELL_SIZE = 500
   const _FIXED_GRID_SIZE = 10

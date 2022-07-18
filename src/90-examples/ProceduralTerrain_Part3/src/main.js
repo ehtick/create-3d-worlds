@@ -44,7 +44,6 @@ class ProceduralTerrain_Demo extends game.Game {
     }
     this._gui = new GUI()
     this._gui.addFolder('General')
-    // this._gui.close()
   }
 
   _LoadBackground() {
