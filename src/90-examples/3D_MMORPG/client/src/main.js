@@ -55,8 +55,6 @@ function LoadControllers_() {
   const spawner = new entity.Entity()
   spawner.AddComponent(new PlayerSpawner({
     grid: grid_,
-    scene,
-    camera,
   }))
   spawner.AddComponent(new NetworkEntitySpawner({
     grid: grid_,
