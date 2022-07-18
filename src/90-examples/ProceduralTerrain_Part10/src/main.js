@@ -39,9 +39,6 @@ class ProceduralTerrain_Demo extends Game {
       },
     }
     this._gui = new GUI()
-
-    const generalRollup = this._gui.addFolder('General')
-    this._gui.close()
   }
 
   _LoadBackground() {

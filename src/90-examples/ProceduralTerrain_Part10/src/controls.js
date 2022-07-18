@@ -68,15 +68,6 @@ export const controls = (function() {
       this._params.guiParams.camera = {
         acceleration_x: 12,
       }
-
-      const rollup = this._params.gui.addFolder('Camera.FPS')
-      rollup.add(this._params.guiParams.camera, 'acceleration_x', 4.0, 24.0).onChange(
-        () => {
-          this._acceleration.set(
-            this._params.guiParams.camera.acceleration_x,
-            this._params.guiParams.camera.acceleration_x,
-            this._params.guiParams.camera.acceleration_x)
-        })
     }
 
     _onKeyDown(event) {
@@ -287,25 +278,6 @@ export const controls = (function() {
 
       document.addEventListener('keydown', e => this._onKeyDown(e), false)
       document.addEventListener('keyup', e => this._onKeyUp(e), false)
-
-      this._InitGUI()
-    }
-
-    _InitGUI() {
-      this._params.guiParams.camera = {
-        acceleration_x: 100,
-        acceleration_y: 0.1,
-      }
-
-      const rollup = this._params.gui.addFolder('Camera.Ship')
-      rollup.add(this._params.guiParams.camera, 'acceleration_x', 50.0, 25000.0).onChange(
-        () => {
-          this._acceleration.x = this._params.guiParams.camera.acceleration_x
-        })
-      rollup.add(this._params.guiParams.camera, 'acceleration_y', 0.001, 0.1).onChange(
-        () => {
-          this._acceleration.y = this._params.guiParams.camera.acceleration_y
-        })
     }
 
     _onKeyDown(event) {

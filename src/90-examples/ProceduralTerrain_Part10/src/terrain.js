@@ -63,34 +63,8 @@ export const terrain = (function() {
         seed: 1
       }
 
-      const onNoiseChanged = () => {
-        this.builder_.Rebuild(this.chunks_)
-      }
-
-      const noiseRollup = params.gui.addFolder('Terrain.Noise')
-      noiseRollup.add(params.guiParams.noise, 'scale', 32.0, 4096.0).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.noise, 'octaves', 1, 20, 1).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.noise, 'persistence', 0.25, 1.0).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.noise, 'lacunarity', 0.01, 4.0).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.noise, 'exponentiation', 0.1, 10.0).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.noise, 'height', 0, 20000).onChange(
-        onNoiseChanged)
-
       this.noise_ = new noise.Noise(params.guiParams.noise)
       this.noiseParams_ = params.guiParams.noise
-
-      params.guiParams.heightmap = {
-        height: 16,
-      }
-
-      const heightmapRollup = params.gui.addFolder('Terrain.Heightmap')
-      heightmapRollup.add(params.guiParams.heightmap, 'height', 0, 128).onChange(
-        onNoiseChanged)
     }
 
     InitBiomes_(params) {
@@ -104,22 +78,6 @@ export const terrain = (function() {
         exponentiation: 1,
         height: 1.0
       }
-
-      const onNoiseChanged = () => {
-        this.builder_.Rebuild(this.chunks_)
-      }
-
-      const noiseRollup = params.gui.addFolder('Terrain.Biomes')
-      noiseRollup.add(params.guiParams.biomes, 'scale', 64.0, 4096.0).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.biomes, 'octaves', 1, 20, 1).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.biomes, 'persistence', 0.01, 1.0).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.biomes, 'lacunarity', 0.01, 4.0).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.biomes, 'exponentiation', 0.1, 10.0).onChange(
-        onNoiseChanged)
 
       this.biomes_ = new noise.Noise(params.guiParams.biomes)
       this.biomesParams_ = params.guiParams.biomes
