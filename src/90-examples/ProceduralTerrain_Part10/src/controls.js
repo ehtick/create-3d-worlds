@@ -1,6 +1,6 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.125/build/three.module.js';
-import {PointerLockControls} from 'https://cdn.jsdelivr.net/npm/three@0.125/examples/jsm/controls/PointerLockControls.js';
-import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.125/examples/jsm/controls/OrbitControls.js';
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js';
+import {PointerLockControls} from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/controls/PointerLockControls.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/controls/OrbitControls.js';
 
 
 export const controls = (function() {

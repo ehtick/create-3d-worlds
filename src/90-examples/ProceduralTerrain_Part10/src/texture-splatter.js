@@ -1,4 +1,4 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.125/build/three.module.js';
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js';
 
 import {math} from './math.js';
 import {spline} from './spline.js';
@@ -142,8 +142,8 @@ export const texture_splatter = (function() {
           _ApplyWeights('sandyrock', s, 1.0 - s);
         }
       } else {
-        if (h > 0.125) {
-          const s = (math.sat((h - 0.125) / 1.25));
+        if (h > 0.127) {
+          const s = (math.sat((h - 0.127) / 1.25));
           _ApplyWeights('rock', s, 1.0 - s);
         }
 

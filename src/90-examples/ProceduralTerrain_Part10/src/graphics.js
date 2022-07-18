@@ -1,10 +1,10 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.125/build/three.module.js'
-import Stats from 'https://cdn.jsdelivr.net/npm/three@0.125/examples/jsm/libs/stats.module.js'
-import { WEBGL } from 'https://cdn.jsdelivr.net/npm/three@0.125/examples/jsm/WebGL.js'
-import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.125/examples/jsm/postprocessing/RenderPass.js'
-import { ShaderPass } from 'https://cdn.jsdelivr.net/npm/three@0.125/examples/jsm/postprocessing/ShaderPass.js'
-import { FXAAShader } from 'https://cdn.jsdelivr.net/npm/three@0.125/examples/jsm/shaders/FXAAShader.js'
-import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.125/examples/jsm/postprocessing/EffectComposer.js'
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js'
+import Stats from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/libs/stats.module.js'
+import { WEBGL } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/WebGL.js'
+import { RenderPass } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/postprocessing/RenderPass.js'
+import { ShaderPass } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/postprocessing/ShaderPass.js'
+import { FXAAShader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/shaders/FXAAShader.js'
+import { EffectComposer } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/postprocessing/EffectComposer.js'
 
 import { scattering_shader } from './scattering-shader.js'
 

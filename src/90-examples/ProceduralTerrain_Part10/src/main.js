@@ -1,5 +1,5 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.125/build/three.module.js'
-import { GUI } from 'https://cdn.jsdelivr.net/npm/three@0.125/examples/jsm/libs/dat.gui.module.js'
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js'
+import { GUI } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/libs/dat.gui.module.js'
 import { controls } from './controls.js'
 import { Game } from './game.js'
 import { terrain } from './terrain.js'

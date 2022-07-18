@@ -1,7 +1,7 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.125/build/three.module.js';
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js';
 
-import {Sky} from 'https://cdn.jsdelivr.net/npm/three@0.125/examples/jsm/objects/Sky.js';
-import {Water} from 'https://cdn.jsdelivr.net/npm/three@0.125/examples/jsm/objects/Water.js';
+import {Sky} from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/objects/Sky.js';
+import {Water} from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/objects/Water.js';
 
 
 export const sky = (function() {
