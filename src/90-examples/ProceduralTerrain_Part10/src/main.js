@@ -7,8 +7,8 @@ import { scene, camera, renderer } from '/utils/scene.js'
 class ProceduralTerrain_Demo extends Game {
 
   _OnInitialize() {
-    camera.position.set(357183.28155512916, -19402.113225302386, -182320.80530987142)
-    camera.quaternion.set(0.2511776691104541, 0.6998229958650649, -0.48248862753627253, 0.46299274000447177)
+    camera.position.set(357183, -19402, -182320)
+    camera.quaternion.set(0.251, 0.699, -0.48248, 0.4629)
 
     this._AddEntity('_terrain', new terrain.TerrainChunkManager({
       camera,

@@ -230,7 +230,6 @@ export const terrain = (function() {
             delete intersection[k]
             difference[k] = allChunks[k]
           }
-
       }
 
       this.builder_.RetireChunks(recycle)
