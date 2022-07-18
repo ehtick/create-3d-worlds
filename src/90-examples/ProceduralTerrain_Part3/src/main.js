@@ -11,19 +11,14 @@ class ProceduralTerrain_Demo extends game.Game {
     this._userCamera.position.set(475, 75, 900)
 
     this._entities._terrain = new terrain.TerrainChunkManager(this._userCamera)
+    this._entities._controls = new controls.FPSControls(this._userCamera)
 
-    this._entities._controls = new controls.FPSControls(
-      {
-        camera: this._userCamera
-      })
-
-    this._graphics.Camera.position.copy(this._userCamera.position)
-
+    camera.position.copy(this._userCamera.position)
     this._LoadBackground()
   }
 
   _LoadBackground() {
-    this._graphics.Scene.background = new THREE.Color(0x000000)
+    scene.background = new THREE.Color(0x000000)
   }
 
   _OnStep(_) {

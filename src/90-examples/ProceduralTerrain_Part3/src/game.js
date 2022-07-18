@@ -1,6 +1,19 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
-import { WEBGL } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/WebGL.js'
-import { graphics } from './graphics.js'
+import { scene, camera, renderer } from '/utils/scene.js'
+
+function initLights() {
+  let light = new THREE.DirectionalLight(0x808080, 1, 100)
+  light.position.set(-100, 100, -100)
+  light.target.position.set(0, 0, 0)
+  light.castShadow = false
+  scene.add(light)
+
+  light = new THREE.DirectionalLight(0x404040, 1.5, 100)
+  light.position.set(100, 100, -100)
+  light.target.position.set(0, 0, 0)
+  light.castShadow = false
+  scene.add(light)
+}
 
 export const game = (function() {
   return {
@@ -10,23 +23,13 @@ export const game = (function() {
       }
 
       _Initialize() {
-        this._graphics = new graphics.Graphics(this)
-        if (!this._graphics.Initialize()) {
-          this._DisplayError('WebGL2 is not available.')
-          return
-        }
-
+        camera.position.set(75, 20, 0)
+        initLights()
         this._previousRAF = null
         this._minFrameTime = 1.0 / 10.0
         this._entities = {}
-
         this._OnInitialize()
         this._RAF()
-      }
-
-      _DisplayError(errorText) {
-        const error = document.getElementById('error')
-        error.innerText = errorText
       }
 
       _RAF() {
@@ -42,16 +45,13 @@ export const game = (function() {
       _StepEntities(timeInSeconds) {
         for (const k in this._entities)
           this._entities[k].Update(timeInSeconds)
-
       }
 
       _Render(timeInMS) {
         const timeInSeconds = Math.min(timeInMS * 0.001, this._minFrameTime)
-
         this._OnStep(timeInSeconds)
         this._StepEntities(timeInSeconds)
-        this._graphics.Render(timeInSeconds)
-
+        renderer.render(scene, camera)
         this._RAF()
       }
     }

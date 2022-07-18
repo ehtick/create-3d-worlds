@@ -8,12 +8,12 @@ export const controls = (function() {
     // and collision detection was completely rewritten, but credit to original
     // class for the setup code.
     FPSControls: class {
-      constructor(params) {
-        this._cells = params.cells
-        this._Init(params)
+      constructor(userCamera) {
+        this._userCamera = userCamera
+        this._Init()
       }
 
-      _Init(params) {
+      _Init() {
         this._radius = 2
         this._enabled = false
         this._move = {
@@ -31,8 +31,7 @@ export const controls = (function() {
 
         this._SetupPointerLock()
 
-        this._controls = new PointerLockControls(
-          params.camera, document.body)
+        this._controls = new PointerLockControls(this._userCamera, document.body)
         scene.add(this._controls.getObject())
 
         document.addEventListener('keydown', e => this._onKeyDown(e), false)
