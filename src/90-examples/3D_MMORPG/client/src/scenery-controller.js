@@ -3,8 +3,8 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.124/build/three.mod
 import { entity } from './entity.js';
 import { RenderComponent } from './render-component.js';
 import { SpatialGridController } from './spatial-grid-controller.js';
-import { math } from '/shared/math.mjs';
-import { noise } from '/shared/noise.mjs';
+import { math } from '../shared/math.mjs';
+import { noise } from '../shared/noise.mjs';
 
 const _SCENERY = {
   birch1: {

@@ -7,9 +7,9 @@ import { TerrainChunkRebuilder_Threaded } from './terrain-builder-threaded.js'
 import { TextureSplatter } from './texture-splatter.js'
 import { textures } from './textures.js'
 import { utils } from './utils.js'
-import { terrain_constants } from '/shared/terrain-constants.mjs'
-import { terrain_height } from '/shared/terrain-height.mjs'
-import { noise } from '/shared/noise.mjs'
+import { terrain_constants } from '../shared/terrain-constants.mjs'
+import { terrain_height } from '../shared/terrain-height.mjs'
+import { noise } from '../shared/noise.mjs'
 
 export class TerrainChunkManager extends entity.Component {
   constructor(params) {
