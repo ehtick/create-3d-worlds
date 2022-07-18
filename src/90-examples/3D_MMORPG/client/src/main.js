@@ -1,5 +1,3 @@
-import { GUI } from 'https://cdn.jsdelivr.net/npm/three@0.124/examples/jsm/libs/dat.gui.module.js'
-
 import { EntityManager } from './entity-manager.js'
 import { entity } from './entity.js'
 import { UIController } from './ui-controller.js'
@@ -14,11 +12,7 @@ import { SpatialHashGrid } from '/shared/spatial-hash-grid.mjs'
 import { defs } from '/shared/defs.mjs'
 import { ThreeJSController } from './threejs_component.js'
 
-let _gui, scene_, camera_, threejs_, previousRAF_
-
-const _guiParams = {
-  general: {}
-}
+let scene_, camera_, threejs_, previousRAF_
 
 const grid_ = new SpatialHashGrid(
   [[-1000, -1000], [1000, 1000]], [100, 100])
@@ -26,20 +20,11 @@ const grid_ = new SpatialHashGrid(
 const entityManager_ = new EntityManager()
 
 function OnGameStarted_() {
-  CreateGUI_()
-
   LoadControllers_()
   LoadPlayer_()
 
   previousRAF_ = null
   loop()
-}
-
-function CreateGUI_() {
-  _gui = new GUI()
-
-  const generalRollup = _gui.addFolder('General')
-  _gui.close()
 }
 
 function LoadControllers_() {
@@ -64,8 +49,6 @@ function LoadControllers_() {
   t.AddComponent(new TerrainChunkManager({
     scene: scene_,
     target: 'player',
-    gui: _gui,
-    guiParams: _guiParams,
     threejs: threejs_,
   }))
   entityManager_.Add(t, 'terrain')
@@ -106,11 +89,6 @@ function LoadControllers_() {
 }
 
 function LoadPlayer_() {
-  const params = {
-    camera: camera_,
-    scene: scene_,
-  }
-
   const levelUpSpawner = new entity.Entity()
   levelUpSpawner.AddComponent(new LevelUpComponentSpawner({
     camera: camera_,

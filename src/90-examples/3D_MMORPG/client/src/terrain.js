@@ -124,10 +124,6 @@ export class TerrainChunkManager extends entity.Component {
   }
 
   _InitTerrain(params) {
-    params.guiParams.terrain = {
-      wireframe: false,
-    }
-
     this._groups = [...new Array(6)].map(_ => new THREE.Group())
     params.scene.add(...this._groups)
 
