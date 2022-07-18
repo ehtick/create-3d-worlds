@@ -1,30 +1,45 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
-import { scene, camera } from '/utils/scene.js'
+import { scene, camera, renderer, clock } from '/utils/scene.js'
 
 import { FPSControls } from './controls.js'
-import { Game } from './game.js'
 import { TerrainChunkManager } from './terrain.js'
 
-class ProceduralTerrain_Demo extends Game {
-  _OnInitialize() {
-    this._userCamera = new THREE.Object3D()
-    this._userCamera.position.set(475, 75, 900)
+function initLights() {
+  let light = new THREE.DirectionalLight(0x808080, 1, 100)
+  light.position.set(-100, 100, -100)
+  light.target.position.set(0, 0, 0)
+  light.castShadow = false
+  scene.add(light)
 
-    this._entities._terrain = new TerrainChunkManager(this._userCamera)
-    this._entities._controls = new FPSControls(this._userCamera)
-
-    camera.position.copy(this._userCamera.position)
-    this._LoadBackground()
-  }
-
-  _LoadBackground() {
-    scene.background = new THREE.Color(0x000000)
-  }
-
-  _OnStep(_) {
-    camera.position.copy(this._userCamera.position)
-    camera.quaternion.copy(this._userCamera.quaternion)
-  }
+  light = new THREE.DirectionalLight(0x404040, 1.5, 100)
+  light.position.set(100, 100, -100)
+  light.target.position.set(0, 0, 0)
+  light.castShadow = false
+  scene.add(light)
 }
 
-new ProceduralTerrain_Demo()
+const entities = {}
+
+camera.position.set(75, 20, 0)
+initLights()
+
+const userCamera = new THREE.Object3D()
+userCamera.position.set(475, 75, 900)
+
+entities._terrain = new TerrainChunkManager(userCamera)
+entities._controls = new FPSControls(userCamera)
+
+camera.position.copy(userCamera.position)
+scene.background = new THREE.Color(0xbfd1e5)
+
+/* LOOP */
+
+void function loop() {
+  requestAnimationFrame(loop)
+  const delta = clock.getDelta()
+  camera.position.copy(userCamera.position)
+  camera.quaternion.copy(userCamera.quaternion)
+  for (const k in entities)
+    entities[k].Update(delta)
+  renderer.render(scene, camera)
+}()
