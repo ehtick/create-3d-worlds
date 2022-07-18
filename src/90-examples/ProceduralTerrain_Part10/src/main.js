@@ -18,15 +18,14 @@ class ProceduralTerrain_Demo extends Game {
       scene,
       scattering: this.graphics_._depthPass,
       gui: this._gui,
-      guiParams: this._guiParams,
       game: this }), 1.0)
 
     this._AddEntity('_controls', new controls.FPSControls({
       camera,
       scene,
       domElement: renderer.domElement,
-      gui: this._gui,
-      guiParams: this._guiParams }), 0.0)
+      gui: this._gui
+    }), 0.0)
 
     this._totalTime = 0
 

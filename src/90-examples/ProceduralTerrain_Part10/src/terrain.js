@@ -52,8 +52,8 @@ export const terrain = (function() {
       })
     }
 
-    InitNoise_(params) {
-      params.guiParams.noise = {
+    InitNoise_() {
+      const noiseParams = {
         octaves: 13,
         persistence: 0.5,
         lacunarity: 1.6,
@@ -63,12 +63,12 @@ export const terrain = (function() {
         seed: 1
       }
 
-      this.noise_ = new noise.Noise(params.guiParams.noise)
-      this.noiseParams_ = params.guiParams.noise
+      this.noise_ = new noise.Noise(noiseParams)
+      this.noiseParams_ = noiseParams
     }
 
-    InitBiomes_(params) {
-      params.guiParams.biomes = {
+    InitBiomes_() {
+      const biomesParams = {
         octaves: 2,
         persistence: 0.5,
         lacunarity: 2.0,
@@ -79,8 +79,8 @@ export const terrain = (function() {
         height: 1.0
       }
 
-      this.biomes_ = new noise.Noise(params.guiParams.biomes)
-      this.biomesParams_ = params.guiParams.biomes
+      this.biomes_ = new noise.Noise(biomesParams)
+      this.biomesParams_ = biomesParams
 
       const colourParams = {
         octaves: 1,
@@ -97,22 +97,8 @@ export const terrain = (function() {
     }
 
     InitTerrain_(params) {
-      params.guiParams.terrain = {
-        wireframe: false,
-        fixedCamera: false,
-      }
-
       this.groups_ = [...new Array(6)].map(_ => new THREE.Group())
       params.scene.add(...this.groups_)
-
-      const terrainRollup = params.gui.addFolder('Terrain')
-      terrainRollup.add(params.guiParams.terrain, 'wireframe').onChange(() => {
-        for (const k in this.chunks_)
-          this.chunks_[k].chunk.SetWireframe(params.guiParams.terrain.wireframe)
-
-      })
-
-      terrainRollup.add(params.guiParams.terrain, 'fixedCamera')
 
       this.chunks_ = {}
       this.params_ = params
@@ -152,10 +138,7 @@ export const terrain = (function() {
 
     Update(_) {
       const cameraPosition = this.params_.camera.position.clone()
-      if (this.params_.guiParams.terrain.fixedCamera)
-        cameraPosition.copy(this.cachedCamera_)
-      else
-        this.cachedCamera_ = cameraPosition.clone()
+      this.cachedCamera_ = cameraPosition.clone()
 
       this.builder_.Update()
       if (!this.builder_.Busy) {

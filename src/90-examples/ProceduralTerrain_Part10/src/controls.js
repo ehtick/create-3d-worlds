@@ -60,14 +60,6 @@ export const controls = (function() {
 
       document.addEventListener('keydown', e => this._onKeyDown(e), false)
       document.addEventListener('keyup', e => this._onKeyUp(e), false)
-
-      this._InitGUI()
-    }
-
-    _InitGUI() {
-      this._params.guiParams.camera = {
-        acceleration_x: 12,
-      }
     }
 
     _onKeyDown(event) {
