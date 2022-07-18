@@ -13,11 +13,7 @@ export class Graphics {
     if (!WEBGL.isWebGL2Available())
       return false
 
-    this._threejs = renderer
-
     this.camera_ = camera
-    camera.position.set(75, 20, 0)
-
     this.scene_ = scene
 
     const renderPass = new RenderPass(scene, camera)
@@ -52,9 +48,9 @@ export class Graphics {
       vertexShader: scattering_shader.VS,
       fragmentShader: scattering_shader.PS,
       uniforms: {
-        cameraNear: { value: this.Camera.near },
-        cameraFar: { value: this.Camera.far },
-        cameraPosition: { value: this.Camera.position },
+        cameraNear: { value: camera.near },
+        cameraFar: { value: camera.far },
+        cameraPosition: { value: camera.position },
         cameraForward: { value: null },
         tDiffuse: { value: null },
         tDepth: { value: null },
@@ -103,14 +99,6 @@ export class Graphics {
 
     light = new THREE.AmbientLight(0xFFFFFF, 1.0)
     scene.add(light)
-  }
-
-  get Scene() {
-    return scene
-  }
-
-  get Camera() {
-    return camera
   }
 
   Render() {
