@@ -1,10 +1,10 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.125/build/three.module.js'
 import { GUI } from 'https://cdn.jsdelivr.net/npm/three@0.125/examples/jsm/libs/dat.gui.module.js'
 import { controls } from './controls.js'
-import { game } from './game.js'
+import { Game } from './game.js'
 import { terrain } from './terrain.js'
 
-class ProceduralTerrain_Demo extends game.Game {
+class ProceduralTerrain_Demo extends Game {
 
   _OnInitialize() {
     this._CreateGUI()
