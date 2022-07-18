@@ -13,7 +13,7 @@ import { NetworkEntityController } from './network-entity-controller.js'
 import { NetworkPlayerController } from './network-player-controller.js'
 import { FloatingName } from './floating-name.js'
 import { SorcerorEffect } from './sorceror-effect.js'
-import { blood_effect } from './blood-effect.js'
+import { BloodEffect } from './blood-effect.js'
 import { scene, camera } from '/utils/scene.js'
 
 class PlayerSpawner extends entity.Component {
@@ -50,12 +50,8 @@ class PlayerSpawner extends entity.Component {
         camera,
         target: player
       }))
-    player.AddComponent(
-      new NetworkPlayerController({
-        camera,
-        target: player
-      }))
-    player.AddComponent(new blood_effect.BloodEffect({
+    player.AddComponent(new NetworkPlayerController())
+    player.AddComponent(new BloodEffect({
       camera,
       scene,
     }))
@@ -106,10 +102,7 @@ class NetworkEntitySpawner extends entity.Component {
     npc.AddComponent(
       new EquipWeapon({ desc }))
     npc.AddComponent(new InventoryController())
-    npc.AddComponent(new blood_effect.BloodEffect({
-      camera,
-      scene,
-    }))
+    npc.AddComponent(new BloodEffect())
     if (desc.character.class == 'sorceror')
       npc.AddComponent(
         new SorcerorEffect({
