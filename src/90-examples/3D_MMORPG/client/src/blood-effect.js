@@ -2,7 +2,6 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.mod
 
 import { ParticleEmitter, ParticleSystem } from './particle-system.js'
 import { entity } from './entity.js'
-import { scene, camera } from '/utils/scene.js'
 
 class BloodEffectEmitter extends ParticleEmitter {
   constructor(parent) {
@@ -100,13 +99,9 @@ export class BloodEffect extends entity.Component {
   constructor() {
     super()
     this.bloodFX_ = new ParticleSystem({
-      camera,
-      parent: scene,
       texture: './resources/textures/whitePuff14.png',
     })
     this.fireFX_ = new ParticleSystem({
-      camera,
-      parent: scene,
       texture: './resources/textures/fire.png',
     })
   }

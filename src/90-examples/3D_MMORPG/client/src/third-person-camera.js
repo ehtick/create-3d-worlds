@@ -1,13 +1,11 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js'
 import { entity } from './entity.js'
+import { camera } from '/utils/scene.js'
 
 export class ThirdPersonCamera extends entity.Component {
-  constructor({ camera, target }) {
+  constructor({ target }) {
     super()
-
     this._target = target
-    this._camera = camera
-
     this._currentPosition = new THREE.Vector3()
     this._currentLookat = new THREE.Vector3()
   }
@@ -41,7 +39,7 @@ export class ThirdPersonCamera extends entity.Component {
     this._currentPosition.lerp(idealOffset, t)
     this._currentLookat.lerp(idealLookat, t)
 
-    this._camera.position.copy(this._currentPosition)
-    this._camera.lookAt(this._currentLookat)
+    camera.position.copy(this._currentPosition)
+    camera.lookAt(this._currentLookat)
   }
 }

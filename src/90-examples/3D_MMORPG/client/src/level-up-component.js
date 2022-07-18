@@ -2,7 +2,6 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.mod
 
 import { ParticleSystem } from './particle-system.js'
 import { entity } from './entity.js'
-import { scene, camera } from '/utils/scene.js'
 
 class LevelUpComponent extends entity.Component {
   constructor(params) {
@@ -10,8 +9,6 @@ class LevelUpComponent extends entity.Component {
     this._params = params
 
     this._particles = new ParticleSystem({
-      camera,
-      parent: scene,
       texture: './resources/textures/ball.png',
     })
     this._particles._alphaSpline.AddPoint(0.0, 0.0)

@@ -14,7 +14,6 @@ import { NetworkPlayerController } from './network-player-controller.js'
 import { FloatingName } from './floating-name.js'
 import { SorcerorEffect } from './sorceror-effect.js'
 import { BloodEffect } from './blood-effect.js'
-import { scene, camera } from '/utils/scene.js'
 
 class PlayerSpawner extends entity.Component {
   constructor({ grid }) {
@@ -42,19 +41,11 @@ class PlayerSpawner extends entity.Component {
       level: 1,
       desc,
     }))
-    player.AddComponent(
-      new SpatialGridController({ grid: this.params_.grid }))
+    player.AddComponent(new SpatialGridController({ grid: this.params_.grid }))
     player.AddComponent(new attack_controller.AttackController())
-    player.AddComponent(
-      new ThirdPersonCamera({
-        camera,
-        target: player
-      }))
+    player.AddComponent(new ThirdPersonCamera({ target: player }))
     player.AddComponent(new NetworkPlayerController())
-    player.AddComponent(new BloodEffect({
-      camera,
-      scene,
-    }))
+    player.AddComponent(new BloodEffect())
     if (desc.character.class == 'sorceror')
       player.AddComponent(new SorcerorEffect())
 
@@ -65,19 +56,15 @@ class PlayerSpawner extends entity.Component {
 };
 
 class NetworkEntitySpawner extends entity.Component {
-  constructor(params) {
+  constructor({ grid }) {
     super()
-    this.params_ = params
+    this.params_ = { grid }
   }
 
   Spawn(name, desc) {
     const npc = new entity.Entity()
     npc.Account = desc.account
-    npc.AddComponent(new NPCController({
-      camera,
-      scene,
-      desc,
-    }))
+    npc.AddComponent(new NPCController({ desc }))
     npc.AddComponent(
       new HealthComponent({
         health: 50,
@@ -90,25 +77,16 @@ class NetworkEntitySpawner extends entity.Component {
         level: 1,
         desc,
       }))
-    npc.AddComponent(
-      new SpatialGridController(
-        { grid: this.params_.grid }))
-    npc.AddComponent(
-      new NetworkEntityController())
+    npc.AddComponent(new SpatialGridController({ grid: this.params_.grid }))
+    npc.AddComponent(new NetworkEntityController())
     if (desc.account.name)
-      npc.AddComponent(
-        new FloatingName({ desc }))
+      npc.AddComponent(new FloatingName({ desc }))
 
-    npc.AddComponent(
-      new EquipWeapon({ desc }))
+    npc.AddComponent(new EquipWeapon({ desc }))
     npc.AddComponent(new InventoryController())
     npc.AddComponent(new BloodEffect())
     if (desc.character.class == 'sorceror')
-      npc.AddComponent(
-        new SorcerorEffect({
-          camera,
-          scene,
-        }))
+      npc.AddComponent(new SorcerorEffect())
 
     this.Manager.Add(npc, name)
 
