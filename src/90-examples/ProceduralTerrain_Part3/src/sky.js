@@ -1,5 +1,5 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.112.1/build/three.module.js'
-import { Sky } from 'https://cdn.jsdelivr.net/npm/three@0.112.1/examples/jsm/objects/Sky.js'
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js'
+import { Sky } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/objects/Sky.js'
 
 export const sky = (function() {
 
@@ -32,12 +32,11 @@ export const sky = (function() {
       }
 
       const onShaderChange = () => {
-        for (const k in params.guiParams.sky)
-          this._sky.material.uniforms[k].value = params.guiParams.sky[k]
+        // for (const k in params.guiParams.sky)
+        //   this._sky.material.uniforms[k].value = params.guiParams.sky[k]
 
-        for (const k in params.guiParams.general)
-          this._sky.material.uniforms[k].value = params.guiParams.general[k]
-
+        // for (const k in params.guiParams.general)
+        //   this._sky.material.uniforms[k].value = params.guiParams.general[k]
       }
 
       const onSunChange = () => {

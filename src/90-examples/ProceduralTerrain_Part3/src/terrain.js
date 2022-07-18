@@ -1,4 +1,4 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.112.1/build/three.module.js'
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js'
 
 import { math } from './math.js'
 import { noise } from './noise.js'
@@ -130,13 +130,19 @@ export const terrain = (function() {
 
     *_Rebuild() {
       const NUM_STEPS = 2000
-      const colours = []
+      const colors = []
       const { offset } = this._params
       let count = 0
 
-      for (const v of this._plane.geometry.vertices) {
+      const positionAttribute = this._plane.geometry.getAttribute('position')
+      const v = new THREE.Vector3()
+
+      for (let i = 0; i < positionAttribute.count; i ++) {
+        v.fromBufferAttribute(positionAttribute, i)
         v.z = this._GenerateHeight(v)
-        colours.push(this._params.colourGenerator.Get(v.x + offset.x, v.z, -v.y + offset.y))
+        const color = this._params.colourGenerator.Get(v.x + offset.x, v.z, -v.y + offset.y)
+        colors.push(color.r, color.g, color.b)
+        positionAttribute.setXYZ(i, v.x, v.y, v.z)
 
         count++
         if (count > NUM_STEPS) {
@@ -144,22 +150,7 @@ export const terrain = (function() {
           yield
         }
       }
-
-      for (const f of this._plane.geometry.faces) {
-        const vs = [f.a, f.b, f.c]
-
-        const vertexColours = []
-        for (const v of vs)
-          vertexColours.push(colours[v])
-
-        f.vertexColors = vertexColours
-
-        count++
-        if (count > NUM_STEPS) {
-          count = 0
-          yield
-        }
-      }
+      this._plane.geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 
       yield
       this._plane.geometry.elementsNeedUpdate = true
