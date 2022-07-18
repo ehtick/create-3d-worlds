@@ -280,36 +280,7 @@ export const terrain = (function() {
         seed: 1
       }
 
-      const onNoiseChanged = () => {
-        for (const k in this._chunks)
-          this._chunks[k].chunk._Rebuild()
-      }
-
-      const noiseRollup = params.gui.addFolder('Terrain.Noise')
-      noiseRollup.add(params.guiParams.noise, 'noiseType', ['simplex', 'perlin', 'rand']).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.noise, 'scale', 32.0, 4096.0).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.noise, 'octaves', 1, 20, 1).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.noise, 'persistence', 0.25, 1.0).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.noise, 'lacunarity', 0.01, 4.0).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.noise, 'exponentiation', 0.1, 10.0).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.noise, 'height', 0, 512).onChange(
-        onNoiseChanged)
-
       this._noise = new noise.Noise(params.guiParams.noise)
-
-      params.guiParams.heightmap = {
-        height: 16,
-      }
-
-      const heightmapRollup = params.gui.addFolder('Terrain.Heightmap')
-      heightmapRollup.add(params.guiParams.heightmap, 'height', 0, 128).onChange(
-        onNoiseChanged)
     }
 
     _InitBiomes(params) {
@@ -325,23 +296,6 @@ export const terrain = (function() {
         height: 1
       }
 
-      const onNoiseChanged = () => {
-        for (const k in this._chunks)
-          this._chunks[k].chunk._Rebuild()
-      }
-
-      const noiseRollup = params.gui.addFolder('Terrain.Biomes')
-      noiseRollup.add(params.guiParams.biomes, 'scale', 64.0, 4096.0).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.biomes, 'octaves', 1, 20, 1).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.biomes, 'persistence', 0.01, 1.0).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.biomes, 'lacunarity', 0.01, 4.0).onChange(
-        onNoiseChanged)
-      noiseRollup.add(params.guiParams.biomes, 'exponentiation', 0.1, 10.0).onChange(
-        onNoiseChanged)
-
       this._biomes = new noise.Noise(params.guiParams.biomes)
     }
 
@@ -352,13 +306,6 @@ export const terrain = (function() {
 
       this._group = new THREE.Group()
       params.scene.add(this._group)
-
-      const terrainRollup = params.gui.addFolder('Terrain')
-      terrainRollup.add(params.guiParams.terrain, 'wireframe').onChange(() => {
-        for (const k in this._chunks)
-          this._chunks[k].chunk._plane.material.wireframe = params.guiParams.terrain.wireframe
-
-      })
 
       this._chunks = {}
       this._params = params
