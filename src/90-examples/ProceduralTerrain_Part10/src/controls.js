@@ -1,18 +1,17 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js'
 import { PointerLockControls } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/controls/PointerLockControls.js'
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/controls/OrbitControls.js'
-import { scene, camera } from '/utils/scene.js'
+import { scene, camera, renderer } from '/utils/scene.js'
 
 export const controls = (function() {
 
   class _OrbitControls {
-    constructor(params) {
-      this._params = params
-      this._Init(params)
+    constructor() {
+      this._Init()
     }
 
-    _Init(params) {
-      this._controls = new OrbitControls(camera, params.domElement)
+    _Init() {
+      this._controls = new OrbitControls(camera, renderer.domElement)
       this._controls.target.set(0, 0, 0)
       this._controls.update()
     }
@@ -25,13 +24,11 @@ export const controls = (function() {
   // and collision detection was completely rewritten, but credit to original
   // class for the setup code.
   class _FPSControls {
-    constructor(params) {
-      this._cells = params.cells
-      this._Init(params)
+    constructor() {
+      this._Init()
     }
 
-    _Init(params) {
-      this._params = params
+    _Init() {
       this._radius = 2
       this._enabled = false
       this._move = {
