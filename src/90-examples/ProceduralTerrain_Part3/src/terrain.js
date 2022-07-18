@@ -328,7 +328,6 @@ class TerrainChunkManager {
     this._builder.Update()
     if (!this._builder.Busy)
       this._UpdateVisibleChunks_Quadtree()
-
   }
 
   _UpdateVisibleChunks_Quadtree() {
@@ -371,7 +370,6 @@ class TerrainChunkManager {
 
     for (const k in difference) {
       const [xp, zp] = difference[k].position
-
       const offset = new THREE.Vector2(xp, zp)
       newTerrainChunks[k] = {
         position: [xp, zp],
