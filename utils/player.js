@@ -59,8 +59,8 @@ export function handleInput(mesh, deltaTime, speed = 4, maxJumpImpulse = speed *
 
 }
 
-export function moveCamera(camera, delta) {
-  const step = 5 * delta // pixels per second
+export function moveCamera(camera, delta, speed = 5) {
+  const step = speed * delta // pixels per second
   const angle = Math.PI / 4 * delta // radians per second
 
   if (keyboard.left) camera.rotateY(angle)

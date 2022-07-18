@@ -1,7 +1,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
+import { moveCamera } from '/utils/player.js'
 
-import { FPSControls } from './controls.js'
 import { TerrainChunkManager } from './terrain.js'
 
 function initLights() {
@@ -21,21 +21,17 @@ function initLights() {
 initLights()
 scene.background = new THREE.Color(0xbfd1e5)
 
-const userCamera = new THREE.Object3D()
-userCamera.position.set(475, 75, 900)
-camera.position.copy(userCamera.position)
+camera.position.set(475, 75, 900)
 
 const entities = {}
-entities._terrain = new TerrainChunkManager(userCamera)
-entities._controls = new FPSControls(userCamera)
+entities._terrain = new TerrainChunkManager(camera)
 
 /* LOOP */
 
 void function loop() {
   requestAnimationFrame(loop)
   const delta = clock.getDelta()
-  camera.position.copy(userCamera.position)
-  camera.quaternion.copy(userCamera.quaternion)
+  moveCamera(camera, delta, 100)
   for (const k in entities)
     entities[k].Update(delta)
   renderer.render(scene, camera)
