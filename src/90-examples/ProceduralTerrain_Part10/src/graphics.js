@@ -13,9 +13,6 @@ export class Graphics {
     if (!WEBGL.isWebGL2Available())
       return false
 
-    this.camera_ = camera
-    this.scene_ = scene
-
     const renderPass = new RenderPass(scene, camera)
     const fxaaPass = new ShaderPass(FXAAShader)
 

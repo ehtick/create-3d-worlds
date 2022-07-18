@@ -1,6 +1,7 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js'
 import { PointerLockControls } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/controls/PointerLockControls.js'
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/controls/OrbitControls.js'
+import { scene, camera } from '/utils/scene.js'
 
 export const controls = (function() {
 
@@ -11,7 +12,7 @@ export const controls = (function() {
     }
 
     _Init(params) {
-      this._controls = new OrbitControls(params.camera, params.domElement)
+      this._controls = new OrbitControls(camera, params.domElement)
       this._controls.target.set(0, 0, 0)
       this._controls.update()
     }
@@ -48,9 +49,8 @@ export const controls = (function() {
 
       this._SetupPointerLock()
 
-      this._controls = new PointerLockControls(
-        params.camera, document.body)
-      params.scene.add(this._controls.getObject())
+      this._controls = new PointerLockControls(camera, document.body)
+      scene.add(this._controls.getObject())
 
       const controlObject = this._controls.getObject()
       this._position = new THREE.Vector3()
@@ -342,7 +342,7 @@ export const controls = (function() {
 
       this._velocity.add(frameDecceleration)
 
-      const controlObject = this._params.camera
+      const controlObject = camera
       const _Q = new THREE.Quaternion()
       const _A = new THREE.Vector3()
       const _R = controlObject.quaternion.clone()

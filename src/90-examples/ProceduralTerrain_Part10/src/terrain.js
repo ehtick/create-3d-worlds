@@ -7,6 +7,7 @@ import { terrain_builder_threaded } from './terrain-builder-threaded.js'
 import { terrain_constants } from './terrain-constants.js'
 import { texture_splatter } from './texture-splatter.js'
 import { utils } from './utils.js'
+import { scene } from '/utils/scene.js'
 
 export const terrain = (function() {
 
@@ -98,7 +99,7 @@ export const terrain = (function() {
 
     InitTerrain_(params) {
       this.groups_ = [...new Array(6)].map(_ => new THREE.Group())
-      params.scene.add(...this.groups_)
+      scene.add(...this.groups_)
 
       this.chunks_ = {}
       this.params_ = params
