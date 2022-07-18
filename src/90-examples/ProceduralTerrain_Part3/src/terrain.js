@@ -269,7 +269,7 @@ export const terrain = (function() {
     }
 
     _InitNoise(params) {
-      params.guiParams.noise = {
+      const noiseParams = {
         octaves: 6,
         persistence: 0.707,
         lacunarity: 1.8,
@@ -280,11 +280,11 @@ export const terrain = (function() {
         seed: 1
       }
 
-      this._noise = new noise.Noise(params.guiParams.noise)
+      this._noise = new noise.Noise(noiseParams)
     }
 
     _InitBiomes(params) {
-      params.guiParams.biomes = {
+      const noiseParams = {
         octaves: 2,
         persistence: 0.5,
         lacunarity: 2.0,
@@ -296,14 +296,10 @@ export const terrain = (function() {
         height: 1
       }
 
-      this._biomes = new noise.Noise(params.guiParams.biomes)
+      this._biomes = new noise.Noise(noiseParams)
     }
 
     _InitTerrain(params) {
-      params.guiParams.terrain = {
-        wireframe: false,
-      }
-
       this._group = new THREE.Group()
       params.scene.add(this._group)
 
