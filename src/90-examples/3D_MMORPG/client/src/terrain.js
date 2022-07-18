@@ -27,7 +27,7 @@ export class TerrainChunkManager extends entity.Component {
     noiseTexture.wrapS = THREE.RepeatWrapping
     noiseTexture.wrapT = THREE.RepeatWrapping
 
-    const diffuse = new textures.TextureAtlas(params)
+    const diffuse = new textures.TextureAtlas()
     diffuse.Load('diffuse', [
       './resources/terrain/dirt_01_diffuse-1024.png',
       './resources/terrain/grass1-albedo3-1024.png',
@@ -40,7 +40,7 @@ export class TerrainChunkManager extends entity.Component {
       './resources/terrain/bark1-albedo.jpg',
     ])
 
-    const normal = new textures.TextureAtlas(params)
+    const normal = new textures.TextureAtlas()
     normal.Load('normal', [
       './resources/terrain/dirt_01_normal-1024.jpg',
       './resources/terrain/grass1-normal-1024.jpg',
@@ -184,9 +184,6 @@ export class TerrainChunkManager extends entity.Component {
 
     for (const c of this._builder._old)
       c.chunk.Update(target.Position)
-
-    // this._params.scattering.uniforms.planetRadius.value = terrain_constants.PLANET_RADIUS;
-    // this._params.scattering.uniforms.atmosphereRadius.value = terrain_constants.PLANET_RADIUS * 1.01;
   }
 
   _UpdateVisibleChunks_Quadtree(target) {

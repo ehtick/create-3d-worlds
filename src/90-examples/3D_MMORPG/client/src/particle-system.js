@@ -177,10 +177,10 @@ class ParticleEmitter {
 };
 
 class ParticleSystem {
-  constructor(params) {
+  constructor({ texture }) {
     const uniforms = {
       diffuseTexture: {
-        value: new THREE.TextureLoader().load(params.texture)
+        value: new THREE.TextureLoader().load(texture)
       },
       pointMultiplier: {
         value: window.innerHeight / (2.0 * Math.tan(0.5 * 60.0 * Math.PI / 180.0))
@@ -212,7 +212,7 @@ class ParticleSystem {
 
     this.points_ = new THREE.Points(this.geometry_, this.material_)
 
-    params.parent.add(this.points_)
+    scene.add(this.points_)
 
     this.emitters_ = []
     this.particles_ = []
