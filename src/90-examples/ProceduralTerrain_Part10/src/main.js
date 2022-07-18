@@ -13,7 +13,6 @@ class ProceduralTerrain_Demo extends Game {
     this._AddEntity('_terrain', new terrain.TerrainChunkManager({
       camera,
       scene,
-      scattering: this.graphics_._depthPass,
       game: this,
     }), 1.0)
 

@@ -1,8 +1,6 @@
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js'
 
-export const scattering_shader = (function() {
-
-  const _VS = `
-
+const vertexShader = /* glsl */`
   #define saturate(a) clamp( a, 0.0, 1.0 )
 
   out vec2 vUv;
@@ -11,10 +9,9 @@ export const scattering_shader = (function() {
     vUv = uv;
     gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }
-  `;
-  
+  `
 
-  const _PS = `
+const fragmentShader = /* glsl */`
   #include <packing>
 
   #define saturate(a) clamp( a, 0.0, 1.0 )
@@ -340,7 +337,6 @@ export const scattering_shader = (function() {
 
     scaledDistanceToSurface = saturate((distance(pb, planetPosition) - planetRadius) / atmosphereThickness);
     scaledDistanceToSurface = smoothstep(0.0, 1.0, 1.0 - scaledDistanceToSurface);
-    //scaledDistanceToSurface = smoothstep(0.0, 1.0, scaledDistanceToSurface);
 
     float scatteringFactor = scaledDistanceToSurface * silhouette;
 
@@ -430,8 +426,6 @@ export const scattering_shader = (function() {
     vec3 diffuse = texture2D(tDiffuse, vUv).xyz;
     vec3 lightDir = normalize(vec3(1, 1, -1));
 
-    // diffuse = _ApplyFog(diffuse, dist, height, posWS, cameraPosition, cameraDirection, lightDir);
-
     vec3 scatteringColour = vec3(0.0);
     vec3 scatteringOpacity = vec3(1.0, 1.0, 1.0);
     _ComputeScattering(
@@ -439,30 +433,34 @@ export const scattering_shader = (function() {
         lightDir, scatteringColour, scatteringOpacity
     );
 
-    // diffuse = diffuse * scatteringOpacity + scatteringColour;
-    // diffuse = ACESFilmicToneMapping(diffuse);
     diffuse = pow(diffuse, vec3(1.0 / 2.0));
 
     gl_FragColor.rgb = diffuse;
     gl_FragColor.a = 1.0;
   }
-  `;
-  
+  `
 
-  const _Shader = {
-    uniforms: {
-      "tDiffuse": { value: null },
-      "tDepth": { value: null },
-      "cameraNear": { value: 0.0 },
-      "cameraFar": { value: 0.0 },
-    },
-    vertexShader: _VS,
-    fragmentShader: _PS,
-  };
+const material = new THREE.ShaderMaterial({
+  vertexShader,
+  fragmentShader,
+  uniforms: {
+    cameraNear: { value: null },
+    cameraFar: { value: null },
+    cameraPosition: { value: null },
+    cameraForward: { value: null },
+    tDiffuse: { value: null },
+    tDepth: { value: null },
+    inverseProjection: { value: null },
+    inverseView: { value: null },
+    planetPosition: { value: null },
+    planetRadius: { value: null },
+    atmosphereRadius: { value: null },
+    logDepthBufFC: { value: null },
+  }
+})
 
-  return {
-    Shader: _Shader,
-    VS: _VS,
-    PS: _PS,
-  };
-})();
+export {
+  vertexShader,
+  fragmentShader,
+  material,
+}

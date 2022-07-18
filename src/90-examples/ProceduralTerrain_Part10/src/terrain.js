@@ -8,6 +8,7 @@ import { terrain_constants } from './terrain-constants.js'
 import { texture_splatter } from './texture-splatter.js'
 import { utils } from './utils.js'
 import { scene } from '/utils/scene.js'
+import { material as shaderMaterial } from './scattering-shader.js'
 
 export const terrain = (function() {
 
@@ -155,8 +156,8 @@ export const terrain = (function() {
       for (const c of this.builder_.old_)
         c.chunk.Update(this.params_.camera.position)
 
-      this.params_.scattering.uniforms.planetRadius.value = terrain_constants.PLANET_RADIUS
-      this.params_.scattering.uniforms.atmosphereRadius.value = terrain_constants.PLANET_RADIUS * 1.01
+      shaderMaterial.uniforms.planetRadius.value = terrain_constants.PLANET_RADIUS
+      shaderMaterial.uniforms.atmosphereRadius.value = terrain_constants.PLANET_RADIUS * 1.01
     }
 
     UpdateVisibleChunks_Quadtree_(cameraPosition) {

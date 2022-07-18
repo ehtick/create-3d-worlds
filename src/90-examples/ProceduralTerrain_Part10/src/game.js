@@ -7,11 +7,7 @@ export class Game {
 
   _Initialize() {
     this.graphics_ = new Graphics(this)
-    if (!this.graphics_.Initialize()) {
-      this._DisplayError('WebGL2 is not available.')
-      return
-    }
-
+    this.graphics_.Initialize()
     this._previousRAF = null
     this._minFrameTime = 1.0 / 10.0
     this._entities = {}
