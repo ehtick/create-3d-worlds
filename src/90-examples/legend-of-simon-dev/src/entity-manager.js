@@ -1,4 +1,3 @@
-
 export default class EntityManager {
   constructor() {
     this._ids = 0
@@ -8,7 +7,6 @@ export default class EntityManager {
 
   _GenerateName() {
     this._ids += 1
-
     return '__name__' + this._ids
   }
 
@@ -20,21 +18,19 @@ export default class EntityManager {
     return this._entities.filter(cb)
   }
 
-  Add(e, n) {
-    if (!n)
-      n = this._GenerateName()
+  Add(e, name) {
+    if (!name) name = this._GenerateName()
 
-    this._entitiesMap[n] = e
+    this._entitiesMap[name] = e
     this._entities.push(e)
 
     e.SetParent(this)
-    e.SetName(n)
+    e.SetName(name)
   }
 
-  SetActive(e, b) {
+  SetActive(e) {
     const i = this._entities.indexOf(e)
-    if (i < 0)
-      return
+    if (i < 0) return
 
     this._entities.splice(i, 1)
   }
@@ -42,6 +38,5 @@ export default class EntityManager {
   Update(timeElapsed) {
     for (const e of this._entities)
       e.Update(timeElapsed)
-
   }
 }
