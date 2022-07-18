@@ -18,19 +18,16 @@ function initLights() {
   scene.add(light)
 }
 
-const entities = {}
-
-camera.position.set(75, 20, 0)
 initLights()
+scene.background = new THREE.Color(0xbfd1e5)
 
 const userCamera = new THREE.Object3D()
 userCamera.position.set(475, 75, 900)
+camera.position.copy(userCamera.position)
 
+const entities = {}
 entities._terrain = new TerrainChunkManager(userCamera)
 entities._controls = new FPSControls(userCamera)
-
-camera.position.copy(userCamera.position)
-scene.background = new THREE.Color(0xbfd1e5)
 
 /* LOOP */
 
