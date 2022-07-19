@@ -27,13 +27,13 @@ scene.add(ground)
 camera.position.set(-64, 14, 7)
 camera.lookAt(new THREE.Vector3(-47, 10, 0))
 
-const camera2 = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000)
-camera2.position.set(-62, 16, 0)
-camera2.lookAt(new THREE.Vector3(-47, 14, 0))
+const fpsCamera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000)
+fpsCamera.position.set(-62, 16, 0)
+fpsCamera.lookAt(new THREE.Vector3(-47, 14, 0))
 
 activeCamera = camera
 
-const { mesh: tower } = await loadModel({ file: 'castle/tower/round/tower2.obj', mtl: 'castle/tower/round/tower2.mtl', size: 12 })
+const { mesh: tower } = await loadModel({ file: 'tower/round/tower2.obj', mtl: 'tower/round/tower2.mtl', size: 12 })
 tower.position.set(towerPosition.x, towerPosition.y - 4, towerPosition.z)
 tower.castShadow = true
 scene.add(tower)
@@ -54,9 +54,8 @@ world.gravity.set(0, -9.82, 0)
 
 const physicsMaterial = new CANNON.Material()
 
-const groundShape = new CANNON.Plane()
 const groundBody = new CANNON.Body({ mass: 0, material: physicsMaterial })
-groundBody.addShape(groundShape)
+groundBody.addShape(new CANNON.Plane())
 groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2)
 world.add(groundBody)
 
@@ -200,7 +199,7 @@ window.addEventListener('keyup', e => {
   if (e.code == 'KeyA') attack()
 
   if (e.code == 'KeyC')
-    activeCamera = activeCamera === camera ? camera2 : camera
+    activeCamera = activeCamera === camera ? fpsCamera : camera
 
   if (e.code == 'Space') {
     positioningEnemy()

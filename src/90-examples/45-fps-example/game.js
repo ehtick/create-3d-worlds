@@ -19,9 +19,7 @@ const fpsRenderer = new FPSRenderer()
 const world = new Octree()
 
 const { mesh } = await loadModel({ file: 'world/collision-world.glb' })
-const texture = new THREE.TextureLoader().load('/assets/textures/bricks-diffuse.png')
-mesh.material.map = texture
-texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+mesh.material.map = null
 
 world.fromGraphNode(mesh)
 scene.add(mesh)

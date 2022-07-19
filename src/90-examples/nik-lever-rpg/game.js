@@ -70,7 +70,7 @@ function contextAction() {
 
 // LOAD GIRL
 
-const { mesh: girlMesh } = await loadModel('lost-treasure/girl-walk.fbx')
+const { mesh: girlMesh, animations } = await loadModel('lost-treasure/girl-walk.fbx')
 player.object = girlMesh
 player.mixer = new THREE.AnimationMixer(girlMesh)
 player.mixer.addEventListener('finished', () => {
@@ -81,7 +81,7 @@ player.mixer.addEventListener('finished', () => {
   }
 })
 player.root = player.mixer.getRoot()
-player.walk = girlMesh.animations[0]
+player.walk = animations[0]
 scene.add(girlMesh)
 
 createCameras()
@@ -108,9 +108,8 @@ scene.add(usbMesh)
 
 // LOAD ANIMATIONS
 
-const animations = await loadFbxAnimations(anims, 'lost-treasure/')
-
-animations.forEach(clip => {
+const otherAnims = await loadFbxAnimations(anims, 'lost-treasure/')
+otherAnims.forEach(clip => {
   player[clip.name] = clip
   if (clip.name == 'push-button') player[clip.name].loop = false
 })

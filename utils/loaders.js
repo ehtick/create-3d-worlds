@@ -48,9 +48,7 @@ const prepareMesh = ({ resolve, model, size, angle, axis, animations, shouldCent
 
   const mixer = animations && animations.length ? getMixer(model, animations) : null
 
-  const needGroup = shouldCenter || shouldAdjustHeight || angle
-
-  resolve({ mesh: needGroup ? createGroup(model) : model, animations, mixer })
+  resolve({ mesh: createGroup(model), animations, mixer })
 }
 
 /* OBJ */
