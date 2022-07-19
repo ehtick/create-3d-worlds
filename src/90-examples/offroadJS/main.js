@@ -22,6 +22,11 @@ const { mesh: chassis } = await loadModel({ file: 'vehicle/jeep/scene.gltf' })
 const { mesh: wheel } = await loadModel('vehicle/lowPoly_car_wheel.gltf')
 chassis.scale.set(0.7, 0.7, 0.7)
 
+chassis.traverse(child => {
+  if (child.isMesh) child.material.color = new THREE.Color(0x4b5320)
+})
+
+// TODO: kako dodati teren u fiziku?
 scene.add(terrain)
 const heightField = generateTerrain()
 world.addBody(heightField)
