@@ -35,6 +35,8 @@ live-server
   - http://schteppe.github.io/cannon.js/demos/raycastVehicle.html
   - http://schteppe.github.io/cannon.js/demos/rigidVehicle.html
 - maze generator https://codepen.io/dragonir/pen/XgawQE
+- https://www.smartjava.org/content/threejs-render-real-world-terrain-heightmap-using-open-data/
+- pucanje fizika, moze top ili katapult https://codepen.io/tjoen/pen/BKxZMQ
 
 - [ ] Konačni automat
   - [x] nakačiti kachujin na konačni automat
