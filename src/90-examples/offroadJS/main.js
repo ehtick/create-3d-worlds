@@ -48,7 +48,11 @@ for (const mesh in meshes) scene.add(meshes[mesh])
 
 cameraHelper.init(camera, chassis)
 
-const resetVehicle = () => {
+resetVehicle()
+
+/* FUNCTIONS */
+
+function resetVehicle() {
   const position = new THREE.Vector3(70, 2, 60)
   const rotation = new THREE.Quaternion().setFromAxisAngle(new CANNON.Vec3(0, -1, 0), -Math.PI / 2)
   vehicle.chassisBody.position.copy(position)
@@ -56,7 +60,6 @@ const resetVehicle = () => {
   vehicle.chassisBody.velocity.set(0, 0, 0)
   vehicle.chassisBody.angularVelocity.set(0, 0, 0)
 }
-resetVehicle()
 
 /* LOOP */
 
