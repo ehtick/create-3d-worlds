@@ -2,7 +2,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
 import * as utils from './utils.js'
-import createVehicle from './raycastVehicle.js'
+import createVehicle from './vehicle.js'
 import { generateTerrain } from './terrainHelper.js'
 import { cameraHelper } from './cameraHelper.js'
 
