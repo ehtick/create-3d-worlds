@@ -5,7 +5,7 @@ import {world_entity} from './world-entity.mjs';
 
 import {SpatialHashGrid} from '../../client/shared/spatial-hash-grid.mjs';
 import {terrain_height} from '../../client/shared/terrain-height.mjs';
-import {defs} from '../../client/shared/defs.mjs';
+import {data} from '../../client/shared/data.mjs';
 
 
 export const world_manager = (() => {
@@ -29,10 +29,10 @@ export const world_manager = (() => {
           rotation: quat.fromValues(0, 0, 0, 1),
           grid: this.grid_,
           character: {
-              definition: defs.CHARACTER_MODELS[this.params_.class],
+              definition: data.CHARACTER_MODELS[this.params_.class],
               class: this.params_.class,
           },
-          account: {accountName: defs.CHARACTER_MODELS[this.params_.class].name},
+          account: {accountName: data.CHARACTER_MODELS[this.params_.class].name},
       });
 
       const wc = new world_client.WorldAIClient(e, this.terrain_, () => {
@@ -104,7 +104,7 @@ export const world_manager = (() => {
           rotation: quat.fromValues(0, 0, 0, 1),
           grid: this.grid_,
           character: {
-              definition: defs.CHARACTER_MODELS[randomClass],
+              definition: data.CHARACTER_MODELS[randomClass],
               class: randomClass,
           },
           account: params,

@@ -1,4 +1,4 @@
-export const defs = (() => {
+export const data = (() => {
 
   const CHARACTER_MODELS = {
     paladin: {

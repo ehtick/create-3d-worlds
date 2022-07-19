@@ -2,7 +2,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.mod
 
 import { entity } from './entity.js'
 import { BasicCharacterControllerProxy, CharacterFSM } from './player-entity.js'
-import { defs } from '../shared/defs.mjs'
+import { data } from '../shared/data.mjs'
 import { scene } from '/utils/scene.js'
 
 export class NPCController extends entity.Component {
@@ -77,7 +77,7 @@ export class NPCController extends entity.Component {
 
   LoadModels_() {
     const classType = this.params_.desc.character.class
-    const modelData = defs.CHARACTER_MODELS[classType]
+    const modelData = data.CHARACTER_MODELS[classType]
 
     const loader = this.FindEntity('loader').GetComponent('LoadController')
     loader.LoadSkinnedGLB(modelData.path, modelData.base, glb => {

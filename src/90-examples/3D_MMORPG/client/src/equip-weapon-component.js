@@ -2,7 +2,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.mod
 import { FBXLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/loaders/FBXLoader.js'
 
 import { entity } from './entity.js'
-import { defs } from '../shared/defs.mjs'
+import { data } from '../shared/data.mjs'
 
 export class EquipWeapon extends entity.Component {
   constructor({ desc }) {
@@ -11,7 +11,7 @@ export class EquipWeapon extends entity.Component {
     this.name_ = null
 
     const classType = desc.character.class
-    const modelData = defs.CHARACTER_MODELS[classType]
+    const modelData = data.CHARACTER_MODELS[classType]
     this.anchor_ = modelData.anchors.rightHand
   }
 
