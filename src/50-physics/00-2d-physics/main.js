@@ -8,64 +8,57 @@ const { ctx } = canvas
 
 let then = Date.now()
 
-class Vektor {
+class Vector {
   constructor(x, y, z = 0) {
     this.x = x
     this.y = y
     this.z = z
   }
 
-  stop() {
-    this.x = 0
-    this.y = 0
-    this.z = 0
+  add(vector) {
+    this.x += vector.x
+    this.y += vector.y
+    this.z += vector.z
   }
 
-  dodaj(vektor) {
-    this.x += vektor.x
-    this.y += vektor.y
-    this.z += vektor.z
-  }
-
-  skaliraj(skalar) {
+  multiplyScalar(skalar) {
     this.x *= skalar
     this.y *= skalar
     this.z *= skalar
   }
 
-  primeniOtpor(procenat) {
-    this.skaliraj(1 - procenat)
+  applyResistance(percent) {
+    this.multiplyScalar(1 - percent)
   }
 }
 
-function skaliraj(vektor, skalar) {
+function multiplyScalar(vector, skalar) {
   return {
-    x: vektor.x * skalar,
-    y: vektor.y * skalar,
-    z: vektor.z * skalar
+    x: vector.x * skalar,
+    y: vector.y * skalar,
+    z: vector.z * skalar
   }
 }
 
-class Krug {
+class Circle {
   /*
-  * param polozaj: Vektor object
+  * param position: Vector
   */
-  constructor(r, polozaj) {
-    this.oblik = 'krug'
+  constructor(r, position) {
     this.r = r
-    this.centar = polozaj
-    this.dubina = 10
+    this.center = position
+    this.depth = 10
   }
 
-  get povrsina() {
+  get area() {
     return Math.PI * this.r * this.r
   }
 
-  get zapremina() {
-    return this.povrsina * this.dubina
+  get volume() {
+    return this.area * this.depth
   }
 
-  render(x = this.centar.x, y = this.centar.y, r = this.r) {
+  render(x = this.center.x, y = this.center.y, r = this.r) {
     ctx.beginPath()
     ctx.arc(x, y, r, 0, 2 * Math.PI)
     ctx.fill()
@@ -73,127 +66,90 @@ class Krug {
 }
 
 /*
-* Predmet podrazumevano ima oblik Kruga
+* Object podrazumevano ima shape Kruga
 */
-class Predmet {
-  constructor(visina = 100, x = Math.random() * canvas.width, y = Math.random() * 100) {
-    this.visina = visina
-    this.polaVisine = visina / 2
-    this.polozaj = new Vektor(x, y)
-    this.oblik = new Krug(this.visina / 2, this.polozaj)
-    this.fizika = true
-    this.gustina = 700
-    this.zapremina = this.oblik.zapremina
-    this.sila = new Vektor(0, 0, 0)
-    this.ubrzanje = new Vektor(0, 0)
-    this.brzina = new Vektor(0, 0)
-    this.trenjeS = 0.74
-    this.trenjeK = 0.57
-    this.odskocivost = 0.7
+class Object {
+  constructor(height = 100, x = Math.random() * canvas.width, y = Math.random() * 100) {
+    this.height = height
+    this.halfHeight = height / 2
+    this.position = new Vector(x, y)
+    this.shape = new Circle(this.height / 2, this.position)
+    this.density = 700
+    this.volume = this.shape.volume
+    this.force = new Vector(0, 0, 0)
+    this.acceleration = new Vector(0, 0)
+    this.velocity = new Vector(0, 0)
+    this.staticFriction = 0.74
+    this.kineticFriction = 0.57
+    this.bounciness = 0.7
   }
 
-  get masa() {
-    return this.gustina * this.zapremina
+  get mass() {
+    return this.density * this.volume
   }
 
-  get trenje() {
-    return this.brzina.x === 0 ? this.trenjeS : this.trenjeK
-  }
-
-  render() {
-    this.oblik.render()
+  get friction() {
+    return this.velocity.x === 0 ? this.staticFriction : this.kineticFriction
   }
 }
 
-class Scena {
-  constructor() {
-    this.predmeti = []
-    this.tlo = canvas.height
-    this.vetar = new Vektor(1, 0)
-    this.vuca = 0.001
-    this.loopID = null
-  }
+const objects = []
+const ground = canvas.height
+const wind = new Vector(1, 0)
+const drag = 0.001
 
-  add(...premeti) {
-    this.predmeti.push(...premeti)
-  }
+function add(...premeti) {
+  objects.push(...premeti)
+}
 
-  /* GAME LOGIC */
+/* LOGIC */
 
-  integracija(predmet, dt) {
-    predmet.sila.dodaj(this.vetar)
-    predmet.sila.dodaj(gravitacija)
-    predmet.sila.primeniOtpor(this.diraTlo(predmet) ? predmet.trenje : this.vuca)
+const touchingGround = object => object.position.y + object.halfHeight >= ground
 
-    predmet.ubrzanje = skaliraj(predmet.sila, 1 / predmet.masa)
-    predmet.brzina.dodaj(skaliraj(predmet.ubrzanje, dt))
-    predmet.polozaj.dodaj(skaliraj(predmet.brzina, dt))
-  }
+// http://davidlively.com/programming/simple-physics-fun-with-verlet-integration/
+function integration(object, dt) {
+  object.force.add(wind)
+  object.force.add(gravity)
+  object.force.applyResistance(touchingGround(object) ? object.friction : drag)
 
-  proveriTlo(predmet) {
-    if (!this.diraTlo(predmet)) return
-    this.sudarniOdgovor(predmet)
-  }
+  object.acceleration = multiplyScalar(object.force, 1 / object.mass)
+  object.velocity.add(multiplyScalar(object.acceleration, dt))
+  object.position.add(multiplyScalar(object.velocity, dt))
+}
 
-  diraTlo(predmet) {
-    return predmet.polozaj.y + predmet.polaVisine >= this.tlo
-  }
+function checkGround(object) {
+  if (touchingGround(object)) collisionResponse(object)
+}
 
-  sudarniOdgovor(predmet) {
-    predmet.polozaj.y = this.tlo - predmet.polaVisine
-    predmet.brzina.y *= -1
-    predmet.brzina.y *= predmet.odskocivost
-  }
-
-  /* PETLJA */
-
-  update(dt) {
-    this.predmeti.map(predmet => {
-      if (!predmet.fizika) return
-      this.integracija(predmet, dt)
-      this.proveriTlo(predmet)
-    })
-  }
-
-  loop() {
-    this.loopID = window.requestAnimationFrame(this.loop.bind(this))
-    const now = Date.now()
-    const delta = now - then
-    this.update(delta)
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    this.render()
-    then = now
-  }
-
-  start() {
-    if (this.loopID) return
-    this.loop()
-  }
-
-  stop() {
-    if (!this.loopID) return
-    window.cancelAnimationFrame(this.loopID)
-    this.loopID = null
-  }
-
-  /* RENDER */
-
-  render() {
-    this.predmeti.map(predmet => predmet.render())
-  }
+function collisionResponse(object) {
+  object.position.y = ground - object.halfHeight
+  object.velocity.y *= -1
+  object.velocity.y *= object.bounciness
 }
 
 /* INIT */
 
-const gravitacija = new Vektor(0, 98)
+const gravity = new Vector(0, 98)
 
-const krug1 = new Predmet(100)
-const krug2 = new Predmet(80)
-const krug3 = new Predmet(120)
+const krug1 = new Object(100)
+const krug2 = new Object(80)
+const krug3 = new Object(120)
 
-const predmeti = []
-predmeti.push(krug1, krug2, krug3)
+add(krug1, krug2, krug3)
 
-const scena = new Scena()
-scena.add(krug1, krug2, krug3)
-scena.start()
+/* LOOP */
+
+void function loop() {
+  requestAnimationFrame(loop)
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  const now = Date.now()
+  const dt = now - then
+
+  objects.map(object => {
+    integration(object, dt)
+    checkGround(object)
+    object.shape.render()
+  })
+
+  then = now
+}()
