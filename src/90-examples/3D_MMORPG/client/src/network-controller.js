@@ -44,7 +44,7 @@ export class NetworkController extends entity.Component {
       console.log('DISCONNECTED: ' + this.socket_.id) // undefined
     })
 
-    this.socket_.onAny((e, d) => this.OnMessage_(e, d))
+    this.socket_.onAny((e, data) => this.OnMessage_(e, data))
   }
 
   SendChat(txt) {
@@ -69,70 +69,82 @@ export class NetworkController extends entity.Component {
     return '__npc__' + serverID
   }
 
-  OnMessage_(e, d) {
-    if (e == 'world.player') {
-      const spawner = this.FindEntity('spawners').GetComponent('PlayerSpawner')
-      const player = spawner.Spawn(d.desc)
-      player.Broadcast({
+  _handleWorldPlayer(data) {
+    const spawner = this.FindEntity('spawners').GetComponent('PlayerSpawner')
+    const player = spawner.Spawn(data.desc)
+    player.Broadcast({
+      topic: 'network.update',
+      transform: data.transform,
+    })
+
+    player.Broadcast({
+      topic: 'network.inventory',
+      inventory: data.desc.character.inventory,
+    })
+
+    console.log('entering world: ' + data.id)
+    this.playerID_ = data.id
+  }
+
+  _handleWorldUpdate(data) {
+    for (const d of data) {
+      let entity
+      const id = this.GetEntityID_(d.id)
+      if ('desc' in d) {
+        const spawner = this.FindEntity('spawners').GetComponent('NetworkEntitySpawner')
+        entity = spawner.Spawn(id, d.desc)
+        entity.Broadcast({
+          topic: 'network.inventory',
+          inventory: d.desc.character.inventory,
+        })
+      } else
+        entity = this.FindEntity(id)
+
+      if (!entity) continue
+
+      // Translate events, hardcoded, bad, sorry
+      const events = []
+      if (d.events)
+        for (const e of d.events)
+          events.push({
+            type: e.type,
+            target: this.FindEntity(this.GetEntityID_(e.target)),
+            attacker: this.FindEntity(this.GetEntityID_(e.attacker)),
+            amount: e.amount,
+          })
+
+      const ui = this.FindEntity('ui').GetComponent('UIController')
+      ui.AddEventMessages(events)
+      entity.Broadcast({
         topic: 'network.update',
         transform: d.transform,
+        stats: d.stats,
+        events,
       })
+    }
+  }
 
-      player.Broadcast({
-        topic: 'network.inventory',
-        inventory: d.desc.character.inventory,
-      })
+  _handleChatMessage(data) {
+    this.FindEntity('ui').GetComponent('UIController').AddChatMessage(data)
+  }
 
-      console.log('entering world: ' + d.id)
-      this.playerID_ = d.id
-    } else if (e == 'world.update') {
-      const updates = d
-      const spawner = this.FindEntity('spawners').GetComponent('NetworkEntitySpawner')
-      const ui = this.FindEntity('ui').GetComponent('UIController')
+  _handleWorldInventory(data) {
+    const id = this.GetEntityID_(data[0])
+    const e = this.FindEntity(id)
+    if (!e) return
 
-      for (const u of updates) {
-        const id = this.GetEntityID_(u.id)
-        let npc = null
-        if ('desc' in u) {
-          npc = spawner.Spawn(id, u.desc)
-          npc.Broadcast({
-            topic: 'network.inventory',
-            inventory: u.desc.character.inventory,
-          })
-        } else
-          npc = this.FindEntity(id)
+    e.Broadcast({
+      topic: 'network.inventory',
+      inventory: data[1],
+    })
+  }
 
-        // Translate events, hardcoded, bad, sorry
-        const events = []
-        if (u.events)
-          for (const e of u.events)
-            events.push({
-              type: e.type,
-              target: this.FindEntity(this.GetEntityID_(e.target)),
-              attacker: this.FindEntity(this.GetEntityID_(e.attacker)),
-              amount: e.amount,
-            })
-
-        ui.AddEventMessages(events)
-        npc.Broadcast({
-          topic: 'network.update',
-          transform: u.transform,
-          stats: u.stats,
-          events,
-        })
-      }
-    } else if (e == 'chat.message')
-      this.FindEntity('ui').GetComponent('UIController').AddChatMessage(d)
-    else if (e == 'world.inventory') {
-      const id = this.GetEntityID_(d[0])
-
-      const e = this.FindEntity(id)
-      if (!e) return
-
-      e.Broadcast({
-        topic: 'network.inventory',
-        inventory: d[1],
-      })
+  OnMessage_(e, data) {
+    switch (e) {
+      case 'world.player': return this._handleWorldPlayer(data)
+      case 'world.update': return this._handleWorldUpdate(data)
+      case 'chat.msg': return this._handleChatMessage(data)
+      case 'world.inventory': return this._handleWorldInventory(data)
     }
   }
 };
