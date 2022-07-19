@@ -10,7 +10,7 @@ import { PlayerSpawner, NetworkEntitySpawner } from './spawners.js'
 import { TerrainChunkManager } from './terrain.js'
 import { InventoryDatabaseController } from './inventory-controller.js'
 import { SpatialHashGrid } from '../shared/spatial-hash-grid.mjs'
-import { data } from '../shared/data.mjs'
+import { WEAPONS_DATA } from '../shared/data.mjs'
 import { ThreeJSController } from './threejs_component.js'
 import { generateRandomName } from './utils.js'
 
@@ -60,8 +60,8 @@ function init() {
 
   const database = new entity.Entity()
   const inventory = new InventoryDatabaseController()
-  for (const key in data.WEAPONS_DATA)
-    inventory.AddItem(key, data.WEAPONS_DATA[key])
+  for (const key in WEAPONS_DATA)
+    inventory.AddItem(key, WEAPONS_DATA[key])
   database.AddComponent(inventory)
   entityManager_.Add(database, 'database')
 
