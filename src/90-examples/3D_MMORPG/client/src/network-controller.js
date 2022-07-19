@@ -10,22 +10,6 @@ export class NetworkController extends entity.Component {
     this.SetupSocket_()
   }
 
-  GenerateRandomName_() {
-    const names1 = [
-      'Aspiring', 'Nameless', 'Cautionary', 'Excited',
-      'Modest', 'Maniacal', 'Caffeinated', 'Sleepy',
-      'Passionate', 'Medical',
-    ]
-    const names2 = [
-      'Painter', 'Cheese Guy', 'Giraffe', 'Snowman',
-      'Doberwolf', 'Cocktail', 'Fondler', 'Typist',
-      'Noodler', 'Arborist', 'Peeper'
-    ]
-    const n1 = names1[Math.floor(Math.random() * names1.length)]
-    const n2 = names2[Math.floor(Math.random() * names2.length)]
-    return n1 + ' ' + n2
-  }
-
   SetupSocket_() {
     this.socket_ = io('ws://localhost:3000', {
       reconnection: false,
@@ -34,8 +18,6 @@ export class NetworkController extends entity.Component {
     })
 
     this.socket_.on('connect', () => {
-      console.log(this.socket_.id)
-      const randomName = this.GenerateRandomName_()
       // Input validation is for losers
       this.socket_.emit('login.commit', document.getElementById('login-input').value)
     })

@@ -1,19 +1,15 @@
-export const utils = {
-  DictIntersection: function (dictA, dictB) {
-    const intersection = {};
-    for (let k in dictB) {
-      if (k in dictA) {
-        intersection[k] = dictA[k];
-      }
-    }
-    return intersection
-  },
-
-  DictDifference: function (dictA, dictB) {
-    const diff = { ...dictA };
-    for (let k in dictB) {
-      delete diff[k];
-    }
-    return diff;
-  }
-};
+export function generateRandomName() {
+  const names1 = [
+    'Aspiring', 'Nameless', 'Cautionary', 'Excited',
+    'Modest', 'Maniacal', 'Caffeinated', 'Sleepy',
+    'Passionate', 'Medical',
+  ]
+  const names2 = [
+    'Painter', 'Cheese Guy', 'Giraffe', 'Snowman',
+    'Doberwolf', 'Cocktail', 'Fondler', 'Typist',
+    'Noodler', 'Arborist', 'Peeper'
+  ]
+  const n1 = names1[Math.floor(Math.random() * names1.length)]
+  const n2 = names2[Math.floor(Math.random() * names2.length)]
+  return n1 + ' ' + n2
+}

@@ -1,3 +1,4 @@
+import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { EntityManager } from './entity-manager.js'
 import { entity } from './entity.js'
 import { UIController } from './ui-controller.js'
@@ -11,13 +12,15 @@ import { InventoryDatabaseController } from './inventory-controller.js'
 import { SpatialHashGrid } from '../shared/spatial-hash-grid.mjs'
 import { defs } from '../shared/defs.mjs'
 import { ThreeJSController } from './threejs_component.js'
-import { scene, camera, renderer, clock } from '/utils/scene.js'
+import { generateRandomName } from './utils.js'
+
+document.getElementById('login-input').value = generateRandomName()
 
 const grid_ = new SpatialHashGrid([[-1000, -1000], [1000, 1000]], [100, 100])
 
 const entityManager_ = new EntityManager()
 
-function OnGameStarted_() {
+function startGame() {
   init()
   loop()
 }
@@ -79,6 +82,4 @@ function loop() {
 
 /* EVENTS */
 
-document.getElementById('login-button').onclick = () => {
-  OnGameStarted_()
-}
+document.getElementById('login-button').addEventListener('click', startGame)
