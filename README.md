@@ -34,7 +34,7 @@ live-server
 - CANNON.js kola primeri 
   - http://schteppe.github.io/cannon.js/demos/raycastVehicle.html
   - http://schteppe.github.io/cannon.js/demos/rigidVehicle.html
-
+- maze generator https://codepen.io/dragonir/pen/XgawQE
 
 - [ ] Konačni automat
   - [x] nakačiti kachujin na konačni automat

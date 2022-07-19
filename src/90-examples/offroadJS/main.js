@@ -1,8 +1,8 @@
 /* global CANNON */
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
+import heightMap from './data/terrainHeightMap.js'
 import createVehicle from './vehicle.js'
-import { generateTerrain } from './terrainHelper.js'
 import { cameraHelper } from './cameraHelper.js'
 import { scene, renderer, camera } from '/utils/scene.js'
 import { ambLight, createSunLight } from '/utils/light.js'
@@ -51,6 +51,17 @@ cameraHelper.init(camera, chassis)
 resetVehicle()
 
 /* FUNCTIONS */
+
+function generateTerrain() {
+  const material = new CANNON.Material('groundMaterial')
+  const shape = new CANNON.Heightfield(heightMap, { elementSize: 1.475 })
+  const terrain = new CANNON.Body({ mass: 0, shape, material })
+
+  terrain.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2)
+  terrain.position.set(-69.07913208007812, 0, 68.98860168457031)
+
+  return terrain
+}
 
 function resetVehicle() {
   const position = new THREE.Vector3(70, 2, 60)
