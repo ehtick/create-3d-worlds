@@ -1,7 +1,7 @@
 import { performance } from 'perf_hooks'
 
 import { WorldManager } from './world-manager.mjs'
-import { login_queue } from './login-queue.mjs'
+import { LoginQueue } from './login-queue.mjs'
 
 class SocketWrapper {
   constructor(params) {
@@ -51,11 +51,9 @@ class SocketWrapper {
 
 export class WorldServer {
   constructor(io) {
-    this.loginQueue_ = new login_queue.LoginQueue(
-      (c, p) => {
-        this.OnLogin_(c, p)
-      })
-
+    this.loginQueue_ = new LoginQueue(
+      (c, p) => this.OnLogin_(c, p)
+    )
     this.worldMgr_ = new WorldManager({ parent: this })
     this.SetupIO_(io)
   }

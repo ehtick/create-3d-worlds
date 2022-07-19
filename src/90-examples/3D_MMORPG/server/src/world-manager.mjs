@@ -1,7 +1,7 @@
 import { quat, vec3 } from 'gl-matrix'
 
-import { world_client } from './world-client.mjs'
-import { world_entity } from './world-entity.mjs'
+import { WorldNetworkClient, WorldAIClient } from './world-client.mjs'
+import { WorldEntity } from './world-entity.mjs'
 
 import { SpatialHashGrid } from '../../client/shared/spatial-hash-grid.mjs'
 import { terrain_height } from '../../client/shared/terrain-height.mjs'
@@ -19,7 +19,7 @@ class MonsterSpawner {
 
   Spawn_() {
     // Hack
-    const e = new world_entity.WorldEntity({
+    const e = new WorldEntity({
       id: this.parent_.ids_++,
       position: vec3.clone(this.pos_),
       rotation: quat.fromValues(0, 0, 0, 1),
@@ -31,7 +31,7 @@ class MonsterSpawner {
       account: { accountName: CHARACTER_MODELS[this.params_.class].name },
     })
 
-    const wc = new world_client.WorldAIClient(e, this.terrain_, () => {
+    const wc = new WorldAIClient(e, this.terrain_, () => {
       this.entity_ = null
       console.log('entity gone, spawner making now one soon')
     })
@@ -65,12 +65,8 @@ export class WorldManager {
       for (let z = -40; z <= 40; ++z)
         if (Math.random() < 0.1) {
           const pos = vec3.fromValues(x * 75, 0, z * 75)
-          if (Math.random() < 0.1)
-            this.spawners_.push(new MonsterSpawner({
-              parent: this, pos, class: 'warrok' }))
-          else
-            this.spawners_.push(new MonsterSpawner({
-              parent: this, pos, class: 'zombie' }))
+          const monster = Math.random() < 0.1 ? 'warrok' : 'zombie'
+          this.spawners_.push(new MonsterSpawner({ parent: this, pos, class: monster }))
         }
   }
 
@@ -83,7 +79,7 @@ export class WorldManager {
     const randomClass = models[Math.floor(Math.random() * models.length)]
 
     // Hack
-    const e = new world_entity.WorldEntity({
+    const e = new WorldEntity({
       id: this.ids_++,
       position: vec3.fromValues(
         -60 + (Math.random() * 2 - 1) * 20,
@@ -98,7 +94,7 @@ export class WorldManager {
       account: params,
     })
 
-    const wc = new world_client.WorldNetworkClient(client, e)
+    const wc = new WorldNetworkClient(client, e)
     this.entities_.push(wc)
     wc.BroadcastChat({
       name: '',
@@ -154,4 +150,4 @@ export class WorldManager {
       d.Destroy()
     }
   }
-};
+}
