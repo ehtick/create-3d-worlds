@@ -11,17 +11,14 @@ function init(camera, target) {
   cameraHelper.switch = () => {
     switch (cameraId++) {
       case 0:
-        console.info('Chase camera')
         target.remove(camera)
         camera.fov = 50
         cameraHelper.update = initChaseCamera(camera, target)
         break
       case 1:
-        console.info('Static camera')
         cameraHelper.update = () => camera.lookAt(target.position)
         break
       case 2:
-        console.info('Hood camera')
         target.add(camera)
         camera.position.set(0, 1.5, 0)
         camera.rotation.set(0, 0, 0)
@@ -53,7 +50,6 @@ function initChaseCamera(camera, target) {
 
     camera.position.lerp(cameraMountPosition, cameraMovementSpeed)
     cameraLookPosition.copy(target.position).y += cameraLookPositionHeightOffset
-
     camera.lookAt(cameraLookPosition)
   }
 }

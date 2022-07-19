@@ -31,6 +31,10 @@ live-server
 - [ ] pokušati prebaciti teren iz MMO u RPG
 - [ ] model gleda kursor https://tympanus.net/codrops/2019/10/14/how-to-create-an-interactive-3d-character-with-three-js/
 - [ ] napraviti sletanje na mesec 3d
+- CANNON.js kola primeri 
+  - http://schteppe.github.io/cannon.js/demos/raycastVehicle.html
+  - http://schteppe.github.io/cannon.js/demos/rigidVehicle.html
+
 
 - [ ] Konačni automat
   - [x] nakačiti kachujin na konačni automat
