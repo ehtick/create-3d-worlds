@@ -113,7 +113,3 @@ window.addEventListener('keyup', e => {
       break
   }
 })
-
-document.getElementById('close-button').addEventListener('click', () => {
-  instructions.classList.add('hidden')
-})

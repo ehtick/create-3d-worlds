@@ -1,8 +1,6 @@
 /* global CANNON */
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
-import controllerSocketHandler from './socketHandler.js'
-
 export default function createVehicle() {
   const chassisBody = new CANNON.Body({ mass: 20 })
   const chassisBaseShape = new CANNON.Box(new CANNON.Vec3(0.9, 0.4, 2.1))
@@ -94,63 +92,10 @@ export default function createVehicle() {
     addToWorld(world)
   }
 
-  const maxAcceleration = 70
-  const maxSteeringValue = 0.5
-  const maxBrakeForce = 1
-
-  const minValues = {
-    acceleration: -maxAcceleration,
-    steeringValue: -maxSteeringValue,
-    brakeForce: 0,
-  }
-
-  const maxValues = {
-    acceleration: maxAcceleration,
-    steeringValue: maxSteeringValue,
-    brakeForce: maxBrakeForce,
-  }
-
-  const state = {
-    acceleration: 0,
-    steeringValue: 0,
-    brakeForce: 0,
-  }
-
-  controllerSocketHandler.connectToServer()
-  controllerSocketHandler.onmessage = action => {
-    setState({ [action.target]: action.value })
-  }
-
-  function setState(properties) {
-    let stateChanged = false
-    Object.keys(properties).forEach(property => {
-      if (state.hasOwnProperty(property) && state[property] !== properties[property]) {
-        state[property] = getLimitedValue(properties[property], minValues[property], maxValues[property])
-        stateChanged = true
-      }
-    })
-
-    if (stateChanged)
-      onStateChange()
-
-  }
-
-  function onStateChange() {
-    [0, 1, 2, 3].forEach(wheelIndex => vehicle.applyEngineForce(state.acceleration * maxAcceleration, wheelIndex));
-
-    [0, 1].forEach(wheelIndex => vehicle.setSteeringValue(state.steeringValue * -1, wheelIndex));
-
-    [0, 1, 2, 3].forEach(wheelIndex => vehicle.setBrake(state.brakeForce, wheelIndex))
-  }
-
   return vehicle
 }
 
-function getLimitedValue(value, min, max) {
-  return Math.max(min, Math.min(value, max))
-}
-
-// // keyboard controls ////
+/* KEYBOARD CONTROLS */
 
 function initControls(vehicle) {
   const keysPressed = new Set()
@@ -158,27 +103,16 @@ function initControls(vehicle) {
   const maxSteeringValue = 0.5
   const maxForceOnFrontWheels = 70
   const maxForceOnRearWheels = 65
-  const brakeForce = 1
+  const brakeForce = 10
 
-  const liftingPoint = new CANNON.Vec3()
-  const liftingForce = new CANNON.Vec3(0, 360, 0)
-  const upAxis = new CANNON.Vec3(0, 1, 0)
   let pressedKey
 
   onkeydown = onkeyup = e => {
     pressedKey = e.key.toUpperCase()
     preventPageScrolling(e)
-    if (isKeyDown('H')) {
-      vehicle.chassisBody.quaternion.vmult(upAxis, liftingPoint)
-      vehicle.chassisBody.position.vadd(liftingPoint, liftingPoint)
-      vehicle.chassisBody.applyForce(liftingForce, liftingPoint)
 
-      vehicle.chassisBody.angularDamping = 0.9
-      vehicle.chassisBody.linearDamping = 0.9
-    } else {
-      vehicle.chassisBody.angularDamping = 0.01
-      vehicle.chassisBody.linearDamping = 0.01
-    }
+    vehicle.chassisBody.angularDamping = 0.01
+    vehicle.chassisBody.linearDamping = 0.01
 
     if (e.type === 'keydown' && e.repeat)
       return
@@ -189,8 +123,6 @@ function initControls(vehicle) {
       keysPressed.add(pressedKey)
 
     const direction = isKeyDown('W') ? 1 : isKeyDown('S') ? -1 : 0;
-
-    // const speed = vehicle.chassisBody.velocity.length();
 
     [0, 1].forEach(wheelIndex => vehicle.applyEngineForce(maxForceOnFrontWheels * direction, wheelIndex));
     [2, 3].forEach(wheelIndex => vehicle.applyEngineForce(maxForceOnRearWheels * direction, wheelIndex))
