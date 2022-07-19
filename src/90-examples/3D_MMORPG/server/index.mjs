@@ -1,20 +1,18 @@
-import * as http from 'http';
-import { Server } from 'socket.io';
+import * as http from 'http'
+import { Server } from 'socket.io'
 
-import { world_server } from './src/world-server.mjs';
+import { WorldServer } from './src/world-server.mjs'
 
-const port = 3000;
-const server = http.createServer();
+const port = 3000
+const server = http.createServer()
 const options = {
-  cors: {
-    origin: '*'
-  }
+  cors: { origin: '*' }
 }
-const io = new Server(server, options);
+const io = new Server(server, options)
 
 server.listen(port, () => {
-  console.log('listening on: *', port);
-});
+  console.log('listening on:', port)
+})
 
-const WORLD = new world_server.WorldServer(io);
-WORLD.Run();
+const WORLD = new WorldServer(io)
+WORLD.Run()
