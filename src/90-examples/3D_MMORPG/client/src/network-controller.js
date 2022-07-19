@@ -6,7 +6,6 @@ import { entity } from './entity.js'
 export class NetworkController extends entity.Component {
   constructor() {
     super()
-
     this.playerID_ = null
     this.SetupSocket_()
   }
@@ -22,10 +21,8 @@ export class NetworkController extends entity.Component {
       'Doberwolf', 'Cocktail', 'Fondler', 'Typist',
       'Noodler', 'Arborist', 'Peeper'
     ]
-    const n1 = names1[
-      Math.floor(Math.random() * names1.length)]
-    const n2 = names2[
-      Math.floor(Math.random() * names2.length)]
+    const n1 = names1[Math.floor(Math.random() * names1.length)]
+    const n2 = names2[Math.floor(Math.random() * names2.length)]
     return n1 + ' ' + n2
   }
 
@@ -40,17 +37,14 @@ export class NetworkController extends entity.Component {
       console.log(this.socket_.id)
       const randomName = this.GenerateRandomName_()
       // Input validation is for losers
-      this.socket_.emit(
-        'login.commit', document.getElementById('login-input').value)
+      this.socket_.emit('login.commit', document.getElementById('login-input').value)
     })
 
     this.socket_.on('disconnect', () => {
       console.log('DISCONNECTED: ' + this.socket_.id) // undefined
     })
 
-    this.socket_.onAny((e, d) => {
-      this.OnMessage_(e, d)
-    })
+    this.socket_.onAny((e, d) => this.OnMessage_(e, d))
   }
 
   SendChat(txt) {
