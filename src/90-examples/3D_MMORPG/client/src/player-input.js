@@ -26,7 +26,7 @@ export class BasicCharacterControllerInput extends entity.Component {
   }
 
   _onMouseUp(event) {
-    const rect = document.getElementById('threejs').getBoundingClientRect()
+    const rect = document.getElementById('container').getBoundingClientRect()
     const pos = {
       x: ((event.clientX - rect.left) / rect.width) * 2 - 1,
       y: ((event.clientY - rect.top) / rect.height) * -2 + 1,

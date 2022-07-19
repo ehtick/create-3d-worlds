@@ -31,33 +31,24 @@ export class EquipWeapon extends entity.Component {
   }
 
   GetItemDefinition_(name) {
-    const database = this.FindEntity('database').GetComponent(
-      'InventoryDatabaseController')
+    const database = this.FindEntity('database').GetComponent('InventoryDatabaseController')
     return database.Find(name)
   }
 
   _OnEquip(msg) {
-    if (msg.value == this.name_)
-      return
+    if (msg.value == this.name_) return
 
-    if (this.target_)
-      this._UnloadModels()
+    if (this.target_) this._UnloadModels()
 
-    const inventory = this.GetComponent('InventoryController')
     const item = this.GetItemDefinition_(msg.value)
-
     this.name_ = msg.value
 
-    if (item)
-      this._LoadModels(item, () => {
-        this._AttachTarget()
-      })
+    if (item) this._LoadModels(item, () => this._AttachTarget())
   }
 
   _UnloadModels() {
     if (this.target_) {
       this.target_.parent.remove(this.target_)
-      // Probably need to free the memory properly, whatever
       this.target_ = null
     }
   }
@@ -72,7 +63,6 @@ export class EquipWeapon extends entity.Component {
       this.target_.traverse(c => {
         c.castShadow = true
         c.receiveShadow = true
-
         // Do this instead of something smart like re-exporting.
         let materials = c.material
         const newMaterials = []

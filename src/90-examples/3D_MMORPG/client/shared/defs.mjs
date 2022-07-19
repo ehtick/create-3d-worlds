@@ -1,8 +1,6 @@
-
-
 export const defs = (() => {
 
-  const _CHARACTER_MODELS = {
+  const CHARACTER_MODELS = {
     paladin: {
       base: 'paladin.glb',
       path: './resources/characters/',
@@ -115,43 +113,43 @@ export const defs = (() => {
       },
       name: 'Zombie',
     },
-  };
+  }
 
-  const _WEAPONS_DATA = {
-      'weapon.axe1':
+  const WEAPONS_DATA = {
+    'weapon.axe1':
       {
-          type: 'weapon',
-          damage: 3,
-          renderParams: {
-            name: 'Axe',
-            scale: 0.125,
-            icon: 'war-axe-64.png',
-          },
+        type: 'weapon',
+        damage: 3,
+        renderParams: {
+          name: 'Axe',
+          scale: 0.125,
+          icon: 'war-axe-64.png',
+        },
       },
-      'weapon.sword1':
+    'weapon.sword1':
       {
-          type: 'weapon',
-          damage: 3,
-          renderParams: {
-            name: 'Sword',
-            scale: 0.125,
-            icon: 'pointy-sword-64.png',
-          },
+        type: 'weapon',
+        damage: 3,
+        renderParams: {
+          name: 'Sword',
+          scale: 0.125,
+          icon: 'pointy-sword-64.png',
+        },
       },
-      'weapon.hammer1':
+    'weapon.hammer1':
       {
-          type: 'weapon',
-          damage: 3,
-          renderParams: {
-            name: 'Hammer_Small',
-            scale: 0.125,
-            icon: 'hammer-64.png',
-          },
+        type: 'weapon',
+        damage: 3,
+        renderParams: {
+          name: 'Hammer_Small',
+          scale: 0.125,
+          icon: 'hammer-64.png',
+        },
       },
-  };
+  }
 
   return {
-    CHARACTER_MODELS: _CHARACTER_MODELS,
-    WEAPONS_DATA: _WEAPONS_DATA,
-  };
-})();
+    CHARACTER_MODELS,
+    WEAPONS_DATA,
+  }
+})()

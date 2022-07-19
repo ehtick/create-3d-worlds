@@ -13,18 +13,16 @@ import { defs } from '../shared/defs.mjs'
 import { ThreeJSController } from './threejs_component.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 
-const grid_ = new SpatialHashGrid(
-  [[-1000, -1000], [1000, 1000]], [100, 100])
+const grid_ = new SpatialHashGrid([[-1000, -1000], [1000, 1000]], [100, 100])
 
 const entityManager_ = new EntityManager()
 
 function OnGameStarted_() {
-  LoadControllers_()
-  LoadPlayer_()
+  init()
   loop()
 }
 
-function LoadControllers_() {
+function init() {
   const threejs = new entity.Entity()
   threejs.AddComponent(new ThreeJSController())
   entityManager_.Add(threejs)
@@ -53,14 +51,8 @@ function LoadControllers_() {
   entityManager_.Add(scenery, 'scenery')
 
   const spawner = new entity.Entity()
-  spawner.AddComponent(new PlayerSpawner({
-    grid: grid_,
-  }))
-  spawner.AddComponent(new NetworkEntitySpawner({
-    grid: grid_,
-    scene,
-    camera,
-  }))
+  spawner.AddComponent(new PlayerSpawner({ grid: grid_ }))
+  spawner.AddComponent(new NetworkEntitySpawner({ grid: grid_ }))
   entityManager_.Add(spawner, 'spawners')
 
   const database = new entity.Entity()
@@ -69,16 +61,10 @@ function LoadControllers_() {
 
   // HACK
   for (const k in defs.WEAPONS_DATA)
-    database.GetComponent('InventoryDatabaseController').AddItem(
-      k, defs.WEAPONS_DATA[k])
-}
+    database.GetComponent('InventoryDatabaseController').AddItem(k, defs.WEAPONS_DATA[k])
 
-function LoadPlayer_() {
   const levelUpSpawner = new entity.Entity()
-  levelUpSpawner.AddComponent(new LevelUpComponentSpawner({
-    camera,
-    scene,
-  }))
+  levelUpSpawner.AddComponent(new LevelUpComponentSpawner())
   entityManager_.Add(levelUpSpawner, 'level-up-spawner')
 }
 

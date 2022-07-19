@@ -17,14 +17,12 @@ export class NPCController extends entity.Component {
         let materials = c.material
         if (!(c.material instanceof Array))
           materials = [c.material]
-
         for (const m of materials)
           m.dispose()
       }
 
       if (c.geometry)
         c.geometry.dispose()
-
     })
     scene.remove(this.group_)
   }
@@ -44,15 +42,9 @@ export class NPCController extends entity.Component {
   }
 
   InitComponent() {
-    this._RegisterHandler('health.death', m => {
-      this.OnDeath_(m)
-    })
-    this._RegisterHandler('update.position', m => {
-      this.OnPosition_(m)
-    })
-    this._RegisterHandler('update.rotation', m => {
-      this.OnRotation_(m)
-    })
+    this._RegisterHandler('health.death', m => this.OnDeath_(m))
+    this._RegisterHandler('update.position', m => this.OnPosition_(m))
+    this._RegisterHandler('update.rotation', m => this.OnRotation_(m))
   }
 
   SetState(s) {
@@ -71,7 +63,7 @@ export class NPCController extends entity.Component {
     this.stateMachine_.SetState(s)
   }
 
-  OnDeath_(msg) {
+  OnDeath_() {
     this.SetState('death')
   }
 
@@ -102,7 +94,6 @@ export class NPCController extends entity.Component {
 
         for (const b of c.skeleton.bones)
           this.bones_[b.name] = b
-
       })
 
       this.target_.traverse(c => {
@@ -110,7 +101,6 @@ export class NPCController extends entity.Component {
         c.receiveShadow = true
         if (c.material && c.material.map)
           c.material.map.encoding = THREE.sRGBEncoding
-
       })
 
       this.mixer_ = new THREE.AnimationMixer(this.target_)
@@ -125,7 +115,6 @@ export class NPCController extends entity.Component {
               action
             }
           }
-
         return null
       }
 
@@ -163,6 +152,5 @@ export class NPCController extends entity.Component {
 
     if (this.mixer_)
       this.mixer_.update(timeInSeconds)
-
   }
-};
+}

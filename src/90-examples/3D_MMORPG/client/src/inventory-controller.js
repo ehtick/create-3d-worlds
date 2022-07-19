@@ -3,7 +3,6 @@ import { entity } from './entity.js'
 class InventoryDatabaseController extends entity.Component {
   constructor() {
     super()
-
     this.items_ = {}
   }
 
@@ -65,8 +64,7 @@ class UIInventoryController extends entity.Component {
   }
 
   GetItemDefinition_(name) {
-    const database = this.FindEntity('database').GetComponent(
-      'InventoryDatabaseController')
+    const database = this.FindEntity('database').GetComponent('InventoryDatabaseController')
     return database.Find(name)
   }
 
@@ -119,7 +117,6 @@ class InventoryController extends entity.Component {
     for (const k in msg.inventory)
       inventory[k].value = msg.inventory[k]
 
-    const changed = false
     for (const k in inventory)
       if (inventory[k].value != this.inventory_[k].value)
         this.SetItemAtSlot_(k, inventory[k].value)
@@ -142,8 +139,7 @@ class InventoryController extends entity.Component {
   }
 
   GetItemDefinition_(name) {
-    const database = this.FindEntity('database').GetComponent(
-      'InventoryDatabaseController')
+    const database = this.FindEntity('database').GetComponent('InventoryDatabaseController')
     return database.Find(name)
   }
 

@@ -58,7 +58,6 @@ export class TerrainChunkManager extends entity.Component {
     })
 
     this._material.onBeforeCompile = s => {
-      const a = 0
       let vsh = s.vertexShader
       vsh = terrain_shader.VS1 + s.vertexShader
       const vi1 = vsh.search('#include <fog_vertex>')
@@ -79,12 +78,8 @@ export class TerrainChunkManager extends entity.Component {
       normal.onLoad = () => {
         s.uniforms.TRIPLANAR_normalMap.value = normal.Info.normal.atlas
       }
-
-      // s.fragmentShader += 'poop';
     }
-
     this._builder = new TerrainChunkRebuilder_Threaded()
-
     this._InitNoise()
     this._InitBiomes()
     this._InitTerrain()
@@ -126,7 +121,6 @@ export class TerrainChunkManager extends entity.Component {
   _InitTerrain() {
     this._groups = [...new Array(6)].map(_ => new THREE.Group())
     scene.add(...this._groups)
-
     this._chunks = {}
   }
 
@@ -155,7 +149,6 @@ export class TerrainChunkManager extends entity.Component {
         max: 100000 + 1,
       }
     }
-
     return this._builder.AllocateChunk(params)
   }
 
@@ -169,8 +162,7 @@ export class TerrainChunkManager extends entity.Component {
 
   Update(_) {
     const target = this.FindEntity(this._target)
-    if (!target)
-      return
+    if (!target) return
 
     this._builder.Update()
     if (!this._builder.Busy)
@@ -236,7 +228,6 @@ export class TerrainChunkManager extends entity.Component {
           terrain_constants.QT_MIN_CELL_RESOLUTION),
       }
     }
-
     this._chunks = newTerrainChunks
   }
 }
