@@ -1,4 +1,3 @@
-import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { EntityManager } from './entity-manager.js'
 import { entity } from './entity.js'
 import { UIController } from './ui-controller.js'
@@ -13,11 +12,11 @@ import { SpatialHashGrid } from '../shared/spatial-hash-grid.mjs'
 import { WEAPONS_DATA } from '../shared/data.mjs'
 import { ThreeJSController } from './threejs_component.js'
 import { generateRandomName } from './utils.js'
+import { scene, camera, renderer, clock } from '/utils/scene.js'
 
 document.getElementById('login-input').value = generateRandomName()
 
-const grid_ = new SpatialHashGrid([[-1000, -1000], [1000, 1000]], [100, 100])
-
+const grid = new SpatialHashGrid([[-1000, -1000], [1000, 1000]], [100, 100])
 const entityManager_ = new EntityManager()
 
 function startGame() {
@@ -47,21 +46,17 @@ function init() {
   entityManager_.Add(l, 'loader')
 
   const scenery = new entity.Entity()
-  scenery.AddComponent(new SceneryController({
-    scene,
-    grid: grid_,
-  }))
+  scenery.AddComponent(new SceneryController({ grid }))
   entityManager_.Add(scenery, 'scenery')
 
   const spawner = new entity.Entity()
-  spawner.AddComponent(new PlayerSpawner({ grid: grid_ }))
-  spawner.AddComponent(new NetworkEntitySpawner({ grid: grid_ }))
+  spawner.AddComponent(new PlayerSpawner({ grid }))
+  spawner.AddComponent(new NetworkEntitySpawner({ grid }))
   entityManager_.Add(spawner, 'spawners')
 
   const database = new entity.Entity()
   const inventory = new InventoryDatabaseController()
-  for (const key in WEAPONS_DATA)
-    inventory.AddItem(key, WEAPONS_DATA[key])
+  for (const key in WEAPONS_DATA) inventory.AddItem(key, WEAPONS_DATA[key])
   database.AddComponent(inventory)
   entityManager_.Add(database, 'database')
 
