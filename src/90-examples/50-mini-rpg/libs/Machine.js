@@ -1,8 +1,6 @@
 /*
-  Originally from Machine.js
-  by mary rose cook
+  Originally from Machine.js by mary rose cook
   http://github.com/maryrosecook/machinejs
-
   modified to remove dependency on base.js
 */
 

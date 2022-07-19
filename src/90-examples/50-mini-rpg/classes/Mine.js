@@ -7,7 +7,6 @@ export default class Mine extends Entity {
     super(model)
     this.name = 'mine'
     this.units = 100
-    this.mesh = this.model.clone()
     this.rotation.y = roll(180) * DEGREE
   }
 }

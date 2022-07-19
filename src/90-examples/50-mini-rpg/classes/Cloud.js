@@ -13,8 +13,7 @@ export default class Cloud extends Entity {
   }
 
   createMesh(pos) {
-    this.model.scale.set(roll(30) + 10, 15, roll(20) + 10)
-    this.mesh = this.model.clone()
+    this.mesh.scale.set(roll(30) + 10, 15, roll(20) + 10)
     this.mesh.name = 'cloud'
     this.mesh.position.copy(pos)
   }
