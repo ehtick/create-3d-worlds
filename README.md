@@ -13,36 +13,40 @@ live-server
 
 ### General
 
-- Shaders
-  - [x] shaders https://youtu.be/C8Cuwq1eqDw
-  - [x] shaders https://youtu.be/uwzEqeMd7uQ
-  - [ ] The Book of Shaders https://thebookofshaders.com/
-
-- [ ] model simplifier https://codepen.io/nik-lever/pen/dymoKmz
-  i exporter https://threejs.org/examples/misc_exporter_gltf
+- [ ] pokušati prebaciti teren iz MMO u RPG
+- [ ] napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
+- [ ] napraviti sletanje na mesec 3d
 - https://github.com/skolakoda/teorija-razvoja-igara
 - [ ] probati storybook https://github.com/jasonsturges/storybook-for-threejs
 - [ ] pathfinding https://github.com/NikLever/three-pathfinding
 - [ ] pathfinding https://github.com/NikLever/ThreeJS-PathFinding-Examples
-- [ ] vozilo joystick https://codepen.io/nik-lever/pen/BaaEmRm
-- [ ] pregledati primere, žvakati mini-rpg, čistka
-- [ ] napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
-- free texture sa normalMaps https://opengameart.org/content/50-free-textures-4-normalmaps
-- [ ] pokušati prebaciti teren iz MMO u RPG
-- [ ] model gleda kursor https://tympanus.net/codrops/2019/10/14/how-to-create-an-interactive-3d-character-with-three-js/
-- [ ] napraviti sletanje na mesec 3d
 - maze generator https://codepen.io/dragonir/pen/XgawQE
-- https://www.smartjava.org/content/threejs-render-real-world-terrain-heightmap-using-open-data/
-- pucanje fizika mozda korisno za ball-throwing-physijs https://codepen.io/tjoen/pen/BKxZMQ
-- spojiti physijs teren + kola
 - fireball shader https://alteredqualia.com/three/examples/webgl_shader_fireball.html
 - city https://alteredqualia.com/three/examples/webgl_city.html
+- let kroz svemir https://alteredqualia.com/xg/examples/deferred_particles_nebula.html
+
+Shaders
+  - [x] shaders https://youtu.be/C8Cuwq1eqDw
+  - [x] shaders https://youtu.be/uwzEqeMd7uQ
+  - [ ] The Book of Shaders https://thebookofshaders.com/
+
+Modeli
+- [ ] model gleda kursor https://tympanus.net/codrops/2019/10/14/how-to-create-an-interactive-3d-character-with-three-js/
+- [ ] model simplifier https://codepen.io/nik-lever/pen/dymoKmz
+  i exporter https://threejs.org/examples/misc_exporter_gltf
+
+VOZILA:
+- [ ] vozilo teren https://codepen.io/nik-lever/pen/BaaEmRm
 - ammo terenska voznja:
   https://alteredqualia.com/xg/examples/animation_physics_terrain.html
   https://alteredqualia.com/xg/examples/animation_physics_level.html
-- let kroz svemir https://alteredqualia.com/xg/examples/deferred_particles_nebula.html
+- [ ] spojiti physijs teren + kola
 
-- [ ] Konačni automat
+VISINSKE MAPE:
+- visinske mape za ceo svet https://tangrams.github.io/heightmapper/#8.3724/43.3401/19.5293
+- srediti boje mapa ovako https://elevationmap.net/
+
+Konačni automat
   - [x] nakačiti kachujin na konačni automat
   - [x] dodati kapuera animacije, bez mrdanja igrača
   - [x] ispratiti tutorijal https://r105.threejsfundamentals.org/threejs/lessons/threejs-game.html
@@ -187,8 +191,8 @@ live-server
 
 ### Physics
 
-- [x] sažvakati threejs catapult projekt
-- [x] sažvakati bus-derby
+- [x] videti threejs catapult projekt
+- [x] videti bus-derby
 - [x] odvojiti fizička pomagala
 - [ ] ujednačiti createTerrain i druga fizička pomagala sa standardnim
 - [x] videti nove primere
@@ -202,8 +206,7 @@ live-server
 - [ ] Steampunk vozilo
   - [ ] dodati fiziku na steam tenk ili lokomotivu (vidi vozilo-physijs)
   - [ ] da gazi i gura prepreke
-    http://127.0.0.1:8080/15-fizika/70-vozilo/
-    http://127.0.0.1:8080/15-fizika/75-vozilo-razbija/
+- mozda korisno za ball-throwing-physijs https://codepen.io/tjoen/pen/BKxZMQ
 
 ### AI
 
@@ -352,3 +355,6 @@ Examples are from theese great books and tutorials:
 * [How to Design 3D Games with Web Technology - Book 01: Three. Js - HTML5 and WebGL](https://thefiveplanets.org/b01/) (Jordi Josa)
 
 Free 3D Models are from 3dwarehouse.sketchup.com, sketchfab.com, mixamo.com, archive3d.net, turbosquid.com and other respected sites.
+
+Textures
+- free textures with normalMaps https://opengameart.org/content/50-free-textures-4-normalmaps

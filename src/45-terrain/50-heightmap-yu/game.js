@@ -1,0 +1,25 @@
+import {
+  scene, camera, renderer, createOrbitControls, hemLight
+} from '/utils/scene.js'
+import terrainFromHeightmap from '/utils/terrain/terrainFromHeightmap.js'
+import { dirLight } from '/utils/light.js'
+import {createWater} from '/utils/ground.js'
+
+hemLight()
+dirLight()
+
+const controls = createOrbitControls()
+camera.position.y = 200
+
+const terrain = terrainFromHeightmap({ file: 'yu.png', textureFile: 'ground.jpg' })
+scene.add(terrain)
+
+scene.add(createWater())
+
+/* LOOP */
+
+void function update() {
+  renderer.render(scene, camera)
+  controls.update()
+  requestAnimationFrame(update)
+}()

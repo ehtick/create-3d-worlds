@@ -3,7 +3,7 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 const textureLoader = new THREE.TextureLoader()
 
 function terrainFromHeightmap({
-  file = 'wiki.png', textureFile = '', widthSegments = 100, heightSegments = 100, displacementScale = 150
+  file = 'wiki.png', textureFile = '', widthSegments = 100, heightSegments = 100, displacementScale = 100
 } = {}) {
   const geometry = new THREE.PlaneBufferGeometry(1000, 1000, widthSegments, heightSegments)
 
