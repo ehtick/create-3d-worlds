@@ -1,10 +1,8 @@
-/* global THREE */
+/* global THREE, SHADER_LOADER */
 let camera, scene, renderer, container
-let light, ambientLight, pointLight, lightRotate, uniforms, flatNormalTex, vs, fs_erode, fs_dilate, vs_main, fs_main, globeImage, globeTexture
+let light, ambientLight, pointLight, lightRotate, uniforms, flatNormalTex, vs, fs_erode, fs_dilate, vs_main, fs_main, globeImage, globeTexture, controls
 
 const RTTs = {}
-
-let normScene, normTextureMat, normTextureGeo
 
 const loopSteps = 50
 
@@ -99,14 +97,11 @@ function init() {
   globeTexture.textureMat.uniforms.u_erode.value = .02
   globeTexture.textureMat.uniforms.u_dilate.value = .02
 
-  textureMats = [globeTexture.textureMat, globeTexture.textureMat2]
-
   // GEOMETRY
-  // geo def
 
-  globeGeo = new THREE.PlaneGeometry(10, 10, 257, 129)
+  const globeGeo = new THREE.PlaneGeometry(10, 10, 257, 129)
   globeGeo.computeTangents()
-  globeMesh = new THREE.Mesh(globeGeo, material)
+  const globeMesh = new THREE.Mesh(globeGeo, material)
   globeMesh.frustumCulled = false
 
   scene.add(globeMesh)
@@ -128,20 +123,14 @@ function init() {
 
   addMouseHandler(renderer.domElement)
 
-  // calculate all textures
-  for (x in RTTs) prepTextures(RTTs[x])
+  for (let x in RTTs) prepTextures(RTTs[x])
+
   startLoop()
-
-  render()
-
-  render()
-
 }
 
 function prepTextures(myRTT) {
-  firstShader = fs_erode, secondShader = fs_dilate // this feels better - science!
+  const firstShader = fs_erode, secondShader = fs_dilate // this feels better - science!
 
-  // set first shader
   myRTT.textureMat.fragmentShader = firstShader
   myRTT.textureMat.needsUpdate = true
 
@@ -152,7 +141,7 @@ function prepTextures(myRTT) {
   renderer.render(myRTT.scene, myRTT.camera, myRTT.texture, false)
   myRTT.textureMat.uniforms.colorMap.value = myRTT.texture2
 
-  for (x = 0; x < loopSteps; x++)
+  for (let x = 0; x < loopSteps; x++)
     calculate(myRTT)
 
   myRTT.textureMat.fragmentShader = secondShader
@@ -194,7 +183,7 @@ function addMouseHandler(div) {
 function loop() {
   if (mouseDown) {
     render()
-    controls.update() // trackball interaction
+    controls.update()
   }
   requestId = requestAnimationFrame(loop)
 }
@@ -202,7 +191,6 @@ function loop() {
 function startLoop() {
   if (!requestId)
     loop()
-
 }
 
 function render() {
@@ -217,7 +205,6 @@ window.onload = function() {
   globeImage = THREE.ImageUtils.loadTexture(
     large ? './img/Srtm.2k_norm.jpg' : './img/Srtm.1k_norm.jpg',
     new THREE.UVMapping(),
-    // callback function
     () => {
       globeTexture = prepRTT(globeImage, vs, fs_dilate)
       addRTT('globe', globeTexture)
@@ -230,24 +217,11 @@ function addRTT(name, texture) {
   init()
 }
 
-function adjustNormScene(width, height) {
-  normTexture = new THREE.WebGLRenderTarget(width, height, renderTargetParams)
-  normTextureMat.uniforms.u_textureSize.value = new THREE.Vector2(width, height)
-  normTextureMat.needsUpdate = true
-  normScene.remove(normTextureMesh)
-  normTextureGeo = new THREE.PlaneGeometry(width, height)
-  normTextureMesh = new THREE.Mesh(normTextureGeo, normTextureMat)
-  normTextureMesh.position.z = -100
-  normScene.add(normTextureMesh)
-  normCamera = new THREE.OrthographicCamera(width / - 2, width / 2, height / 2, height / - 2, 1, 10000)
-}
-
 SHADER_LOADER.load(
   data => {
     vs = data.vs_rt.vertex
     fs_erode = data.fs_erode.fragment
     fs_dilate = data.fs_dilate.fragment
-    fs_rtt = data.fs_rtt.fragment
     vs_main = data.vs_main.vertex
     fs_main = data.fs_main.fragment
   }
