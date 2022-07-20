@@ -31,9 +31,6 @@ live-server
 - [ ] pokušati prebaciti teren iz MMO u RPG
 - [ ] model gleda kursor https://tympanus.net/codrops/2019/10/14/how-to-create-an-interactive-3d-character-with-three-js/
 - [ ] napraviti sletanje na mesec 3d
-- CANNON.js kola primeri 
-  - http://schteppe.github.io/cannon.js/demos/raycastVehicle.html
-  - http://schteppe.github.io/cannon.js/demos/rigidVehicle.html
 - maze generator https://codepen.io/dragonir/pen/XgawQE
 - https://www.smartjava.org/content/threejs-render-real-world-terrain-heightmap-using-open-data/
 - pucanje fizika, moze top ili katapult https://codepen.io/tjoen/pen/BKxZMQ
