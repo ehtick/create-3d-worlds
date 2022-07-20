@@ -24,6 +24,7 @@ live-server
 - fireball shader https://alteredqualia.com/three/examples/webgl_shader_fireball.html
 - city https://alteredqualia.com/three/examples/webgl_city.html
 - let kroz svemir https://alteredqualia.com/xg/examples/deferred_particles_nebula.html
+- cestice https://github.com/hmans/three-vfx
 
 Shaders
   - [x] shaders https://youtu.be/C8Cuwq1eqDw
@@ -36,6 +37,7 @@ Modeli
   i exporter https://threejs.org/examples/misc_exporter_gltf
 
 VOZILA:
+- https://sbcode.net/threejs/globe/
 - ammo terenska voznja:
   https://alteredqualia.com/xg/examples/animation_physics_terrain.html
   https://alteredqualia.com/xg/examples/animation_physics_level.html
