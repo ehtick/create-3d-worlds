@@ -4,6 +4,7 @@ import { createFirTrees } from '/utils/trees.js'
 
 const scene = createWorldScene()
 const avatar = new Avatar()
+avatar.add(camera)
 scene.add(avatar.mesh)
 
 const trees = createFirTrees()
