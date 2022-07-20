@@ -9,7 +9,6 @@ const RTTs = {}
 
 const normalize = false
 let normScene, normCamera, normTexture, normTextureMat, normTextureGeo
-let easeType
 
 const loopSteps = 50
 
@@ -127,21 +126,6 @@ function init() {
   globeMesh.frustumCulled = false
 
   scene.add(globeMesh)
-
-  easeType = TWEEN.Easing.Quartic.InOut
-  // unwrapping test
-  unwrap = { x: 1.0 }
-  unwrapGoal = { x: 1.0 }
-
-  const unwrapTween = new TWEEN.Tween(unwrap)
-    .to(unwrapGoal, 1000)
-    .easing(easeType)
-    .onStart(() => {
-      unwrapGoal.x = unwrapGoal.x == 0.0 ? 1.0 : 0.0
-    })
-    .onUpdate(function() {
-      material.uniforms.mixAmount.value = this.x
-    })
 
   controls = new THREE.TrackballControls(camera, container)
 
