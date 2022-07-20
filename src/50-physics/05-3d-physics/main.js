@@ -1,5 +1,5 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
-import { scene, camera, renderer } from '/utils/scene.js'
+import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSphere } from '/utils/geometry.js'
 import Canvas from '/classes/2d/Canvas.js'
 
@@ -20,32 +20,7 @@ function createPhysicsBall({ r = .5, x = Math.random() * 10, y = Math.random() *
 
 const sphere = createPhysicsBall()
 scene.add(sphere)
-
-let then = Date.now()
-
-class Vector {
-  constructor(x, y, z = 0) {
-    this.x = x
-    this.y = y
-    this.z = z
-  }
-
-  add(vector) {
-    this.x += vector.x
-    this.y += vector.y
-    this.z += vector.z
-  }
-
-  multiplyScalar(skalar) {
-    this.x *= skalar
-    this.y *= skalar
-    this.z *= skalar
-  }
-
-  applyResistance(percent) {
-    this.multiplyScalar(1 - percent)
-  }
-}
+// objects.push(sphere)
 
 function multiplyScalar(vector, skalar) {
   return {
@@ -86,7 +61,7 @@ class Object {
     this.shape = new Circle(height / 2, this.position)
     this.density = 70
     this.volume = this.shape.volume
-    this.force = new Vector(0, 0, 0)
+    this.force = new THREE.Vector3(0, 0, 0)
     this.acceleration = new THREE.Vector2(0, 0)
     this.velocity = new THREE.Vector2(0, 0)
     this.staticFriction = 0.74
@@ -107,11 +82,15 @@ class Object {
 
 const touchingGround = object => object.position.y + object.halfHeight >= ground
 
+const applyResistance = (force, percent) => {
+  force.multiplyScalar(1 - percent)
+}
+
 // http://davidlively.com/programming/simple-physics-fun-with-verlet-integration/
 function integration(object, dt) {
   object.force.add(wind)
   object.force.add(gravity)
-  object.force.applyResistance(touchingGround(object) ? object.friction : drag)
+  applyResistance(object.force, touchingGround(object) ? object.friction : drag)
 
   object.acceleration = multiplyScalar(object.force, 1 / object.mass)
   object.velocity.add(multiplyScalar(object.acceleration, dt))
@@ -149,15 +128,13 @@ add(krug1, krug2, krug3)
 void function loop() {
   requestAnimationFrame(loop)
   ctx.clearRect(0, 0, canvas.width, canvas.height)
-  const now = Date.now()
-  const dt = now - then
+  const delta = clock.getDelta() * 1000
 
   objects.map(object => {
-    integration(object, dt)
+    integration(object, delta)
     checkGround(object)
     object.shape.render()
   })
 
-  then = now
   renderer.render(scene, camera)
 }()
