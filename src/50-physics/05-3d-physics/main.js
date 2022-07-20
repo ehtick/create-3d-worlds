@@ -9,6 +9,8 @@ const { ctx } = canvas
 const objects = []
 const ground = canvas.height
 const drag = 0.001
+const wind = new THREE.Vector2(1, 0)
+const gravity = new THREE.Vector2(0, 98)
 
 function createPhysicsBall({ r = .5, x = Math.random() * 10, y = Math.random() * 5 } = {}) {
   const sphere = createSphere({ r })
@@ -20,7 +22,6 @@ function createPhysicsBall({ r = .5, x = Math.random() * 10, y = Math.random() *
 
 const sphere = createPhysicsBall()
 scene.add(sphere)
-// objects.push(sphere)
 
 function multiplyScalar(vector, skalar) {
   return {
@@ -55,10 +56,10 @@ class Circle {
 * Object podrazumevano ima shape Kruga
 */
 class Object {
-  constructor(height = 100, x = Math.random() * canvas.width, y = Math.random() * 100) {
-    this.halfHeight = height / 2
+  constructor(r = 50, x = Math.random() * canvas.width, y = Math.random() * 100) {
+    this.r = r
     this.position = new THREE.Vector2(x, y)
-    this.shape = new Circle(height / 2, this.position)
+    this.shape = new Circle(r, this.position)
     this.density = 70
     this.volume = this.shape.volume
     this.force = new THREE.Vector3(0, 0, 0)
@@ -80,7 +81,7 @@ class Object {
 
 /* LOGIC */
 
-const touchingGround = object => object.position.y + object.halfHeight >= ground
+const touchingGround = object => object.position.y + object.r >= ground
 
 const applyResistance = (force, percent) => {
   force.multiplyScalar(1 - percent)
@@ -102,24 +103,20 @@ function checkGround(object) {
 }
 
 function collisionResponse(object) {
-  object.position.y = ground - object.halfHeight
+  object.position.y = ground - object.r
   object.velocity.y *= -1
   object.velocity.y *= object.bounciness
 }
 
 /* INIT */
 
-const wind = new THREE.Vector2(1, 0)
-
 function add(...premeti) {
   objects.push(...premeti)
 }
 
-const gravity = new THREE.Vector2(0, 98)
-
-const krug1 = new Object(100)
-const krug2 = new Object(80)
-const krug3 = new Object(120)
+const krug1 = new Object(50)
+const krug2 = new Object(40)
+const krug3 = new Object(60)
 
 add(krug1, krug2, krug3)
 
