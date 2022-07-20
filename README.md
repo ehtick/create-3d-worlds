@@ -33,8 +33,7 @@ live-server
 - [ ] napraviti sletanje na mesec 3d
 - maze generator https://codepen.io/dragonir/pen/XgawQE
 - https://www.smartjava.org/content/threejs-render-real-world-terrain-heightmap-using-open-data/
-- pucanje fizika, moze top ili katapult https://codepen.io/tjoen/pen/BKxZMQ
-- ammojs teren https://threejs.org/examples/physics_ammo_terrain.html
+- pucanje fizika mozda korisno za ball-throwing-physijs https://codepen.io/tjoen/pen/BKxZMQ
 - spojiti physijs teren + kola
 
 - [ ] Konačni automat
