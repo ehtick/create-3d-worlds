@@ -62,7 +62,7 @@ renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.shadowMap.enabled = true
 renderer.shadowMapSoft = true // Shadow
-renderer.shadowMapType = THREE.PCFShadowMap // Shadow
+renderer.shadowMap.type = THREE.PCFShadowMap // Shadow
 document.body.appendChild(renderer.domElement)
 
 // ===================================================== add lighting
@@ -121,7 +121,7 @@ dat.GUI.toggleHide()
 const collisionMesh = []
 var geometry = new THREE.BoxBufferGeometry(0.15, 2, 0.15)
 // We change the pivot point to be at the bottom of the cube, instead of its center. So we translate the whole geometry.
-geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, 1, 0))
+geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 1, 0))
 var material = new THREE.MeshNormalMaterial({ transparent: true, opacity: 0 })
 treeLocation = new THREE.Mesh(geometry, material)
 scene.add(treeLocation)
@@ -383,7 +383,7 @@ const collidableMeshList = []
 for (var i = 0; i < 1; i++) {
   var geometry = new THREE.BoxBufferGeometry(0.2, .5, 0.2)
   // We change the pivot point to be at the bottom of the cube, instead of its center. So we translate the whole geometry.
-  geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, .25, 0))
+  geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, .25, 0))
   var material = new THREE.MeshNormalMaterial({ transparent: true, opacity: 0 })
   var group = new THREE.Mesh(geometry, material)
   collidableMeshList.push(group)
