@@ -1,4 +1,4 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js'
+import * as THREE from '/node_modules/three127/build/three.module.js'
 import { controls } from './controls.js'
 import { Graphics } from './graphics.js'
 import { TerrainChunkManager } from './terrain.js'
@@ -12,8 +12,8 @@ const entities = {}
 camera.position.set(357183, -19402, -182320)
 camera.quaternion.set(0.251, 0.699, -0.48248, 0.4629)
 
-addEntity('_terrain', new TerrainChunkManager(), 1.0)
-addEntity('_controls', new controls.FPSControls(), 0.0)
+addEntity('terrain', new TerrainChunkManager(), 1.0)
+addEntity('controls', new controls.FPSControls(), 0.0)
 
 loadBackground()
 
