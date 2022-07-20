@@ -1,42 +1,17 @@
 /* global THREE */
-const startTime = new Date()
-
 let camera, scene, renderer, container
 let light, ambientLight, pointLight
 
 let globeImage
 
 let globeTexture
-let myDbgMat, myDbgMat2, myDbgMat3
 const RTTs = {}
 
 const normalize = false
 let normScene, normCamera, normTexture, normTextureMat, normTextureGeo
-let textureMats
 let easeType
 
-let loopSteps = 50
-let gui, myGui
-
-// HELPER FUNCTIONS
-
-function log(n) {
-  console.log(n)
-}
-
-function rads(x) {
-  return x * Math.PI / 180
-}
-
-// function setMatUniform(name, value) {
-//   for (mat in mats) {
-//     mats[mat].uniforms[name].value = value;
-//   }
-// }
-
-function setMatUniform(name, value) {
-  material.uniforms[name].value = value
-}
+const loopSteps = 50
 
 // START THE MACHINE
 
@@ -188,143 +163,11 @@ function init() {
   // calculate all textures
   for (x in RTTs) prepTextures(RTTs[x])
   startLoop()
-  endTime = new Date()
-  console.log((endTime - startTime) / 1000)
+  
   render()
 
-  //
-  // GUI
-  //
-
-  const initGUI = function() {
-    // this.x = 0.0;
-    this.lightRotate = 0.0
-    this.camera_z = 0.0
-    this.camera_near = 1.0
-    this.camera_far = 1.0
-
-    this.bumpScale = 30.0
-    this.normal_offset = 1.0
-    this.diffuse = 1.0
-    this.ambient = 0.0
-    this.pointLight = .5
-    this.shininess = 10.0
-    this.specular = 1.0
-
-    this.erode = 0.02
-    this.dilate = 0.02
-    this.steps = 50
-    this.scale = 25
-
-    // this.normalize = true;
-    // this.debug = false;
-    // this.unwrap = false;
-
-  }
-
-  myGui = new initGUI()
-  gui = new dat.GUI()
-
-  // controls setup
-
-  normalScaleControl = gui.add(myGui, 'bumpScale', 0, 100)
-  // normalOffsetControl = gui.add(myGui, 'normal_offset', 0, 2);
-
-  erodeControl = gui.add(myGui, 'erode', 0.0, 0.05)
-  dilateControl = gui.add(myGui, 'dilate', 0.0, 0.05)
-  stepsControl = gui.add(myGui, 'steps', 0, 100.0)
-  scaleControl = gui.add(myGui, 'scale', 0, 100.0)
-
-  diffuseControl = gui.add(myGui, 'diffuse', 0, 1.0)
-  ambientControl = gui.add(myGui, 'ambient', 0, 1.0)
-  pointControl = gui.add(myGui, 'pointLight', 0, 1.0)
-  shininessControl = gui.add(myGui, 'shininess', 0, 250.0)
-  specularControl = gui.add(myGui, 'specular', 0, 10.0)
-
-  lightRotateControl = gui.add(myGui, 'lightRotate', 0, 1.0)
-
-  // control functions
-
-  normalScaleControl.onChange(value => {
-    setMatUniform('bumpScale', value)
-    render()
-  })
-
-  diffuseControl.onChange(value => {
-    setMatUniform('tDiffuseOpacity', value)
-    render()
-  })
-
-  erodeControl.onChange(value => {
-    if (value == 0.05) value = 10
-    // setTextureMatUniform("u_erode", Math.log(value));
-    setTextureMatUniform('u_erode', value)
-    // log(Math.log(value));
-    // only perform the calculations for the currentView
-    tweakRTTs()
-    // render();
-  })
-
-  dilateControl.onChange(value => {
-    if (value == 0.05) value = 10
-
-    // setTextureMatUniform("u_dilate", Math.log(value));
-    setTextureMatUniform('u_dilate', value)
-    // log(Math.log(value));
-    tweakRTTs()
-    // render();
-  })
-
-  stepsControl.onChange(value => {
-    loopSteps = value
-    tweakRTTs()
-    // render();
-  })
-
-  scaleControl.onChange(value => {
-    setMatUniform('uDisplacementPostScale', value)
-    render()
-  })
-
-  ambientControl.onChange(value => {
-    setMatUniform('uAmbientLightColor', new THREE.Color().setRGB(value, value, value))
-    render()
-  })
-
-  pointControl.onChange(value => {
-    setMatUniform('uPointLightColor', new THREE.Color().setRGB(value, value, value))
-    render()
-  })
-
-  shininessControl.onChange(value => {
-    setMatUniform('shininess', value)
-    render()
-  })
-
-  specularControl.onChange(value => {
-    setMatUniform('specular', new THREE.Color().setRGB(value, value, value))
-    render()
-  })
-
-  lightRotateControl.onChange(value => {
-    lightRotate.rotation.y = rads(value * 360)
-    vector = new THREE.Vector3()
-    vector.setFromMatrixPosition(light.matrixWorld)
-    material.uniforms.uPointLightPos.value = vector
-    render()
-  })
   render()
 
-}
-
-function setTextureMatUniform(name, value) {
-  for (mat in textureMats)
-    textureMats[mat].uniforms[name].value = value
-
-}
-
-function tweakRTTs() {
-  prepTextures(RTTs.globe)
 }
 
 function prepTextures(myRTT) {
@@ -337,23 +180,13 @@ function prepTextures(myRTT) {
   myRTT.textureMat2.fragmentShader = firstShader
   myRTT.textureMat2.needsUpdate = true
 
-  // initialize first RTT FBO's colorMap with the source image
   myRTT.textureMat.uniforms.colorMap.value = myRTT.image
-
-  // render first FBO with erode shader
   renderer.render(myRTT.scene, myRTT.camera, myRTT.texture, false)
-
-  // then switch first FBO's colorMap to second FBO
   myRTT.textureMat.uniforms.colorMap.value = myRTT.texture2
 
-  // while ( myRTT.textureMat.uniforms.u_unchanged == 0.0 ) {
-  // would be nice to have some kind of switch that turned the loop off
-  // when there was no difference detected between the two FBOs.
-  // I suppose I'd need a third shader to do a diff...
   for (x = 0; x < loopSteps; x++)
     calculate(myRTT)
 
-  // switch shaders
   myRTT.textureMat.fragmentShader = secondShader
   myRTT.textureMat.needsUpdate = true
 
@@ -364,9 +197,6 @@ function prepTextures(myRTT) {
     calculate(myRTT)
 
   if (normalize) {
-    //
-    // find maximum value in texture
-    //
     myRTT.textureMat.fragmentShader = fs_maximum
     myRTT.textureMat.needsUpdate = true
 
@@ -374,9 +204,6 @@ function prepTextures(myRTT) {
       adjustNormScene(myRTT.texture.width, myRTT.texture.height)
 
     normTextureMat.uniforms.colorMap.value = myRTT.texture
-
-    myDbgMat3.map = normTexture
-    myDbgMat3.needsUpdate = true
     renderer.render(normScene, normCamera, normTexture, false)
 
     myRTT.textureMat.uniforms.colorMap.value = normTexture
@@ -408,19 +235,16 @@ function prepTextures(myRTT) {
     renderer.render(scene, camera)
   }
   render()
-
 }
 
 function calculate(myRTT) {
-  // render second FBO, based on first FBO
   renderer.render(myRTT.scene2, myRTT.camera2, myRTT.texture2, false)
-  // render first FBO, based on second FBO
   renderer.render(myRTT.scene, myRTT.camera, myRTT.texture, false)
 }
 
 let requestId
 
-// interaction
+/* EVENTS */
 
 let mouseDown = false
 
@@ -433,12 +257,8 @@ function onMouseUp(evt) {
 }
 
 function addMouseHandler(div) {
-  div.addEventListener('mousedown', e => {
-    onMouseDown(e)
-  }, false)
-  div.addEventListener('mouseup', e => {
-    onMouseUp(e)
-  }, false)
+  div.addEventListener('mousedown', onMouseDown)
+  div.addEventListener('mouseup', onMouseUp)
 }
 
 function loop() {
@@ -455,48 +275,15 @@ function startLoop() {
 
 }
 
-function stopLoop() {
-  if (requestId) {
-    cancelAnimationFrame(requestId)
-    requestId = undefined
-  }
-}
-
 function render() {
   renderer.clear()
   renderer.render(scene, camera)
 }
 
-window.requestAnimFrame = (function() {
-  return window.requestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    window.oRequestAnimationFrame ||
-    window.msRequestAnimationFrame ||
-    function(callback) {
-      window.setTimeout(callback, 1000 / 60)
-    }
-})()
-
-// TWEEN.JS SETUP
-
-const currentView = -1
-const lastView = 0
-const viewsList = ['globe', 'globe2', 'europe', 'euroborders', 'alps', 'hannibal', 'region', 'mountain']
-const matsList = ['globe', 'globe', 'globe', 'globe', 'alps', 'alps', 'region', 'mountain', 'globe']
-
-function setView(which) {
-  for (x in viewsList)
-    window[viewsList[x]] = (viewsList[x] == which)
-}
-
-globeRotation = 1.42
-
 // onload
 
 window.onload = function() {
   large = !(window.innerWidth < 1200)
-  log('large: ' + large)
   globeImage = THREE.ImageUtils.loadTexture(
     large ? './img/Srtm.2k_norm.jpg' : './img/Srtm.1k_norm.jpg',
     new THREE.UVMapping(),
@@ -512,11 +299,8 @@ function addRTT(name, texture) {
   RTTs[name] = texture // register texture so it can be referenced by name
 
   if (Object.keys(RTTs).length == 1) {
-
     if (normalize) {
-      // setup normalizing scene
       normScene = new THREE.Scene()
-      // create buffer - initialize with size 1 - will be adjusted by adjustNormScene()
       normTexture = new THREE.WebGLRenderTarget(1, 1)
       normUniforms = {
         colorMap: { type: 't', value: texture.image },
@@ -539,14 +323,9 @@ function addRTT(name, texture) {
 }
 
 function adjustNormScene(width, height) {
-  // recreate buffer
   normTexture = new THREE.WebGLRenderTarget(width, height, renderTargetParams)
-  // update debug plane's material
-  myDbgMat3.map = normTexture
-  // resize texture to match image size
   normTextureMat.uniforms.u_textureSize.value = new THREE.Vector2(width, height)
   normTextureMat.needsUpdate = true
-  // recreate rtt scene
   normScene.remove(normTextureMesh)
   normTextureGeo = new THREE.PlaneGeometry(width, height)
   normTextureMesh = new THREE.Mesh(normTextureGeo, normTextureMat)
