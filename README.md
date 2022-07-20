@@ -35,6 +35,12 @@ live-server
 - https://www.smartjava.org/content/threejs-render-real-world-terrain-heightmap-using-open-data/
 - pucanje fizika mozda korisno za ball-throwing-physijs https://codepen.io/tjoen/pen/BKxZMQ
 - spojiti physijs teren + kola
+- fireball shader https://alteredqualia.com/three/examples/webgl_shader_fireball.html
+- city https://alteredqualia.com/three/examples/webgl_city.html
+- ammo terenska voznja:
+  https://alteredqualia.com/xg/examples/animation_physics_terrain.html
+  https://alteredqualia.com/xg/examples/animation_physics_level.html
+- let kroz svemir https://alteredqualia.com/xg/examples/deferred_particles_nebula.html
 
 - [ ] Konačni automat
   - [x] nakačiti kachujin na konačni automat
