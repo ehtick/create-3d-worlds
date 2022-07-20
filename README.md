@@ -13,7 +13,7 @@ live-server
 
 ### General
 
-- [ ] pokušati prebaciti teren iz MMO u RPG
+- [ ] prebaciti teren iz MMO u RPG
 - [ ] napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
 - [ ] napraviti sletanje na mesec 3d
 - https://github.com/skolakoda/teorija-razvoja-igara
@@ -303,7 +303,6 @@ Konačni automat
 ### Ostalo
 
 - [x] isprobati lagani prelaz (lerp ili tween.js)
-- [ ] dodati panoramu (skybox), nebo/zvezde (vidi 50-svod)
 - [ ] dodati UI komande redom
 - [ ] popraviti HTML margine
 - [ ] optimizacija 
@@ -313,9 +312,7 @@ Konačni automat
   - https://threejs.org/docs/#manual/en/introduction/How-to-create-VR-content
   - https://ski-mountain-vr.herokuapp.com/
 - [ ] dodati preloader (ima u 3D-RPG-Game-With-THREE.js)
-- [ ] naci vismapu sutjeske
-  - http://www.smartjava.org/content/threejs-render-real-world-terrain-heightmap-using-open-data/
-  - https://blog.mapbox.com/bringing-3d-terrain-to-the-browser-with-three-js-410068138357
+- [x] naci vismapu sutjeske
 - [x] dodati lavu (dodato na lava-avatar)
 
 ## Documentation

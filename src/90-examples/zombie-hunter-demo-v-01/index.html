@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Zombie Hunter Demo v.01</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js"></script>
+<script src='https://threejs.org/examples/js/controls/OrbitControls.js'></script>
+<script src="https://baronwatts.com/scripts/LegacyJSONLoader.js"></script>
+<script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+<!-- processing -->
+<script type="text/javascript" src="https://threejs.org/examples/js/postprocessing/EffectComposer.js"></script>
+<script type="text/javascript" src="https://threejs.org/examples/js/postprocessing/ShaderPass.js"></script>
+<script type="text/javascript" src="https://threejs.org/examples/js/postprocessing/RenderPass.js"></script>
+<script type="text/javascript" src="https://threejs.org/examples/js/postprocessing/MaskPass.js"></script>
+<!-- shaders -->
+<script type="text/javascript" src="https://threejs.org/examples/js/shaders/CopyShader.js"></script>
+<script type="text/javascript" src="https://threejs.org/examples/js/shaders/HorizontalTiltShiftShader.js"></script>
+<!-- cannon -->
+<script src="https://cdn.rawgit.com/schteppe/cannon.js/master/build/cannon.js"></script>
+<!-- tweenmax -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.11.2/TweenMax.min.js"></script>
+
+<h1><span>double click</span> to shoot</h1>
+<audio id="bflat" src="https://raw.githubusercontent.com/baronwatts/models/master/gunblast.mp3"></audio>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>

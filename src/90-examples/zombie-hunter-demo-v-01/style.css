@@ -1,0 +1,31 @@
+body {
+  /* set margin to 0 and overflow to hidden, to go fullsc{reen */
+  margin: 0;
+  overflow: hidden;
+  background: #000;
+  color: white;
+}
+h1 {
+  font-family: monospace;
+  font-weight: normal;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  font-size: 14px;
+}
+span {
+  color: wheat;
+}
+#crosshair {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 52%;
+  left: 51%;
+  transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  z-index: 9999;
+  opacity: 0;
+}
