@@ -34,6 +34,8 @@ live-server
 - maze generator https://codepen.io/dragonir/pen/XgawQE
 - https://www.smartjava.org/content/threejs-render-real-world-terrain-heightmap-using-open-data/
 - pucanje fizika, moze top ili katapult https://codepen.io/tjoen/pen/BKxZMQ
+- ammojs teren https://threejs.org/examples/physics_ammo_terrain.html
+- spojiti physijs teren + kola
 
 - [ ] Konačni automat
   - [x] nakačiti kachujin na konačni automat
