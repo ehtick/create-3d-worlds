@@ -12,11 +12,9 @@ export function createObstacles() {
     mesh.position.y = 0.5
     mesh.position.z = Math.random() * 100 - 50
     const cylinderShape = new CANNON.Cylinder(0.01, 1, 0.5, 5)
-    const body = new CANNON.Body({ mass: 0 })
+    const body = new CANNON.Body({ mass: 1 })
     body.addShape(cylinderShape, new CANNON.Vec3())
-    body.position.x = mesh.position.x
-    body.position.y = mesh.position.y
-    body.position.z = mesh.position.z
+    body.position.copy(mesh.position)
     mesh.body = body
     obstacles.push(mesh)
   }
@@ -25,11 +23,11 @@ export function createObstacles() {
 
 export function createGround({ size = 100 } = {}) {
   const mesh = createFloor({ size })
-  const groundMaterial = new CANNON.Material()
-  groundMaterial.friction = 0.25
-  groundMaterial.restitution = 0.25
+  const material = new CANNON.Material()
+  material.friction = 0.25
+  material.restitution = 0.25
   const groundShape = new CANNON.Box(new CANNON.Vec3(size * .5, 1, size * .5))
-  const body = new CANNON.Body({ mass: 0, material: groundMaterial })
+  const body = new CANNON.Body({ mass: 0, material })
   body.addShape(groundShape)
   body.position.set(0, -1, 0)
   mesh.body = body

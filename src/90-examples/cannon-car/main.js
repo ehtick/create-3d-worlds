@@ -15,7 +15,7 @@ const car = new Car()
 const obstacles = createObstacles()
 
 const chaseCam = createChaseCam()
-// car.chassis.add(chaseCam)
+car.chassis.add(chaseCam)
 
 ;[ground, ...obstacles, ...car.meshes].forEach(mesh => {
   scene.add(mesh)
@@ -36,6 +36,11 @@ void function loop() {
 
   car.update()
   updateChaseCam(chaseCam, car.chassis)
+
+  obstacles.forEach(mesh => {
+    mesh.position.copy(mesh.body.position)
+    mesh.quaternion.copy(mesh.body.quaternion)
+  })
 
   renderer.render(scene, camera)
 }()
