@@ -24,7 +24,7 @@ export function crateGroundGeometry({ size, circle = true }) {
 }
 
 export function createGround({ size = 1000, color, circle, file, repeat = size / 8 } = {}) {
-  const material = createGroundMaterial({ size, file, color, repeat })
+  const material = createGroundMaterial({ file, color, repeat })
   const geometry = crateGroundGeometry({ size, circle })
 
   const mesh = new THREE.Mesh(geometry, material)

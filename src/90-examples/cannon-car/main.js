@@ -4,6 +4,7 @@ import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 import keyboard from '/classes/Keyboard.js'
+import { createObstacles } from './cannon-utils.js'
 
 initLights()
 
@@ -23,8 +24,8 @@ const wheelMaterial = new CANNON.Material()
 wheelMaterial.friction = 0.25
 wheelMaterial.restitution = 0.25
 
-const groundMesh = createFloor({ size: 100 })
-scene.add(groundMesh)
+const ground = createFloor({ size: 100 })
+scene.add(ground)
 
 const groundShape = new CANNON.Box(new CANNON.Vec3(50, 1, 50))
 const groundBody = new CANNON.Body({ mass: 0, material: groundMaterial })
@@ -32,21 +33,10 @@ groundBody.addShape(groundShape)
 groundBody.position.set(0, -1, 0)
 world.addBody(groundBody)
 
-// jumps (prepreke)
-for (let i = 0; i < 100; i++) {
-  const jump = new THREE.Mesh(new THREE.CylinderGeometry(0, 1, 0.5, 5), phongMaterial)
-  jump.position.x = Math.random() * 100 - 50
-  jump.position.y = 0.5
-  jump.position.z = Math.random() * 100 - 50
-  scene.add(jump)
-  const cylinderShape = new CANNON.Cylinder(0.01, 1, 0.5, 5)
-  const cylinderBody = new CANNON.Body({ mass: 0 })
-  cylinderBody.addShape(cylinderShape, new CANNON.Vec3())
-  cylinderBody.position.x = jump.position.x
-  cylinderBody.position.y = jump.position.y
-  cylinderBody.position.z = jump.position.z
-  world.addBody(cylinderBody)
-}
+createObstacles().forEach(obstacle => {
+  scene.add(obstacle)
+  world.addBody(obstacle.body)
+})
 
 const carBodyGeometry = new THREE.BoxGeometry(1, 1, 2)
 const car = new THREE.Mesh(carBodyGeometry, phongMaterial)
