@@ -4,9 +4,7 @@ import { initLights } from '/utils/light.js'
 import keyboard from '/classes/Keyboard.js'
 import { createObstacles, createGround } from './cannon-utils.js'
 import { createChaseCam, updateChaseCam } from './camera.js'
-import { createChassis, createFrontLeftWheel, createFrontRightWheel, createBackLeftWheel, createBackRightWheel } from './vehicle.js'
-
-const physicMeshes = []
+import { Car } from './vehicle.js'
 
 initLights()
 
@@ -18,54 +16,40 @@ const chaseCam = createChaseCam()
 const addPhysicMesh = mesh => {
   scene.add(mesh)
   world.addBody(mesh.body)
-  physicMeshes.push(mesh)
 }
 
-addPhysicMesh(createGround({ size: 100 }))
+const ground = createGround({ size: 100 })
+addPhysicMesh(ground)
 
-createObstacles().forEach(mesh => {
-  scene.add(mesh)
-  world.addBody(mesh.body)
-})
+const obstacles = createObstacles()
+obstacles.forEach(addPhysicMesh)
 
-const car = createChassis()
-car.add(chaseCam)
-addPhysicMesh(car)
+const car = new Car()
+car.meshes.forEach(addPhysicMesh)
+car.chassis.add(chaseCam)
 
-const wheelLF = createFrontLeftWheel()
-addPhysicMesh(wheelLF)
-
-const wheelRF = createFrontRightWheel()
-addPhysicMesh(wheelRF)
-
-const wheelLB = createBackLeftWheel()
-addPhysicMesh(wheelLB)
-
-const wheelRB = createBackRightWheel()
-addPhysicMesh(wheelRB)
-
-const constraintLF = new CANNON.HingeConstraint(car.body, wheelLF.body, {
+const constraintLF = new CANNON.HingeConstraint(car.chassis.body, car.wheelLF.body, {
   pivotA: new CANNON.Vec3(-1, -0.5, -1),
   axisA: new CANNON.Vec3(1, 0, 0),
   maxForce: 0.99,
 })
 world.addConstraint(constraintLF)
 
-const constraintRF = new CANNON.HingeConstraint(car.body, wheelRF.body, {
+const constraintRF = new CANNON.HingeConstraint(car.chassis.body, car.wheelRF.body, {
   pivotA: new CANNON.Vec3(1, -0.5, -1),
   axisA: new CANNON.Vec3(1, 0, 0),
   maxForce: 0.99,
 })
 world.addConstraint(constraintRF)
 
-const constraintLB = new CANNON.HingeConstraint(car.body, wheelLB.body, {
+const constraintLB = new CANNON.HingeConstraint(car.chassis.body, car.wheelLB.body, {
   pivotA: new CANNON.Vec3(-1, -0.5, 1),
   axisA: new CANNON.Vec3(1, 0, 0),
   maxForce: 0.99,
 })
 world.addConstraint(constraintLB)
 
-const constraintRB = new CANNON.HingeConstraint(car.body, wheelRB.body, {
+const constraintRB = new CANNON.HingeConstraint(car.chassis.body, car.wheelRB.body, {
   pivotA: new CANNON.Vec3(1, -0.5, 1),
   axisA: new CANNON.Vec3(1, 0, 0),
   maxForce: 0.99,
@@ -77,13 +61,6 @@ constraintRF.enableMotor()
 let forwardVelocity = 0
 let turnAngle = 0
 
-/* FUNCTIONS */
-
-const updateCar = () => physicMeshes.forEach(mesh => {
-  mesh.position.copy(mesh.body.position)
-  mesh.quaternion.copy(mesh.body.quaternion)
-})
-
 /* LOOP */
 
 let thrusting = false
@@ -93,7 +70,7 @@ void function loop() {
   const delta = clock.getDelta()
   world.step(delta)
 
-  updateCar()
+  car.update()
   thrusting = false
 
   if (keyboard.up) {
@@ -129,7 +106,7 @@ void function loop() {
   constraintLF.axisA.z = turnAngle
   constraintRF.axisA.z = turnAngle
 
-  updateChaseCam(chaseCam, car)
+  updateChaseCam(chaseCam, car.chassis)
 
   renderer.render(scene, camera)
 }()

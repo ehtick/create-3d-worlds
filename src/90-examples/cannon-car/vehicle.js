@@ -48,3 +48,21 @@ export function createBackLeftWheel() {
 export function createBackRightWheel() {
   return createWheel({ size: .5, width: .33, position: [1, 3, 1] })
 }
+
+export class Car {
+  constructor() {
+    this.chassis = createChassis()
+    this.wheelLF = createFrontLeftWheel()
+    this.wheelRF = createFrontRightWheel()
+    this.wheelLB = createBackLeftWheel()
+    this.wheelRB = createBackRightWheel()
+    this.meshes = [this.chassis, this.wheelLF, this.wheelRF, this.wheelLB, this.wheelRB]
+  }
+
+  update() {
+    this.meshes.forEach(mesh => {
+      mesh.position.copy(mesh.body.position)
+      mesh.quaternion.copy(mesh.body.quaternion)
+    })
+  }
+}
