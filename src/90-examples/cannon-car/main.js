@@ -22,10 +22,10 @@ car.chassis.add(chaseCam)
   world.addBody(mesh.body)
 })
 
-world.addConstraint(car.constraintLF)
-world.addConstraint(car.constraintRF)
-world.addConstraint(car.constraintLB)
-world.addConstraint(car.constraintRB)
+world.addConstraint(car.frontLeftWheel)
+world.addConstraint(car.frontRightWheel)
+world.addConstraint(car.backLeftWheel)
+world.addConstraint(car.backRightWheel)
 
 /* LOOP */
 

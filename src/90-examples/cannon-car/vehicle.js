@@ -62,31 +62,31 @@ export class Car {
     this.wheelRB = createBackRightWheel()
     this.meshes = [this.chassis, this.wheelLF, this.wheelRF, this.wheelLB, this.wheelRB]
 
-    this.constraintLF = new CANNON.HingeConstraint(this.chassis.body, this.wheelLF.body, {
+    this.frontLeftWheel = new CANNON.HingeConstraint(this.chassis.body, this.wheelLF.body, {
       pivotA: new CANNON.Vec3(-1, -0.5, -1),
       axisA: new CANNON.Vec3(1, 0, 0),
       maxForce: 0.99,
     })
 
-    this.constraintRF = new CANNON.HingeConstraint(this.chassis.body, this.wheelRF.body, {
+    this.frontRightWheel = new CANNON.HingeConstraint(this.chassis.body, this.wheelRF.body, {
       pivotA: new CANNON.Vec3(1, -0.5, -1),
       axisA: new CANNON.Vec3(1, 0, 0),
       maxForce: 0.99,
     })
 
-    this.constraintLB = new CANNON.HingeConstraint(this.chassis.body, this.wheelLB.body, {
+    this.backLeftWheel = new CANNON.HingeConstraint(this.chassis.body, this.wheelLB.body, {
       pivotA: new CANNON.Vec3(-1, -0.5, 1),
       axisA: new CANNON.Vec3(1, 0, 0),
       maxForce: 0.99,
     })
 
-    this.constraintRB = new CANNON.HingeConstraint(this.chassis.body, this.wheelRB.body, {
+    this.backRightWheel = new CANNON.HingeConstraint(this.chassis.body, this.wheelRB.body, {
       pivotA: new CANNON.Vec3(1, -0.5, 1),
       axisA: new CANNON.Vec3(1, 0, 0),
       maxForce: 0.99,
     })
-    this.constraintLF.enableMotor()
-    this.constraintRF.enableMotor()
+    this.frontLeftWheel.enableMotor()
+    this.frontRightWheel.enableMotor()
   }
 
   handleInput() {
@@ -123,10 +123,10 @@ export class Car {
 
   update() {
     this.handleInput()
-    this.constraintLF.setMotorSpeed(this.forwardVelocity)
-    this.constraintRF.setMotorSpeed(this.forwardVelocity)
-    this.constraintLF.axisA.z = this.turnAngle
-    this.constraintRF.axisA.z = this.turnAngle
+    this.frontLeftWheel.setMotorSpeed(this.forwardVelocity)
+    this.frontRightWheel.setMotorSpeed(this.forwardVelocity)
+    this.frontLeftWheel.axisA.z = this.turnAngle
+    this.frontRightWheel.axisA.z = this.turnAngle
     this.meshes.forEach(mesh => {
       mesh.position.copy(mesh.body.position)
       mesh.quaternion.copy(mesh.body.quaternion)
