@@ -43,7 +43,7 @@ const createConstraint = (chassis, wheel, pos) => new CANNON.HingeConstraint(cha
 export class Car {
   constructor() {
     this.turnAngle = 0
-    this.forwardVelocity = 0
+    this.velocity = 0
     this.thrusting = false
 
     this.chassis = createChassis()
@@ -66,11 +66,11 @@ export class Car {
     this.thrusting = false
 
     if (keyboard.up) {
-      if (this.forwardVelocity < 30.0) this.forwardVelocity += 1
+      if (this.velocity < 30.0) this.velocity += 1
       this.thrusting = true
     }
     if (keyboard.down) {
-      if (this.forwardVelocity > -30.0) this.forwardVelocity -= 1
+      if (this.velocity > -30.0) this.velocity -= 1
       this.thrusting = true
     }
     if (keyboard.left)
@@ -80,26 +80,28 @@ export class Car {
       if (this.turnAngle < 1.0) this.turnAngle += 0.1
 
     if (keyboard.pressed.Space) {
-      if (this.forwardVelocity > 0)
-        this.forwardVelocity -= 1
-      if (this.forwardVelocity < 0)
-        this.forwardVelocity += 1
+      if (this.velocity > 0)
+        this.velocity -= 1
+      if (this.velocity < 0)
+        this.velocity += 1
     }
 
     if (!this.thrusting) {
-      if (this.forwardVelocity > 0)
-        this.forwardVelocity -= 0.25
-      if (this.forwardVelocity < 0)
-        this.forwardVelocity += 0.25
+      if (this.velocity > 0)
+        this.velocity -= 0.25
+      if (this.velocity < 0)
+        this.velocity += 0.25
     }
   }
 
   update() {
     this.handleInput()
-    this.frontLeftWheel.setMotorSpeed(this.forwardVelocity)
-    this.frontRightWheel.setMotorSpeed(this.forwardVelocity)
+
+    this.frontLeftWheel.setMotorSpeed(this.velocity)
+    this.frontRightWheel.setMotorSpeed(this.velocity)
     this.frontLeftWheel.axisA.z = this.turnAngle
     this.frontRightWheel.axisA.z = this.turnAngle
+
     this.meshes.forEach(mesh => {
       mesh.position.copy(mesh.body.position)
       mesh.quaternion.copy(mesh.body.quaternion)
