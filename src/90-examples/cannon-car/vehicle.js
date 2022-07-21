@@ -3,19 +3,17 @@ import * as CANNON from './cannon-es.js'
 
 const phongMaterial = new THREE.MeshPhongMaterial()
 
-export function createCar() {
-  const carBodyGeometry = new THREE.BoxGeometry(1, 1, 2)
-  const car = new THREE.Mesh(carBodyGeometry, phongMaterial)
-  car.position.y = 3
-  car.castShadow = true
+export function createChassis() {
+  const geometry = new THREE.BoxGeometry(1, 1, 2)
+  const mesh = new THREE.Mesh(geometry, phongMaterial)
+  mesh.position.y = 3
+  mesh.castShadow = true
   const carBodyShape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 1))
-  const body = new CANNON.Body({ mass: 1 })
+  const body = new CANNON.Body({ mass: 5 })
   body.addShape(carBodyShape)
-  body.position.x = car.position.x
-  body.position.y = car.position.y
-  body.position.z = car.position.z
-  car.body = body
-  return car
+  body.position.copy(mesh.position)
+  mesh.body = body
+  return mesh
 }
 
 function createWheel({ size, width, position }) {

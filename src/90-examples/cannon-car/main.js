@@ -4,7 +4,7 @@ import { initLights } from '/utils/light.js'
 import keyboard from '/classes/Keyboard.js'
 import { createObstacles, createGround } from './cannon-utils.js'
 import { createChaseCam, updateChaseCam } from './camera.js'
-import { createCar, createFrontLeftWheel, createFrontRightWheel, createBackLeftWheel, createBackRightWheel } from './vehicle.js'
+import { createChassis, createFrontLeftWheel, createFrontRightWheel, createBackLeftWheel, createBackRightWheel } from './vehicle.js'
 
 const physicMeshes = []
 
@@ -28,7 +28,7 @@ createObstacles().forEach(mesh => {
   world.addBody(mesh.body)
 })
 
-const car = createCar()
+const car = createChassis()
 car.add(chaseCam)
 addPhysicMesh(car)
 
