@@ -2,11 +2,10 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 import * as CANNON from './cannon-es.js'
 import keyboard from '/classes/Keyboard.js'
 
-const phongMaterial = new THREE.MeshPhongMaterial()
-
 function createChassis() {
   const geometry = new THREE.BoxGeometry(1, 1, 2)
-  const mesh = new THREE.Mesh(geometry, phongMaterial)
+  const material = new THREE.MeshPhongMaterial({ color: 0xDC143C })
+  const mesh = new THREE.Mesh(geometry, material)
   mesh.position.y = 3
   mesh.castShadow = true
   const carBodyShape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 1))
@@ -20,7 +19,8 @@ function createChassis() {
 function createWheel({ size, width, position }) {
   const geometry = new THREE.CylinderGeometry(size, size, width)
   geometry.rotateZ(Math.PI / 2)
-  const mesh = new THREE.Mesh(geometry, phongMaterial)
+  const material = new THREE.MeshPhongMaterial({ color: 0x333333 })
+  const mesh = new THREE.Mesh(geometry, material)
   mesh.castShadow = true
   mesh.position.set(...position)
   const shape = new CANNON.Sphere(size)
@@ -40,6 +40,9 @@ const createConstraint = (chassis, wheel, pos) => new CANNON.HingeConstraint(cha
   maxForce: 0.99,
 })
 
+const maxAngle = .75
+const maxVelocity = 30
+
 export class Car {
   constructor() {
     this.turnAngle = 0
@@ -53,10 +56,10 @@ export class Car {
     this.wheelRB = createWheel({ size: .5, width: .33, position: [1, 3, 1] })
     this.meshes = [this.chassis, this.wheelLF, this.wheelRF, this.wheelLB, this.wheelRB]
 
-    this.frontLeftWheel = createConstraint(this.chassis, this.wheelLF, [-1, -0.5, -1])
-    this.frontRightWheel = createConstraint(this.chassis, this.wheelRF, [1, -0.5, -1])
-    this.backLeftWheel = createConstraint(this.chassis, this.wheelLB, [-1, -0.5, 1])
-    this.backRightWheel = createConstraint(this.chassis, this.wheelRB, [1, -0.5, 1])
+    this.frontLeftWheel = createConstraint(this.chassis, this.wheelLF, [-.8, -0.5, -1])
+    this.frontRightWheel = createConstraint(this.chassis, this.wheelRF, [.8, -0.5, -1])
+    this.backLeftWheel = createConstraint(this.chassis, this.wheelLB, [-.8, -0.33, 1])
+    this.backRightWheel = createConstraint(this.chassis, this.wheelRB, [.8, -0.33, 1])
 
     this.frontLeftWheel.enableMotor()
     this.frontRightWheel.enableMotor()
@@ -66,18 +69,18 @@ export class Car {
     this.thrusting = false
 
     if (keyboard.up) {
-      if (this.velocity < 30.0) this.velocity += 1
+      if (this.velocity < maxVelocity) this.velocity += 1
       this.thrusting = true
     }
     if (keyboard.down) {
-      if (this.velocity > -30.0) this.velocity -= 1
+      if (this.velocity > -maxVelocity) this.velocity -= 1
       this.thrusting = true
     }
     if (keyboard.left)
-      if (this.turnAngle > -1.0) this.turnAngle -= 0.1
+      if (this.turnAngle > -maxAngle) this.turnAngle -= 0.1
 
     if (keyboard.right)
-      if (this.turnAngle < 1.0) this.turnAngle += 0.1
+      if (this.turnAngle < maxAngle) this.turnAngle += 0.1
 
     if (keyboard.pressed.Space) {
       if (this.velocity > 0)

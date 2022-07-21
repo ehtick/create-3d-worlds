@@ -15,7 +15,7 @@ const car = new Car()
 const obstacles = createObstacles()
 
 const chaseCam = createChaseCam()
-car.chassis.add(chaseCam)
+// car.chassis.add(chaseCam)
 
 ;[ground, ...obstacles, ...car.meshes].forEach(mesh => {
   scene.add(mesh)
