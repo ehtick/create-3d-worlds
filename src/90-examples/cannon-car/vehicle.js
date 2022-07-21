@@ -6,6 +6,10 @@ function createChassis() {
   const geometry = new THREE.BoxGeometry(1, 1, 2)
   const material = new THREE.MeshPhongMaterial({ color: 0xDC143C })
   const mesh = new THREE.Mesh(geometry, material)
+  const box = new THREE.Mesh(new THREE.CylinderGeometry(.4, .4, .5), material)
+  box.translateY(.5)
+  box.translateZ(.3)
+  mesh.add(box)
   mesh.position.y = 3
   mesh.castShadow = true
   const carBodyShape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 1))
