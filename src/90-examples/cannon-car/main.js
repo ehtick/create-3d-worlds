@@ -37,10 +37,5 @@ void function loop() {
   car.update()
   updateChaseCam(chaseCam, car.chassis)
 
-  obstacles.forEach(mesh => {
-    mesh.position.copy(mesh.body.position)
-    mesh.quaternion.copy(mesh.body.quaternion)
-  })
-
   renderer.render(scene, camera)
 }()

@@ -12,7 +12,7 @@ export function createObstacles() {
     mesh.position.y = 0.5
     mesh.position.z = Math.random() * 100 - 50
     const cylinderShape = new CANNON.Cylinder(0.01, 1, 0.5, 5)
-    const body = new CANNON.Body({ mass: 1 })
+    const body = new CANNON.Body({ mass: 0 })
     body.addShape(cylinderShape, new CANNON.Vec3())
     body.position.copy(mesh.position)
     mesh.body = body
