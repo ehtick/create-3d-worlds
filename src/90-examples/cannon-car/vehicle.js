@@ -1,5 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import * as CANNON from './cannon-es.js'
+import keyboard from '/classes/Keyboard.js'
 
 const phongMaterial = new THREE.MeshPhongMaterial()
 
@@ -51,15 +52,81 @@ export function createBackRightWheel() {
 
 export class Car {
   constructor() {
+    this.turnAngle = 0
+    this.forwardVelocity = 0
+    this.thrusting = false
     this.chassis = createChassis()
     this.wheelLF = createFrontLeftWheel()
     this.wheelRF = createFrontRightWheel()
     this.wheelLB = createBackLeftWheel()
     this.wheelRB = createBackRightWheel()
     this.meshes = [this.chassis, this.wheelLF, this.wheelRF, this.wheelLB, this.wheelRB]
+
+    this.constraintLF = new CANNON.HingeConstraint(this.chassis.body, this.wheelLF.body, {
+      pivotA: new CANNON.Vec3(-1, -0.5, -1),
+      axisA: new CANNON.Vec3(1, 0, 0),
+      maxForce: 0.99,
+    })
+
+    this.constraintRF = new CANNON.HingeConstraint(this.chassis.body, this.wheelRF.body, {
+      pivotA: new CANNON.Vec3(1, -0.5, -1),
+      axisA: new CANNON.Vec3(1, 0, 0),
+      maxForce: 0.99,
+    })
+
+    this.constraintLB = new CANNON.HingeConstraint(this.chassis.body, this.wheelLB.body, {
+      pivotA: new CANNON.Vec3(-1, -0.5, 1),
+      axisA: new CANNON.Vec3(1, 0, 0),
+      maxForce: 0.99,
+    })
+
+    this.constraintRB = new CANNON.HingeConstraint(this.chassis.body, this.wheelRB.body, {
+      pivotA: new CANNON.Vec3(1, -0.5, 1),
+      axisA: new CANNON.Vec3(1, 0, 0),
+      maxForce: 0.99,
+    })
+    this.constraintLF.enableMotor()
+    this.constraintRF.enableMotor()
+  }
+
+  handleInput() {
+    this.thrusting = false
+
+    if (keyboard.up) {
+      if (this.forwardVelocity < 30.0) this.forwardVelocity += 1
+      this.thrusting = true
+    }
+    if (keyboard.down) {
+      if (this.forwardVelocity > -30.0) this.forwardVelocity -= 1
+      this.thrusting = true
+    }
+    if (keyboard.left)
+      if (this.turnAngle > -1.0) this.turnAngle -= 0.1
+
+    if (keyboard.right)
+      if (this.turnAngle < 1.0) this.turnAngle += 0.1
+
+    if (keyboard.pressed.Space) {
+      if (this.forwardVelocity > 0)
+        this.forwardVelocity -= 1
+      if (this.forwardVelocity < 0)
+        this.forwardVelocity += 1
+    }
+
+    if (!this.thrusting) {
+      if (this.forwardVelocity > 0)
+        this.forwardVelocity -= 0.25
+      if (this.forwardVelocity < 0)
+        this.forwardVelocity += 0.25
+    }
   }
 
   update() {
+    this.handleInput()
+    this.constraintLF.setMotorSpeed(this.forwardVelocity)
+    this.constraintRF.setMotorSpeed(this.forwardVelocity)
+    this.constraintLF.axisA.z = this.turnAngle
+    this.constraintRF.axisA.z = this.turnAngle
     this.meshes.forEach(mesh => {
       mesh.position.copy(mesh.body.position)
       mesh.quaternion.copy(mesh.body.quaternion)
