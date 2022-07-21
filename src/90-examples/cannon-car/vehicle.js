@@ -4,7 +4,7 @@ import keyboard from '/classes/Keyboard.js'
 
 const phongMaterial = new THREE.MeshPhongMaterial()
 
-export function createChassis() {
+function createChassis() {
   const geometry = new THREE.BoxGeometry(1, 1, 2)
   const mesh = new THREE.Mesh(geometry, phongMaterial)
   mesh.position.y = 3
@@ -34,57 +34,30 @@ function createWheel({ size, width, position }) {
   return mesh
 }
 
-export function createFrontLeftWheel() {
-  return createWheel({ size: .33, width: .2, position: [-1, 3, -1] })
-}
-
-export function createFrontRightWheel() {
-  return createWheel({ size: .33, width: .2, position: [1, 3, -1] })
-}
-
-export function createBackLeftWheel() {
-  return createWheel({ size: .5, width: .33, position: [-1, 3, 1] })
-}
-
-export function createBackRightWheel() {
-  return createWheel({ size: .5, width: .33, position: [1, 3, 1] })
-}
+const createConstraint = (chassis, wheel, pos) => new CANNON.HingeConstraint(chassis.body, wheel.body, {
+  pivotA: new CANNON.Vec3(...pos),
+  axisA: new CANNON.Vec3(1, 0, 0),
+  maxForce: 0.99,
+})
 
 export class Car {
   constructor() {
     this.turnAngle = 0
     this.forwardVelocity = 0
     this.thrusting = false
+
     this.chassis = createChassis()
-    this.wheelLF = createFrontLeftWheel()
-    this.wheelRF = createFrontRightWheel()
-    this.wheelLB = createBackLeftWheel()
-    this.wheelRB = createBackRightWheel()
+    this.wheelLF = createWheel({ size: .33, width: .2, position: [-1, 3, -1] })
+    this.wheelRF = createWheel({ size: .33, width: .2, position: [1, 3, -1] })
+    this.wheelLB = createWheel({ size: .5, width: .33, position: [-1, 3, 1] })
+    this.wheelRB = createWheel({ size: .5, width: .33, position: [1, 3, 1] })
     this.meshes = [this.chassis, this.wheelLF, this.wheelRF, this.wheelLB, this.wheelRB]
 
-    this.frontLeftWheel = new CANNON.HingeConstraint(this.chassis.body, this.wheelLF.body, {
-      pivotA: new CANNON.Vec3(-1, -0.5, -1),
-      axisA: new CANNON.Vec3(1, 0, 0),
-      maxForce: 0.99,
-    })
+    this.frontLeftWheel = createConstraint(this.chassis, this.wheelLF, [-1, -0.5, -1])
+    this.frontRightWheel = createConstraint(this.chassis, this.wheelRF, [1, -0.5, -1])
+    this.backLeftWheel = createConstraint(this.chassis, this.wheelLB, [-1, -0.5, 1])
+    this.backRightWheel = createConstraint(this.chassis, this.wheelRB, [1, -0.5, 1])
 
-    this.frontRightWheel = new CANNON.HingeConstraint(this.chassis.body, this.wheelRF.body, {
-      pivotA: new CANNON.Vec3(1, -0.5, -1),
-      axisA: new CANNON.Vec3(1, 0, 0),
-      maxForce: 0.99,
-    })
-
-    this.backLeftWheel = new CANNON.HingeConstraint(this.chassis.body, this.wheelLB.body, {
-      pivotA: new CANNON.Vec3(-1, -0.5, 1),
-      axisA: new CANNON.Vec3(1, 0, 0),
-      maxForce: 0.99,
-    })
-
-    this.backRightWheel = new CANNON.HingeConstraint(this.chassis.body, this.wheelRB.body, {
-      pivotA: new CANNON.Vec3(1, -0.5, 1),
-      axisA: new CANNON.Vec3(1, 0, 0),
-      maxForce: 0.99,
-    })
     this.frontLeftWheel.enableMotor()
     this.frontRightWheel.enableMotor()
   }
