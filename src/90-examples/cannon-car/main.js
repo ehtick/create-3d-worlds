@@ -3,6 +3,7 @@ import * as CANNON from './cannon-es.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
+import keyboard from '/classes/Keyboard.js'
 
 initLights()
 
@@ -11,7 +12,6 @@ chaseCam.position.set(0, 0, 0)
 const chaseCamPivot = new THREE.Object3D()
 chaseCamPivot.position.set(0, 2, 4)
 chaseCam.add(chaseCamPivot)
-scene.add(chaseCam)
 
 const phongMaterial = new THREE.MeshPhongMaterial()
 const world = new CANNON.World()
@@ -49,85 +49,85 @@ for (let i = 0; i < 100; i++) {
 }
 
 const carBodyGeometry = new THREE.BoxGeometry(1, 1, 2)
-const carBodyMesh = new THREE.Mesh(carBodyGeometry, phongMaterial)
-carBodyMesh.position.y = 3
-carBodyMesh.castShadow = true
-scene.add(carBodyMesh)
-carBodyMesh.add(chaseCam)
+const car = new THREE.Mesh(carBodyGeometry, phongMaterial)
+car.position.y = 3
+car.castShadow = true
+scene.add(car)
+car.add(chaseCam)
 const carBodyShape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 1))
 const carBody = new CANNON.Body({ mass: 1 })
 carBody.addShape(carBodyShape)
-carBody.position.x = carBodyMesh.position.x
-carBody.position.y = carBodyMesh.position.y
-carBody.position.z = carBodyMesh.position.z
+carBody.position.x = car.position.x
+carBody.position.y = car.position.y
+carBody.position.z = car.position.z
 world.addBody(carBody)
 
 // front left wheel
 const wheelLFGeometry = new THREE.CylinderGeometry(0.33, 0.33, 0.2)
 wheelLFGeometry.rotateZ(Math.PI / 2)
-const wheelLFMesh = new THREE.Mesh(wheelLFGeometry, phongMaterial)
-wheelLFMesh.position.x = -1
-wheelLFMesh.position.y = 3
-wheelLFMesh.position.z = -1
-wheelLFMesh.castShadow = true
-scene.add(wheelLFMesh)
+const wheelLF = new THREE.Mesh(wheelLFGeometry, phongMaterial)
+wheelLF.position.x = -1
+wheelLF.position.y = 3
+wheelLF.position.z = -1
+wheelLF.castShadow = true
+scene.add(wheelLF)
 const wheelLFShape = new CANNON.Sphere(0.33)
 const wheelLFBody = new CANNON.Body({ mass: 1, material: wheelMaterial })
 wheelLFBody.addShape(wheelLFShape)
-wheelLFBody.position.x = wheelLFMesh.position.x
-wheelLFBody.position.y = wheelLFMesh.position.y
-wheelLFBody.position.z = wheelLFMesh.position.z
+wheelLFBody.position.x = wheelLF.position.x
+wheelLFBody.position.y = wheelLF.position.y
+wheelLFBody.position.z = wheelLF.position.z
 world.addBody(wheelLFBody)
 
 // front right wheel
 const wheelRFGeometry = new THREE.CylinderGeometry(0.33, 0.33, 0.2)
 wheelRFGeometry.rotateZ(Math.PI / 2)
-const wheelRFMesh = new THREE.Mesh(wheelRFGeometry, phongMaterial)
-wheelRFMesh.position.y = 3
-wheelRFMesh.position.x = 1
-wheelRFMesh.position.z = -1
-wheelRFMesh.castShadow = true
-scene.add(wheelRFMesh)
+const wheelRF = new THREE.Mesh(wheelRFGeometry, phongMaterial)
+wheelRF.position.y = 3
+wheelRF.position.x = 1
+wheelRF.position.z = -1
+wheelRF.castShadow = true
+scene.add(wheelRF)
 const wheelRFShape = new CANNON.Sphere(0.33)
 const wheelRFBody = new CANNON.Body({ mass: 1, material: wheelMaterial })
 wheelRFBody.addShape(wheelRFShape)
-wheelRFBody.position.x = wheelRFMesh.position.x
-wheelRFBody.position.y = wheelRFMesh.position.y
-wheelRFBody.position.z = wheelRFMesh.position.z
+wheelRFBody.position.x = wheelRF.position.x
+wheelRFBody.position.y = wheelRF.position.y
+wheelRFBody.position.z = wheelRF.position.z
 world.addBody(wheelRFBody)
 
 // back left wheel
 const wheelLBGeometry = new THREE.CylinderGeometry(0.4, 0.4, 0.33)
 wheelLBGeometry.rotateZ(Math.PI / 2)
-const wheelLBMesh = new THREE.Mesh(wheelLBGeometry, phongMaterial)
-wheelLBMesh.position.y = 3
-wheelLBMesh.position.x = -1
-wheelLBMesh.position.z = 1
-wheelLBMesh.castShadow = true
-scene.add(wheelLBMesh)
+const wheelLB = new THREE.Mesh(wheelLBGeometry, phongMaterial)
+wheelLB.position.y = 3
+wheelLB.position.x = -1
+wheelLB.position.z = 1
+wheelLB.castShadow = true
+scene.add(wheelLB)
 const wheelLBShape = new CANNON.Sphere(0.4)
 const wheelLBBody = new CANNON.Body({ mass: 1, material: wheelMaterial })
 wheelLBBody.addShape(wheelLBShape)
-wheelLBBody.position.x = wheelLBMesh.position.x
-wheelLBBody.position.y = wheelLBMesh.position.y
-wheelLBBody.position.z = wheelLBMesh.position.z
+wheelLBBody.position.x = wheelLB.position.x
+wheelLBBody.position.y = wheelLB.position.y
+wheelLBBody.position.z = wheelLB.position.z
 world.addBody(wheelLBBody)
 
 // back right wheel
 const wheelRBGeometry = new THREE.CylinderGeometry(0.4, 0.4, 0.33)
 wheelRBGeometry.rotateZ(Math.PI / 2)
-const wheelRBMesh = new THREE.Mesh(wheelRBGeometry, phongMaterial)
-wheelRBMesh.position.y = 3
-wheelRBMesh.position.x = 1
-wheelRBMesh.position.z = 1
-wheelRBMesh.castShadow = true
-scene.add(wheelRBMesh)
+const wheelRB = new THREE.Mesh(wheelRBGeometry, phongMaterial)
+wheelRB.position.y = 3
+wheelRB.position.x = 1
+wheelRB.position.z = 1
+wheelRB.castShadow = true
+scene.add(wheelRB)
 const wheelRBShape = new CANNON.Sphere(0.4)
 const wheelRBBody = new CANNON.Body({ mass: 1, material: wheelMaterial })
 wheelRBBody.addShape(wheelRBShape)
-wheelRBBody.position.x = wheelRBMesh.position.x
-wheelRBBody.position.y = wheelRBMesh.position.y
-wheelRBBody.position.z = wheelRBMesh.position.z
+wheelRBBody.position.x = wheelRB.position.x
+wheelRBBody.position.y = wheelRB.position.y
+wheelRBBody.position.z = wheelRB.position.z
 world.addBody(wheelRBBody)
 const leftFrontAxis = new CANNON.Vec3(1, 0, 0)
 const rightFrontAxis = new CANNON.Vec3(1, 0, 0)
@@ -161,52 +161,45 @@ world.addConstraint(constraintRB)
 // rear wheel drive
 constraintLB.enableMotor()
 constraintRB.enableMotor()
-const keyMap = {}
-const onDocumentKey = e => {
-  keyMap[e.key] = e.type === 'keydown'
-  return false
-}
 let forwardVelocity = 0
 let rightVelocity = 0
-document.addEventListener('keydown', onDocumentKey, false)
-document.addEventListener('keyup', onDocumentKey, false)
+
+/* LOOP */
 
 const v = new THREE.Vector3()
 let thrusting = false
-
-/* LOOP */
 
 void function loop() {
   requestAnimationFrame(loop)
   const delta = clock.getDelta()
   world.step(delta)
-  carBodyMesh.position.copy(carBody.position)
-  carBodyMesh.quaternion.copy(carBody.quaternion)
-  wheelLFMesh.position.copy(wheelLFBody.position)
-  wheelLFMesh.quaternion.copy(wheelLFBody.quaternion)
-  wheelRFMesh.position.copy(wheelRFBody.position)
-  wheelRFMesh.quaternion.copy(wheelRFBody.quaternion)
-  wheelLBMesh.position.copy(wheelLBBody.position)
-  wheelLBMesh.quaternion.copy(wheelLBBody.quaternion)
-  wheelRBMesh.position.copy(wheelRBBody.position)
-  wheelRBMesh.quaternion.copy(wheelRBBody.quaternion)
+  car.position.copy(carBody.position)
+  car.quaternion.copy(carBody.quaternion)
+  wheelLF.position.copy(wheelLFBody.position)
+  wheelLF.quaternion.copy(wheelLFBody.quaternion)
+  wheelRF.position.copy(wheelRFBody.position)
+  wheelRF.quaternion.copy(wheelRFBody.quaternion)
+  wheelLB.position.copy(wheelLBBody.position)
+  wheelLB.quaternion.copy(wheelLBBody.quaternion)
+  wheelRB.position.copy(wheelRBBody.position)
+  wheelRB.quaternion.copy(wheelRBBody.quaternion)
   thrusting = false
 
-  if (keyMap.w || keyMap.ArrowUp) {
+  if (keyboard.up) {
     if (forwardVelocity < 100.0) forwardVelocity += 1
     thrusting = true
   }
-  if (keyMap.s || keyMap.ArrowDown) {
+  if (keyboard.down) {
     if (forwardVelocity > -100.0) forwardVelocity -= 1
     thrusting = true
   }
-  if (keyMap.a || keyMap.ArrowLeft)
+  if (keyboard.left)
     if (rightVelocity > -1.0) rightVelocity -= 0.1
 
-  if (keyMap.d || keyMap.ArrowRight)
+  if (keyboard.right)
     if (rightVelocity < 1.0) rightVelocity += 0.1
 
-  if (keyMap[' ']) {
+  if (keyboard.pressed.Space) {
     if (forwardVelocity > 0)
       forwardVelocity -= 1
     if (forwardVelocity < 0)
@@ -223,7 +216,7 @@ void function loop() {
   constraintRB.setMotorSpeed(forwardVelocity)
   constraintLF.axisA.z = rightVelocity
   constraintRF.axisA.z = rightVelocity
-  camera.lookAt(carBodyMesh.position)
+  camera.lookAt(car.position)
   chaseCamPivot.getWorldPosition(v)
 
   if (v.y < 1) v.y = 1
