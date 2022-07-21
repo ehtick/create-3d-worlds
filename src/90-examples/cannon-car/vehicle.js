@@ -3,10 +3,6 @@ import * as CANNON from './cannon-es.js'
 
 const phongMaterial = new THREE.MeshPhongMaterial()
 
-const wheelMaterial = new CANNON.Material()
-wheelMaterial.friction = 0.25
-wheelMaterial.restitution = 0.25
-
 export function createCar() {
   const carBodyGeometry = new THREE.BoxGeometry(1, 1, 2)
   const car = new THREE.Mesh(carBodyGeometry, phongMaterial)
@@ -22,74 +18,35 @@ export function createCar() {
   return car
 }
 
-export function createFrontLeftWheel() {
-  const geometry = new THREE.CylinderGeometry(0.33, 0.33, 0.2)
+function createWheel({ size, width, position }) {
+  const geometry = new THREE.CylinderGeometry(size, size, width)
   geometry.rotateZ(Math.PI / 2)
   const mesh = new THREE.Mesh(geometry, phongMaterial)
-  mesh.position.x = -1
-  mesh.position.y = 3
-  mesh.position.z = -1
   mesh.castShadow = true
-  const wheelLFShape = new CANNON.Sphere(0.33)
+  mesh.position.set(...position)
+  const shape = new CANNON.Sphere(size)
+  const wheelMaterial = new CANNON.Material()
+  wheelMaterial.friction = 0.25
+  wheelMaterial.restitution = 0.25
   const body = new CANNON.Body({ mass: 1, material: wheelMaterial })
-  body.addShape(wheelLFShape)
-  body.position.x = mesh.position.x
-  body.position.y = mesh.position.y
-  body.position.z = mesh.position.z
+  body.addShape(shape)
+  body.position.set(...position)
   mesh.body = body
   return mesh
+}
+
+export function createFrontLeftWheel() {
+  return createWheel({ size: .33, width: .2, position: [-1, 3, -1] })
 }
 
 export function createFrontRightWheel() {
-  const geometry = new THREE.CylinderGeometry(0.33, 0.33, 0.2)
-  geometry.rotateZ(Math.PI / 2)
-  const mesh = new THREE.Mesh(geometry, phongMaterial)
-  mesh.position.y = 3
-  mesh.position.x = 1
-  mesh.position.z = -1
-  mesh.castShadow = true
-  const wheelRFShape = new CANNON.Sphere(0.33)
-  const body = new CANNON.Body({ mass: 1, material: wheelMaterial })
-  body.addShape(wheelRFShape)
-  body.position.x = mesh.position.x
-  body.position.y = mesh.position.y
-  body.position.z = mesh.position.z
-  mesh.body = body
-  return mesh
+  return createWheel({ size: .33, width: .2, position: [1, 3, -1] })
 }
 
 export function createBackLeftWheel() {
-  const geometry = new THREE.CylinderGeometry(0.4, 0.4, 0.33)
-  geometry.rotateZ(Math.PI / 2)
-  const mesh = new THREE.Mesh(geometry, phongMaterial)
-  mesh.position.y = 3
-  mesh.position.x = -1
-  mesh.position.z = 1
-  mesh.castShadow = true
-  const wheelLBShape = new CANNON.Sphere(0.4)
-  const body = new CANNON.Body({ mass: 1, material: wheelMaterial })
-  body.addShape(wheelLBShape)
-  body.position.x = mesh.position.x
-  body.position.y = mesh.position.y
-  body.position.z = mesh.position.z
-  mesh.body = body
-  return mesh
+  return createWheel({ size: .5, width: .33, position: [-1, 3, 1] })
 }
 
 export function createBackRightWheel() {
-  const geometry = new THREE.CylinderGeometry(0.4, 0.4, 0.33)
-  geometry.rotateZ(Math.PI / 2)
-  const mesh = new THREE.Mesh(geometry, phongMaterial)
-  mesh.position.y = 3
-  mesh.position.x = 1
-  mesh.position.z = 1
-  mesh.castShadow = true
-  const wheelRBShape = new CANNON.Sphere(0.4)
-  const body = new CANNON.Body({ mass: 1, material: wheelMaterial })
-  body.addShape(wheelRBShape)
-  body.position.x = mesh.position.x
-  body.position.y = mesh.position.y
-  body.position.z = mesh.position.z
-  mesh.body = body
-  return mesh
+  return createWheel({ size: .5, width: .33, position: [1, 3, 1] })
 }
