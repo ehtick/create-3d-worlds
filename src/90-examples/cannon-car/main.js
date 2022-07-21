@@ -1,9 +1,9 @@
-import * as THREE from '/node_modules/three127/build/three.module.js'
 import * as CANNON from './cannon-es.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import keyboard from '/classes/Keyboard.js'
-import { createObstacles, createGround, createCar, createChaseCam, createFrontLeftWheel, createFrontRightWheel, createBackLeftWheel, createBackRightWheel } from './cannon-utils.js'
+import { createObstacles, createGround, createCar, createFrontLeftWheel, createFrontRightWheel, createBackLeftWheel, createBackRightWheel } from './cannon-utils.js'
+import { createChaseCam, updateChaseCam } from './camera-utils.js'
 
 const physicMeshes = []
 
@@ -13,7 +13,6 @@ const world = new CANNON.World()
 world.gravity.set(0, -9.82, 0)
 
 const chaseCam = createChaseCam()
-const camPivot = chaseCam.getObjectByName('pivot')
 
 const addPhysicMesh = mesh => {
   scene.add(mesh)
@@ -72,26 +71,27 @@ const constraintRB = new CANNON.HingeConstraint(car.body, wheelRB.body, {
 })
 world.addConstraint(constraintRB)
 
-// rear wheel drive
-constraintLB.enableMotor()
-constraintRB.enableMotor()
+constraintLF.enableMotor()
+constraintRF.enableMotor()
 let forwardVelocity = 0
-let sideVelocity = 0
+let turnAngle = 0
 
-/* LOOP */
-
-const v = new THREE.Vector3()
-let thrusting = false
+/* FUNCTIONS */
 
 const updateCar = () => physicMeshes.forEach(mesh => {
   mesh.position.copy(mesh.body.position)
   mesh.quaternion.copy(mesh.body.quaternion)
 })
 
+/* LOOP */
+
+let thrusting = false
+
 void function loop() {
   requestAnimationFrame(loop)
   const delta = clock.getDelta()
   world.step(delta)
+
   updateCar()
   thrusting = false
 
@@ -104,10 +104,10 @@ void function loop() {
     thrusting = true
   }
   if (keyboard.left)
-    if (sideVelocity > -1.0) sideVelocity -= 0.1
+    if (turnAngle > -1.0) turnAngle -= 0.1
 
   if (keyboard.right)
-    if (sideVelocity < 1.0) sideVelocity += 0.1
+    if (turnAngle < 1.0) turnAngle += 0.1
 
   if (keyboard.pressed.Space) {
     if (forwardVelocity > 0)
@@ -122,15 +122,13 @@ void function loop() {
     if (forwardVelocity < 0)
       forwardVelocity += 0.25
   }
-  constraintLB.setMotorSpeed(forwardVelocity)
-  constraintRB.setMotorSpeed(forwardVelocity)
-  constraintLF.axisA.z = sideVelocity
-  constraintRF.axisA.z = sideVelocity
-  camera.lookAt(car.position)
-  camPivot.getWorldPosition(v)
 
-  if (v.y < 1) v.y = 1
+  constraintLF.setMotorSpeed(forwardVelocity)
+  constraintRF.setMotorSpeed(forwardVelocity)
+  constraintLF.axisA.z = turnAngle
+  constraintRF.axisA.z = turnAngle
 
-  camera.position.lerpVectors(camera.position, v, 0.05)
+  updateChaseCam(chaseCam, car)
+
   renderer.render(scene, camera)
 }()

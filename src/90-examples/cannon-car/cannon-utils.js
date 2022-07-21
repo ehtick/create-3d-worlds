@@ -40,16 +40,6 @@ export function createGround({ size = 100 } = {}) {
   return mesh
 }
 
-export function createChaseCam() {
-  const chaseCam = new THREE.Object3D()
-  chaseCam.position.set(0, 0, 0)
-  const pivot = new THREE.Object3D()
-  pivot.position.set(0, 2, 4)
-  pivot.name = 'pivot'
-  chaseCam.add(pivot)
-  return chaseCam
-}
-
 export function createCar() {
   const carBodyGeometry = new THREE.BoxGeometry(1, 1, 2)
   const car = new THREE.Mesh(carBodyGeometry, phongMaterial)
