@@ -37,7 +37,6 @@ Modeli
   i exporter https://threejs.org/examples/misc_exporter_gltf
 
 VOZILA:
-- https://sbcode.net/threejs/globe/
 - ammo terenska voznja:
   https://alteredqualia.com/xg/examples/animation_physics_terrain.html
   https://alteredqualia.com/xg/examples/animation_physics_level.html

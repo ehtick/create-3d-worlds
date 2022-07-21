@@ -1,6 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import * as CANNON from './cannon-es.js'
-import { scene, camera, renderer } from '/utils/scene.js'
+import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 
@@ -16,10 +16,10 @@ scene.add(chaseCam)
 const phongMaterial = new THREE.MeshPhongMaterial()
 const world = new CANNON.World()
 world.gravity.set(0, -9.82, 0)
-const groundMaterial = new CANNON.Material('groundMaterial')
+const groundMaterial = new CANNON.Material()
 groundMaterial.friction = 0.25
 groundMaterial.restitution = 0.25
-const wheelMaterial = new CANNON.Material('wheelMaterial')
+const wheelMaterial = new CANNON.Material()
 wheelMaterial.friction = 0.25
 wheelMaterial.restitution = 0.25
 
@@ -171,8 +171,6 @@ let rightVelocity = 0
 document.addEventListener('keydown', onDocumentKey, false)
 document.addEventListener('keyup', onDocumentKey, false)
 
-const clock = new THREE.Clock()
-let delta
 const v = new THREE.Vector3()
 let thrusting = false
 
@@ -180,60 +178,20 @@ let thrusting = false
 
 void function loop() {
   requestAnimationFrame(loop)
-  delta = clock.getDelta()
+  const delta = clock.getDelta()
   world.step(delta)
-  carBodyMesh.position.set(carBody.position.x, carBody.position.y, carBody.position.z)
-  carBodyMesh.quaternion.set(
-    carBody.quaternion.x,
-    carBody.quaternion.y,
-    carBody.quaternion.z,
-    carBody.quaternion.w
-  )
-  wheelLFMesh.position.set(
-    wheelLFBody.position.x,
-    wheelLFBody.position.y,
-    wheelLFBody.position.z
-  )
-  wheelLFMesh.quaternion.set(
-    wheelLFBody.quaternion.x,
-    wheelLFBody.quaternion.y,
-    wheelLFBody.quaternion.z,
-    wheelLFBody.quaternion.w
-  )
-  wheelRFMesh.position.set(
-    wheelRFBody.position.x,
-    wheelRFBody.position.y,
-    wheelRFBody.position.z
-  )
-  wheelRFMesh.quaternion.set(
-    wheelRFBody.quaternion.x,
-    wheelRFBody.quaternion.y,
-    wheelRFBody.quaternion.z,
-    wheelRFBody.quaternion.w
-  )
-  wheelLBMesh.position.set(
-    wheelLBBody.position.x,
-    wheelLBBody.position.y,
-    wheelLBBody.position.z
-  )
-  wheelLBMesh.quaternion.set(
-    wheelLBBody.quaternion.x,
-    wheelLBBody.quaternion.y,
-    wheelLBBody.quaternion.z,
-    wheelLBBody.quaternion.w
-  )
-  wheelRBMesh.position.set(
-    wheelRBBody.position.x,
-    wheelRBBody.position.y,
-    wheelRBBody.position.z
-  )
-  wheelRBMesh.quaternion.set(
-    wheelRBBody.quaternion.x,
-    wheelRBBody.quaternion.y,
-    wheelRBBody.quaternion.z,
-    wheelRBBody.quaternion.w
-  )
+  carBodyMesh.position.copy(carBody.position)
+  carBodyMesh.quaternion.copy(carBody.quaternion)
+  wheelLFMesh.position.copy(wheelLFBody.position)
+  wheelLFMesh.quaternion.copy(wheelLFBody.quaternion)
+  wheelRFMesh.position.copy(wheelRFBody.position)
+  wheelRFMesh.quaternion.copy(wheelRFBody.quaternion)
+  wheelLBMesh.position.copy(wheelLBBody.position)
+  wheelLBMesh.quaternion.copy(wheelLBBody.quaternion)
+  wheelRBMesh.position.copy(wheelRBBody.position)
+  wheelRBMesh.quaternion.copy(wheelRBBody.quaternion)
   thrusting = false
+
   if (keyMap.w || keyMap.ArrowUp) {
     if (forwardVelocity < 100.0) forwardVelocity += 1
     thrusting = true
@@ -254,6 +212,7 @@ void function loop() {
     if (forwardVelocity < 0)
       forwardVelocity += 1
   }
+
   if (!thrusting) {
     if (forwardVelocity > 0)
       forwardVelocity -= 0.25
