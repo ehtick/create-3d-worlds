@@ -29,7 +29,6 @@ export function createObstacles() {
 
 export function createGround({ size = 100 } = {}) {
   const mesh = createFloor({ size })
-
   const groundMaterial = new CANNON.Material()
   groundMaterial.friction = 0.25
   groundMaterial.restitution = 0.25
@@ -46,6 +45,7 @@ export function createChaseCam() {
   chaseCam.position.set(0, 0, 0)
   const pivot = new THREE.Object3D()
   pivot.position.set(0, 2, 4)
+  pivot.name = 'pivot'
   chaseCam.add(pivot)
   return chaseCam
 }

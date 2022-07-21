@@ -5,11 +5,13 @@ import { initLights } from '/utils/light.js'
 import keyboard from '/classes/Keyboard.js'
 import { createObstacles, createGround, createCar, createChaseCam, createFrontLeftWheel, createFrontRightWheel, createBackLeftWheel, createBackRightWheel } from './cannon-utils.js'
 
+const physicMeshes = []
+
 initLights()
 
 const chaseCam = createChaseCam()
+const camPivot = chaseCam.getObjectByName('pivot')
 
-const phongMaterial = new THREE.MeshPhongMaterial()
 const world = new CANNON.World()
 world.gravity.set(0, -9.82, 0)
 
@@ -17,30 +19,34 @@ const wheelMaterial = new CANNON.Material()
 wheelMaterial.friction = 0.25
 wheelMaterial.restitution = 0.25
 
-const add = mesh => {
+const addPhysicMesh = mesh => {
   scene.add(mesh)
   world.addBody(mesh.body)
+  physicMeshes.push(mesh)
 }
 
-add(createGround({ size: 100 }))
+addPhysicMesh(createGround({ size: 100 }))
 
-createObstacles().forEach(add)
+createObstacles().forEach(mesh => {
+  scene.add(mesh)
+  world.addBody(mesh.body)
+})
 
 const car = createCar()
 car.add(chaseCam)
-add(car)
+addPhysicMesh(car)
 
 const wheelLF = createFrontLeftWheel()
-add(wheelLF)
+addPhysicMesh(wheelLF)
 
 const wheelRF = createFrontRightWheel()
-add(wheelRF)
+addPhysicMesh(wheelRF)
 
 const wheelLB = createBackLeftWheel()
-add(wheelLB)
+addPhysicMesh(wheelLB)
 
 const wheelRB = createBackRightWheel()
-add(wheelRB)
+addPhysicMesh(wheelRB)
 
 const constraintLF = new CANNON.HingeConstraint(car.body, wheelLF.body, {
   pivotA: new CANNON.Vec3(-1, -0.5, -1),
@@ -80,8 +86,6 @@ let sideVelocity = 0
 
 const v = new THREE.Vector3()
 let thrusting = false
-
-const physicMeshes = [car, wheelLF, wheelRF, wheelLB, wheelRB]
 
 const updateCar = () => physicMeshes.forEach(mesh => {
   mesh.position.copy(mesh.body.position)
@@ -127,7 +131,7 @@ void function loop() {
   constraintLF.axisA.z = sideVelocity
   constraintRF.axisA.z = sideVelocity
   camera.lookAt(car.position)
-  chaseCam.children[0].getWorldPosition(v) // pivot
+  camPivot.getWorldPosition(v)
 
   if (v.y < 1) v.y = 1
 
