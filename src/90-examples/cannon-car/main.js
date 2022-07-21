@@ -2,8 +2,9 @@ import * as CANNON from './cannon-es.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import keyboard from '/classes/Keyboard.js'
-import { createObstacles, createGround, createCar, createFrontLeftWheel, createFrontRightWheel, createBackLeftWheel, createBackRightWheel } from './cannon-utils.js'
-import { createChaseCam, updateChaseCam } from './camera-utils.js'
+import { createObstacles, createGround } from './cannon-utils.js'
+import { createChaseCam, updateChaseCam } from './camera.js'
+import { createCar, createFrontLeftWheel, createFrontRightWheel, createBackLeftWheel, createBackRightWheel } from './vehicle.js'
 
 const physicMeshes = []
 
@@ -96,11 +97,11 @@ void function loop() {
   thrusting = false
 
   if (keyboard.up) {
-    if (forwardVelocity < 100.0) forwardVelocity += 1
+    if (forwardVelocity < 30.0) forwardVelocity += 1
     thrusting = true
   }
   if (keyboard.down) {
-    if (forwardVelocity > -100.0) forwardVelocity -= 1
+    if (forwardVelocity > -30.0) forwardVelocity -= 1
     thrusting = true
   }
   if (keyboard.left)
