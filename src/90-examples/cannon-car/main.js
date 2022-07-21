@@ -9,15 +9,11 @@ const physicMeshes = []
 
 initLights()
 
-const chaseCam = createChaseCam()
-const camPivot = chaseCam.getObjectByName('pivot')
-
 const world = new CANNON.World()
 world.gravity.set(0, -9.82, 0)
 
-const wheelMaterial = new CANNON.Material()
-wheelMaterial.friction = 0.25
-wheelMaterial.restitution = 0.25
+const chaseCam = createChaseCam()
+const camPivot = chaseCam.getObjectByName('pivot')
 
 const addPhysicMesh = mesh => {
   scene.add(mesh)
