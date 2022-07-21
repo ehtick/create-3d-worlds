@@ -2,9 +2,8 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 import * as CANNON from './cannon-es.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
-import { createFloor } from '/utils/ground.js'
 import keyboard from '/classes/Keyboard.js'
-import { createObstacles } from './cannon-utils.js'
+import { createObstacles, createGround } from './cannon-utils.js'
 
 initLights()
 
@@ -17,26 +16,18 @@ chaseCam.add(chaseCamPivot)
 const phongMaterial = new THREE.MeshPhongMaterial()
 const world = new CANNON.World()
 world.gravity.set(0, -9.82, 0)
-const groundMaterial = new CANNON.Material()
-groundMaterial.friction = 0.25
-groundMaterial.restitution = 0.25
 const wheelMaterial = new CANNON.Material()
 wheelMaterial.friction = 0.25
 wheelMaterial.restitution = 0.25
 
-const ground = createFloor({ size: 100 })
-scene.add(ground)
+const add = mesh => {
+  scene.add(mesh)
+  world.addBody(mesh.body)
+}
 
-const groundShape = new CANNON.Box(new CANNON.Vec3(50, 1, 50))
-const groundBody = new CANNON.Body({ mass: 0, material: groundMaterial })
-groundBody.addShape(groundShape)
-groundBody.position.set(0, -1, 0)
-world.addBody(groundBody)
+add(createGround({ size: 100 }))
 
-createObstacles().forEach(obstacle => {
-  scene.add(obstacle)
-  world.addBody(obstacle.body)
-})
+createObstacles().forEach(add)
 
 const carBodyGeometry = new THREE.BoxGeometry(1, 1, 2)
 const car = new THREE.Mesh(carBodyGeometry, phongMaterial)
