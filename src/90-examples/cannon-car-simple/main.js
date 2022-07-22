@@ -3,9 +3,10 @@ import * as CANNON from '/libs/cannon-es.js'
 import { scene, camera, renderer } from '/utils/scene.js'
 import CannonDebugRenderer from '/libs/cannonDebugRenderer.js'
 import keyboard from '/classes/Keyboard.js'
+import { initLights } from '/utils/light.js'
 
-camera.position.set(0, 1, -10)
-camera.lookAt(0, 0, 0)
+// camera.position.set(0, 1, -10)
+// camera.lookAt(0, 0, 0)
 
 let geometry = new THREE.PlaneGeometry(100, 100, 10)
 let material = new THREE.MeshBasicMaterial({ color: 0x999999, side: THREE.DoubleSide })
@@ -13,9 +14,7 @@ const plane = new THREE.Mesh(geometry, material)
 plane.rotation.x = Math.PI / 2
 scene.add(plane)
 
-const sunlight = new THREE.DirectionalLight(0xffffff, 1.0)
-sunlight.position.set(-10, 10, 0)
-scene.add(sunlight)
+initLights()
 
 const world = new CANNON.World()
 world.broadphase = new CANNON.SAPBroadphase(world)
@@ -129,41 +128,39 @@ world.addBody(planeBody)
 /** LOOP **/
 
 function handleInput() {
-  const brakeForce = 5
+  const brakeForce = keyboard.pressed.Space ? 10 : 0
   const engineForce = 800
   const maxSteerVal = 0.5
 
   if (!keyboard.keyPressed) {
-    vehicle.applyEngineForce(0, 2)
-    vehicle.applyEngineForce(0, 3)
+    vehicle.applyEngineForce(0, 1)
+    vehicle.applyEngineForce(0, 1)
     return
   }
 
-  if (keyboard.pressed.Space) {
-    vehicle.setBrake(brakeForce, 0)
-    vehicle.setBrake(brakeForce, 1)
-    vehicle.setBrake(brakeForce, 2)
-    vehicle.setBrake(brakeForce, 3)
+  vehicle.setBrake(brakeForce, 0)
+  vehicle.setBrake(brakeForce, 1)
+  vehicle.setBrake(brakeForce, 2)
+  vehicle.setBrake(brakeForce, 3)
+
+  if (keyboard.down) {
+    vehicle.applyEngineForce(-engineForce, 0)
+    vehicle.applyEngineForce(-engineForce, 1)
   }
 
   if (keyboard.up) {
-    vehicle.applyEngineForce(-engineForce, 2)
-    vehicle.applyEngineForce(-engineForce, 3)
-  }
-
-  if (keyboard.down) {
-    vehicle.applyEngineForce(engineForce, 2)
-    vehicle.applyEngineForce(engineForce, 3)
+    vehicle.applyEngineForce(engineForce, 0)
+    vehicle.applyEngineForce(engineForce, 1)
   }
 
   if (keyboard.left) {
-    vehicle.setSteeringValue(maxSteerVal, 2)
-    vehicle.setSteeringValue(maxSteerVal, 3)
+    vehicle.setSteeringValue(maxSteerVal, 0)
+    vehicle.setSteeringValue(maxSteerVal, 1)
   }
 
   if (keyboard.right) {
-    vehicle.setSteeringValue(-maxSteerVal, 2)
-    vehicle.setSteeringValue(-maxSteerVal, 3)
+    vehicle.setSteeringValue(-maxSteerVal, 0)
+    vehicle.setSteeringValue(-maxSteerVal, 1)
   }
 }
 
