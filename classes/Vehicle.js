@@ -4,7 +4,7 @@ import keyboard from '/classes/Keyboard.js'
 import { world } from '/utils/physics-cannon.js'
 
 const maxAngle = .75
-const maxVelocity = 25
+const maxVelocity = 20
 
 const frontWheelSize = .33
 const frontWheelWidth = .25
@@ -38,9 +38,9 @@ function createWheel({ size, width, position }) {
   mesh.position.set(...position)
   const shape = new CANNON.Cylinder(size, size, width, 20)
   const wheelMaterial = new CANNON.Material()
-  wheelMaterial.friction = 0.1
+  wheelMaterial.friction = 0.4
   wheelMaterial.restitution = 0.25
-  const body = new CANNON.Body({ mass: .5, material: wheelMaterial })
+  const body = new CANNON.Body({ mass: .1, material: wheelMaterial })
   const q = new CANNON.Quaternion()
   q.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), Math.PI / 2)
   body.addShape(shape, new CANNON.Vec3(), q)
@@ -62,16 +62,16 @@ export default class Vehicle {
     this.thrusting = false
 
     this.chassis = createChassis()
-    this.wheelLF = createWheel({ size: frontWheelSize, width: frontWheelWidth, position: [-1, 3, -1] })
-    this.wheelRF = createWheel({ size: frontWheelSize, width: frontWheelWidth, position: [1, 3, -1] })
-    this.wheelLB = createWheel({ size: backWheelSize, width: backWheelWidth, position: [-1, 3, 1] })
-    this.wheelRB = createWheel({ size: backWheelSize, width: backWheelWidth, position: [1, 3, 1] })
-    this.meshes = [this.chassis, this.wheelLF, this.wheelRF, this.wheelLB, this.wheelRB]
+    const wheelLF = createWheel({ size: frontWheelSize, width: frontWheelWidth, position: [-1, 3, -1] })
+    const wheelRF = createWheel({ size: frontWheelSize, width: frontWheelWidth, position: [1, 3, -1] })
+    const wheelLB = createWheel({ size: backWheelSize, width: backWheelWidth, position: [-1, 3, 1] })
+    const wheelRB = createWheel({ size: backWheelSize, width: backWheelWidth, position: [1, 3, 1] })
+    this.meshes = [this.chassis, wheelLF, wheelRF, wheelLB, wheelRB]
 
-    this.frontLeftWheel = createConstraint(this.chassis, this.wheelLF, [-.8, -backWheelSize, -1])
-    this.frontRightWheel = createConstraint(this.chassis, this.wheelRF, [.8, -backWheelSize, -1])
-    this.backLeftWheel = createConstraint(this.chassis, this.wheelLB, [-.8, -frontWheelSize, 1])
-    this.backRightWheel = createConstraint(this.chassis, this.wheelRB, [.8, -frontWheelSize, 1])
+    this.frontLeftWheel = createConstraint(this.chassis, wheelLF, [-.8, -backWheelSize, -1])
+    this.frontRightWheel = createConstraint(this.chassis, wheelRF, [.8, -backWheelSize, -1])
+    this.backLeftWheel = createConstraint(this.chassis, wheelLB, [-.8, -frontWheelSize, 1])
+    this.backRightWheel = createConstraint(this.chassis, wheelRB, [.8, -frontWheelSize, 1])
 
     this.frontLeftWheel.enableMotor()
     this.frontRightWheel.enableMotor()
@@ -86,18 +86,18 @@ export default class Vehicle {
     this.thrusting = false
 
     if (keyboard.up) {
-      if (this.velocity < maxVelocity) this.velocity += 1
+      if (this.velocity < maxVelocity) this.velocity += .3
       this.thrusting = true
     }
     if (keyboard.down) {
-      if (this.velocity > -maxVelocity) this.velocity -= 1
+      if (this.velocity > -maxVelocity) this.velocity -= .3
       this.thrusting = true
     }
     if (keyboard.left)
-      if (this.turnAngle > -maxAngle) this.turnAngle -= 0.1
+      if (this.turnAngle > -maxAngle) this.turnAngle -= 0.05
 
     if (keyboard.right)
-      if (this.turnAngle < maxAngle) this.turnAngle += 0.1
+      if (this.turnAngle < maxAngle) this.turnAngle += 0.05
 
     if (keyboard.pressed.Space) {
       if (this.velocity > 0)
