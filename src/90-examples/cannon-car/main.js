@@ -1,4 +1,5 @@
 import * as CANNON from '/libs/cannon-es.js'
+import CannonDebugRenderer from '/libs/cannonDebugRenderer.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createObstacles, createGround } from './cannon-utils.js'
@@ -9,6 +10,7 @@ initLights()
 
 const world = new CANNON.World()
 world.gravity.set(0, -9.82, 0)
+const cannonDebugRenderer = new CannonDebugRenderer(scene, world)
 
 const ground = createGround({ size: 100 })
 const car = new Car()
@@ -36,6 +38,7 @@ void function loop() {
 
   car.update()
   updateChaseCam(chaseCam, car.chassis)
+  cannonDebugRenderer.update()
 
   renderer.render(scene, camera)
 }()

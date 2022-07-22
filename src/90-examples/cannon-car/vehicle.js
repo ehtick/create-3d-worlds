@@ -20,9 +20,9 @@ function createChassis() {
   mesh.add(box)
   mesh.position.y = 3
   mesh.castShadow = true
-  const carBodyShape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 1))
+  const shape = new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 1))
   const body = new CANNON.Body({ mass: 5 })
-  body.addShape(carBodyShape)
+  body.addShape(shape)
   body.position.copy(mesh.position)
   mesh.body = body
   return mesh
@@ -35,12 +35,14 @@ function createWheel({ size, width, position }) {
   const mesh = new THREE.Mesh(geometry, material)
   mesh.castShadow = true
   mesh.position.set(...position)
-  const shape = new CANNON.Sphere(size)
+  const shape = new CANNON.Cylinder(size, size, width, 20)
   const wheelMaterial = new CANNON.Material()
   wheelMaterial.friction = 0.1
   wheelMaterial.restitution = 0.25
   const body = new CANNON.Body({ mass: .5, material: wheelMaterial })
-  body.addShape(shape)
+  const q = new CANNON.Quaternion()
+  q.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), Math.PI / 2)
+  body.addShape(shape, new CANNON.Vec3(), q)
   body.position.set(...position)
   mesh.body = body
   return mesh
