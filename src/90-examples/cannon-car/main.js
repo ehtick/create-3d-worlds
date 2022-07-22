@@ -1,4 +1,4 @@
-import * as CANNON from './cannon-es.js'
+import * as CANNON from '/libs/cannon-es.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createObstacles, createGround } from './cannon-utils.js'

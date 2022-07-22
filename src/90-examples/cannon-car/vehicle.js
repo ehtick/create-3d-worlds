@@ -1,5 +1,5 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
-import * as CANNON from './cannon-es.js'
+import * as CANNON from '/libs/cannon-es.js'
 import keyboard from '/classes/Keyboard.js'
 
 const maxAngle = .75
