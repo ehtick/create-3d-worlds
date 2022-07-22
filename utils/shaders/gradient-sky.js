@@ -10,22 +10,22 @@ const vertexShader = /* glsl */`
 `
 
 const fragmentShader = /* glsl */`
-  uniform vec3 topColor;
-  uniform vec3 bottomColor;
+  uniform vec3 color1;
+  uniform vec3 color2;
   uniform float offset;
   uniform float exponent;
   varying vec3 vWorldPosition;
   void main() {
     float height = normalize( vWorldPosition + offset ).y;
     float weight = pow( max( height , 0.0), exponent );
-    vec3 rgb = mix( bottomColor, topColor, weight );
+    vec3 rgb = mix( color2, color1, weight );
     gl_FragColor = vec4( rgb, 1.0 );
   }
 `
 
 const uniforms = {
-  topColor: { value: new THREE.Color(0x0077ff) },
-  bottomColor: { value: new THREE.Color(0xffffff) },
+  color1: { value: new THREE.Color(0x0077ff) },
+  color2: { value: new THREE.Color(0xffffff) },
   offset: { value: 33 },
   exponent: { value: 0.6 }
 }

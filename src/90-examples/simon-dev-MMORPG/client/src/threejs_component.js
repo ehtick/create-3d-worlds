@@ -14,8 +14,8 @@ const vertexShader = `
   }`
 
 const fragmentShader = `
-  uniform vec3 topColor;
-  uniform vec3 bottomColor;
+  uniform vec3 color1;
+  uniform vec3 color2;
   uniform float offset;
   uniform float exponent;
   uniform samplerCube background;
@@ -31,7 +31,7 @@ const fragmentShader = `
   
     float f = exp(min(0.0, -vWorldPosition.y * 0.00125));
   
-    vec3 sky = mix(stars, bottomColor, f);
+    vec3 sky = mix(stars, color2, f);
     gl_FragColor = vec4(sky, 1.0);
   }`
 
@@ -117,14 +117,14 @@ export class ThreeJSController extends entity.Component {
     texture.encoding = THREE.sRGBEncoding
 
     const uniforms = {
-      'topColor': { value: new THREE.Color(0x000000) },
-      'bottomColor': { value: new THREE.Color(0x5d679e) },
+      'color1': { value: new THREE.Color(0x000000) },
+      'color2': { value: new THREE.Color(0x5d679e) },
       'offset': { value: -500 },
       'exponent': { value: 0.3 },
       'background': { value: texture },
     }
 
-    scene.fog.color.copy(uniforms.bottomColor.value)
+    scene.fog.color.copy(uniforms.color2.value)
 
     const skyGeo = new THREE.SphereBufferGeometry(5000, 32, 15)
     const skyMat = new THREE.ShaderMaterial({

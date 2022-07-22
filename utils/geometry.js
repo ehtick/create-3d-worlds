@@ -180,9 +180,9 @@ export function createWorldSphere({ r = 26, widthSegments = 40, heightSegments =
 
 /* SKY SPHERE */
 
-export function createSkySphere({ r = 4000, topColor = 0x0077ff, bottomColor = 0xffffff } = {}) {
+export function createSkySphere({ r = 4000, color1 = 0x0077ff, color2 = 0xffffff } = {}) {
   const geometry = new THREE.SphereGeometry(r, 32, 15)
-  skyMaterial.uniforms.topColor.value = new THREE.Color(topColor)
-  skyMaterial.uniforms.bottomColor.value = new THREE.Color(bottomColor)
+  skyMaterial.uniforms.color1.value = new THREE.Color(color1)
+  skyMaterial.uniforms.color2.value = new THREE.Color(color2)
   return new THREE.Mesh(geometry, skyMaterial)
 }
