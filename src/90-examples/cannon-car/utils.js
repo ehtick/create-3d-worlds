@@ -5,13 +5,16 @@ import { createFloor } from '/utils/ground.js'
 const phongMaterial = new THREE.MeshPhongMaterial()
 
 export function createObstacles() {
+  const radiusTop = 0, radiusBottom = 3, height = .5, radialSegments = 5
   const obstacles = []
+
   for (let i = 0; i < 100; i++) {
-    const mesh = new THREE.Mesh(new THREE.CylinderGeometry(0, 1, 0.5, 5), phongMaterial)
+    const geometry = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments)
+    const mesh = new THREE.Mesh(geometry, phongMaterial)
     mesh.position.x = Math.random() * 100 - 50
     mesh.position.y = 0.5
     mesh.position.z = Math.random() * 100 - 50
-    const cylinderShape = new CANNON.Cylinder(0.01, 1, 0.5, 5)
+    const cylinderShape = new CANNON.Cylinder(radiusTop + 0.01, radiusBottom, height, radialSegments)
     const body = new CANNON.Body({ mass: 0 })
     body.addShape(cylinderShape, new CANNON.Vec3())
     body.position.copy(mesh.position)

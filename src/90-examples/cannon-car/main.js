@@ -2,7 +2,7 @@ import * as CANNON from '/libs/cannon-es.js'
 import CannonDebugRenderer from '/libs/cannonDebugRenderer.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
-import { createObstacles, createGround } from './cannon-utils.js'
+import { createObstacles, createGround } from './utils.js'
 import { createChaseCam, updateChaseCam } from './camera.js'
 import { Car } from './vehicle.js'
 
