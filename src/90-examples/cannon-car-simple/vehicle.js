@@ -15,7 +15,7 @@ function createChassis() {
   return { chassis, chassisBody }
 }
 
-export function createWheels(vehicle) {
+function createWheels(vehicle) {
   const wheelMaterial = new CANNON.Material()
   const wheelOptions = {
     radius: 0.3,
@@ -47,7 +47,7 @@ export function createWheels(vehicle) {
   wheelOptions.chassisConnectionPointLocal.set(-axlewidth, 0, 1)
   vehicle.addWheel(wheelOptions)
 
-  const wheelBodies = [], wheelVisuals = []
+  const wheelBodies = [], wheelMeshes = []
 
   vehicle.wheelInfos.forEach(wheel => {
     const shape = new CANNON.Cylinder(wheel.radius, wheel.radius, wheel.radius / 2, 20)
@@ -64,57 +64,81 @@ export function createWheels(vehicle) {
     })
     const mesh = new THREE.Mesh(geometry, material)
     mesh.geometry.rotateZ(Math.PI / 2)
-    wheelVisuals.push(mesh)
+    wheelMeshes.push(mesh)
   })
-  return { wheelBodies, wheelVisuals }
+  return { wheelBodies, wheelMeshes }
 }
 
-export function createVehicle() {
-  const { chassis, chassisBody } = createChassis()
+function createVehicle(chassisBody) {
   const vehicle = new CANNON.RaycastVehicle({
     chassisBody,
     indexRightAxis: 0, // x
     indexUpAxis: 1, // y
     indexForwardAxis: 2, // z
   })
-  return { vehicle, chassis, chassisBody }
+  return { vehicle }
 }
 
-/* INPUT */
-
-export function handleInput(vehicle) {
-  const brakeForce = keyboard.pressed.Space ? 10 : 0
-  const engineForce = 800
-  const maxSteerVal = 0.5
-
-  if (!keyboard.keyPressed) {
-    vehicle.applyEngineForce(0, 1)
-    vehicle.applyEngineForce(0, 1)
-    return
+export default class Car {
+  constructor() {
+    const { chassis, chassisBody } = createChassis()
+    this.vehicle = createVehicle(chassisBody)
+    const { wheelBodies, wheelMeshes } = createWheels(this.vehicle)
+    this.chassis = chassis
+    this.chassisBody = chassisBody
+    this.wheelBodies = wheelBodies
+    this.wheelMeshes = wheelMeshes
   }
 
-  vehicle.setBrake(brakeForce, 0)
-  vehicle.setBrake(brakeForce, 1)
-  vehicle.setBrake(brakeForce, 2)
-  vehicle.setBrake(brakeForce, 3)
+  handleInput() {
+    const { vehicle } = this
+    const brakeForce = keyboard.pressed.Space ? 10 : 0
+    const engineForce = 800
+    const maxSteerVal = 0.5
 
-  if (keyboard.down) {
-    vehicle.applyEngineForce(-engineForce, 0)
-    vehicle.applyEngineForce(-engineForce, 1)
+    if (!keyboard.keyPressed) {
+      vehicle.applyEngineForce(0, 1)
+      vehicle.applyEngineForce(0, 1)
+      return
+    }
+
+    vehicle.setBrake(brakeForce, 0)
+    vehicle.setBrake(brakeForce, 1)
+    vehicle.setBrake(brakeForce, 2)
+    vehicle.setBrake(brakeForce, 3)
+
+    if (keyboard.down) {
+      vehicle.applyEngineForce(-engineForce, 0)
+      vehicle.applyEngineForce(-engineForce, 1)
+    }
+
+    if (keyboard.up) {
+      vehicle.applyEngineForce(engineForce, 0)
+      vehicle.applyEngineForce(engineForce, 1)
+    }
+
+    if (keyboard.left) {
+      vehicle.setSteeringValue(maxSteerVal, 0)
+      vehicle.setSteeringValue(maxSteerVal, 1)
+    }
+
+    if (keyboard.right) {
+      vehicle.setSteeringValue(-maxSteerVal, 0)
+      vehicle.setSteeringValue(-maxSteerVal, 1)
+    }
   }
 
-  if (keyboard.up) {
-    vehicle.applyEngineForce(engineForce, 0)
-    vehicle.applyEngineForce(engineForce, 1)
-  }
-
-  if (keyboard.left) {
-    vehicle.setSteeringValue(maxSteerVal, 0)
-    vehicle.setSteeringValue(maxSteerVal, 1)
-  }
-
-  if (keyboard.right) {
-    vehicle.setSteeringValue(-maxSteerVal, 0)
-    vehicle.setSteeringValue(-maxSteerVal, 1)
+  update() {
+    const { wheelBodies, wheelMeshes, chassis, chassisBody } = this
+    this.handleInput()
+    this.vehicle.wheelInfos.forEach((wheel, i) => {
+      const t = wheel.worldTransform
+      wheelBodies[i].position.copy(t.position)
+      wheelBodies[i].quaternion.copy(t.quaternion)
+      wheelMeshes[i].position.copy(t.position)
+      wheelMeshes[i].quaternion.copy(t.quaternion)
+    })
+    chassis.position.copy(chassisBody.position)
+    chassis.quaternion.copy(chassisBody.quaternion)
   }
 }
