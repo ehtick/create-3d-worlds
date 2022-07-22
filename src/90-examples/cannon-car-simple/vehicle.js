@@ -1,5 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import * as CANNON from '/libs/cannon-es.js'
+import keyboard from '/classes/Keyboard.js'
 
 export function createVehicle() {
   const chassisShape = new CANNON.Box(new CANNON.Vec3(1, 0.3, 2))
@@ -72,4 +73,43 @@ export function createVehicle() {
   })
 
   return { vehicle, chassis, chassisBody, wheelBodies, wheelVisuals }
+}
+
+
+
+export function handleInput(vehicle) {
+  const brakeForce = keyboard.pressed.Space ? 10 : 0
+  const engineForce = 800
+  const maxSteerVal = 0.5
+
+  if (!keyboard.keyPressed) {
+    vehicle.applyEngineForce(0, 1)
+    vehicle.applyEngineForce(0, 1)
+    return
+  }
+
+  vehicle.setBrake(brakeForce, 0)
+  vehicle.setBrake(brakeForce, 1)
+  vehicle.setBrake(brakeForce, 2)
+  vehicle.setBrake(brakeForce, 3)
+
+  if (keyboard.down) {
+    vehicle.applyEngineForce(-engineForce, 0)
+    vehicle.applyEngineForce(-engineForce, 1)
+  }
+
+  if (keyboard.up) {
+    vehicle.applyEngineForce(engineForce, 0)
+    vehicle.applyEngineForce(engineForce, 1)
+  }
+
+  if (keyboard.left) {
+    vehicle.setSteeringValue(maxSteerVal, 0)
+    vehicle.setSteeringValue(maxSteerVal, 1)
+  }
+
+  if (keyboard.right) {
+    vehicle.setSteeringValue(-maxSteerVal, 0)
+    vehicle.setSteeringValue(-maxSteerVal, 1)
+  }
 }
