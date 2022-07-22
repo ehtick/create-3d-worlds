@@ -15,5 +15,6 @@ export function createFloor() {
     quaternion: new CANNON.Quaternion(q._x, q._y, q._z, q._w)
   })
 
-  return { mesh, body }
+  mesh.body = body
+  return mesh
 }

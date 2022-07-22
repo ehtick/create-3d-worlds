@@ -15,7 +15,7 @@ function createChassis() {
   return { chassis, chassisBody }
 }
 
-function createWheels(vehicle) {
+export function createWheels(vehicle) {
   const wheelMaterial = new CANNON.Material()
   const wheelOptions = {
     radius: 0.3,
@@ -77,8 +77,7 @@ export function createVehicle() {
     indexUpAxis: 1, // y
     indexForwardAxis: 2, // z
   })
-  const { wheelBodies, wheelVisuals } = createWheels(vehicle)
-  return { vehicle, chassis, chassisBody, wheelBodies, wheelVisuals }
+  return { vehicle, chassis, chassisBody }
 }
 
 /* INPUT */
