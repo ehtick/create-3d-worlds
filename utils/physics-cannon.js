@@ -7,6 +7,29 @@ const colors = [0xc2b280, 0xF2D16B, 0xedc9af, 0xfffacd, 0xF3CCAA, 0xf5deb3, 0xf0
 
 const phongMaterial = new THREE.MeshPhongMaterial({ color: colors[1] })
 
+/* WORLD */
+
+export const world = new CANNON.World()
+world.gravity.set(0, -9.82, 0)
+
+/* GROUND */
+
+export function createGround({ size = 100 } = {}) {
+  const mesh = createFloor({ size, color: colors[6] })
+  mesh.material = phongMaterial
+  const cannonMaterial = new CANNON.Material()
+  cannonMaterial.friction = 0.25
+  cannonMaterial.restitution = 0.25
+  const groundShape = new CANNON.Box(new CANNON.Vec3(size * .5, 1, size * .5))
+  const body = new CANNON.Body({ mass: 0, cannonMaterial })
+  body.addShape(groundShape)
+  body.position.set(0, -1, 0)
+  mesh.body = body
+  return mesh
+}
+
+/* DUNES */
+
 export function createObstacles() {
   const radiusTop = 0
   const obstacles = []
@@ -34,18 +57,4 @@ export function createObstacles() {
     obstacles.push(mesh)
   }
   return obstacles
-}
-
-export function createGround({ size = 100 } = {}) {
-  const mesh = createFloor({ size, color: colors[6] })
-  mesh.material = phongMaterial
-  const cannonMaterial = new CANNON.Material()
-  cannonMaterial.friction = 0.25
-  cannonMaterial.restitution = 0.25
-  const groundShape = new CANNON.Box(new CANNON.Vec3(size * .5, 1, size * .5))
-  const body = new CANNON.Body({ mass: 0, cannonMaterial })
-  body.addShape(groundShape)
-  body.position.set(0, -1, 0)
-  mesh.body = body
-  return mesh
 }

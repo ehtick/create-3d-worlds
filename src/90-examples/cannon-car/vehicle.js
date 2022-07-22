@@ -1,6 +1,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import * as CANNON from '/libs/cannon-es.js'
 import keyboard from '/classes/Keyboard.js'
+import { world } from '/utils/physics-cannon.js'
 
 const maxAngle = .75
 const maxVelocity = 25
@@ -54,7 +55,7 @@ const createConstraint = (chassis, wheel, pos) => new CANNON.HingeConstraint(cha
   maxForce: 0.99,
 })
 
-export class Car {
+export default class Vehicle {
   constructor() {
     this.turnAngle = 0
     this.velocity = 0
@@ -74,6 +75,11 @@ export class Car {
 
     this.frontLeftWheel.enableMotor()
     this.frontRightWheel.enableMotor()
+
+    world.addConstraint(this.frontLeftWheel)
+    world.addConstraint(this.frontRightWheel)
+    world.addConstraint(this.backLeftWheel)
+    world.addConstraint(this.backRightWheel)
   }
 
   handleInput() {
