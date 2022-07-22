@@ -3,7 +3,7 @@ import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { world, createGround, createObstacles } from '/utils/physics-cannon.js'
 import { createChaseCam, updateChaseCam } from './camera.js'
-import Vehicle from './Vehicle.js'
+import Vehicle from '/classes/Vehicle.js'
 
 initLights()
 
@@ -16,7 +16,8 @@ const obstacles = createObstacles()
 const chaseCam = createChaseCam()
 car.chassis.add(chaseCam)
 
-;[ground, ...obstacles, ...car.meshes].forEach(mesh => {
+const physicMeshes = [ground, ...car.meshes, ...obstacles]
+physicMeshes.forEach(mesh => {
   scene.add(mesh)
   world.addBody(mesh.body)
 })
@@ -25,12 +26,9 @@ car.chassis.add(chaseCam)
 
 void function loop() {
   requestAnimationFrame(loop)
-  const delta = clock.getDelta()
-  world.step(delta)
-
+  world.step(clock.getDelta())
   car.update()
   updateChaseCam(chaseCam, car.chassis)
   // cannonDebugRenderer.update()
-
   renderer.render(scene, camera)
 }()
