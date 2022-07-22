@@ -49,7 +49,10 @@ export function createObstacles() {
     mesh.position.z = Math.random() * 100 - 50
 
     const shape = new CANNON.Cylinder(radiusTop + 0.01, radiusBottom, height, radialSegments)
-    const body = new CANNON.Body({ mass: 0 })
+    const cannonMaterial = new CANNON.Material()
+    cannonMaterial.friction = .9
+    cannonMaterial.restitution = .9
+    const body = new CANNON.Body({ mass: 0, material: cannonMaterial })
     body.addShape(shape, new CANNON.Vec3())
     body.position.copy(mesh.position)
 

@@ -37,10 +37,10 @@ function createWheel({ size, width, position }) {
   mesh.castShadow = true
   mesh.position.set(...position)
   const shape = new CANNON.Cylinder(size, size, width, 20)
-  const wheelMaterial = new CANNON.Material()
-  wheelMaterial.friction = 0.4
-  wheelMaterial.restitution = 0.25
-  const body = new CANNON.Body({ mass: .1, material: wheelMaterial })
+  const cannonMaterial = new CANNON.Material()
+  cannonMaterial.friction = 0.4
+  cannonMaterial.restitution = 0.25
+  const body = new CANNON.Body({ mass: .1, material: cannonMaterial })
   const q = new CANNON.Quaternion()
   q.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), Math.PI / 2)
   body.addShape(shape, new CANNON.Vec3(), q)
