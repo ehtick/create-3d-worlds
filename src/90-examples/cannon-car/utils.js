@@ -3,7 +3,7 @@ import * as CANNON from '/libs/cannon-es.js'
 import { createFloor } from '/utils/ground.js'
 import { randomInRange } from '/utils/helpers.js'
 
-const colors = [0xc2b280, 0xF2D16B, 0xedc9af, 0xfffacd, 0xF3CCAA]
+const colors = [0xc2b280, 0xF2D16B, 0xedc9af, 0xfffacd, 0xF3CCAA, 0xf5deb3, 0xf0e68c]
 
 export function createObstacles() {
   const radiusTop = 0
@@ -33,7 +33,7 @@ export function createObstacles() {
 }
 
 export function createGround({ size = 100 } = {}) {
-  const mesh = createFloor({ size, color: colors[1] })
+  const mesh = createFloor({ size, color: colors[6] })
   const material = new CANNON.Material()
   material.friction = 0.25
   material.restitution = 0.25
