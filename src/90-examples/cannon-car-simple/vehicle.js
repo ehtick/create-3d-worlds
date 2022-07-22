@@ -21,17 +21,8 @@ function createWheels(vehicle) {
     radius: 0.3,
     directionLocal: new CANNON.Vec3(0, -1, 0),
     chassisConnectionPointLocal: new CANNON.Vec3(1, 1, 0),
-    suspensionStiffness: 45,
-    suspensionRestLength: 0.4,
-    frictionSlip: 5,
-    dampingRelaxation: 2.3,
-    dampingCompression: 4.5,
-    maxSuspensionForce: 200000,
-    rollInfluence: 0.01,
-    axleLocal: new CANNON.Vec3(-1, 0, 0),
-    maxSuspensionTravel: 0.25,
-    customSlidingRotationalSpeed: -30,
-    useCustomSlidingRotationalSpeed: true,
+    suspensionRestLength: 0.6,
+    frictionSlip: 0.5,
   }
 
   const axlewidth = 0.7

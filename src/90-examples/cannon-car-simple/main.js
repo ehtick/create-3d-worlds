@@ -1,4 +1,5 @@
 import * as CANNON from '/libs/cannon-es.js'
+import CannonDebugRenderer from '/libs/cannonDebugRenderer.js'
 import { scene, camera, renderer } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import Car from './vehicle.js'
@@ -11,6 +12,7 @@ world.gravity.set(0, -10, 0)
 const floor = createFloor()
 scene.add(floor)
 world.addBody(floor.body)
+const cannonDebugRenderer = new CannonDebugRenderer(scene, world)
 
 const car = new Car()
 const { vehicle, chassis, wheelMeshes } = car
@@ -25,5 +27,6 @@ void function render() {
   requestAnimationFrame(render)
   world.step(1 / 60)
   car.update()
+  cannonDebugRenderer.update()
   renderer.render(scene, camera)
 }()
