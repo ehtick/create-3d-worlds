@@ -2,26 +2,21 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 import * as CANNON from '/libs/cannon-es.js'
 import keyboard from '/classes/Keyboard.js'
 
-export function createVehicle() {
+function createChassis() {
   const chassisShape = new CANNON.Box(new CANNON.Vec3(1, 0.3, 2))
   const chassisBody = new CANNON.Body({ mass: 150 })
   chassisBody.addShape(chassisShape)
   chassisBody.position.set(0, 0.2, 0)
   chassisBody.angularVelocity.set(0, 0, 0) // initial velocity
 
-  const wheelMaterial = new CANNON.Material()
-
   const geometry = new THREE.BoxGeometry(2, 0.6, 4)
   const material = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide })
   const chassis = new THREE.Mesh(geometry, material)
+  return { chassis, chassisBody }
+}
 
-  const vehicle = new CANNON.RaycastVehicle({
-    chassisBody,
-    indexRightAxis: 0, // x
-    indexUpAxis: 1, // y
-    indexForwardAxis: 2, // z
-  })
-
+function createWheels(vehicle) {
+  const wheelMaterial = new CANNON.Material()
   const wheelOptions = {
     radius: 0.3,
     directionLocal: new CANNON.Vec3(0, -1, 0),
@@ -67,15 +62,26 @@ export function createVehicle() {
       side: THREE.DoubleSide,
       flatShading: true,
     })
-    const cylinder = new THREE.Mesh(geometry, material)
-    cylinder.geometry.rotateZ(Math.PI / 2)
-    wheelVisuals.push(cylinder)
+    const mesh = new THREE.Mesh(geometry, material)
+    mesh.geometry.rotateZ(Math.PI / 2)
+    wheelVisuals.push(mesh)
   })
+  return { wheelBodies, wheelVisuals }
+}
 
+export function createVehicle() {
+  const { chassis, chassisBody } = createChassis()
+  const vehicle = new CANNON.RaycastVehicle({
+    chassisBody,
+    indexRightAxis: 0, // x
+    indexUpAxis: 1, // y
+    indexForwardAxis: 2, // z
+  })
+  const { wheelBodies, wheelVisuals } = createWheels(vehicle)
   return { vehicle, chassis, chassisBody, wheelBodies, wheelVisuals }
 }
 
-
+/* INPUT */
 
 export function handleInput(vehicle) {
   const brakeForce = keyboard.pressed.Space ? 10 : 0

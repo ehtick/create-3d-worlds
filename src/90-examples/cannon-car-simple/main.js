@@ -7,7 +7,6 @@ import { createFloor } from './utils.js'
 
 initLights()
 const world = new CANNON.World()
-world.broadphase = new CANNON.SAPBroadphase(world)
 world.gravity.set(0, -10, 0)
 
 const { mesh, body } = createFloor()
@@ -16,6 +15,7 @@ world.addBody(body)
 
 const { vehicle, chassis, chassisBody, wheelBodies, wheelVisuals } = createVehicle()
 vehicle.addToWorld(world)
+
 scene.add(chassis)
 wheelVisuals.forEach(cylinder => scene.add(cylinder))
 
@@ -29,8 +29,8 @@ void function render() {
   cannonDebugRenderer.update()
 
   handleInput(vehicle)
-  vehicle.wheelInfos.forEach((w, i) => {
-    const t = w.worldTransform
+  vehicle.wheelInfos.forEach((wheel, i) => {
+    const t = wheel.worldTransform
     wheelBodies[i].position.copy(t.position)
     wheelBodies[i].quaternion.copy(t.quaternion)
     wheelVisuals[i].position.copy(t.position)
