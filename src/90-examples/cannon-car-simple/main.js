@@ -37,13 +37,6 @@ vehicle.addToWorld(world)
 scene.add(chassis)
 wheelVisuals.forEach(cylinder => scene.add(cylinder))
 
-const wheelMaterial = wheelBodies[0].material
-const wheelGroundContactMaterial = new CANNON.ContactMaterial(wheelMaterial, plane.material, {
-  friction: 0.3,
-  restitution: 0,
-  contactEquationStiffness: 1000,
-})
-world.addContactMaterial(wheelGroundContactMaterial)
 const cannonDebugRenderer = new CannonDebugRenderer(scene, world)
 
 /** LOOP **/

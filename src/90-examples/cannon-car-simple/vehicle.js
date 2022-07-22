@@ -24,6 +24,7 @@ export function createVehicle() {
   const wheelOptions = {
     radius: 0.3,
     directionLocal: new CANNON.Vec3(0, -1, 0),
+    chassisConnectionPointLocal: new CANNON.Vec3(1, 1, 0),
     suspensionStiffness: 45,
     suspensionRestLength: 0.4,
     frictionSlip: 5,
@@ -32,7 +33,6 @@ export function createVehicle() {
     maxSuspensionForce: 200000,
     rollInfluence: 0.01,
     axleLocal: new CANNON.Vec3(-1, 0, 0),
-    chassisConnectionPointLocal: new CANNON.Vec3(1, 1, 0),
     maxSuspensionTravel: 0.25,
     customSlidingRotationalSpeed: -30,
     useCustomSlidingRotationalSpeed: true,
