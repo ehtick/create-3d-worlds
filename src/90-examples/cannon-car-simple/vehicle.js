@@ -82,8 +82,9 @@ function createVehicle(chassisBody) {
 export default class Car {
   constructor() {
     const { chassis, chassisBody } = createChassis()
-    this.vehicle = createVehicle(chassisBody)
-    const { wheelBodies, wheelMeshes } = createWheels(this.vehicle)
+    const { vehicle } = createVehicle(chassisBody)
+    const { wheelBodies, wheelMeshes } = createWheels(vehicle)
+    this.vehicle = vehicle
     this.chassis = chassis
     this.chassisBody = chassisBody
     this.wheelBodies = wheelBodies
