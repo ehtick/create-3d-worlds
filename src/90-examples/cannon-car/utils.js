@@ -2,10 +2,10 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 import * as CANNON from '/libs/cannon-es.js'
 import { createFloor } from '/utils/ground.js'
 import { randomInRange } from '/utils/helpers.js'
-import { material as materialGradient } from '/utils/shaders/gradient.js'
-import { material as materialUv } from '/utils/shaders/gradient-uv.js'
 
 const colors = [0xc2b280, 0xF2D16B, 0xedc9af, 0xfffacd, 0xF3CCAA, 0xf5deb3, 0xf0e68c]
+
+const phongMaterial = new THREE.MeshPhongMaterial({ color: colors[1] })
 
 export function createObstacles() {
   const radiusTop = 0
@@ -17,11 +17,10 @@ export function createObstacles() {
     const radialSegments = radiusBottom * 5
 
     const geometry = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments)
-    const clonedMaterial = materialGradient.clone()
-    clonedMaterial.uniforms.color1.value = new THREE.Color(colors[i % colors.length])
-    clonedMaterial.uniforms.color2.value = new THREE.Color(colors[(i + 1) % colors.length])
+    const material = new THREE.MeshPhongMaterial({ color: colors[5] })
 
-    const mesh = new THREE.Mesh(geometry, clonedMaterial)
+    const mesh = new THREE.Mesh(geometry, material)
+    mesh.receiveShadow = true
     mesh.position.x = Math.random() * 100 - 50
     mesh.position.y = 0.5
     mesh.position.z = Math.random() * 100 - 50
@@ -39,9 +38,7 @@ export function createObstacles() {
 
 export function createGround({ size = 100 } = {}) {
   const mesh = createFloor({ size, color: colors[6] })
-  materialUv.uniforms.color1.value = new THREE.Color(colors[1])
-  materialUv.uniforms.color2.value = new THREE.Color(colors[5])
-  mesh.material = materialUv
+  mesh.material = phongMaterial
   const cannonMaterial = new CANNON.Material()
   cannonMaterial.friction = 0.25
   cannonMaterial.restitution = 0.25

@@ -38,7 +38,7 @@ void function loop() {
 
   car.update()
   updateChaseCam(chaseCam, car.chassis)
-  cannonDebugRenderer.update()
+  // cannonDebugRenderer.update()
 
   renderer.render(scene, camera)
 }()
