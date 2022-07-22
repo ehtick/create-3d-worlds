@@ -3,50 +3,49 @@ import * as CANNON from '/libs/cannon-es.js'
 import keyboard from '/classes/Keyboard.js'
 
 function createChassis() {
-  const chassisShape = new CANNON.Box(new CANNON.Vec3(1, 0.3, 2))
+  const shape = new CANNON.Box(new CANNON.Vec3(1, 0.3, 2))
   const chassisBody = new CANNON.Body({ mass: 150 })
-  chassisBody.addShape(chassisShape)
+  chassisBody.addShape(shape)
   chassisBody.position.set(0, 0.2, 0)
-  chassisBody.angularVelocity.set(0, 0, 0) // initial velocity
 
   const geometry = new THREE.BoxGeometry(2, 0.6, 4)
   const material = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide })
   const chassis = new THREE.Mesh(geometry, material)
-  return { chassis, chassisBody }
+  chassis.body = chassisBody
+  return { chassis }
 }
 
 function createWheels(vehicle) {
-  const wheelMaterial = new CANNON.Material()
-  const wheelOptions = {
+  const params = {
     radius: 0.3,
     directionLocal: new CANNON.Vec3(0, -1, 0),
-    chassisConnectionPointLocal: new CANNON.Vec3(1, 1, 0),
+    chassisConnectionPointLocal: new CANNON.Vec3(0, 0, 0),
     suspensionRestLength: 0.6,
     frictionSlip: 0.5,
   }
+  const width = 0.75
+  const length = 1.1
 
-  const axlewidth = 0.7
-  wheelOptions.chassisConnectionPointLocal.set(axlewidth, 0, -1)
-  vehicle.addWheel(wheelOptions)
+  params.chassisConnectionPointLocal.set(width, 0, -length)
+  vehicle.addWheel(params)
 
-  wheelOptions.chassisConnectionPointLocal.set(-axlewidth, 0, -1)
-  vehicle.addWheel(wheelOptions)
+  params.chassisConnectionPointLocal.set(-width, 0, -length)
+  vehicle.addWheel(params)
 
-  wheelOptions.chassisConnectionPointLocal.set(axlewidth, 0, 1)
-  vehicle.addWheel(wheelOptions)
+  params.chassisConnectionPointLocal.set(width, 0, length)
+  vehicle.addWheel(params)
 
-  wheelOptions.chassisConnectionPointLocal.set(-axlewidth, 0, 1)
-  vehicle.addWheel(wheelOptions)
+  params.chassisConnectionPointLocal.set(-width, 0, length)
+  vehicle.addWheel(params)
 
-  const wheelBodies = [], wheelMeshes = []
+  const wheelMeshes = []
 
   vehicle.wheelInfos.forEach(wheel => {
     const shape = new CANNON.Cylinder(wheel.radius, wheel.radius, wheel.radius / 2, 20)
-    const body = new CANNON.Body({ mass: 1, material: wheelMaterial })
+    const body = new CANNON.Body({ mass: 1, material: new CANNON.Material() })
     const q = new CANNON.Quaternion()
     q.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), Math.PI / 2)
     body.addShape(shape, new CANNON.Vec3(), q)
-    wheelBodies.push(body)
     const geometry = new THREE.CylinderGeometry(wheel.radius, wheel.radius, 0.4, 32)
     const material = new THREE.MeshPhongMaterial({
       color: 0x444444,
@@ -55,9 +54,10 @@ function createWheels(vehicle) {
     })
     const mesh = new THREE.Mesh(geometry, material)
     mesh.geometry.rotateZ(Math.PI / 2)
+    mesh.body = body
     wheelMeshes.push(mesh)
   })
-  return { wheelBodies, wheelMeshes }
+  return { wheelMeshes }
 }
 
 function createVehicle(chassisBody) {
@@ -72,13 +72,11 @@ function createVehicle(chassisBody) {
 
 export default class Car {
   constructor() {
-    const { chassis, chassisBody } = createChassis()
-    const { vehicle } = createVehicle(chassisBody)
-    const { wheelBodies, wheelMeshes } = createWheels(vehicle)
+    const { chassis } = createChassis()
+    const { vehicle } = createVehicle(chassis.body)
+    const { wheelMeshes } = createWheels(vehicle)
     this.vehicle = vehicle
     this.chassis = chassis
-    this.chassisBody = chassisBody
-    this.wheelBodies = wheelBodies
     this.wheelMeshes = wheelMeshes
   }
 
@@ -121,16 +119,17 @@ export default class Car {
   }
 
   update() {
-    const { wheelBodies, wheelMeshes, chassis, chassisBody } = this
+    const { wheelMeshes, chassis } = this
     this.handleInput()
     this.vehicle.wheelInfos.forEach((wheel, i) => {
       const t = wheel.worldTransform
-      wheelBodies[i].position.copy(t.position)
-      wheelBodies[i].quaternion.copy(t.quaternion)
-      wheelMeshes[i].position.copy(t.position)
-      wheelMeshes[i].quaternion.copy(t.quaternion)
+      const mesh = wheelMeshes[i]
+      mesh.position.copy(t.position)
+      mesh.quaternion.copy(t.quaternion)
+      mesh.body.position.copy(t.position)
+      mesh.body.quaternion.copy(t.quaternion)
     })
-    chassis.position.copy(chassisBody.position)
-    chassis.quaternion.copy(chassisBody.quaternion)
+    chassis.position.copy(chassis.body.position)
+    chassis.quaternion.copy(chassis.body.quaternion)
   }
 }
