@@ -79,5 +79,11 @@ export function createTank() {
   turretMesh.castShadow = true
   turretMesh.position.z = turretLength * .5
 
-  return { tank, bodyMesh, turretMesh, wheelMeshes }
+  const tankGun = new THREE.Object3D()
+  tankGun.scale.set(5, 5, 5)
+  tankGun.position.y = .5
+  tankGun.add(turretMesh)
+  bodyMesh.add(tankGun)
+
+  return { tank, wheelMeshes, tankGun }
 }

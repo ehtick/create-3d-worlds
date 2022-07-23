@@ -14,14 +14,8 @@ initLights()
 
 scene.add(createGround({ size: 50 }))
 
-const { tank, bodyMesh, turretMesh, wheelMeshes } = createTank()
+const { tank, tankGun, wheelMeshes } = createTank()
 scene.add(tank)
-
-const turretPivot = new THREE.Object3D()
-turretPivot.scale.set(5, 5, 5)
-turretPivot.position.y = .5
-turretPivot.add(turretMesh)
-bodyMesh.add(turretPivot)
 
 const targetGeometry = new THREE.SphereBufferGeometry(.5, 6, 3)
 const targetMaterial = new THREE.MeshPhongMaterial({ color: 0x00FF00, flatShading: true })
@@ -77,7 +71,7 @@ void function loop() {
 
   // Face turret at the target
   targetMesh.getWorldPosition(targetPosition)
-  turretPivot.lookAt(targetPosition)
+  tankGun.lookAt(targetPosition)
 
   // Rotate the wheels
   wheelMeshes.forEach(obj => {
