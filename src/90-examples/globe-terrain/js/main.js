@@ -1,14 +1,13 @@
 /* global THREE */
 let camera, scene, renderer, container
-let light, ambientLight, pointLight, lightRotate, uniforms, flatNormalTex, globeImage, globeTexture, controls
+let light, ambientLight, pointLight, lightRotate, uniforms, flatNormalTex, globeTexture, controls
 
 import { vs_rt as vs, fs_erode, fs_dilate, vs_main, fs_main } from './shaders.js'
+import { prepRTT } from './RTT_setup.js'
 
 const RTTs = {}
-
 const loopSteps = 50
 
-// START THE MACHINE
 function init() {
   container = document.getElementById('globecontainer')
   renderer = new THREE.WebGLRenderer({ alpha: true, 'antialias': false })
@@ -48,16 +47,12 @@ function init() {
 
   // MATERIALS
 
-  // base mat def
-
-  const ambient = 0xffffff, diffuse = 0xffffff, specular = 1, shininess = 10.0, scale = 100
+  const ambient = 0xffffff, diffuse = 0xffffff, specular = 1, shininess = 10.0
 
   const shader = THREE.ShaderLib.normalmap
   uniforms = THREE.UniformsUtils.clone(shader.uniforms)
 
-  flatNormalTex = THREE.ImageUtils.loadTexture('./img/flat.png', new THREE.UVMapping(), () => {
-    render()
-  })
+  flatNormalTex = THREE.ImageUtils.loadTexture('./img/flat.png', new THREE.UVMapping())
   uniforms.tNormal = { type: 't', value: flatNormalTex }
 
   uniforms.diffuse.value.setHex(diffuse)
@@ -67,16 +62,14 @@ function init() {
   uniforms.enableDiffuse = { type: 'i', value: 1 }
   uniforms.tNormal = { type: 't', value: flatNormalTex }
   uniforms.tDiffuse = {
-    type: 't', value: new THREE.ImageUtils.loadTexture('./img/world.topo.1024.jpg', new THREE.UVMapping(), (() => {
-      render()
-    }))
+    type: 't', value: new THREE.ImageUtils.loadTexture('./img/world.topo.1024.jpg', new THREE.UVMapping())
   }
   uniforms.tDisplacement = { type: 't', value: globeTexture.texture2 }
 
   uniforms.tDiffuseOpacity = { type: 'f', value: 1 }
   uniforms.tDiffuse2Opacity = { type: 'f', value: 0 }
   uniforms.uPointLightPos = { type: 'v3', value: pointLight.position },
-    uniforms.uPointLightColor = { type: 'c', value: new THREE.Color(pointLight.color) }
+  uniforms.uPointLightColor = { type: 'c', value: new THREE.Color(pointLight.color) }
   uniforms.uAmbientLightColor = { type: 'c', value: new THREE.Color(ambientLight.color) }
   uniforms.matrightBottom = { type: 'v2', value: new THREE.Vector2(180.0, -90.0) }
   uniforms.matleftTop = { type: 'v2', value: new THREE.Vector2(-180.0, 90.0) }
@@ -120,15 +113,11 @@ function init() {
 
   controls.staticMoving = false
   controls.dynamicDampingFactor = 0.3
-  controls.addEventListener('change', render)
-
   controls.enabled = true
 
-  addMouseHandler(renderer.domElement)
+  for (const x in RTTs) prepTextures(RTTs[x])
 
-  for (let x in RTTs) prepTextures(RTTs[x])
-
-  startLoop()
+  loop()
 }
 
 function prepTextures(myRTT) {
@@ -152,11 +141,6 @@ function prepTextures(myRTT) {
 
   myRTT.textureMat2.fragmentShader = secondShader
   myRTT.textureMat2.needsUpdate = true
-
-  for (let x = 0; x < loopSteps; x++)
-    calculate(myRTT)
-
-  render()
 }
 
 function calculate(myRTT) {
@@ -164,58 +148,22 @@ function calculate(myRTT) {
   renderer.render(myRTT.scene, myRTT.camera, myRTT.texture, false)
 }
 
-let requestId
-
 /* EVENTS */
 
-let mouseDown = false
-
-function onMouseDown(evt) {
-  mouseDown = true
-}
-
-function onMouseUp(evt) {
-  mouseDown = false
-}
-
-function addMouseHandler(div) {
-  div.addEventListener('mousedown', onMouseDown)
-  div.addEventListener('mouseup', onMouseUp)
-}
-
 function loop() {
-  if (mouseDown) {
-    render()
-    controls.update()
-  }
-  requestId = requestAnimationFrame(loop)
-}
-
-function startLoop() {
-  if (!requestId)
-    loop()
-}
-
-function render() {
-  renderer.clear()
+  requestAnimationFrame(loop)
+  controls.update()
   renderer.render(scene, camera)
 }
 
 // onload
 
-window.onload = function () {
-  const large = window.innerWidth >= 1200
-  globeImage = THREE.ImageUtils.loadTexture(
-    large ? './img/Srtm.2k_norm.jpg' : './img/Srtm.1k_norm.jpg',
-    new THREE.UVMapping(),
-    () => {
-      globeTexture = prepRTT(globeImage, vs, fs_dilate)
-      addRTT('globe', globeTexture)
-    }
-  )
-}
-
-function addRTT(name, texture) {
-  RTTs[name] = texture // register texture so it can be referenced by name
-  init()
-}
+const globeImage = THREE.ImageUtils.loadTexture(
+  window.innerWidth >= 1200 ? './img/Srtm.2k_norm.jpg' : './img/Srtm.1k_norm.jpg',
+  new THREE.UVMapping(),
+  () => {
+    globeTexture = prepRTT(globeImage, vs, fs_dilate)
+    RTTs.gloge = globeTexture
+    init()
+  }
+)

@@ -6,8 +6,7 @@ const renderTargetParams = {
   depthBuffer: false,
 }
 
-function prepRTT(myImage, vs, fs) {
-  // RTT 1
+export function prepRTT(myImage, vs, fs) {
   const myScene = new THREE.Scene()
 
   const imageW = myImage.image.width
