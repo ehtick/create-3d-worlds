@@ -27,6 +27,22 @@ export function createEarthClouds({ r = 15.2, segments = 64 } = {}) {
   return clouds
 }
 
+export function createGlobe() {
+  const geometry = new THREE.SphereGeometry(3, 720, 360)
+  const material = new THREE.MeshStandardMaterial()
+  const texture = textureLoader.load('earthmap4k.jpg')
+  // texture.anisotropy = renderer.capabilities.getMaxAnisotropy()
+  material.map = texture
+
+  material.displacementMap = textureLoader.load('earthbump4k.jpg')
+  material.displacementScale = 0.2
+
+  const sphere = new THREE.Mesh(geometry, material)
+  sphere.rotation.y = -Math.PI / 2
+  sphere.castShadow = sphere.receiveShadow = true
+  return sphere
+}
+
 /* MOON */
 
 export function createMoon({ r = 2, segments = 32 } = {}) {
