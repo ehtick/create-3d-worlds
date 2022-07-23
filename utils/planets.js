@@ -7,14 +7,16 @@ textureLoader.setPath('/assets/textures/planets/')
 
 export function createEarth({ r = 15, segments = 64 } = {}) {
   const map = textureLoader.load('earthmap4k.jpg') // max width is 4096
+  // map.anisotropy = renderer.capabilities.getMaxAnisotropy()
   const bumpMap = textureLoader.load('earthbump4k.jpg')
   const specularMap = textureLoader.load('earthspec4k.jpg')
-  const material = new THREE.MeshPhongMaterial({ map, specularMap, bumpMap })
+  const material = new THREE.MeshPhongMaterial({ map, specularMap, bumpMap, displacementMap: bumpMap, displacementScale: 1.75 })
 
   const geometry = new THREE.SphereGeometry(r, segments, segments)
-  const earth = new THREE.Mesh(geometry, material)
-  earth.name = 'earth'
-  return earth
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.castShadow = mesh.receiveShadow = true
+  mesh.name = 'earth'
+  return mesh
 }
 
 export function createEarthClouds({ r = 15.2, segments = 64 } = {}) {
@@ -25,22 +27,6 @@ export function createEarthClouds({ r = 15.2, segments = 64 } = {}) {
   const clouds = new THREE.Mesh(geometry, material)
   clouds.name = 'clouds'
   return clouds
-}
-
-export function createGlobe() {
-  const geometry = new THREE.SphereGeometry(3, 720, 360)
-  const material = new THREE.MeshStandardMaterial()
-  const texture = textureLoader.load('earthmap4k.jpg')
-  // texture.anisotropy = renderer.capabilities.getMaxAnisotropy()
-  material.map = texture
-
-  material.displacementMap = textureLoader.load('earthbump4k.jpg')
-  material.displacementScale = 0.2
-
-  const sphere = new THREE.Mesh(geometry, material)
-  sphere.rotation.y = -Math.PI / 2
-  sphere.castShadow = sphere.receiveShadow = true
-  return sphere
 }
 
 /* MOON */

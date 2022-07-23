@@ -5,8 +5,6 @@ import { dirLight } from '/utils/light.js'
 dirLight({ position: [100, 10, -50] })
 renderer.setClearColor(0x000000)
 
-const rotationSpeed = 0.001
-
 const controls = createOrbitControls()
 camera.position.set(40, 0, 0)
 
@@ -15,6 +13,8 @@ const clouds = createEarthClouds({ r: 15.2 })
 scene.add(earth, clouds)
 
 /* LOOP */
+
+const rotationSpeed = 0.001
 
 void function render() {
   controls.update()
