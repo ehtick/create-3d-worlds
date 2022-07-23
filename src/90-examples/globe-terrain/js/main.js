@@ -1,6 +1,8 @@
-/* global THREE, SHADER_LOADER */
+/* global THREE */
 let camera, scene, renderer, container
-let light, ambientLight, pointLight, lightRotate, uniforms, flatNormalTex, vs, fs_erode, fs_dilate, vs_main, fs_main, globeImage, globeTexture, controls
+let light, ambientLight, pointLight, lightRotate, uniforms, flatNormalTex, globeImage, globeTexture, controls
+
+import { vs_rt as vs, fs_erode, fs_dilate, vs_main, fs_main } from './shaders.js'
 
 const RTTs = {}
 
@@ -40,7 +42,7 @@ function init() {
 
   const sphere = new THREE.SphereGeometry(100, 8, 8)
   light = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xffffff }))
-  light.position = pointLight.position
+  light.position.copy(pointLight.position)
   light.scale.x = light.scale.y = light.scale.z = 0.05
   lightRotate.add(light)
   scene.add(lightRotate)
@@ -65,15 +67,17 @@ function init() {
   uniforms.shininess.value = shininess
   uniforms.enableDiffuse = { type: 'i', value: 1 }
   uniforms.tNormal = { type: 't', value: flatNormalTex }
-  uniforms.tDiffuse = { type: 't', value: new THREE.ImageUtils.loadTexture('./img/world.topo.1024.jpg', new THREE.UVMapping(), (() => {
-    render()
-  })) }
+  uniforms.tDiffuse = {
+    type: 't', value: new THREE.ImageUtils.loadTexture('./img/world.topo.1024.jpg', new THREE.UVMapping(), (() => {
+      render()
+    }))
+  }
   uniforms.tDisplacement = { type: 't', value: globeTexture.texture2 }
 
   uniforms.tDiffuseOpacity = { type: 'f', value: 1 }
   uniforms.tDiffuse2Opacity = { type: 'f', value: 0 }
   uniforms.uPointLightPos = { type: 'v3', value: pointLight.position },
-  uniforms.uPointLightColor = { type: 'c', value: new THREE.Color(pointLight.color) }
+    uniforms.uPointLightColor = { type: 'c', value: new THREE.Color(pointLight.color) }
   uniforms.uAmbientLightColor = { type: 'c', value: new THREE.Color(ambientLight.color) }
   uniforms.matrightBottom = { type: 'v2', value: new THREE.Vector2(180.0, -90.0) }
   uniforms.matleftTop = { type: 'v2', value: new THREE.Vector2(-180.0, 90.0) }
@@ -99,7 +103,7 @@ function init() {
 
   // GEOMETRY
 
-  const globeGeo = new THREE.PlaneGeometry(10, 10, 257, 129)
+  const globeGeo = new THREE.PlaneBufferGeometry(10, 10, 257, 129)
   globeGeo.computeTangents()
   const globeMesh = new THREE.Mesh(globeGeo, material)
   globeMesh.frustumCulled = false
@@ -200,7 +204,7 @@ function render() {
 
 // onload
 
-window.onload = function() {
+window.onload = function () {
   const large = window.innerWidth >= 1200
   globeImage = THREE.ImageUtils.loadTexture(
     large ? './img/Srtm.2k_norm.jpg' : './img/Srtm.1k_norm.jpg',
@@ -216,13 +220,3 @@ function addRTT(name, texture) {
   RTTs[name] = texture // register texture so it can be referenced by name
   init()
 }
-
-SHADER_LOADER.load(
-  data => {
-    vs = data.vs_rt.vertex
-    fs_erode = data.fs_erode.fragment
-    fs_dilate = data.fs_dilate.fragment
-    vs_main = data.vs_main.vertex
-    fs_main = data.fs_main.fragment
-  }
-)
