@@ -124,7 +124,7 @@ function loop() {
 
 const globeImage = THREE.ImageUtils.loadTexture(
   window.innerWidth >= 1200 ? './img/Srtm.2k_norm.jpg' : './img/Srtm.1k_norm.jpg',
-  new THREE.UVMapping(),
+  THREE.UVMapping,
   () => {
     globeTexture = prepRTT(globeImage, vs, fs_dilate)
     RTTs.gloge = globeTexture

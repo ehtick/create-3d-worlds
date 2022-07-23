@@ -357,23 +357,22 @@ export const fs_main = /* glsl */ `
 
 const ambient = 0xffffff, diffuse = 0xffffff, specular = 1, shininess = 10.0
 
-const shader = THREE.ShaderLib.normalmap
+// const shader = THREE.ShaderLib.normalmap
+// const uniforms = THREE.UniformsUtils.clone(shader.uniforms)
 
-const uniforms = THREE.UniformsUtils.clone(shader.uniforms)
+const uniforms = {}
 
-const flatNormalTex = THREE.ImageUtils.loadTexture('./img/flat.png', new THREE.UVMapping())
+const flatNormalTex = THREE.ImageUtils.loadTexture('./img/flat.png', THREE.UVMapping)
 uniforms.tNormal = { type: 't', value: flatNormalTex }
-
-uniforms.diffuse.value.setHex(diffuse)
-uniforms.specular.value = new THREE.Color().setRGB(specular, specular, specular)
-uniforms.ambient.value.setHex(ambient)
-uniforms.shininess.value = shininess
+uniforms.diffuse = { value: diffuse }
+uniforms.specular = { value: new THREE.Color().setRGB(specular, specular, specular) }
+uniforms.ambient = { value: ambient }
+uniforms.shininess = { value: shininess }
 uniforms.enableDiffuse = { type: 'i', value: 1 }
 uniforms.tNormal = { type: 't', value: flatNormalTex }
 uniforms.tDiffuse = {
-  type: 't', value: new THREE.ImageUtils.loadTexture('./img/world.topo.1024.jpg', new THREE.UVMapping())
+  type: 't', value: new THREE.ImageUtils.loadTexture('./img/world.topo.1024.jpg', THREE.UVMapping)
 }
-
 uniforms.tDiffuseOpacity = { type: 'f', value: 1 }
 uniforms.tDiffuse2Opacity = { type: 'f', value: 0 }
 uniforms.matrightBottom = { type: 'v2', value: new THREE.Vector2(180.0, -90.0) }
