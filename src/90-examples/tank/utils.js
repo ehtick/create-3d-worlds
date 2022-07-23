@@ -23,3 +23,16 @@ export function createTarget() {
   targetElevation.add(targetMesh)
   return { targetMesh, targetOrbit }
 }
+
+export const path = new THREE.SplineCurve([
+  new THREE.Vector2(-10, 0),
+  new THREE.Vector2(-5, 5),
+  new THREE.Vector2(0, 0),
+  new THREE.Vector2(5, -5),
+  new THREE.Vector2(10, 0),
+  new THREE.Vector2(5, 10),
+  new THREE.Vector2(-5, 10),
+  new THREE.Vector2(-10, -10),
+  new THREE.Vector2(-15, -8),
+  new THREE.Vector2(-10, 0),
+])
