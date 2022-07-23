@@ -9,7 +9,6 @@ const RTTs = {}
 const loopSteps = 50
 
 // START THE MACHINE
-
 function init() {
   container = document.getElementById('globecontainer')
   renderer = new THREE.WebGLRenderer({ alpha: true, 'antialias': false })
