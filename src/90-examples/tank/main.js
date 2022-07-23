@@ -5,7 +5,7 @@ import { createGround } from '/utils/ground.js'
 import { createTank } from './tank.js'
 import { path, createPathVisual, createTarget } from './utils.js'
 
-camera.position.set(8, 4, 10).multiplyScalar(3)
+camera.position.set(8, 4, 10).multiplyScalar(2)
 camera.lookAt(0, 0, 0)
 
 initLights()
@@ -20,29 +20,25 @@ scene.add(targetOrbit)
 
 scene.add(createPathVisual(path))
 
+/* LOOP */
+
 const targetPosition = new THREE.Vector3()
 const tankPosition = new THREE.Vector2()
-const tankTarget = new THREE.Vector2()
-
-/* LOOP */
+const tankNext = new THREE.Vector2()
 
 void function loop() {
   const time = clock.getElapsedTime()
+  const tankTime = time * 0.05
 
   targetOrbit.rotation.y = time * .27
-
-  // Move tank
-  const tankTime = time * 0.05
-  path.getPointAt(tankTime % 1, tankPosition)
-  path.getPointAt((tankTime + 0.01) % 1, tankTarget)
-  tank.position.set(tankPosition.x, 0, tankPosition.y)
-  tank.lookAt(tankTarget.x, 0, tankTarget.y)
-
-  // Face turret at the target
   targetMesh.getWorldPosition(targetPosition)
+
+  path.getPointAt(tankTime % 1, tankPosition)
+  path.getPointAt((tankTime + 0.01) % 1, tankNext)
+  tank.position.set(tankPosition.x, 0, tankPosition.y)
+  tank.lookAt(tankNext.x, 0, tankNext.y)
   tankGun.lookAt(targetPosition)
 
-  // Rotate the wheels
   wheelMeshes.forEach(obj => {
     obj.rotation.x = time * 3
   })
