@@ -4,7 +4,7 @@ import keyboard from '/classes/Keyboard.js'
 import { world } from '/utils/physics-cannon.js'
 
 const maxAngle = .75
-const maxVelocity = 20
+const maxVelocity = 35
 
 const frontWheelSize = .33
 const frontWheelWidth = .25

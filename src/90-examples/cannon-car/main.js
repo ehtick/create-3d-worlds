@@ -2,7 +2,7 @@ import CannonDebugRenderer from '/libs/cannonDebugRenderer.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { world, createGround, createObstacles } from '/utils/physics-cannon.js'
-import { createChaseCam } from './camera.js'
+import { createChaseCamera } from '/utils/helpers.js'
 import Vehicle from '/classes/Vehicle.js'
 
 initLights()
@@ -13,7 +13,7 @@ const ground = createGround({ size: 100 })
 const car = new Vehicle()
 const obstacles = createObstacles()
 
-const chaseCam = createChaseCam(car.chassis)
+const chaseCam = createChaseCamera(car.chassis)
 
 const physicMeshes = [ground, ...car.meshes, ...obstacles]
 physicMeshes.forEach(mesh => {
