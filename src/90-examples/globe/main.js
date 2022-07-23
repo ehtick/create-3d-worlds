@@ -10,11 +10,11 @@ const controls = createOrbitControls()
 
 const geometry = new THREE.SphereGeometry(3, 720, 360)
 const material = new THREE.MeshStandardMaterial()
-const texture = textureLoader.load('img/worldColour.5400x2700.jpg')
+const texture = textureLoader.load('/assets/textures/planets/earth-5400x2700-color.jpg')
 texture.anisotropy = renderer.capabilities.getMaxAnisotropy()
 material.map = texture
 
-material.displacementMap = textureLoader.load('img/world.5400x2700.jpg')
+material.displacementMap = textureLoader.load('/assets/textures/planets/earth-5400x2700.jpg')
 material.displacementScale = 0.2
 
 const sphere = new THREE.Mesh(geometry, material)
