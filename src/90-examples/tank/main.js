@@ -1,8 +1,12 @@
-// import './styles.css'
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
+import { createTank } from './tank.js'
+
+const carWidth = 4
+const carHeight = 1
+const carLength = 8
 
 function makeCamera(fov = 40) {
   const aspect = 2
@@ -18,23 +22,8 @@ initLights()
 
 scene.add(createGround({ size: 50 }))
 
-const carWidth = 4
-const carHeight = 1
-const carLength = 8
-
-const tank = new THREE.Object3D()
+const { tank, bodyMesh, turretMesh, wheelMeshes } = createTank()
 scene.add(tank)
-
-const bodyGeometry = new THREE.BoxBufferGeometry(
-  carWidth,
-  carHeight,
-  carLength
-)
-const bodyMaterial = new THREE.MeshPhongMaterial({ color: 0x6688aa })
-const bodyMesh = new THREE.Mesh(bodyGeometry, bodyMaterial)
-bodyMesh.position.y = 1.4
-bodyMesh.castShadow = true
-tank.add(bodyMesh)
 
 const tankCameraFov = 75
 const tankCamera = makeCamera(tankCameraFov)
@@ -42,67 +31,6 @@ tankCamera.position.y = 3
 tankCamera.position.z = -6
 tankCamera.rotation.y = Math.PI
 bodyMesh.add(tankCamera)
-
-const wheelRadius = 1
-const wheelThickness = 0.5
-const wheelSegments = 6
-const wheelGeometry = new THREE.CylinderBufferGeometry(
-  wheelRadius,
-  wheelRadius,
-  wheelThickness,
-  wheelSegments
-)
-const wheelMaterial = new THREE.MeshPhongMaterial({ color: 0x888888 })
-const wheelPositions = [
-  [-carWidth / 2 - wheelThickness / 2, -carHeight / 2, carLength / 3],
-  [carWidth / 2 + wheelThickness / 2, -carHeight / 2, carLength / 3],
-  [-carWidth / 2 - wheelThickness / 2, -carHeight / 2, 0],
-  [carWidth / 2 + wheelThickness / 2, -carHeight / 2, 0],
-  [-carWidth / 2 - wheelThickness / 2, -carHeight / 2, -carLength / 3],
-  [carWidth / 2 + wheelThickness / 2, -carHeight / 2, -carLength / 3]
-]
-const wheelMeshes = wheelPositions.map(position => {
-  const mesh = new THREE.Mesh(wheelGeometry, wheelMaterial)
-  mesh.position.set(...position)
-  mesh.rotation.z = Math.PI * 0.5
-  mesh.castShadow = true
-
-  bodyMesh.add(mesh)
-  return mesh
-})
-
-const domeRadius = 2
-const domeWidthSubdivisions = 12
-const domeHeightSubdivisions = 12
-const domePhiStart = 0
-const domePhiEnd = Math.PI * 2
-const domeThetaStart = 0
-const domeThetaEnd = Math.PI * 0.5
-const domeGeometry = new THREE.SphereBufferGeometry(
-  domeRadius,
-  domeWidthSubdivisions,
-  domeHeightSubdivisions,
-  domePhiStart,
-  domePhiEnd,
-  domeThetaStart,
-  domeThetaEnd
-)
-const domeMesh = new THREE.Mesh(domeGeometry, bodyMaterial)
-domeMesh.castShadow = true
-domeMesh.position.y = 0.5
-bodyMesh.add(domeMesh)
-
-const turretWidth = 0.1
-const turretHeight = 0.1
-const turretLength = carLength * 0.75 * 0.2
-const turretGeometry = new THREE.BoxBufferGeometry(
-  turretWidth,
-  turretHeight,
-  turretLength
-)
-const turretMesh = new THREE.Mesh(turretGeometry, bodyMaterial)
-turretMesh.castShadow = true
-turretMesh.position.z = turretLength * .5
 
 const turretPivot = new THREE.Object3D()
 turretPivot.scale.set(5, 5, 5)
@@ -161,15 +89,6 @@ const targetPosition = new THREE.Vector3()
 const tankPosition = new THREE.Vector2()
 const tankTarget = new THREE.Vector2()
 
-const cameras = [
-  { cam: camera, desc: 'detached camera', },
-  { cam: turretCamera, desc: 'on turret looking at target', },
-  { cam: targetCamera, desc: 'near target looking at tank', },
-  { cam: tankCamera, desc: 'above back of tank', },
-]
-
-const infoElem = document.querySelector('#info')
-
 /* LOOP */
 
 void function loop() {
@@ -206,10 +125,6 @@ void function loop() {
     obj.rotation.x = time * 3
   })
 
-  const camera = cameras[time * .25 % cameras.length | 0]
-  // const camera = cameras[0];
-  infoElem.textContent = camera.desc
-
-  renderer.render(scene, camera.cam)
+  renderer.render(scene, camera)
   requestAnimationFrame(loop)
 }()
