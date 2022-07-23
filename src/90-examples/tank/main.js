@@ -3,9 +3,7 @@ import { scene, renderer, camera, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { createTank } from './tank.js'
-import { createPathVisual } from './utils.js'
-
-const carLength = 8
+import { createPathVisual, createTarget } from './utils.js'
 
 camera.position.set(8, 4, 10).multiplyScalar(3)
 camera.lookAt(0, 0, 0)
@@ -17,19 +15,8 @@ scene.add(createGround({ size: 50 }))
 const { tank, tankGun, wheelMeshes } = createTank()
 scene.add(tank)
 
-const targetGeometry = new THREE.SphereBufferGeometry(.5, 6, 3)
-const targetMaterial = new THREE.MeshPhongMaterial({ color: 0x00FF00, flatShading: true })
-const targetMesh = new THREE.Mesh(targetGeometry, targetMaterial)
-const targetOrbit = new THREE.Object3D()
-const targetElevation = new THREE.Object3D()
-const targetBob = new THREE.Object3D()
-targetMesh.castShadow = true
+const { targetOrbit, targetMesh } = createTarget()
 scene.add(targetOrbit)
-targetOrbit.add(targetElevation)
-targetElevation.position.z = carLength * 2
-targetElevation.position.y = 8
-targetElevation.add(targetBob)
-targetBob.add(targetMesh)
 
 const curve = new THREE.SplineCurve([
   new THREE.Vector2(-10, 0),
@@ -54,13 +41,7 @@ const tankTarget = new THREE.Vector2()
 void function loop() {
   const time = clock.getElapsedTime()
 
-  // Move target
   targetOrbit.rotation.y = time * .27
-  targetBob.position.y = Math.sin(time * 2) * 4
-  targetMesh.rotation.x = time * 7
-  targetMesh.rotation.y = time * 13
-  targetMaterial.emissive.setHSL(time * 10 % 1, 1, .25)
-  targetMaterial.color.setHSL(time * 10 % 1, 1, .25)
 
   // Move tank
   const tankTime = time * 0.05

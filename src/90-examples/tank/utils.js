@@ -9,3 +9,17 @@ export function createPathVisual(curve) {
   splineObject.position.y = 0.05
   return splineObject
 }
+
+export function createTarget() {
+  const targetGeometry = new THREE.SphereBufferGeometry(.5, 6, 3)
+  const targetMaterial = new THREE.MeshPhongMaterial({ color: 0x00FF00, flatShading: true })
+  const targetMesh = new THREE.Mesh(targetGeometry, targetMaterial)
+  const targetOrbit = new THREE.Object3D()
+  const targetElevation = new THREE.Object3D()
+  targetMesh.castShadow = true
+  targetOrbit.add(targetElevation)
+  targetElevation.position.z = 16 // carLength * 2
+  targetElevation.position.y = 8
+  targetElevation.add(targetMesh)
+  return { targetMesh, targetOrbit }
+}
