@@ -1,8 +1,8 @@
 /* global THREE */
 let camera, scene, renderer, container
-let light, ambientLight, pointLight, lightRotate, uniforms, flatNormalTex, globeTexture, controls
+let globeTexture, controls
 
-import { vs_rt as vs, fs_erode, fs_dilate, vs_main, fs_main } from './shaders.js'
+import { vs_rt as vs, fs_erode, fs_dilate, material } from './shaders.js'
 import { prepRTT } from './RTT_setup.js'
 
 const RTTs = {}
@@ -29,17 +29,17 @@ function init() {
   camera.lookAt(scene.position)
   camera.updateMatrix()
 
-  ambientLight = new THREE.AmbientLight(0x000000)
+  const ambientLight = new THREE.AmbientLight(0x000000)
   scene.add(ambientLight)
 
-  pointLight = new THREE.PointLight(0x888888)
-  lightRotate = new THREE.Object3D()
+  const pointLight = new THREE.PointLight(0x888888)
+  const lightRotate = new THREE.Object3D()
 
   pointLight.position.set(0, 200, -300)
   lightRotate.add(pointLight)
 
   const sphere = new THREE.SphereGeometry(100, 8, 8)
-  light = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xffffff }))
+  const light = new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xffffff }))
   light.position.copy(pointLight.position)
   light.scale.x = light.scale.y = light.scale.z = 0.05
   lightRotate.add(light)
@@ -47,51 +47,15 @@ function init() {
 
   // MATERIALS
 
-  const ambient = 0xffffff, diffuse = 0xffffff, specular = 1, shininess = 10.0
-
-  const shader = THREE.ShaderLib.normalmap
-  uniforms = THREE.UniformsUtils.clone(shader.uniforms)
-
-  flatNormalTex = THREE.ImageUtils.loadTexture('./img/flat.png', new THREE.UVMapping())
-  uniforms.tNormal = { type: 't', value: flatNormalTex }
-
-  uniforms.diffuse.value.setHex(diffuse)
-  uniforms.specular.value = new THREE.Color().setRGB(specular, specular, specular)
-  uniforms.ambient.value.setHex(ambient)
-  uniforms.shininess.value = shininess
-  uniforms.enableDiffuse = { type: 'i', value: 1 }
-  uniforms.tNormal = { type: 't', value: flatNormalTex }
-  uniforms.tDiffuse = {
-    type: 't', value: new THREE.ImageUtils.loadTexture('./img/world.topo.1024.jpg', new THREE.UVMapping())
-  }
-  uniforms.tDisplacement = { type: 't', value: globeTexture.texture2 }
-
-  uniforms.tDiffuseOpacity = { type: 'f', value: 1 }
-  uniforms.tDiffuse2Opacity = { type: 'f', value: 0 }
-  uniforms.uPointLightPos = { type: 'v3', value: pointLight.position },
-  uniforms.uPointLightColor = { type: 'c', value: new THREE.Color(pointLight.color) }
-  uniforms.uAmbientLightColor = { type: 'c', value: new THREE.Color(ambientLight.color) }
-  uniforms.matrightBottom = { type: 'v2', value: new THREE.Vector2(180.0, -90.0) }
-  uniforms.matleftTop = { type: 'v2', value: new THREE.Vector2(-180.0, 90.0) }
-  uniforms.sphereRadius = { type: 'f', value: 100.0 }
-  uniforms.mixAmount = { type: 'f', value: 1.0 }
-  uniforms.enableDisplacement = { type: 'i', value: 1 }
-  uniforms.uDisplacementScale = { type: 'f', value: 100 }
-  uniforms.uDisplacementPostScale = { type: 'f', value: 25 }
-  uniforms.bumpScale = { type: 'f', value: 30.0 }
-  uniforms.opacity = { type: 'f', value: 1.0 }
-  uniforms.uNormalOffset = { type: 'v2', value: new THREE.Vector2(1.0, 1.0) }
-
-  const material = new THREE.ShaderMaterial({
-    uniforms,
-    vertexShader: vs_main,
-    fragmentShader: fs_main,
-  })
-
   globeTexture.textureMat2.uniforms.u_erode.value = .02
   globeTexture.textureMat2.uniforms.u_dilate.value = .02
   globeTexture.textureMat.uniforms.u_erode.value = .02
   globeTexture.textureMat.uniforms.u_dilate.value = .02
+
+  material.uniforms.uPointLightPos = { type: 'v3', value: pointLight.position },
+  material.uniforms.uPointLightColor = { type: 'c', value: new THREE.Color(pointLight.color) }
+  material.uniforms.uAmbientLightColor = { type: 'c', value: new THREE.Color(ambientLight.color) }
+  material.uniforms.tDisplacement = { type: 't', value: globeTexture.texture2 }
 
   // GEOMETRY
 

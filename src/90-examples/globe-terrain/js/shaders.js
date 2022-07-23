@@ -1,3 +1,5 @@
+/* global THREE */
+
 export const vs_rt = /* glsl */ `
   varying vec2 vUv;
 
@@ -352,3 +354,41 @@ export const fs_main = /* glsl */ `
     // gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );								
   }
 `
+
+const ambient = 0xffffff, diffuse = 0xffffff, specular = 1, shininess = 10.0
+
+const shader = THREE.ShaderLib.normalmap
+
+const uniforms = THREE.UniformsUtils.clone(shader.uniforms)
+
+const flatNormalTex = THREE.ImageUtils.loadTexture('./img/flat.png', new THREE.UVMapping())
+uniforms.tNormal = { type: 't', value: flatNormalTex }
+
+uniforms.diffuse.value.setHex(diffuse)
+uniforms.specular.value = new THREE.Color().setRGB(specular, specular, specular)
+uniforms.ambient.value.setHex(ambient)
+uniforms.shininess.value = shininess
+uniforms.enableDiffuse = { type: 'i', value: 1 }
+uniforms.tNormal = { type: 't', value: flatNormalTex }
+uniforms.tDiffuse = {
+  type: 't', value: new THREE.ImageUtils.loadTexture('./img/world.topo.1024.jpg', new THREE.UVMapping())
+}
+
+uniforms.tDiffuseOpacity = { type: 'f', value: 1 }
+uniforms.tDiffuse2Opacity = { type: 'f', value: 0 }
+uniforms.matrightBottom = { type: 'v2', value: new THREE.Vector2(180.0, -90.0) }
+uniforms.matleftTop = { type: 'v2', value: new THREE.Vector2(-180.0, 90.0) }
+uniforms.sphereRadius = { type: 'f', value: 100.0 }
+uniforms.mixAmount = { type: 'f', value: 1.0 }
+uniforms.enableDisplacement = { type: 'i', value: 1 }
+uniforms.uDisplacementScale = { type: 'f', value: 100 }
+uniforms.uDisplacementPostScale = { type: 'f', value: 25 }
+uniforms.bumpScale = { type: 'f', value: 30.0 }
+uniforms.opacity = { type: 'f', value: 1.0 }
+uniforms.uNormalOffset = { type: 'v2', value: new THREE.Vector2(1.0, 1.0) }
+
+export const material = new THREE.ShaderMaterial({
+  uniforms,
+  vertexShader: vs_main,
+  fragmentShader: fs_main,
+})
