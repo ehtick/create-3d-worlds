@@ -4,7 +4,7 @@ import { scene, camera } from '/utils/scene.js'
 
 import { AnimatedModelComponent, StaticModelComponent } from './gltf-component.js'
 import { entity } from './entity.js'
-import { math } from './math.js'
+import { math } from './math.mjs'
 import SpatialGridController from './spatial-grid-controller.js'
 import NPCController from './npc-entity.js'
 import HealthComponent from './health-component.js'

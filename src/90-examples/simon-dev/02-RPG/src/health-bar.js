@@ -1,7 +1,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
 import { entity } from './entity.js'
-import { math } from './math.js'
+import { math } from './math.mjs'
 
 const vertexShader = `#version 300 es
 varying vec2 vUV;

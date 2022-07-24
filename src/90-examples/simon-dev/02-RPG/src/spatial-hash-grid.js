@@ -1,4 +1,4 @@
-import { math } from './math.js'
+import { math } from './math.mjs'
 
 export default class SpatialHashGrid {
   constructor(bounds, dimensions) {

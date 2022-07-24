@@ -1,12 +1,12 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene } from '/utils/scene.js'
 
-import { Noise } from '../shared/noise.js'
+import { Noise } from '../shared/noise.mjs'
 import { QuadTree } from './quadtree.js'
 import { TerrainChunkRebuilder } from './terrain-builder.js'
-import { LinearSpline } from '../shared/spline.js'
+import { LinearSpline } from '../shared/spline.mjs'
 import { utils } from './utils.js'
-import { HeightGenerator } from '../shared/terrain-height.js'
+import { HeightGenerator } from '../shared/terrain-height.mjs'
 
 const _OCEAN = new THREE.Color(0xd9d592)
 const _SNOW = new THREE.Color(0xFFFFFF)
