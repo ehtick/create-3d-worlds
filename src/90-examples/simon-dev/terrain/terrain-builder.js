@@ -1,4 +1,4 @@
-import { TerrainChunk } from './terrain-chunk.js'
+import { TerrainChunk } from './terrain-chunk-old.js'
 
 export class TerrainChunkRebuilder {
   constructor(params) {

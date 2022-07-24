@@ -2,7 +2,7 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene } from '/utils/scene.js'
 
 import { Noise } from '../shared/noise.mjs'
-import { QuadTree2D } from './quadtree.js'
+import { QuadTree } from './quadtree-old.js'
 import { TerrainChunkRebuilder } from './terrain-builder.js'
 import { LinearSpline } from '../shared/spline.mjs'
 import { utils } from './utils.js'
@@ -146,7 +146,7 @@ export class TerrainChunkManager {
       return c.position[0] + '/' + c.position[1] + ' [' + c.dimensions[0] + ']'
     }
 
-    const q = new QuadTree2D({
+    const q = new QuadTree({
       size: 32000,
     })
     q.Insert(this._userCamera.position)

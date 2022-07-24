@@ -1,4 +1,4 @@
-import { TerrainChunk } from './terrain-chunk.js'
+import { TerrainChunk } from '../../../terrain/terrain-chunk.js'
 
 const _NUM_WORKERS = 4
 
