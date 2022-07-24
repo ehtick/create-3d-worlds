@@ -1,7 +1,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene } from '/utils/scene.js'
 
-import { math } from '../utils/math.js'
+import { math } from '../shared/math.js'
 import { Noise } from './noise.js'
 import { QuadTree } from './quadtree.js'
 import { LinearSpline } from './spline.js'

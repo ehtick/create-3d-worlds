@@ -1,7 +1,7 @@
 import 'https://cdn.jsdelivr.net/npm/simplex-noise@2.4.0/simplex-noise.js'
 import perlin from 'https://cdn.jsdelivr.net/gh/mikechambers/es6-perlin-module/perlin.js'
 
-import { math } from '../utils/math.js'
+import { math } from '../shared/math.js'
 
 class _PerlinWrapper {
   noise2D(x, y) {
@@ -53,7 +53,7 @@ export class Noise {
   _Init() {
     this._noise = {
       simplex: new SimplexNoise(this._params.seed),
-      // perlin: new _PerlinWrapper(),
+      perlin: new _PerlinWrapper(),
       rand: new _RandomWrapper(),
     }
   }
