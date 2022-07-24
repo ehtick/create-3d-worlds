@@ -5,7 +5,7 @@ import { math } from '../utils/math.js'
 import { Noise } from './noise.js'
 import { QuadTree } from './quadtree.js'
 import { LinearSpline } from './spline.js'
-import { utils } from './terrain-utils.js'
+import { utils } from './utils.js'
 
 class HeightGenerator {
   constructor(generator, position, minRadius, maxRadius) {

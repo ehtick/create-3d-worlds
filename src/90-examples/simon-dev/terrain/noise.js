@@ -53,7 +53,7 @@ export class Noise {
   _Init() {
     this._noise = {
       simplex: new SimplexNoise(this._params.seed),
-      perlin: new _PerlinWrapper(),
+      // perlin: new _PerlinWrapper(),
       rand: new _RandomWrapper(),
     }
   }
