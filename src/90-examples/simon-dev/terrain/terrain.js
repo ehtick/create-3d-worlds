@@ -147,8 +147,7 @@ export class TerrainChunkManager {
     }
 
     const q = new QuadTree({
-      min: new THREE.Vector2(-32000, -32000),
-      max: new THREE.Vector2(32000, 32000),
+      size: 32000,
     })
     q.Insert(this._userCamera.position)
 
@@ -209,7 +208,6 @@ export class TerrainChunkManager {
       }
 
     const difference = utils.DictDifference(keys, this._chunks)
-    const recycle = Object.values(utils.DictDifference(this._chunks, keys))
 
     for (const k in difference) {
       if (k in this._chunks)

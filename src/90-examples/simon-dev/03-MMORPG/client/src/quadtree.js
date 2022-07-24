@@ -13,7 +13,6 @@ export class QuadTree {
       size: b.getSize(new THREE.Vector3()),
       root: true,
     }
-
     this._params = params
   }
 

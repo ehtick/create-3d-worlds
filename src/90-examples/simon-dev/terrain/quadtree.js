@@ -4,7 +4,10 @@ const _MIN_NODE_SIZE = 500
 
 export class QuadTree {
   constructor(params) {
-    const b = new THREE.Box2(params.min, params.max)
+    const s = params.size
+    const b = new THREE.Box2(
+      new THREE.Vector3(-s, -s,),
+      new THREE.Vector3(s, s))
     this._root = {
       bounds: b,
       children: [],
