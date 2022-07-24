@@ -4,7 +4,7 @@ import { WorldNetworkClient, WorldAIClient } from './world-client.mjs'
 import { WorldEntity } from './world-entity.mjs'
 
 import { SpatialHashGrid } from '../../client/shared/spatial-hash-grid.mjs'
-import { terrain_height } from '../../client/shared/terrain-height.mjs'
+import { HeightGenerator } from '../../client/shared/terrain-height.mjs'
 import { CHARACTER_MODELS } from '../../client/shared/data.mjs'
 
 class MonsterSpawner {
@@ -56,7 +56,7 @@ export class WorldManager {
       [[-4000, -4000], [4000, 4000]], [1000, 1000]
     )
 
-    this.terrain_ = new terrain_height.HeightGenerator()
+    this.terrain_ = new HeightGenerator()
     this.spawners_ = []
     this.tickTimer_ = 0.0
 

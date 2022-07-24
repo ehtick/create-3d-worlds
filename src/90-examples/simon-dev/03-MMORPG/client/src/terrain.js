@@ -8,7 +8,7 @@ import { TextureSplatter } from './texture-splatter.js'
 import { textures } from './textures.js'
 import { utils } from './terrain-utils.js'
 import { terrain_constants } from '../shared/terrain-constants.mjs'
-import { terrain_height } from '../shared/terrain-height.mjs'
+import { HeightGenerator } from '../shared/terrain-height.mjs'
 import { noise } from '../shared/noise.mjs'
 import { scene } from '/utils/scene.js'
 
@@ -86,7 +86,7 @@ export class TerrainChunkManager extends entity.Component {
   }
 
   _InitNoise() {
-    this.heightGenerator_ = new terrain_height.HeightGenerator()
+    this.heightGenerator_ = new HeightGenerator()
   }
 
   _InitBiomes() {

@@ -3,7 +3,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.mod
 import { TextureSplatter } from './texture-splatter.js';
 import { math } from '../shared/math.mjs';
 import { noise } from '../shared/noise.mjs';
-import { terrain_height } from '../shared/terrain-height.mjs';
+import { HeightGenerator } from '../shared/terrain-height.mjs';
 
 class _TerrainBuilderThreadedWorker {
   Init(params) {
@@ -11,7 +11,7 @@ class _TerrainBuilderThreadedWorker {
     this._params.offset = new THREE.Vector3(
       params.offset[0], params.offset[1], params.offset[2]);
     this._params.noise = new noise.Noise(params.noiseParams);
-    this._params.heightGenerators = [new terrain_height.HeightGenerator()];
+    this._params.heightGenerators = [new HeightGenerator()];
 
     this._params.biomeGenerator = new noise.Noise(params.biomesParams);
     this._params.colourNoise = new noise.Noise(params.colourNoiseParams);
