@@ -7,6 +7,7 @@ import { TerrainChunkRebuilder } from './terrain-builder.js'
 import { LinearSpline } from '../shared/spline.mjs'
 import { utils } from './utils.js'
 import { HeightGenerator } from '../shared/terrain-height.mjs'
+import { terrain_shader } from '../terrain/terrain-shader.js'
 
 const _OCEAN = new THREE.Color(0xd9d592)
 const _SNOW = new THREE.Color(0xFFFFFF)
@@ -70,6 +71,7 @@ export class TerrainChunkManager {
       side: THREE.FrontSide,
       vertexColors: THREE.VertexColors,
     })
+
     this._builder = new TerrainChunkRebuilder()
 
     this._InitNoise()

@@ -5,7 +5,7 @@ import { CubeQuadTree } from '../../../terrain/quadtree.js'
 import { terrain_shader } from '../../../terrain/terrain-shader.js'
 import { TerrainChunkRebuilder_Threaded } from './terrain-builder-threaded.js'
 import { TextureSplatter } from '../../../terrain/texture-splatter.js'
-import { textures } from './textures.js'
+import { TextureAtlas } from '../../../terrain/textures.js'
 import { utils } from '../../../terrain/utils.js'
 import { terrain_constants } from '../../../shared/terrain-constants.mjs'
 import { HeightGenerator } from '../../../shared/terrain-height.mjs'
@@ -22,32 +22,32 @@ export class TerrainChunkManager extends entity.Component {
   _Init() {
     const loader = new THREE.TextureLoader()
 
-    const noiseTexture = loader.load('./resources/terrain/simplex-noise.png')
+    const noiseTexture = loader.load('/assets/textures/terrain/simplex-noise.png')
     noiseTexture.wrapS = THREE.RepeatWrapping
     noiseTexture.wrapT = THREE.RepeatWrapping
 
-    const diffuse = new textures.TextureAtlas()
+    const diffuse = new TextureAtlas()
     diffuse.Load('diffuse', [
-      './resources/terrain/dirt_01_diffuse-1024.png',
-      './resources/terrain/grass1-albedo3-1024.png',
-      './resources/terrain/sandyground-albedo-1024.png',
-      './resources/terrain/worn-bumpy-rock-albedo-1024.png',
-      './resources/terrain/rock-snow-ice-albedo-1024.png',
-      './resources/terrain/snow-packed-albedo-1024.png',
-      './resources/terrain/rough-wet-cobble-albedo-1024.png',
-      './resources/terrain/bark1-albedo.jpg',
+      '/assets/textures/terrain/dirt_01_diffuse-1024.png',
+      '/assets/textures/terrain/grass1-albedo3-1024.png',
+      '/assets/textures/terrain/sandyground-albedo-1024.png',
+      '/assets/textures/terrain/worn-bumpy-rock-albedo-1024.png',
+      '/assets/textures/terrain/rock-snow-ice-albedo-1024.png',
+      '/assets/textures/terrain/snow-packed-albedo-1024.png',
+      '/assets/textures/terrain/rough-wet-cobble-albedo-1024.png',
+      '/assets/textures/terrain/bark1-albedo.jpg',
     ])
 
-    const normal = new textures.TextureAtlas()
+    const normal = new TextureAtlas()
     normal.Load('normal', [
-      './resources/terrain/dirt_01_normal-1024.jpg',
-      './resources/terrain/grass1-normal-1024.jpg',
-      './resources/terrain/sandyground-normal-1024.jpg',
-      './resources/terrain/worn-bumpy-rock-normal-1024.jpg',
-      './resources/terrain/rock-snow-ice-normal-1024.jpg',
-      './resources/terrain/snow-packed-normal-1024.jpg',
-      './resources/terrain/rough-wet-cobble-normal-1024.jpg',
-      './resources/terrain/bark1-normal3.jpg',
+      '/assets/textures/terrain/dirt_01_normal-1024.jpg',
+      '/assets/textures/terrain/grass1-normal-1024.jpg',
+      '/assets/textures/terrain/sandyground-normal-1024.jpg',
+      '/assets/textures/terrain/worn-bumpy-rock-normal-1024.jpg',
+      '/assets/textures/terrain/rock-snow-ice-normal-1024.jpg',
+      '/assets/textures/terrain/snow-packed-normal-1024.jpg',
+      '/assets/textures/terrain/rough-wet-cobble-normal-1024.jpg',
+      '/assets/textures/terrain/bark1-normal3.jpg',
     ])
 
     this._material = new THREE.MeshStandardMaterial({

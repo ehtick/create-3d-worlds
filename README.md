@@ -27,6 +27,10 @@ live-server
 - let kroz svemir https://alteredqualia.com/xg/examples/deferred_particles_nebula.html
 - cestice https://github.com/hmans/three-vfx
 
+Čišćenje smeća:
+- modeli i ostalo iz simon-dev primera
+- assets/textures/terrain
+
 Shaders
   - [x] shaders https://youtu.be/C8Cuwq1eqDw
   - [x] shaders https://youtu.be/uwzEqeMd7uQ

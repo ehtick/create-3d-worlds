@@ -107,12 +107,12 @@ export class ThreeJSController extends entity.Component {
 
     const loader = new THREE.CubeTextureLoader()
     const texture = loader.load([
-      './resources/terrain/space-posx.jpg',
-      './resources/terrain/space-negx.jpg',
-      './resources/terrain/space-posy.jpg',
-      './resources/terrain/space-negy.jpg',
-      './resources/terrain/space-posz.jpg',
-      './resources/terrain/space-negz.jpg',
+      '/assets/textures/terrain/space-posx.jpg',
+      '/assets/textures/terrain/space-negx.jpg',
+      '/assets/textures/terrain/space-posy.jpg',
+      '/assets/textures/terrain/space-negy.jpg',
+      '/assets/textures/terrain/space-posz.jpg',
+      '/assets/textures/terrain/space-negz.jpg',
     ])
     texture.encoding = THREE.sRGBEncoding
 
