@@ -168,7 +168,7 @@ void function update() {
   renderer.render(scene, activeCamera)
   if (pause) return
 
-  if (keyboard.pressed.KeyA && userShootVelocity < maxVelocity) {
+  if (keyboard.pressed.Space && userShootVelocity < maxVelocity) {
     document.getElementById('range').value = userShootVelocity
     userShootVelocity += 0.5
   }
@@ -190,10 +190,10 @@ void function update() {
 /* EVENTS */
 
 window.addEventListener('keyup', e => {
-  if (e.code == 'KeyA') attack()
+  if (e.code == 'Space') attack()
 
   if (e.code == 'KeyC')
     activeCamera = activeCamera === camera ? fpsCamera : camera
 
-  if (e.code == 'Space') restart()
+  if (e.code == 'KeyR') restart()
 })
