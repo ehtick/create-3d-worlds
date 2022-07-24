@@ -5,13 +5,12 @@ import { scene, camera, renderer, clock, createSkyBox } from '/utils/scene.js'
 import { ambLight, dirLight } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { loadModel } from '/utils/loaders.js'
-import { getTexture } from '/utils/helpers.js'
 import { gameOver, victory } from './utils.js'
 
 ambLight({ intensity: 2 })
 dirLight({ intensity: 5 })
 
-const stones = [], stonesBody = []
+const stones = []
 const towerPosition = { x: -60, y: 5, z: 0 }
 
 let activeCamera
@@ -65,21 +64,18 @@ createStones()
 /* FUNCTIONS */
 
 function createStones() {
-  const texture = getTexture({ file: 'rocks.jpg', repeat: 1 })
   for (let i = 0; i < 20; i++) {
-    const stoneShape = new CANNON.Sphere(0.3)
-    const stoneBody = new CANNON.Body({ mass: 80, material: physicsMaterial })
-    stoneBody.addShape(stoneShape)
-    stonesBody.push(stoneBody)
-
-    const geometry = new THREE.SphereGeometry(stoneShape.radius, 8, 8)
+    const shape = new CANNON.Sphere(0.3)
+    const body = new CANNON.Body({ mass: 80, material: physicsMaterial })
+    body.addShape(shape)
+    const geometry = new THREE.SphereGeometry(shape.radius, 8, 8)
     const material = new THREE.MeshLambertMaterial({
       color: 0x232426,
       side: THREE.FrontSide,
-      map: texture
     })
     const stone = new THREE.Mesh(geometry, material)
     stone.castShadow = true
+    stone.body = body
     stones.push(stone)
   }
 }
@@ -101,11 +97,10 @@ function positioningEnemy() {
 function throwStone(catapult, shootDirection, shootVelocity, name) {
   if (stoneIndex > 19) stoneIndex = 0
   const stone = stones[stoneIndex]
-  const stoneBody = stonesBody[stoneIndex]
   scene.add(stone)
-  world.addBody(stoneBody)
+  world.addBody(stone.body)
 
-  stoneBody.velocity.set(
+  stone.body.velocity.set(
     shootDirection.x * shootVelocity,
     shootDirection.y * shootVelocity,
     shootDirection.z * shootVelocity
@@ -115,7 +110,7 @@ function throwStone(catapult, shootDirection, shootVelocity, name) {
   y += shootDirection.y * (3)
   z += shootDirection.z * (2)
 
-  stoneBody.position.set(x, y, z)
+  stone.body.position.set(x, y, z)
   stone.name = name
   userShootVelocity = 0
   stoneIndex++
@@ -145,8 +140,8 @@ function attack() {
 
 function updatePhysics() {
   world.step(1 / 60)
-  stonesBody.forEach((stoneBody, i) => {
-    stones[i].position.copy(stoneBody.position)
+  stones.forEach((stone, i) => {
+    stones[i].position.copy(stone.body.position)
   })
 }
 
