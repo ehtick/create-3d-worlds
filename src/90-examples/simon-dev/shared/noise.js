@@ -7,15 +7,13 @@ export class Noise {
   }
 
   _Init() {
-    this._noise = {
-      simplex: new SimplexNoise(this._params.seed),
-    }
+    this._noise = new SimplexNoise(this._params.seed)
   }
 
   Get(x, y) {
     const xs = x / this._params.scale
     const ys = y / this._params.scale
-    const noiseFunc = this._noise[this._params.noiseType]
+    const noiseFunc = this._noise
     const G = 2.0 ** (-this._params.persistence)
     let amplitude = 1.0
     let frequency = 1.0
