@@ -1,47 +1,4 @@
 import { SimplexNoise } from './simplex-noise.js'
-import perlin from 'https://cdn.jsdelivr.net/gh/mikechambers/es6-perlin-module/perlin.js'
-import { math } from './math.js'
-
-class _PerlinWrapper {
-  noise2D(x, y) {
-    return perlin(x, y) * 2.0 - 1.0
-  }
-}
-
-class _RandomWrapper {
-  constructor() {
-    this._values = {}
-  }
-
-  _Rand(x, y) {
-    const k = x + '.' + y
-    if (!(k in this._values))
-      this._values[k] = Math.random() * 2 - 1
-
-    return this._values[k]
-  }
-
-  noise2D(x, y) {
-    // Bilinear filter
-    const x1 = Math.floor(x)
-    const y1 = Math.floor(y)
-    const x2 = x1 + 1
-    const y2 = y1 + 1
-
-    const xp = x - x1
-    const yp = y - y1
-
-    const p11 = this._Rand(x1, y1)
-    const p21 = this._Rand(x2, y1)
-    const p12 = this._Rand(x1, y2)
-    const p22 = this._Rand(x2, y2)
-
-    const px1 = math.lerp(xp, p11, p21)
-    const px2 = math.lerp(xp, p12, p22)
-
-    return math.lerp(yp, px1, px2)
-  }
-}
 
 export class Noise {
   constructor(params) {
@@ -52,8 +9,6 @@ export class Noise {
   _Init() {
     this._noise = {
       simplex: new SimplexNoise(this._params.seed),
-      perlin: new _PerlinWrapper(),
-      rand: new _RandomWrapper(),
     }
   }
 
