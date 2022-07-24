@@ -7,7 +7,7 @@ import { createGround } from '/utils/physics-cannon.js'
 import { loadModel } from '/utils/loaders.js'
 import { gameOver, victory } from './utils.js'
 
-ambLight({ intensity: 1 })
+ambLight({ intensity: 2 })
 initLights()
 scene.background = new THREE.Color(0x8FBCD4)
 

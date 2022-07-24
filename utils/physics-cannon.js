@@ -12,9 +12,8 @@ world.gravity.set(0, -9.82, 0)
 
 /* GROUND */
 
-export function createGround({ size = 100, file } = {}) {
-  const mesh = createFloor({ size, color: colors[6], file })
-  // mesh.material = new THREE.MeshPhongMaterial({ color: colors[1] })
+export function createGround({ size = 100, color = colors[1], file } = {}) {
+  const mesh = createFloor({ size, color, file })
   const cannonMaterial = new CANNON.Material()
   cannonMaterial.friction = 0.25
   cannonMaterial.restitution = 0.25
