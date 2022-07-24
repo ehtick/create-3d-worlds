@@ -1,11 +1,12 @@
-/* global CANNON */
 import * as THREE from '/node_modules/three127/build/three.module.js'
+import * as CANNON from '/libs/cannon-es.js'
 import keyboard from '/classes/Keyboard.js'
 import { scene, camera, renderer, clock, createSkyBox } from '/utils/scene.js'
 import { ambLight, dirLight } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { loadModel } from '/utils/loaders.js'
 import { getTexture } from '/utils/helpers.js'
+import { gameOver, victory } from './utils.js'
 
 ambLight({ intensity: 2 })
 dirLight({ intensity: 5 })
@@ -57,7 +58,7 @@ const physicsMaterial = new CANNON.Material()
 const groundBody = new CANNON.Body({ mass: 0, material: physicsMaterial })
 groundBody.addShape(new CANNON.Plane())
 groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2)
-world.add(groundBody)
+world.addBody(groundBody)
 
 createStones()
 
@@ -102,7 +103,7 @@ function throwStone(catapult, shootDirection, shootVelocity, name) {
   const stone = stones[stoneIndex]
   const stoneBody = stonesBody[stoneIndex]
   scene.add(stone)
-  world.add(stoneBody)
+  world.addBody(stoneBody)
 
   stoneBody.velocity.set(
     shootDirection.x * shootVelocity,
@@ -120,22 +121,11 @@ function throwStone(catapult, shootDirection, shootVelocity, name) {
   stoneIndex++
 }
 
-function victory() {
-  document.getElementById('game').innerHTML = 'Victory'
-  document.getElementById('game').style.color = '#0AB408'
-  document.getElementById('game').style.display = 'block'
-}
-
-function gameOver() {
-  document.getElementById('game').innerHTML = 'Game over'
-  document.getElementById('game').style.color = 'red'
-  document.getElementById('game').style.display = 'block'
-  scene.add(playerCatapult)
-}
-
 const checkVictory = () => {
-  if (playerCatapult.parent == null) gameOver()
-
+  if (playerCatapult.parent == null) {
+    gameOver()
+    scene.add(playerCatapult)
+  }
   let check = 0
   if (enemyCatapult.parent == scene)
     check++
