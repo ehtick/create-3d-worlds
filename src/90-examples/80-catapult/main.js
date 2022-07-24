@@ -2,13 +2,13 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 import * as CANNON from '/libs/cannon-es.js'
 import keyboard from '/classes/Keyboard.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { ambLight, dirLight } from '/utils/light.js'
-import { createGround } from '/utils/ground.js'
+import { ambLight, initLights } from '/utils/light.js'
+import { createGround } from '/utils/physics-cannon.js'
 import { loadModel } from '/utils/loaders.js'
 import { gameOver, victory } from './utils.js'
 
-ambLight({ intensity: 2 })
-dirLight({ intensity: 5 })
+ambLight({ intensity: 1 })
+initLights()
 scene.background = new THREE.Color(0x8FBCD4)
 
 const stones = []
@@ -21,8 +21,12 @@ let userShootVelocity = 4
 let stoneIndex = 0
 let pause = true
 
+const world = new CANNON.World()
+world.gravity.set(0, -9.82, 0)
+
 const ground = createGround({ size: 512, file: 'grass-512.jpg' })
 scene.add(ground)
+world.addBody(ground.body)
 
 camera.position.set(-64, 14, 7)
 camera.lookAt(new THREE.Vector3(-47, 10, 0))
@@ -46,18 +50,6 @@ enemyCatapult.rotateY(-Math.PI / 2)
 
 playerCatapult.position.set(towerPosition.x - 1.5, towerPosition.y + 7, towerPosition.z + 1)
 
-/* INIT PHYSICS */
-
-const world = new CANNON.World()
-world.gravity.set(0, -9.82, 0)
-
-const physicsMaterial = new CANNON.Material()
-
-const groundBody = new CANNON.Body({ mass: 0, material: physicsMaterial })
-groundBody.addShape(new CANNON.Plane())
-groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2)
-world.addBody(groundBody)
-
 createStones()
 
 /* FUNCTIONS */
@@ -65,7 +57,7 @@ createStones()
 function createStones() {
   for (let i = 0; i < 20; i++) {
     const shape = new CANNON.Sphere(0.3)
-    const body = new CANNON.Body({ mass: 80, material: physicsMaterial })
+    const body = new CANNON.Body({ mass: 80, material: new CANNON.Material() })
     body.addShape(shape)
     const geometry = new THREE.SphereGeometry(shape.radius, 8, 8)
     const material = new THREE.MeshLambertMaterial({

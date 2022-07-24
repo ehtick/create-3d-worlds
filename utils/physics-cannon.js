@@ -5,8 +5,6 @@ import { randomInRange } from '/utils/helpers.js'
 
 const colors = [0xc2b280, 0xF2D16B, 0xedc9af, 0xfffacd, 0xF3CCAA, 0xf5deb3, 0xf0e68c]
 
-const phongMaterial = new THREE.MeshPhongMaterial({ color: colors[1] })
-
 /* WORLD */
 
 export const world = new CANNON.World()
@@ -14,9 +12,9 @@ world.gravity.set(0, -9.82, 0)
 
 /* GROUND */
 
-export function createGround({ size = 100 } = {}) {
-  const mesh = createFloor({ size, color: colors[6] })
-  mesh.material = phongMaterial
+export function createGround({ size = 100, file } = {}) {
+  const mesh = createFloor({ size, color: colors[6], file })
+  // mesh.material = new THREE.MeshPhongMaterial({ color: colors[1] })
   const cannonMaterial = new CANNON.Material()
   cannonMaterial.friction = 0.25
   cannonMaterial.restitution = 0.25
