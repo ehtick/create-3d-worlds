@@ -4,20 +4,22 @@
 <head>
   <meta charset="UTF-8">
   <title>Catapult</title>
-  <!-- <link rel="stylesheet" href="main.css"> -->
+  <style>
+    #ui {
+      position: absolute;
+    }
+  </style>
 </head>
 
 <body>
   <!-- https://github.com/Sina-Ghiasi/Three.js-Catapult-Game -->
 
-  <div id="instruction">
+  <div id="ui">
     R: restart<br>
     Space: shoot <br>
     C: change the camera<br>
+    <div id="msg"></div>
   </div>
-  <input type="range" id="range" max="50">
-
-  <div id="msg"></div>
 
   <script src="main.js" type="module"></script>
 

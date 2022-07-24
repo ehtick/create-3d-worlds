@@ -1,7 +1,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import * as CANNON from '/libs/cannon-es.js'
 import keyboard from '/classes/Keyboard.js'
-import { scene, camera, renderer, clock, createSkyBox } from '/utils/scene.js'
+import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { ambLight, dirLight } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { loadModel } from '/utils/loaders.js'
@@ -9,6 +9,7 @@ import { gameOver, victory } from './utils.js'
 
 ambLight({ intensity: 2 })
 dirLight({ intensity: 5 })
+scene.background = new THREE.Color(0x8FBCD4)
 
 const stones = []
 const towerPosition = { x: -60, y: 5, z: 0 }
@@ -19,8 +20,6 @@ let lastEnemyAttack = 0
 let userShootVelocity = 4
 let stoneIndex = 0
 let pause = true
-
-scene.background = createSkyBox()
 
 const ground = createGround({ size: 512, file: 'grass-512.jpg' })
 scene.add(ground)
@@ -46,7 +45,6 @@ const enemyCatapult = catapult.clone()
 enemyCatapult.rotateY(-Math.PI / 2)
 
 playerCatapult.position.set(towerPosition.x - 1.5, towerPosition.y + 7, towerPosition.z + 1)
-scene.add(playerCatapult)
 
 /* INIT PHYSICS */
 
@@ -90,10 +88,9 @@ function getRandPosition() {
 }
 
 function positioningEnemy() {
-  const pos = getRandPosition()
   if (enemyCatapult.parent == null)
     scene.add(enemyCatapult)
-  enemyCatapult.position.copy(pos)
+  enemyCatapult.position.copy(getRandPosition())
 }
 
 function throwStone(catapult, shootDirection, shootVelocity, name) {
@@ -168,14 +165,12 @@ void function update() {
   renderer.render(scene, activeCamera)
   if (pause) return
 
-  if (keyboard.pressed.Space && userShootVelocity < maxVelocity) {
-    document.getElementById('range').value = userShootVelocity
+  if (keyboard.pressed.Space && userShootVelocity < maxVelocity)
     userShootVelocity += 0.5
-  }
 
   world.step(1 / 60)
-  stones.forEach((stone, i) => {
-    stones[i].position.copy(stone.body.position)
+  stones.forEach(stone => {
+    stone.position.copy(stone.body.position)
   })
 
   for (let i = 0; i < stones.length; i++)
