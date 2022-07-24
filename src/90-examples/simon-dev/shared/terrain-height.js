@@ -1,19 +1,14 @@
-import * as THREE from '/node_modules/three127/build/three.module.js'
-import { math } from './math.js'
+
+import { terrain_constants } from './terrain-constants.js'
+import { Noise } from './noise.js'
 
 export class HeightGenerator {
-  constructor(generator, position, minRadius, maxRadius) {
-    this._position = position.clone()
-    this._radius = [minRadius, maxRadius]
-    this._generator = generator
+  constructor() {
+    this.noise_ = new Noise(terrain_constants.NOISE_PARAMS)
   }
 
-  Get(x, y) {
-    const distance = this._position.distanceTo(new THREE.Vector2(x, y))
-    let normalization = 1.0 - math.sat(
-      (distance - this._radius[0]) / (this._radius[1] - this._radius[0]))
-    normalization = normalization * normalization * (3 - 2 * normalization)
-
-    return [this._generator.Get(x, y), normalization]
+  Get(x, y, z) {
+    return [this.noise_.Get(x, y, z), 1]
   }
-}
+};
+
