@@ -88,17 +88,19 @@ function throwStone(catapult, shootDirection, shootVelocity, name) {
   scene.add(stone)
   world.addBody(stone.body)
 
+  // REFACTOR: should apply force not set velocity
   stone.body.velocity.set(
     shootDirection.x * shootVelocity,
     shootDirection.y * shootVelocity,
     shootDirection.z * shootVelocity
   )
+
   let { x, y, z } = catapult.position
   x += shootDirection.x * (2)
   y += shootDirection.y * (3)
   z += shootDirection.z * (2)
-
   stone.body.position.set(x, y, z)
+
   stone.name = name
   userShootVelocity = 0
   stoneIndex++
