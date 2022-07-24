@@ -32,9 +32,7 @@ export class SpatialHashGrid {
       },
       _queryId: -1,
     }
-
     this._Insert(client)
-
     return client
   }
 
@@ -68,52 +66,41 @@ export class SpatialHashGrid {
     for (let x = i1[0], xn = i2[0]; x <= xn; ++x)
       for (let y = i1[1], yn = i2[1]; y <= yn; ++y) {
         let head = this._cells[x][y]
-
         while (head) {
           const v = head.client
           head = head.next
-
           if (v._queryId != queryId) {
             v._queryId = queryId
             clients.push(v)
           }
         }
       }
-
     return clients
   }
 
   _Insert(client) {
     const [x, y] = client.position
     const [w, h] = client.dimensions
-
     const i1 = this._GetCellIndex([x - w / 2, y - h / 2])
     const i2 = this._GetCellIndex([x + w / 2, y + h / 2])
-
     const nodes = []
 
     for (let x = i1[0], xn = i2[0]; x <= xn; ++x) {
       nodes.push([])
-
       for (let y = i1[1], yn = i2[1]; y <= yn; ++y) {
         const xi = x - i1[0]
-
         const head = {
           next: null,
           prev: null,
           client,
         }
-
         nodes[xi].push(head)
-
         head.next = this._cells[x][y]
         if (this._cells[x][y])
           this._cells[x][y].prev = head
-
         this._cells[x][y] = head
       }
     }
-
     client._cells.min = i1
     client._cells.max = i2
     client._cells.nodes = nodes
@@ -128,7 +115,6 @@ export class SpatialHashGrid {
         const xi = x - i1[0]
         const yi = y - i1[1]
         const node = client._cells.nodes[xi][yi]
-
         if (node.next)
           node.next.prev = node.prev
 
@@ -137,7 +123,6 @@ export class SpatialHashGrid {
 
         if (!node.prev)
           this._cells[x][y] = node.next
-
       }
 
     client._cells.min = null

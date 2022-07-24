@@ -52,10 +52,7 @@ export class WorldManager {
   constructor() {
     this.ids_ = 0
     this.entities_ = []
-    this.grid_ = new SpatialHashGrid(
-      [[-4000, -4000], [4000, 4000]], [1000, 1000]
-    )
-
+    this.grid_ = new SpatialHashGrid([[-4000, -4000], [4000, 4000]], [1000, 1000])
     this.terrain_ = new HeightGenerator()
     this.spawners_ = []
     this.tickTimer_ = 0.0
@@ -111,8 +108,7 @@ export class WorldManager {
 
   TickClientState_(timeElapsed) {
     this.tickTimer_ += timeElapsed
-    if (this.tickTimer_ < _TICK_RATE)
-      return
+    if (this.tickTimer_ < _TICK_RATE) return
 
     this.tickTimer_ = 0.0
 
