@@ -1,4 +1,4 @@
-import { math } from '../shared/math.mjs'
+import { math } from '../../shared/math.mjs'
 
 export class SpatialHashGrid {
   constructor(bounds, dimensions) {
