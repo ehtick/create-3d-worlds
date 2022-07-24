@@ -5,7 +5,7 @@ import { scene, camera, renderer, clock, createSkyBox } from '/utils/scene.js'
 import { ambLight, dirLight } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { loadModel } from '/utils/loaders.js'
-import { gameOver, victory, hideIntro } from './utils.js'
+import { gameOver, victory } from './utils.js'
 
 ambLight({ intensity: 2 })
 dirLight({ intensity: 5 })
@@ -91,7 +91,8 @@ function getRandPosition() {
 
 function positioningEnemy() {
   const pos = getRandPosition()
-  scene.add(enemyCatapult)
+  if (enemyCatapult.parent == null)
+    scene.add(enemyCatapult)
   enemyCatapult.position.copy(pos)
 }
 
@@ -120,13 +121,16 @@ function throwStone(catapult, shootDirection, shootVelocity, name) {
 const checkVictory = () => {
   if (playerCatapult.parent == null) {
     gameOver()
-    scene.add(playerCatapult)
+    pause = true
   }
   let check = 0
   if (enemyCatapult.parent == scene)
     check++
 
-  if (check === 0) victory()
+  if (check === 0) {
+    pause = true
+    victory()
+  }
 }
 
 function enemyAttack() {
@@ -139,13 +143,6 @@ function attack() {
   checkVictory()
 }
 
-function updatePhysics() {
-  world.step(1 / 60)
-  stones.forEach((stone, i) => {
-    stones[i].position.copy(stone.body.position)
-  })
-}
-
 function checkHit(stone, catapult) {
   if (stone.position.distanceTo(catapult.position) < 1.5)
     scene.remove(catapult)
@@ -156,10 +153,19 @@ function checkCollison(stone) {
   if (stone.name == 'player') checkHit(stone, enemyCatapult)
 }
 
+function restart() {
+  positioningEnemy()
+  if (playerCatapult.parent == null) scene.add(playerCatapult)
+  document.getElementById('msg').innerHTML = ''
+  activeCamera = camera
+  pause = false
+}
+
 /* LOOP */
 
 void function update() {
   requestAnimationFrame(update)
+  renderer.render(scene, activeCamera)
   if (pause) return
 
   if (keyboard.pressed.KeyA && userShootVelocity < maxVelocity) {
@@ -167,7 +173,10 @@ void function update() {
     userShootVelocity += 0.5
   }
 
-  updatePhysics()
+  world.step(1 / 60)
+  stones.forEach((stone, i) => {
+    stones[i].position.copy(stone.body.position)
+  })
 
   for (let i = 0; i < stones.length; i++)
     checkCollison(stones[i], [playerCatapult, enemyCatapult])
@@ -176,7 +185,6 @@ void function update() {
     lastEnemyAttack = clock.getElapsedTime()
     enemyAttack()
   }
-  renderer.render(scene, activeCamera)
 }()
 
 /* EVENTS */
@@ -187,10 +195,5 @@ window.addEventListener('keyup', e => {
   if (e.code == 'KeyC')
     activeCamera = activeCamera === camera ? fpsCamera : camera
 
-  if (e.code == 'Space') {
-    positioningEnemy()
-    hideIntro()
-    activeCamera = camera
-    pause = false
-  }
+  if (e.code == 'Space') restart()
 })

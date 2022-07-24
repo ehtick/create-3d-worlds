@@ -1,19 +1,11 @@
 /* GUI */
 
 export function victory() {
-  document.getElementById('game').innerHTML = 'Victory'
-  document.getElementById('game').style.color = '#0AB408'
-  document.getElementById('game').style.display = 'block'
+  document.getElementById('msg').innerHTML = '<h1>Victory</h1>'
+  document.getElementById('msg').style.color = '#0AB408'
 }
 
 export function gameOver() {
-  document.getElementById('game').innerHTML = 'Game over'
-  document.getElementById('game').style.color = 'red'
-  document.getElementById('game').style.display = 'block'
-}
-
-export function hideIntro() {
-  document.getElementById('instruction').style.display = 'none'
-  document.getElementById('game').style.display = 'none'
-  document.getElementById('game').innerHTML = ''
+  document.getElementById('msg').innerHTML = '<h1>Game over</h1>'
+  document.getElementById('msg').style.color = 'red'
 }
