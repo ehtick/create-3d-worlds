@@ -1,7 +1,7 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js'
 
 import { entity } from './entity.js'
-import { CHARACTER_MODELS } from '../shared/data.mjs'
+import { CHARACTER_MODELS } from '../../shared/data.mjs'
 
 export class FloatingName extends entity.Component {
   constructor(params) {

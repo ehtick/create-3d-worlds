@@ -2,7 +2,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.mod
 
 import { entity } from './entity.js'
 import { BasicCharacterControllerProxy, CharacterFSM } from './player-entity.js'
-import { CHARACTER_MODELS } from '../shared/data.mjs'
+import { CHARACTER_MODELS } from '../../shared/data.mjs'
 import { scene } from '/utils/scene.js'
 
 export class NPCController extends entity.Component {

@@ -3,7 +3,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.mod
 import { entity } from './entity.js'
 import { FiniteStateMachine } from './finite-state-machine.js'
 import { player_state } from './player-state.js'
-import { CHARACTER_MODELS } from '../shared/data.mjs'
+import { CHARACTER_MODELS } from '../../shared/data.mjs'
 import { scene } from '/utils/scene.js'
 
 class CharacterFSM extends FiniteStateMachine {

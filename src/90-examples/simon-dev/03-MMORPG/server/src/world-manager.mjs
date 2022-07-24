@@ -3,9 +3,9 @@ import { quat, vec3 } from 'gl-matrix'
 import { WorldNetworkClient, WorldAIClient } from './world-client.mjs'
 import { WorldEntity } from './world-entity.mjs'
 
-import { SpatialHashGrid } from '../../client/shared/spatial-hash-grid.mjs'
-import { HeightGenerator } from '../../client/shared/terrain-height.mjs'
-import { CHARACTER_MODELS } from '../../client/shared/data.mjs'
+import { SpatialHashGrid } from '../../shared/spatial-hash-grid.mjs'
+import { HeightGenerator } from '../../shared/terrain-height.mjs'
+import { CHARACTER_MODELS } from '../../shared/data.mjs'
 
 class MonsterSpawner {
   constructor(params) {

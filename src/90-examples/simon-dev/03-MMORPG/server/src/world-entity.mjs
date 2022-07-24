@@ -1,6 +1,6 @@
 import { quat, vec3 } from 'gl-matrix'
 
-import { WEAPONS_DATA } from '../../client/shared/data.mjs'
+import { WEAPONS_DATA } from '../../shared/data.mjs'
 
 class Action_Attack {
   constructor(time, cooldown, onAction) {
