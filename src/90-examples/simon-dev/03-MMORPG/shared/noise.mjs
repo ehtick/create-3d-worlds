@@ -1,4 +1,4 @@
-import { SimplexNoise } from '../shared/simplex-noise.mjs'
+import { SimplexNoise } from '../../shared/simplex-noise.mjs'
 
 export class Noise {
   constructor(params) {
