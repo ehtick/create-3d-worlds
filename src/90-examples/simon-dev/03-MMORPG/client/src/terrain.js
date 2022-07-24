@@ -134,8 +134,7 @@ export class TerrainChunkManager extends entity.Component {
       radius: terrain_constants.PLANET_RADIUS,
       resolution,
       biomeGenerator: this._biomes,
-      colourGenerator: new TextureSplatter(
-        { biomeGenerator: this._biomes, colourNoise: this._colourNoise }),
+      colourGenerator: new TextureSplatter({ biomeGenerator: this._biomes, colourNoise: this._colourNoise }),
       heightGenerators: [this.heightGenerator_],
       noiseParams: terrain_constants.NOISE_PARAMS,
       colourNoiseParams: this._colourNoiseParams,
