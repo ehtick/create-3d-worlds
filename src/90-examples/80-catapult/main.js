@@ -80,11 +80,8 @@ function createStones() {
 }
 
 function getRandPosition() {
-  const position = new THREE.Vector3()
-  const x = -46
   const y = Math.floor(Math.random() * 20)
-  position.set(x, y, 0.7)
-  return position
+  return new THREE.Vector3(-46, y, 0.7)
 }
 
 function positioningEnemy() {
