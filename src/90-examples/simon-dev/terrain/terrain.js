@@ -1,13 +1,15 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene } from '/utils/scene.js'
 
+import { HeightGenerator } from '../shared/terrain-height.mjs'
+import { LinearSpline } from '../shared/spline.mjs'
 import { Noise } from '../shared/noise.mjs'
 import { QuadTree } from './quadtree-old.js'
 import { TerrainChunkRebuilder } from './terrain-builder.js'
-import { LinearSpline } from '../shared/spline.mjs'
-import { utils } from './utils.js'
-import { HeightGenerator } from '../shared/terrain-height.mjs'
+import { TextureAtlas } from './textures.js'
+import { TextureSplatter } from './texture-splatter.js'
 import { terrain_shader } from '../terrain/terrain-shader.js'
+import { utils } from './utils.js'
 
 const _OCEAN = new THREE.Color(0xd9d592)
 const _SNOW = new THREE.Color(0xFFFFFF)
@@ -71,7 +73,6 @@ export class TerrainChunkManager {
       side: THREE.FrontSide,
       vertexColors: THREE.VertexColors,
     })
-
     this._builder = new TerrainChunkRebuilder()
 
     this._InitNoise()
