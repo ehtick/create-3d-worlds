@@ -228,7 +228,7 @@ class TerrainChunkRebuilder {
   }
 }
 
-class TerrainChunkManager {
+export class TerrainChunkManager {
   constructor(userCamera) {
     this._Init()
     this._userCamera = userCamera
@@ -417,8 +417,4 @@ class TerrainChunkManager {
       chunk: this._CreateTerrainChunk(offset, _MIN_CELL_SIZE),
     }
   }
-}
-
-export {
-  TerrainChunkManager
 }
