@@ -31,24 +31,11 @@ body {
   text-shadow: 0 0 1px white;
 }
 
-
-#power {
-  position: absolute;
-  top: 10px;
-  width: 100%;
-  text-align: center;
-  z-index: 100;
-  display: block;
-  font-size: 40px;
-  color: #f0ffff;
-}
-
 #game {
   position: absolute;
   top: 50px;
   width: 100%;
   text-align: center;
-  alignment: center;
   z-index: 100;
   display: block;
   font-size: 200px;

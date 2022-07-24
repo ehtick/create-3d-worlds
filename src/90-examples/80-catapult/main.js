@@ -12,6 +12,7 @@ dirLight({ intensity: 5 })
 
 const stones = []
 const towerPosition = { x: -60, y: 5, z: 0 }
+const maxVelocity = 50
 
 let activeCamera
 let lastEnemyAttack = 0
@@ -161,8 +162,8 @@ void function update() {
   requestAnimationFrame(update)
   if (pause) return
 
-  if (keyboard.pressed.KeyA && userShootVelocity < 50) {
-    document.getElementById('power').innerHTML = 'power :' + userShootVelocity
+  if (keyboard.pressed.KeyA && userShootVelocity < maxVelocity) {
+    document.getElementById('range').value = userShootVelocity
     userShootVelocity += 0.5
   }
 
