@@ -33,4 +33,6 @@ export const math = {
   sat(x) {
     return Math.min(Math.max(x, 0.0), 1.0)
   },
+
+  in_range: (x, a, b) => x >= a && x <= b,
 }
