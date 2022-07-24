@@ -2,7 +2,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.mod
 
 import { TextureSplatter } from './texture-splatter.js'
 import { math } from '../../../shared/math.mjs'
-import { Noise } from '../../shared/noise.mjs'
+import { Noise } from '../../../shared/noise.mjs'
 import { HeightGenerator } from '../../shared/terrain-height.mjs'
 
 class _TerrainBuilderThreadedWorker {

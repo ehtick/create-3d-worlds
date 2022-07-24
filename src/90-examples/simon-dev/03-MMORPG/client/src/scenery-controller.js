@@ -4,7 +4,7 @@ import { entity } from './entity.js'
 import { RenderComponent } from './render-component.js'
 import { SpatialGridController } from './spatial-grid-controller.js'
 import { math } from '../../../shared/math.mjs'
-import { Noise } from '../../shared/noise.mjs'
+import { Noise } from '../../../shared/noise.mjs'
 import { scene } from '/utils/scene.js'
 
 const _SCENERY = {

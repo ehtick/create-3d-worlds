@@ -9,7 +9,7 @@ import { textures } from './textures.js'
 import { utils } from './terrain-utils.js'
 import { terrain_constants } from '../../shared/terrain-constants.mjs'
 import { HeightGenerator } from '../../shared/terrain-height.mjs'
-import { Noise } from '../../shared/noise.mjs'
+import { Noise } from '../../../shared/noise.mjs'
 import { scene } from '/utils/scene.js'
 
 export class TerrainChunkManager extends entity.Component {
