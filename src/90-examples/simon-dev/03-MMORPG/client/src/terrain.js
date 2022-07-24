@@ -2,7 +2,7 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 
 import { entity } from './entity.js'
 import { CubeQuadTree } from '../../../terrain/quadtree.js'
-import { terrain_shader } from './terrain-shader.js'
+import { terrain_shader } from '../../../terrain/terrain-shader.js'
 import { TerrainChunkRebuilder_Threaded } from './terrain-builder-threaded.js'
 import { TextureSplatter } from '../../../terrain/texture-splatter.js'
 import { textures } from './textures.js'
@@ -35,7 +35,6 @@ export class TerrainChunkManager extends entity.Component {
       './resources/terrain/rock-snow-ice-albedo-1024.png',
       './resources/terrain/snow-packed-albedo-1024.png',
       './resources/terrain/rough-wet-cobble-albedo-1024.png',
-      // './resources/terrain/sandy-rocks1-albedo-1024.png',
       './resources/terrain/bark1-albedo.jpg',
     ])
 
@@ -48,7 +47,6 @@ export class TerrainChunkManager extends entity.Component {
       './resources/terrain/rock-snow-ice-normal-1024.jpg',
       './resources/terrain/snow-packed-normal-1024.jpg',
       './resources/terrain/rough-wet-cobble-normal-1024.jpg',
-      // './resources/terrain/sandy-rocks1-normal-1024.jpg',
       './resources/terrain/bark1-normal3.jpg',
     ])
 

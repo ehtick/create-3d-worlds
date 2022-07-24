@@ -1,6 +1,4 @@
-export const terrain_shader = (function() {
-
-  const _VS_1 = `
+const VS1 = /* glsl*/`
 
 // Triplanar Attributes
 in vec4 weights1;
@@ -10,20 +8,16 @@ in vec4 weights2;
 out vec3 vCoords;
 out vec4 vWeights1;
 out vec4 vWeights2;
+`
 
-
-`;
-
-
-    const _VS_2 = `
+const VS2 = /* glsl*/`
 
 vCoords = transformed.xyz;
 vWeights1 = weights1;
 vWeights2 = weights2;
+`
 
-`;
-
-  const _VS = `
+const VS = /* glsl*/`
 
 // Attributes
 in vec3 coords;
@@ -50,10 +44,9 @@ void main(){
   vWeights1 = weights1;
   vWeights2 = weights2;
 }
-  `;
-  
+`
 
-  const _PS = `
+const PS = /* glsl*/`
 
 precision highp float;
 precision highp int;
@@ -256,11 +249,9 @@ void main() {
 
   gl_FragColor = vec4(finalColour, 1);
 }
+`
 
-  `;
-
-
-  const _PS_1 = `
+const PS1 = /* glsl*/`
 
 precision mediump sampler2DArray;
 
@@ -422,10 +413,9 @@ vec4 _TriplanarN(vec3 pos, vec3 normal, float texSlice, sampler2DArray tex) {
       clamp(tbnZ * tz, -1.0, 1.0) * weights.z);
   return vec4(worldNormal, 0.0);
 }
+`
 
-  `;
-  
-    const _PS_2 = `
+const PS2 = /* glsl*/`
 
 {
   vec3 worldPosition = vCoords;
@@ -460,16 +450,13 @@ vec4 _TriplanarN(vec3 pos, vec3 normal, float texSlice, sampler2DArray tex) {
   diffuseColor = sRGBToLinear(diffuseBlended);
   // normal = normalBlended.xyz;
 }
+`
 
-    `;
-
-    return {
-      VS: _VS,
-      PS: _PS,
-      VS1: _VS_1,
-      VS2: _VS_2,
-      PS1: _PS_1,
-      PS2: _PS_2,
-    };
-  })();
-  
+export const terrain_shader = {
+  VS,
+  PS,
+  VS1,
+  VS2,
+  PS1,
+  PS2,
+}
