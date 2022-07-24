@@ -4,7 +4,7 @@ import { entity } from './entity.js'
 import { RenderComponent } from './render-component.js'
 import { SpatialGridController } from './spatial-grid-controller.js'
 import { math } from '../shared/math.mjs'
-import { noise } from '../shared/noise.mjs'
+import { Noise } from '../shared/noise.mjs'
 import { scene } from '/utils/scene.js'
 
 const _SCENERY = {
@@ -102,7 +102,7 @@ export class SceneryController extends entity.Component {
       seed: 2,
       height: 1.0,
     }
-    this.noise_ = new noise.Noise(noiseParams)
+    this.noise_ = new Noise(noiseParams)
     this.center_ = null
     this.crap_ = []
   }

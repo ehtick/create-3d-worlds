@@ -1,10 +1,10 @@
 
 import { terrain_constants } from './terrain-constants.mjs'
-import { noise } from './noise.mjs'
+import { Noise } from './noise.mjs'
 
 export class HeightGenerator {
   constructor() {
-    this.noise_ = new noise.Noise(terrain_constants.NOISE_PARAMS)
+    this.noise_ = new Noise(terrain_constants.NOISE_PARAMS)
   }
 
   Get(x, y, z) {

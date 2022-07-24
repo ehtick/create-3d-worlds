@@ -9,7 +9,7 @@ import { textures } from './textures.js'
 import { utils } from './terrain-utils.js'
 import { terrain_constants } from '../shared/terrain-constants.mjs'
 import { HeightGenerator } from '../shared/terrain-height.mjs'
-import { noise } from '../shared/noise.mjs'
+import { Noise } from '../shared/noise.mjs'
 import { scene } from '/utils/scene.js'
 
 export class TerrainChunkManager extends entity.Component {
@@ -101,7 +101,7 @@ export class TerrainChunkManager extends entity.Component {
       height: 1.0
     }
 
-    this._biomes = new noise.Noise(biomesParams)
+    this._biomes = new Noise(biomesParams)
     this._biomesParams = biomesParams
 
     const colourParams = {
@@ -114,7 +114,7 @@ export class TerrainChunkManager extends entity.Component {
       seed: 2,
       height: 1.0,
     }
-    this._colourNoise = new noise.Noise(colourParams)
+    this._colourNoise = new Noise(colourParams)
     this._colourNoiseParams = colourParams
   }
 
