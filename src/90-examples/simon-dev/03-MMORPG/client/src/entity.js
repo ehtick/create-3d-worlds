@@ -64,7 +64,6 @@ export const entity = (() => {
     InitEntity() {
       for (const k in this._components)
         this._components[k].InitEntity()
-
     }
 
     GetComponent(n) {
@@ -81,7 +80,6 @@ export const entity = (() => {
 
       for (const curHandler of this._handlers[msg.topic])
         curHandler(msg)
-
     }
 
     SetPosition(p) {
@@ -111,7 +109,6 @@ export const entity = (() => {
     Update(timeElapsed) {
       for (const k in this._components)
         this._components[k].Update(timeElapsed)
-
     }
   };
 
