@@ -1,7 +1,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
 import { entity } from './entity.js'
-import { CubeQuadTree } from './quadtree.js'
+import { CubeQuadTree } from '../../../terrain/quadtree.js'
 import { terrain_shader } from './terrain-shader.js'
 import { TerrainChunkRebuilder_Threaded } from './terrain-builder-threaded.js'
 import { TextureSplatter } from '../../../terrain/texture-splatter.js'
