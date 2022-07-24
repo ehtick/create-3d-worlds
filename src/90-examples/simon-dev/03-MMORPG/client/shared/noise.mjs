@@ -1,4 +1,4 @@
-import { simplex } from './simplex-noise.mjs'
+import { SimplexNoise } from './simplex-noise.mjs'
 
 export class Noise {
   constructor(params) {
@@ -7,7 +7,7 @@ export class Noise {
   }
 
   _Init() {
-    this._noise = new simplex.SimplexNoise(this._params.seed)
+    this._noise = new SimplexNoise(this._params.seed)
   }
 
   Get(x, y, z) {
