@@ -11,3 +11,9 @@ export function gameOver() {
   document.getElementById('game').style.color = 'red'
   document.getElementById('game').style.display = 'block'
 }
+
+export function hideIntro() {
+  document.getElementById('instruction').style.display = 'none'
+  document.getElementById('game').style.display = 'none'
+  document.getElementById('game').innerHTML = ''
+}

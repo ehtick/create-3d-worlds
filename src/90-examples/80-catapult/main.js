@@ -5,7 +5,7 @@ import { scene, camera, renderer, clock, createSkyBox } from '/utils/scene.js'
 import { ambLight, dirLight } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { loadModel } from '/utils/loaders.js'
-import { gameOver, victory } from './utils.js'
+import { gameOver, victory, hideIntro } from './utils.js'
 
 ambLight({ intensity: 2 })
 dirLight({ intensity: 5 })
@@ -189,10 +189,8 @@ window.addEventListener('keyup', e => {
 
   if (e.code == 'Space') {
     positioningEnemy()
+    hideIntro()
     activeCamera = camera
-    document.getElementById('instruction').style.display = 'none'
-    document.getElementById('game').style.display = 'none'
-    document.getElementById('game').innerHTML = ''
     pause = false
   }
 })
