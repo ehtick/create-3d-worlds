@@ -1,7 +1,7 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.127/build/three.module.js'
 
 import { math } from '../../../shared/math.mjs'
-import { spline } from '../../shared/spline.mjs'
+import { LinearSpline } from '../../shared/spline.mjs'
 import { terrain_constants } from '../../shared/terrain-constants.mjs'
 
 const _HEIGHT_NORMALIZATION = terrain_constants.NOISE_HEIGHT / 10.0
@@ -19,8 +19,8 @@ export class TextureSplatter {
       return c.lerp(p1, t)
     }
     this._colourSpline = [
-      new spline.LinearSpline(_colourLerp),
-      new spline.LinearSpline(_colourLerp)
+      new LinearSpline(_colourLerp),
+      new LinearSpline(_colourLerp)
     ]
 
     // Arid
@@ -33,7 +33,7 @@ export class TextureSplatter {
     this._colourSpline[1].AddPoint(0.5, new THREE.Color(0x8a9343))
     this._colourSpline[1].AddPoint(1.0, _SNOW)
 
-    this._oceanSpline = new spline.LinearSpline(_colourLerp)
+    this._oceanSpline = new LinearSpline(_colourLerp)
     this._oceanSpline.AddPoint(0, _DEEP_OCEAN)
     this._oceanSpline.AddPoint(0.03, _SHALLOW_OCEAN)
     this._oceanSpline.AddPoint(0.05, _SHALLOW_OCEAN)

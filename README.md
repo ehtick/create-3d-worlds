@@ -13,6 +13,7 @@ live-server
 
 ### General
 
+- decals https://threejs.org/examples/webgl_decals.html
 - [ ] prebaciti teren iz MMO u RPG
 - [ ] napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
 - [ ] napraviti sletanje na mesec 3d
