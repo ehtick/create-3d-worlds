@@ -1,28 +1,11 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene } from '/utils/scene.js'
 
-import { math } from '../shared/math.js'
 import { Noise } from '../shared/noise.js'
 import { QuadTree } from './quadtree.js'
 import { LinearSpline } from '../shared/spline.js'
 import { utils } from './utils.js'
-
-class HeightGenerator {
-  constructor(generator, position, minRadius, maxRadius) {
-    this._position = position.clone()
-    this._radius = [minRadius, maxRadius]
-    this._generator = generator
-  }
-
-  Get(x, y) {
-    const distance = this._position.distanceTo(new THREE.Vector2(x, y))
-    let normalization = 1.0 - math.sat(
-      (distance - this._radius[0]) / (this._radius[1] - this._radius[0]))
-    normalization = normalization * normalization * (3 - 2 * normalization)
-
-    return [this._generator.Get(x, y), normalization]
-  }
-}
+import { HeightGenerator } from '../shared/terrain-height.js'
 
 const _OCEAN = new THREE.Color(0xd9d592)
 const _SNOW = new THREE.Color(0xFFFFFF)
