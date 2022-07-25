@@ -3,6 +3,11 @@ export default class Component {
     this.parent_ = null
   }
 
+  // compatibility with old code
+  get _parent() {
+    return this.parent_
+  }
+
   Destroy() { }
 
   SetParent(p) {

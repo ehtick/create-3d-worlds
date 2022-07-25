@@ -1,5 +1,5 @@
 import { Entity } from './entity.js'
-import Component from './ComponentOld.js'
+import Component from './Component.js'
 
 export const entity = (() => ({
   Entity,
