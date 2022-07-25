@@ -1,6 +1,6 @@
-import { entity } from '../../ecs/entity.js'
+import { Component } from '../../ecs/component.js'
 
-export default class SpatialGridController extends entity.Component {
+export default class SpatialGridController extends Component {
   constructor({ grid }) {
     super()
     this._grid = grid

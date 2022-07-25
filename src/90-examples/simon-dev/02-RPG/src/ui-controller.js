@@ -1,6 +1,6 @@
-import { entity } from '../../ecs/entity.js'
+import { Component } from '../../ecs/component.js'
 
-export default class UIController extends entity.Component {
+export default class UIController extends Component {
   constructor(params) {
     super()
     this._params = params

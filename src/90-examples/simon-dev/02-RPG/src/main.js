@@ -6,7 +6,7 @@ import { createSunLight, sunFollow } from '/utils/light.js'
 
 import ThirdPersonCamera from './third-person-camera.js'
 import { EntityManager } from '../../ecs/entity-manager.js'
-import { entity } from '../../ecs/entity.js'
+import { Entity } from '../../ecs/entity.js'
 import { math } from '../../shared/math.mjs'
 import SpatialHashGrid from './spatial-hash-grid.js'
 import UIController from './ui-controller.js'
@@ -28,11 +28,11 @@ const grid = new SpatialHashGrid([[-1000, -1000], [1000, 1000]], [100, 100])
 // loadClouds(scene, entityManager)
 // addSky(scene)
 
-const ui = new entity.Entity()
+const ui = new Entity()
 ui.AddComponent(new UIController())
 entityManager.Add(ui, 'ui')
 
-const levelUpSpawner = new entity.Entity()
+const levelUpSpawner = new Entity()
 levelUpSpawner.AddComponent(new LevelUpComponentSpawner())
 entityManager.Add(levelUpSpawner, 'level-up-spawner')
 
@@ -66,7 +66,7 @@ player.Broadcast({
   added: false,
 })
 
-const playerCamera = new entity.Entity()
+const playerCamera = new Entity()
 playerCamera.AddComponent(new ThirdPersonCamera({ camera, target: player }))
 entityManager.Add(playerCamera, 'player-camera')
 

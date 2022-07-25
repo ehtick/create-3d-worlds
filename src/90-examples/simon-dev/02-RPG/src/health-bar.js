@@ -1,6 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
-import { entity } from '../../ecs/entity.js'
+import { Component } from '../../ecs/component.js'
 import { math } from '../../shared/math.mjs'
 
 const vertexShader = `#version 300 es
@@ -26,7 +26,7 @@ void main() {
 }
 `
 
-export default class HealthBar extends entity.Component {
+export default class HealthBar extends Component {
   constructor(params) {
     super()
     this._params = params

@@ -1,7 +1,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { FBXLoader } from '/node_modules/three127/examples/jsm/loaders/FBXLoader.js'
 
-import { entity } from '../../ecs/entity.js'
+import { Component } from '../../ecs/component.js'
 import { FiniteStateMachine } from '../../fsm/finite-state-machine.js'
 import { player_state } from '../../fsm/player-state.js'
 
@@ -31,7 +31,7 @@ export class BasicCharacterControllerProxy {
   }
 };
 
-export class BasicCharacterController extends entity.Component {
+export class BasicCharacterController extends Component {
   constructor(params) {
     super()
     this._Init(params)

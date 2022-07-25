@@ -1,6 +1,6 @@
-import { entity } from '../../ecs/entity.js'
+import { Component } from '../../ecs/component.js'
 
-export class InventoryController extends entity.Component {
+export class InventoryController extends Component {
   constructor() {
     super()
 
@@ -93,7 +93,7 @@ export class InventoryController extends entity.Component {
   }
 }
 
-export class InventoryItem extends entity.Component {
+export class InventoryItem extends Component {
   constructor(params) {
     super()
     this._params = params

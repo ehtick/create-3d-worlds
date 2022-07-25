@@ -1,8 +1,8 @@
 import { FBXLoader } from '/node_modules/three127/examples/jsm/loaders/FBXLoader.js'
 
-import { entity } from '../../ecs/entity.js'
+import { Component } from '../../ecs/component.js'
 
-export default class EquipWeapon extends entity.Component {
+export default class EquipWeapon extends Component {
   constructor(params) {
     super()
     this._params = params

@@ -1,9 +1,9 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
-import { entity } from '../../ecs/entity.js'
+import { Component } from '../../ecs/component.js'
 import { math } from '../../shared/math.mjs'
 
-export default class AttackController extends entity.Component {
+export default class AttackController extends Component {
   constructor({ timing }) {
     super()
     this._timing = timing
