@@ -6,7 +6,7 @@ import { NetworkController } from './network-controller.js'
 import { SceneryController } from './scenery-controller.js'
 import { LoadController } from './load-controller.js'
 import { PlayerSpawner, NetworkEntitySpawner } from './spawners.js'
-import { TerrainChunkManager } from './terrain.js'
+import { TerrainChunkManager } from '../../../terrain/terrain.js'
 import { InventoryDatabaseController } from './inventory-controller.js'
 import { SpatialHashGrid } from '../../shared/spatial-hash-grid.mjs'
 import { WEAPONS_DATA } from '../../shared/data.mjs'
@@ -20,6 +20,7 @@ const grid = new SpatialHashGrid([[-1000, -1000], [1000, 1000]], [100, 100])
 const entityManager_ = new EntityManager()
 
 function startGame() {
+  console.log('clicked')
   init()
   loop()
 }

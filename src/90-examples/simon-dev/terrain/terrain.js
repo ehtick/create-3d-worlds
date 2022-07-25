@@ -1,16 +1,16 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene } from '/utils/scene.js'
 
-import { CubeQuadTree } from '../../../terrain/quadtree.js'
-import { HeightGenerator } from '../../../shared/terrain-height.mjs'
-import { Noise } from '../../../shared/noise.mjs'
-import { TerrainChunkRebuilder_Threaded } from '../../../terrain/terrain-builder-threaded.js'
-import { TextureAtlas } from '../../../terrain/textures.js'
-import { TextureSplatter } from '../../../terrain/texture-splatter.js'
-import { entity } from '../../../ecs/entity.js'
-import { terrain_constants } from '../../../shared/terrain-constants.mjs'
-import { terrain_shader } from '../../../terrain/terrain-shader.js'
-import { utils } from '../../../terrain/utils.js'
+import { CubeQuadTree } from './quadtree.js'
+import { HeightGenerator } from '../shared/terrain-height.mjs'
+import { Noise } from '../shared/noise.mjs'
+import { TerrainChunkRebuilder_Threaded } from './terrain-builder-threaded.js'
+import { TextureAtlas } from './textures.js'
+import { TextureSplatter } from './texture-splatter.js'
+import { entity } from '../ecs/entity.js'
+import { terrain_constants } from '../shared/terrain-constants.mjs'
+import { terrain_shader } from './terrain-shader.js'
+import { utils } from './utils.js'
 
 export class TerrainChunkManager extends entity.Component {
   constructor({ target }) {
