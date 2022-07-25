@@ -1,5 +1,7 @@
 import { TerrainChunk } from './terrain-chunk.js'
 
+const fileLocation = `${location.origin}/src/90-examples/simon-dev/terrain/terrain-builder-threaded-worker.js`
+
 const _NUM_WORKERS = 4
 
 let _IDs = 0
@@ -72,10 +74,7 @@ export class TerrainChunkRebuilder_Threaded {
   constructor(params) {
     this._pool = {}
     this._old = []
-
-    this._workerPool = new WorkerThreadPool(
-      _NUM_WORKERS, 'src/terrain-builder-threaded-worker.js')
-
+    this._workerPool = new WorkerThreadPool(_NUM_WORKERS, fileLocation)
     this._params = params
   }
 

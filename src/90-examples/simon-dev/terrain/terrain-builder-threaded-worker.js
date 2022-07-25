@@ -1,9 +1,9 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
-import { TextureSplatter } from '../../../terrain/texture-splatter.js'
-import { math } from '../../../shared/math.mjs'
-import { Noise } from '../../../shared/noise.mjs'
-import { HeightGenerator } from '../../../shared/terrain-height.mjs'
+import { TextureSplatter } from './texture-splatter.js'
+import { math } from '../shared/math.mjs'
+import { Noise } from '../shared/noise.mjs'
+import { HeightGenerator } from '../shared/terrain-height.mjs'
 
 class _TerrainBuilderThreadedWorker {
   Init(params) {
