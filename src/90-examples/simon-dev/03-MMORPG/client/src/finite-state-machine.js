@@ -19,7 +19,6 @@ export class FiniteStateMachine {
     }
 
     const state = new this._states[name](this)
-
     this._currentState = state
     state.Enter(prevState)
   }
@@ -27,6 +26,5 @@ export class FiniteStateMachine {
   Update(timeElapsed, input) {
     if (this._currentState)
       this._currentState.Update(timeElapsed, input)
-
   }
 };
