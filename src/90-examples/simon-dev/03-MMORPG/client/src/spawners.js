@@ -7,7 +7,7 @@ import { BasicCharacterControllerInput } from './player-input.js'
 import { SpatialGridController } from './spatial-grid-controller.js'
 import { UIInventoryController, InventoryController } from './inventory-controller.js'
 import { EquipWeapon } from './equip-weapon-component.js'
-import { attack_controller } from './attacker-controller.js'
+import { AttackController } from './attacker-controller.js'
 import { NPCController } from './npc-entity.js'
 import { NetworkEntityController } from './network-entity-controller.js'
 import { NetworkPlayerController } from './network-player-controller.js'
@@ -42,7 +42,7 @@ class PlayerSpawner extends Component {
       desc,
     }))
     player.AddComponent(new SpatialGridController({ grid: this.params_.grid }))
-    player.AddComponent(new attack_controller.AttackController())
+    player.AddComponent(new AttackController())
     player.AddComponent(new ThirdPersonCamera({ target: player }))
     player.AddComponent(new NetworkPlayerController())
     player.AddComponent(new BloodEffect())
