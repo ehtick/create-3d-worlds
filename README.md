@@ -13,7 +13,11 @@ live-server
 
 ### General
 
-- decals https://threejs.org/examples/webgl_decals.html
+ECS:
+- https://vasir.net/blog/game-development/how-to-build-entity-component-system-in-javascript
+- https://medium.com/ingeniouslysimple/entities-components-and-systems-89c31464240d
+- https://youtu.be/mCDo3lmrQv4
+
 - [ ] prebaciti teren iz MMO u RPG
 - [ ] napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
 - [ ] napraviti sletanje na mesec 3d

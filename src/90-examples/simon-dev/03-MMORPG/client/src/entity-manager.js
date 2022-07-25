@@ -7,7 +7,6 @@ export class EntityManager {
 
   _GenerateName() {
     this._ids += 1
-
     return '__name__' + this._ids
   }
 
@@ -19,15 +18,15 @@ export class EntityManager {
     return this._entities.filter(cb)
   }
 
-  Add(e, n) {
-    if (!n)
-      n = this._GenerateName()
+  Add(e, name) {
+    if (!name)
+      name = this._GenerateName()
 
-    this._entitiesMap[n] = e
+    this._entitiesMap[name] = e
     this._entities.push(e)
 
     e.SetParent(this)
-    e.SetName(n)
+    e.SetName(name)
     e.InitEntity()
   }
 
@@ -52,21 +51,17 @@ export class EntityManager {
     const alive = []
     for (let i = 0; i < this._entities.length; ++i) {
       const e = this._entities[i]
-
       e.Update(timeElapsed)
 
       if (e.dead_)
         dead.push(e)
       else
         alive.push(e)
-
     }
 
     for (let i = 0; i < dead.length; ++i) {
       const e = dead[i]
-
       delete this._entitiesMap[e.Name]
-
       e.Destroy()
     }
 

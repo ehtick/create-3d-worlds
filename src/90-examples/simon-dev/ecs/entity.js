@@ -44,6 +44,10 @@ export class Entity {
     return this.parent_
   }
 
+  get _parent() {
+    return this.parent_
+  }
+
   SetActive(b) {
     this.parent_.SetActive(this, b)
   }
