@@ -1,9 +1,8 @@
-/* eslint-disable new-cap */
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene, camera } from '/utils/scene.js'
 
+import { Entity } from '../../ecs/entity.js'
 import { AnimatedModelComponent, StaticModelComponent } from './gltf-component.js'
-import { entity } from '../../ecs/entity.js'
 import { math } from '../../shared/math.mjs'
 import SpatialGridController from './spatial-grid-controller.js'
 import NPCController from './npc-entity.js'
@@ -36,7 +35,7 @@ export function loadClouds(_scene, _entityManager) {
       100,
       (Math.random() * 2.0 - 1.0) * 500)
 
-    const e = new entity.Entity()
+    const e = new Entity()
     e.AddComponent(new StaticModelComponent({
       scene: _scene,
       resourcePath: './assets/nature2/GLTF/',
@@ -67,7 +66,7 @@ export function loadTrees(_scene, _grid, _entityManager) {
       0,
       (Math.random() * 2.0 - 1.0) * 500)
 
-    const e = new entity.Entity()
+    const e = new Entity()
     e.AddComponent(new StaticModelComponent({
       scene: _scene,
       resourcePath: './assets/nature/FBX/',
@@ -87,7 +86,7 @@ export function loadTrees(_scene, _grid, _entityManager) {
 }
 
 export function createNPC(resourceName, resourceTexture, grid) {
-  const npc = new entity.Entity()
+  const npc = new Entity()
 
   npc.AddComponent(new NPCController({
     camera,
@@ -127,7 +126,7 @@ export function createNPC(resourceName, resourceTexture, grid) {
 }
 
 export function createPlayer(grid) {
-  const player = new entity.Entity()
+  const player = new Entity()
   const params = { camera, scene }
   player.AddComponent(new BasicCharacterControllerInput(params))
   player.AddComponent(new BasicCharacterController(params))
@@ -151,7 +150,7 @@ export function createPlayer(grid) {
 }
 
 export function createGirl(grid) {
-  const girl = new entity.Entity()
+  const girl = new Entity()
   girl.AddComponent(new AnimatedModelComponent({
     scene,
     resourcePath: './assets/girl/',
@@ -169,7 +168,7 @@ export function createGirl(grid) {
 }
 
 export function createAxe() {
-  const axe = new entity.Entity()
+  const axe = new Entity()
   axe.AddComponent(new InventoryItem({
     type: 'weapon',
     damage: 3,
@@ -183,7 +182,7 @@ export function createAxe() {
 }
 
 export function createSword() {
-  const sword = new entity.Entity()
+  const sword = new Entity()
   sword.AddComponent(new InventoryItem({
     type: 'weapon',
     damage: 3,

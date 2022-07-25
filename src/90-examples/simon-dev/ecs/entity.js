@@ -113,8 +113,3 @@ export class Entity {
       this._components[k].Update(timeElapsed)
   }
 };
-
-export const entity = (() => ({
-  Entity,
-  Component,
-}))()

@@ -7,12 +7,12 @@ import { Noise } from '../shared/noise.mjs'
 import { TerrainChunkRebuilder_Threaded } from './terrain-builder-threaded.js'
 import { TextureAtlas } from './textures.js'
 import { TextureSplatter } from './texture-splatter.js'
-import { entity } from '../ecs/entity.js'
+import { Component } from '../ecs/component.js'
 import { terrain_constants } from '../shared/terrain-constants.mjs'
 import { terrain_shader } from './terrain-shader.js'
 import { utils } from './utils.js'
 
-export class TerrainChunkManager extends entity.Component {
+export class TerrainChunkManager extends Component {
   constructor({ target }) {
     super()
     this._target = target
