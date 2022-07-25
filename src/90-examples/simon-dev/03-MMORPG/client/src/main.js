@@ -1,4 +1,4 @@
-import { EntityManager } from './entity-manager.js'
+import { EntityManager } from '../../../ecs/entity-manager.js'
 import { entity } from '../../../ecs/entity.js'
 import { UIController } from './ui-controller.js'
 import { LevelUpComponentSpawner } from './level-up-component.js'
