@@ -40,11 +40,9 @@ export const player_state = (() => {
 
     }
 
-    Exit() {
-    }
+    Exit() {}
 
-    Update(_) {
-    }
+    Update(_) {}
   };
 
   class DanceState extends State {
@@ -96,8 +94,7 @@ export const player_state = (() => {
       this._Cleanup()
     }
 
-    Update(_) {
-    }
+    Update(_) {}
   };
 
   class AttackState extends State {
@@ -148,15 +145,10 @@ export const player_state = (() => {
       this._Cleanup()
     }
 
-    Update(_) {
-    }
+    Update(_) {}
   };
 
   class WalkState extends State {
-    constructor(parent) {
-      super(parent)
-    }
-
     get Name() {
       return 'walk'
     }
@@ -181,11 +173,9 @@ export const player_state = (() => {
         curAction.play()
       } else
         curAction.play()
-
     }
 
-    Exit() {
-    }
+    Exit() {}
 
     Update(timeElapsed, input) {
       if (!input)
@@ -203,10 +193,6 @@ export const player_state = (() => {
   };
 
   class RunState extends State {
-    constructor(parent) {
-      super(parent)
-    }
-
     get Name() {
       return 'run'
     }
@@ -234,8 +220,7 @@ export const player_state = (() => {
 
     }
 
-    Exit() {
-    }
+    Exit() {}
 
     Update(timeElapsed, input) {
       if (!input)
@@ -253,10 +238,6 @@ export const player_state = (() => {
   };
 
   class IdleState extends State {
-    constructor(parent) {
-      super(parent)
-    }
-
     get Name() {
       return 'idle'
     }
@@ -276,8 +257,7 @@ export const player_state = (() => {
 
     }
 
-    Exit() {
-    }
+    Exit() {}
 
     Update(_, input) {
       if (!input)
@@ -289,7 +269,6 @@ export const player_state = (() => {
         this._parent.SetState('attack')
       else if (input._keys.backspace)
         this._parent.SetState('dance')
-
     }
   };
 

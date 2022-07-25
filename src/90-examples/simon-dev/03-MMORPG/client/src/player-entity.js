@@ -1,10 +1,10 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
+import { scene } from '/utils/scene.js'
 
 import { entity } from '../../../ecs/entity.js'
 import { FiniteStateMachine } from '../../../fsm/finite-state-machine.js'
-import { player_state } from './player-state.js'
+import { player_state } from '../../../fsm/player-state.js'
 import { CHARACTER_MODELS } from '../../shared/data.mjs'
-import { scene } from '/utils/scene.js'
 
 class CharacterFSM extends FiniteStateMachine {
   constructor(proxy) {
