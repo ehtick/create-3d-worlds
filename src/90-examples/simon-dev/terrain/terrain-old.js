@@ -8,7 +8,7 @@ import { QuadTree } from './quadtree-old.js'
 import { TerrainChunkRebuilder } from './terrain-builder.js'
 import { TextureAtlas } from './textures.js'
 import { TextureSplatter } from './texture-splatter.js'
-import { terrain_shader } from '../terrain/terrain-shader.js'
+import { terrain_shader } from './terrain-shader.js'
 import { utils } from './utils.js'
 
 const _OCEAN = new THREE.Color(0xd9d592)
