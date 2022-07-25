@@ -1,6 +1,6 @@
-import { entity } from '../../../ecs/entity.js'
+import { Component } from '../../../ecs/component.js'
 
-export class HealthComponent extends entity.Component {
+export class HealthComponent extends Component {
   constructor(params) {
     super()
     this.stats_ = params

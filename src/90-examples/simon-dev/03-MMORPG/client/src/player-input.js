@@ -1,9 +1,8 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
-
-import { entity } from '../../../ecs/entity.js'
 import { camera } from '/utils/scene.js'
+import { Component } from '../../../ecs/component.js'
 
-export class BasicCharacterControllerInput extends entity.Component {
+export class BasicCharacterControllerInput extends Component {
   constructor() {
     super()
     this._Init()

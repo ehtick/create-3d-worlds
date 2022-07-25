@@ -1,7 +1,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene, camera, renderer } from '/utils/scene.js'
 
-import { entity } from '../../../ecs/entity.js'
+import { Component } from '../../../ecs/component.js'
 
 const vertexShader = `
   varying vec3 vWorldPosition;
@@ -35,7 +35,7 @@ const fragmentShader = `
     gl_FragColor = vec4(sky, 1.0);
   }`
 
-export class ThreeJSController extends entity.Component {
+export class ThreeJSController extends Component {
   InitEntity() {
     THREE.ShaderChunk.fog_fragment = `
       #ifdef USE_FOG

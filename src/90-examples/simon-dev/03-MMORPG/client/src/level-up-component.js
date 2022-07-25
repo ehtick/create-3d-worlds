@@ -1,9 +1,10 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
 import { ParticleSystem } from './particle-system.js'
-import { entity } from '../../../ecs/entity.js'
+import { Entity } from '../../../ecs/entity.js'
+import { Component } from '../../../ecs/component.js'
 
-class LevelUpComponent extends entity.Component {
+class LevelUpComponent extends Component {
   constructor(params) {
     super()
     this._params = params
@@ -36,14 +37,14 @@ class LevelUpComponent extends entity.Component {
   }
 }
 
-class LevelUpComponentSpawner extends entity.Component {
+class LevelUpComponentSpawner extends Component {
   constructor(params) {
     super()
     this._params = params
   }
 
   Spawn(pos) {
-    const e = new entity.Entity()
+    const e = new Entity()
     e.SetPosition(pos)
     e.AddComponent(new LevelUpComponent(this._params))
     this.Manager.Add(e)

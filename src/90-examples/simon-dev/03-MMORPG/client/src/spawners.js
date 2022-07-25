@@ -1,5 +1,5 @@
-import { entity } from '../../../ecs/entity.js'
-
+import { Entity } from '../../../ecs/entity.js'
+import { Component } from '../../../ecs/component.js'
 import { ThirdPersonCamera } from './third-person-camera.js'
 import { BasicCharacterController } from './player-entity.js'
 import { HealthComponent } from './health-component.js'
@@ -15,14 +15,14 @@ import { FloatingName } from './floating-name.js'
 import { SorcerorEffect } from './sorceror-effect.js'
 import { BloodEffect } from './blood-effect.js'
 
-class PlayerSpawner extends entity.Component {
+class PlayerSpawner extends Component {
   constructor({ grid }) {
     super()
     this.params_ = { grid }
   }
 
   Spawn(desc) {
-    const player = new entity.Entity()
+    const player = new Entity()
     player.Account = desc.account
     player.AddComponent(new BasicCharacterControllerInput())
     player.AddComponent(new BasicCharacterController({ desc }))
@@ -55,14 +55,14 @@ class PlayerSpawner extends entity.Component {
   }
 };
 
-class NetworkEntitySpawner extends entity.Component {
+class NetworkEntitySpawner extends Component {
   constructor({ grid }) {
     super()
     this.params_ = { grid }
   }
 
   Spawn(name, desc) {
-    const npc = new entity.Entity()
+    const npc = new Entity()
     npc.Account = desc.account
     npc.AddComponent(new NPCController({ desc }))
     npc.AddComponent(

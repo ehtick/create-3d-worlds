@@ -1,34 +1,33 @@
-import * as THREE from '/node_modules/three127/build/three.module.js';
-
-import {entity} from '../../../ecs/entity.js';
-
+import { Component } from '../../../ecs/component.js'
 
 export const attack_controller = (() => {
 
-  class AttackController extends entity.Component {
+  class AttackController extends Component {
     constructor() {
-      super();
-      this.action_ = null;
+      super()
+      this.action_ = null
     }
 
     InitComponent() {
-      this._RegisterHandler('player.action', (m) => { this._OnAnimAction(m); });
+      this._RegisterHandler('player.action', m => {
+        this._OnAnimAction(m)
+      })
     }
 
     _OnAnimAction(m) {
       if (m.action != 'attack') {
-        this.action_ = m.action;
-        return;
+        this.action_ = m.action
+        return
       } else if (m.action != this.action_) {
-        this.action_ = m.action;
+        this.action_ = m.action
         this.Broadcast({
-            topic: 'action.attack',
-        });
+          topic: 'action.attack',
+        })
       }
     }
   };
 
   return {
-      AttackController: AttackController,
-  };
-})();
+    AttackController,
+  }
+})()

@@ -1,8 +1,8 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
-import { entity } from '../../../ecs/entity.js'
+import { Component } from '../../../ecs/component.js'
 import { camera } from '/utils/scene.js'
 
-export class ThirdPersonCamera extends entity.Component {
+export class ThirdPersonCamera extends Component {
   constructor({ target }) {
     super()
     this._target = target

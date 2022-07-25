@@ -2,9 +2,9 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/loaders/GLTFLoader.js'
 import { OBJLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/loaders/OBJLoader.js'
 
-import { entity } from '../../../ecs/entity.js'
+import { Component } from '../../../ecs/component.js'
 
-export class RenderComponent extends entity.Component {
+export class RenderComponent extends Component {
   constructor(params) {
     super()
     this.group_ = new THREE.Group()

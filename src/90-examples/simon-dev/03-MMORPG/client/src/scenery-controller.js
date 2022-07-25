@@ -1,6 +1,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
-import { entity } from '../../../ecs/entity.js'
+import { Entity } from '../../../ecs/entity.js'
+import { Component } from '../../../ecs/component.js'
 import { RenderComponent } from './render-component.js'
 import { SpatialGridController } from './spatial-grid-controller.js'
 import { math } from '../../../shared/math.mjs'
@@ -88,7 +89,7 @@ for (const k in multiples)
     _SCENERY[multiples[k].key + i].base = multiples[k].name + i + '.fbx'
   }
 
-export class SceneryController extends entity.Component {
+export class SceneryController extends Component {
   constructor({ grid }) {
     super()
     this.params_ = { grid }
@@ -119,7 +120,7 @@ export class SceneryController extends entity.Component {
         500,
         (Math.random() * 2.0 - 1.0) * 5000)
 
-      const e = new entity.Entity()
+      const e = new Entity()
       e.AddComponent(new RenderComponent({
         scene,
         resourcePath: './resources/nature2/GLTF/',
@@ -163,7 +164,7 @@ export class SceneryController extends entity.Component {
     const randomProp = _SCENERY[
       matchingScenery[Math.round(roll * (matchingScenery.length - 1))]]
 
-    const e = new entity.Entity()
+    const e = new Entity()
     e.AddComponent(new RenderComponent({
       scene,
       resourcePath: randomProp.resourcePath,

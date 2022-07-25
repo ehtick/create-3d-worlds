@@ -1,6 +1,6 @@
-import { entity } from '../../../ecs/entity.js'
+import { Component } from '../../../ecs/component.js'
 
-class InventoryDatabaseController extends entity.Component {
+class InventoryDatabaseController extends Component {
   constructor() {
     super()
     this.items_ = {}
@@ -15,7 +15,7 @@ class InventoryDatabaseController extends entity.Component {
   }
 };
 
-class UIInventoryController extends entity.Component {
+class UIInventoryController extends Component {
 
   InitEntity() {
     this._RegisterHandler('inventory.updated', () => this.OnInventoryUpdated_())
@@ -80,7 +80,7 @@ class UIInventoryController extends entity.Component {
   }
 };
 
-class InventoryController extends entity.Component {
+class InventoryController extends Component {
   constructor() {
     super()
     this.inventory_ = this.CreateEmpty_()
@@ -165,7 +165,7 @@ class InventoryController extends entity.Component {
   }
 };
 
-class InventoryItem extends entity.Component {
+class InventoryItem extends Component {
   constructor(params) {
     super()
     this._params = params

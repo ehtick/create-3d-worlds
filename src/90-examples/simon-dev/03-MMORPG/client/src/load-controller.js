@@ -3,9 +3,9 @@ import { FBXLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm
 import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/loaders/GLTFLoader.js'
 import { SkeletonUtils } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/utils/SkeletonUtils.js'
 
-import { entity } from '../../../ecs/entity.js'
+import { Component } from '../../../ecs/component.js'
 
-export class LoadController extends entity.Component {
+export class LoadController extends Component {
   constructor() {
     super()
 
