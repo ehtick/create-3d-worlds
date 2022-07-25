@@ -1,4 +1,4 @@
-import { TerrainChunk } from '../../../terrain/terrain-chunk.js'
+import { TerrainChunk } from './terrain-chunk.js'
 
 const _NUM_WORKERS = 4
 
@@ -135,7 +135,6 @@ export class TerrainChunkRebuilder_Threaded {
     for (const c of chunks) {
       if (!(c.chunk._params.width in this._pool))
         this._pool[c.chunk._params.width] = []
-
       c.chunk.Destroy()
     }
   }
@@ -147,7 +146,6 @@ export class TerrainChunkRebuilder_Threaded {
   Rebuild(chunks) {
     for (const k in chunks)
       this._workerPool.Enqueue(chunks[k].chunk._params)
-
   }
 
   Update() {
