@@ -2,7 +2,7 @@
 const CHARACTER_MODELS = {
   paladin: {
     base: 'paladin.glb',
-    path: './resources/characters/',
+    path: './assets/characters/',
     anchors: {
       rightHand: 'RightHandIndex1',
     },
@@ -33,7 +33,7 @@ const CHARACTER_MODELS = {
   },
   sorceror: {
     base: 'sorceror.glb',
-    path: './resources/characters/',
+    path: './assets/characters/',
     anchors: {
       rightHand: 'RightHandIndex1',
     },
@@ -60,7 +60,7 @@ const CHARACTER_MODELS = {
   },
   warrok: {
     base: 'warrok.glb',
-    path: './resources/characters/',
+    path: './assets/characters/',
     anchors: {
       rightHand: 'RightHandIndex1',
     },
@@ -87,7 +87,7 @@ const CHARACTER_MODELS = {
   },
   zombie: {
     base: 'zombie-guy.glb',
-    path: './resources/characters/',
+    path: './assets/characters/',
     anchors: {
       rightHand: 'RightHandIndex1',
     },
