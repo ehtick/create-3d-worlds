@@ -1,5 +1,5 @@
 import { EntityManager } from './entity-manager.js'
-import { entity } from './entity.js'
+import { entity } from '../../../ecs/entity.js'
 import { UIController } from './ui-controller.js'
 import { LevelUpComponentSpawner } from './level-up-component.js'
 import { NetworkController } from './network-controller.js'

@@ -1,6 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
-import { entity } from './entity.js'
+import { entity } from '../../../ecs/entity.js'
 import { camera } from '/utils/scene.js'
 
 export class BasicCharacterControllerInput extends entity.Component {

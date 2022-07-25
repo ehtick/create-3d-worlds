@@ -1,4 +1,4 @@
-import { entity } from './entity.js'
+import { entity } from '../../../ecs/entity.js'
 
 import { ThirdPersonCamera } from './third-person-camera.js'
 import { BasicCharacterController } from './player-entity.js'

@@ -1,7 +1,7 @@
 /* global io */
 import 'https://cdn.jsdelivr.net/npm/socket.io-client@3.1.0/dist/socket.io.js'
 
-import { entity } from './entity.js'
+import { entity } from '../../../ecs/entity.js'
 
 export class NetworkController extends entity.Component {
   constructor() {
