@@ -6,7 +6,6 @@ export const entity = (() => {
     constructor() {
       this._name = null
       this._components = {}
-
       this._position = new THREE.Vector3()
       this._rotation = new THREE.Quaternion()
       this._handlers = {}
