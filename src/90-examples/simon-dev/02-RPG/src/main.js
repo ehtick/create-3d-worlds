@@ -5,7 +5,7 @@ import { createFloor } from '/utils/ground.js'
 import { createSunLight, sunFollow } from '/utils/light.js'
 
 import ThirdPersonCamera from './third-person-camera.js'
-import EntityManager from '../../ecs/entity-manager-old.js'
+import { EntityManager } from '../../ecs/entity-manager.js'
 import { entity } from '../../ecs/entity.js'
 import { math } from '../../shared/math.mjs'
 import SpatialHashGrid from './spatial-hash-grid.js'
