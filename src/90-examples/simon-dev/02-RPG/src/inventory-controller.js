@@ -1,4 +1,4 @@
-import { entity } from '../../ecs/entity-old.js'
+import { entity } from '../../ecs/entity.js'
 
 export class InventoryController extends entity.Component {
   constructor() {

@@ -3,11 +3,6 @@ export default class Component {
     this.parent_ = null
   }
 
-  // compatibility with old code
-  get _parent() {
-    return this.parent_
-  }
-
   Destroy() { }
 
   SetParent(p) {
@@ -27,6 +22,11 @@ export default class Component {
   }
 
   get Parent() {
+    return this.parent_
+  }
+
+  // compatibility with old code
+  get _parent() {
     return this.parent_
   }
 

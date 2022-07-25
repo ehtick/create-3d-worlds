@@ -2,7 +2,7 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 import { FBXLoader } from '/node_modules/three127/examples/jsm/loaders/FBXLoader.js'
 import { GLTFLoader } from '/node_modules/three127/examples/jsm/loaders/GLTFLoader.js'
 
-import { entity } from '../../ecs/entity-old.js'
+import { entity } from '../../ecs/entity.js'
 
 export class StaticModelComponent extends entity.Component {
   constructor(params) {
