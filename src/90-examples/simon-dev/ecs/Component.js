@@ -1,4 +1,4 @@
-export default class Component {
+export class Component {
   constructor() {
     this.parent_ = null
   }
