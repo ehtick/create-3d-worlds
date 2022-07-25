@@ -1,4 +1,4 @@
-import { entity } from './entity.js'
+import { entity } from '../../ecs/entity-old.js'
 
 export default class UIController extends entity.Component {
   constructor(params) {

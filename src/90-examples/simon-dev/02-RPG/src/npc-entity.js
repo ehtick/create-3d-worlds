@@ -2,7 +2,7 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 import { FBXLoader } from '/node_modules/three127/examples/jsm/loaders/FBXLoader.js'
 
 import FiniteStateMachine from './finite-state-machine.js'
-import { entity } from './entity.js'
+import { entity } from '../../ecs/entity-old.js'
 import { BasicCharacterControllerProxy } from './player-entity.js'
 import { player_state } from './player-state.js'
 

@@ -6,7 +6,7 @@ import { createSunLight, sunFollow } from '/utils/light.js'
 
 import ThirdPersonCamera from './third-person-camera.js'
 import EntityManager from './entity-manager.js'
-import { entity } from './entity.js'
+import { entity } from '../../ecs/entity-old.js'
 import { math } from '../../shared/math.mjs'
 import SpatialHashGrid from './spatial-hash-grid.js'
 import UIController from './ui-controller.js'
