@@ -21,30 +21,18 @@ export class FloatingName extends Component {
         let materials = c.material
         if (!(c.material instanceof Array))
           materials = [c.material]
-
         for (const m of materials)
           m.dispose()
-
       }
-
-      if (c.geometry)
-        c.geometry.dispose()
-
+      if (c.geometry) c.geometry.dispose()
     })
     if (this.sprite_.parent)
       this.sprite_.parent.remove(this.sprite_)
-
   }
 
   InitComponent() {
-    this.RegisterHandler(
-      'load.character', m => {
-        this.CreateSprite_(m)
-      })
-    this.RegisterHandler(
-      'health.death', m => {
-        this.OnDeath_(m)
-      })
+    this.RegisterHandler('load.character', m => this.CreateSprite_(m))
+    this.RegisterHandler('health.death', m => this.OnDeath_(m))
   }
 
   OnDeath_() {
@@ -52,11 +40,9 @@ export class FloatingName extends Component {
   }
 
   CreateSprite_(msg) {
-    if (!this.visible_)
-      return
+    if (!this.visible_) return
 
-    const modelData = CHARACTER_MODELS[
-      this.params.desc.character.class]
+    const modelData = CHARACTER_MODELS[this.params.desc.character.class]
 
     this.element_ = document.createElement('canvas')
     this.context2d_ = this.element_.getContext('2d')
@@ -73,8 +59,7 @@ export class FloatingName extends Component {
 
     const map = new THREE.CanvasTexture(this.context2d_.canvas)
 
-    this.sprite_ = new THREE.Sprite(
-      new THREE.SpriteMaterial({ map, color: 0xffffff, fog: false }))
+    this.sprite_ = new THREE.Sprite(new THREE.SpriteMaterial({ map, color: 0xffffff, fog: false }))
     this.sprite_.scale.set(10, 5, 1)
     this.sprite_.position.y += modelData.nameOffset
     msg.model.add(this.sprite_)

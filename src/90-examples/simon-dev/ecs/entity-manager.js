@@ -40,20 +40,19 @@ export class EntityManager {
   Update(timeElapsed) {
     const dead = []
     const alive = []
-    for (let i = 0; i < this.entities.length; ++i) {
-      const e = this.entities[i]
+
+    this.entities.forEach(e => {
       e.Update(timeElapsed)
       if (e.dead)
         dead.push(e)
       else
         alive.push(e)
-    }
+    })
 
-    for (let i = 0; i < dead.length; ++i) {
-      const e = dead[i]
+    dead.forEach(e => {
       delete this.entitiesMap[e.Name]
       e.Destroy()
-    }
+    })
 
     this.entities = alive
   }

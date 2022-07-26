@@ -27,9 +27,9 @@ function startGame() {
 }
 
 function init() {
-  const threejs = new Entity()
-  threejs.AddComponent(new SkyController())
-  entityManager.Add(threejs)
+  const sky = new Entity()
+  sky.AddComponent(new SkyController())
+  entityManager.Add(sky)
 
   const ui = new Entity()
   ui.AddComponent(new UIController())
@@ -39,13 +39,13 @@ function init() {
   network.AddComponent(new NetworkController())
   entityManager.Add(network, 'network')
 
-  const t = new Entity()
-  t.AddComponent(new TerrainChunkManager({ target: 'player' }))
-  entityManager.Add(t, 'terrain')
+  const terrain = new Entity()
+  terrain.AddComponent(new TerrainChunkManager({ target: 'player' }))
+  entityManager.Add(terrain, 'terrain')
 
-  const l = new Entity()
-  l.AddComponent(new LoadController())
-  entityManager.Add(l, 'loader')
+  const loader = new Entity()
+  loader.AddComponent(new LoadController())
+  entityManager.Add(loader, 'loader')
 
   const scenery = new Entity()
   scenery.AddComponent(new SceneryController({ grid }))

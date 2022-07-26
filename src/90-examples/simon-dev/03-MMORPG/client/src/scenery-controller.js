@@ -8,7 +8,7 @@ import { math } from '../../../shared/math.mjs'
 import { Noise } from '../../../shared/noise.mjs'
 import { scene } from '/utils/scene.js'
 
-const _SCENERY = {
+const SCENERY = {
   birch1: {
     base: 'Birch_1.fbx',
     resourcePath: '/assets/simon-dev/trees/FBX/',
@@ -68,7 +68,7 @@ const _SCENERY = {
   },
 }
 
-const _BIOMES = {
+const BIOMES = {
   desert: 0.1,
   forest: 0.8,
   arid: 0.6,
@@ -85,8 +85,8 @@ const multiples = {
 
 for (const k in multiples)
   for (let i = 2; i < multiples[k].num; ++i) {
-    _SCENERY[multiples[k].key + i] = { ..._SCENERY[k] }
-    _SCENERY[multiples[k].key + i].base = multiples[k].name + i + '.fbx'
+    SCENERY[multiples[k].key + i] = { ...SCENERY[k] }
+    SCENERY[multiples[k].key + i].base = multiples[k].name + i + '.fbx'
   }
 
 export class SceneryController extends Component {
@@ -156,12 +156,12 @@ export class SceneryController extends Component {
 
   SpawnAt_(biome, spawnPos) {
     const matchingScenery = []
-    for (const k in _SCENERY)
-      if (_SCENERY[k].biomes.indexOf(biome) >= 0)
+    for (const k in SCENERY)
+      if (SCENERY[k].biomes.indexOf(biome) >= 0)
         matchingScenery.push(k)
 
     const roll = this.noise_.Get(spawnPos.x, 3.0, spawnPos.z)
-    const randomProp = _SCENERY[
+    const randomProp = SCENERY[
       matchingScenery[Math.round(roll * (matchingScenery.length - 1))]]
 
     const e = new Entity()
@@ -232,7 +232,7 @@ export class SceneryController extends Component {
         const biome = this.FindBiome_(terrain, _P)
 
         const roll = this.noise_.Get(_V.x, 2.0, _V.z)
-        if (roll > _BIOMES[biome])
+        if (roll > BIOMES[biome])
           continue
 
         const e = this.SpawnAt_(biome, _P)
