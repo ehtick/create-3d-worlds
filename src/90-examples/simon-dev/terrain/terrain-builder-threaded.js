@@ -75,7 +75,7 @@ export class TerrainChunkRebuilder_Threaded {
     this._pool = {}
     this._old = []
     this._workerPool = new WorkerThreadPool(_NUM_WORKERS, fileLocation)
-    this._params = params
+    this.params = params
   }
 
   _OnResult(chunk, msg) {
@@ -94,7 +94,7 @@ export class TerrainChunkRebuilder_Threaded {
     let c = null
     if (this._pool[w].length > 0) {
       c = this._pool[w].pop()
-      c._params = params
+      c.params = params
     } else
       c = new TerrainChunk(params)
 
@@ -132,8 +132,8 @@ export class TerrainChunkRebuilder_Threaded {
 
   _RecycleChunks(chunks) {
     for (const c of chunks) {
-      if (!(c.chunk._params.width in this._pool))
-        this._pool[c.chunk._params.width] = []
+      if (!(c.chunk.params.width in this._pool))
+        this._pool[c.chunk.params.width] = []
       c.chunk.Destroy()
     }
   }
@@ -144,7 +144,7 @@ export class TerrainChunkRebuilder_Threaded {
 
   Rebuild(chunks) {
     for (const k in chunks)
-      this._workerPool.Enqueue(chunks[k].chunk._params)
+      this._workerPool.Enqueue(chunks[k].chunk.params)
   }
 
   Update() {

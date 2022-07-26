@@ -9,7 +9,7 @@ import { scene } from '/utils/scene.js'
 export class NPCController extends Component {
   constructor({ desc }) {
     super()
-    this.params_ = { desc }
+    this.params = { desc }
   }
 
   Destroy() {
@@ -77,7 +77,7 @@ export class NPCController extends Component {
   }
 
   LoadModels_() {
-    const classType = this.params_.desc.character.class
+    const classType = this.params.desc.character.class
     const modelData = CHARACTER_MODELS[classType]
 
     const loader = this.FindEntity('loader').GetComponent('LoadController')

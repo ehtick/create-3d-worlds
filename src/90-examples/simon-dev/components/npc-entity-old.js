@@ -41,7 +41,7 @@ export class NPCController extends Component {
   }
 
   _Init(params) {
-    this._params = params
+    this.params = params
     this._decceleration = new THREE.Vector3(-0.0005, -0.0001, -5.0)
     this._acceleration = new THREE.Vector3(1, 0.25, 40.0)
     this._velocity = new THREE.Vector3(0, 0, 0)
@@ -77,16 +77,16 @@ export class NPCController extends Component {
   _LoadModels() {
     const loader = new FBXLoader()
     loader.setPath('/assets/simon-dev/monsters/FBX/')
-    loader.load(this._params.resourceName, glb => {
+    loader.load(this.params.resourceName, glb => {
       this._target = glb
-      this._params.scene.add(this._target)
+      this.params.scene.add(this._target)
 
       this._target.scale.setScalar(0.025)
       this._target.position.copy(this._parent._position)
       this._target.position.y += 0.35
       const texLoader = new THREE.TextureLoader()
       const texture = texLoader.load(
-        '/assets/simon-dev/monsters/Textures/' + this._params.resourceTexture)
+        '/assets/simon-dev/monsters/Textures/' + this.params.resourceTexture)
       texture.encoding = THREE.sRGBEncoding
       texture.flipY = true
 

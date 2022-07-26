@@ -13,7 +13,7 @@ export class QuadTree {
       size: b.getSize(new THREE.Vector3()),
       root: true,
     }
-    this._params = params
+    this.params = params
   }
 
   GetChildren() {
@@ -40,7 +40,7 @@ export class QuadTree {
   _Insert(child, pos) {
     const distToChild = this._DistanceToChild(child, pos)
 
-    if (distToChild < child.size.x * 1.5 && child.size.x > this._params.min_node_size) {
+    if (distToChild < child.size.x * 1.5 && child.size.x > this.params.min_node_size) {
       child.children = this._CreateChildren(child)
 
       for (const c of child.children)
@@ -86,7 +86,7 @@ export class QuadTree {
 
 export class CubeQuadTree {
   constructor(params) {
-    this._params = params
+    this.params = params
     this._sides = []
 
     const r = params.radius

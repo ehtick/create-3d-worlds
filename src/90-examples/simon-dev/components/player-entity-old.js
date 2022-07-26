@@ -22,7 +22,7 @@ export class BasicCharacterController extends Component {
   }
 
   _Init(params) {
-    this._params = params
+    this.params = params
     this._decceleration = new THREE.Vector3(-0.0005, -0.0001, -5.0)
     this._acceleration = new THREE.Vector3(1, 0.125, 50.0)
     this._velocity = new THREE.Vector3(0, 0, 0)
@@ -50,7 +50,7 @@ export class BasicCharacterController extends Component {
     loader.load('castle_guard_01.fbx', fbx => {
       this._target = fbx
       this._target.scale.setScalar(0.035)
-      this._params.scene.add(this._target)
+      this.params.scene.add(this._target)
 
       this._bones = {}
 

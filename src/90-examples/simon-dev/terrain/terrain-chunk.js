@@ -2,12 +2,12 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 
 export class TerrainChunk {
   constructor(params) {
-    this._params = params
+    this.params = params
     this._Init(params)
   }
 
   Destroy() {
-    this._params.group.remove(this._plane)
+    this.params.group.remove(this._plane)
   }
 
   Hide() {
@@ -24,17 +24,17 @@ export class TerrainChunk {
     this._plane.castShadow = false
     this._plane.receiveShadow = true
     this._plane.frustumCulled = false
-    this._params.group.add(this._plane)
+    this.params.group.add(this._plane)
     this.Reinit(params)
   }
 
   Update(cameraPosition) {
-    // this._plane.position.copy(this._params.origin);
+    // this._plane.position.copy(this.params.origin);
     // this._plane.position.sub(cameraPosition);
   }
 
   Reinit(params) {
-    this._params = params
+    this.params = params
     this._plane.position.set(0, 0, 0)
   }
 

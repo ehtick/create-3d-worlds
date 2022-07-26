@@ -7,7 +7,7 @@ import { Component } from '../ecs/component.js'
 class LevelUpComponent extends Component {
   constructor(params) {
     super()
-    this._params = params
+    this.params = params
 
     this._particles = new ParticleSystem({
       texture: '/assets/simon-dev/textures/ball.png',
@@ -40,13 +40,13 @@ class LevelUpComponent extends Component {
 class LevelUpComponentSpawner extends Component {
   constructor(params) {
     super()
-    this._params = params
+    this.params = params
   }
 
   Spawn(pos) {
     const e = new Entity()
     e.SetPosition(pos)
-    e.AddComponent(new LevelUpComponent(this._params))
+    e.AddComponent(new LevelUpComponent(this.params))
     this.Manager.Add(e)
 
     return e

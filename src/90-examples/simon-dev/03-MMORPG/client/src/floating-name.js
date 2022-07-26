@@ -6,7 +6,7 @@ import { CHARACTER_MODELS } from '../../shared/data.mjs'
 export class FloatingName extends Component {
   constructor(params) {
     super()
-    this.params_ = params
+    this.params = params
     this.visible_ = true
   }
 
@@ -56,7 +56,7 @@ export class FloatingName extends Component {
       return
 
     const modelData = CHARACTER_MODELS[
-      this.params_.desc.character.class]
+      this.params.desc.character.class]
 
     this.element_ = document.createElement('canvas')
     this.context2d_ = this.element_.getContext('2d')
@@ -69,7 +69,7 @@ export class FloatingName extends Component {
     this.context2d_.shadowColor = 'rgba(0,0,0,0.3)'
     this.context2d_.shadowBlur = 4
     this.context2d_.textAlign = 'center'
-    this.context2d_.fillText(this.params_.desc.account.name, 128, 64)
+    this.context2d_.fillText(this.params.desc.account.name, 128, 64)
 
     const map = new THREE.CanvasTexture(this.context2d_.canvas)
 

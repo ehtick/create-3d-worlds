@@ -18,7 +18,7 @@ import { BloodEffect } from './blood-effect.js'
 class PlayerSpawner extends Component {
   constructor({ grid }) {
     super()
-    this.params_ = { grid }
+    this.params = { grid }
   }
 
   Spawn(desc) {
@@ -41,7 +41,7 @@ class PlayerSpawner extends Component {
       level: 1,
       desc,
     }))
-    player.AddComponent(new SpatialGridController({ grid: this.params_.grid }))
+    player.AddComponent(new SpatialGridController({ grid: this.params.grid }))
     player.AddComponent(new AttackController())
     player.AddComponent(new ThirdPersonCamera({ target: player }))
     player.AddComponent(new NetworkPlayerController())
@@ -57,7 +57,7 @@ class PlayerSpawner extends Component {
 class NetworkEntitySpawner extends Component {
   constructor({ grid }) {
     super()
-    this.params_ = { grid }
+    this.params = { grid }
   }
 
   Spawn(name, desc) {
@@ -76,7 +76,7 @@ class NetworkEntitySpawner extends Component {
         level: 1,
         desc,
       }))
-    npc.AddComponent(new SpatialGridController({ grid: this.params_.grid }))
+    npc.AddComponent(new SpatialGridController({ grid: this.params.grid }))
     npc.AddComponent(new NetworkEntityController())
     if (desc.account.name)
       npc.AddComponent(new FloatingName({ desc }))

@@ -3,7 +3,7 @@ import { Component } from '../ecs/component.js'
 export class UIController extends Component {
   constructor(params) {
     super()
-    this._params = params
+    this.params = params
     this._quests = {}
   }
 

@@ -7,23 +7,23 @@ import { HeightGenerator } from '../shared/terrain-height.mjs'
 
 class _TerrainBuilderThreadedWorker {
   Init(params) {
-    this._params = params
-    this._params.offset = new THREE.Vector3(
+    this.params = params
+    this.params.offset = new THREE.Vector3(
       params.offset[0], params.offset[1], params.offset[2])
-    this._params.noise = new Noise(params.noiseParams)
-    this._params.heightGenerators = [new HeightGenerator()]
+    this.params.noise = new Noise(params.noiseParams)
+    this.params.heightGenerators = [new HeightGenerator()]
 
-    this._params.biomeGenerator = new Noise(params.biomesParams)
-    this._params.colourNoise = new Noise(params.colourNoiseParams)
-    this._params.colourGenerator = new TextureSplatter(
+    this.params.biomeGenerator = new Noise(params.biomesParams)
+    this.params.colourNoise = new Noise(params.colourNoiseParams)
+    this.params.colourGenerator = new TextureSplatter(
       {
-        biomeGenerator: this._params.biomeGenerator,
-        colourNoise: this._params.colourNoise
+        biomeGenerator: this.params.biomeGenerator,
+        colourNoise: this.params.colourNoise
       })
   }
 
   _GenerateHeight(v) {
-    return this._params.heightGenerators[0].Get(v.x, v.y, v.z)[0]
+    return this.params.heightGenerators[0].Get(v.x, v.y, v.z)[0]
   }
 
   Rebuild() {
@@ -51,10 +51,10 @@ class _TerrainBuilderThreadedWorker {
     const indices = []
     const wsPositions = []
 
-    const resolution = this._params.resolution + 2
-    const { radius } = this._params
-    const { offset } = this._params
-    const { width } = this._params
+    const resolution = this.params.resolution + 2
+    const { radius } = this.params
+    const { offset } = this.params
+    const { width } = this.params
     const half = width / 2
 
     const effectiveResolution = resolution - 2
@@ -87,7 +87,7 @@ class _TerrainBuilderThreadedWorker {
 
         _S.set(_W.x, _W.y, height)
 
-        const color = this._params.colourGenerator.GetColour(_S)
+        const color = this.params.colourGenerator.GetColour(_S)
         colors.push(color.r, color.g, color.b)
         up.push(_D.x, _D.y, _D.z)
         wsPositions.push(_W.x, _W.z, height)
@@ -179,7 +179,7 @@ class _TerrainBuilderThreadedWorker {
         _P.fromArray(wsPositions, j1)
         _N.fromArray(normals, j1)
         _D.fromArray(up, j1)
-        const s = this._params.colourGenerator.GetSplat(_P, _N, _D)
+        const s = this.params.colourGenerator.GetSplat(_P, _N, _D)
         splats.push(s)
       }
 

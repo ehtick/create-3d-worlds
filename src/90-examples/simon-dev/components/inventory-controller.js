@@ -163,17 +163,17 @@ class InventoryController extends Component {
 class InventoryItem extends Component {
   constructor(params) {
     super()
-    this._params = params
+    this.params = params
   }
 
   InitComponent() { }
 
   get Params() {
-    return this._params
+    return this.params
   }
 
   get RenderParams() {
-    return this._params.renderParams
+    return this.params.renderParams
   }
 };
 

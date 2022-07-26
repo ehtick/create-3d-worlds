@@ -5,7 +5,7 @@ import { Component } from '../ecs/component.js'
 export class EquipWeapon extends Component {
   constructor({ anchor }) { // 'RightHandIndex1'
     super()
-    this._params = { anchor }
+    this.params = { anchor }
     this._target = null
     this._name = null
   }
@@ -26,7 +26,7 @@ export class EquipWeapon extends Component {
 
   _AttachTarget() {
     if (this._bones && this._target)
-      this._bones[this._params.anchor].add(this._target)
+      this._bones[this.params.anchor].add(this._target)
   }
 
   _OnEquip(msg) {

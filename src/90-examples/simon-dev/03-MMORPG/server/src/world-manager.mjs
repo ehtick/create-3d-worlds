@@ -3,7 +3,7 @@ import { quat, vec3 } from 'gl-matrix'
 import { WorldNetworkClient, WorldAIClient } from './world-client.mjs'
 import { WorldEntity } from './world-entity.mjs'
 
-import { SpatialHashGrid } from '../../shared/spatial-hash-grid.mjs'
+import { SpatialHashGrid } from '../../../shared/spatial-hash-grid.mjs'
 import { HeightGenerator } from '../../../shared/terrain-height.mjs'
 import { CHARACTER_MODELS } from '../../shared/data.mjs'
 
@@ -14,7 +14,7 @@ class MonsterSpawner {
     this.terrain_ = this.parent_.terrain_
     this.pos_ = params.pos
     this.pos_[1] = this.terrain_.Get(...params.pos)[0]
-    this.params_ = params
+    this.params = params
   }
 
   Spawn_() {
@@ -25,10 +25,10 @@ class MonsterSpawner {
       rotation: quat.fromValues(0, 0, 0, 1),
       grid: this.grid_,
       character: {
-        definition: CHARACTER_MODELS[this.params_.class],
-        class: this.params_.class,
+        definition: CHARACTER_MODELS[this.params.class],
+        class: this.params.class,
       },
-      account: { accountName: CHARACTER_MODELS[this.params_.class].name },
+      account: { accountName: CHARACTER_MODELS[this.params.class].name },
     })
 
     const wc = new WorldAIClient(e, this.terrain_, () => {

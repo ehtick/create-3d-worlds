@@ -92,7 +92,7 @@ for (const k in multiples)
 export class SceneryController extends Component {
   constructor({ grid }) {
     super()
-    this.params_ = { grid }
+    this.params = { grid }
     const noiseParams = {
       octaves: 1,
       persistence: 0.5,
@@ -185,7 +185,7 @@ export class SceneryController extends Component {
       }
     }))
     if (randomProp.collision)
-      e.AddComponent(new SpatialGridController({ grid: this.params_.grid }))
+      e.AddComponent(new SpatialGridController({ grid: this.params.grid }))
 
     const q = new THREE.Quaternion().setFromAxisAngle(
       new THREE.Vector3(0, 1, 0), this.noise_.Get(spawnPos.x, 5.0, spawnPos.z) * 360

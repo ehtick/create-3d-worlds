@@ -38,11 +38,11 @@ export class TextureSplatter {
     this._oceanSpline.AddPoint(0.03, _SHALLOW_OCEAN)
     this._oceanSpline.AddPoint(0.05, _SHALLOW_OCEAN)
 
-    this._params = params
+    this.params = params
   }
 
   _BaseColour(x, y, z) {
-    const m = this._params.biomeGenerator.Get(x, y, z)
+    const m = this.params.biomeGenerator.Get(x, y, z)
     const h = math.sat(z / 100.0)
 
     const c1 = this._colourSpline[0].Get(h)
@@ -58,14 +58,14 @@ export class TextureSplatter {
 
   _Colour(x, y, z) {
     const c = this._BaseColour(x, y, z)
-    const r = this._params.colourNoise.Get(x, y, z) * 2.0 - 1.0
+    const r = this.params.colourNoise.Get(x, y, z) * 2.0 - 1.0
 
     c.offsetHSL(0.0, 0.0, r * 0.2)
     return c
   }
 
   _GetTextureWeights(p, n, up) {
-    const m = this._params.biomeGenerator.Get(p.x, p.y, p.z)
+    const m = this.params.biomeGenerator.Get(p.x, p.y, p.z)
     const h = p.z / _HEIGHT_NORMALIZATION
 
     const types = {

@@ -42,11 +42,11 @@ class HyposemetricTints {
     this._colourSpline[1].AddPoint(0.5, new THREE.Color(0xcee59c))
     this._colourSpline[1].AddPoint(1.0, _SNOW)
 
-    this._params = params
+    this.params = params
   }
 
   Get(x, y, z) {
-    const m = this._params.biomeGenerator.Get(x, z)
+    const m = this.params.biomeGenerator.Get(x, z)
     const h = y / 100.0
 
     if (h < 0.05)

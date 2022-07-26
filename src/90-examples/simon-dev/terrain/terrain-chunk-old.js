@@ -2,12 +2,12 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 
 export class TerrainChunk {
   constructor(params) {
-    this._params = params
+    this.params = params
     this._Init(params)
   }
 
   Destroy() {
-    this._params.group.remove(this._plane)
+    this.params.group.remove(this._plane)
   }
 
   Hide() {
@@ -27,15 +27,15 @@ export class TerrainChunk {
     this._plane.castShadow = false
     this._plane.receiveShadow = true
     this._plane.rotation.x = -Math.PI / 2
-    this._params.group.add(this._plane)
+    this.params.group.add(this._plane)
   }
 
   _GenerateHeight(v) {
-    const { offset } = this._params
+    const { offset } = this.params
     const heightPairs = []
     let normalization = 0
     let z = 0
-    for (const gen of this._params.heightGenerators) {
+    for (const gen of this.params.heightGenerators) {
       heightPairs.push(gen.Get(v.x + offset.x, -v.y + offset.y))
       normalization += heightPairs[heightPairs.length - 1][1]
     }
@@ -50,7 +50,7 @@ export class TerrainChunk {
   *_Rebuild() {
     const NUM_STEPS = 5000
     const colors = []
-    const { offset } = this._params
+    const { offset } = this.params
     let count = 0
 
     const positionAttribute = this._plane.geometry.getAttribute('position')
@@ -59,7 +59,7 @@ export class TerrainChunk {
     for (let i = 0; i < positionAttribute.count; i ++) {
       v.fromBufferAttribute(positionAttribute, i)
       v.z = this._GenerateHeight(v)
-      const color = this._params.colourGenerator.Get(v.x + offset.x, v.z, -v.y + offset.y)
+      const color = this.params.colourGenerator.Get(v.x + offset.x, v.z, -v.y + offset.y)
       colors.push(color.r, color.g, color.b)
       positionAttribute.setXYZ(i, v.x, v.y, v.z)
 

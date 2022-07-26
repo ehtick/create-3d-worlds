@@ -46,12 +46,12 @@ class State {
 class Login_Confirm extends State {
   constructor(params) {
     super()
-    this.params_ = { ...params }
+    this.params = { ...params }
   }
 
   OnEnter() {
-    console.log('login confirmed: ' + this.params_.accountName)
-    this.Broadcast({ topic: 'login.complete', params: this.params_ })
+    console.log('login confirmed: ' + this.params.accountName)
+    this.Broadcast({ topic: 'login.complete', params: this.params })
   }
 
   OnMessage() {
@@ -62,15 +62,15 @@ class Login_Confirm extends State {
 class Login_Await extends State {
   constructor() {
     super()
-    this.params_ = {}
+    this.params = {}
   }
 
   OnMessage(evt, data) {
     if (evt != 'login.commit')
       return false
 
-    this.params_.accountName = data
-    this.parent_.SetState(new Login_Confirm(this.params_))
+    this.params.accountName = data
+    this.parent_.SetState(new Login_Confirm(this.params))
 
     return true
   }

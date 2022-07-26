@@ -8,8 +8,8 @@ export class RenderComponent extends Component {
   constructor(params) {
     super()
     this.group_ = new THREE.Group()
-    this.params_ = params
-    this.params_.scene.add(this.group_)
+    this.params = params
+    this.params.scene.add(this.group_)
   }
 
   Destroy() {
@@ -20,15 +20,15 @@ export class RenderComponent extends Component {
       if (c.geometry)
         c.geometry.dispose()
     })
-    this.params_.scene.remove(this.group_)
+    this.params.scene.remove(this.group_)
   }
 
   InitEntity() {
-    this._Init(this.params_)
+    this._Init(this.params)
   }
 
   _Init(params) {
-    this.params_ = params
+    this.params = params
 
     this._LoadModels()
   }
@@ -51,29 +51,29 @@ export class RenderComponent extends Component {
   }
 
   _LoadModels() {
-    if (this.params_.resourceName.endsWith('glb'))
+    if (this.params.resourceName.endsWith('glb'))
       this._LoadGLB()
-    else if (this.params_.resourceName.endsWith('fbx'))
+    else if (this.params.resourceName.endsWith('fbx'))
       this._LoadFBX()
-    else if (this.params_.resourceName.endsWith('obj'))
+    else if (this.params.resourceName.endsWith('obj'))
       this._LoadOBJ()
   }
 
   _OnLoaded(obj) {
     this._target = obj
     this.group_.add(this._target)
-    this._target.scale.setScalar(this.params_.scale)
+    this._target.scale.setScalar(this.params.scale)
 
     const textures = {}
-    if (this.params_.textures) {
+    if (this.params.textures) {
       const loader = this.FindEntity('loader').GetComponent('LoadController')
 
-      for (const k in this.params_.textures.names) {
+      for (const k in this.params.textures.names) {
         const t = loader.LoadTexture(
-          this.params_.textures.resourcePath, this.params_.textures.names[k])
+          this.params.textures.resourcePath, this.params.textures.names[k])
         t.encoding = THREE.sRGBEncoding
 
-        if (this.params_.textures.wrap) {
+        if (this.params.textures.wrap) {
           t.wrapS = THREE.RepeatWrapping
           t.wrapT = THREE.RepeatWrapping
         }
@@ -92,28 +92,28 @@ export class RenderComponent extends Component {
 
       for (const m of materials)
         if (m) {
-          if (this.params_.onMaterial)
-            this.params_.onMaterial(m)
+          if (this.params.onMaterial)
+            this.params.onMaterial(m)
 
           for (const k in textures)
             if (m.name.search(k) >= 0)
               m.map = textures[k]
 
-          if (this.params_.specular)
-            m.specular = this.params_.specular
+          if (this.params.specular)
+            m.specular = this.params.specular
 
-          if (this.params_.emissive)
-            m.emissive = this.params_.emissive
+          if (this.params.emissive)
+            m.emissive = this.params.emissive
         }
 
-      if (this.params_.receiveShadow != undefined)
-        c.receiveShadow = this.params_.receiveShadow
+      if (this.params.receiveShadow != undefined)
+        c.receiveShadow = this.params.receiveShadow
 
-      if (this.params_.castShadow != undefined)
-        c.castShadow = this.params_.castShadow
+      if (this.params.castShadow != undefined)
+        c.castShadow = this.params.castShadow
 
-      if (this.params_.visible != undefined)
-        c.visible = this.params_.visible
+      if (this.params.visible != undefined)
+        c.visible = this.params.visible
 
       this.Broadcast({
         topic: 'render.loaded',
@@ -124,8 +124,8 @@ export class RenderComponent extends Component {
 
   _LoadGLB() {
     const loader = new GLTFLoader()
-    loader.setPath(this.params_.resourcePath)
-    loader.load(this.params_.resourceName, glb => {
+    loader.setPath(this.params.resourcePath)
+    loader.load(this.params.resourceName, glb => {
       this._OnLoaded(glb.scene)
     })
   }
@@ -133,15 +133,15 @@ export class RenderComponent extends Component {
   _LoadFBX() {
     const loader = this.FindEntity('loader').GetComponent('LoadController')
     loader.LoadFBX(
-      this.params_.resourcePath, this.params_.resourceName, fbx => {
+      this.params.resourcePath, this.params.resourceName, fbx => {
         this._OnLoaded(fbx)
       })
   }
 
   _LoadOBJ() {
     const loader = new OBJLoader()
-    loader.setPath(this.params_.resourcePath)
-    loader.load(this.params_.resourceName, fbx => {
+    loader.setPath(this.params.resourcePath)
+    loader.load(this.params.resourceName, fbx => {
       this._OnLoaded(fbx)
     })
   }

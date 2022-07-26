@@ -10,7 +10,7 @@ import { AnimationProxy } from './AnimationProxy.js'
 class BasicCharacterController extends Component {
   constructor({ desc }) {
     super()
-    this.params_ = { desc }
+    this.params = { desc }
   }
 
   InitEntity() {
@@ -57,7 +57,7 @@ class BasicCharacterController extends Component {
   }
 
   LoadModels_() {
-    const classType = this.params_.desc.character.class
+    const classType = this.params.desc.character.class
     const modelData = CHARACTER_MODELS[classType]
 
     const loader = this.FindEntity('loader').GetComponent('LoadController')

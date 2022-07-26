@@ -3,7 +3,7 @@ import { TerrainChunk } from './terrain-chunk-old.js'
 export class TerrainChunkRebuilder {
   constructor(params) {
     this._pool = {}
-    this._params = params
+    this.params = params
     this._Reset()
   }
 
@@ -16,7 +16,7 @@ export class TerrainChunkRebuilder {
     let c = null
     if (this._pool[w].length > 0) {
       c = this._pool[w].pop()
-      c._params = params
+      c.params = params
     } else
       c = new TerrainChunk(params)
 
@@ -29,11 +29,11 @@ export class TerrainChunkRebuilder {
 
   _RecycleChunks(chunks) {
     for (const c of chunks) {
-      if (!(c.chunk._params.width in this._pool))
-        this._pool[c.chunk._params.width] = []
+      if (!(c.chunk.params.width in this._pool))
+        this._pool[c.chunk.params.width] = []
 
       c.chunk.Hide()
-      this._pool[c.chunk._params.width].push(c.chunk)
+      this._pool[c.chunk.params.width].push(c.chunk)
     }
   }
 
