@@ -112,7 +112,6 @@ export class NPCController extends Component {
               action
             }
           }
-
         return null
       }
 
@@ -137,9 +136,7 @@ export class NPCController extends Component {
   _FindIntersections(pos) {
     const _IsAlive = c => {
       const h = c.entity.GetComponent('HealthComponent')
-      if (!h)
-        return true
-
+      if (!h) return true
       return h._health > 0
     }
 
@@ -160,8 +157,7 @@ export class NPCController extends Component {
   _FindPlayer(pos) {
     const _IsAlivePlayer = c => {
       const h = c.entity.GetComponent('HealthComponent')
-      if (!h)
-        return false
+      if (!h) return false
 
       if (c.entity.Name != 'player')
         return false
@@ -188,8 +184,7 @@ export class NPCController extends Component {
     if (currentState.Name != 'walk' && currentState.Name != 'run' && currentState.Name != 'idle')
       return
 
-    if (currentState.Name == 'death')
-      return
+    if (currentState.Name == 'death') return
 
     if (currentState.Name == 'idle' || currentState.Name == 'walk')
       this._OnAIWalk(timeInSeconds)
@@ -222,10 +217,7 @@ export class NPCController extends Component {
     velocity.z += acc.z * timeInSeconds
 
     const m = new THREE.Matrix4()
-    m.lookAt(
-      new THREE.Vector3(0, 0, 0),
-      dirToPlayer,
-      new THREE.Vector3(0, 1, 0))
+    m.lookAt(new THREE.Vector3(0, 0, 0), dirToPlayer, new THREE.Vector3(0, 1, 0))
     _R.setFromRotationMatrix(m)
 
     controlObject.quaternion.copy(_R)
