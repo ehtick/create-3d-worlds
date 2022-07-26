@@ -51,7 +51,7 @@ const _TICK_RATE = 0.1
 export class WorldManager {
   constructor() {
     this.ids_ = 0
-    this.entities_ = []
+    this.entities = []
     this.grid = new SpatialHashGrid([[-4000, -4000], [4000, 4000]], [1000, 1000])
     this.terrain_ = new HeightGenerator()
     this.spawners_ = []
@@ -68,7 +68,7 @@ export class WorldManager {
   }
 
   AddMonster(e) {
-    this.entities_.push(e)
+    this.entities.push(e)
   }
 
   Add(client, params) {
@@ -92,7 +92,7 @@ export class WorldManager {
     })
 
     const wc = new WorldNetworkClient(client, e)
-    this.entities_.push(wc)
+    this.entities.push(wc)
     wc.BroadcastChat({
       name: '',
       server: true,
@@ -112,11 +112,11 @@ export class WorldManager {
 
     this.tickTimer_ = 0.0
 
-    for (let i = 0; i < this.entities_.length; ++i)
-      this.entities_[i].UpdateClientState_()
+    for (let i = 0; i < this.entities.length; ++i)
+      this.entities[i].UpdateClientState_()
 
-    for (let i = 0; i < this.entities_.length; ++i)
-      this.entities_[i].entity_.events_ = []
+    for (let i = 0; i < this.entities.length; ++i)
+      this.entities[i].entity_.events_ = []
   }
 
   UpdateSpawners_(timeElapsed) {
@@ -128,8 +128,8 @@ export class WorldManager {
     const dead = []
     const alive = []
 
-    for (let i = 0; i < this.entities_.length; ++i) {
-      const e = this.entities_[i]
+    for (let i = 0; i < this.entities.length; ++i) {
+      const e = this.entities[i]
       e.Update(timeElapsed)
 
       if (e.IsDead) {
@@ -139,7 +139,7 @@ export class WorldManager {
         alive.push(e)
     }
 
-    this.entities_ = alive
+    this.entities = alive
 
     for (const d of dead) {
       d.OnDeath()

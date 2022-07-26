@@ -1,58 +1,48 @@
 export class EntityManager {
   constructor() {
-    this._ids = 0
-    this._entitiesMap = {}
-    this._entities = []
+    this.id = 0
+    this.entitiesMap = {}
+    this.entities = []
   }
 
   _GenerateName() {
-    this._ids += 1
-    return '__name__' + this._ids
+    this.id += 1
+    return '__name__' + this.id
   }
 
   Get(n) {
-    return this._entitiesMap[n]
+    return this.entitiesMap[n]
   }
 
   Filter(cb) {
-    return this._entities.filter(cb)
+    return this.entities.filter(cb)
   }
 
-  Add(e, name) {
-    if (!name)
-      name = this._GenerateName()
-
-    this._entitiesMap[name] = e
-    this._entities.push(e)
-
+  Add(e, name = this._GenerateName()) {
+    this.entitiesMap[name] = e
+    this.entities.push(e)
     e.SetParent(this)
     e.SetName(name)
     e.InitEntity()
   }
 
   SetActive(e, b) {
-    const i = this._entities.indexOf(e)
-
+    const i = this.entities.indexOf(e)
     if (!b) {
-      if (i < 0)
-        return
-
-      this._entities.splice(i, 1)
+      if (i < 0) return
+      this.entities.splice(i, 1)
     } else {
-      if (i >= 0)
-        return
-
-      this._entities.push(e)
+      if (i >= 0) return
+      this.entities.push(e)
     }
   }
 
   Update(timeElapsed) {
     const dead = []
     const alive = []
-    for (let i = 0; i < this._entities.length; ++i) {
-      const e = this._entities[i]
+    for (let i = 0; i < this.entities.length; ++i) {
+      const e = this.entities[i]
       e.Update(timeElapsed)
-
       if (e.dead)
         dead.push(e)
       else
@@ -61,10 +51,10 @@ export class EntityManager {
 
     for (let i = 0; i < dead.length; ++i) {
       const e = dead[i]
-      delete this._entitiesMap[e.Name]
+      delete this.entitiesMap[e.Name]
       e.Destroy()
     }
 
-    this._entities = alive
+    this.entities = alive
   }
 }
