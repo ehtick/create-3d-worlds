@@ -3,24 +3,7 @@ import { FBXLoader } from '/node_modules/three127/examples/jsm/loaders/FBXLoader
 import keyboard from '/classes/Keyboard.js'
 
 import { Component } from '../ecs/component.js'
-import { FiniteStateMachine } from '../fsm/finite-state-machine.js'
-import { player_state } from '../fsm/player-state.js'
-
-class CharacterFSM extends FiniteStateMachine {
-  constructor(proxy) {
-    super()
-    this._proxy = proxy
-    this._Init()
-  }
-
-  _Init() {
-    this._AddState('idle', player_state.IdleState)
-    this._AddState('walk', player_state.WalkState)
-    this._AddState('run', player_state.RunState)
-    this._AddState('attack', player_state.AttackState)
-    this._AddState('death', player_state.DeathState)
-  }
-};
+import { CharacterFSM } from './CharacterFSM.js'
 
 export class BasicCharacterControllerProxy {
   constructor(animations) {

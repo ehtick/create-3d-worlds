@@ -3,26 +3,8 @@ import { scene } from '/utils/scene.js'
 import keyboard from '/classes/Keyboard.js'
 
 import { Component } from '../ecs/component.js'
-import { FiniteStateMachine } from '../fsm/finite-state-machine.js'
-import { player_state } from '../fsm/player-state.js'
 import { CHARACTER_MODELS } from '../03-MMORPG/shared/data.mjs'
-
-class CharacterFSM extends FiniteStateMachine {
-  constructor(proxy) {
-    super()
-    this._proxy = proxy
-    this.Init_()
-  }
-
-  Init_() {
-    this._AddState('idle', player_state.IdleState)
-    this._AddState('walk', player_state.WalkState)
-    this._AddState('run', player_state.RunState)
-    this._AddState('attack', player_state.AttackState)
-    this._AddState('death', player_state.DeathState)
-    this._AddState('dance', player_state.DanceState)
-  }
-};
+import { CharacterFSM } from './CharacterFSM.js'
 
 class BasicCharacterControllerProxy {
   constructor(animations) {
@@ -138,8 +120,7 @@ class BasicCharacterController extends Component {
 
       this.target_.visible = true
 
-      this.stateMachine_ = new CharacterFSM(
-        new BasicCharacterControllerProxy(this.animations_))
+      this.stateMachine_ = new CharacterFSM(new BasicCharacterControllerProxy(this.animations_))
 
       this.stateMachine_.SetState('idle')
 
