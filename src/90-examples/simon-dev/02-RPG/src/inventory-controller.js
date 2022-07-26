@@ -66,7 +66,7 @@ export class InventoryController extends Component {
     const obj = this.FindEntity(itemName)
     if (obj) {
       const item = obj.GetComponent('InventoryItem')
-      const path = './assets/icons/weapons/' + item.RenderParams.icon
+      const path = '/assets/simon-dev/icons/weapons/' + item.RenderParams.icon
       div.style.backgroundImage = 'url(\'' + path + '\')'
     } else
       div.style.backgroundImage = ''

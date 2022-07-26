@@ -99,10 +99,10 @@ export class BloodEffect extends Component {
   constructor() {
     super()
     this.bloodFX_ = new ParticleSystem({
-      texture: './assets/textures/whitePuff14.png',
+      texture: '/assets/simon-dev/textures/whitePuff14.png',
     })
     this.fireFX_ = new ParticleSystem({
-      texture: './assets/textures/fire.png',
+      texture: '/assets/simon-dev/textures/fire.png',
     })
   }
 

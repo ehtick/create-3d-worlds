@@ -56,7 +56,7 @@ export default class EquipWeapon extends Component {
 
   _LoadModels(item, cb) {
     const loader = new FBXLoader()
-    loader.setPath('./assets/weapons/FBX/')
+    loader.setPath('/assets/simon-dev/weapons/FBX/')
     loader.load(item.RenderParams.name + '.fbx', fbx => {
       this._target = fbx
       this._target.scale.setScalar(item.RenderParams.scale)

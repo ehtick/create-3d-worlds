@@ -38,7 +38,7 @@ export function loadClouds(_scene, _entityManager) {
     const e = new Entity()
     e.AddComponent(new StaticModelComponent({
       scene: _scene,
-      resourcePath: './assets/nature2/GLTF/',
+      resourcePath: '/assets/simon-dev/nature2/GLTF/',
       resourceName: 'Cloud' + index + '.glb',
       position: pos,
       scale: Math.random() * 5 + 10,
@@ -69,7 +69,7 @@ export function loadTrees(_scene, _grid, _entityManager) {
     const e = new Entity()
     e.AddComponent(new StaticModelComponent({
       scene: _scene,
-      resourcePath: './assets/nature/FBX/',
+      resourcePath: '/assets/simon-dev/nature/FBX/',
       resourceName: name + '_' + index + '.fbx',
       scale: 0.25,
       emissive: new THREE.Color(0x000000),
@@ -153,7 +153,7 @@ export function createGirl(grid) {
   const girl = new Entity()
   girl.AddComponent(new AnimatedModelComponent({
     scene,
-    resourcePath: './assets/girl/',
+    resourcePath: '/assets/simon-dev/girl/',
     resourceName: 'peasant_girl.fbx',
     resourceAnimation: 'Standing Idle.fbx',
     scale: 0.035,

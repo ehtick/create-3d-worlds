@@ -34,7 +34,7 @@ body {
   top: 0;
   left: 0;
   font-family: 'IM Fell French Canon', serif;
-  background-image: url('./assets/background-3.png');
+  background-image: url('/assets/simon-dev/background-3.png');
   background-size: cover;
 }
 
@@ -225,7 +225,7 @@ body {
   position: absolute;
   top: 0px;
   left: 0px;
-  background-image: url('./assets/icons/ui/health-bar.png');
+  background-image: url('/assets/simon-dev/icons/ui/health-bar.png');
   width: 500px;
   height: 300px;
   z-index: 1;
@@ -344,7 +344,7 @@ body {
 }
 
 .inventory-character {
-  background-image: url('./assets/icons/ui/inventory-character.png');
+  background-image: url('/assets/simon-dev/icons/ui/inventory-character.png');
   background-size: cover;
   width: 200px;
   height: 350px;

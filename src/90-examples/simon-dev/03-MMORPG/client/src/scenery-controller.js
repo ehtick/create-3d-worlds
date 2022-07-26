@@ -11,7 +11,7 @@ import { scene } from '/utils/scene.js'
 const _SCENERY = {
   birch1: {
     base: 'Birch_1.fbx',
-    resourcePath: './assets/trees/FBX/',
+    resourcePath: '/assets/simon-dev/trees/FBX/',
     names: {
       Bark: 'Birch_Bark.png',
       Leaves: 'Birch_Leaves_Yellow.png'
@@ -22,7 +22,7 @@ const _SCENERY = {
   },
   tree1: {
     base: 'Tree_1.fbx',
-    resourcePath: './assets/trees/FBX/',
+    resourcePath: '/assets/simon-dev/trees/FBX/',
     names: {
       Bark: 'Tree_Bark.jpg',
       Leaves: 'Leaves_Blue.png'
@@ -33,35 +33,35 @@ const _SCENERY = {
   },
   rock1: {
     base: 'Rock_1.fbx',
-    resourcePath: './assets/nature/FBX/',
+    resourcePath: '/assets/simon-dev/nature/FBX/',
     names: {},
     scale: 0.025,
     biomes: ['arid', 'desert'],
   },
   rockMoss1: {
     base: 'Rock_Moss_1.fbx',
-    resourcePath: './assets/nature/FBX/',
+    resourcePath: '/assets/simon-dev/nature/FBX/',
     names: {},
     scale: 0.025,
     biomes: ['forest'],
   },
   plant1: {
     base: 'Plant_1.fbx',
-    resourcePath: './assets/nature/FBX/',
+    resourcePath: '/assets/simon-dev/nature/FBX/',
     names: {},
     scale: 0.05,
     biomes: ['forest', 'arid'],
   },
   grass1: {
     base: 'Grass_1.fbx',
-    resourcePath: './assets/nature/FBX/',
+    resourcePath: '/assets/simon-dev/nature/FBX/',
     names: {},
     scale: 0.05,
     biomes: ['forest', 'arid'],
   },
   flowers1: {
     base: 'Flowers.fbx',
-    resourcePath: './assets/nature/FBX/',
+    resourcePath: '/assets/simon-dev/nature/FBX/',
     names: {},
     scale: 0.05,
     biomes: ['forest'],
@@ -123,7 +123,7 @@ export class SceneryController extends Component {
       const e = new Entity()
       e.AddComponent(new RenderComponent({
         scene,
-        resourcePath: './assets/nature2/GLTF/',
+        resourcePath: '/assets/simon-dev/nature2/GLTF/',
         resourceName: 'Cloud' + index + '.glb',
         scale: Math.random() * 20 + 40,
         emissive: new THREE.Color(0x000000),
@@ -170,7 +170,7 @@ export class SceneryController extends Component {
       resourcePath: randomProp.resourcePath,
       resourceName: randomProp.base,
       textures: {
-        resourcePath: './assets/trees/Textures/',
+        resourcePath: '/assets/simon-dev/trees/Textures/',
         names: randomProp.names,
         wrap: true,
       },

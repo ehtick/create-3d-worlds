@@ -72,7 +72,7 @@ class UIInventoryController extends Component {
     const div = document.getElementById(slot)
     const item = this.GetItemDefinition_(itemName)
     if (item) {
-      const path = './assets/icons/weapons/' + item.renderParams.icon
+      const path = '/assets/simon-dev/icons/weapons/' + item.renderParams.icon
       div.style.backgroundImage = 'url(\'' + path + '\')'
     } else
       div.style.backgroundImage = ''

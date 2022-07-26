@@ -10,7 +10,7 @@ class LevelUpComponent extends Component {
     this._params = params
 
     this._particles = new ParticleSystem({
-      texture: './assets/textures/ball.png',
+      texture: '/assets/simon-dev/textures/ball.png',
     })
     this._particles._alphaSpline.AddPoint(0.0, 0.0)
     this._particles._alphaSpline.AddPoint(0.1, 1.0)

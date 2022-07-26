@@ -63,7 +63,7 @@ export class BasicCharacterController extends Component {
 
   _LoadModels() {
     const loader = new FBXLoader()
-    loader.setPath('./assets/guard/')
+    loader.setPath('/assets/simon-dev/guard/')
     loader.load('castle_guard_01.fbx', fbx => {
       this._target = fbx
       this._target.scale.setScalar(0.035)
@@ -106,7 +106,7 @@ export class BasicCharacterController extends Component {
       }
 
       const loader = new FBXLoader(this._manager)
-      loader.setPath('./assets/guard/')
+      loader.setPath('/assets/simon-dev/guard/')
       loader.load('Sword And Shield Idle.fbx', a => {
         _OnLoad('idle', a)
       })

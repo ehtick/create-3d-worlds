@@ -51,7 +51,7 @@ export class SorcerorEffect extends Component {
   constructor() {
     super()
     this.particles_ = new ParticleSystem({
-      texture: './assets/textures/fire.png',
+      texture: '/assets/simon-dev/textures/fire.png',
     })
   }
 
