@@ -53,7 +53,6 @@ export class BasicCharacterController extends Component {
         c.receiveShadow = true
         if (c.material && c.material.map)
           c.material.map.encoding = THREE.sRGBEncoding
-
       })
 
       this.Broadcast({
@@ -67,7 +66,6 @@ export class BasicCharacterController extends Component {
       const _OnLoad = (animName, anim) => {
         const clip = anim.animations[0]
         const action = this.mixer.clipAction(clip)
-
         this.animations[animName] = {
           clip,
           action,
@@ -75,36 +73,22 @@ export class BasicCharacterController extends Component {
       }
 
       this._manager = new THREE.LoadingManager()
-      this._manager.onLoad = () => {
-        this.stateMachine.SetState('idle')
-      }
+      this._manager.onLoad = () => this.stateMachine.SetState('idle')
 
       const loader = new FBXLoader(this._manager)
       loader.setPath('/assets/simon-dev/guard/')
-      loader.load('Sword And Shield Idle.fbx', a => {
-        _OnLoad('idle', a)
-      })
-      loader.load('Sword And Shield Run.fbx', a => {
-        _OnLoad('run', a)
-      })
-      loader.load('Sword And Shield Walk.fbx', a => {
-        _OnLoad('walk', a)
-      })
-      loader.load('Sword And Shield Slash.fbx', a => {
-        _OnLoad('attack', a)
-      })
-      loader.load('Sword And Shield Death.fbx', a => {
-        _OnLoad('death', a)
-      })
+      loader.load('Sword And Shield Idle.fbx', a => _OnLoad('idle', a))
+      loader.load('Sword And Shield Run.fbx', a => _OnLoad('run', a))
+      loader.load('Sword And Shield Walk.fbx', a => _OnLoad('walk', a))
+      loader.load('Sword And Shield Slash.fbx', a => _OnLoad('attack', a))
+      loader.load('Sword And Shield Death.fbx', a => _OnLoad('death', a))
     })
   }
 
   _FindIntersections(pos) {
     const _IsAlive = c => {
       const h = c.entity.GetComponent('HealthComponent')
-      if (!h)
-        return true
-
+      if (!h) return true
       return h._health > 0
     }
 
@@ -115,11 +99,9 @@ export class BasicCharacterController extends Component {
     for (let i = 0; i < nearby.length; ++i) {
       const e = nearby[i].entity
       const d = ((pos.x - e._position.x) ** 2 + (pos.z - e._position.z) ** 2) ** 0.5
-
       // HARDCODED
       if (d <= 4)
         collisions.push(nearby[i].entity)
-
     }
     return collisions
   }
@@ -142,7 +124,7 @@ export class BasicCharacterController extends Component {
         time: this.stateMachine.currentState._action.time,
       })
 
-    const currentState = this.stateMachine.currentState
+    const { currentState } = this.stateMachine
     if (currentState.Name != 'walk' && currentState.Name != 'run' && currentState.Name != 'idle')
       return
 

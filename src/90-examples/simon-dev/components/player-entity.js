@@ -31,17 +31,9 @@ class BasicCharacterController extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler('health.death', m => {
-      this.OnDeath_(m)
-    })
-    this._RegisterHandler(
-      'update.position', m => {
-        this.OnUpdatePosition_(m)
-      })
-    this._RegisterHandler(
-      'update.rotation', m => {
-        this.OnUpdateRotation_(m)
-      })
+    this._RegisterHandler('health.death', m => this.OnDeath_(m))
+    this._RegisterHandler('update.position', m => this.OnUpdatePosition_(m))
+    this._RegisterHandler('update.rotation', m => this.OnUpdateRotation_(m))
   }
 
   OnUpdatePosition_(msg) {
@@ -133,11 +125,9 @@ class BasicCharacterController extends Component {
     for (let i = 0; i < nearby.length; ++i) {
       const e = nearby[i].entity
       const d = ((pos.x - e.Position.x) ** 2 + (pos.z - e.Position.z) ** 2) ** 0.5
-
       // HARDCODED
       if (d <= 4) {
         const d2 = ((oldPos.x - e.Position.x) ** 2 + (oldPos.z - e.Position.z) ** 2) ** 0.5
-
         // If they're already colliding, let them get untangled.
         if (d2 <= 4)
           continue
