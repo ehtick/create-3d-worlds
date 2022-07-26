@@ -37,67 +37,13 @@ const fragmentShader = `
 
 export class SkyController extends Component {
   InitEntity() {
-    THREE.ShaderChunk.fog_fragment = `
-      #ifdef USE_FOG
-        vec3 fogOrigin = cameraPosition;
-        vec3 fogDirection = normalize(vWorldPosition - fogOrigin);
-        float fogDepth = distance(vWorldPosition, fogOrigin);
-  
-        fogDepth *= fogDepth;
-  
-        float heightFactor = 0.05;
-        float fogFactor = heightFactor * exp(-fogOrigin.y * fogDensity) * (
-            1.0 - exp(-fogDepth * fogDirection.y * fogDensity)) / fogDirection.y;
-        fogFactor = saturate(fogFactor);
-  
-        gl_FragColor.rgb = mix( gl_FragColor.rgb, fogColor, fogFactor );
-      #endif`
-
-    THREE.ShaderChunk.fog_pars_fragment = `
-      #ifdef USE_FOG
-        uniform float fogTime;
-        uniform vec3 fogColor;
-        varying vec3 vWorldPosition;
-        #ifdef FOG_EXP2
-          uniform float fogDensity;
-        #else
-          uniform float fogNear;
-          uniform float fogFar;
-        #endif
-      #endif`
-
-    THREE.ShaderChunk.fog_vertex = `
-      #ifdef USE_FOG
-        vWorldPosition = (modelMatrix * vec4(transformed, 1.0 )).xyz;
-      #endif`
-
-    THREE.ShaderChunk.fog_pars_vertex = `
-      #ifdef USE_FOG
-        varying vec3 vWorldPosition;
-      #endif`
-
     renderer.outputEncoding = THREE.sRGBEncoding
     renderer.gammaFactor = 2.2
 
     camera.position.set(25, 10, 25)
-    scene.fog = new THREE.FogExp2(0x89b2eb, 0.00002)
 
-    const light = new THREE.DirectionalLight(0x8088b3, 0.7)
-    light.position.set(-10, 500, 10)
-    light.target.position.set(0, 0, 0)
-    light.castShadow = true
-    light.shadow.bias = -0.001
-    light.shadow.mapSize.width = 4096
-    light.shadow.mapSize.height = 4096
-    light.shadow.camera.near = 0.1
-    light.shadow.camera.far = 1000.0
-    light.shadow.camera.left = 100
-    light.shadow.camera.right = -100
-    light.shadow.camera.top = 100
-    light.shadow.camera.bottom = -100
-    scene.add(light)
-
-    this.sun_ = light
+    this.sun_ = createSunLight()
+    scene.add(this.sun_)
     this.LoadSky_()
   }
 
@@ -124,7 +70,7 @@ export class SkyController extends Component {
       'background': { value: texture },
     }
 
-    scene.fog.color.copy(uniforms.color2.value)
+    scene.fog = new THREE.FogExp2(uniforms.color2.value, 0.00002)
 
     const skyGeo = new THREE.SphereBufferGeometry(5000, 32, 15)
     const skyMat = new THREE.ShaderMaterial({

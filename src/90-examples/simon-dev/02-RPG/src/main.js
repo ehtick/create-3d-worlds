@@ -1,8 +1,5 @@
-/* eslint-disable new-cap */
-import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
-import { createSunLight, sunFollow } from '/utils/light.js'
 
 import { ThirdPersonCamera } from '../../components/third-person-camera.js'
 import { EntityManager } from '../../ecs/entity-manager.js'
@@ -13,10 +10,6 @@ import { UIController } from '../../components/ui-controller.js'
 import { LevelUpComponentSpawner } from '../../components/level-up-component-old.js'
 import { createNPC, createPlayer, createGirl, createAxe, createSword, loadClouds, loadTrees } from './utils.js'
 import { SkyController } from '../../components/sky_component.js'
-
-scene.fog = new THREE.FogExp2(0xffffff, 0.002)
-// const sun = createSunLight({ far: 1000 })
-// scene.add(sun)
 
 const plane = createFloor({ size: 5000, color: 0x1e601c })
 scene.add(plane)
@@ -84,7 +77,6 @@ for (let i = 0; i < 50; ++i) {
 void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
-  // sunFollow(sun, entityManager.Get('player')._position)
   entityManager.Update(delta)
   renderer.render(scene, camera)
 }()
