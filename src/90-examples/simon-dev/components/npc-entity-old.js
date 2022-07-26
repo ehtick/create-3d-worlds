@@ -5,19 +5,6 @@ import { FiniteStateMachine } from '../fsm/finite-state-machine.js'
 import { Component } from '../ecs/component.js'
 import { player_state } from '../fsm/player-state.js'
 
-class AIInput {
-  constructor() {
-    this._Init()
-  }
-
-  _Init() {
-    this.keys = {
-      up: false,
-      space: false,
-    }
-  }
-};
-
 class NPCFSM extends FiniteStateMachine {
   constructor(animations) {
     super()
@@ -45,10 +32,13 @@ export class NPCController extends Component {
     this._acceleration = new THREE.Vector3(1, 0.25, 40.0)
     this._velocity = new THREE.Vector3(0, 0, 0)
     this._position = new THREE.Vector3()
-
     this.animations = {}
-    this._input = new AIInput()
-    // FIXME
+    this.input = {
+      keys: {
+        up: false,
+        space: false,
+      }
+    }
     this.stateMachine = new NPCFSM(this.animations)
     this._LoadModels()
   }
@@ -179,7 +169,7 @@ export class NPCController extends Component {
   }
 
   _UpdateAI(timeInSeconds) {
-    const currentState = this.stateMachine.currentState
+    const { currentState } = this.stateMachine
     if (currentState.Name != 'walk' && currentState.Name != 'run' && currentState.Name != 'idle')
       return
 
@@ -207,12 +197,12 @@ export class NPCController extends Component {
     const controlObject = this.target
     const _R = controlObject.quaternion.clone()
 
-    this._input.keys.up = false
+    this.input.keys.up = false
 
     const acc = this._acceleration
     if (dirToPlayer.length() == 0) return
 
-    this._input.keys.up = true
+    this.input.keys.up = true
     velocity.z += acc.z * timeInSeconds
 
     const m = new THREE.Matrix4()
@@ -241,8 +231,8 @@ export class NPCController extends Component {
 
     const collisions = this._FindIntersections(pos)
     if (collisions.length > 0) {
-      this._input.keys.space = true
-      this._input.keys.up = false
+      this.input.keys.space = true
+      this.input.keys.up = false
       return
     }
 
@@ -256,12 +246,12 @@ export class NPCController extends Component {
   Update(timeInSeconds) {
     if (!this.stateMachine.currentState) return
 
-    this._input.keys.space = false
-    this._input.keys.up = false
+    this.input.keys.space = false
+    this.input.keys.up = false
 
     this._UpdateAI(timeInSeconds)
 
-    this.stateMachine.Update(timeInSeconds, this._input)
+    this.stateMachine.Update(timeInSeconds, this.input)
 
     // HARDCODED
     if (this.stateMachine.currentState._action)
