@@ -5,10 +5,9 @@ import { Entity } from '../../ecs/entity.js'
 import { AnimatedModelComponent, StaticModelComponent } from './gltf-component.js'
 import { math } from '../../shared/math.mjs'
 import SpatialGridController from './spatial-grid-controller.js'
-import NPCController from './npc-entity.js'
+import { NPCController } from '../../components/npc-entity-old.js'
 import { HealthComponent } from '../../components/health-component-old.js'
 import { AttackController } from '../../components/attacker-controller-old.js'
-// import HealthBar from './health-bar.js'
 import { PickableComponent, BasicCharacterControllerInput } from './player-input.js'
 import { BasicCharacterController } from './player-entity.js'
 import { EquipWeapon } from '../../components/equip-weapon-component-old.js'
@@ -109,11 +108,6 @@ export function createNPC(resourceName, resourceTexture, grid) {
   }))
 
   npc.AddComponent(new SpatialGridController({ grid }))
-
-  // npc.AddComponent(new HealthBar({
-  //   parent: scene,
-  //   camera,
-  // }))
 
   npc.AddComponent(new AttackController({ timing: 0.35 }))
 
