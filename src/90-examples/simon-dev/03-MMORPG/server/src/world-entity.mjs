@@ -28,7 +28,7 @@ export class WorldEntity {
   constructor(params) {
     this.id_ = params.id
     this.state_ = 'idle'
-    this.position_ = vec3.clone(params.position)
+    this.position = vec3.clone(params.position)
     this.rotation_ = quat.clone(params.rotation)
 
     // HACK
@@ -44,7 +44,7 @@ export class WorldEntity {
     this.events_ = []
     this.grid = params.grid
     this.gridClient_ = this.grid.NewClient(
-      [this.position_[0], this.position_[2]], [10, 10])
+      [this.position[0], this.position[2]], [10, 10])
     this.gridClient_.entity = this
 
     this.updateTimer_ = 0.0
@@ -94,7 +94,7 @@ export class WorldEntity {
   CreateTransformPacket_() {
     return [
       this.state_,
-      [...this.position_],
+      [...this.position],
       [...this.rotation_],
     ]
   }
@@ -104,14 +104,14 @@ export class WorldEntity {
       this.SetState('death')
 
     this.state_ = transformData[0]
-    this.position_ = vec3.fromValues(...transformData[1])
+    this.position = vec3.fromValues(...transformData[1])
     this.rotation_ = quat.fromValues(...transformData[2])
 
     this.UpdateGridClient_()
   }
 
   UpdateGridClient_() {
-    this.gridClient_.position = [this.position_[0], this.position_[2]]
+    this.gridClient_.position = [this.position[0], this.position[2]]
     this.grid.UpdateClient(this.gridClient_)
   }
 
@@ -139,7 +139,7 @@ export class WorldEntity {
       if (c.Health == 0)
         return false
 
-      const dist = vec3.distance(c.position_, this.position_)
+      const dist = vec3.distance(c.position, this.position)
       return dist <= this.characterDefinition_.attack.range
     }
 
@@ -148,7 +148,7 @@ export class WorldEntity {
       const target = a
 
       const dirToTarget = vec3.create()
-      vec3.sub(dirToTarget, target.position_, this.position_)
+      vec3.sub(dirToTarget, target.position, this.position)
       vec3.normalize(dirToTarget, dirToTarget)
 
       const forward = vec3.fromValues(0, 0, 1)
@@ -209,7 +209,7 @@ export class WorldEntity {
 
   FindNear(radius, includeSelf) {
     let nearby = this.grid.FindNear(
-      [this.position_[0], this.position_[2]], [radius, radius]).map(c => c.entity)
+      [this.position[0], this.position[2]], [radius, radius]).map(c => c.entity)
 
     if (!includeSelf) {
       const _Filter = e => e.ID != this.ID

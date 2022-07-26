@@ -52,7 +52,7 @@ export class AttackController extends Component {
       for (const a of attackable) {
         const target = a.entity
 
-        const dirToTarget = target._position.clone().sub(this.parent._position)
+        const dirToTarget = target.position.clone().sub(this.parent.position)
         dirToTarget.normalize()
 
         const forward = new THREE.Vector3(0, 0, 1)

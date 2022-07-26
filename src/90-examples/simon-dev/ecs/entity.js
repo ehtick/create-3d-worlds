@@ -4,7 +4,7 @@ export class Entity {
   constructor() {
     this.name = null
     this.components = {}
-    this._position = new THREE.Vector3()
+    this.position = new THREE.Vector3()
     this._rotation = new THREE.Quaternion()
     this.handlers = {}
     this.parent = null
@@ -80,10 +80,10 @@ export class Entity {
   }
 
   SetPosition(p) {
-    this._position.copy(p)
+    this.position.copy(p)
     this.Broadcast({
       topic: 'update.position',
-      value: this._position,
+      value: this.position,
     })
   }
 
@@ -96,7 +96,7 @@ export class Entity {
   }
 
   get Position() {
-    return this._position
+    return this.position
   }
 
   get Quaternion() {

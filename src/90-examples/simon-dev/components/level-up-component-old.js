@@ -26,7 +26,7 @@ class LevelUpComponent extends Component {
   }
 
   InitComponent() {
-    this.particles.AddParticles(this.parent._position, 300)
+    this.particles.AddParticles(this.parent.position, 300)
   }
 
   Update(timeElapsed) {

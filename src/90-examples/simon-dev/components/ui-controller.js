@@ -62,16 +62,13 @@ export class UIController extends Component {
   }
 
   AddQuest(quest) {
-    if (quest.id in this._quests)
-      return
+    if (quest.id in this._quests) return
 
     const e = document.createElement('DIV')
     e.className = 'quest-entry'
     e.id = 'quest-entry-' + quest.id
     e.innerText = quest.title
-    e.onclick = evt => {
-      this.OnQuestSelected_(e.id)
-    }
+    e.onclick = () => this.OnQuestSelected_(e.id)
     document.getElementById('quest-journal').appendChild(e)
 
     this._quests[quest.id] = quest
@@ -147,8 +144,5 @@ export class UIController extends Component {
     const { visibility } = this._ui.inventory.style
     this.HideUI_()
     this._ui.inventory.style.visibility = (visibility ? '' : 'hidden')
-  }
-
-  Update(timeInSeconds) {
   }
 };

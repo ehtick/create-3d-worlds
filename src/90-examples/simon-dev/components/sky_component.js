@@ -67,7 +67,7 @@ export class SkyController extends Component {
       'color2': { value: new THREE.Color(0x5d679e) },
       'offset': { value: -500 },
       'exponent': { value: 0.3 },
-      'background': { value: texture },
+      // 'background': { value: texture },
     }
 
     scene.fog = new THREE.FogExp2(uniforms.color2.value, 0.00002)
@@ -87,6 +87,6 @@ export class SkyController extends Component {
   Update(_) {
     const player = this.FindEntity('player')
     if (!player) return
-    sunFollow(this.sun_, player._position)
+    sunFollow(this.sun_, player.position)
   }
 }

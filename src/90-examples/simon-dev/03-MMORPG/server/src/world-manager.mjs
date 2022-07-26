@@ -32,16 +32,16 @@ class MonsterSpawner {
     })
 
     const wc = new WorldAIClient(e, this.terrain_, () => {
-      this.entity_ = null
+      this.entity = null
       console.log('entity gone, spawner making now one soon')
     })
 
     this.parent.AddMonster(wc)
-    this.entity_ = wc
+    this.entity = wc
   }
 
   Update(timeElapsed) {
-    if (!this.entity_)
+    if (!this.entity)
       this.Spawn_()
   }
 };
@@ -116,7 +116,7 @@ export class WorldManager {
       this.entities[i].UpdateClientState_()
 
     for (let i = 0; i < this.entities.length; ++i)
-      this.entities[i].entity_.events_ = []
+      this.entities[i].entity.events_ = []
   }
 
   UpdateSpawners_(timeElapsed) {

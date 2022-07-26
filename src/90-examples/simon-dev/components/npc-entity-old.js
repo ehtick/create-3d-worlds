@@ -31,7 +31,7 @@ export class NPCController extends Component {
     this._decceleration = new THREE.Vector3(-0.0005, -0.0001, -5.0)
     this._acceleration = new THREE.Vector3(1, 0.25, 40.0)
     this._velocity = new THREE.Vector3(0, 0, 0)
-    this._position = new THREE.Vector3()
+    this.position = new THREE.Vector3()
     this.animations = {}
     this.keys = {
       up: false,
@@ -69,7 +69,7 @@ export class NPCController extends Component {
       this.params.scene.add(this.target)
 
       this.target.scale.setScalar(0.025)
-      this.target.position.copy(this.parent._position)
+      this.target.position.copy(this.parent.position)
       this.target.position.y += 0.35
       const texLoader = new THREE.TextureLoader()
       const texture = texLoader.load(
@@ -111,7 +111,7 @@ export class NPCController extends Component {
   }
 
   get Position() {
-    return this._position
+    return this.position
   }
 
   get Rotation() {
@@ -133,7 +133,7 @@ export class NPCController extends Component {
 
     for (let i = 0; i < nearby.length; ++i) {
       const e = nearby[i].entity
-      const d = ((pos.x - e._position.x) ** 2 + (pos.z - e._position.z) ** 2) ** 0.5
+      const d = ((pos.x - e.position.x) ** 2 + (pos.z - e.position.z) ** 2) ** 0.5
       // HARDCODED
       if (d <= 4)
         collisions.push(nearby[i].entity)
@@ -158,8 +158,8 @@ export class NPCController extends Component {
     if (nearby.length == 0)
       return new THREE.Vector3(0, 0, 0)
 
-    const dir = this.parent._position.clone()
-    dir.sub(nearby[0].entity._position)
+    const dir = this.parent.position.clone()
+    dir.sub(nearby[0].entity.position)
     dir.y = 0.0
     dir.normalize()
 
@@ -235,9 +235,9 @@ export class NPCController extends Component {
     }
 
     controlObject.position.copy(pos)
-    this._position.copy(pos)
+    this.position.copy(pos)
 
-    this.parent.SetPosition(this._position)
+    this.parent.SetPosition(this.position)
     this.parent.SetQuaternion(this.target.quaternion)
   }
 

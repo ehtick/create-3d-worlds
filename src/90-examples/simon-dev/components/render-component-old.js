@@ -42,11 +42,11 @@ export class AnimatedModelComponent extends Component {
     this.params.scene.add(this.target)
 
     obj.scale.setScalar(this.params.scale)
-    this.target.position.copy(this.parent._position)
+    this.target.position.copy(this.parent.position)
 
     this.Broadcast({
       topic: 'update.position',
-      value: this.parent._position,
+      value: this.parent.position,
     })
 
     let texture = null

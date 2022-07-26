@@ -4,13 +4,13 @@ const _TIMEOUT = 600.0
 
 class WorldClient {
   constructor(client, entity) {
-    this.entity_ = entity
+    this.entity = entity
     // Hack
-    this.entity_.onEvent_ = (t, d) => this.OnEntityEvent_(t, d)
+    this.entity.onEvent_ = (t, d) => this.OnEntityEvent_(t, d)
     this.client_ = client
     this.client_.onMessage = (e, d) => this.OnMessage_(e, d)
-    this.client_.Send('world.player', this.entity_ .CreatePlayerPacket_())
-    this.client_.Send('world.stats', this.entity_ .CreateStatsPacket_())
+    this.client_.Send('world.player', this.entity .CreatePlayerPacket_())
+    this.client_.Send('world.stats', this.entity .CreateStatsPacket_())
     this.timeout_ = _TIMEOUT
     this.entityCache_ = {}
     // Hack
@@ -21,8 +21,8 @@ class WorldClient {
     this.client_.Disconnect()
     this.client_ = null
 
-    this.entity_.Destroy()
-    this.entity_ = null
+    this.entity.Destroy()
+    this.entity = null
   }
 
   OnDeath() {}
@@ -36,7 +36,7 @@ class WorldClient {
     this.timeout_ = _TIMEOUT
 
     if (evt == 'world.update') {
-      this.entity_.UpdateTransform(data)
+      this.entity.UpdateTransform(data)
       return true
     }
 
@@ -46,7 +46,7 @@ class WorldClient {
     }
 
     if (evt == 'action.attack') {
-      this.entity_.OnActionAttack()
+      this.entity.OnActionAttack()
       return true
     }
 
@@ -60,25 +60,25 @@ class WorldClient {
   OnDamageEvent_(_) {}
 
   OnInventoryChanged_(inventory) {
-    this.entity_.UpdateInventory(inventory)
+    this.entity.UpdateInventory(inventory)
 
     // TODO: Merge this into entityCache_ path.
-    const nearby = this.entity_.FindNear(50, true)
+    const nearby = this.entity.FindNear(50, true)
 
     for (const n of nearby)
-      n.parent.client_.Send('world.inventory', [this.entity_.ID, inventory])
+      n.parent.client_.Send('world.inventory', [this.entity.ID, inventory])
   }
 
   OnChatMessage_(message) {
     const chatMessage = {
-      name: this.entity_.accountInfo_.name,
+      name: this.entity.accountInfo_.name,
       text: message,
     }
     this.BroadcastChat(chatMessage)
   }
 
   BroadcastChat(chatMessage) {
-    const nearby = this.entity_.FindNear(50, true)
+    const nearby = this.entity.FindNear(50, true)
     for (let i = 0; i < nearby.length; ++i) {
       const n = nearby[i]
       n.parent.client_.Send('chat.message', chatMessage)
@@ -99,7 +99,7 @@ class WorldClient {
 
   Update(timeElapsed) {
     this.timeout_ -= timeElapsed
-    this.entity_.Update(timeElapsed)
+    this.entity.Update(timeElapsed)
     this.OnUpdate_(timeElapsed)
   }
 };
@@ -110,14 +110,14 @@ class WorldNetworkClient extends WorldClient {
   }
 
   OnUpdateClientState_() {
-    const _Filter = e => e.ID != this.entity_.ID
+    const _Filter = e => e.ID != this.entity.ID
 
-    const nearby = this.entity_.FindNear(500).filter(e => _Filter(e))
+    const nearby = this.entity.FindNear(500).filter(e => _Filter(e))
 
     const updates = [{
-      id: this.entity_.ID,
-      stats: this.entity_.CreateStatsPacket_(),
-      events: this.entity_.CreateEventsPacket_(),
+      id: this.entity.ID,
+      stats: this.entity.CreateStatsPacket_(),
+      events: this.entity.CreateEventsPacket_(),
     }]
     const newCache_ = {}
 
@@ -147,7 +147,7 @@ class WorldNetworkClient extends WorldClient {
 class AIStateMachine {
   constructor(entity, terrain) {
     this.currentState = null
-    this.entity_ = entity
+    this.entity = entity
     this.terrain_ = terrain
   }
 
@@ -163,7 +163,7 @@ class AIStateMachine {
 
     this.currentState = state
     this.currentState.parent = this
-    this.currentState.entity_ = this.entity_
+    this.currentState.entity = this.entity
     this.currentState.terrain_ = this.terrain_
     state.Enter(prevState)
   }
@@ -189,7 +189,7 @@ class AIState_JustSitThere extends AIState {
 
   UpdateLogic_() {
     const _IsPlayer = e => !e.isAI
-    const nearby = this.entity_.FindNear(50.0).filter(e => e.Health > 0).filter(_IsPlayer)
+    const nearby = this.entity.FindNear(50.0).filter(e => e.Health > 0).filter(_IsPlayer)
 
     if (nearby.length > 0)
       this.parent.SetState(new AIState_FollowToAttack(nearby[0]))
@@ -197,7 +197,7 @@ class AIState_JustSitThere extends AIState {
 
   Update(timeElapsed) {
     this.timer_ += timeElapsed
-    this.entity_.SetState('idle')
+    this.entity.SetState('idle')
 
     if (this.timer_ > 5.0) {
       this.UpdateLogic_()
@@ -213,29 +213,29 @@ class AIState_FollowToAttack extends AIState {
   }
 
   UpdateMovement_(timeElapsed) {
-    this.entity_.state_ = 'walk'
+    this.entity.state_ = 'walk'
 
     const direction = vec3.create()
     const forward = vec3.fromValues(0, 0, 1)
 
-    vec3.sub(direction, this.target.position_, this.entity_.position_)
+    vec3.sub(direction, this.target.position, this.entity.position)
     direction[1] = 0.0
 
     vec3.normalize(direction, direction)
-    quat.rotationTo(this.entity_.rotation_, forward, direction)
+    quat.rotationTo(this.entity.rotation_, forward, direction)
 
     const movement = vec3.clone(direction)
     vec3.scale(movement, movement, timeElapsed * 10.0)
 
-    vec3.add(this.entity_.position_, this.entity_.position_, movement)
+    vec3.add(this.entity.position, this.entity.position, movement)
 
-    this.entity_.position_[1] = this.terrain_.Get(...this.entity_.position_)[0]
-    this.entity_.UpdateGridClient_()
+    this.entity.position[1] = this.terrain_.Get(...this.entity.position)[0]
+    this.entity.UpdateGridClient_()
 
-    const distance = vec3.distance(this.entity_.position_, this.target.position_)
+    const distance = vec3.distance(this.entity.position, this.target.position)
 
     if (distance < 10.0) {
-      this.entity_.OnActionAttack()
+      this.entity.OnActionAttack()
       this.parent.SetState(new AIState_WaitAttackDone(this.target))
     } else if (distance > 100.0)
       this.parent.SetState(new AIState_JustSitThere())
@@ -257,8 +257,8 @@ class AIState_WaitAttackDone extends AIState {
   }
 
   Update(_) {
-    this.entity_.state_ = 'attack'
-    if (this.entity_.action_)
+    this.entity.state_ = 'attack'
+    if (this.entity.action_)
       return
     this.parent.SetState(new AIState_FollowToAttack(this.target))
   }
@@ -276,7 +276,7 @@ class WorldAIClient extends WorldClient {
     this.terrain_ = terrain
     this.onDeath_ = onDeath
     // Haha sorry
-    this.entity_.isAI = true
+    this.entity.isAI = true
 
     this.fsm_ = new AIStateMachine(entity, this.terrain_)
     this.fsm_.SetState(new AIState_JustSitThere())
@@ -297,7 +297,7 @@ class WorldAIClient extends WorldClient {
   OnUpdate_(timeElapsed) {
     // Never times out
     this.timeout_ = 1000.0
-    if (this.entity_.Health > 0)
+    if (this.entity.Health > 0)
       this.fsm_.Update(timeElapsed)
     else
       this.deathTimer_ += timeElapsed

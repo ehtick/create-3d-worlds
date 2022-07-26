@@ -63,7 +63,7 @@ export class HealthComponent extends Component {
     this.stats_.curl += 2
 
     const spawner = this.FindEntity('level-up-spawner').GetComponent('LevelUpComponentSpawner')
-    spawner.Spawn(this.parent._position)
+    spawner.Spawn(this.parent.position)
 
     this.Broadcast({
       topic: 'health.levelGained',
