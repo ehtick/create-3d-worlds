@@ -29,8 +29,7 @@ export class BasicCharacterController extends Component {
     this._position = new THREE.Vector3()
 
     this._animations = {}
-    this._stateMachine = new CharacterFSM(
-      new BasicCharacterControllerProxy(this._animations))
+    this._stateMachine = new CharacterFSM(new BasicCharacterControllerProxy(this._animations))
 
     this._LoadModels()
   }

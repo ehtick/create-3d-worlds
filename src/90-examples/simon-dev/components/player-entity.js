@@ -5,16 +5,7 @@ import keyboard from '/classes/Keyboard.js'
 import { Component } from '../ecs/component.js'
 import { CHARACTER_MODELS } from '../03-MMORPG/shared/data.mjs'
 import { CharacterFSM } from './CharacterFSM.js'
-
-class BasicCharacterControllerProxy {
-  constructor(animations) {
-    this.animations_ = animations
-  }
-
-  get animations() {
-    return this.animations_
-  }
-};
+import { AnimationProxy } from './AnimationProxy.js'
 
 class BasicCharacterController extends Component {
   constructor({ desc }) {
@@ -120,7 +111,7 @@ class BasicCharacterController extends Component {
 
       this.target_.visible = true
 
-      this.stateMachine_ = new CharacterFSM(new BasicCharacterControllerProxy(this.animations_))
+      this.stateMachine_ = new CharacterFSM(new AnimationProxy(this.animations_))
 
       this.stateMachine_.SetState('idle')
 
@@ -262,6 +253,5 @@ class BasicCharacterController extends Component {
 
 export {
   CharacterFSM,
-  BasicCharacterControllerProxy,
   BasicCharacterController,
 }
