@@ -1,38 +1,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene, camera } from '/utils/scene.js'
 import { material } from '/utils/shaders/thrust.js'
-
-class LinearSpline {
-  constructor(lerp) {
-    this.points_ = []
-    this._lerp = lerp
-  }
-
-  AddPoint(t, d) {
-    this.points_.push([t, d])
-  }
-
-  Get(t) {
-    let p1 = 0
-
-    for (let i = 0; i < this.points_.length; i++) {
-      if (this.points_[i][0] >= t)
-        break
-
-      p1 = i
-    }
-
-    const p2 = Math.min(this.points_.length - 1, p1 + 1)
-
-    if (p1 == p2)
-      return this.points_[p1][1]
-
-    return this._lerp(
-      (t - this.points_[p1][0]) / (
-        this.points_[p2][0] - this.points_[p1][0]),
-      this.points_[p1][1], this.points_[p2][1])
-  }
-}
+import { LinearSpline } from '../shared/spline.mjs'
 
 class ParticleEmitter {
   constructor() {
