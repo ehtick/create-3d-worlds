@@ -14,11 +14,7 @@ class AIInput {
   _Init() {
     this._keys = {
       up: false,
-      down: false,
-      left: false,
-      right: false,
       space: false,
-      shift: false,
     }
   }
 };
