@@ -1,7 +1,7 @@
 import { Entity } from '../../../ecs/entity.js'
 import { Component } from '../../../ecs/component.js'
 import { ThirdPersonCamera } from './third-person-camera.js'
-import { BasicCharacterController } from './player-entity.js'
+import { BasicCharacterController } from '../../../components/player-entity.js'
 import { HealthComponent } from '../../../components/health-component.js'
 import { BasicCharacterControllerInput } from '../../../components/player-input.js'
 import { SpatialGridController } from './spatial-grid-controller.js'

@@ -3,7 +3,7 @@ import { FBXLoader } from '/node_modules/three127/examples/jsm/loaders/FBXLoader
 
 import { FiniteStateMachine } from '../fsm/finite-state-machine.js'
 import { Component } from '../ecs/component.js'
-import { BasicCharacterControllerProxy } from '../02-RPG/src/player-entity.js'
+import { BasicCharacterControllerProxy } from './player-entity-old.js'
 import { player_state } from '../fsm/player-state.js'
 
 class AIInput {
