@@ -14,6 +14,10 @@ export class HealthComponent extends Component {
     this._params.health = value
   }
 
+  get _maxHealth() {
+    return this._params.maxHealth
+  }
+
   InitComponent() {
     this._RegisterHandler('health.damage', m => this._OnDamage(m))
     this._RegisterHandler('health.add-experience', m => this._OnAddExperience(m))
