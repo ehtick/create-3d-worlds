@@ -1,4 +1,5 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
+import { scene, camera } from '/utils/scene.js'
 import { material } from '/utils/shaders/thrust.js'
 
 class LinearSpline {
@@ -33,10 +34,9 @@ class LinearSpline {
 }
 
 export class ParticleSystem {
-  constructor({ camera, parent, texture }) {
+  constructor({ texture, parent = scene } = {}) {
     material.uniforms.diffuseTexture.value = new THREE.TextureLoader().load(texture)
 
-    this._camera = camera
     this._particles = []
 
     this._geometry = new THREE.BufferGeometry()
@@ -128,8 +128,8 @@ export class ParticleSystem {
     }
 
     this._particles.sort((a, b) => {
-      const d1 = this._camera.position.distanceTo(a.position)
-      const d2 = this._camera.position.distanceTo(b.position)
+      const d1 = camera.position.distanceTo(a.position)
+      const d2 = camera.position.distanceTo(b.position)
 
       if (d1 > d2) return -1
       if (d1 < d2) return 1
