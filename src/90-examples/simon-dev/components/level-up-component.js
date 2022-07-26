@@ -5,10 +5,8 @@ import { Entity } from '../ecs/entity.js'
 import { Component } from '../ecs/component.js'
 
 class LevelUpComponent extends Component {
-  constructor(params) {
+  constructor() {
     super()
-    this.params = params
-
     this.particles = new ParticleSystem({
       texture: '/assets/simon-dev/textures/ball.png',
     })
@@ -38,17 +36,11 @@ class LevelUpComponent extends Component {
 }
 
 export class LevelUpComponentSpawner extends Component {
-  constructor(params) {
-    super()
-    this.params = params
-  }
-
   Spawn(pos) {
     const e = new Entity()
     e.SetPosition(pos)
-    e.AddComponent(new LevelUpComponent(this.params))
+    e.AddComponent(new LevelUpComponent())
     this.Manager.Add(e)
-
     return e
   }
 }
