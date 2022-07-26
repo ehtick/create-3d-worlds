@@ -1,7 +1,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
-import { Component } from '../../ecs/component.js'
-import { math } from '../../shared/math.mjs'
+import { Component } from '../ecs/component.js'
+import { math } from '../shared/math.mjs'
 
 export class AttackController extends Component {
   constructor({ timing }) {
