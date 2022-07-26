@@ -12,7 +12,7 @@ class AIInput {
   }
 
   _Init() {
-    this._keys = {
+    this.keys = {
       up: false,
       space: false,
     }
@@ -22,7 +22,7 @@ class AIInput {
 class NPCFSM extends FiniteStateMachine {
   constructor(proxy) {
     super()
-    this._proxy = proxy
+    this.proxy = proxy
     this._Init()
   }
 
@@ -50,7 +50,7 @@ export class NPCController extends Component {
     this.animations = {}
     this._input = new AIInput()
     // FIXME
-    this._stateMachine = new NPCFSM(new AnimationProxy(this.animations))
+    this.stateMachine = new NPCFSM(new AnimationProxy(this.animations))
     this._LoadModels()
   }
 
@@ -64,13 +64,13 @@ export class NPCController extends Component {
   }
 
   _OnDeath(msg) {
-    this._stateMachine.SetState('death')
+    this.stateMachine.SetState('death')
   }
 
   _OnPosition(m) {
-    if (this._target) {
-      this._target.position.copy(m.value)
-      this._target.position.y = 0.35
+    if (this.target) {
+      this.target.position.copy(m.value)
+      this.target.position.y = 0.35
     }
   }
 
@@ -78,19 +78,19 @@ export class NPCController extends Component {
     const loader = new FBXLoader()
     loader.setPath('/assets/simon-dev/monsters/FBX/')
     loader.load(this.params.resourceName, glb => {
-      this._target = glb
-      this.params.scene.add(this._target)
+      this.target = glb
+      this.params.scene.add(this.target)
 
-      this._target.scale.setScalar(0.025)
-      this._target.position.copy(this.parent._position)
-      this._target.position.y += 0.35
+      this.target.scale.setScalar(0.025)
+      this.target.position.copy(this.parent._position)
+      this.target.position.y += 0.35
       const texLoader = new THREE.TextureLoader()
       const texture = texLoader.load(
         '/assets/simon-dev/monsters/Textures/' + this.params.resourceTexture)
       texture.encoding = THREE.sRGBEncoding
       texture.flipY = true
 
-      this._target.traverse(c => {
+      this.target.traverse(c => {
         c.castShadow = true
         c.receiveShadow = true
         if (c.material) {
@@ -99,14 +99,14 @@ export class NPCController extends Component {
         }
       })
 
-      this._mixer = new THREE.AnimationMixer(this._target)
+      this.mixer = new THREE.AnimationMixer(this.target)
 
       const fbx = glb
       const _FindAnim = animName => {
         for (let i = 0; i < fbx.animations.length; i++)
           if (fbx.animations[i].name.includes(animName)) {
             const clip = fbx.animations[i]
-            const action = this._mixer.clipAction(clip)
+            const action = this.mixer.clipAction(clip)
             return {
               clip,
               action
@@ -119,7 +119,7 @@ export class NPCController extends Component {
       this.animations.walk = _FindAnim('Walk')
       this.animations.death = _FindAnim('Death')
       this.animations.attack = _FindAnim('Bite_Front')
-      this._stateMachine.SetState('idle')
+      this.stateMachine.SetState('idle')
     })
   }
 
@@ -128,9 +128,9 @@ export class NPCController extends Component {
   }
 
   get Rotation() {
-    if (!this._target) return new THREE.Quaternion()
+    if (!this.target) return new THREE.Quaternion()
 
-    return this._target.quaternion
+    return this.target.quaternion
   }
 
   _FindIntersections(pos) {
@@ -180,7 +180,7 @@ export class NPCController extends Component {
   }
 
   _UpdateAI(timeInSeconds) {
-    const currentState = this._stateMachine._currentState
+    const currentState = this.stateMachine.currentState
     if (currentState.Name != 'walk' && currentState.Name != 'run' && currentState.Name != 'idle')
       return
 
@@ -205,15 +205,15 @@ export class NPCController extends Component {
 
     velocity.add(frameDecceleration)
 
-    const controlObject = this._target
+    const controlObject = this.target
     const _R = controlObject.quaternion.clone()
 
-    this._input._keys.up = false
+    this._input.keys.up = false
 
     const acc = this._acceleration
     if (dirToPlayer.length() == 0) return
 
-    this._input._keys.up = true
+    this._input.keys.up = true
     velocity.z += acc.z * timeInSeconds
 
     const m = new THREE.Matrix4()
@@ -242,8 +242,8 @@ export class NPCController extends Component {
 
     const collisions = this._FindIntersections(pos)
     if (collisions.length > 0) {
-      this._input._keys.space = true
-      this._input._keys.up = false
+      this._input.keys.space = true
+      this._input.keys.up = false
       return
     }
 
@@ -251,27 +251,27 @@ export class NPCController extends Component {
     this._position.copy(pos)
 
     this.parent.SetPosition(this._position)
-    this.parent.SetQuaternion(this._target.quaternion)
+    this.parent.SetQuaternion(this.target.quaternion)
   }
 
   Update(timeInSeconds) {
-    if (!this._stateMachine._currentState) return
+    if (!this.stateMachine.currentState) return
 
-    this._input._keys.space = false
-    this._input._keys.up = false
+    this._input.keys.space = false
+    this._input.keys.up = false
 
     this._UpdateAI(timeInSeconds)
 
-    this._stateMachine.Update(timeInSeconds, this._input)
+    this.stateMachine.Update(timeInSeconds, this._input)
 
     // HARDCODED
-    if (this._stateMachine._currentState._action)
+    if (this.stateMachine.currentState._action)
       this.Broadcast({
         topic: 'player.action',
-        action: this._stateMachine._currentState.Name,
-        time: this._stateMachine._currentState._action.time,
+        action: this.stateMachine.currentState.Name,
+        time: this.stateMachine.currentState._action.time,
       })
 
-    if (this._mixer) this._mixer.update(timeInSeconds)
+    if (this.mixer) this.mixer.update(timeInSeconds)
   }
 };

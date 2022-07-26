@@ -49,19 +49,19 @@ export class NPCController extends Component {
   }
 
   SetState(s) {
-    if (!this.stateMachine_) {
+    if (!this.stateMachine) {
       this.queuedState_ = s
       return
     }
 
     // hack: should propogate attacks through the events on server
     // Right now, they're inferred from whatever animation we're running, blech
-    if (s == 'attack' && this.stateMachine_._currentState.Name != 'attack')
+    if (s == 'attack' && this.stateMachine.currentState.Name != 'attack')
       this.Broadcast({
         topic: 'action.attack',
       })
 
-    this.stateMachine_.SetState(s)
+    this.stateMachine.SetState(s)
   }
 
   OnDeath_() {
@@ -82,14 +82,14 @@ export class NPCController extends Component {
 
     const loader = this.FindEntity('loader').GetComponent('LoadController')
     loader.LoadSkinnedGLB(modelData.path, modelData.base, glb => {
-      this.target_ = glb.scene
-      this.target_.scale.setScalar(modelData.scale)
-      this.target_.visible = false
+      this.target = glb.scene
+      this.target.scale.setScalar(modelData.scale)
+      this.target.visible = false
 
-      this.group_.add(this.target_)
+      this.group_.add(this.target)
 
       this.bones_ = {}
-      this.target_.traverse(c => {
+      this.target.traverse(c => {
         if (!c.skeleton)
           return
 
@@ -97,20 +97,20 @@ export class NPCController extends Component {
           this.bones_[b.name] = b
       })
 
-      this.target_.traverse(c => {
+      this.target.traverse(c => {
         c.castShadow = true
         c.receiveShadow = true
         if (c.material && c.material.map)
           c.material.map.encoding = THREE.sRGBEncoding
       })
 
-      this.mixer_ = new THREE.AnimationMixer(this.target_)
+      this.mixer = new THREE.AnimationMixer(this.target)
 
       const _FindAnim = animName => {
         for (let i = 0; i < glb.animations.length; i++)
           if (glb.animations[i].name.includes(animName)) {
             const clip = glb.animations[i]
-            const action = this.mixer_.clipAction(clip)
+            const action = this.mixer.clipAction(clip)
             return {
               clip,
               action
@@ -126,16 +126,16 @@ export class NPCController extends Component {
       this.animations.attack = _FindAnim('Attack')
       this.animations.dance = _FindAnim('Dance')
 
-      this.target_.visible = true
+      this.target.visible = true
 
-      this.stateMachine_ = new CharacterFSM(
+      this.stateMachine = new CharacterFSM(
         new AnimationProxy(this.animations))
 
       if (this.queuedState_) {
-        this.stateMachine_.SetState(this.queuedState_)
+        this.stateMachine.SetState(this.queuedState_)
         this.queuedState_ = null
       } else
-        this.stateMachine_.SetState('idle')
+        this.stateMachine.SetState('idle')
 
       this.Broadcast({
         topic: 'load.character',
@@ -146,11 +146,11 @@ export class NPCController extends Component {
   }
 
   Update(timeInSeconds) {
-    if (!this.stateMachine_) return
+    if (!this.stateMachine) return
 
-    this.stateMachine_.Update(timeInSeconds, null)
+    this.stateMachine.Update(timeInSeconds, null)
 
-    if (this.mixer_)
-      this.mixer_.update(timeInSeconds)
+    if (this.mixer)
+      this.mixer.update(timeInSeconds)
   }
 }

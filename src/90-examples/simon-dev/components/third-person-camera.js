@@ -5,15 +5,15 @@ import { camera } from '/utils/scene.js'
 export class ThirdPersonCamera extends Component {
   constructor({ target }) {
     super()
-    this._target = target
+    this.target = target
     this._currentPosition = new THREE.Vector3()
     this._currentLookat = new THREE.Vector3()
   }
 
   _CalculateIdealOffset() {
     const idealOffset = new THREE.Vector3(-0, 10, -15)
-    idealOffset.applyQuaternion(this._target._rotation)
-    idealOffset.add(this._target._position)
+    idealOffset.applyQuaternion(this.target._rotation)
+    idealOffset.add(this.target._position)
 
     if (this.FindEntity('terrain')) {
       const terrain = this.FindEntity('terrain').GetComponent('TerrainChunkManager')
@@ -24,8 +24,8 @@ export class ThirdPersonCamera extends Component {
 
   _CalculateIdealLookat() {
     const idealLookat = new THREE.Vector3(0, 5, 20)
-    idealLookat.applyQuaternion(this._target._rotation)
-    idealLookat.add(this._target._position)
+    idealLookat.applyQuaternion(this.target._rotation)
+    idealLookat.add(this.target._position)
     return idealLookat
   }
 

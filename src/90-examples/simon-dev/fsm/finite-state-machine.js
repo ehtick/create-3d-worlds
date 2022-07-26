@@ -1,7 +1,7 @@
 export class FiniteStateMachine {
   constructor() {
     this._states = {}
-    this._currentState = null
+    this.currentState = null
   }
 
   _AddState(name, type) {
@@ -9,7 +9,7 @@ export class FiniteStateMachine {
   }
 
   SetState(name) {
-    const prevState = this._currentState
+    const prevState = this.currentState
 
     if (prevState) {
       if (prevState.Name == name)
@@ -19,12 +19,12 @@ export class FiniteStateMachine {
     }
 
     const state = new this._states[name](this)
-    this._currentState = state
+    this.currentState = state
     state.Enter(prevState)
   }
 
   Update(timeElapsed, input) {
-    if (this._currentState)
-      this._currentState.Update(timeElapsed, input)
+    if (this.currentState)
+      this.currentState.Update(timeElapsed, input)
   }
 };

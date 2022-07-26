@@ -20,7 +20,7 @@ export class BasicCharacterController extends Component {
     this._position = new THREE.Vector3()
 
     this.animations = {}
-    this._stateMachine = new CharacterFSM(new AnimationProxy(this.animations))
+    this.stateMachine = new CharacterFSM(new AnimationProxy(this.animations))
 
     this._LoadModels()
   }
@@ -32,23 +32,23 @@ export class BasicCharacterController extends Component {
   }
 
   _OnDeath(msg) {
-    this._stateMachine.SetState('death')
+    this.stateMachine.SetState('death')
   }
 
   _LoadModels() {
     const loader = new FBXLoader()
     loader.setPath('/assets/simon-dev/guard/')
     loader.load('castle_guard_01.fbx', fbx => {
-      this._target = fbx
-      this._target.scale.setScalar(0.035)
-      this.params.scene.add(this._target)
+      this.target = fbx
+      this.target.scale.setScalar(0.035)
+      this.params.scene.add(this.target)
 
       this._bones = {}
 
-      for (const b of this._target.children[1].skeleton.bones)
+      for (const b of this.target.children[1].skeleton.bones)
         this._bones[b.name] = b
 
-      this._target.traverse(c => {
+      this.target.traverse(c => {
         c.castShadow = true
         c.receiveShadow = true
         if (c.material && c.material.map)
@@ -58,15 +58,15 @@ export class BasicCharacterController extends Component {
 
       this.Broadcast({
         topic: 'load.character',
-        model: this._target,
+        model: this.target,
         bones: this._bones,
       })
 
-      this._mixer = new THREE.AnimationMixer(this._target)
+      this.mixer = new THREE.AnimationMixer(this.target)
 
       const _OnLoad = (animName, anim) => {
         const clip = anim.animations[0]
-        const action = this._mixer.clipAction(clip)
+        const action = this.mixer.clipAction(clip)
 
         this.animations[animName] = {
           clip,
@@ -76,7 +76,7 @@ export class BasicCharacterController extends Component {
 
       this._manager = new THREE.LoadingManager()
       this._manager.onLoad = () => {
-        this._stateMachine.SetState('idle')
+        this.stateMachine.SetState('idle')
       }
 
       const loader = new FBXLoader(this._manager)
@@ -125,24 +125,24 @@ export class BasicCharacterController extends Component {
   }
 
   Update(timeInSeconds) {
-    if (!this._stateMachine._currentState)
+    if (!this.stateMachine.currentState)
       return
 
-    const input = { _keys: keyboard }
-    this._stateMachine.Update(timeInSeconds, input)
+    const input = { keys: keyboard }
+    this.stateMachine.Update(timeInSeconds, input)
 
-    if (this._mixer)
-      this._mixer.update(timeInSeconds)
+    if (this.mixer)
+      this.mixer.update(timeInSeconds)
 
     // HARDCODED
-    if (this._stateMachine._currentState._action)
+    if (this.stateMachine.currentState._action)
       this.Broadcast({
         topic: 'player.action',
-        action: this._stateMachine._currentState.Name,
-        time: this._stateMachine._currentState._action.time,
+        action: this.stateMachine.currentState.Name,
+        time: this.stateMachine.currentState._action.time,
       })
 
-    const currentState = this._stateMachine._currentState
+    const currentState = this.stateMachine.currentState
     if (currentState.Name != 'walk' && currentState.Name != 'run' && currentState.Name != 'idle')
       return
 
@@ -158,27 +158,27 @@ export class BasicCharacterController extends Component {
 
     velocity.add(frameDecceleration)
 
-    const controlObject = this._target
+    const controlObject = this.target
     const _Q = new THREE.Quaternion()
     const _A = new THREE.Vector3()
     const _R = controlObject.quaternion.clone()
 
     const acc = this._acceleration.clone()
-    if (input._keys.capsLock)
+    if (input.keys.capsLock)
       acc.multiplyScalar(2.0)
 
-    if (input._keys.up)
+    if (input.keys.up)
       velocity.z += acc.z * timeInSeconds
 
-    if (input._keys.down)
+    if (input.keys.down)
       velocity.z -= acc.z * timeInSeconds
 
-    if (input._keys.left) {
+    if (input.keys.left) {
       _A.set(0, 1, 0)
       _Q.setFromAxisAngle(_A, 4.0 * Math.PI * timeInSeconds * this._acceleration.y)
       _R.multiply(_Q)
     }
-    if (input._keys.right) {
+    if (input.keys.right) {
       _A.set(0, 1, 0)
       _Q.setFromAxisAngle(_A, 4.0 * -Math.PI * timeInSeconds * this._acceleration.y)
       _R.multiply(_Q)
@@ -212,6 +212,6 @@ export class BasicCharacterController extends Component {
     this._position.copy(pos)
 
     this.parent.SetPosition(this._position)
-    this.parent.SetQuaternion(this._target.quaternion)
+    this.parent.SetQuaternion(this.target.quaternion)
   }
 };

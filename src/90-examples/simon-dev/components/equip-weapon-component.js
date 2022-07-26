@@ -7,7 +7,7 @@ import { CHARACTER_MODELS } from '../03-MMORPG/shared/data.mjs'
 export class EquipWeapon extends Component {
   constructor({ desc }) { // {account, character} = desc
     super()
-    this.target_ = null
+    this.target = null
     this.name_ = null
 
     const classType = desc.character.class
@@ -26,8 +26,8 @@ export class EquipWeapon extends Component {
   }
 
   _AttachTarget() {
-    if (this._bones && this.target_)
-      this._bones[this.anchor_].add(this.target_)
+    if (this._bones && this.target)
+      this._bones[this.anchor_].add(this.target)
   }
 
   GetItemDefinition_(name) {
@@ -38,7 +38,7 @@ export class EquipWeapon extends Component {
   _OnEquip(msg) {
     if (msg.value == this.name_) return
 
-    if (this.target_) this._UnloadModels()
+    if (this.target) this._UnloadModels()
 
     const item = this.GetItemDefinition_(msg.value)
     this.name_ = msg.value
@@ -47,9 +47,9 @@ export class EquipWeapon extends Component {
   }
 
   _UnloadModels() {
-    if (this.target_) {
-      this.target_.parent.remove(this.target_)
-      this.target_ = null
+    if (this.target) {
+      this.target.parent.remove(this.target)
+      this.target = null
     }
   }
 
@@ -57,10 +57,10 @@ export class EquipWeapon extends Component {
     const loader = new FBXLoader()
     loader.setPath('/assets/simon-dev/weapons/FBX/')
     loader.load(item.renderParams.name + '.fbx', fbx => {
-      this.target_ = fbx
-      this.target_.scale.setScalar(item.renderParams.scale)
-      this.target_.rotateX(Math.PI / 2)
-      this.target_.traverse(c => {
+      this.target = fbx
+      this.target.scale.setScalar(item.renderParams.scale)
+      this.target.rotateX(Math.PI / 2)
+      this.target.traverse(c => {
         c.castShadow = true
         c.receiveShadow = true
         // Do this instead of something smart like re-exporting.
@@ -90,7 +90,7 @@ export class EquipWeapon extends Component {
 
       this.Broadcast({
         topic: 'load.weapon',
-        model: this.target_,
+        model: this.target,
         bones: this._bones,
       })
     })

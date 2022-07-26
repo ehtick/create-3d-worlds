@@ -56,7 +56,7 @@ export class NetworkPlayerController extends Component {
     const controller = this.GetComponent('BasicCharacterController')
     // HACK
     return [
-      controller.stateMachine_._currentState.Name,
+      controller.stateMachine.currentState.Name,
       this.Parent.Position.toArray(),
       this.Parent.Quaternion.toArray(),
     ]

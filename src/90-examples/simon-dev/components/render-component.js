@@ -60,9 +60,9 @@ export class RenderComponent extends Component {
   }
 
   _OnLoaded(obj) {
-    this._target = obj
-    this.group_.add(this._target)
-    this._target.scale.setScalar(this.params.scale)
+    this.target = obj
+    this.group_.add(this.target)
+    this.target.scale.setScalar(this.params.scale)
 
     const textures = {}
     if (this.params.textures) {
@@ -82,7 +82,7 @@ export class RenderComponent extends Component {
       }
     }
 
-    this._target.traverse(c => {
+    this.target.traverse(c => {
       let materials = c.material
       if (!(c.material instanceof Array))
         materials = [c.material]
@@ -117,7 +117,7 @@ export class RenderComponent extends Component {
 
       this.Broadcast({
         topic: 'render.loaded',
-        value: this._target,
+        value: this.target,
       })
     })
   }

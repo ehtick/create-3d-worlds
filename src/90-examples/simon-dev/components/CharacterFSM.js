@@ -4,7 +4,7 @@ import { player_state } from '../fsm/player-state.js'
 export class CharacterFSM extends FiniteStateMachine {
   constructor(proxy) {
     super()
-    this._proxy = proxy
+    this.proxy = proxy
     this.Init_()
   }
 

@@ -53,7 +53,7 @@ class BasicCharacterController extends Component {
   }
 
   OnDeath_(msg) {
-    this.stateMachine_.SetState('death')
+    this.stateMachine.SetState('death')
   }
 
   LoadModels_() {
@@ -62,43 +62,38 @@ class BasicCharacterController extends Component {
 
     const loader = this.FindEntity('loader').GetComponent('LoadController')
     loader.LoadSkinnedGLB(modelData.path, modelData.base, glb => {
-      this.target_ = glb.scene
-      this.target_.scale.setScalar(modelData.scale)
-      this.target_.visible = false
+      this.target = glb.scene
+      this.target.scale.setScalar(modelData.scale)
+      this.target.visible = false
 
-      this.group_.add(this.target_)
+      this.group_.add(this.target)
 
       this.bones_ = {}
-      this.target_.traverse(c => {
-        if (!c.skeleton)
-          return
-
+      this.target.traverse(c => {
+        if (!c.skeleton) return
         for (const b of c.skeleton.bones)
           this.bones_[b.name] = b
-
       })
 
-      this.target_.traverse(c => {
+      this.target.traverse(c => {
         c.castShadow = true
         c.receiveShadow = true
         if (c.material && c.material.map)
           c.material.map.encoding = THREE.sRGBEncoding
-
       })
 
-      this._mixer = new THREE.AnimationMixer(this.target_)
+      this.mixer = new THREE.AnimationMixer(this.target)
 
       const _FindAnim = animName => {
         for (let i = 0; i < glb.animations.length; i++)
           if (glb.animations[i].name.includes(animName)) {
             const clip = glb.animations[i]
-            const action = this._mixer.clipAction(clip)
+            const action = this.mixer.clipAction(clip)
             return {
               clip,
               action
             }
           }
-
         return null
       }
 
@@ -109,15 +104,14 @@ class BasicCharacterController extends Component {
       this.animations.attack = _FindAnim('Attack')
       this.animations.dance = _FindAnim('Dance')
 
-      this.target_.visible = true
+      this.target.visible = true
 
-      this.stateMachine_ = new CharacterFSM(new AnimationProxy(this.animations))
-
-      this.stateMachine_.SetState('idle')
+      this.stateMachine = new CharacterFSM(new AnimationProxy(this.animations))
+      this.stateMachine.SetState('idle')
 
       this.Broadcast({
         topic: 'load.character',
-        model: this.target_,
+        model: this.target,
         bones: this.bones_,
       })
 
@@ -128,9 +122,7 @@ class BasicCharacterController extends Component {
   _FindIntersections(pos, oldPos) {
     const _IsAlive = c => {
       const h = c.entity.GetComponent('HealthComponent')
-      if (!h)
-        return true
-
+      if (!h) return true
       return h.Health > 0
     }
 
@@ -151,32 +143,28 @@ class BasicCharacterController extends Component {
           continue
         else
           collisions.push(nearby[i].entity)
-
       }
     }
     return collisions
   }
 
   Update(timeInSeconds) {
-    if (!this.stateMachine_)
-      return
+    if (!this.stateMachine) return
 
-    const input = { _keys: keyboard }
-    this.stateMachine_.Update(timeInSeconds, input)
+    const input = { keys: keyboard }
+    this.stateMachine.Update(timeInSeconds, input)
 
-    if (this._mixer)
-      this._mixer.update(timeInSeconds)
+    if (this.mixer)
+      this.mixer.update(timeInSeconds)
 
     // HARDCODED
     this.Broadcast({
       topic: 'player.action',
-      action: this.stateMachine_._currentState.Name,
+      action: this.stateMachine.currentState.Name,
     })
 
-    const currentState = this.stateMachine_._currentState
-    if (currentState.Name != 'walk' &&
-      currentState.Name != 'run' &&
-      currentState.Name != 'idle')
+    const { currentState } = this.stateMachine
+    if (currentState.Name != 'walk' && currentState.Name != 'run' && currentState.Name != 'idle')
       return
 
     const velocity = this.velocity_
@@ -197,21 +185,21 @@ class BasicCharacterController extends Component {
     const _R = controlObject.quaternion.clone()
 
     const acc = this.acceleration_.clone()
-    if (input._keys.capsLock)
+    if (input.keys.capsLock)
       acc.multiplyScalar(2.0)
 
-    if (input._keys.up)
+    if (input.keys.up)
       velocity.z += acc.z * timeInSeconds
 
-    if (input._keys.down)
+    if (input.keys.down)
       velocity.z -= acc.z * timeInSeconds
 
-    if (input._keys.left) {
+    if (input.keys.left) {
       _A.set(0, 1, 0)
       _Q.setFromAxisAngle(_A, 4.0 * Math.PI * timeInSeconds * this.acceleration_.y)
       _R.multiply(_Q)
     }
-    if (input._keys.right) {
+    if (input.keys.right) {
       _A.set(0, 1, 0)
       _Q.setFromAxisAngle(_A, 4.0 * -Math.PI * timeInSeconds * this.acceleration_.y)
       _R.multiply(_Q)
@@ -238,8 +226,7 @@ class BasicCharacterController extends Component {
     pos.add(sideways)
 
     const collisions = this._FindIntersections(pos, oldPosition)
-    if (collisions.length > 0)
-      return
+    if (collisions.length > 0) return
 
     const terrain = this.FindEntity('terrain').GetComponent('TerrainChunkManager')
     pos.y = terrain.GetHeight(pos)[0]

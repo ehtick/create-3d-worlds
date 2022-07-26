@@ -1,11 +1,11 @@
 class FiniteStateMachine {
   constructor(onEvent) {
-    this.currentState_ = null
+    this.currentState = null
     this.onEvent_ = onEvent
   }
 
   get State() {
-    return this.currentState_
+    return this.currentState
   }
 
   Broadcast(evt) {
@@ -13,17 +13,17 @@ class FiniteStateMachine {
   }
 
   OnMessage(evt, data) {
-    return this.currentState_.OnMessage(evt, data)
+    return this.currentState.OnMessage(evt, data)
   }
 
   SetState(state) {
-    const prevState = this.currentState_
+    const prevState = this.currentState
 
     if (prevState)
       prevState.OnExit()
 
-    this.currentState_ = state
-    this.currentState_.parent = this
+    this.currentState = state
+    this.currentState.parent = this
     state.OnEnter(prevState)
   }
 }

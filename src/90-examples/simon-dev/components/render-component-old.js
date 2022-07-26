@@ -17,9 +17,9 @@ export class AnimatedModelComponent extends Component {
   }
 
   _OnPosition(m) {
-    if (this._target) {
-      this._target.position.copy(m.value)
-      this._target.position.y = 0.35
+    if (this.target) {
+      this.target.position.copy(m.value)
+      this.target.position.y = 0.35
     }
   }
 
@@ -38,11 +38,11 @@ export class AnimatedModelComponent extends Component {
   }
 
   _OnLoaded(obj, animations) {
-    this._target = obj
-    this.params.scene.add(this._target)
+    this.target = obj
+    this.params.scene.add(this.target)
 
     obj.scale.setScalar(this.params.scale)
-    this._target.position.copy(this.parent._position)
+    this.target.position.copy(this.parent._position)
 
     this.Broadcast({
       topic: 'update.position',
@@ -56,7 +56,7 @@ export class AnimatedModelComponent extends Component {
       texture.encoding = THREE.sRGBEncoding
     }
 
-    this._target.traverse(c => {
+    this.target.traverse(c => {
       let materials = c.material
       if (!(c.material instanceof Array))
         materials = [c.material]
@@ -87,7 +87,7 @@ export class AnimatedModelComponent extends Component {
 
     const _OnLoad = anim => {
       const clip = anim.animations[0]
-      const action = this._mixer.clipAction(clip)
+      const action = this.mixer.clipAction(clip)
 
       action.play()
     }
@@ -98,12 +98,12 @@ export class AnimatedModelComponent extends Component {
       _OnLoad(a)
     })
 
-    this._mixer = new THREE.AnimationMixer(this._target)
+    this.mixer = new THREE.AnimationMixer(this.target)
 
-    this.parent._mesh = this._target
+    this.parent._mesh = this.target
     this.Broadcast({
       topic: 'load.character',
-      model: this._target,
+      model: this.target,
     })
   }
 
@@ -124,7 +124,7 @@ export class AnimatedModelComponent extends Component {
   }
 
   Update(timeInSeconds) {
-    if (this._mixer)
-      this._mixer.update(timeInSeconds)
+    if (this.mixer)
+      this.mixer.update(timeInSeconds)
   }
 };

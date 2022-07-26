@@ -6,7 +6,7 @@ export class EquipWeapon extends Component {
   constructor({ anchor }) { // 'RightHandIndex1'
     super()
     this.params = { anchor }
-    this._target = null
+    this.target = null
     this._name = null
   }
 
@@ -25,15 +25,15 @@ export class EquipWeapon extends Component {
   }
 
   _AttachTarget() {
-    if (this._bones && this._target)
-      this._bones[this.params.anchor].add(this._target)
+    if (this._bones && this.target)
+      this._bones[this.params.anchor].add(this.target)
   }
 
   _OnEquip(msg) {
     if (msg.value == this._name)
       return
 
-    if (this._target)
+    if (this.target)
       this._UnloadModels()
 
     const inventory = this.GetComponent('InventoryController')
@@ -46,10 +46,10 @@ export class EquipWeapon extends Component {
   }
 
   _UnloadModels() {
-    if (this._target) {
-      this._target.parent.remove(this._target)
+    if (this.target) {
+      this.target.parent.remove(this.target)
       // Probably need to free the memory properly, whatever
-      this._target = null
+      this.target = null
     }
   }
 
@@ -57,13 +57,13 @@ export class EquipWeapon extends Component {
     const loader = new FBXLoader()
     loader.setPath('/assets/simon-dev/weapons/FBX/')
     loader.load(item.RenderParams.name + '.fbx', fbx => {
-      this._target = fbx
-      this._target.scale.setScalar(item.RenderParams.scale)
-      this._target.rotateY(Math.PI)
-      this._target.rotateX(-Math.PI / 3)
-      this._target.rotateY(-1)
+      this.target = fbx
+      this.target.scale.setScalar(item.RenderParams.scale)
+      this.target.rotateY(Math.PI)
+      this.target.rotateX(-Math.PI / 3)
+      this.target.rotateY(-1)
 
-      this._target.traverse(c => {
+      this.target.traverse(c => {
         c.castShadow = true
         c.receiveShadow = true
       })
@@ -72,7 +72,7 @@ export class EquipWeapon extends Component {
 
       this.Broadcast({
         topic: 'load.weapon',
-        model: this._target,
+        model: this.target,
         bones: this._bones,
       })
     })

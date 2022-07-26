@@ -15,7 +15,7 @@ import { utils } from './utils.js'
 export class TerrainChunkManager extends Component {
   constructor({ target }) {
     super()
-    this._target = target
+    this.target = target
     this._Init()
   }
 
@@ -158,7 +158,7 @@ export class TerrainChunkManager extends Component {
   }
 
   Update(_) {
-    const target = this.FindEntity(this._target)
+    const target = this.FindEntity(this.target)
     if (!target) return
 
     this._builder.Update()

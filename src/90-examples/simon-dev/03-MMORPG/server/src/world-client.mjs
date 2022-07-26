@@ -146,13 +146,13 @@ class WorldNetworkClient extends WorldClient {
 
 class AIStateMachine {
   constructor(entity, terrain) {
-    this.currentState_ = null
+    this.currentState = null
     this.entity_ = entity
     this.terrain_ = terrain
   }
 
   SetState(state) {
-    const prevState = this.currentState_
+    const prevState = this.currentState
 
     if (prevState) {
       if (prevState.constructor.name == state.constructor.name)
@@ -161,16 +161,16 @@ class AIStateMachine {
       prevState.Exit()
     }
 
-    this.currentState_ = state
-    this.currentState_.parent = this
-    this.currentState_.entity_ = this.entity_
-    this.currentState_.terrain_ = this.terrain_
+    this.currentState = state
+    this.currentState.parent = this
+    this.currentState.entity_ = this.entity_
+    this.currentState.terrain_ = this.terrain_
     state.Enter(prevState)
   }
 
   Update(timeElapsed) {
-    if (this.currentState_)
-      this.currentState_.Update(timeElapsed)
+    if (this.currentState)
+      this.currentState.Update(timeElapsed)
 
   }
 };
@@ -209,7 +209,7 @@ class AIState_JustSitThere extends AIState {
 class AIState_FollowToAttack extends AIState {
   constructor(target) {
     super()
-    this.target_ = target
+    this.target = target
   }
 
   UpdateMovement_(timeElapsed) {
@@ -218,7 +218,7 @@ class AIState_FollowToAttack extends AIState {
     const direction = vec3.create()
     const forward = vec3.fromValues(0, 0, 1)
 
-    vec3.sub(direction, this.target_.position_, this.entity_.position_)
+    vec3.sub(direction, this.target.position_, this.entity_.position_)
     direction[1] = 0.0
 
     vec3.normalize(direction, direction)
@@ -232,18 +232,18 @@ class AIState_FollowToAttack extends AIState {
     this.entity_.position_[1] = this.terrain_.Get(...this.entity_.position_)[0]
     this.entity_.UpdateGridClient_()
 
-    const distance = vec3.distance(this.entity_.position_, this.target_.position_)
+    const distance = vec3.distance(this.entity_.position_, this.target.position_)
 
     if (distance < 10.0) {
       this.entity_.OnActionAttack()
-      this.parent.SetState(new AIState_WaitAttackDone(this.target_))
+      this.parent.SetState(new AIState_WaitAttackDone(this.target))
     } else if (distance > 100.0)
       this.parent.SetState(new AIState_JustSitThere())
   }
 
   Update(timeElapsed) {
-    if (!this.target_.Valid || this.target_.Health == 0) {
-      this.parent.SetState(new AIState_JustSitThere(this.target_))
+    if (!this.target.Valid || this.target.Health == 0) {
+      this.parent.SetState(new AIState_JustSitThere(this.target))
       return
     }
     this.UpdateMovement_(timeElapsed)
@@ -253,14 +253,14 @@ class AIState_FollowToAttack extends AIState {
 class AIState_WaitAttackDone extends AIState {
   constructor(target) {
     super()
-    this.target_ = target
+    this.target = target
   }
 
   Update(_) {
     this.entity_.state_ = 'attack'
     if (this.entity_.action_)
       return
-    this.parent.SetState(new AIState_FollowToAttack(this.target_))
+    this.parent.SetState(new AIState_FollowToAttack(this.target))
   }
 };
 

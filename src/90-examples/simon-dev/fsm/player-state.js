@@ -24,14 +24,14 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      this._action = this.parent._proxy.animations.death.action
+      this._action = this.parent.proxy.animations.death.action
 
       this._action.reset()
       this._action.setLoop(THREE.LoopOnce, 1)
       this._action.clampWhenFinished = true
 
       if (prevState) {
-        const prevAction = this.parent._proxy.animations[prevState.Name].action
+        const prevAction = this.parent.proxy.animations[prevState.Name].action
 
         this._action.crossFadeFrom(prevAction, 0.2, true)
         this._action.play()
@@ -61,7 +61,7 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      this._action = this.parent._proxy.animations.dance.action
+      this._action = this.parent.proxy.animations.dance.action
       const mixer = this._action.getMixer()
       mixer.addEventListener('finished', this._FinishedCallback)
 
@@ -70,7 +70,7 @@ export const player_state = (() => {
       this._action.clampWhenFinished = true
 
       if (prevState) {
-        const prevAction = this.parent._proxy.animations[prevState.Name].action
+        const prevAction = this.parent.proxy.animations[prevState.Name].action
 
         this._action.crossFadeFrom(prevAction, 0.2, true)
         this._action.play()
@@ -113,12 +113,12 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      this._action = this.parent._proxy.animations.attack.action
+      this._action = this.parent.proxy.animations.attack.action
       const mixer = this._action.getMixer()
       mixer.addEventListener('finished', this._FinishedCallback)
 
       if (prevState) {
-        const prevAction = this.parent._proxy.animations[prevState.Name].action
+        const prevAction = this.parent.proxy.animations[prevState.Name].action
 
         this._action.reset()
         this._action.setLoop(THREE.LoopOnce, 1)
@@ -154,9 +154,9 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      const curAction = this.parent._proxy.animations.walk.action
+      const curAction = this.parent.proxy.animations.walk.action
       if (prevState) {
-        const prevAction = this.parent._proxy.animations[prevState.Name].action
+        const prevAction = this.parent.proxy.animations[prevState.Name].action
 
         curAction.enabled = true
 
@@ -181,8 +181,8 @@ export const player_state = (() => {
       if (!input)
         return
 
-      if (input._keys.up || input._keys.down) {
-        if (input._keys.capsLock)
+      if (input.keys.up || input.keys.down) {
+        if (input.keys.capsLock)
           this.parent.SetState('run')
 
         return
@@ -198,9 +198,9 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      const curAction = this.parent._proxy.animations.run.action
+      const curAction = this.parent.proxy.animations.run.action
       if (prevState) {
-        const prevAction = this.parent._proxy.animations[prevState.Name].action
+        const prevAction = this.parent.proxy.animations[prevState.Name].action
 
         curAction.enabled = true
 
@@ -225,8 +225,8 @@ export const player_state = (() => {
     Update(timeElapsed, input) {
       if (!input) return
 
-      if (input._keys.up || input._keys.down) {
-        if (!input._keys.capsLock)
+      if (input.keys.up || input.keys.down) {
+        if (!input.keys.capsLock)
           this.parent.SetState('walk')
         return
       }
@@ -241,9 +241,9 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      const idleAction = this.parent._proxy.animations.idle.action
+      const idleAction = this.parent.proxy.animations.idle.action
       if (prevState) {
-        const prevAction = this.parent._proxy.animations[prevState.Name].action
+        const prevAction = this.parent.proxy.animations[prevState.Name].action
         idleAction.time = 0.0
         idleAction.enabled = true
         idleAction.setEffectiveTimeScale(1.0)
@@ -260,11 +260,11 @@ export const player_state = (() => {
     Update(_, input) {
       if (!input) return
 
-      if (input._keys.up || input._keys.down)
+      if (input.keys.up || input.keys.down)
         this.parent.SetState('walk')
-      else if (input._keys.space)
+      else if (input.keys.space)
         this.parent.SetState('attack')
-      else if (input._keys.backspace)
+      else if (input.keys.backspace)
         this.parent.SetState('dance')
     }
   };
