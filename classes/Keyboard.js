@@ -96,6 +96,14 @@ class Keyboard {
     return this.pressed.ArrowRight || this.pressed.KeyD
   }
 
+  get space() {
+    return this.pressed.Space
+  }
+
+  get backspace() {
+    return this.pressed.Backspace
+  }
+
   get arrowPressed() {
     return this.pressed.ArrowRight || this.pressed.ArrowLeft || this.pressed.ArrowDown || this.pressed.ArrowUp
   }
@@ -111,6 +119,8 @@ class Keyboard {
   get keyPressed() {
     return this.totalPressed > 0
   }
+
+  /* SWIPES */
 
   get swipeLeft() {
     return this.SwipeX < -swipeThreshold

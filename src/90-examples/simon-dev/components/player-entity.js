@@ -1,5 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene } from '/utils/scene.js'
+import keyboard from '/classes/Keyboard.js'
 
 import { Component } from '../ecs/component.js'
 import { FiniteStateMachine } from '../fsm/finite-state-machine.js'
@@ -188,8 +189,7 @@ class BasicCharacterController extends Component {
     if (!this.stateMachine_)
       return
 
-    // TODO: reuse keyboard
-    const input = this.GetComponent('BasicCharacterControllerInput')
+    const input = { _keys: keyboard }
     this.stateMachine_.Update(timeInSeconds, input)
 
     if (this._mixer)
