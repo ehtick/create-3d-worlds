@@ -1,6 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { camera } from '/utils/scene.js'
-import { Component } from '../../../ecs/component.js'
+import { Component } from '../ecs/component.js'
 
 export class BasicCharacterControllerInput extends Component {
   constructor() {

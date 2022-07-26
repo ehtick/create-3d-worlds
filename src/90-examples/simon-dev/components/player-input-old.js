@@ -1,7 +1,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { renderer } from '/utils/scene.js'
 
-import { Component } from '../../ecs/component.js'
+import { Component } from '../ecs/component.js'
 
 export class PickableComponent extends Component {
   InitComponent() {}
