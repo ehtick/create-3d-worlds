@@ -25,7 +25,7 @@ class BasicCharacterController extends Component {
 
     scene.add(this.group_)
 
-    this.animations_ = {}
+    this.animations = {}
 
     this.LoadModels_()
   }
@@ -102,16 +102,16 @@ class BasicCharacterController extends Component {
         return null
       }
 
-      this.animations_.idle = _FindAnim('Idle')
-      this.animations_.walk = _FindAnim('Walk')
-      this.animations_.run = _FindAnim('Run')
-      this.animations_.death = _FindAnim('Death')
-      this.animations_.attack = _FindAnim('Attack')
-      this.animations_.dance = _FindAnim('Dance')
+      this.animations.idle = _FindAnim('Idle')
+      this.animations.walk = _FindAnim('Walk')
+      this.animations.run = _FindAnim('Run')
+      this.animations.death = _FindAnim('Death')
+      this.animations.attack = _FindAnim('Attack')
+      this.animations.dance = _FindAnim('Dance')
 
       this.target_.visible = true
 
-      this.stateMachine_ = new CharacterFSM(new AnimationProxy(this.animations_))
+      this.stateMachine_ = new CharacterFSM(new AnimationProxy(this.animations))
 
       this.stateMachine_.SetState('idle')
 

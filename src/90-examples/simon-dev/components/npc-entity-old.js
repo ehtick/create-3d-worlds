@@ -47,10 +47,10 @@ export class NPCController extends Component {
     this._velocity = new THREE.Vector3(0, 0, 0)
     this._position = new THREE.Vector3()
 
-    this._animations = {}
+    this.animations = {}
     this._input = new AIInput()
     // FIXME
-    this._stateMachine = new NPCFSM(new AnimationProxy(this._animations))
+    this._stateMachine = new NPCFSM(new AnimationProxy(this.animations))
     this._LoadModels()
   }
 
@@ -115,10 +115,10 @@ export class NPCController extends Component {
         return null
       }
 
-      this._animations.idle = _FindAnim('Idle')
-      this._animations.walk = _FindAnim('Walk')
-      this._animations.death = _FindAnim('Death')
-      this._animations.attack = _FindAnim('Bite_Front')
+      this.animations.idle = _FindAnim('Idle')
+      this.animations.walk = _FindAnim('Walk')
+      this.animations.death = _FindAnim('Death')
+      this.animations.attack = _FindAnim('Bite_Front')
       this._stateMachine.SetState('idle')
     })
   }

@@ -4,16 +4,7 @@ import keyboard from '/classes/Keyboard.js'
 
 import { Component } from '../ecs/component.js'
 import { CharacterFSM } from './CharacterFSM.js'
-
-export class BasicCharacterControllerProxy {
-  constructor(animations) {
-    this._animations = animations
-  }
-
-  get animations() {
-    return this._animations
-  }
-};
+import { AnimationProxy } from './AnimationProxy.js'
 
 export class BasicCharacterController extends Component {
   constructor(params) {
@@ -28,8 +19,8 @@ export class BasicCharacterController extends Component {
     this._velocity = new THREE.Vector3(0, 0, 0)
     this._position = new THREE.Vector3()
 
-    this._animations = {}
-    this._stateMachine = new CharacterFSM(new BasicCharacterControllerProxy(this._animations))
+    this.animations = {}
+    this._stateMachine = new CharacterFSM(new AnimationProxy(this.animations))
 
     this._LoadModels()
   }
@@ -77,7 +68,7 @@ export class BasicCharacterController extends Component {
         const clip = anim.animations[0]
         const action = this._mixer.clipAction(clip)
 
-        this._animations[animName] = {
+        this.animations[animName] = {
           clip,
           action,
         }

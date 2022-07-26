@@ -33,7 +33,7 @@ export class NPCController extends Component {
   }
 
   _Init() {
-    this.animations_ = {}
+    this.animations = {}
     this.group_ = new THREE.Group()
 
     scene.add(this.group_)
@@ -119,17 +119,17 @@ export class NPCController extends Component {
         return null
       }
 
-      this.animations_.idle = _FindAnim('Idle')
-      this.animations_.walk = _FindAnim('Walk')
-      this.animations_.run = _FindAnim('Run')
-      this.animations_.death = _FindAnim('Death')
-      this.animations_.attack = _FindAnim('Attack')
-      this.animations_.dance = _FindAnim('Dance')
+      this.animations.idle = _FindAnim('Idle')
+      this.animations.walk = _FindAnim('Walk')
+      this.animations.run = _FindAnim('Run')
+      this.animations.death = _FindAnim('Death')
+      this.animations.attack = _FindAnim('Attack')
+      this.animations.dance = _FindAnim('Dance')
 
       this.target_.visible = true
 
       this.stateMachine_ = new CharacterFSM(
-        new AnimationProxy(this.animations_))
+        new AnimationProxy(this.animations))
 
       if (this.queuedState_) {
         this.stateMachine_.SetState(this.queuedState_)

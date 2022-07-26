@@ -1,9 +1,5 @@
 export class AnimationProxy {
   constructor(animations) {
-    this.animations_ = animations
+    this.animations = animations
   }
-
-  get animations() {
-    return this.animations_
-  }
-};
+}
