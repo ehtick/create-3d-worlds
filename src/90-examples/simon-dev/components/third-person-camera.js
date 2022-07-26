@@ -15,9 +15,10 @@ export class ThirdPersonCamera extends Component {
     idealOffset.applyQuaternion(this._target._rotation)
     idealOffset.add(this._target._position)
 
-    const terrain = this.FindEntity('terrain').GetComponent('TerrainChunkManager')
-    idealOffset.y = Math.max(idealOffset.y, terrain.GetHeight(idealOffset)[0] + 5.0)
-
+    if (this.FindEntity('terrain')) {
+      const terrain = this.FindEntity('terrain').GetComponent('TerrainChunkManager')
+      idealOffset.y = Math.max(idealOffset.y, terrain.GetHeight(idealOffset)[0] + 5.0)
+    }
     return idealOffset
   }
 
