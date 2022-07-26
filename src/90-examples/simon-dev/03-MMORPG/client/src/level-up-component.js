@@ -1,6 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
-import { ParticleSystem } from './particle-system.js'
+import { ParticleSystem } from '../../../components/particle-system.js'
 import { Entity } from '../../../ecs/entity.js'
 import { Component } from '../../../ecs/component.js'
 
