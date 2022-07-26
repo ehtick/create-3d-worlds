@@ -4,15 +4,15 @@ export class InventoryController extends Component {
   constructor() {
     super()
 
-    this._inventory = {}
+    this.inventory = {}
     for (let i = 1; i <= 24; ++i)
-      this._inventory['inventory-' + i] = {
+      this.inventory['inventory-' + i] = {
         type: 'inventory',
         value: null,
       }
 
     for (let i = 1; i <= 8; ++i)
-      this._inventory['inventory-equip-' + i] = {
+      this.inventory['inventory-equip-' + i] = {
         type: 'equip',
         value: null,
       }
@@ -37,13 +37,13 @@ export class InventoryController extends Component {
       }
     }
 
-    for (const k in this._inventory)
+    for (const k in this.inventory)
       _SetupElement(k)
   }
 
   _OnItemDropped(oldElement, newElement) {
-    const oldItem = this._inventory[oldElement.id]
-    const newItem = this._inventory[newElement.id]
+    const oldItem = this.inventory[oldElement.id]
+    const newItem = this.inventory[newElement.id]
 
     const oldValue = oldItem.value
     const newValue = newItem.value
@@ -69,13 +69,13 @@ export class InventoryController extends Component {
     } else
       div.style.backgroundImage = ''
 
-    this._inventory[slot].value = itemName
+    this.inventory[slot].value = itemName
   }
 
   _OnInventoryAdded(msg) {
-    for (const k in this._inventory)
-      if (!this._inventory[k].value && this._inventory[k].type == 'inventory') {
-        this._inventory[k].value = msg.value
+    for (const k in this.inventory)
+      if (!this.inventory[k].value && this.inventory[k].type == 'inventory') {
+        this.inventory[k].value = msg.value
         msg.added = true
         this._SetItemAtSlot(k, msg.value)
         break
@@ -83,8 +83,8 @@ export class InventoryController extends Component {
   }
 
   GetItemByName(name) {
-    for (const k in this._inventory)
-      if (this._inventory[k].value == name)
+    for (const k in this.inventory)
+      if (this.inventory[k].value == name)
         return this.FindEntity(name)
 
     return null

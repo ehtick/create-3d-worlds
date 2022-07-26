@@ -110,8 +110,8 @@ export class TerrainChunkManager {
   }
 
   _InitTerrain() {
-    this._group = new THREE.Group()
-    scene.add(this._group)
+    this.group = new THREE.Group()
+    scene.add(this.group)
     this._chunks = {}
   }
 
@@ -125,7 +125,7 @@ export class TerrainChunkManager {
 
   _CreateTerrainChunk(offset, width) {
     const params = {
-      group: this._group,
+      group: this.group,
       material: this._material,
       width,
       offset: new THREE.Vector3(offset.x, offset.y, 0),

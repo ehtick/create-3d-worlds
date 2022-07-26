@@ -1,26 +1,26 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/loaders/GLTFLoader.js'
 import { OBJLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/loaders/OBJLoader.js'
-
+import { scene } from '/utils/scene.js'
 import { Component } from '../ecs/component.js'
 
 export class RenderComponent extends Component {
   constructor(params) {
     super()
-    this.group_ = new THREE.Group()
+    this.group = new THREE.Group()
     this.params = params
-    this.params.scene.add(this.group_)
+    scene.add(this.group)
   }
 
   Destroy() {
-    this.group_.traverse(c => {
+    this.group.traverse(c => {
       if (c.material)
         c.material.dispose()
 
       if (c.geometry)
         c.geometry.dispose()
     })
-    this.params.scene.remove(this.group_)
+    scene.remove(this.group)
   }
 
   InitEntity() {
@@ -43,11 +43,11 @@ export class RenderComponent extends Component {
   }
 
   _OnPosition(m) {
-    this.group_.position.copy(m.value)
+    this.group.position.copy(m.value)
   }
 
   _OnRotation(m) {
-    this.group_.quaternion.copy(m.value)
+    this.group.quaternion.copy(m.value)
   }
 
   _LoadModels() {
@@ -61,7 +61,7 @@ export class RenderComponent extends Component {
 
   _OnLoaded(obj) {
     this.target = obj
-    this.group_.add(this.target)
+    this.group.add(this.target)
     this.target.scale.setScalar(this.params.scale)
 
     const textures = {}
@@ -141,10 +141,6 @@ export class RenderComponent extends Component {
   _LoadOBJ() {
     const loader = new OBJLoader()
     loader.setPath(this.params.resourcePath)
-    loader.load(this.params.resourceName, fbx => {
-      this._OnLoaded(fbx)
-    })
+    loader.load(this.params.resourceName, fbx => this._OnLoaded(fbx))
   }
-
-  Update(timeInSeconds) {}
 }

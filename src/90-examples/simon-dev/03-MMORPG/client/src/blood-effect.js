@@ -60,7 +60,7 @@ class FireFXEmitter extends ParticleEmitter {
 
   AddParticles(num) {
     for (let i = 0; i < num; ++i)
-      this.particles_.push(this.CreateParticle_())
+      this.particles.push(this.CreateParticle_())
 
   }
 

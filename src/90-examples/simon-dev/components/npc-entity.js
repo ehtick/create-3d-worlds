@@ -12,7 +12,7 @@ export class NPCController extends Component {
   }
 
   Destroy() {
-    this.group_.traverse(c => {
+    this.group.traverse(c => {
       if (c.material) {
         let materials = c.material
         if (!(c.material instanceof Array))
@@ -24,7 +24,7 @@ export class NPCController extends Component {
       if (c.geometry)
         c.geometry.dispose()
     })
-    scene.remove(this.group_)
+    scene.remove(this.group)
   }
 
   InitEntity() {
@@ -33,9 +33,9 @@ export class NPCController extends Component {
 
   Init() {
     this.animations = {}
-    this.group_ = new THREE.Group()
+    this.group = new THREE.Group()
 
-    scene.add(this.group_)
+    scene.add(this.group)
     this.queuedState_ = null
 
     this.LoadModels_()
@@ -68,11 +68,11 @@ export class NPCController extends Component {
   }
 
   OnPosition_(m) {
-    this.group_.position.copy(m.value)
+    this.group.position.copy(m.value)
   }
 
   OnRotation_(m) {
-    this.group_.quaternion.copy(m.value)
+    this.group.quaternion.copy(m.value)
   }
 
   LoadModels_() {
@@ -85,7 +85,7 @@ export class NPCController extends Component {
       this.target.scale.setScalar(modelData.scale)
       this.target.visible = false
 
-      this.group_.add(this.target)
+      this.group.add(this.target)
 
       this.bones_ = {}
       this.target.traverse(c => {
@@ -137,7 +137,7 @@ export class NPCController extends Component {
 
       this.Broadcast({
         topic: 'load.character',
-        model: this.group_,
+        model: this.group,
         bones: this.bones_,
       })
     })

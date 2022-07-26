@@ -7,7 +7,7 @@ export class ParticleSystem {
   constructor({ texture, parent = scene } = {}) {
     material.uniforms.diffuseTexture.value = new THREE.TextureLoader().load(texture)
 
-    this._particles = []
+    this.particles = []
 
     this._geometry = new THREE.BufferGeometry()
     this._geometry.setAttribute('position', new THREE.Float32BufferAttribute([], 3))
@@ -37,7 +37,7 @@ export class ParticleSystem {
         (Math.random() * 2 - 1) * 1.0)
       const d = p.clone().normalize().multiplyScalar(15)
       p.add(origin)
-      this._particles.push({
+      this.particles.push({
         position: p,
         size: (Math.random() * 0.5 + 0.5) * 4.0,
         colour: new THREE.Color(),
@@ -56,7 +56,7 @@ export class ParticleSystem {
     const colours = []
     const angles = []
 
-    for (const p of this._particles) {
+    for (const p of this.particles) {
       positions.push(p.position.x, p.position.y, p.position.z)
       colours.push(p.colour.r, p.colour.g, p.colour.b, p.alpha)
       sizes.push(p.currentSize)
@@ -75,11 +75,11 @@ export class ParticleSystem {
   }
 
   _UpdateParticles(timeElapsed) {
-    for (const p of this._particles) p.life -= timeElapsed
+    for (const p of this.particles) p.life -= timeElapsed
 
-    this._particles = this._particles.filter(p => p.life > 0.0)
+    this.particles = this.particles.filter(p => p.life > 0.0)
 
-    for (const p of this._particles) {
+    for (const p of this.particles) {
       const t = 1.0 - p.life / p.maxLife
 
       p.rotation += timeElapsed * 0.5
@@ -97,7 +97,7 @@ export class ParticleSystem {
       p.velocity.sub(drag)
     }
 
-    this._particles.sort((a, b) => {
+    this.particles.sort((a, b) => {
       const d1 = camera.position.distanceTo(a.position)
       const d2 = camera.position.distanceTo(b.position)
 

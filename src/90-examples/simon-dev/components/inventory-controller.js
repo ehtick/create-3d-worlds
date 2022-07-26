@@ -20,7 +20,7 @@ class UIInventoryController extends Component {
   InitEntity() {
     this.RegisterHandler('inventory.updated', () => this.OnInventoryUpdated_())
 
-    this.inventory_ = this.GetComponent('InventoryController')
+    this.inventory = this.GetComponent('InventoryController')
 
     const _SetupElement = n => {
       const element = document.getElementById(n)
@@ -38,19 +38,19 @@ class UIInventoryController extends Component {
       }
     }
 
-    for (const k in this.inventory_.Inventory)
+    for (const k in this.inventory.Inventory)
       _SetupElement(k)
   }
 
   OnInventoryUpdated_() {
-    const items = this.inventory_.Inventory
+    const items = this.inventory.Inventory
     for (const k in items)
       this.SetItemAtSlot_(k, items[k].value)
   }
 
   OnItemDropped_(oldElement, newElement) {
-    const oldItem = this.inventory_.Inventory[oldElement.id]
-    const newItem = this.inventory_.Inventory[newElement.id]
+    const oldItem = this.inventory.Inventory[oldElement.id]
+    const newItem = this.inventory.Inventory[newElement.id]
 
     const oldValue = oldItem.value
     const newValue = newItem.value
@@ -58,8 +58,8 @@ class UIInventoryController extends Component {
     this.SetItemAtSlot_(oldElement.id, newValue)
     this.SetItemAtSlot_(newElement.id, oldValue)
 
-    this.inventory_.SetItemAtSlot_(oldElement.id, newValue)
-    this.inventory_.SetItemAtSlot_(newElement.id, oldValue)
+    this.inventory.SetItemAtSlot_(oldElement.id, newValue)
+    this.inventory.SetItemAtSlot_(newElement.id, oldValue)
   }
 
   GetItemDefinition_(name) {
@@ -81,7 +81,7 @@ class UIInventoryController extends Component {
 class InventoryController extends Component {
   constructor() {
     super()
-    this.inventory_ = this.CreateEmpty_()
+    this.inventory = this.CreateEmpty_()
   }
 
   CreateEmpty_() {
@@ -102,7 +102,7 @@ class InventoryController extends Component {
   }
 
   get Inventory() {
-    return this.inventory_
+    return this.inventory
   }
 
   InitComponent() {
@@ -116,7 +116,7 @@ class InventoryController extends Component {
       inventory[k].value = msg.inventory[k]
 
     for (const k in inventory)
-      if (inventory[k].value != this.inventory_[k].value)
+      if (inventory[k].value != this.inventory[k].value)
         this.SetItemAtSlot_(k, inventory[k].value)
 
     if (inventory)
@@ -128,9 +128,9 @@ class InventoryController extends Component {
   CreatePacket() {
     // Meh
     const packet = {}
-    for (const k in this.inventory_)
-      if (this.inventory_[k].value)
-        packet[k] = this.inventory_[k].value
+    for (const k in this.inventory)
+      if (this.inventory[k].value)
+        packet[k] = this.inventory[k].value
 
     return packet
   }
@@ -141,10 +141,10 @@ class InventoryController extends Component {
   }
 
   SetItemAtSlot_(slot, itemName) {
-    const oldValue = this.inventory_[slot].value
-    this.inventory_[slot].value = itemName
+    const oldValue = this.inventory[slot].value
+    this.inventory[slot].value = itemName
 
-    if (this.inventory_[slot].type == 'equip' && oldValue != itemName)
+    if (this.inventory[slot].type == 'equip' && oldValue != itemName)
       this.Broadcast({
         topic: 'inventory.equip',
         value: itemName,
@@ -152,8 +152,8 @@ class InventoryController extends Component {
   }
 
   GetItemByName(name) {
-    for (const k in this.inventory_)
-      if (this.inventory_[k].value == name)
+    for (const k in this.inventory)
+      if (this.inventory[k].value == name)
         return this.FindEntity(name)
 
     return null
@@ -165,8 +165,6 @@ class InventoryItem extends Component {
     super()
     this.params = params
   }
-
-  InitComponent() { }
 
   get Params() {
     return this.params

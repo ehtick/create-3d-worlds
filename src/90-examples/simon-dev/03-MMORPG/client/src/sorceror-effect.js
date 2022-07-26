@@ -50,13 +50,13 @@ class SorcerorEffectEmitter extends ParticleEmitter {
 export class SorcerorEffect extends Component {
   constructor() {
     super()
-    this.particles_ = new ParticleSystem({
+    this.particles = new ParticleSystem({
       texture: '/assets/simon-dev/textures/fire.png',
     })
   }
 
   Destroy() {
-    this.particles_.Destroy()
+    this.particles.Destroy()
   }
 
   InitComponent() {
@@ -89,7 +89,7 @@ export class SorcerorEffect extends Component {
       emitter.SetLife(2.5)
       emitter.blend_ = 0.0
 
-      this.particles_.AddEmitter(emitter)
+      this.particles.AddEmitter(emitter)
 
       emitter = new SorcerorEffectEmitter(h)
       emitter.alphaSpline_.AddPoint(0.0, 0.0)
@@ -104,11 +104,11 @@ export class SorcerorEffect extends Component {
       emitter.SetLife(2.5)
       emitter.blend_ = 1.0
 
-      this.particles_.AddEmitter(emitter)
+      this.particles.AddEmitter(emitter)
     }
   }
 
   Update(timeElapsed) {
-    this.particles_.Update(timeElapsed)
+    this.particles.Update(timeElapsed)
   }
 }

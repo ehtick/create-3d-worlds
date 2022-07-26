@@ -20,9 +20,9 @@ class BasicCharacterController extends Component {
     this.decceleration_ = new THREE.Vector3(-0.0005, -0.0001, -5.0)
     this.acceleration_ = new THREE.Vector3(1, 0.125, 100.0)
     this.velocity_ = new THREE.Vector3(0, 0, 0)
-    this.group_ = new THREE.Group()
+    this.group = new THREE.Group()
 
-    scene.add(this.group_)
+    scene.add(this.group)
 
     this.animations = {}
 
@@ -36,11 +36,11 @@ class BasicCharacterController extends Component {
   }
 
   OnUpdatePosition_(msg) {
-    this.group_.position.copy(msg.value)
+    this.group.position.copy(msg.value)
   }
 
   OnUpdateRotation_(msg) {
-    this.group_.quaternion.copy(msg.value)
+    this.group.quaternion.copy(msg.value)
   }
 
   OnDeath_(msg) {
@@ -57,7 +57,7 @@ class BasicCharacterController extends Component {
       this.target.scale.setScalar(modelData.scale)
       this.target.visible = false
 
-      this.group_.add(this.target)
+      this.group.add(this.target)
 
       this.bones_ = {}
       this.target.traverse(c => {
@@ -167,7 +167,7 @@ class BasicCharacterController extends Component {
 
     velocity.add(frameDecceleration)
 
-    const controlObject = this.group_
+    const controlObject = this.group
     const _Q = new THREE.Quaternion()
     const _A = new THREE.Vector3()
     const _R = controlObject.quaternion.clone()

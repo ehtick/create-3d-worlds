@@ -16,18 +16,18 @@ class ParticleEmitter {
 
     this.emissionRate_ = 0.0
     this.emissionAccumulator_ = 0.0
-    this.particles_ = []
+    this.particles = []
     this.emitterLife_ = null
   }
 
   UpdateParticles_(timeElapsed) {
-    for (const p of this.particles_)
+    for (const p of this.particles)
       p.life -= timeElapsed
 
-    this.particles_ = this.particles_.filter(p => p.life > 0.0)
+    this.particles = this.particles.filter(p => p.life > 0.0)
 
-    for (let i = 0; i < this.particles_.length; ++i) {
-      const p = this.particles_[i]
+    for (let i = 0; i < this.particles.length; ++i) {
+      const p = this.particles[i]
       const t = 1.0 - p.life / p.maxLife
 
       if (t < 0 || t > 1) {
@@ -70,9 +70,9 @@ class ParticleEmitter {
 
   get IsAlive() {
     if (this.emitterLife_ === null)
-      return this.particles_.length > 0
+      return this.particles.length > 0
 
-    return this.emitterLife_ > 0.0 || this.particles_.length > 0
+    return this.emitterLife_ > 0.0 || this.particles.length > 0
 
   }
 
@@ -100,7 +100,7 @@ class ParticleEmitter {
 
       for (let i = 0; i < n; i++) {
         const p = this.CreateParticle_()
-        this.particles_.push(p)
+        this.particles.push(p)
       }
     }
 
@@ -111,7 +111,7 @@ class ParticleEmitter {
 class ParticleSystem {
   constructor({ texture }) {
     material.uniforms.diffuseTexture.value = new THREE.TextureLoader().load(texture)
-    this.particles_ = []
+    this.particles = []
 
     this.geometry_ = new THREE.BufferGeometry()
     this.geometry_.setAttribute('position', new THREE.Float32BufferAttribute([], 3))
@@ -125,7 +125,7 @@ class ParticleSystem {
     scene.add(this.points_)
 
     this.emitters_ = []
-    this.particles_ = []
+    this.particles = []
 
     this.UpdateGeometry_()
   }
@@ -150,7 +150,7 @@ class ParticleSystem {
     const blends = []
 
     const box = new THREE.Box3()
-    for (const p of this.particles_) {
+    for (const p of this.particles) {
       positions.push(p.position.x, p.position.y, p.position.z)
       colours.push(p.colour.r, p.colour.g, p.colour.b, p.alpha)
       sizes.push(p.currentSize)
@@ -178,9 +178,9 @@ class ParticleSystem {
   }
 
   UpdateParticles_() {
-    this.particles_ = this.emitters_.map(e => e.particles_)
-    this.particles_ = this.particles_.flat()
-    this.particles_.sort((a, b) => {
+    this.particles = this.emitters_.map(e => e.particles)
+    this.particles = this.particles.flat()
+    this.particles.sort((a, b) => {
       const d1 = camera.position.distanceTo(a.position)
       const d2 = camera.position.distanceTo(b.position)
 

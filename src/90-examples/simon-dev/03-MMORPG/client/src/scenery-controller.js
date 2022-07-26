@@ -6,7 +6,6 @@ import { RenderComponent } from '../../../components/render-component.js'
 import { SpatialGridController } from '../../../components/spatial-grid-controller.js'
 import { math } from '../../../shared/math.mjs'
 import { Noise } from '../../../shared/noise.mjs'
-import { scene } from '/utils/scene.js'
 
 const SCENERY = {
   birch1: {
@@ -122,7 +121,6 @@ export class SceneryController extends Component {
 
       const e = new Entity()
       e.AddComponent(new RenderComponent({
-        scene,
         resourcePath: '/assets/simon-dev/nature2/GLTF/',
         resourceName: 'Cloud' + index + '.glb',
         scale: Math.random() * 20 + 40,
@@ -166,7 +164,6 @@ export class SceneryController extends Component {
 
     const e = new Entity()
     e.AddComponent(new RenderComponent({
-      scene,
       resourcePath: randomProp.resourcePath,
       resourceName: randomProp.base,
       textures: {

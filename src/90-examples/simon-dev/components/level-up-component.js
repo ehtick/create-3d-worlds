@@ -9,35 +9,35 @@ class LevelUpComponent extends Component {
     super()
     this.params = params
 
-    this._particles = new ParticleSystem({
+    this.particles = new ParticleSystem({
       texture: '/assets/simon-dev/textures/ball.png',
     })
-    this._particles._alphaSpline.AddPoint(0.0, 0.0)
-    this._particles._alphaSpline.AddPoint(0.1, 1.0)
-    this._particles._alphaSpline.AddPoint(0.7, 1.0)
-    this._particles._alphaSpline.AddPoint(1.0, 0.0)
+    this.particles._alphaSpline.AddPoint(0.0, 0.0)
+    this.particles._alphaSpline.AddPoint(0.1, 1.0)
+    this.particles._alphaSpline.AddPoint(0.7, 1.0)
+    this.particles._alphaSpline.AddPoint(1.0, 0.0)
 
-    this._particles._colourSpline.AddPoint(0.0, new THREE.Color(0x00FF00))
-    this._particles._colourSpline.AddPoint(0.5, new THREE.Color(0x40C040))
-    this._particles._colourSpline.AddPoint(1.0, new THREE.Color(0xFF4040))
+    this.particles._colourSpline.AddPoint(0.0, new THREE.Color(0x00FF00))
+    this.particles._colourSpline.AddPoint(0.5, new THREE.Color(0x40C040))
+    this.particles._colourSpline.AddPoint(1.0, new THREE.Color(0xFF4040))
 
-    this._particles._sizeSpline.AddPoint(0.0, 0.05)
-    this._particles._sizeSpline.AddPoint(0.5, 0.25)
-    this._particles._sizeSpline.AddPoint(1.0, 0.0)
+    this.particles._sizeSpline.AddPoint(0.0, 0.05)
+    this.particles._sizeSpline.AddPoint(0.5, 0.25)
+    this.particles._sizeSpline.AddPoint(1.0, 0.0)
   }
 
   InitComponent() {
-    this._particles.AddParticles(this.Parent.Position, 300)
+    this.particles.AddParticles(this.Parent.Position, 300)
   }
 
   Update(timeElapsed) {
-    this._particles.Step(timeElapsed)
-    if (this._particles._particles.length == 0)
+    this.particles.Step(timeElapsed)
+    if (this.particles.particles.length == 0)
       this.Parent.SetActive(false)
   }
 }
 
-class LevelUpComponentSpawner extends Component {
+export class LevelUpComponentSpawner extends Component {
   constructor(params) {
     super()
     this.params = params
@@ -51,8 +51,4 @@ class LevelUpComponentSpawner extends Component {
 
     return e
   }
-};
-
-export {
-  LevelUpComponentSpawner,
 }
