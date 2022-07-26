@@ -1,7 +1,7 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene, camera, renderer } from '/utils/scene.js'
 
-import { Component } from '../../../ecs/component.js'
+import { Component } from '../ecs/component.js'
 
 const vertexShader = `
   varying vec3 vWorldPosition;

@@ -1,11 +1,14 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
-import { Component } from '../../../ecs/component.js'
-import { camera } from '/utils/scene.js'
+
+import { Component } from '../ecs/component.js'
 
 export class ThirdPersonCamera extends Component {
-  constructor({ target }) {
+  constructor({ camera, target }) {
     super()
+
     this._target = target
+    this._camera = camera
+
     this._currentPosition = new THREE.Vector3()
     this._currentLookat = new THREE.Vector3()
   }
@@ -14,10 +17,6 @@ export class ThirdPersonCamera extends Component {
     const idealOffset = new THREE.Vector3(-0, 10, -15)
     idealOffset.applyQuaternion(this._target._rotation)
     idealOffset.add(this._target._position)
-
-    const terrain = this.FindEntity('terrain').GetComponent('TerrainChunkManager')
-    idealOffset.y = Math.max(idealOffset.y, terrain.GetHeight(idealOffset)[0] + 5.0)
-
     return idealOffset
   }
 
@@ -32,13 +31,14 @@ export class ThirdPersonCamera extends Component {
     const idealOffset = this._CalculateIdealOffset()
     const idealLookat = this._CalculateIdealLookat()
 
+    // const t = 0.05;
     // const t = 4.0 * timeElapsed;
     const t = 1.0 - Math.pow(0.01, timeElapsed)
 
     this._currentPosition.lerp(idealOffset, t)
     this._currentLookat.lerp(idealLookat, t)
 
-    camera.position.copy(this._currentPosition)
-    camera.lookAt(this._currentLookat)
+    this._camera.position.copy(this._currentPosition)
+    this._camera.lookAt(this._currentLookat)
   }
 }

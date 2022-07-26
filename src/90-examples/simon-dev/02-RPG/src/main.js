@@ -4,7 +4,7 @@ import { scene, renderer, camera, clock } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { createSunLight, sunFollow } from '/utils/light.js'
 
-import ThirdPersonCamera from './third-person-camera.js'
+import { ThirdPersonCamera } from '../../components/third-person-camera-old.js'
 import { EntityManager } from '../../ecs/entity-manager.js'
 import { Entity } from '../../ecs/entity.js'
 import { math } from '../../shared/math.mjs'
