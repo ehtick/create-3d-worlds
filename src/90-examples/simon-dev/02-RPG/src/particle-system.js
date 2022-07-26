@@ -32,7 +32,7 @@ class LinearSpline {
   }
 }
 
-export default class ParticleSystem {
+export class ParticleSystem {
   constructor({ camera, parent, texture }) {
     material.uniforms.diffuseTexture.value = new THREE.TextureLoader().load(texture)
 
