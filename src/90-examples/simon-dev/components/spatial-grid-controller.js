@@ -19,7 +19,7 @@ export class SpatialGridController extends Component {
 
     this.client_ = this.grid.NewClient(pos, [1, 1])
     this.client_.entity = this.parent
-    this._RegisterHandler('update.position', m => this._OnPosition(m))
+    this.RegisterHandler('update.position', m => this._OnPosition(m))
   }
 
   _OnPosition(msg) {

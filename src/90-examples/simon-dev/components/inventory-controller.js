@@ -18,7 +18,7 @@ class InventoryDatabaseController extends Component {
 class UIInventoryController extends Component {
 
   InitEntity() {
-    this._RegisterHandler('inventory.updated', () => this.OnInventoryUpdated_())
+    this.RegisterHandler('inventory.updated', () => this.OnInventoryUpdated_())
 
     this.inventory_ = this.GetComponent('InventoryController')
 
@@ -107,7 +107,7 @@ class InventoryController extends Component {
 
   InitComponent() {
     // Hack
-    this._RegisterHandler('network.inventory', m => this.OnNetworkUpdate_(m))
+    this.RegisterHandler('network.inventory', m => this.OnNetworkUpdate_(m))
   }
 
   OnNetworkUpdate_(msg) {

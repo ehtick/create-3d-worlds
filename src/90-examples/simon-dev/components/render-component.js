@@ -34,10 +34,10 @@ export class RenderComponent extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler('update.position', m => {
+    this.RegisterHandler('update.position', m => {
       this._OnPosition(m)
     })
-    this._RegisterHandler('update.rotation', m => {
+    this.RegisterHandler('update.rotation', m => {
       this._OnRotation(m)
     })
   }

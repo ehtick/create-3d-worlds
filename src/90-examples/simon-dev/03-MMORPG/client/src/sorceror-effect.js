@@ -60,10 +60,10 @@ export class SorcerorEffect extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler('action.attack', m => {
+    this.RegisterHandler('action.attack', m => {
       this.OnAttack_(m)
     })
-    this._RegisterHandler('load.character', m => this.OnCharacterLoaded_(m))
+    this.RegisterHandler('load.character', m => this.OnCharacterLoaded_(m))
   }
 
   OnCharacterLoaded_(msg) {

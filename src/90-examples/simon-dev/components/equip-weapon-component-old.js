@@ -7,16 +7,16 @@ export class EquipWeapon extends Component {
     super()
     this.params = { anchor }
     this.target = null
-    this._name = null
+    this.name = null
   }
 
   InitComponent() {
-    this._RegisterHandler('load.character', m => this._OnCharacterLoaded(m))
-    this._RegisterHandler('inventory.equip', m => this._OnEquip(m))
+    this.RegisterHandler('load.character', m => this._OnCharacterLoaded(m))
+    this.RegisterHandler('inventory.equip', m => this._OnEquip(m))
   }
 
   get Name() {
-    return this._name
+    return this.name
   }
 
   _OnCharacterLoaded(msg) {
@@ -30,7 +30,7 @@ export class EquipWeapon extends Component {
   }
 
   _OnEquip(msg) {
-    if (msg.value == this._name)
+    if (msg.value == this.name)
       return
 
     if (this.target)
@@ -38,7 +38,7 @@ export class EquipWeapon extends Component {
 
     const inventory = this.GetComponent('InventoryController')
     const item = inventory.GetItemByName(msg.value).GetComponent('InventoryItem')
-    this._name = msg.value
+    this.name = msg.value
 
     this._LoadModels(item, () => {
       this._AttachTarget()

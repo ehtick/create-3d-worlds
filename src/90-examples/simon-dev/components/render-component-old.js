@@ -11,7 +11,7 @@ export class AnimatedModelComponent extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler('update.position', m => {
+    this.RegisterHandler('update.position', m => {
       this._OnPosition(m)
     })
   }

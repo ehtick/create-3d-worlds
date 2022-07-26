@@ -112,10 +112,10 @@ export class BloodEffect extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler('events.network', m => {
+    this.RegisterHandler('events.network', m => {
       this.OnEvents_(m)
     })
-    this._RegisterHandler('load.character', m => this.OnCharacterLoaded_(m))
+    this.RegisterHandler('load.character', m => this.OnCharacterLoaded_(m))
   }
 
   OnCharacterLoaded_(msg) {

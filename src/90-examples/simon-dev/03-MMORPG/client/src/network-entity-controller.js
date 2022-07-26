@@ -12,7 +12,7 @@ export class NetworkEntityController extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler(
+    this.RegisterHandler(
       'network.update', m => {
         this.OnNetworkUpdate_(m)
       })

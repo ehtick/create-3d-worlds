@@ -30,9 +30,9 @@ class BasicCharacterController extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler('health.death', m => this.OnDeath_(m))
-    this._RegisterHandler('update.position', m => this.OnUpdatePosition_(m))
-    this._RegisterHandler('update.rotation', m => this.OnUpdateRotation_(m))
+    this.RegisterHandler('health.death', m => this.OnDeath_(m))
+    this.RegisterHandler('update.position', m => this.OnUpdatePosition_(m))
+    this.RegisterHandler('update.rotation', m => this.OnUpdateRotation_(m))
   }
 
   OnUpdatePosition_(msg) {

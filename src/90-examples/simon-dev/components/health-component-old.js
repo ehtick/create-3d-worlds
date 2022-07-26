@@ -19,8 +19,8 @@ export class HealthComponent extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler('health.damage', m => this._OnDamage(m))
-    this._RegisterHandler('health.add-experience', m => this._OnAddExperience(m))
+    this.RegisterHandler('health.damage', m => this._OnDamage(m))
+    this.RegisterHandler('health.add-experience', m => this._OnAddExperience(m))
     this._UpdateUI()
   }
 

@@ -12,7 +12,7 @@ export default class QuestComponent extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler('input.picked', m => this._OnPicked(m))
+    this.RegisterHandler('input.picked', m => this._OnPicked(m))
   }
 
   _OnPicked(msg) {

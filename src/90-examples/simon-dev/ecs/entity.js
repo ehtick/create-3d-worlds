@@ -2,11 +2,11 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 
 export class Entity {
   constructor() {
-    this._name = null
+    this.name = null
     this.components = {}
     this._position = new THREE.Vector3()
     this._rotation = new THREE.Quaternion()
-    this._handlers = {}
+    this.handlers = {}
     this.parent = null
     this.dead = false
   }
@@ -17,14 +17,14 @@ export class Entity {
 
     this.components = null
     this.parent = null
-    this._handlers = null
+    this.handlers = null
   }
 
-  _RegisterHandler(n, h) {
-    if (!(n in this._handlers))
-      this._handlers[n] = []
+  RegisterHandler(n, h) {
+    if (!(n in this.handlers))
+      this.handlers[n] = []
 
-    this._handlers[n].push(h)
+    this.handlers[n].push(h)
   }
 
   SetParent(p) {
@@ -32,11 +32,11 @@ export class Entity {
   }
 
   SetName(n) {
-    this._name = n
+    this.name = n
   }
 
   get Name() {
-    return this._name
+    return this.name
   }
 
   get Manager() {
@@ -72,11 +72,11 @@ export class Entity {
   }
 
   Broadcast(msg) {
-    if (!(msg.topic in this._handlers))
+    if (!(msg.topic in this.handlers))
       return
 
-    for (const curHandler of this._handlers[msg.topic])
-      curHandler(msg)
+    for (const handler of this.handlers[msg.topic])
+      handler(msg)
   }
 
   SetPosition(p) {

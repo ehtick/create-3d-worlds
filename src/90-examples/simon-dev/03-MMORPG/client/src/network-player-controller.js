@@ -10,10 +10,10 @@ export class NetworkPlayerController extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler('load.character', m => this.OnLoaded_(m))
-    this._RegisterHandler('inventory.equip', m => this.OnEquipChanged_(m))
-    this._RegisterHandler('network.update', m => this.OnUpdate_(m))
-    this._RegisterHandler('action.attack', m => this.OnActionAttack_(m))
+    this.RegisterHandler('load.character', m => this.OnLoaded_(m))
+    this.RegisterHandler('inventory.equip', m => this.OnEquipChanged_(m))
+    this.RegisterHandler('network.update', m => this.OnUpdate_(m))
+    this.RegisterHandler('action.attack', m => this.OnActionAttack_(m))
   }
 
   InitEntity() {

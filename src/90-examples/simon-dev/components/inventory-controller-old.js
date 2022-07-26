@@ -19,7 +19,7 @@ export class InventoryController extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler('inventory.add', m => this._OnInventoryAdded(m))
+    this.RegisterHandler('inventory.add', m => this._OnInventoryAdded(m))
 
     const _SetupElement = n => {
       const element = document.getElementById(n)

@@ -12,7 +12,7 @@ export class AttackController extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler('player.action', m => {
+    this.RegisterHandler('player.action', m => {
       this._OnAnimAction(m)
     })
   }

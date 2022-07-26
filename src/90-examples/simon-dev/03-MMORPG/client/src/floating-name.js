@@ -37,11 +37,11 @@ export class FloatingName extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler(
+    this.RegisterHandler(
       'load.character', m => {
         this.CreateSprite_(m)
       })
-    this._RegisterHandler(
+    this.RegisterHandler(
       'health.death', m => {
         this.OnDeath_(m)
       })

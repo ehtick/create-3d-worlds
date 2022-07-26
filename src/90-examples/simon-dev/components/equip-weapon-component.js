@@ -8,7 +8,7 @@ export class EquipWeapon extends Component {
   constructor({ desc }) { // {account, character} = desc
     super()
     this.target = null
-    this.name_ = null
+    this.name = null
 
     const classType = desc.character.class
     const modelData = CHARACTER_MODELS[classType]
@@ -16,8 +16,8 @@ export class EquipWeapon extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler('load.character', m => this._OnCharacterLoaded(m))
-    this._RegisterHandler('inventory.equip', m => this._OnEquip(m))
+    this.RegisterHandler('load.character', m => this._OnCharacterLoaded(m))
+    this.RegisterHandler('inventory.equip', m => this._OnEquip(m))
   }
 
   _OnCharacterLoaded(msg) {
@@ -36,12 +36,12 @@ export class EquipWeapon extends Component {
   }
 
   _OnEquip(msg) {
-    if (msg.value == this.name_) return
+    if (msg.value == this.name) return
 
     if (this.target) this._UnloadModels()
 
     const item = this.GetItemDefinition_(msg.value)
-    this.name_ = msg.value
+    this.name = msg.value
 
     if (item) this._LoadModels(item, () => this._AttachTarget())
   }

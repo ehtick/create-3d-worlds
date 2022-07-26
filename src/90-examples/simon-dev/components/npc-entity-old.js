@@ -42,10 +42,10 @@ export class NPCController extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler('health.death', m => {
+    this.RegisterHandler('health.death', m => {
       this._OnDeath(m)
     })
-    this._RegisterHandler('update.position', m => {
+    this.RegisterHandler('update.position', m => {
       this._OnPosition(m)
     })
   }

@@ -25,7 +25,7 @@ export class BasicCharacterController extends Component {
   }
 
   InitComponent() {
-    this._RegisterHandler('health.death', m => {
+    this.RegisterHandler('health.death', m => {
       this._OnDeath(m)
     })
   }

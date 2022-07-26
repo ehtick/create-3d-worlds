@@ -35,7 +35,7 @@ export class Component {
 
   Update(_) { }
 
-  _RegisterHandler(n, h) {
-    this.parent._RegisterHandler(n, h)
+  RegisterHandler(n, h) {
+    this.parent.RegisterHandler(n, h)
   }
 }
