@@ -19,9 +19,9 @@ class AIInput {
 };
 
 class NPCFSM extends FiniteStateMachine {
-  constructor(proxy) {
+  constructor(animations) {
     super()
-    this.proxy = proxy
+    this.animations = animations
     this._Init()
   }
 

@@ -2,9 +2,9 @@ import { FiniteStateMachine } from '../fsm/finite-state-machine.js'
 import { player_state } from '../fsm/player-state.js'
 
 export class CharacterFSM extends FiniteStateMachine {
-  constructor(proxy) {
+  constructor(animations) {
     super()
-    this.proxy = proxy
+    this.animations = animations
     this.Init_()
   }
 
