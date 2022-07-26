@@ -39,7 +39,6 @@ export class InventoryController extends Component {
 
     for (const k in this._inventory)
       _SetupElement(k)
-
   }
 
   _OnItemDropped(oldElement, newElement) {
@@ -58,7 +57,6 @@ export class InventoryController extends Component {
         value: oldValue,
         added: false,
       })
-
   }
 
   _SetItemAtSlot(slot, itemName) {

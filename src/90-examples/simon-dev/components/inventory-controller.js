@@ -46,7 +46,6 @@ class UIInventoryController extends Component {
     const items = this.inventory_.Inventory
     for (const k in items)
       this.SetItemAtSlot_(k, items[k].value)
-
   }
 
   OnItemDropped_(oldElement, newElement) {
@@ -76,7 +75,6 @@ class UIInventoryController extends Component {
       div.style.backgroundImage = 'url(\'' + path + '\')'
     } else
       div.style.backgroundImage = ''
-
   }
 };
 
@@ -125,7 +123,6 @@ class InventoryController extends Component {
       this.Broadcast({
         topic: 'inventory.updated'
       })
-
   }
 
   CreatePacket() {
@@ -145,7 +142,6 @@ class InventoryController extends Component {
 
   SetItemAtSlot_(slot, itemName) {
     const oldValue = this.inventory_[slot].value
-
     this.inventory_[slot].value = itemName
 
     if (this.inventory_[slot].type == 'equip' && oldValue != itemName)
@@ -153,7 +149,6 @@ class InventoryController extends Component {
         topic: 'inventory.equip',
         value: itemName,
       })
-
   }
 
   GetItemByName(name) {
