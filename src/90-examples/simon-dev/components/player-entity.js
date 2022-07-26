@@ -225,7 +225,7 @@ class BasicCharacterController extends Component {
     const _R = controlObject.quaternion.clone()
 
     const acc = this.acceleration_.clone()
-    if (input._keys.shift)
+    if (input._keys.capsLock)
       acc.multiplyScalar(2.0)
 
     if (input._keys.up)

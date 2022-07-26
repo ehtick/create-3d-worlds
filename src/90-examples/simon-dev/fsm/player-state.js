@@ -182,7 +182,7 @@ export const player_state = (() => {
         return
 
       if (input._keys.up || input._keys.down) {
-        if (input._keys.shift)
+        if (input._keys.capsLock)
           this._parent.SetState('run')
 
         return
@@ -223,13 +223,11 @@ export const player_state = (() => {
     Exit() {}
 
     Update(timeElapsed, input) {
-      if (!input)
-        return
+      if (!input) return
 
       if (input._keys.up || input._keys.down) {
-        if (!input._keys.shift)
+        if (!input._keys.capsLock)
           this._parent.SetState('walk')
-
         return
       }
 
