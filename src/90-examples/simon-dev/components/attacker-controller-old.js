@@ -40,7 +40,7 @@ export class AttackController extends Component {
       const nearby = grid.FindNearbyEntities(2)
 
       const _Filter = c => {
-        if (c.entity == this._parent) return false
+        if (c.entity == this.parent) return false
 
         const h = c.entity.GetComponent('HealthComponent')
         if (!h) return false
@@ -52,11 +52,11 @@ export class AttackController extends Component {
       for (const a of attackable) {
         const target = a.entity
 
-        const dirToTarget = target._position.clone().sub(this._parent._position)
+        const dirToTarget = target._position.clone().sub(this.parent._position)
         dirToTarget.normalize()
 
         const forward = new THREE.Vector3(0, 0, 1)
-        forward.applyQuaternion(this._parent._rotation)
+        forward.applyQuaternion(this.parent._rotation)
         forward.normalize()
 
         let damage = this.GetComponent('HealthComponent').stats_.strength
@@ -69,7 +69,7 @@ export class AttackController extends Component {
         if (math.in_range(dot, 0.9, 1.1)) target.Broadcast({
           topic: 'health.damage',
           value: damage,
-          attacker: this._parent,
+          attacker: this.parent,
         })
       }
     }

@@ -82,7 +82,7 @@ export class NPCController extends Component {
       this.params.scene.add(this._target)
 
       this._target.scale.setScalar(0.025)
-      this._target.position.copy(this._parent._position)
+      this._target.position.copy(this.parent._position)
       this._target.position.y += 0.35
       const texLoader = new THREE.TextureLoader()
       const texture = texLoader.load(
@@ -171,7 +171,7 @@ export class NPCController extends Component {
     if (nearby.length == 0)
       return new THREE.Vector3(0, 0, 0)
 
-    const dir = this._parent._position.clone()
+    const dir = this.parent._position.clone()
     dir.sub(nearby[0].entity._position)
     dir.y = 0.0
     dir.normalize()
@@ -250,8 +250,8 @@ export class NPCController extends Component {
     controlObject.position.copy(pos)
     this._position.copy(pos)
 
-    this._parent.SetPosition(this._position)
-    this._parent.SetQuaternion(this._target.quaternion)
+    this.parent.SetPosition(this._position)
+    this.parent.SetQuaternion(this._target.quaternion)
   }
 
   Update(timeInSeconds) {

@@ -6,19 +6,19 @@ import { Component } from '../../../ecs/component.js'
 class SorcerorEffectEmitter extends ParticleEmitter {
   constructor(parent) {
     super()
-    this.parent_ = parent
+    this.parent = parent
     this.blend_ = 0.0
   }
 
   OnUpdate_() {
-    this.parent_.updateMatrixWorld(true)
+    this.parent.updateMatrixWorld(true)
 
     this.SetEmissionRate(300.0 * (this.emitterLife_ / 3.0))
   }
 
   CreateParticle_() {
     const origin = new THREE.Vector3(0, 0, 0)
-    this.parent_.localToWorld(origin)
+    this.parent.localToWorld(origin)
 
     const radius = 1.0
     const life = (Math.random() * 0.75 + 0.25) * 1.0

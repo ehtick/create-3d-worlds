@@ -4,7 +4,7 @@ export const player_state = (() => {
 
   class State {
     constructor(parent) {
-      this._parent = parent
+      this.parent = parent
     }
 
     Enter() {}
@@ -24,14 +24,14 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      this._action = this._parent._proxy.animations.death.action
+      this._action = this.parent._proxy.animations.death.action
 
       this._action.reset()
       this._action.setLoop(THREE.LoopOnce, 1)
       this._action.clampWhenFinished = true
 
       if (prevState) {
-        const prevAction = this._parent._proxy.animations[prevState.Name].action
+        const prevAction = this.parent._proxy.animations[prevState.Name].action
 
         this._action.crossFadeFrom(prevAction, 0.2, true)
         this._action.play()
@@ -61,7 +61,7 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      this._action = this._parent._proxy.animations.dance.action
+      this._action = this.parent._proxy.animations.dance.action
       const mixer = this._action.getMixer()
       mixer.addEventListener('finished', this._FinishedCallback)
 
@@ -70,7 +70,7 @@ export const player_state = (() => {
       this._action.clampWhenFinished = true
 
       if (prevState) {
-        const prevAction = this._parent._proxy.animations[prevState.Name].action
+        const prevAction = this.parent._proxy.animations[prevState.Name].action
 
         this._action.crossFadeFrom(prevAction, 0.2, true)
         this._action.play()
@@ -81,7 +81,7 @@ export const player_state = (() => {
 
     _Finished() {
       this._Cleanup()
-      this._parent.SetState('idle')
+      this.parent.SetState('idle')
     }
 
     _Cleanup() {
@@ -113,12 +113,12 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      this._action = this._parent._proxy.animations.attack.action
+      this._action = this.parent._proxy.animations.attack.action
       const mixer = this._action.getMixer()
       mixer.addEventListener('finished', this._FinishedCallback)
 
       if (prevState) {
-        const prevAction = this._parent._proxy.animations[prevState.Name].action
+        const prevAction = this.parent._proxy.animations[prevState.Name].action
 
         this._action.reset()
         this._action.setLoop(THREE.LoopOnce, 1)
@@ -132,7 +132,7 @@ export const player_state = (() => {
 
     _Finished() {
       this._Cleanup()
-      this._parent.SetState('idle')
+      this.parent.SetState('idle')
     }
 
     _Cleanup() {
@@ -154,9 +154,9 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      const curAction = this._parent._proxy.animations.walk.action
+      const curAction = this.parent._proxy.animations.walk.action
       if (prevState) {
-        const prevAction = this._parent._proxy.animations[prevState.Name].action
+        const prevAction = this.parent._proxy.animations[prevState.Name].action
 
         curAction.enabled = true
 
@@ -183,12 +183,12 @@ export const player_state = (() => {
 
       if (input._keys.up || input._keys.down) {
         if (input._keys.capsLock)
-          this._parent.SetState('run')
+          this.parent.SetState('run')
 
         return
       }
 
-      this._parent.SetState('idle')
+      this.parent.SetState('idle')
     }
   };
 
@@ -198,9 +198,9 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      const curAction = this._parent._proxy.animations.run.action
+      const curAction = this.parent._proxy.animations.run.action
       if (prevState) {
-        const prevAction = this._parent._proxy.animations[prevState.Name].action
+        const prevAction = this.parent._proxy.animations[prevState.Name].action
 
         curAction.enabled = true
 
@@ -227,11 +227,11 @@ export const player_state = (() => {
 
       if (input._keys.up || input._keys.down) {
         if (!input._keys.capsLock)
-          this._parent.SetState('walk')
+          this.parent.SetState('walk')
         return
       }
 
-      this._parent.SetState('idle')
+      this.parent.SetState('idle')
     }
   };
 
@@ -241,9 +241,9 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      const idleAction = this._parent._proxy.animations.idle.action
+      const idleAction = this.parent._proxy.animations.idle.action
       if (prevState) {
-        const prevAction = this._parent._proxy.animations[prevState.Name].action
+        const prevAction = this.parent._proxy.animations[prevState.Name].action
         idleAction.time = 0.0
         idleAction.enabled = true
         idleAction.setEffectiveTimeScale(1.0)
@@ -261,11 +261,11 @@ export const player_state = (() => {
       if (!input) return
 
       if (input._keys.up || input._keys.down)
-        this._parent.SetState('walk')
+        this.parent.SetState('walk')
       else if (input._keys.space)
-        this._parent.SetState('attack')
+        this.parent.SetState('attack')
       else if (input._keys.backspace)
-        this._parent.SetState('dance')
+        this.parent.SetState('dance')
     }
   };
 

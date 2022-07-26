@@ -1,5 +1,4 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
-import { Component } from './component.js'
 
 export class Entity {
   constructor() {
@@ -8,7 +7,7 @@ export class Entity {
     this._position = new THREE.Vector3()
     this._rotation = new THREE.Quaternion()
     this._handlers = {}
-    this.parent_ = null
+    this.parent = null
     this.dead_ = false
   }
 
@@ -17,7 +16,7 @@ export class Entity {
       this._components[k].Destroy()
 
     this._components = null
-    this.parent_ = null
+    this.parent = null
     this._handlers = null
   }
 
@@ -29,7 +28,7 @@ export class Entity {
   }
 
   SetParent(p) {
-    this.parent_ = p
+    this.parent = p
   }
 
   SetName(n) {
@@ -41,15 +40,11 @@ export class Entity {
   }
 
   get Manager() {
-    return this.parent_
-  }
-
-  get _parent() {
-    return this.parent_
+    return this.parent
   }
 
   SetActive(b) {
-    this.parent_.SetActive(this, b)
+    this.parent.SetActive(this, b)
   }
 
   SetDead() {
@@ -73,7 +68,7 @@ export class Entity {
   }
 
   FindEntity(n) {
-    return this.parent_.Get(n)
+    return this.parent.Get(n)
   }
 
   Broadcast(msg) {
@@ -112,4 +107,4 @@ export class Entity {
     for (const k in this._components)
       this._components[k].Update(timeElapsed)
   }
-};
+}

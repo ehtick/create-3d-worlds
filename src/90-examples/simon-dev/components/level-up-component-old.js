@@ -25,13 +25,13 @@ class LevelUpComponent extends Component {
   }
 
   InitComponent() {
-    this._particles.AddParticles(this._parent._position, 300)
+    this._particles.AddParticles(this.parent._position, 300)
   }
 
   Update(timeElapsed) {
     this._particles.Step(timeElapsed)
     if (this._particles._particles.length == 0)
-      this._parent.SetActive(false)
+      this.parent.SetActive(false)
   }
 }
 
@@ -40,7 +40,7 @@ export class LevelUpComponentSpawner extends Component {
     const e = new Entity()
     e.SetPosition(pos)
     e.AddComponent(new LevelUpComponent())
-    this._parent._parent.Add(e)
+    this.parent.parent.Add(e)
     return e
   }
 };

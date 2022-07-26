@@ -220,7 +220,7 @@ export class BasicCharacterController extends Component {
     controlObject.position.copy(pos)
     this._position.copy(pos)
 
-    this._parent.SetPosition(this._position)
-    this._parent.SetQuaternion(this._target.quaternion)
+    this.parent.SetPosition(this._position)
+    this.parent.SetQuaternion(this._target.quaternion)
   }
 };

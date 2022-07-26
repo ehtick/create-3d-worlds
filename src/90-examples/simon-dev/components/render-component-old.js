@@ -42,11 +42,11 @@ export class AnimatedModelComponent extends Component {
     this.params.scene.add(this._target)
 
     obj.scale.setScalar(this.params.scale)
-    this._target.position.copy(this._parent._position)
+    this._target.position.copy(this.parent._position)
 
     this.Broadcast({
       topic: 'update.position',
-      value: this._parent._position,
+      value: this.parent._position,
     })
 
     let texture = null
@@ -100,7 +100,7 @@ export class AnimatedModelComponent extends Component {
 
     this._mixer = new THREE.AnimationMixer(this._target)
 
-    this._parent._mesh = this._target
+    this.parent._mesh = this._target
     this.Broadcast({
       topic: 'load.character',
       model: this._target,

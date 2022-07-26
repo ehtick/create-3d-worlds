@@ -9,9 +9,9 @@ import { CHARACTER_MODELS } from '../../shared/data.mjs'
 
 class MonsterSpawner {
   constructor(params) {
-    this.parent_ = params.parent
-    this.grid_ = this.parent_.grid_
-    this.terrain_ = this.parent_.terrain_
+    this.parent = params.parent
+    this.grid_ = this.parent.grid_
+    this.terrain_ = this.parent.terrain_
     this.pos_ = params.pos
     this.pos_[1] = this.terrain_.Get(...params.pos)[0]
     this.params = params
@@ -20,7 +20,7 @@ class MonsterSpawner {
   Spawn_() {
     // Hack
     const e = new WorldEntity({
-      id: this.parent_.ids_++,
+      id: this.parent.ids_++,
       position: vec3.clone(this.pos_),
       rotation: quat.fromValues(0, 0, 0, 1),
       grid: this.grid_,
@@ -36,7 +36,7 @@ class MonsterSpawner {
       console.log('entity gone, spawner making now one soon')
     })
 
-    this.parent_.AddMonster(wc)
+    this.parent.AddMonster(wc)
     this.entity_ = wc
   }
 

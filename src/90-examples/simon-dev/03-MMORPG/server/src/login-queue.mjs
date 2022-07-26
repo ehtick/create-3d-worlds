@@ -23,14 +23,14 @@ class FiniteStateMachine {
       prevState.OnExit()
 
     this.currentState_ = state
-    this.currentState_.parent_ = this
+    this.currentState_.parent = this
     state.OnEnter(prevState)
   }
 }
 
 class State {
   Broadcast(evt) {
-    this.parent_.Broadcast(evt)
+    this.parent.Broadcast(evt)
   }
 
   OnEnter() {
@@ -70,7 +70,7 @@ class Login_Await extends State {
       return false
 
     this.params.accountName = data
-    this.parent_.SetState(new Login_Confirm(this.params))
+    this.parent.SetState(new Login_Confirm(this.params))
 
     return true
   }
