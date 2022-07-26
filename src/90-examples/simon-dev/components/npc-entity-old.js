@@ -13,8 +13,8 @@ class AIInput {
 
   _Init() {
     this._keys = {
-      forward: false,
-      backward: false,
+      up: false,
+      down: false,
       left: false,
       right: false,
       space: false,
@@ -217,12 +217,12 @@ export class NPCController extends Component {
     const controlObject = this._target
     const _R = controlObject.quaternion.clone()
 
-    this._input._keys.forward = false
+    this._input._keys.up = false
 
     const acc = this._acceleration
     if (dirToPlayer.length() == 0) return
 
-    this._input._keys.forward = true
+    this._input._keys.up = true
     velocity.z += acc.z * timeInSeconds
 
     const m = new THREE.Matrix4()
@@ -255,7 +255,7 @@ export class NPCController extends Component {
     const collisions = this._FindIntersections(pos)
     if (collisions.length > 0) {
       this._input._keys.space = true
-      this._input._keys.forward = false
+      this._input._keys.up = false
       return
     }
 
@@ -270,7 +270,7 @@ export class NPCController extends Component {
     if (!this._stateMachine._currentState) return
 
     this._input._keys.space = false
-    this._input._keys.forward = false
+    this._input._keys.up = false
 
     this._UpdateAI(timeInSeconds)
 

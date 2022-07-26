@@ -145,8 +145,7 @@ export class NPCController extends Component {
   }
 
   Update(timeInSeconds) {
-    if (!this.stateMachine_)
-      return
+    if (!this.stateMachine_) return
 
     this.stateMachine_.Update(timeInSeconds, null)
 

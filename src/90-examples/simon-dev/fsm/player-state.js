@@ -181,7 +181,7 @@ export const player_state = (() => {
       if (!input)
         return
 
-      if (input._keys.forward || input._keys.backward) {
+      if (input._keys.up || input._keys.down) {
         if (input._keys.shift)
           this._parent.SetState('run')
 
@@ -226,7 +226,7 @@ export const player_state = (() => {
       if (!input)
         return
 
-      if (input._keys.forward || input._keys.backward) {
+      if (input._keys.up || input._keys.down) {
         if (!input._keys.shift)
           this._parent.SetState('walk')
 
@@ -260,10 +260,9 @@ export const player_state = (() => {
     Exit() {}
 
     Update(_, input) {
-      if (!input)
-        return
+      if (!input) return
 
-      if (input._keys.forward || input._keys.backward)
+      if (input._keys.up || input._keys.down)
         this._parent.SetState('walk')
       else if (input._keys.space)
         this._parent.SetState('attack')

@@ -10,8 +10,8 @@ export class BasicCharacterControllerInput extends Component {
 
   _Init() {
     this._keys = {
-      forward: false,
-      backward: false,
+      up: false,
+      down: false,
       left: false,
       right: false,
       space: false,
@@ -66,13 +66,13 @@ export class BasicCharacterControllerInput extends Component {
 
     switch (event.keyCode) {
       case 87: // w
-        this._keys.forward = true
+        this._keys.up = true
         break
       case 65: // a
         this._keys.left = true
         break
       case 83: // s
-        this._keys.backward = true
+        this._keys.down = true
         break
       case 68: // d
         this._keys.right = true
@@ -95,13 +95,13 @@ export class BasicCharacterControllerInput extends Component {
 
     switch (event.keyCode) {
       case 87: // w
-        this._keys.forward = false
+        this._keys.up = false
         break
       case 65: // a
         this._keys.left = false
         break
       case 83: // s
-        this._keys.backward = false
+        this._keys.down = false
         break
       case 68: // d
         this._keys.right = false

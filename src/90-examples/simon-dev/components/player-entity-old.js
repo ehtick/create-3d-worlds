@@ -193,10 +193,10 @@ export class BasicCharacterController extends Component {
     if (input._keys.shift)
       acc.multiplyScalar(2.0)
 
-    if (input._keys.forward)
+    if (input._keys.up)
       velocity.z += acc.z * timeInSeconds
 
-    if (input._keys.backward)
+    if (input._keys.down)
       velocity.z -= acc.z * timeInSeconds
 
     if (input._keys.left) {
