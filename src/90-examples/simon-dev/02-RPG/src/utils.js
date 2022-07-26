@@ -2,7 +2,8 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene, camera } from '/utils/scene.js'
 
 import { Entity } from '../../ecs/entity.js'
-import { AnimatedModelComponent, StaticModelComponent } from '../../components/render-component-old.js'
+import { AnimatedModelComponent } from '../../components/render-component-old.js'
+import { RenderComponent } from '../../components/render-component.js'
 import { math } from '../../shared/math.mjs'
 import { SpatialGridController } from '../../components/spatial-grid-controller.js'
 import { NPCController } from '../../components/npc-entity-old.js'
@@ -24,7 +25,7 @@ export function loadClouds(_scene, _entityManager) {
       (Math.random() * 2.0 - 1.0) * 500)
 
     const e = new Entity()
-    e.AddComponent(new StaticModelComponent({
+    e.AddComponent(new RenderComponent({
       scene: _scene,
       resourcePath: '/assets/simon-dev/nature2/GLTF/',
       resourceName: 'Cloud' + index + '.glb',
@@ -55,7 +56,7 @@ export function loadTrees(_scene, _grid, _entityManager) {
       (Math.random() * 2.0 - 1.0) * 500)
 
     const e = new Entity()
-    e.AddComponent(new StaticModelComponent({
+    e.AddComponent(new RenderComponent({
       scene: _scene,
       resourcePath: '/assets/simon-dev/nature/FBX/',
       resourceName: name + '_' + index + '.fbx',

@@ -62,7 +62,6 @@ export class RenderComponent extends Component {
   _OnLoaded(obj) {
     this._target = obj
     this.group_.add(this._target)
-
     this._target.scale.setScalar(this.params_.scale)
 
     const textures = {}

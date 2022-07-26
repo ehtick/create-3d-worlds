@@ -3,7 +3,7 @@ import { FBXLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm
 import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/loaders/GLTFLoader.js'
 import { SkeletonUtils } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/utils/SkeletonUtils.js'
 
-import { Component } from '../../../ecs/component.js'
+import { Component } from '../ecs/component.js'
 
 export class LoadController extends Component {
   constructor() {

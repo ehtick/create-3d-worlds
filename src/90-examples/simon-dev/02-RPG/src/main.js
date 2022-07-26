@@ -10,12 +10,17 @@ import { UIController } from '../../components/ui-controller.js'
 import { LevelUpComponentSpawner } from '../../components/level-up-component-old.js'
 import { createNPC, createPlayer, createGirl, createAxe, createSword, loadClouds, loadTrees } from './utils.js'
 import { SkyController } from '../../components/sky_component.js'
+import { LoadController } from '../../components/load-controller.js'
 
 const plane = createFloor({ size: 5000, color: 0x1e601c })
 scene.add(plane)
 
 const entityManager = new EntityManager()
 const grid = new SpatialHashGrid([[-1000, -1000], [1000, 1000]], [100, 100])
+
+const l = new Entity()
+l.AddComponent(new LoadController())
+entityManager.Add(l, 'loader')
 
 const threejs = new Entity()
 threejs.AddComponent(new SkyController())
