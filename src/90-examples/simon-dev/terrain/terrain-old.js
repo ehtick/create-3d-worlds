@@ -61,11 +61,11 @@ class HyposemetricTints {
 
 export class TerrainChunkManager {
   constructor(userCamera) {
-    this._Init()
+    this.Init()
     this._userCamera = userCamera
   }
 
-  _Init() {
+  Init() {
     this._material = new THREE.MeshStandardMaterial({
       wireframe: false,
       wireframeLinewidth: 1,

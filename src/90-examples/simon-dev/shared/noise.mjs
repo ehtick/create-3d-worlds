@@ -3,10 +3,10 @@ import { SimplexNoise } from './simplex-noise.mjs'
 export class Noise {
   constructor(params) {
     this.params = params
-    this._Init()
+    this.Init()
   }
 
-  _Init() {
+  Init() {
     this._noise = new SimplexNoise(this.params.seed)
   }
 

@@ -53,7 +53,7 @@ export class EntityManager {
       const e = this._entities[i]
       e.Update(timeElapsed)
 
-      if (e.dead_)
+      if (e.dead)
         dead.push(e)
       else
         alive.push(e)

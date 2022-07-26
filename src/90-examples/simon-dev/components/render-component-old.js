@@ -7,7 +7,7 @@ import { Component } from '../ecs/component.js'
 export class AnimatedModelComponent extends Component {
   constructor(params) {
     super()
-    this._Init(params)
+    this.Init(params)
   }
 
   InitComponent() {
@@ -23,7 +23,7 @@ export class AnimatedModelComponent extends Component {
     }
   }
 
-  _Init(params) {
+  Init(params) {
     this.params = params
 
     this._LoadModels()

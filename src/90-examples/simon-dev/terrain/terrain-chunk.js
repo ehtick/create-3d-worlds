@@ -3,7 +3,7 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 export class TerrainChunk {
   constructor(params) {
     this.params = params
-    this._Init(params)
+    this.Init(params)
   }
 
   Destroy() {
@@ -18,7 +18,7 @@ export class TerrainChunk {
     this._plane.visible = true
   }
 
-  _Init(params) {
+  Init(params) {
     this._geometry = new THREE.BufferGeometry()
     this._plane = new THREE.Mesh(this._geometry, params.material)
     this._plane.castShadow = false

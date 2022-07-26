@@ -24,10 +24,10 @@ export class RenderComponent extends Component {
   }
 
   InitEntity() {
-    this._Init(this.params)
+    this.Init(this.params)
   }
 
-  _Init(params) {
+  Init(params) {
     this.params = params
 
     this._LoadModels()

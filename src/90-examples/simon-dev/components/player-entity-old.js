@@ -8,10 +8,10 @@ import { CharacterFSM } from './CharacterFSM.js'
 export class BasicCharacterController extends Component {
   constructor(params) {
     super()
-    this._Init(params)
+    this.Init(params)
   }
 
-  _Init(params) {
+  Init(params) {
     this.params = params
     this._decceleration = new THREE.Vector3(-0.0005, -0.0001, -5.0)
     this._acceleration = new THREE.Vector3(1, 0.125, 50.0)

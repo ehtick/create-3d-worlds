@@ -4,7 +4,7 @@ export class FiniteStateMachine {
     this.currentState = null
   }
 
-  _AddState(name, type) {
+  AddState(name, type) {
     this._states[name] = type
   }
 

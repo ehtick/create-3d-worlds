@@ -13,10 +13,10 @@ class BasicCharacterController extends Component {
   }
 
   InitEntity() {
-    this.Init_()
+    this.Init()
   }
 
-  Init_() {
+  Init() {
     this.decceleration_ = new THREE.Vector3(-0.0005, -0.0001, -5.0)
     this.acceleration_ = new THREE.Vector3(1, 0.125, 100.0)
     this.velocity_ = new THREE.Vector3(0, 0, 0)

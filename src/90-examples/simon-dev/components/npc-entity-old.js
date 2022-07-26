@@ -9,24 +9,24 @@ class NPCFSM extends FiniteStateMachine {
   constructor(animations) {
     super()
     this.animations = animations
-    this._Init()
+    this.Init()
   }
 
-  _Init() {
-    this._AddState('idle', player_state.IdleState)
-    this._AddState('walk', player_state.WalkState)
-    this._AddState('death', player_state.DeathState)
-    this._AddState('attack', player_state.AttackState)
+  Init() {
+    this.AddState('idle', player_state.IdleState)
+    this.AddState('walk', player_state.WalkState)
+    this.AddState('death', player_state.DeathState)
+    this.AddState('attack', player_state.AttackState)
   }
 };
 
 export class NPCController extends Component {
   constructor(params) {
     super()
-    this._Init(params)
+    this.Init(params)
   }
 
-  _Init(params) {
+  Init(params) {
     this.params = params
     this._decceleration = new THREE.Vector3(-0.0005, -0.0001, -5.0)
     this._acceleration = new THREE.Vector3(1, 0.25, 40.0)

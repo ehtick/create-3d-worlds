@@ -5,10 +5,10 @@ import { Component } from '../ecs/component.js'
 export class BasicCharacterControllerInput extends Component {
   constructor() {
     super()
-    this._Init()
+    this.Init()
   }
 
-  _Init() {
+  Init() {
     document.addEventListener('mouseup', e => this._onMouseUp(e), false)
   }
 

@@ -5,15 +5,15 @@ export class CharacterFSM extends FiniteStateMachine {
   constructor(animations) {
     super()
     this.animations = animations
-    this.Init_()
+    this.Init()
   }
 
-  Init_() {
-    this._AddState('idle', player_state.IdleState)
-    this._AddState('walk', player_state.WalkState)
-    this._AddState('run', player_state.RunState)
-    this._AddState('attack', player_state.AttackState)
-    this._AddState('death', player_state.DeathState)
-    this._AddState('dance', player_state.DanceState)
+  Init() {
+    this.AddState('idle', player_state.IdleState)
+    this.AddState('walk', player_state.WalkState)
+    this.AddState('run', player_state.RunState)
+    this.AddState('attack', player_state.AttackState)
+    this.AddState('death', player_state.DeathState)
+    this.AddState('dance', player_state.DanceState)
   }
 };

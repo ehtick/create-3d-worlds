@@ -3,19 +3,19 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 export class Entity {
   constructor() {
     this._name = null
-    this._components = {}
+    this.components = {}
     this._position = new THREE.Vector3()
     this._rotation = new THREE.Quaternion()
     this._handlers = {}
     this.parent = null
-    this.dead_ = false
+    this.dead = false
   }
 
   Destroy() {
-    for (const k in this._components)
-      this._components[k].Destroy()
+    for (const k in this.components)
+      this.components[k].Destroy()
 
-    this._components = null
+    this.components = null
     this.parent = null
     this._handlers = null
   }
@@ -48,23 +48,23 @@ export class Entity {
   }
 
   SetDead() {
-    this.dead_ = true
+    this.dead = true
   }
 
   AddComponent(c) {
     c.SetParent(this)
-    this._components[c.constructor.name] = c
+    this.components[c.constructor.name] = c
 
     c.InitComponent()
   }
 
   InitEntity() {
-    for (const k in this._components)
-      this._components[k].InitEntity()
+    for (const k in this.components)
+      this.components[k].InitEntity()
   }
 
   GetComponent(n) {
-    return this._components[n]
+    return this.components[n]
   }
 
   FindEntity(n) {
@@ -104,7 +104,7 @@ export class Entity {
   }
 
   Update(timeElapsed) {
-    for (const k in this._components)
-      this._components[k].Update(timeElapsed)
+    for (const k in this.components)
+      this.components[k].Update(timeElapsed)
   }
 }

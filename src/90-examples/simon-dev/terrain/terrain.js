@@ -16,10 +16,10 @@ export class TerrainChunkManager extends Component {
   constructor({ target }) {
     super()
     this.target = target
-    this._Init()
+    this.Init()
   }
 
-  _Init() {
+  Init() {
     const loader = new THREE.TextureLoader()
 
     const noiseTexture = loader.load('/assets/textures/terrain/simplex-noise.png')

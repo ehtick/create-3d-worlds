@@ -28,10 +28,10 @@ export class NPCController extends Component {
   }
 
   InitEntity() {
-    this._Init()
+    this.Init()
   }
 
-  _Init() {
+  Init() {
     this.animations = {}
     this.group_ = new THREE.Group()
 
