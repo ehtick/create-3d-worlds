@@ -23,8 +23,8 @@ export class FiniteStateMachine {
     state.Enter(prevState)
   }
 
-  Update(timeElapsed, input) {
+  Update(timeElapsed, keys) {
     if (this.currentState)
-      this.currentState.Update(timeElapsed, input)
+      this.currentState.Update(timeElapsed, keys)
   }
 };

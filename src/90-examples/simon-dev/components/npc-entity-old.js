@@ -33,11 +33,9 @@ export class NPCController extends Component {
     this._velocity = new THREE.Vector3(0, 0, 0)
     this._position = new THREE.Vector3()
     this.animations = {}
-    this.input = {
-      keys: {
-        up: false,
-        space: false,
-      }
+    this.keys = {
+      up: false,
+      space: false,
     }
     this.stateMachine = new NPCFSM(this.animations)
     this._LoadModels()
@@ -197,12 +195,12 @@ export class NPCController extends Component {
     const controlObject = this.target
     const _R = controlObject.quaternion.clone()
 
-    this.input.keys.up = false
+    this.keys.up = false
 
     const acc = this._acceleration
     if (dirToPlayer.length() == 0) return
 
-    this.input.keys.up = true
+    this.keys.up = true
     velocity.z += acc.z * timeInSeconds
 
     const m = new THREE.Matrix4()
@@ -231,8 +229,8 @@ export class NPCController extends Component {
 
     const collisions = this._FindIntersections(pos)
     if (collisions.length > 0) {
-      this.input.keys.space = true
-      this.input.keys.up = false
+      this.keys.space = true
+      this.keys.up = false
       return
     }
 
@@ -246,12 +244,12 @@ export class NPCController extends Component {
   Update(timeInSeconds) {
     if (!this.stateMachine.currentState) return
 
-    this.input.keys.space = false
-    this.input.keys.up = false
+    this.keys.space = false
+    this.keys.up = false
 
     this._UpdateAI(timeInSeconds)
 
-    this.stateMachine.Update(timeInSeconds, this.input)
+    this.stateMachine.Update(timeInSeconds, this.keys)
 
     // HARDCODED
     if (this.stateMachine.currentState._action)

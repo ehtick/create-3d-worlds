@@ -109,8 +109,7 @@ export class BasicCharacterController extends Component {
     if (!this.stateMachine.currentState)
       return
 
-    const input = { keys: keyboard }
-    this.stateMachine.Update(timeInSeconds, input)
+    this.stateMachine.Update(timeInSeconds, keyboard)
 
     if (this.mixer)
       this.mixer.update(timeInSeconds)
@@ -145,21 +144,21 @@ export class BasicCharacterController extends Component {
     const _R = controlObject.quaternion.clone()
 
     const acc = this._acceleration.clone()
-    if (input.keys.capsLock)
+    if (keyboard.capsLock)
       acc.multiplyScalar(2.0)
 
-    if (input.keys.up)
+    if (keyboard.up)
       velocity.z += acc.z * timeInSeconds
 
-    if (input.keys.down)
+    if (keyboard.down)
       velocity.z -= acc.z * timeInSeconds
 
-    if (input.keys.left) {
+    if (keyboard.left) {
       _A.set(0, 1, 0)
       _Q.setFromAxisAngle(_A, 4.0 * Math.PI * timeInSeconds * this._acceleration.y)
       _R.multiply(_Q)
     }
-    if (input.keys.right) {
+    if (keyboard.right) {
       _A.set(0, 1, 0)
       _Q.setFromAxisAngle(_A, 4.0 * -Math.PI * timeInSeconds * this._acceleration.y)
       _R.multiply(_Q)

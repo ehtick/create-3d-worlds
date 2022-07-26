@@ -177,12 +177,12 @@ export const player_state = (() => {
 
     Exit() {}
 
-    Update(timeElapsed, input) {
-      if (!input)
+    Update(timeElapsed, keys) {
+      if (!keys)
         return
 
-      if (input.keys.up || input.keys.down) {
-        if (input.keys.capsLock)
+      if (keys.up || keys.down) {
+        if (keys.capsLock)
           this.parent.SetState('run')
 
         return
@@ -222,11 +222,11 @@ export const player_state = (() => {
 
     Exit() {}
 
-    Update(timeElapsed, input) {
-      if (!input) return
+    Update(timeElapsed, keys) {
+      if (!keys) return
 
-      if (input.keys.up || input.keys.down) {
-        if (!input.keys.capsLock)
+      if (keys.up || keys.down) {
+        if (!keys.capsLock)
           this.parent.SetState('walk')
         return
       }
@@ -257,14 +257,14 @@ export const player_state = (() => {
 
     Exit() {}
 
-    Update(_, input) {
-      if (!input) return
+    Update(_, keys) {
+      if (!keys) return
 
-      if (input.keys.up || input.keys.down)
+      if (keys.up || keys.down)
         this.parent.SetState('walk')
-      else if (input.keys.space)
+      else if (keys.space)
         this.parent.SetState('attack')
-      else if (input.keys.backspace)
+      else if (keys.backspace)
         this.parent.SetState('dance')
     }
   };
