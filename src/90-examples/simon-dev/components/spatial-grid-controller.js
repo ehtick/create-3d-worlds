@@ -1,9 +1,9 @@
 import { Component } from '../ecs/component.js'
 
 export class SpatialGridController extends Component {
-  constructor(params) {
+  constructor({ grid }) {
     super()
-    this.grid_ = params.grid
+    this.grid_ = grid
   }
 
   Destroy() {
@@ -28,8 +28,7 @@ export class SpatialGridController extends Component {
   }
 
   FindNearbyEntities(range) {
-    const results = this.grid_.FindNear(
-      [this.parent_._position.x, this.parent_._position.z], [range, range])
+    const results = this.grid_.FindNear([this.parent_._position.x, this.parent_._position.z], [range, range])
 
     return results.filter(c => c.entity != this.parent_)
   }
