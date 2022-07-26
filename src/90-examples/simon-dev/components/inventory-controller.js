@@ -1,4 +1,4 @@
-import { Component } from '../../../ecs/component.js'
+import { Component } from '../ecs/component.js'
 
 class InventoryDatabaseController extends Component {
   constructor() {

@@ -12,7 +12,7 @@ import { AttackController } from '../../components/attacker-controller-old.js'
 import { PickableComponent, BasicCharacterControllerInput } from './player-input.js'
 import { BasicCharacterController } from './player-entity.js'
 import { EquipWeapon } from '../../components/equip-weapon-component-old.js'
-import { InventoryController, InventoryItem } from './inventory-controller.js'
+import { InventoryController, InventoryItem } from '../../components/inventory-controller-old.js'
 import QuestComponent from './quest-component.js'
 import { material as skyMaterial } from '/utils/shaders/gradient-sky.js'
 
