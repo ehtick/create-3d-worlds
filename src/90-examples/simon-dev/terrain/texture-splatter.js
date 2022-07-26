@@ -18,20 +18,20 @@ export class TextureSplatter {
 
       return c.lerp(p1, t)
     }
-    this._colourSpline = [
+    this.colourSpline = [
       new LinearSpline(_colourLerp),
       new LinearSpline(_colourLerp)
     ]
 
     // Arid
-    this._colourSpline[0].AddPoint(0.0, new THREE.Color(0xb7a67d))
-    this._colourSpline[0].AddPoint(0.5, new THREE.Color(0xf1e1bc))
-    this._colourSpline[0].AddPoint(1.0, _SNOW)
+    this.colourSpline[0].AddPoint(0.0, new THREE.Color(0xb7a67d))
+    this.colourSpline[0].AddPoint(0.5, new THREE.Color(0xf1e1bc))
+    this.colourSpline[0].AddPoint(1.0, _SNOW)
 
     // Humid
-    this._colourSpline[1].AddPoint(0.0, _FOREST_BOREAL)
-    this._colourSpline[1].AddPoint(0.5, new THREE.Color(0x8a9343))
-    this._colourSpline[1].AddPoint(1.0, _SNOW)
+    this.colourSpline[1].AddPoint(0.0, _FOREST_BOREAL)
+    this.colourSpline[1].AddPoint(0.5, new THREE.Color(0x8a9343))
+    this.colourSpline[1].AddPoint(1.0, _SNOW)
 
     this._oceanSpline = new LinearSpline(_colourLerp)
     this._oceanSpline.AddPoint(0, _DEEP_OCEAN)
@@ -45,8 +45,8 @@ export class TextureSplatter {
     const m = this.params.biomeGenerator.Get(x, y, z)
     const h = math.sat(z / 100.0)
 
-    const c1 = this._colourSpline[0].Get(h)
-    const c2 = this._colourSpline[1].Get(h)
+    const c1 = this.colourSpline[0].Get(h)
+    const c2 = this.colourSpline[1].Get(h)
 
     let c = c1.lerp(c2, m)
 

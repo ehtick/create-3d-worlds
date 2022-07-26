@@ -9,21 +9,18 @@ export class ParticleSystem {
 
     this.particles = []
 
-    this._geometry = new THREE.BufferGeometry()
-    this._geometry.setAttribute('position', new THREE.Float32BufferAttribute([], 3))
-    this._geometry.setAttribute('size', new THREE.Float32BufferAttribute([], 1))
-    this._geometry.setAttribute('colour', new THREE.Float32BufferAttribute([], 4))
-    this._geometry.setAttribute('angle', new THREE.Float32BufferAttribute([], 1))
+    this.geometry = new THREE.BufferGeometry()
+    this.geometry.setAttribute('position', new THREE.Float32BufferAttribute([], 3))
+    this.geometry.setAttribute('size', new THREE.Float32BufferAttribute([], 1))
+    this.geometry.setAttribute('colour', new THREE.Float32BufferAttribute([], 4))
+    this.geometry.setAttribute('angle', new THREE.Float32BufferAttribute([], 1))
 
-    this._points = new THREE.Points(this._geometry, material)
+    this.points = new THREE.Points(this.geometry, material)
+    parent.add(this.points)
 
-    parent.add(this._points)
-
-    this._alphaSpline = new LinearSpline((t, a, b) => a + t * (b - a))
-
-    this._colourSpline = new LinearSpline((t, a, b) => a.clone().lerp(b, t))
-
-    this._sizeSpline = new LinearSpline((t, a, b) => a + t * (b - a))
+    this.alphaSpline = new LinearSpline((t, a, b) => a + t * (b - a))
+    this.colourSpline = new LinearSpline((t, a, b) => a.clone().lerp(b, t))
+    this.sizeSpline = new LinearSpline((t, a, b) => a + t * (b - a))
 
     this._UpdateGeometry()
   }
@@ -63,15 +60,15 @@ export class ParticleSystem {
       angles.push(p.rotation)
     }
 
-    this._geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
-    this._geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1))
-    this._geometry.setAttribute('colour', new THREE.Float32BufferAttribute(colours, 4))
-    this._geometry.setAttribute('angle', new THREE.Float32BufferAttribute(angles, 1))
+    this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+    this.geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1))
+    this.geometry.setAttribute('colour', new THREE.Float32BufferAttribute(colours, 4))
+    this.geometry.setAttribute('angle', new THREE.Float32BufferAttribute(angles, 1))
 
-    this._geometry.attributes.position.needsUpdate = true
-    this._geometry.attributes.size.needsUpdate = true
-    this._geometry.attributes.colour.needsUpdate = true
-    this._geometry.attributes.angle.needsUpdate = true
+    this.geometry.attributes.position.needsUpdate = true
+    this.geometry.attributes.size.needsUpdate = true
+    this.geometry.attributes.colour.needsUpdate = true
+    this.geometry.attributes.angle.needsUpdate = true
   }
 
   _UpdateParticles(timeElapsed) {
@@ -83,9 +80,9 @@ export class ParticleSystem {
       const t = 1.0 - p.life / p.maxLife
 
       p.rotation += timeElapsed * 0.5
-      p.alpha = this._alphaSpline.Get(t)
-      p.currentSize = p.size * this._sizeSpline.Get(t)
-      p.colour.copy(this._colourSpline.Get(t))
+      p.alpha = this.alphaSpline.Get(t)
+      p.currentSize = p.size * this.sizeSpline.Get(t)
+      p.colour.copy(this.colourSpline.Get(t))
 
       p.position.add(p.velocity.clone().multiplyScalar(timeElapsed))
 

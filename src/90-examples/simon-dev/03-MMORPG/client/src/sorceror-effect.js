@@ -74,33 +74,33 @@ export class SorcerorEffect extends Component {
     const hands = [this._bones.RightHandIndex1, this._bones.LeftHandIndex1]
     for (const h of hands) {
       let emitter = new SorcerorEffectEmitter(h)
-      emitter.alphaSpline_.AddPoint(0.0, 0.0)
-      emitter.alphaSpline_.AddPoint(0.1, 1.0)
-      emitter.alphaSpline_.AddPoint(0.7, 1.0)
-      emitter.alphaSpline_.AddPoint(1.0, 0.0)
+      emitter.alphaSpline.AddPoint(0.0, 0.0)
+      emitter.alphaSpline.AddPoint(0.1, 1.0)
+      emitter.alphaSpline.AddPoint(0.7, 1.0)
+      emitter.alphaSpline.AddPoint(1.0, 0.0)
 
-      emitter.colourSpline_.AddPoint(0.0, new THREE.Color(0x00FF00))
-      emitter.colourSpline_.AddPoint(0.5, new THREE.Color(0x40C040))
-      emitter.colourSpline_.AddPoint(1.0, new THREE.Color(0xFF4040))
+      emitter.colourSpline.AddPoint(0.0, new THREE.Color(0x00FF00))
+      emitter.colourSpline.AddPoint(0.5, new THREE.Color(0x40C040))
+      emitter.colourSpline.AddPoint(1.0, new THREE.Color(0xFF4040))
 
-      emitter.sizeSpline_.AddPoint(0.0, 0.5)
-      emitter.sizeSpline_.AddPoint(0.5, 2.5)
-      emitter.sizeSpline_.AddPoint(1.0, 0.0)
+      emitter.sizeSpline.AddPoint(0.0, 0.5)
+      emitter.sizeSpline.AddPoint(0.5, 2.5)
+      emitter.sizeSpline.AddPoint(1.0, 0.0)
       emitter.SetLife(2.5)
       emitter.blend_ = 0.0
 
       this.particles.AddEmitter(emitter)
 
       emitter = new SorcerorEffectEmitter(h)
-      emitter.alphaSpline_.AddPoint(0.0, 0.0)
-      emitter.alphaSpline_.AddPoint(0.7, 1.0)
-      emitter.alphaSpline_.AddPoint(1.0, 0.0)
+      emitter.alphaSpline.AddPoint(0.0, 0.0)
+      emitter.alphaSpline.AddPoint(0.7, 1.0)
+      emitter.alphaSpline.AddPoint(1.0, 0.0)
 
-      emitter.colourSpline_.AddPoint(0.0, new THREE.Color(0x202020))
-      emitter.colourSpline_.AddPoint(1.0, new THREE.Color(0x101010))
+      emitter.colourSpline.AddPoint(0.0, new THREE.Color(0x202020))
+      emitter.colourSpline.AddPoint(1.0, new THREE.Color(0x101010))
 
-      emitter.sizeSpline_.AddPoint(0.0, 0.5)
-      emitter.sizeSpline_.AddPoint(1.0, 4.0)
+      emitter.sizeSpline.AddPoint(0.0, 0.5)
+      emitter.sizeSpline.AddPoint(1.0, 4.0)
       emitter.SetLife(2.5)
       emitter.blend_ = 1.0
 

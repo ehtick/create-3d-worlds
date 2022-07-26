@@ -144,34 +144,34 @@ export class BloodEffect extends Component {
     for (const t of targets) {
       const b = this.bones_[t]
       let emitter = new FireFXEmitter(b)
-      emitter.alphaSpline_.AddPoint(0.0, 0.0)
-      emitter.alphaSpline_.AddPoint(0.5, 1.0)
-      emitter.alphaSpline_.AddPoint(1.0, 0.0)
+      emitter.alphaSpline.AddPoint(0.0, 0.0)
+      emitter.alphaSpline.AddPoint(0.5, 1.0)
+      emitter.alphaSpline.AddPoint(1.0, 0.0)
 
-      emitter.colourSpline_.AddPoint(0.0, new THREE.Color(0x00FF00))
-      emitter.colourSpline_.AddPoint(0.3, new THREE.Color(0x00FF00))
-      emitter.colourSpline_.AddPoint(0.4, new THREE.Color(0xdeec42))
-      emitter.colourSpline_.AddPoint(1.0, new THREE.Color(0xf4a776))
+      emitter.colourSpline.AddPoint(0.0, new THREE.Color(0x00FF00))
+      emitter.colourSpline.AddPoint(0.3, new THREE.Color(0x00FF00))
+      emitter.colourSpline.AddPoint(0.4, new THREE.Color(0xdeec42))
+      emitter.colourSpline.AddPoint(1.0, new THREE.Color(0xf4a776))
 
-      emitter.sizeSpline_.AddPoint(0.0, 0.5)
-      emitter.sizeSpline_.AddPoint(0.5, 3.0)
-      emitter.sizeSpline_.AddPoint(1.0, 0.5)
+      emitter.sizeSpline.AddPoint(0.0, 0.5)
+      emitter.sizeSpline.AddPoint(0.5, 3.0)
+      emitter.sizeSpline.AddPoint(1.0, 0.5)
       emitter.blend_ = 0.0
       emitter.AddParticles(200)
 
       this.fireFX_.AddEmitter(emitter)
 
       emitter = new FireFXEmitter(b)
-      emitter.alphaSpline_.AddPoint(0.0, 0.0)
-      emitter.alphaSpline_.AddPoint(0.7, 1.0)
-      emitter.alphaSpline_.AddPoint(1.0, 0.0)
+      emitter.alphaSpline.AddPoint(0.0, 0.0)
+      emitter.alphaSpline.AddPoint(0.7, 1.0)
+      emitter.alphaSpline.AddPoint(1.0, 0.0)
 
-      emitter.colourSpline_.AddPoint(0.0, new THREE.Color(0x000000))
-      emitter.colourSpline_.AddPoint(1.0, new THREE.Color(0x000000))
+      emitter.colourSpline.AddPoint(0.0, new THREE.Color(0x000000))
+      emitter.colourSpline.AddPoint(1.0, new THREE.Color(0x000000))
 
-      emitter.sizeSpline_.AddPoint(0.0, 0.5)
-      emitter.sizeSpline_.AddPoint(0.5, 4.0)
-      emitter.sizeSpline_.AddPoint(1.0, 10.0)
+      emitter.sizeSpline.AddPoint(0.0, 0.5)
+      emitter.sizeSpline.AddPoint(0.5, 4.0)
+      emitter.sizeSpline.AddPoint(1.0, 10.0)
       emitter.blend_ = 1.0
       emitter.AddParticles(100)
 
@@ -185,16 +185,16 @@ export class BloodEffect extends Component {
     for (const t of targets) {
       const b = this.bones_[t]
       const emitter = new BloodEffectEmitter(b)
-      emitter.alphaSpline_.AddPoint(0.0, 0.0)
-      emitter.alphaSpline_.AddPoint(0.7, 1.0)
-      emitter.alphaSpline_.AddPoint(1.0, 0.0)
+      emitter.alphaSpline.AddPoint(0.0, 0.0)
+      emitter.alphaSpline.AddPoint(0.7, 1.0)
+      emitter.alphaSpline.AddPoint(1.0, 0.0)
 
-      emitter.colourSpline_.AddPoint(0.0, new THREE.Color(0xbb2909))
-      emitter.colourSpline_.AddPoint(1.0, new THREE.Color(0x701a08))
+      emitter.colourSpline.AddPoint(0.0, new THREE.Color(0xbb2909))
+      emitter.colourSpline.AddPoint(1.0, new THREE.Color(0x701a08))
 
-      emitter.sizeSpline_.AddPoint(0.0, 0.5)
-      emitter.sizeSpline_.AddPoint(0.5, 1.0)
-      emitter.sizeSpline_.AddPoint(1.0, 0.5)
+      emitter.sizeSpline.AddPoint(0.0, 0.5)
+      emitter.sizeSpline.AddPoint(0.5, 1.0)
+      emitter.sizeSpline.AddPoint(1.0, 0.5)
       emitter.SetLife(0.5)
       emitter.SetEmissionRate(500)
       emitter.blend_ = 1.0

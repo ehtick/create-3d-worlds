@@ -5,14 +5,9 @@ import { LinearSpline } from '../shared/spline.mjs'
 
 class ParticleEmitter {
   constructor() {
-    this.alphaSpline_ = new LinearSpline((t, a, b) => a + t * (b - a))
-
-    this.colourSpline_ = new LinearSpline((t, a, b) => {
-      const c = a.clone()
-      return c.lerp(b, t)
-    })
-
-    this.sizeSpline_ = new LinearSpline((t, a, b) => a + t * (b - a))
+    this.alphaSpline = new LinearSpline((t, a, b) => a + t * (b - a))
+    this.colourSpline = new LinearSpline((t, a, b) => a.clone().lerp(b, t))
+    this.sizeSpline = new LinearSpline((t, a, b) => a + t * (b - a))
 
     this.emissionRate_ = 0.0
     this.emissionAccumulator_ = 0.0
@@ -35,9 +30,9 @@ class ParticleEmitter {
       }
 
       p.rotation += timeElapsed * 0.5
-      p.alpha = this.alphaSpline_.Get(t)
-      p.currentSize = p.size * this.sizeSpline_.Get(t)
-      p.colour.copy(this.colourSpline_.Get(t))
+      p.alpha = this.alphaSpline.Get(t)
+      p.currentSize = p.size * this.sizeSpline.Get(t)
+      p.colour.copy(this.colourSpline.Get(t))
 
       p.position.add(p.velocity.clone().multiplyScalar(timeElapsed))
 
@@ -113,16 +108,16 @@ class ParticleSystem {
     material.uniforms.diffuseTexture.value = new THREE.TextureLoader().load(texture)
     this.particles = []
 
-    this.geometry_ = new THREE.BufferGeometry()
-    this.geometry_.setAttribute('position', new THREE.Float32BufferAttribute([], 3))
-    this.geometry_.setAttribute('size', new THREE.Float32BufferAttribute([], 1))
-    this.geometry_.setAttribute('colour', new THREE.Float32BufferAttribute([], 4))
-    this.geometry_.setAttribute('angle', new THREE.Float32BufferAttribute([], 1))
-    this.geometry_.setAttribute('blend', new THREE.Float32BufferAttribute([], 1))
+    this.geometry = new THREE.BufferGeometry()
+    this.geometry.setAttribute('position', new THREE.Float32BufferAttribute([], 3))
+    this.geometry.setAttribute('size', new THREE.Float32BufferAttribute([], 1))
+    this.geometry.setAttribute('colour', new THREE.Float32BufferAttribute([], 4))
+    this.geometry.setAttribute('angle', new THREE.Float32BufferAttribute([], 1))
+    this.geometry.setAttribute('blend', new THREE.Float32BufferAttribute([], 1))
 
-    this.points_ = new THREE.Points(this.geometry_, material)
+    this.points = new THREE.Points(this.geometry, material)
 
-    scene.add(this.points_)
+    scene.add(this.points)
 
     this.emitters_ = []
     this.particles = []
@@ -132,9 +127,9 @@ class ParticleSystem {
 
   Destroy() {
     material.dispose()
-    this.geometry_.dispose()
-    if (this.points_.parent)
-      this.points_.parent.remove(this.points_)
+    this.geometry.dispose()
+    if (this.points.parent)
+      this.points.parent.remove(this.points)
 
   }
 
@@ -160,21 +155,21 @@ class ParticleSystem {
       box.expandByPoint(p.position)
     }
 
-    this.geometry_.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
-    this.geometry_.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1))
-    this.geometry_.setAttribute('colour', new THREE.Float32BufferAttribute(colours, 4))
-    this.geometry_.setAttribute('angle', new THREE.Float32BufferAttribute(angles, 1))
-    this.geometry_.setAttribute('blend', new THREE.Float32BufferAttribute(blends, 1))
+    this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+    this.geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1))
+    this.geometry.setAttribute('colour', new THREE.Float32BufferAttribute(colours, 4))
+    this.geometry.setAttribute('angle', new THREE.Float32BufferAttribute(angles, 1))
+    this.geometry.setAttribute('blend', new THREE.Float32BufferAttribute(blends, 1))
 
-    this.geometry_.attributes.position.needsUpdate = true
-    this.geometry_.attributes.size.needsUpdate = true
-    this.geometry_.attributes.colour.needsUpdate = true
-    this.geometry_.attributes.angle.needsUpdate = true
-    this.geometry_.attributes.blend.needsUpdate = true
-    this.geometry_.boundingBox = box
-    this.geometry_.boundingSphere = new THREE.Sphere()
+    this.geometry.attributes.position.needsUpdate = true
+    this.geometry.attributes.size.needsUpdate = true
+    this.geometry.attributes.colour.needsUpdate = true
+    this.geometry.attributes.angle.needsUpdate = true
+    this.geometry.attributes.blend.needsUpdate = true
+    this.geometry.boundingBox = box
+    this.geometry.boundingSphere = new THREE.Sphere()
 
-    box.getBoundingSphere(this.geometry_.boundingSphere)
+    box.getBoundingSphere(this.geometry.boundingSphere)
   }
 
   UpdateParticles_() {

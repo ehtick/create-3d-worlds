@@ -28,19 +28,19 @@ class HyposemetricTints {
 
       return c.lerpHSL(p1, t)
     }
-    this._colourSpline = [
+    this.colourSpline = [
       new LinearSpline(_colourLerp),
       new LinearSpline(_colourLerp)
     ]
     // Arid
-    this._colourSpline[0].AddPoint(0.0, new THREE.Color(0xb7a67d))
-    this._colourSpline[0].AddPoint(0.5, new THREE.Color(0xf1e1bc))
-    this._colourSpline[0].AddPoint(1.0, _SNOW)
+    this.colourSpline[0].AddPoint(0.0, new THREE.Color(0xb7a67d))
+    this.colourSpline[0].AddPoint(0.5, new THREE.Color(0xf1e1bc))
+    this.colourSpline[0].AddPoint(1.0, _SNOW)
 
     // Humid
-    this._colourSpline[1].AddPoint(0.0, _FOREST_BOREAL)
-    this._colourSpline[1].AddPoint(0.5, new THREE.Color(0xcee59c))
-    this._colourSpline[1].AddPoint(1.0, _SNOW)
+    this.colourSpline[1].AddPoint(0.0, _FOREST_BOREAL)
+    this.colourSpline[1].AddPoint(0.5, new THREE.Color(0xcee59c))
+    this.colourSpline[1].AddPoint(1.0, _SNOW)
 
     this.params = params
   }
@@ -52,8 +52,8 @@ class HyposemetricTints {
     if (h < 0.05)
       return _OCEAN
 
-    const c1 = this._colourSpline[0].Get(h)
-    const c2 = this._colourSpline[1].Get(h)
+    const c1 = this.colourSpline[0].Get(h)
+    const c2 = this.colourSpline[1].Get(h)
 
     return c1.lerpHSL(c2, m)
   }
