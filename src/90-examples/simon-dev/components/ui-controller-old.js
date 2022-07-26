@@ -1,4 +1,4 @@
-import { Component } from '../../ecs/component.js'
+import { Component } from '../ecs/component.js'
 
 export default class UIController extends Component {
   constructor(params) {

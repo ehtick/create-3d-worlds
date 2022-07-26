@@ -2,7 +2,7 @@ import { scene, camera, renderer, clock } from '/utils/scene.js'
 
 import { EntityManager } from '../../../ecs/entity-manager.js'
 import { Entity } from '../../../ecs/entity.js'
-import { UIController } from './ui-controller.js'
+import { UIController } from '../../../components/ui-controller.js'
 import { LevelUpComponentSpawner } from '../../../components/level-up-component.js'
 import { NetworkController } from './network-controller.js'
 import { SceneryController } from './scenery-controller.js'
