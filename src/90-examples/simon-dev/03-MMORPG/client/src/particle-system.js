@@ -1,43 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene, camera } from '/utils/scene.js'
-
-const vertexShader = `
-  uniform float pointMultiplier;
-  
-  attribute float size;
-  attribute float angle;
-  attribute float blend;
-  attribute vec4 colour;
-  
-  varying vec4 vColour;
-  varying vec2 vAngle;
-  varying float vBlend;
-  
-  void main() {
-    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-  
-    gl_Position = projectionMatrix * mvPosition;
-    gl_PointSize = size * pointMultiplier / gl_Position.w;
-  
-    vAngle = vec2(cos(angle), sin(angle));
-    vColour = colour;
-    vBlend = blend;
-  }`
-
-const fragmentShader = `
-  
-  uniform sampler2D diffuseTexture;
-  
-  varying vec4 vColour;
-  varying vec2 vAngle;
-  varying float vBlend;
-  
-  void main() {
-    vec2 coords = (gl_PointCoord - 0.5) * mat2(vAngle.x, vAngle.y, -vAngle.y, vAngle.x) + 0.5;
-    gl_FragColor = texture2D(diffuseTexture, coords) * vColour;
-    gl_FragColor.xyz *= gl_FragColor.w;
-    gl_FragColor.w *= vBlend;
-  }`
+import { material } from '/utils/shaders/thrust.js'
 
 class LinearSpline {
   constructor(lerp) {
@@ -178,29 +141,7 @@ class ParticleEmitter {
 
 class ParticleSystem {
   constructor({ texture }) {
-    const uniforms = {
-      diffuseTexture: {
-        value: new THREE.TextureLoader().load(texture)
-      },
-      pointMultiplier: {
-        value: window.innerHeight / (2.0 * Math.tan(0.5 * 60.0 * Math.PI / 180.0))
-      }
-    }
-
-    this.material_ = new THREE.ShaderMaterial({
-      uniforms,
-      vertexShader,
-      fragmentShader,
-      blending: THREE.CustomBlending,
-      blendEquation: THREE.AddEquation,
-      blendSrc: THREE.OneFactor,
-      blendDst: THREE.OneMinusSrcAlphaFactor,
-      depthTest: true,
-      depthWrite: false,
-      transparent: true,
-      vertexColors: true
-    })
-
+    material.uniforms.diffuseTexture.value = new THREE.TextureLoader().load(texture)
     this.particles_ = []
 
     this.geometry_ = new THREE.BufferGeometry()
@@ -210,7 +151,7 @@ class ParticleSystem {
     this.geometry_.setAttribute('angle', new THREE.Float32BufferAttribute([], 1))
     this.geometry_.setAttribute('blend', new THREE.Float32BufferAttribute([], 1))
 
-    this.points_ = new THREE.Points(this.geometry_, this.material_)
+    this.points_ = new THREE.Points(this.geometry_, material)
 
     scene.add(this.points_)
 
@@ -221,7 +162,7 @@ class ParticleSystem {
   }
 
   Destroy() {
-    this.material_.dispose()
+    material.dispose()
     this.geometry_.dispose()
     if (this.points_.parent)
       this.points_.parent.remove(this.points_)
