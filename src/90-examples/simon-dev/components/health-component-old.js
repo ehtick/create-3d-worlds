@@ -3,19 +3,19 @@ import { Component } from '../ecs/component.js'
 export class HealthComponent extends Component {
   constructor(params) {
     super()
-    this._params = params
+    this.stats_ = params
   }
 
   get _health() {
-    return this._params.health
+    return this.stats_.health
   }
 
   set _health(value) {
-    this._params.health = value
+    this.stats_.health = value
   }
 
   get _maxHealth() {
-    return this._params.maxHealth
+    return this.stats_.maxHealth
   }
 
   InitComponent() {
@@ -29,45 +29,45 @@ export class HealthComponent extends Component {
   }
 
   _UpdateUI() {
-    if (!this._params.updateUI) return
+    if (!this.stats_.updateUI) return
 
     const bar = document.getElementById('health-bar')
 
     const healthAsPercentage = this._health / this._maxHealth
     bar.style.width = Math.floor(200 * healthAsPercentage) + 'px'
 
-    document.getElementById('stats-strength').innerText = this._params.strength
-    document.getElementById('stats-wisdomness').innerText = this._params.wisdomness
-    document.getElementById('stats-benchpress').innerText = this._params.benchpress
-    document.getElementById('stats-curl').innerText = this._params.curl
-    document.getElementById('stats-experience').innerText = this._params.experience
+    document.getElementById('stats-strength').innerText = this.stats_.strength
+    document.getElementById('stats-wisdomness').innerText = this.stats_.wisdomness
+    document.getElementById('stats-benchpress').innerText = this.stats_.benchpress
+    document.getElementById('stats-curl').innerText = this.stats_.curl
+    document.getElementById('stats-experience').innerText = this.stats_.experience
   }
 
   _ComputeLevelXPRequirement() {
-    const { level } = this._params
+    const { level } = this.stats_
     // Blah just something easy
     const xpRequired = Math.round(2 ** (level - 1) * 100)
     return xpRequired
   }
 
   _OnAddExperience(msg) {
-    this._params.experience += msg.value
+    this.stats_.experience += msg.value
     const requiredExperience = this._ComputeLevelXPRequirement()
-    if (this._params.experience < requiredExperience)
+    if (this.stats_.experience < requiredExperience)
       return
 
-    this._params.level += 1
-    this._params.strength += 1
-    this._params.wisdomness += 1
-    this._params.benchpress += 1
-    this._params.curl += 2
+    this.stats_.level += 1
+    this.stats_.strength += 1
+    this.stats_.wisdomness += 1
+    this.stats_.benchpress += 1
+    this.stats_.curl += 2
 
     const spawner = this.FindEntity('level-up-spawner').GetComponent('LevelUpComponentSpawner')
     spawner.Spawn(this._parent._position)
 
     this.Broadcast({
       topic: 'health.levelGained',
-      value: this._params.level,
+      value: this.stats_.level,
     })
 
     this._UpdateUI()
@@ -77,7 +77,7 @@ export class HealthComponent extends Component {
     if (attacker)
       attacker.Broadcast({
         topic: 'health.add-experience',
-        value: this._params.level * 100
+        value: this.stats_.level * 100
       })
 
     this.Broadcast({

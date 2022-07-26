@@ -59,7 +59,7 @@ export class AttackController extends Component {
         forward.applyQuaternion(this._parent._rotation)
         forward.normalize()
 
-        let damage = this.GetComponent('HealthComponent')._params.strength
+        let damage = this.GetComponent('HealthComponent').stats_.strength
         if (item) {
           damage *= item.Params.damage
           damage = Math.round(damage)
