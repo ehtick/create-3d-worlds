@@ -4,7 +4,6 @@ import { FBXLoader } from '/node_modules/three127/examples/jsm/loaders/FBXLoader
 import { FiniteStateMachine } from '../fsm/finite-state-machine.js'
 import { Component } from '../ecs/component.js'
 import { player_state } from '../fsm/player-state.js'
-import { AnimationProxy } from './AnimationProxy.js'
 
 class AIInput {
   constructor() {
@@ -50,7 +49,7 @@ export class NPCController extends Component {
     this.animations = {}
     this._input = new AIInput()
     // FIXME
-    this.stateMachine = new NPCFSM(new AnimationProxy(this.animations))
+    this.stateMachine = new NPCFSM(this.animations)
     this._LoadModels()
   }
 

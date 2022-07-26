@@ -2,7 +2,6 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 
 import { Component } from '../ecs/component.js'
 import { CharacterFSM } from './player-entity.js'
-import { AnimationProxy } from './AnimationProxy.js'
 import { CHARACTER_MODELS } from '../03-MMORPG/shared/data.mjs'
 import { scene } from '/utils/scene.js'
 
@@ -128,8 +127,7 @@ export class NPCController extends Component {
 
       this.target.visible = true
 
-      this.stateMachine = new CharacterFSM(
-        new AnimationProxy(this.animations))
+      this.stateMachine = new CharacterFSM(this.animations)
 
       if (this.queuedState_) {
         this.stateMachine.SetState(this.queuedState_)

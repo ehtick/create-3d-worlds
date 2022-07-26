@@ -24,14 +24,14 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      this._action = this.parent.proxy.animations.death.action
+      this._action = this.parent.proxy.death.action
 
       this._action.reset()
       this._action.setLoop(THREE.LoopOnce, 1)
       this._action.clampWhenFinished = true
 
       if (prevState) {
-        const prevAction = this.parent.proxy.animations[prevState.Name].action
+        const prevAction = this.parent.proxy[prevState.Name].action
 
         this._action.crossFadeFrom(prevAction, 0.2, true)
         this._action.play()
@@ -61,7 +61,7 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      this._action = this.parent.proxy.animations.dance.action
+      this._action = this.parent.proxy.dance.action
       const mixer = this._action.getMixer()
       mixer.addEventListener('finished', this._FinishedCallback)
 
@@ -70,7 +70,7 @@ export const player_state = (() => {
       this._action.clampWhenFinished = true
 
       if (prevState) {
-        const prevAction = this.parent.proxy.animations[prevState.Name].action
+        const prevAction = this.parent.proxy[prevState.Name].action
 
         this._action.crossFadeFrom(prevAction, 0.2, true)
         this._action.play()
@@ -113,12 +113,12 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      this._action = this.parent.proxy.animations.attack.action
+      this._action = this.parent.proxy.attack.action
       const mixer = this._action.getMixer()
       mixer.addEventListener('finished', this._FinishedCallback)
 
       if (prevState) {
-        const prevAction = this.parent.proxy.animations[prevState.Name].action
+        const prevAction = this.parent.proxy[prevState.Name].action
 
         this._action.reset()
         this._action.setLoop(THREE.LoopOnce, 1)
@@ -154,9 +154,9 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      const curAction = this.parent.proxy.animations.walk.action
+      const curAction = this.parent.proxy.walk.action
       if (prevState) {
-        const prevAction = this.parent.proxy.animations[prevState.Name].action
+        const prevAction = this.parent.proxy[prevState.Name].action
 
         curAction.enabled = true
 
@@ -198,9 +198,9 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      const curAction = this.parent.proxy.animations.run.action
+      const curAction = this.parent.proxy.run.action
       if (prevState) {
-        const prevAction = this.parent.proxy.animations[prevState.Name].action
+        const prevAction = this.parent.proxy[prevState.Name].action
 
         curAction.enabled = true
 
@@ -241,9 +241,9 @@ export const player_state = (() => {
     }
 
     Enter(prevState) {
-      const idleAction = this.parent.proxy.animations.idle.action
+      const idleAction = this.parent.proxy.idle.action
       if (prevState) {
-        const prevAction = this.parent.proxy.animations[prevState.Name].action
+        const prevAction = this.parent.proxy[prevState.Name].action
         idleAction.time = 0.0
         idleAction.enabled = true
         idleAction.setEffectiveTimeScale(1.0)

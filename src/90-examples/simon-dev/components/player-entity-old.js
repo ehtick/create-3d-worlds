@@ -4,7 +4,6 @@ import keyboard from '/classes/Keyboard.js'
 
 import { Component } from '../ecs/component.js'
 import { CharacterFSM } from './CharacterFSM.js'
-import { AnimationProxy } from './AnimationProxy.js'
 
 export class BasicCharacterController extends Component {
   constructor(params) {
@@ -20,7 +19,7 @@ export class BasicCharacterController extends Component {
     this._position = new THREE.Vector3()
 
     this.animations = {}
-    this.stateMachine = new CharacterFSM(new AnimationProxy(this.animations))
+    this.stateMachine = new CharacterFSM(this.animations)
 
     this._LoadModels()
   }
