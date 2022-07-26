@@ -1,11 +1,12 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { FBXLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/loaders/FBXLoader.js'
 
-import { Component } from '../../../ecs/component.js'
-import { CHARACTER_MODELS } from '../../shared/data.mjs'
+import { Component } from '../ecs/component.js'
+import { CHARACTER_MODELS } from '../03-MMORPG/shared/data.mjs'
 
 export class EquipWeapon extends Component {
-  constructor({ desc }) {
+  constructor({ desc }) { // {account, character} = desc
+    console.log(desc)
     super()
     this.target_ = null
     this.name_ = null

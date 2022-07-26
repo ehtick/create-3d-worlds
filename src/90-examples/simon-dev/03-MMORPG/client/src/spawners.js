@@ -6,7 +6,7 @@ import { HealthComponent } from './health-component.js'
 import { BasicCharacterControllerInput } from './player-input.js'
 import { SpatialGridController } from './spatial-grid-controller.js'
 import { UIInventoryController, InventoryController } from './inventory-controller.js'
-import { EquipWeapon } from './equip-weapon-component.js'
+import { EquipWeapon } from '../../../components/equip-weapon-component.js'
 import { AttackController } from '../../../components/attacker-controller.js'
 import { NPCController } from './npc-entity.js'
 import { NetworkEntityController } from './network-entity-controller.js'
@@ -50,7 +50,6 @@ class PlayerSpawner extends Component {
       player.AddComponent(new SorcerorEffect())
 
     this.Manager.Add(player, 'player')
-
     return player
   }
 };

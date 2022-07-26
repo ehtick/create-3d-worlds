@@ -2,10 +2,10 @@ import { FBXLoader } from '/node_modules/three127/examples/jsm/loaders/FBXLoader
 
 import { Component } from '../ecs/component.js'
 
-export default class EquipWeapon extends Component {
-  constructor(params) {
+export class EquipWeapon extends Component {
+  constructor({ anchor }) { // 'RightHandIndex1'
     super()
-    this._params = params
+    this._params = { anchor }
     this._target = null
     this._name = null
   }
@@ -27,7 +27,6 @@ export default class EquipWeapon extends Component {
   _AttachTarget() {
     if (this._bones && this._target)
       this._bones[this._params.anchor].add(this._target)
-
   }
 
   _OnEquip(msg) {

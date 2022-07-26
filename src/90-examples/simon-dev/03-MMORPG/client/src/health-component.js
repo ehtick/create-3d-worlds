@@ -60,8 +60,7 @@ export class HealthComponent extends Component {
     this.stats_.benchpress += 1
     this.stats_.curl += 2
 
-    const spawner = this.FindEntity(
-      'level-up-spawner').GetComponent('LevelUpComponentSpawner')
+    const spawner = this.FindEntity('level-up-spawner').GetComponent('LevelUpComponentSpawner')
     spawner.Spawn(this.Parent.Position)
 
     this.Broadcast({
