@@ -3,9 +3,15 @@ import { Component } from '../ecs/component.js'
 export class HealthComponent extends Component {
   constructor(params) {
     super()
-    this._health = params.health
-    this._maxHealth = params.maxHealth
     this._params = params
+  }
+
+  get _health() {
+    return this._params.health
+  }
+
+  set _health(value) {
+    this._params.health = value
   }
 
   InitComponent() {
