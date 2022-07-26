@@ -8,7 +8,6 @@ import { Component } from '../../../ecs/component.js'
 export class LoadController extends Component {
   constructor() {
     super()
-
     this.textures_ = {}
     this.models_ = {}
   }
@@ -59,19 +58,8 @@ export class LoadController extends Component {
         this.models_[name].asset = glb
 
         glb.scene.traverse(c => {
-          // HAHAHAH
           c.frustumCulled = false
           // Apparently this doesn't work, so just disable frustum culling.
-          // Bugs... so many bugs...
-
-          // if (c.geometry) {
-          //   // Just make our own, super crappy, super big box
-          //   c.geometry.boundingBox = new THREE.Box3(
-          //       new THREE.Vector3(-50, -50, -50),
-          //       new THREE.Vector3(50, 50, 50));
-          //   c.geometry.boundingSphere = new THREE.Sphere();
-          //   c.geometry.boundingBox.getBoundingSphere(c.geometry.boundingSphere);
-          // }
         })
 
         const { queue } = this.models_[name]

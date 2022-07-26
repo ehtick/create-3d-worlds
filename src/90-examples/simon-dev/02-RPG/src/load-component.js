@@ -222,6 +222,5 @@ export class AnimatedModelComponent extends Component {
   Update(timeInSeconds) {
     if (this._mixer)
       this._mixer.update(timeInSeconds)
-
   }
 };

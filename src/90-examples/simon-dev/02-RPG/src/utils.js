@@ -2,7 +2,7 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene, camera } from '/utils/scene.js'
 
 import { Entity } from '../../ecs/entity.js'
-import { AnimatedModelComponent, StaticModelComponent } from './gltf-component.js'
+import { AnimatedModelComponent, StaticModelComponent } from './load-component.js'
 import { math } from '../../shared/math.mjs'
 import SpatialGridController from './spatial-grid-controller.js'
 import { NPCController } from '../../components/npc-entity-old.js'
