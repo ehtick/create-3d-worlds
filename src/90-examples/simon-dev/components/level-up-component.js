@@ -1,12 +1,14 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 
-import { ParticleSystem } from '../../components/particle-system-old.js'
-import { Entity } from '../../ecs/entity.js'
-import { Component } from '../../ecs/component.js'
+import { ParticleSystem } from './particle-system.js'
+import { Entity } from '../ecs/entity.js'
+import { Component } from '../ecs/component.js'
 
 class LevelUpComponent extends Component {
-  constructor() {
+  constructor(params) {
     super()
+    this._params = params
+
     this._particles = new ParticleSystem({
       texture: '/assets/simon-dev/textures/ball.png',
     })
@@ -25,22 +27,32 @@ class LevelUpComponent extends Component {
   }
 
   InitComponent() {
-    this._particles.AddParticles(this._parent._position, 300)
+    this._particles.AddParticles(this.Parent.Position, 300)
   }
 
   Update(timeElapsed) {
     this._particles.Step(timeElapsed)
     if (this._particles._particles.length == 0)
-      this._parent.SetActive(false)
+      this.Parent.SetActive(false)
   }
 }
 
-export class LevelUpComponentSpawner extends Component {
+class LevelUpComponentSpawner extends Component {
+  constructor(params) {
+    super()
+    this._params = params
+  }
+
   Spawn(pos) {
     const e = new Entity()
     e.SetPosition(pos)
-    e.AddComponent(new LevelUpComponent())
-    this._parent._parent.Add(e)
+    e.AddComponent(new LevelUpComponent(this._params))
+    this.Manager.Add(e)
+
     return e
   }
 };
+
+export {
+  LevelUpComponentSpawner,
+}

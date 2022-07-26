@@ -10,7 +10,7 @@ import { Entity } from '../../ecs/entity.js'
 import { math } from '../../shared/math.mjs'
 import SpatialHashGrid from './spatial-hash-grid.js'
 import UIController from './ui-controller.js'
-import { LevelUpComponentSpawner } from './level-up-component.js'
+import { LevelUpComponentSpawner } from '../../components/level-up-component-old.js'
 import { addSky, createNPC, createPlayer, createGirl, createAxe, createSword, loadClouds, loadTrees } from './utils.js'
 
 scene.fog = new THREE.FogExp2(0xffffff, 0.002)
