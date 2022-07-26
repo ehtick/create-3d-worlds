@@ -1,6 +1,6 @@
-import { Component } from '../../ecs/component.js'
+import { Component } from '../ecs/component.js'
 
-export default class HealthComponent extends Component {
+export class HealthComponent extends Component {
   constructor(params) {
     super()
     this._health = params.health
@@ -11,7 +11,6 @@ export default class HealthComponent extends Component {
   InitComponent() {
     this._RegisterHandler('health.damage', m => this._OnDamage(m))
     this._RegisterHandler('health.add-experience', m => this._OnAddExperience(m))
-
     this._UpdateUI()
   }
 
@@ -20,8 +19,7 @@ export default class HealthComponent extends Component {
   }
 
   _UpdateUI() {
-    if (!this._params.updateUI)
-      return
+    if (!this._params.updateUI) return
 
     const bar = document.getElementById('health-bar')
 

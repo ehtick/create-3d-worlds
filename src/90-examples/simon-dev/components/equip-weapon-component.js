@@ -6,7 +6,6 @@ import { CHARACTER_MODELS } from '../03-MMORPG/shared/data.mjs'
 
 export class EquipWeapon extends Component {
   constructor({ desc }) { // {account, character} = desc
-    console.log(desc)
     super()
     this.target_ = null
     this.name_ = null

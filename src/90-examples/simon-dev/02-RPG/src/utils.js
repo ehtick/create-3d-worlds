@@ -6,7 +6,7 @@ import { AnimatedModelComponent, StaticModelComponent } from './gltf-component.j
 import { math } from '../../shared/math.mjs'
 import SpatialGridController from './spatial-grid-controller.js'
 import NPCController from './npc-entity.js'
-import HealthComponent from './health-component.js'
+import { HealthComponent } from '../../components/health-component-old.js'
 import { AttackController } from '../../components/attacker-controller-old.js'
 // import HealthBar from './health-bar.js'
 import { PickableComponent, BasicCharacterControllerInput } from './player-input.js'
