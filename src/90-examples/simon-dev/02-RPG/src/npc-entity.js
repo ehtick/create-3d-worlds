@@ -124,7 +124,6 @@ export default class NPCController extends Component {
       this._animations.walk = _FindAnim('Walk')
       this._animations.death = _FindAnim('Death')
       this._animations.attack = _FindAnim('Bite_Front')
-
       this._stateMachine.SetState('idle')
     })
   }
@@ -134,8 +133,7 @@ export default class NPCController extends Component {
   }
 
   get Rotation() {
-    if (!this._target)
-      return new THREE.Quaternion()
+    if (!this._target) return new THREE.Quaternion()
 
     return this._target.quaternion
   }
@@ -156,11 +154,9 @@ export default class NPCController extends Component {
     for (let i = 0; i < nearby.length; ++i) {
       const e = nearby[i].entity
       const d = ((pos.x - e._position.x) ** 2 + (pos.z - e._position.z) ** 2) ** 0.5
-
       // HARDCODED
       if (d <= 4)
         collisions.push(nearby[i].entity)
-
     }
     return collisions
   }
@@ -193,18 +189,14 @@ export default class NPCController extends Component {
 
   _UpdateAI(timeInSeconds) {
     const currentState = this._stateMachine._currentState
-    if (currentState.Name != 'walk' &&
-          currentState.Name != 'run' &&
-          currentState.Name != 'idle')
+    if (currentState.Name != 'walk' && currentState.Name != 'run' && currentState.Name != 'idle')
       return
 
     if (currentState.Name == 'death')
       return
 
-    if (currentState.Name == 'idle' ||
-          currentState.Name == 'walk')
+    if (currentState.Name == 'idle' || currentState.Name == 'walk')
       this._OnAIWalk(timeInSeconds)
-
   }
 
   _OnAIWalk(timeInSeconds) {
@@ -223,15 +215,12 @@ export default class NPCController extends Component {
     velocity.add(frameDecceleration)
 
     const controlObject = this._target
-    const _Q = new THREE.Quaternion()
-    const _A = new THREE.Vector3()
     const _R = controlObject.quaternion.clone()
 
     this._input._keys.forward = false
 
     const acc = this._acceleration
-    if (dirToPlayer.length() == 0)
-      return
+    if (dirToPlayer.length() == 0) return
 
     this._input._keys.forward = true
     velocity.z += acc.z * timeInSeconds
@@ -278,8 +267,7 @@ export default class NPCController extends Component {
   }
 
   Update(timeInSeconds) {
-    if (!this._stateMachine._currentState)
-      return
+    if (!this._stateMachine._currentState) return
 
     this._input._keys.space = false
     this._input._keys.forward = false
@@ -296,8 +284,6 @@ export default class NPCController extends Component {
         time: this._stateMachine._currentState._action.time,
       })
 
-    if (this._mixer)
-      this._mixer.update(timeInSeconds)
-
+    if (this._mixer) this._mixer.update(timeInSeconds)
   }
 };

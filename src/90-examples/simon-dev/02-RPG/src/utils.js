@@ -110,10 +110,10 @@ export function createNPC(resourceName, resourceTexture, grid) {
 
   npc.AddComponent(new SpatialGridController({ grid }))
 
-  npc.AddComponent(new HealthBar({
-    parent: scene,
-    camera,
-  }))
+  // npc.AddComponent(new HealthBar({
+  //   parent: scene,
+  //   camera,
+  // }))
 
   npc.AddComponent(new AttackController({ timing: 0.35 }))
 

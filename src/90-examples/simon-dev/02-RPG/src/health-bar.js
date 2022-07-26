@@ -3,27 +3,25 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 import { Component } from '../../ecs/component.js'
 import { math } from '../../shared/math.mjs'
 
-const vertexShader = `#version 300 es
-varying vec2 vUV;
+const vertexShader = /* glsl */`#version 300 es
+  varying vec2 vUV;
 
-void main() {
-  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-  gl_Position = projectionMatrix * mvPosition;
-  vUV = uv;
-}
+  void main() {
+    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+    gl_Position = projectionMatrix * mvPosition;
+    vUV = uv;
+  }
 `
 
-const fragmentShader = `#version 300 es
-uniform vec3 colour;
-uniform float health;
+const fragmentShader = /* glsl */`#version 300 es
+  uniform vec3 colour;
+  uniform float health;
+  varying vec2 vUV;
+  out vec4 out_FragColor;
 
-varying vec2 vUV;
-
-out vec4 out_FragColor;
-
-void main() {
-  out_FragColor = vec4(mix(colour, vec3(0.0), step(health, vUV.y)), 1.0);
-}
+  void main() {
+    out_FragColor = vec4(mix(colour, vec3(0.0), step(health, vUV.y)), 1.0);
+  }
 `
 
 export default class HealthBar extends Component {
@@ -74,7 +72,6 @@ export default class HealthBar extends Component {
 
   _OnHealth(msg) {
     const healthPercent = (msg.health / msg.maxHealth)
-
     this._realHealth = healthPercent
   }
 
@@ -101,7 +98,6 @@ export default class HealthBar extends Component {
     const uvs = []
 
     const square = [0, 1, 2, 2, 3, 0]
-
     indices.push(...square)
 
     const p1 = new THREE.Vector3(-1, -1, 0)
@@ -119,12 +115,9 @@ export default class HealthBar extends Component {
     positions.push(p3.x, p3.y, p3.z)
     positions.push(p4.x, p4.y, p4.z)
 
-    this._geometry.setAttribute(
-      'position', new THREE.Float32BufferAttribute(positions, 3))
-    this._geometry.setAttribute(
-      'uv', new THREE.Float32BufferAttribute(uvs, 2))
-    this._geometry.setIndex(
-      new THREE.BufferAttribute(new Uint32Array(indices), 1))
+    this._geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+    this._geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2))
+    this._geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(indices), 1))
 
     this._geometry.attributes.position.needsUpdate = true
   }

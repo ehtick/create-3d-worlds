@@ -169,9 +169,7 @@ export class BasicCharacterController extends Component {
       })
 
     const currentState = this._stateMachine._currentState
-    if (currentState.Name != 'walk' &&
-          currentState.Name != 'run' &&
-          currentState.Name != 'idle')
+    if (currentState.Name != 'walk' && currentState.Name != 'run' && currentState.Name != 'idle')
       return
 
     const velocity = this._velocity
