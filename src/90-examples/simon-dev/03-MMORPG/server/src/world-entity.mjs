@@ -42,8 +42,8 @@ export class WorldEntity {
     }
     this.stats_ = { ...this.characterDefinition_.stats }
     this.events_ = []
-    this.grid_ = params.grid
-    this.gridClient_ = this.grid_.NewClient(
+    this.grid = params.grid
+    this.gridClient_ = this.grid.NewClient(
       [this.position_[0], this.position_[2]], [10, 10])
     this.gridClient_.entity = this
 
@@ -52,7 +52,7 @@ export class WorldEntity {
   }
 
   Destroy() {
-    this.grid_.Remove(this.gridClient_)
+    this.grid.Remove(this.gridClient_)
     this.gridClient_ = null
   }
 
@@ -112,7 +112,7 @@ export class WorldEntity {
 
   UpdateGridClient_() {
     this.gridClient_.position = [this.position_[0], this.position_[2]]
-    this.grid_.UpdateClient(this.gridClient_)
+    this.grid.UpdateClient(this.gridClient_)
   }
 
   UpdateInventory(inventory) {
@@ -208,7 +208,7 @@ export class WorldEntity {
   }
 
   FindNear(radius, includeSelf) {
-    let nearby = this.grid_.FindNear(
+    let nearby = this.grid.FindNear(
       [this.position_[0], this.position_[2]], [radius, radius]).map(c => c.entity)
 
     if (!includeSelf) {

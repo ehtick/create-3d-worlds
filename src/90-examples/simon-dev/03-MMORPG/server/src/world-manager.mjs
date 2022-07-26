@@ -10,7 +10,7 @@ import { CHARACTER_MODELS } from '../../shared/data.mjs'
 class MonsterSpawner {
   constructor(params) {
     this.parent = params.parent
-    this.grid_ = this.parent.grid_
+    this.grid = this.parent.grid
     this.terrain_ = this.parent.terrain_
     this.pos_ = params.pos
     this.pos_[1] = this.terrain_.Get(...params.pos)[0]
@@ -23,7 +23,7 @@ class MonsterSpawner {
       id: this.parent.ids_++,
       position: vec3.clone(this.pos_),
       rotation: quat.fromValues(0, 0, 0, 1),
-      grid: this.grid_,
+      grid: this.grid,
       character: {
         definition: CHARACTER_MODELS[this.params.class],
         class: this.params.class,
@@ -52,7 +52,7 @@ export class WorldManager {
   constructor() {
     this.ids_ = 0
     this.entities_ = []
-    this.grid_ = new SpatialHashGrid([[-4000, -4000], [4000, 4000]], [1000, 1000])
+    this.grid = new SpatialHashGrid([[-4000, -4000], [4000, 4000]], [1000, 1000])
     this.terrain_ = new HeightGenerator()
     this.spawners_ = []
     this.tickTimer_ = 0.0
@@ -83,7 +83,7 @@ export class WorldManager {
         0,
         (Math.random() * 2 - 1) * 20),
       rotation: quat.fromValues(0, 0, 0, 1),
-      grid: this.grid_,
+      grid: this.grid,
       character: {
         definition: CHARACTER_MODELS[randomClass],
         class: randomClass,

@@ -3,11 +3,11 @@ import { Component } from '../ecs/component.js'
 export class SpatialGridController extends Component {
   constructor({ grid }) {
     super()
-    this.grid_ = grid
+    this.grid = grid
   }
 
   Destroy() {
-    this.grid_.Remove(this.client_)
+    this.grid.Remove(this.client_)
     this.client_ = null
   }
 
@@ -17,18 +17,18 @@ export class SpatialGridController extends Component {
       this.parent._position.z,
     ]
 
-    this.client_ = this.grid_.NewClient(pos, [1, 1])
+    this.client_ = this.grid.NewClient(pos, [1, 1])
     this.client_.entity = this.parent
     this._RegisterHandler('update.position', m => this._OnPosition(m))
   }
 
   _OnPosition(msg) {
     this.client_.position = [msg.value.x, msg.value.z]
-    this.grid_.UpdateClient(this.client_)
+    this.grid.UpdateClient(this.client_)
   }
 
   FindNearbyEntities(range) {
-    const results = this.grid_.FindNear([this.parent._position.x, this.parent._position.z], [range, range])
+    const results = this.grid.FindNear([this.parent._position.x, this.parent._position.z], [range, range])
 
     return results.filter(c => c.entity != this.parent)
   }

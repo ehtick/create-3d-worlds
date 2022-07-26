@@ -16,7 +16,7 @@ import { EquipWeapon } from '../../components/equip-weapon-component-old.js'
 import { InventoryController, InventoryItem } from '../../components/inventory-controller-old.js'
 import QuestComponent from './quest-component.js'
 
-export function loadClouds(_scene, _entityManager) {
+export function loadClouds(scene, entityManager) {
   for (let i = 0; i < 20; ++i) {
     const index = math.rand_int(1, 3)
     const pos = new THREE.Vector3(
@@ -26,7 +26,7 @@ export function loadClouds(_scene, _entityManager) {
 
     const e = new Entity()
     e.AddComponent(new RenderComponent({
-      scene: _scene,
+      scene,
       resourcePath: '/assets/simon-dev/nature2/GLTF/',
       resourceName: 'Cloud' + index + '.glb',
       position: pos,
@@ -34,12 +34,12 @@ export function loadClouds(_scene, _entityManager) {
       emissive: new THREE.Color(0x808080),
     }))
     e.SetPosition(pos)
-    _entityManager.Add(e)
+    entityManager.Add(e)
     e.SetActive(false)
   }
 }
 
-export function loadTrees(_scene, _grid, _entityManager) {
+export function loadTrees(scene, grid, entityManager) {
   for (let i = 0; i < 100; ++i) {
     const names = [
       'CommonTree_Dead', 'CommonTree',
@@ -57,7 +57,7 @@ export function loadTrees(_scene, _grid, _entityManager) {
 
     const e = new Entity()
     e.AddComponent(new RenderComponent({
-      scene: _scene,
+      scene,
       resourcePath: '/assets/simon-dev/nature/FBX/',
       resourceName: name + '_' + index + '.fbx',
       scale: 0.25,
@@ -67,9 +67,9 @@ export function loadTrees(_scene, _grid, _entityManager) {
       castShadow: true,
     }))
     e.AddComponent(
-      new SpatialGridController({ grid: _grid }))
+      new SpatialGridController({ grid: grid }))
     e.SetPosition(pos)
-    _entityManager.Add(e)
+    entityManager.Add(e)
     e.SetActive(false)
   }
 }
