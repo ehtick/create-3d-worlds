@@ -160,16 +160,11 @@ class ParticleSystem {
       box.expandByPoint(p.position)
     }
 
-    this.geometry_.setAttribute(
-      'position', new THREE.Float32BufferAttribute(positions, 3))
-    this.geometry_.setAttribute(
-      'size', new THREE.Float32BufferAttribute(sizes, 1))
-    this.geometry_.setAttribute(
-      'colour', new THREE.Float32BufferAttribute(colours, 4))
-    this.geometry_.setAttribute(
-      'angle', new THREE.Float32BufferAttribute(angles, 1))
-    this.geometry_.setAttribute(
-      'blend', new THREE.Float32BufferAttribute(blends, 1))
+    this.geometry_.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+    this.geometry_.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1))
+    this.geometry_.setAttribute('colour', new THREE.Float32BufferAttribute(colours, 4))
+    this.geometry_.setAttribute('angle', new THREE.Float32BufferAttribute(angles, 1))
+    this.geometry_.setAttribute('blend', new THREE.Float32BufferAttribute(blends, 1))
 
     this.geometry_.attributes.position.needsUpdate = true
     this.geometry_.attributes.size.needsUpdate = true
