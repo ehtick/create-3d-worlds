@@ -140,11 +140,9 @@ export class ThreeJSController extends Component {
 
   Update(_) {
     const player = this.FindEntity('player')
-    if (!player)
-      return
+    if (!player) return
 
     const pos = player._position
-
     this.sun_.position.copy(pos)
     this.sun_.position.add(new THREE.Vector3(-50, 200, -10))
     this.sun_.target.position.copy(pos)

@@ -18,7 +18,7 @@ import { generateRandomName } from './utils.js'
 document.getElementById('login-input').value = generateRandomName()
 
 const grid = new SpatialHashGrid([[-1000, -1000], [1000, 1000]], [100, 100])
-const entityManager_ = new EntityManager()
+const entityManager = new EntityManager()
 
 function startGame() {
   console.log('clicked')
@@ -29,42 +29,42 @@ function startGame() {
 function init() {
   const threejs = new Entity()
   threejs.AddComponent(new ThreeJSController())
-  entityManager_.Add(threejs)
+  entityManager.Add(threejs)
 
   const ui = new Entity()
   ui.AddComponent(new UIController())
-  entityManager_.Add(ui, 'ui')
+  entityManager.Add(ui, 'ui')
 
   const network = new Entity()
   network.AddComponent(new NetworkController())
-  entityManager_.Add(network, 'network')
+  entityManager.Add(network, 'network')
 
   const t = new Entity()
   t.AddComponent(new TerrainChunkManager({ target: 'player' }))
-  entityManager_.Add(t, 'terrain')
+  entityManager.Add(t, 'terrain')
 
   const l = new Entity()
   l.AddComponent(new LoadController())
-  entityManager_.Add(l, 'loader')
+  entityManager.Add(l, 'loader')
 
   const scenery = new Entity()
   scenery.AddComponent(new SceneryController({ grid }))
-  entityManager_.Add(scenery, 'scenery')
+  entityManager.Add(scenery, 'scenery')
 
   const spawner = new Entity()
   spawner.AddComponent(new PlayerSpawner({ grid }))
   spawner.AddComponent(new NetworkEntitySpawner({ grid }))
-  entityManager_.Add(spawner, 'spawners')
+  entityManager.Add(spawner, 'spawners')
 
   const database = new Entity()
   const inventory = new InventoryDatabaseController()
   for (const key in WEAPONS_DATA) inventory.AddItem(key, WEAPONS_DATA[key])
   database.AddComponent(inventory)
-  entityManager_.Add(database, 'database')
+  entityManager.Add(database, 'database')
 
   const levelUpSpawner = new Entity()
   levelUpSpawner.AddComponent(new LevelUpComponentSpawner())
-  entityManager_.Add(levelUpSpawner, 'level-up-spawner')
+  entityManager.Add(levelUpSpawner, 'level-up-spawner')
 }
 
 /* LOOP */
@@ -72,7 +72,7 @@ function init() {
 function loop() {
   requestAnimationFrame(loop)
   const deltaTime = clock.getDelta()
-  entityManager_.Update(deltaTime)
+  entityManager.Update(deltaTime)
   renderer.render(scene, camera)
 }
 

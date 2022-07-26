@@ -14,18 +14,6 @@ import { PickableComponent } from '../../components/pickable.js'
 import { EquipWeapon } from '../../components/equip-weapon-component-old.js'
 import { InventoryController, InventoryItem } from '../../components/inventory-controller-old.js'
 import QuestComponent from './quest-component.js'
-import { material as skyMaterial } from '/utils/shaders/gradient-sky.js'
-
-export function addSky(scene) {
-  const hemiLight = new THREE.HemisphereLight(0xFFFFFF, 0xFFFFFFF, 0.6)
-  hemiLight.color.setHSL(0.6, 1, 0.6)
-  hemiLight.groundColor.setHSL(0.095, 1, 0.75)
-  scene.add(hemiLight)
-
-  const skyGeo = new THREE.SphereBufferGeometry(1000, 32, 15)
-  const sky = new THREE.Mesh(skyGeo, skyMaterial)
-  scene.add(sky)
-}
 
 export function loadClouds(_scene, _entityManager) {
   for (let i = 0; i < 20; ++i) {

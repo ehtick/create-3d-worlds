@@ -11,7 +11,8 @@ import { math } from '../../shared/math.mjs'
 import SpatialHashGrid from './spatial-hash-grid.js'
 import { UIController } from '../../components/ui-controller.js'
 import { LevelUpComponentSpawner } from '../../components/level-up-component-old.js'
-import { addSky, createNPC, createPlayer, createGirl, createAxe, createSword, loadClouds, loadTrees } from './utils.js'
+import { createNPC, createPlayer, createGirl, createAxe, createSword, loadClouds, loadTrees } from './utils.js'
+import { ThreeJSController } from '../../components/threejs_component.js'
 
 scene.fog = new THREE.FogExp2(0xffffff, 0.002)
 
@@ -24,9 +25,9 @@ scene.add(plane)
 const entityManager = new EntityManager()
 const grid = new SpatialHashGrid([[-1000, -1000], [1000, 1000]], [100, 100])
 
-// loadTrees(scene, grid, entityManager)
-// loadClouds(scene, entityManager)
-// addSky(scene)
+const threejs = new Entity()
+threejs.AddComponent(new ThreeJSController())
+entityManager.Add(threejs)
 
 const ui = new Entity()
 ui.AddComponent(new UIController())
