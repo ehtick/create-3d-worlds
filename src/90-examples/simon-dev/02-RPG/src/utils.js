@@ -135,6 +135,7 @@ export function createPlayer(grid) {
 
 export function createGirl(grid) {
   const girl = new Entity()
+  // TODO: deprecate with RenderComponent
   girl.AddComponent(new AnimatedModelComponent({
     scene,
     resourcePath: '/assets/simon-dev/girl/',

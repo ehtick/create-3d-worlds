@@ -4,102 +4,6 @@ import { GLTFLoader } from '/node_modules/three127/examples/jsm/loaders/GLTFLoad
 
 import { Component } from '../ecs/component.js'
 
-export class StaticModelComponent extends Component {
-  constructor(params) {
-    super()
-    this._Init(params)
-  }
-
-  _Init(params) {
-    this._params = params
-
-    this._LoadModels()
-  }
-
-  InitComponent() {
-    this._RegisterHandler('update.position', m => {
-      this._OnPosition(m)
-    })
-  }
-
-  _OnPosition(m) {
-    if (this._target)
-      this._target.position.copy(m.value)
-
-  }
-
-  _LoadModels() {
-    if (this._params.resourceName.endsWith('glb') || this._params.resourceName.endsWith('gltf'))
-      this._LoadGLB()
-    else if (this._params.resourceName.endsWith('fbx'))
-      this._LoadFBX()
-
-  }
-
-  _OnLoaded(obj) {
-    this._target = obj
-    this._params.scene.add(this._target)
-
-    this._target.scale.setScalar(this._params.scale)
-    this._target.position.copy(this._parent._position)
-
-    let texture = null
-    if (this._params.resourceTexture) {
-      const texLoader = new THREE.TextureLoader()
-      texture = texLoader.load(this._params.resourceTexture)
-      texture.encoding = THREE.sRGBEncoding
-    }
-
-    this._target.traverse(c => {
-      let materials = c.material
-      if (!(c.material instanceof Array))
-        materials = [c.material]
-
-      for (const m of materials)
-        if (m) {
-          if (texture)
-            m.map = texture
-
-          if (this._params.specular)
-            m.specular = this._params.specular
-
-          if (this._params.emissive)
-            m.emissive = this._params.emissive
-
-        }
-
-      if (this._params.receiveShadow != undefined)
-        c.receiveShadow = this._params.receiveShadow
-
-      if (this._params.castShadow != undefined)
-        c.castShadow = this._params.castShadow
-
-      if (this._params.visible != undefined)
-        c.visible = this._params.visible
-
-    })
-  }
-
-  _LoadGLB() {
-    const loader = new GLTFLoader()
-    loader.setPath(this._params.resourcePath)
-    loader.load(this._params.resourceName, glb => {
-      this._OnLoaded(glb.scene)
-    })
-  }
-
-  _LoadFBX() {
-    const loader = new FBXLoader()
-    loader.setPath(this._params.resourcePath)
-    loader.load(this._params.resourceName, fbx => {
-      this._OnLoaded(fbx)
-    })
-  }
-
-  Update(timeInSeconds) {
-  }
-};
-
 export class AnimatedModelComponent extends Component {
   constructor(params) {
     super()
@@ -120,24 +24,24 @@ export class AnimatedModelComponent extends Component {
   }
 
   _Init(params) {
-    this._params = params
+    this.params_ = params
 
     this._LoadModels()
   }
 
   _LoadModels() {
-    if (this._params.resourceName.endsWith('glb') || this._params.resourceName.endsWith('gltf'))
+    if (this.params_.resourceName.endsWith('glb') || this.params_.resourceName.endsWith('gltf'))
       this._LoadGLB()
-    else if (this._params.resourceName.endsWith('fbx'))
+    else if (this.params_.resourceName.endsWith('fbx'))
       this._LoadFBX()
 
   }
 
   _OnLoaded(obj, animations) {
     this._target = obj
-    this._params.scene.add(this._target)
+    this.params_.scene.add(this._target)
 
-    this._target.scale.setScalar(this._params.scale)
+    obj.scale.setScalar(this.params_.scale)
     this._target.position.copy(this._parent._position)
 
     this.Broadcast({
@@ -146,9 +50,9 @@ export class AnimatedModelComponent extends Component {
     })
 
     let texture = null
-    if (this._params.resourceTexture) {
+    if (this.params_.resourceTexture) {
       const texLoader = new THREE.TextureLoader()
-      texture = texLoader.load(this._params.resourceTexture)
+      texture = texLoader.load(this.params_.resourceTexture)
       texture.encoding = THREE.sRGBEncoding
     }
 
@@ -162,22 +66,22 @@ export class AnimatedModelComponent extends Component {
           if (texture)
             m.map = texture
 
-          if (this._params.specular)
-            m.specular = this._params.specular
+          if (this.params_.specular)
+            m.specular = this.params_.specular
 
-          if (this._params.emissive)
-            m.emissive = this._params.emissive
+          if (this.params_.emissive)
+            m.emissive = this.params_.emissive
 
         }
 
-      if (this._params.receiveShadow != undefined)
-        c.receiveShadow = this._params.receiveShadow
+      if (this.params_.receiveShadow != undefined)
+        c.receiveShadow = this.params_.receiveShadow
 
-      if (this._params.castShadow != undefined)
-        c.castShadow = this._params.castShadow
+      if (this.params_.castShadow != undefined)
+        c.castShadow = this.params_.castShadow
 
-      if (this._params.visible != undefined)
-        c.visible = this._params.visible
+      if (this.params_.visible != undefined)
+        c.visible = this.params_.visible
 
     })
 
@@ -189,8 +93,8 @@ export class AnimatedModelComponent extends Component {
     }
 
     const loader = new FBXLoader()
-    loader.setPath(this._params.resourcePath)
-    loader.load(this._params.resourceAnimation, a => {
+    loader.setPath(this.params_.resourcePath)
+    loader.load(this.params_.resourceAnimation, a => {
       _OnLoad(a)
     })
 
@@ -205,16 +109,16 @@ export class AnimatedModelComponent extends Component {
 
   _LoadGLB() {
     const loader = new GLTFLoader()
-    loader.setPath(this._params.resourcePath)
-    loader.load(this._params.resourceName, glb => {
+    loader.setPath(this.params_.resourcePath)
+    loader.load(this.params_.resourceName, glb => {
       this._OnLoaded(glb.scene, glb.animations)
     })
   }
 
   _LoadFBX() {
     const loader = new FBXLoader()
-    loader.setPath(this._params.resourcePath)
-    loader.load(this._params.resourceName, fbx => {
+    loader.setPath(this.params_.resourcePath)
+    loader.load(this.params_.resourceName, fbx => {
       this._OnLoaded(fbx)
     })
   }
