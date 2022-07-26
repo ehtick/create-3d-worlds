@@ -12,7 +12,7 @@ import { TerrainChunkManager } from '../../../terrain/terrain.js'
 import { InventoryDatabaseController } from '../../../components/inventory-controller.js'
 import { SpatialHashGrid } from '../../shared/spatial-hash-grid.mjs'
 import { WEAPONS_DATA } from '../../shared/data.mjs'
-import { ThreeJSController } from '../../../components/threejs_component.js'
+import { SkyController } from '../../../components/sky_component.js'
 import { generateRandomName } from './utils.js'
 
 document.getElementById('login-input').value = generateRandomName()
@@ -28,7 +28,7 @@ function startGame() {
 
 function init() {
   const threejs = new Entity()
-  threejs.AddComponent(new ThreeJSController())
+  threejs.AddComponent(new SkyController())
   entityManager.Add(threejs)
 
   const ui = new Entity()

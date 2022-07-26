@@ -12,12 +12,11 @@ import SpatialHashGrid from './spatial-hash-grid.js'
 import { UIController } from '../../components/ui-controller.js'
 import { LevelUpComponentSpawner } from '../../components/level-up-component-old.js'
 import { createNPC, createPlayer, createGirl, createAxe, createSword, loadClouds, loadTrees } from './utils.js'
-import { ThreeJSController } from '../../components/threejs_component.js'
+import { SkyController } from '../../components/sky_component.js'
 
 scene.fog = new THREE.FogExp2(0xffffff, 0.002)
-
-const sun = createSunLight({ far: 1000 })
-scene.add(sun)
+// const sun = createSunLight({ far: 1000 })
+// scene.add(sun)
 
 const plane = createFloor({ size: 5000, color: 0x1e601c })
 scene.add(plane)
@@ -26,7 +25,7 @@ const entityManager = new EntityManager()
 const grid = new SpatialHashGrid([[-1000, -1000], [1000, 1000]], [100, 100])
 
 const threejs = new Entity()
-threejs.AddComponent(new ThreeJSController())
+threejs.AddComponent(new SkyController())
 entityManager.Add(threejs)
 
 const ui = new Entity()
@@ -36,6 +35,8 @@ entityManager.Add(ui, 'ui')
 const levelUpSpawner = new Entity()
 levelUpSpawner.AddComponent(new LevelUpComponentSpawner())
 entityManager.Add(levelUpSpawner, 'level-up-spawner')
+
+loadClouds(scene, entityManager)
 
 const axe = createAxe()
 entityManager.Add(axe)
@@ -83,7 +84,7 @@ for (let i = 0; i < 50; ++i) {
 void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
-  sunFollow(sun, entityManager.Get('player')._position)
+  // sunFollow(sun, entityManager.Get('player')._position)
   entityManager.Update(delta)
   renderer.render(scene, camera)
 }()

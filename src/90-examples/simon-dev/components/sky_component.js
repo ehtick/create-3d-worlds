@@ -1,6 +1,6 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
 import { scene, camera, renderer } from '/utils/scene.js'
-
+import { createSunLight, sunFollow } from '/utils/light.js'
 import { Component } from '../ecs/component.js'
 
 const vertexShader = `
@@ -35,7 +35,7 @@ const fragmentShader = `
     gl_FragColor = vec4(sky, 1.0);
   }`
 
-export class ThreeJSController extends Component {
+export class SkyController extends Component {
   InitEntity() {
     THREE.ShaderChunk.fog_fragment = `
       #ifdef USE_FOG
@@ -141,12 +141,6 @@ export class ThreeJSController extends Component {
   Update(_) {
     const player = this.FindEntity('player')
     if (!player) return
-
-    const pos = player._position
-    this.sun_.position.copy(pos)
-    this.sun_.position.add(new THREE.Vector3(-50, 200, -10))
-    this.sun_.target.position.copy(pos)
-    this.sun_.updateMatrixWorld()
-    this.sun_.target.updateMatrixWorld()
+    sunFollow(this.sun_, player._position)
   }
 }
