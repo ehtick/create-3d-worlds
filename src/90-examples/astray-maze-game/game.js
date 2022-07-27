@@ -2,6 +2,10 @@
 import keyboard from '/classes/Keyboard.js'
 import { generateSquareMaze } from './maze.js'
 
+const { b2World, b2FixtureDef, b2BodyDef, b2Body } = Box2D.Dynamics
+const { b2CircleShape, b2PolygonShape } = Box2D.Collision.Shapes
+const { b2Vec2 } = Box2D.Common.Math
+
 let camera = undefined
 let scene = undefined
 let renderer = undefined
@@ -9,23 +13,14 @@ let light = undefined
 let maze = undefined
 let mazeMesh = undefined
 let mazeDimension = 11
-let planeMesh = undefined
-let ballMesh = undefined
+let ground = undefined
+let ball = undefined
 const ballRadius = 0.25
 let keyAxis = [0, 0]
 const ironTexture = THREE.ImageUtils.loadTexture('textures/ball.png')
 const planeTexture = THREE.ImageUtils.loadTexture('textures/concrete.png')
 const brickTexture = THREE.ImageUtils.loadTexture('textures/brick.png')
 let gameState = undefined
-
-// Box2D shortcuts
-const { b2World } = Box2D.Dynamics
-const { b2FixtureDef } = Box2D.Dynamics
-const { b2BodyDef } = Box2D.Dynamics
-const { b2Body } = Box2D.Dynamics
-const { b2CircleShape } = Box2D.Collision.Shapes
-const { b2PolygonShape } = Box2D.Collision.Shapes
-const { b2Vec2 } = Box2D.Common.Math
 
 // Box2D world variables
 let wWorld = undefined
@@ -84,83 +79,79 @@ function createRenderWorld() {
   light.position.set(1, 1, 1.3)
   scene.add(light)
 
-  // Add the ball.
+  // ball
   let g = new THREE.SphereGeometry(ballRadius, 32, 16)
   let m = new THREE.MeshPhongMaterial({ map: ironTexture })
-  ballMesh = new THREE.Mesh(g, m)
-  ballMesh.position.set(1, 1, ballRadius)
-  scene.add(ballMesh)
+  ball = new THREE.Mesh(g, m)
+  ball.position.set(1, 1, ballRadius)
+  scene.add(ball)
 
-  // Add the camera.
+  // camera
   const aspect = window.innerWidth / window.innerHeight
   camera = new THREE.PerspectiveCamera(60, aspect, 1, 1000)
   camera.position.set(1, 1, 5)
   scene.add(camera)
 
-  // Add the maze.
+  // maze
   mazeMesh = generate_maze_mesh(maze)
   scene.add(mazeMesh)
 
-  // Add the ground.
   g = new THREE.PlaneGeometry(mazeDimension * 10, mazeDimension * 10, mazeDimension, mazeDimension)
   planeTexture.wrapS = planeTexture.wrapT = THREE.RepeatWrapping
   planeTexture.repeat.set(mazeDimension * 5, mazeDimension * 5)
   m = new THREE.MeshPhongMaterial({ map: planeTexture })
-  planeMesh = new THREE.Mesh(g, m)
-  planeMesh.position.set((mazeDimension - 1) / 2, (mazeDimension - 1) / 2, 0)
-  planeMesh.rotation.set(Math.PI / 2, 0, 0)
-  scene.add(planeMesh)
-
+  ground = new THREE.Mesh(g, m)
+  ground.position.set((mazeDimension - 1) / 2, (mazeDimension - 1) / 2, 0)
+  ground.rotation.set(Math.PI / 2, 0, 0)
+  scene.add(ground)
 }
 
 function updatePhysicsWorld() {
-  // Apply "friction".
+  // Apply "friction"
   const lv = wBall.GetLinearVelocity()
   lv.Multiply(0.95)
   wBall.SetLinearVelocity(lv)
 
-  // Apply user-directed force.
+  // Apply user-directed force
   const f = new b2Vec2(keyAxis[0] * wBall.GetMass() * 0.25, keyAxis[1] * wBall.GetMass() * 0.25)
   wBall.ApplyImpulse(f, wBall.GetPosition())
   keyAxis = [0, 0]
 
-  // Take a time step.
   wWorld.Step(1 / 60, 8, 3)
 }
 
 function updateRenderWorld() {
   // Update ball position.
-  const stepX = wBall.GetPosition().x - ballMesh.position.x
-  const stepY = wBall.GetPosition().y - ballMesh.position.y
-  ballMesh.position.x += stepX
-  ballMesh.position.y += stepY
+  const stepX = wBall.GetPosition().x - ball.position.x
+  const stepY = wBall.GetPosition().y - ball.position.y
+  ball.position.x += stepX
+  ball.position.y += stepY
 
   // Update ball rotation.
   let tempMat = new THREE.Matrix4()
   tempMat.makeRotationAxis(new THREE.Vector3(0, 1, 0), stepX / ballRadius)
-  tempMat.multiplySelf(ballMesh.matrix)
-  ballMesh.matrix = tempMat
+  tempMat.multiplySelf(ball.matrix)
+  ball.matrix = tempMat
   tempMat = new THREE.Matrix4()
   tempMat.makeRotationAxis(new THREE.Vector3(1, 0, 0), -stepY / ballRadius)
-  tempMat.multiplySelf(ballMesh.matrix)
-  ballMesh.matrix = tempMat
-  ballMesh.rotation.getRotationFromMatrix(ballMesh.matrix)
+  tempMat.multiplySelf(ball.matrix)
+  ball.matrix = tempMat
+  ball.rotation.getRotationFromMatrix(ball.matrix)
 
   // Update camera and light positions.
-  camera.position.x += (ballMesh.position.x - camera.position.x) * 0.1
-  camera.position.y += (ballMesh.position.y - camera.position.y) * 0.1
+  camera.position.x += (ball.position.x - camera.position.x) * 0.1
+  camera.position.y += (ball.position.y - camera.position.y) * 0.1
   camera.position.z += (5 - camera.position.z) * 0.1
   light.position.x = camera.position.x
   light.position.y = camera.position.y
   light.position.z = camera.position.z - 3.7
 }
 
-// Create the renderer.
 renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)
 document.body.appendChild(renderer.domElement)
 
-// Set the initial game state.
+// initial game state.
 gameState = 'initialize'
 
 function checkInput() {
@@ -203,9 +194,9 @@ void function gameLoop() {
       updateRenderWorld()
       renderer.render(scene, camera)
 
-      // Check for victory.
-      const mazeX = Math.floor(ballMesh.position.x + 0.5)
-      const mazeY = Math.floor(ballMesh.position.y + 0.5)
+      // check victory
+      const mazeX = Math.floor(ball.position.x + 0.5)
+      const mazeY = Math.floor(ball.position.y + 0.5)
       if (mazeX == mazeDimension && mazeY == mazeDimension - 2) {
         mazeDimension += 2
         gameState = 'fade out'
