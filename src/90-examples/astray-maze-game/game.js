@@ -1,5 +1,6 @@
-/* global THREE, Box2D, generateSquareMaze */
+/* global THREE, Box2D */
 import keyboard from '/classes/Keyboard.js'
+import { generateSquareMaze } from './maze.js'
 
 let camera = undefined
 let scene = undefined
