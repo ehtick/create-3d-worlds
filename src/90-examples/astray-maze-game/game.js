@@ -6,6 +6,11 @@ const { b2World, b2FixtureDef, b2BodyDef, b2Body } = Box2D.Dynamics
 const { b2CircleShape, b2PolygonShape } = Box2D.Collision.Shapes
 const { b2Vec2 } = Box2D.Common.Math
 
+const ballRadius = 0.25
+const ironTexture = THREE.ImageUtils.loadTexture('textures/ball.png')
+const planeTexture = THREE.ImageUtils.loadTexture('textures/concrete.png')
+const brickTexture = THREE.ImageUtils.loadTexture('textures/brick.png')
+
 let camera = undefined
 let scene = undefined
 let renderer = undefined
@@ -15,11 +20,7 @@ let mazeMesh = undefined
 let mazeDimension = 11
 let ground = undefined
 let ball = undefined
-const ballRadius = 0.25
 let keyAxis = [0, 0]
-const ironTexture = THREE.ImageUtils.loadTexture('textures/ball.png')
-const planeTexture = THREE.ImageUtils.loadTexture('textures/concrete.png')
-const brickTexture = THREE.ImageUtils.loadTexture('textures/brick.png')
 let gameState = undefined
 
 // Box2D world variables
@@ -136,7 +137,7 @@ function updateRenderWorld() {
   tempMat.makeRotationAxis(new THREE.Vector3(1, 0, 0), -stepY / ballRadius)
   tempMat.multiplySelf(ball.matrix)
   ball.matrix = tempMat
-  ball.rotation.getRotationFromMatrix(ball.matrix)
+  ball.rotation.setEulerFromRotationMatrix(ball.matrix)
 
   // Update camera and light positions.
   camera.position.x += (ball.position.x - camera.position.x) * 0.1
