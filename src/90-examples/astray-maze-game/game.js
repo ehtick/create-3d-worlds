@@ -56,21 +56,19 @@ function createPhysicsWorld() {
 }
 
 function generate_maze_mesh(field) {
-  const dummy = new THREE.Geometry()
+  const parent = new THREE.Geometry()
   for (let i = 0; i < field.dimension; i++)
     for (let j = 0; j < field.dimension; j++)
       if (field[i][j]) {
         const geometry = new THREE.BoxGeometry(1, 1, 1, 1, 1, 1)
-        const mesh_ij = new THREE.Mesh(geometry)
-        mesh_ij.position.x = i
-        mesh_ij.position.y = j
-        mesh_ij.position.z = 0.5
-        mesh_ij.updateMatrix()
-        dummy.merge(mesh_ij.geometry, mesh_ij.matrix)
+        const mesh = new THREE.Mesh(geometry)
+        mesh.position.set(i, j, 0.5)
+        mesh.updateMatrix()
+        parent.merge(mesh.geometry, mesh.matrix)
       }
 
   const material = new THREE.MeshPhongMaterial({ map: brickTexture })
-  const mesh = new THREE.Mesh(dummy, material)
+  const mesh = new THREE.Mesh(parent, material)
   return mesh
 }
 
