@@ -60,12 +60,13 @@ function generate_maze_mesh(field) {
   for (let i = 0; i < field.dimension; i++)
     for (let j = 0; j < field.dimension; j++)
       if (field[i][j]) {
-        const geometry = new THREE.CubeGeometry(1, 1, 1, 1, 1, 1)
+        const geometry = new THREE.BoxGeometry(1, 1, 1, 1, 1, 1)
         const mesh_ij = new THREE.Mesh(geometry)
         mesh_ij.position.x = i
         mesh_ij.position.y = j
         mesh_ij.position.z = 0.5
-        THREE.GeometryUtils.merge(dummy, mesh_ij)
+        mesh_ij.updateMatrix()
+        dummy.merge(mesh_ij.geometry, mesh_ij.matrix)
       }
 
   const material = new THREE.MeshPhongMaterial({ map: brickTexture })
