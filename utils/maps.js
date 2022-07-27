@@ -2,8 +2,8 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 import { BufferGeometryUtils } from '/node_modules/three127/examples/jsm/utils/BufferGeometryUtils.js'
 import { createBox } from '/utils/geometry.js'
 
-const WALL = 1
 const EMPTY = 0
+const WALL = 1
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -14,6 +14,13 @@ const textureLoader = new THREE.TextureLoader()
  * https://github.com/wwwtyro/Astray/blob/master/maze.js
  */
 export function generateSquareMaze(size) {
+
+  let matrix = new Array(size)
+  for (let i = 0; i < size; i++) {
+    matrix[i] = new Array(size)
+    for (let j = 0; j < size; j++)
+      matrix[i][j] = WALL
+  }
 
   function iterate(matrix, x, y) {
     matrix[x][y] = EMPTY
@@ -31,26 +38,17 @@ export function generateSquareMaze(size) {
       if (y < size - 2 && matrix[x][y + 2] == WALL)
         directions.push([0, 1])
 
-      if (directions.length == 0)
-        return matrix
+      if (directions.length == 0) return matrix
 
       const dir = directions[Math.floor(Math.random() * directions.length)]
       matrix[x + dir[0]][y + dir[1]] = EMPTY
-      matrix = iterate(matrix, x + dir[0] * 2, y + dir[1] * 2) // eslint-disable-line no-param-reassign
+      iterate(matrix, x + dir[0] * 2, y + dir[1] * 2) // recursion
     }
   }
 
-  let matrix = new Array(size)
-  for (let i = 0; i < size; i++) {
-    matrix[i] = new Array(size)
-    for (let j = 0; j < size; j++)
-      matrix[i][j] = WALL
-  }
-
-  // generate the maze recursively.
   matrix = iterate(matrix, 1, 1)
 
-  matrix[size - 1][size - 2] = EMPTY // exit on diagonal corner
+  matrix[size - 1][size - 2] = EMPTY // exit hole
   return matrix
 }
 

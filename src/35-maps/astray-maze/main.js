@@ -5,8 +5,7 @@ import { initLights } from '/utils/light.js'
 initLights()
 createOrbitControls()
 
-const matrix = generateSquareMaze(11)
-console.log(matrix)
+const matrix = generateSquareMaze(15)
 
 const mazeMesh = createMeshFromMatrix({ matrix })
 scene.add(mazeMesh)
