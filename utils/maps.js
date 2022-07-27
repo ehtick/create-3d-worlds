@@ -1,57 +1,65 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
+import { BufferGeometryUtils } from '/node_modules/three127/examples/jsm/utils/BufferGeometryUtils.js'
 import { createBox } from '/utils/geometry.js'
 
-export function randomMatrix(size = 10, wallPercent = .3) {
-  const matrix = []
-  for (let y = 0; y < size; y++) {
-    matrix[y] = []
-    for (let x = 0; x < size; x++)
-      matrix[y][x] = Math.random() < wallPercent ? 1 : 0
+const WALL = 1
+const EMPTY = 0
+
+const textureLoader = new THREE.TextureLoader()
+
+/* MAZE GENERATION */
+
+/**
+ * Generates a square maze, with a path from one corner to another.
+ * https://github.com/wwwtyro/Astray/blob/master/maze.js
+ */
+export function generateSquareMaze(size) {
+
+  function iterate(matrix, x, y) {
+    matrix[x][y] = EMPTY
+    while (true) {
+      const directions = []
+      if (x > 1 && matrix[x - 2][y] == WALL)
+        directions.push([-1, 0])
+
+      if (x < size - 2 && matrix[x + 2][y] == WALL)
+        directions.push([1, 0])
+
+      if (y > 1 && matrix[x][y - 2] == WALL)
+        directions.push([0, -1])
+
+      if (y < size - 2 && matrix[x][y + 2] == WALL)
+        directions.push([0, 1])
+
+      if (directions.length == 0)
+        return matrix
+
+      const dir = directions[Math.floor(Math.random() * directions.length)]
+      matrix[x + dir[0]][y + dir[1]] = EMPTY
+      matrix = iterate(matrix, x + dir[0] * 2, y + dir[1] * 2) // eslint-disable-line no-param-reassign
+    }
   }
+
+  let matrix = new Array(size)
+  for (let i = 0; i < size; i++) {
+    matrix[i] = new Array(size)
+    for (let j = 0; j < size; j++)
+      matrix[i][j] = WALL
+  }
+
+  // generate the maze recursively.
+  matrix = iterate(matrix, 1, 1)
+
+  matrix[size - 1][size - 2] = EMPTY // exit on diagonal corner
   return matrix
-}
-
-export function create3DMap({ matrix = randomMatrix(), size = 1, yModifier } = {}) {
-  const origin = {
-    x: -matrix[0].length * size / 2,
-    z: -matrix.length * size / 2
-  }
-  const textures = ['concrete.jpg', 'crate.gif', 'brick.png']
-  const group = new THREE.Group()
-  matrix.forEach((row, rowIndex) => row.forEach((val, columnIndex) => {
-    if (!val) return
-    const x = (columnIndex * size) + origin.x
-    const z = (rowIndex * size) + origin.z
-    const box = createBox({ x, z, size, file: textures[val - 1], yModifier })
-    box.position.set(x, 0, z)
-    group.add(box)
-  }))
-  return group
-}
-
-export function randomField(matrix) {
-  const y = Math.floor(Math.random() * matrix.length)
-  const x = Math.floor(Math.random() * matrix[0].length)
-  return [x, y]
-}
-
-export const getMapPosition = ({ obj, map, cellSize }) => {
-  const mapWidth = map.length
-  const mapHeight = map[0].length
-  return {
-    x: Math.floor((obj.x + cellSize / 2) / cellSize + mapHeight / 2),
-    z: Math.floor((obj.z + cellSize / 2) / cellSize + mapWidth / 2)
-  }
 }
 
 /*
   Prim's Algorithm
   https://stackoverflow.com/questions/54613229
 */
-const WALL = 1
-const EMPTY = 0
 
-export default function generateMaze(cols = 60, rows = 60) {
+export function generateMaze(cols = 60, rows = 60) {
   // 1. Start with a grid full of walls.
   const maze = []
   for (let i = 0; i < cols; i++) {
@@ -142,4 +150,68 @@ export default function generateMaze(cols = 60, rows = 60) {
     walls.splice(wallIndex, 1)
   }
   return maze
+}
+
+/* MESH FROM MATRIX */
+
+export function create3DMap({ matrix = randomMatrix(), size = 1, yModifier } = {}) {
+  const origin = {
+    x: -matrix[0].length * size / 2,
+    z: -matrix.length * size / 2
+  }
+  const textures = ['concrete.jpg', 'crate.gif', 'brick.png']
+  const group = new THREE.Group()
+  matrix.forEach((row, rowIndex) => row.forEach((val, columnIndex) => {
+    if (!val) return
+    const x = (columnIndex * size) + origin.x
+    const z = (rowIndex * size) + origin.z
+    const box = createBox({ x, z, size, file: textures[val - 1], yModifier })
+    box.position.set(x, 0, z)
+    group.add(box)
+  }))
+  return group
+}
+
+export function createMeshFromMatrix({ matrix, size = 1, texture = 'brick.png' } = {}) {
+  const map = textureLoader.load(`/assets/textures/${texture}`)
+  const geometries = []
+  for (let i = 0; i < matrix.length; i++)
+    for (let j = 0; j < matrix[0].length; j++)
+      if (matrix[i][j]) {
+        const geometry = new THREE.BoxGeometry(size, size, size)
+        geometry.translate(i, j, size * .5)
+        geometries.push(geometry)
+      }
+
+  const merged = BufferGeometryUtils.mergeBufferGeometries(geometries)
+  const material = new THREE.MeshPhongMaterial({ map })
+  const mesh = new THREE.Mesh(merged, material)
+  return mesh
+}
+
+/* HELPERS */
+
+export function randomField(matrix) {
+  const y = Math.floor(Math.random() * matrix.length)
+  const x = Math.floor(Math.random() * matrix[0].length)
+  return [x, y]
+}
+
+export const getMapPosition = ({ obj, map, cellSize }) => {
+  const mapWidth = map.length
+  const mapHeight = map[0].length
+  return {
+    x: Math.floor((obj.x + cellSize / 2) / cellSize + mapHeight / 2),
+    z: Math.floor((obj.z + cellSize / 2) / cellSize + mapWidth / 2)
+  }
+}
+
+export function randomMatrix(size = 10, wallPercent = .3) {
+  const matrix = []
+  for (let y = 0; y < size; y++) {
+    matrix[y] = []
+    for (let x = 0; x < size; x++)
+      matrix[y][x] = Math.random() < wallPercent ? WALL : EMPTY
+  }
+  return matrix
 }
