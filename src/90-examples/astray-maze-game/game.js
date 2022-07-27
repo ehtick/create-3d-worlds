@@ -131,13 +131,13 @@ function updateRenderWorld() {
   // Update ball rotation.
   let tempMat = new THREE.Matrix4()
   tempMat.makeRotationAxis(new THREE.Vector3(0, 1, 0), stepX / ballRadius)
-  tempMat.multiplySelf(ball.matrix)
+  tempMat.multiply(ball.matrix)
   ball.matrix = tempMat
   tempMat = new THREE.Matrix4()
   tempMat.makeRotationAxis(new THREE.Vector3(1, 0, 0), -stepY / ballRadius)
-  tempMat.multiplySelf(ball.matrix)
+  tempMat.multiply(ball.matrix)
   ball.matrix = tempMat
-  ball.rotation.setEulerFromRotationMatrix(ball.matrix)
+  ball.quaternion.setFromRotationMatrix(ball.matrix)
 
   // Update camera and light positions.
   camera.position.x += (ball.position.x - camera.position.x) * 0.1
