@@ -3,21 +3,23 @@ import * as THREE from '/node_modules/three127/build/three.module.js'
 // https://stackoverflow.com/questions/11638883/thickness-of-lines-using-three-linebasicmaterial
 // https://threejs.org/examples/#webgl_lines_fat
 
-const material = new THREE.LineBasicMaterial({ color: 0x0000ff, linewidth: 2, })
-
 const isLinked = (cellA, cellB) => {
   const link = cellA.links.find(l => l.row === cellB.row && l.col === cellB.col)
   return !!link
 }
 
-const createLine = (x1, z1, x2, z2) => {
-  const points = []
-  points.push(new THREE.Vector3(x1, 0, z1))
-  points.push(new THREE.Vector3(x2, 0, z2))
-
-  const geometry = new THREE.BufferGeometry().setFromPoints(points)
-  const line = new THREE.Line(geometry, material)
-  return line
+// TODO: merge geometry
+function createLine(point1, point2) {
+  const h = point1.distanceTo(point2)
+  const geometry = new THREE.CylinderGeometry(1, 1, h, 12)
+  geometry.translate(0, -h / 2, 0)
+  geometry.rotateX(-Math.PI / 2)
+  const material = new THREE.MeshLambertMaterial({ color: 'gray' })
+  material.transparent = true
+  const gun = new THREE.Mesh(geometry, material)
+  gun.position.copy(point1)
+  gun.lookAt(point2)
+  return gun
 }
 
 export const renderCircularMaze = grid => {
@@ -26,17 +28,23 @@ export const renderCircularMaze = grid => {
     for (const cell of row)
       if (cell.row) {
         if (!cell.inward || !isLinked(cell, cell.inward)) {
-          const line = createLine(cell.innerCcwX, cell.innerCcwY, cell.innerCwX, cell.innerCwY)
+          const point1 = new THREE.Vector3(cell.innerCcwX, 0, cell.innerCcwY)
+          const point2 = new THREE.Vector3(cell.innerCwX, 0, cell.innerCwY)
+          const line = createLine(point1, point2)
           group.add(line)
         }
 
         if (!cell.cw || !isLinked(cell, cell.cw)) {
-          const line = createLine(cell.innerCwX, cell.innerCwY, cell.outerCwX, cell.outerCwY)
+          const point1 = new THREE.Vector3(cell.innerCwX, 0, cell.innerCwY)
+          const point2 = new THREE.Vector3(cell.outerCwX, 0, cell.outerCwY)
+          const line = createLine(point1, point2)
           group.add(line)
         }
 
         if (cell.row === grid.length - 1 && cell.col !== row.length * 0.75) {
-          const line = createLine(cell.outerCcwX, cell.outerCcwY, cell.outerCwX, cell.outerCwY)
+          const point1 = new THREE.Vector3(cell.outerCcwX, 0, cell.outerCcwY)
+          const point2 = new THREE.Vector3(cell.outerCwX, 0, cell.outerCwY)
+          const line = createLine(point1, point2)
           group.add(line)
         }
       }
