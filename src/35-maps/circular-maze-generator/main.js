@@ -1,75 +1,19 @@
+import { createMaze } from './circular-maze.js'
 import { renderMaze, renderPath } from './utils.js'
 
-const container = document.querySelector('.maze')
 const canvas = document.querySelector('canvas')
 
-const lineWidth = 4
+const width = 400
 const cellSize = 10
-const containerWidth = Math.min(container.clientWidth, container.clientHeight)
-const rows = Math.floor(containerWidth / 2 / cellSize)
-const width = 2 * rows * cellSize
+const lineWidth = 4
+const rows = Math.floor(width / 2 / cellSize)
 
 canvas.width = width + lineWidth
 canvas.height = width + lineWidth
 canvas.style.width = `${width + lineWidth}px`
 canvas.style.height = `${width + lineWidth}px`
 
-let grid = []
-
-const getNeighbors = cell => {
-  const list = []
-  if (cell.cw) list.push(grid[cell.cw.row][cell.cw.col])
-  if (cell.ccw) list.push(grid[cell.ccw.row][cell.ccw.col])
-  if (cell.inward) list.push(grid[cell.inward.row][cell.inward.col])
-
-  cell.outward.forEach(out => {
-    list.push(grid[out.row][out.col])
-  })
-  return list
-}
-
-const huntAndKill = () => {
-  const randomRow = Math.floor(Math.random() * rows)
-  const randomCol = Math.floor(Math.random() * grid[randomRow].length)
-  let current = grid[randomRow][randomCol]
-
-  while (current) {
-    const unvisitedNeighbors = getNeighbors(current).filter(n => n.links.length === 0)
-    const { length } = unvisitedNeighbors
-
-    if (length) {
-      const rand = Math.floor(Math.random() * length)
-      const { row, col } = unvisitedNeighbors[rand]
-
-      current.links.push({ row, col })
-      grid[row][col].links.push({ row: current.row, col: current.col })
-
-      current = unvisitedNeighbors[rand]
-    } else {
-      current = null
-
-      loop:
-      for (const row of grid)
-        for (const cell of row) {
-          const visitedNeighbors = getNeighbors(cell).filter(n => n.links.length !== 0)
-
-          if (cell.links.length === 0 && visitedNeighbors.length !== 0) {
-            current = cell
-
-            const rand = Math.floor(Math.random() * visitedNeighbors.length)
-            const { row, col } = visitedNeighbors[rand]
-
-            current.links.push({ row, col })
-            grid[row][col].links.push({ row: current.row, col: current.col })
-
-            break loop
-          }
-        }
-
-    }
-  }
-  renderMaze(grid)
-}
+let grid
 
 const calculateDistance = (row = 0, col = 0, value = 0) => {
   grid[row][col].distance = value
@@ -80,92 +24,17 @@ const calculateDistance = (row = 0, col = 0, value = 0) => {
   })
 }
 
+const newMaze = () => {
+  grid = createMaze({ width, rows, cellSize, lineWidth })
+  renderMaze(grid)
+}
+
 const solveMaze = () => {
   calculateDistance()
   renderPath(grid)
 }
 
-const positionCells = () => {
-  const center = width / 2
+newMaze()
 
-  grid.forEach(row => {
-    row.forEach(cell => {
-      const angle = 2 * Math.PI / row.length
-      const innerRadius = cell.row * cellSize
-      const outerRadius = (cell.row + 1) * cellSize
-      const angleCcw = cell.col * angle
-      const angleCw = (cell.col + 1) * angle
-
-      cell.innerCcwX = Math.round(center + (innerRadius * Math.cos(angleCcw))) + lineWidth / 2
-      cell.innerCcwY = Math.round(center + (innerRadius * Math.sin(angleCcw))) + lineWidth / 2
-      cell.outerCcwX = Math.round(center + (outerRadius * Math.cos(angleCcw))) + lineWidth / 2
-      cell.outerCcwY = Math.round(center + (outerRadius * Math.sin(angleCcw))) + lineWidth / 2
-      cell.innerCwX = Math.round(center + (innerRadius * Math.cos(angleCw))) + lineWidth / 2
-      cell.innerCwY = Math.round(center + (innerRadius * Math.sin(angleCw))) + lineWidth / 2
-      cell.outerCwX = Math.round(center + (outerRadius * Math.cos(angleCw))) + lineWidth / 2
-      cell.outerCwY = Math.round(center + (outerRadius * Math.sin(angleCw))) + lineWidth / 2
-
-      const centerAngle = (angleCcw + angleCw) / 2
-
-      cell.centerX = (Math.round(center + (innerRadius * Math.cos(centerAngle))) + lineWidth / 2 +
-        Math.round(center + (outerRadius * Math.cos(centerAngle))) + lineWidth / 2) / 2
-      cell.centerY = (Math.round(center + (innerRadius * Math.sin(centerAngle))) + lineWidth / 2 +
-        Math.round(center + (outerRadius * Math.sin(centerAngle))) + lineWidth / 2) / 2
-    })
-  })
-}
-
-const createGrid = () => {
-  const rowHeight = 1 / rows
-
-  grid = []
-  grid.push([{ row: 0, col: 0, links: [], outward: [] }])
-
-  for (let i = 1; i < rows; i++) {
-    const radius = i / rows
-    const circumference = 2 * Math.PI * radius
-    const prevCount = grid[i - 1].length
-    const cellWidth = circumference / prevCount
-    const ratio = Math.round(cellWidth / rowHeight)
-    const count = prevCount * ratio
-
-    const row = []
-
-    for (let j = 0; j < count; j++)
-      row.push({
-        row: i,
-        col: j,
-        links: [],
-        outward: [],
-      })
-
-    grid.push(row)
-  }
-
-  grid.forEach((row, i) => {
-    row.forEach((cell, j) => {
-      if (cell.row > 0) {
-        cell.cw = { row: i, col: (j === row.length - 1 ? 0 : j + 1) }
-        cell.ccw = { row: i, col: (j === 0 ? row.length - 1 : j - 1) }
-
-        const ratio = grid[i].length / grid[i - 1].length
-        const parent = grid[i - 1][Math.floor(j / ratio)]
-
-        cell.inward = { row: parent.row, col: parent.col }
-        parent.outward.push({ row: cell.row, col: cell.col })
-      }
-    })
-  })
-
-  positionCells()
-}
-
-const createMaze = () => {
-  createGrid()
-  huntAndKill()
-}
-
-createMaze()
-
-document.querySelector('button.create').addEventListener('click', createMaze)
+document.querySelector('button.create').addEventListener('click', newMaze)
 document.querySelector('button.solve').addEventListener('click', solveMaze)
