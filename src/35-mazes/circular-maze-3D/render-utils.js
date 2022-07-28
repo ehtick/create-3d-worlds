@@ -1,5 +1,4 @@
-// import * as THREE from '/node_modules/three127/build/three.module.js'
-// import { MeshLine, MeshLineMaterial, MeshLineRaycast } from './THREE.MeshLine.js'
+import * as THREE from '/node_modules/three127/build/three.module.js'
 
 // https://stackoverflow.com/questions/11638883/thickness-of-lines-using-three-linebasicmaterial
 // https://threejs.org/examples/#webgl_lines_fat
