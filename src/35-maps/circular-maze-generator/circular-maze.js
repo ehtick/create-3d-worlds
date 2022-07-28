@@ -126,7 +126,6 @@ export const createMaze = ({ width, rows, cellSize, lineWidth }) => {
 
       }
     }
-  // renderMaze(grid)
   }
 
   const grid = createGrid()

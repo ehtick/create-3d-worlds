@@ -63,3 +63,13 @@ export const renderPath = grid => {
 
   ctx.stroke()
 }
+
+// add distance property to each cell
+export const calculateDistance = (grid, row = 0, col = 0, value = 0) => {
+  grid[row][col].distance = value
+  grid[row][col].links.forEach(l => {
+    const { distance } = grid[l.row][l.col]
+    if (!distance && distance !== 0)
+      calculateDistance(grid, l.row, l.col, value + 1)
+  })
+}
