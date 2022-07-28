@@ -1,7 +1,9 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
-// import { createBox } from '/utils/geometry.js'
 
-const material = new THREE.LineBasicMaterial({ color: 0x0000ff })
+// https://stackoverflow.com/questions/11638883/thickness-of-lines-using-three-linebasicmaterial
+// https://threejs.org/examples/#webgl_lines_fat
+
+const material = new THREE.LineBasicMaterial({ color: 0x0000ff, linewidth: 2, })
 
 const isLinked = (cellA, cellB) => {
   const link = cellA.links.find(l => l.row === cellB.row && l.col === cellB.col)
