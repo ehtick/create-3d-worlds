@@ -328,7 +328,7 @@ Raycaster arrow helper:
 scene.add(new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 300))
 ```
 
-Axes helper:
+Axes helper (X axis is red, Y is green, Z is blue):
 
 ```
 scene.add(new THREE.AxesHelper(50))
