@@ -3,7 +3,7 @@ import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createMaze } from './circular-maze.js'
 import { renderCircularMaze } from './render-utils.js'
-import {centerObject} from '/utils/helpers.js'
+import { centerObject } from '/utils/helpers.js'
 
 initLights()
 createOrbitControls()
