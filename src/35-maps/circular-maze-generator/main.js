@@ -1,14 +1,20 @@
-import { renderMaze } from './utils.js'
+import { renderMaze, renderPath } from './utils.js'
 
 const mazeContainer = document.querySelector('.maze')
 const canvas = document.querySelector('canvas')
-const ctx = canvas.getContext('2d')
 
 const pixelRatio = window.devicePixelRatio || 1
+
 const lineWidth = 4
-let size = 10
-let width = 0
-let rows = 0
+const size = 10
+let width = Math.min(mazeContainer.clientWidth, mazeContainer.clientHeight)
+const rows = Math.floor(width / 2 / size)
+width = 2 * rows * size
+
+canvas.width = width * pixelRatio + lineWidth
+canvas.height = width * pixelRatio + lineWidth
+canvas.style.width = `${width + lineWidth}px`
+canvas.style.height = `${width + lineWidth}px`
 
 let grid = []
 let maxDistance = 0
@@ -28,7 +34,6 @@ const getNeighbors = cell => {
 const huntAndKill = () => {
   const randomRow = Math.floor(Math.random() * rows)
   const randomCol = Math.floor(Math.random() * grid[randomRow].length)
-
   let current = grid[randomRow][randomCol]
 
   while (current) {
@@ -66,50 +71,22 @@ const huntAndKill = () => {
 
     }
   }
-
-  renderMaze(grid, width)
-}
-
-const renderPath = () => {
-  const row = grid.length - 1
-  let cell = { ...grid[row][grid[row].length * 0.75] }
-  let nextCell = null
-  let { distance } = cell
-
-  ctx.strokeStyle = '#f00'
-
-  ctx.beginPath()
-  ctx.moveTo(cell.centerX, cell.centerY)
-
-  while (distance > 0) {
-    const link = cell.links.filter(l => grid[l.row][l.col].distance === distance - 1)[0]
-    nextCell = { ...grid[link.row][link.col] }
-
-    ctx.lineTo(cell.centerX, cell.centerY)
-
-    distance -= 1
-    cell = { ...nextCell }
-  }
-
-  ctx.lineTo(width * 0.5 * pixelRatio, width * 0.5 * pixelRatio)
-  ctx.stroke()
+  renderMaze(grid)
 }
 
 const calculateDistance = (row = 0, col = 0, value = 0) => {
   maxDistance = Math.max(maxDistance, value)
-
   grid[row][col].distance = value
   grid[row][col].links.forEach(l => {
     const { distance } = grid[l.row][l.col]
     if (!distance && distance !== 0)
       calculateDistance(l.row, l.col, value + 1)
-
   })
 }
 
 const solveMaze = () => {
   calculateDistance()
-  renderPath()
+  renderPath(grid)
 }
 
 const positionCells = () => {
@@ -187,37 +164,12 @@ const createGrid = () => {
   positionCells()
 }
 
-const resize = change => {
-  width = Math.min(mazeContainer.clientWidth, mazeContainer.clientHeight)
-
-  if (change)
-    size = Math.floor(width / 2 / rows)
-  else
-    rows = Math.floor(width / 2 / size)
-
-  width = 2 * rows * size
-
-  canvas.width = width * pixelRatio + lineWidth
-  canvas.height = width * pixelRatio + lineWidth
-
-  canvas.style.width = `${width + lineWidth}px`
-  canvas.style.height = `${width + lineWidth}px`
-}
-
 const createMaze = () => {
-  resize()
   createGrid()
   huntAndKill()
 }
 
 createMaze()
 
-const createButton = document.querySelector('button.create')
-const solveButton = document.querySelector('button.solve')
-
-createButton.addEventListener('click', () => {
-  createMaze()
-})
-solveButton.addEventListener('click', () => {
-  solveMaze()
-})
+document.querySelector('button.create').addEventListener('click', createMaze)
+document.querySelector('button.solve').addEventListener('click', solveMaze)

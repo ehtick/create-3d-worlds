@@ -1,7 +1,6 @@
 const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
 
-const pixelRatio = window.devicePixelRatio || 1
 const lineWidth = 4
 
 const isLinked = (cellA, cellB) => {
@@ -9,9 +8,7 @@ const isLinked = (cellA, cellB) => {
   return !!link
 }
 
-export const renderMaze = (grid, width) => {
-  ctx.clearRect(0, 0, width * pixelRatio, width * pixelRatio)
-
+export const renderMaze = grid => {
   ctx.strokeStyle = '#000'
   ctx.lineWidth = lineWidth
 
@@ -40,4 +37,28 @@ export const renderMaze = (grid, width) => {
         }
       }
 
+}
+
+export const renderPath = grid => {
+  const row = grid.length - 1
+  let cell = { ...grid[row][grid[row].length * 0.75] }
+  let nextCell = null
+  let { distance } = cell
+
+  ctx.strokeStyle = '#f00'
+
+  ctx.beginPath()
+  ctx.moveTo(cell.centerX, cell.centerY)
+
+  while (distance > 0) {
+    const link = cell.links.filter(l => grid[l.row][l.col].distance === distance - 1)[0]
+    nextCell = { ...grid[link.row][link.col] }
+
+    ctx.lineTo(cell.centerX, cell.centerY)
+
+    distance -= 1
+    cell = { ...nextCell }
+  }
+
+  ctx.stroke()
 }
