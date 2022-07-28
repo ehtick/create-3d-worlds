@@ -20,7 +20,6 @@ const isLinked = (cellA, cellB) => {
 
 const getNeighbors = cell => {
   const list = []
-
   if (cell.cw) list.push(grid[cell.cw.row][cell.cw.col])
   if (cell.ccw) list.push(grid[cell.ccw.row][cell.ccw.col])
   if (cell.inward) list.push(grid[cell.inward.row][cell.inward.col])
@@ -28,8 +27,40 @@ const getNeighbors = cell => {
   cell.outward.forEach(out => {
     list.push(grid[out.row][out.col])
   })
-
   return list
+}
+
+const renderMaze = () => {
+  ctx.clearRect(0, 0, width * pixelRatio, width * pixelRatio)
+
+  ctx.strokeStyle = '#000'
+  ctx.lineWidth = lineWidth
+
+  for (const row of grid)
+    for (const cell of row)
+      if (cell.row) {
+        if (!cell.inward || !isLinked(cell, cell.inward)) {
+          ctx.beginPath()
+          ctx.moveTo(cell.innerCcwX, cell.innerCcwY)
+          ctx.lineTo(cell.innerCwX, cell.innerCwY)
+          ctx.stroke()
+        }
+
+        if (!cell.cw || !isLinked(cell, cell.cw)) {
+          ctx.beginPath()
+          ctx.moveTo(cell.innerCwX, cell.innerCwY)
+          ctx.lineTo(cell.outerCwX, cell.outerCwY)
+          ctx.stroke()
+        }
+
+        if (cell.row === grid.length - 1 && cell.col !== row.length * 0.75) {
+          ctx.beginPath()
+          ctx.moveTo(cell.outerCcwX, cell.outerCcwY)
+          ctx.lineTo(cell.outerCwX, cell.outerCwY)
+          ctx.stroke()
+        }
+      }
+
 }
 
 const huntAndKill = () => {
@@ -77,39 +108,6 @@ const huntAndKill = () => {
   renderMaze()
 }
 
-const renderMaze = () => {
-  ctx.clearRect(0, 0, width * pixelRatio, width * pixelRatio)
-
-  ctx.strokeStyle = '#000'
-  ctx.lineWidth = lineWidth
-
-  for (const row of grid)
-    for (const cell of row)
-      if (cell.row) {
-        if (!cell.inward || !isLinked(cell, cell.inward)) {
-          ctx.beginPath()
-          ctx.moveTo(cell.innerCcwX, cell.innerCcwY)
-          ctx.lineTo(cell.innerCwX, cell.innerCwY)
-          ctx.stroke()
-        }
-
-        if (!cell.cw || !isLinked(cell, cell.cw)) {
-          ctx.beginPath()
-          ctx.moveTo(cell.innerCwX, cell.innerCwY)
-          ctx.lineTo(cell.outerCwX, cell.outerCwY)
-          ctx.stroke()
-        }
-
-        if (cell.row === grid.length - 1 && cell.col !== row.length * 0.75) {
-          ctx.beginPath()
-          ctx.moveTo(cell.outerCcwX, cell.outerCcwY)
-          ctx.lineTo(cell.outerCwX, cell.outerCwY)
-          ctx.stroke()
-        }
-      }
-
-}
-
 const renderPath = () => {
   const row = grid.length - 1
   let cell = { ...grid[row][grid[row].length * 0.75] }
@@ -150,6 +148,36 @@ const calculateDistance = (row = 0, col = 0, value = 0) => {
 const solveMaze = () => {
   calculateDistance()
   renderPath()
+}
+
+const positionCells = () => {
+  const center = width / 2
+
+  grid.forEach(row => {
+    row.forEach(cell => {
+      const angle = 2 * Math.PI / row.length
+      const innerRadius = cell.row * size
+      const outerRadius = (cell.row + 1) * size
+      const angleCcw = cell.col * angle
+      const angleCw = (cell.col + 1) * angle
+
+      cell.innerCcwX = Math.round(center + (innerRadius * Math.cos(angleCcw))) * pixelRatio + lineWidth / 2
+      cell.innerCcwY = Math.round(center + (innerRadius * Math.sin(angleCcw))) * pixelRatio + lineWidth / 2
+      cell.outerCcwX = Math.round(center + (outerRadius * Math.cos(angleCcw))) * pixelRatio + lineWidth / 2
+      cell.outerCcwY = Math.round(center + (outerRadius * Math.sin(angleCcw))) * pixelRatio + lineWidth / 2
+      cell.innerCwX = Math.round(center + (innerRadius * Math.cos(angleCw))) * pixelRatio + lineWidth / 2
+      cell.innerCwY = Math.round(center + (innerRadius * Math.sin(angleCw))) * pixelRatio + lineWidth / 2
+      cell.outerCwX = Math.round(center + (outerRadius * Math.cos(angleCw))) * pixelRatio + lineWidth / 2
+      cell.outerCwY = Math.round(center + (outerRadius * Math.sin(angleCw))) * pixelRatio + lineWidth / 2
+
+      const centerAngle = (angleCcw + angleCw) / 2
+
+      cell.centerX = (Math.round(center + (innerRadius * Math.cos(centerAngle))) * pixelRatio + lineWidth / 2 +
+        Math.round(center + (outerRadius * Math.cos(centerAngle))) * pixelRatio + lineWidth / 2) / 2
+      cell.centerY = (Math.round(center + (innerRadius * Math.sin(centerAngle))) * pixelRatio + lineWidth / 2 +
+        Math.round(center + (outerRadius * Math.sin(centerAngle))) * pixelRatio + lineWidth / 2) / 2
+    })
+  })
 }
 
 const createGrid = () => {
@@ -195,36 +223,6 @@ const createGrid = () => {
   })
 
   positionCells()
-}
-
-const positionCells = () => {
-  const center = width / 2
-
-  grid.forEach(row => {
-    row.forEach(cell => {
-      const angle = 2 * Math.PI / row.length
-      const innerRadius = cell.row * size
-      const outerRadius = (cell.row + 1) * size
-      const angleCcw = cell.col * angle
-      const angleCw = (cell.col + 1) * angle
-
-      cell.innerCcwX = Math.round(center + (innerRadius * Math.cos(angleCcw))) * pixelRatio + lineWidth / 2
-      cell.innerCcwY = Math.round(center + (innerRadius * Math.sin(angleCcw))) * pixelRatio + lineWidth / 2
-      cell.outerCcwX = Math.round(center + (outerRadius * Math.cos(angleCcw))) * pixelRatio + lineWidth / 2
-      cell.outerCcwY = Math.round(center + (outerRadius * Math.sin(angleCcw))) * pixelRatio + lineWidth / 2
-      cell.innerCwX = Math.round(center + (innerRadius * Math.cos(angleCw))) * pixelRatio + lineWidth / 2
-      cell.innerCwY = Math.round(center + (innerRadius * Math.sin(angleCw))) * pixelRatio + lineWidth / 2
-      cell.outerCwX = Math.round(center + (outerRadius * Math.cos(angleCw))) * pixelRatio + lineWidth / 2
-      cell.outerCwY = Math.round(center + (outerRadius * Math.sin(angleCw))) * pixelRatio + lineWidth / 2
-
-      const centerAngle = (angleCcw + angleCw) / 2
-
-      cell.centerX = (Math.round(center + (innerRadius * Math.cos(centerAngle))) * pixelRatio + lineWidth / 2 +
-                      Math.round(center + (outerRadius * Math.cos(centerAngle))) * pixelRatio + lineWidth / 2) / 2
-      cell.centerY = (Math.round(center + (innerRadius * Math.sin(centerAngle))) * pixelRatio + lineWidth / 2 +
-                      Math.round(center + (outerRadius * Math.sin(centerAngle))) * pixelRatio + lineWidth / 2) / 2
-    })
-  })
 }
 
 const resize = change => {
