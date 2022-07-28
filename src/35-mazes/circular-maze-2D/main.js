@@ -5,18 +5,15 @@ const canvas = document.querySelector('canvas')
 
 const width = 400
 const cellSize = 10
-const lineWidth = 4
 const rows = Math.floor(width / 2 / cellSize)
 
-canvas.width = width + lineWidth
-canvas.height = width + lineWidth
-canvas.style.width = `${canvas.width}px`
-canvas.style.height = `${canvas.width}px`
+canvas.width = width
+canvas.height = width
 
 let grid
 
 const newMaze = () => {
-  grid = createMaze({ width, rows, cellSize, lineWidth })
+  grid = createMaze({ width, rows, cellSize })
   renderMaze(grid)
 }
 
