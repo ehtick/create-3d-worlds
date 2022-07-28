@@ -9,6 +9,7 @@ const isLinked = (cellA, cellB) => {
 }
 
 export const renderMaze = grid => {
+  ctx.clearRect(0, 0, canvas.width, canvas.width)
   ctx.strokeStyle = '#000'
   ctx.lineWidth = lineWidth
 

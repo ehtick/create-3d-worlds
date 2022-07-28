@@ -1,23 +1,20 @@
 import { renderMaze, renderPath } from './utils.js'
 
-const mazeContainer = document.querySelector('.maze')
+const container = document.querySelector('.maze')
 const canvas = document.querySelector('canvas')
 
-const pixelRatio = window.devicePixelRatio || 1
-
 const lineWidth = 4
-const size = 10
-let width = Math.min(mazeContainer.clientWidth, mazeContainer.clientHeight)
-const rows = Math.floor(width / 2 / size)
-width = 2 * rows * size
+const cellSize = 10
+const containerWidth = Math.min(container.clientWidth, container.clientHeight)
+const rows = Math.floor(containerWidth / 2 / cellSize)
+const width = 2 * rows * cellSize
 
-canvas.width = width * pixelRatio + lineWidth
-canvas.height = width * pixelRatio + lineWidth
+canvas.width = width + lineWidth
+canvas.height = width + lineWidth
 canvas.style.width = `${width + lineWidth}px`
 canvas.style.height = `${width + lineWidth}px`
 
 let grid = []
-let maxDistance = 0
 
 const getNeighbors = cell => {
   const list = []
@@ -75,7 +72,6 @@ const huntAndKill = () => {
 }
 
 const calculateDistance = (row = 0, col = 0, value = 0) => {
-  maxDistance = Math.max(maxDistance, value)
   grid[row][col].distance = value
   grid[row][col].links.forEach(l => {
     const { distance } = grid[l.row][l.col]
@@ -95,26 +91,26 @@ const positionCells = () => {
   grid.forEach(row => {
     row.forEach(cell => {
       const angle = 2 * Math.PI / row.length
-      const innerRadius = cell.row * size
-      const outerRadius = (cell.row + 1) * size
+      const innerRadius = cell.row * cellSize
+      const outerRadius = (cell.row + 1) * cellSize
       const angleCcw = cell.col * angle
       const angleCw = (cell.col + 1) * angle
 
-      cell.innerCcwX = Math.round(center + (innerRadius * Math.cos(angleCcw))) * pixelRatio + lineWidth / 2
-      cell.innerCcwY = Math.round(center + (innerRadius * Math.sin(angleCcw))) * pixelRatio + lineWidth / 2
-      cell.outerCcwX = Math.round(center + (outerRadius * Math.cos(angleCcw))) * pixelRatio + lineWidth / 2
-      cell.outerCcwY = Math.round(center + (outerRadius * Math.sin(angleCcw))) * pixelRatio + lineWidth / 2
-      cell.innerCwX = Math.round(center + (innerRadius * Math.cos(angleCw))) * pixelRatio + lineWidth / 2
-      cell.innerCwY = Math.round(center + (innerRadius * Math.sin(angleCw))) * pixelRatio + lineWidth / 2
-      cell.outerCwX = Math.round(center + (outerRadius * Math.cos(angleCw))) * pixelRatio + lineWidth / 2
-      cell.outerCwY = Math.round(center + (outerRadius * Math.sin(angleCw))) * pixelRatio + lineWidth / 2
+      cell.innerCcwX = Math.round(center + (innerRadius * Math.cos(angleCcw))) + lineWidth / 2
+      cell.innerCcwY = Math.round(center + (innerRadius * Math.sin(angleCcw))) + lineWidth / 2
+      cell.outerCcwX = Math.round(center + (outerRadius * Math.cos(angleCcw))) + lineWidth / 2
+      cell.outerCcwY = Math.round(center + (outerRadius * Math.sin(angleCcw))) + lineWidth / 2
+      cell.innerCwX = Math.round(center + (innerRadius * Math.cos(angleCw))) + lineWidth / 2
+      cell.innerCwY = Math.round(center + (innerRadius * Math.sin(angleCw))) + lineWidth / 2
+      cell.outerCwX = Math.round(center + (outerRadius * Math.cos(angleCw))) + lineWidth / 2
+      cell.outerCwY = Math.round(center + (outerRadius * Math.sin(angleCw))) + lineWidth / 2
 
       const centerAngle = (angleCcw + angleCw) / 2
 
-      cell.centerX = (Math.round(center + (innerRadius * Math.cos(centerAngle))) * pixelRatio + lineWidth / 2 +
-        Math.round(center + (outerRadius * Math.cos(centerAngle))) * pixelRatio + lineWidth / 2) / 2
-      cell.centerY = (Math.round(center + (innerRadius * Math.sin(centerAngle))) * pixelRatio + lineWidth / 2 +
-        Math.round(center + (outerRadius * Math.sin(centerAngle))) * pixelRatio + lineWidth / 2) / 2
+      cell.centerX = (Math.round(center + (innerRadius * Math.cos(centerAngle))) + lineWidth / 2 +
+        Math.round(center + (outerRadius * Math.cos(centerAngle))) + lineWidth / 2) / 2
+      cell.centerY = (Math.round(center + (innerRadius * Math.sin(centerAngle))) + lineWidth / 2 +
+        Math.round(center + (outerRadius * Math.sin(centerAngle))) + lineWidth / 2) / 2
     })
   })
 }
