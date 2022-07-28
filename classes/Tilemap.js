@@ -1,4 +1,4 @@
-import { randomMatrix, randomField, create3DMap } from '/utils/maps.js'
+import { randomMatrix, randomField, create3DMap } from '/utils/mazes.js'
 
 export default class Tilemap {
   constructor(matrix = randomMatrix(), cellSize = 250, origin) {

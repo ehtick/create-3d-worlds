@@ -1,5 +1,5 @@
 import { createGround } from '/utils/ground.js'
-import { randomMatrix } from '/utils/maps.js'
+import { randomMatrix } from '/utils/mazes.js'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
 import FPSRenderer from '/classes/2d/FPSRenderer.js'
 import Map2DRenderer from '/classes/2d/Map2DRenderer.js'

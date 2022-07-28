@@ -1,5 +1,5 @@
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
-import { create3DMap } from '/utils/maps.js'
+import { create3DMap } from '/utils/mazes.js'
 import { createGround } from '/utils/ground.js'
 import matrix from '/data/small-map.js'
 

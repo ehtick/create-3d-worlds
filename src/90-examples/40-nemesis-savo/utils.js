@@ -3,7 +3,7 @@ import { camera, scene } from '/utils/scene.js'
 import { UNITSIZE, BULLETMOVESPEED, PROJECTILEDAMAGE, MOVESPEED, mapWidth, mapHeight } from './constants.js'
 import { randomInt } from '/utils/helpers.js'
 import { nemesis } from '/data/maps.js'
-import { getMapPosition } from '/utils/maps.js'
+import { getMapPosition } from '/utils/mazes.js'
 
 const textureLoader = new THREE.TextureLoader()
 

@@ -1,5 +1,5 @@
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { generateSquareMaze, createMeshFromMatrix } from '/utils/maps.js'
+import { generateSquareMaze, createMeshFromMatrix } from '/utils/mazes.js'
 import { initLights } from '/utils/light.js'
 
 initLights()
