@@ -9,7 +9,6 @@ const isLinked = (cellA, cellB) => {
   return !!link
 }
 
-// TODO: merge geometry
 function createPipe(point1, point2) {
   const h = point1.distanceTo(point2)
   const geometry = new THREE.CylinderGeometry(1, 1, h, 12)
@@ -23,10 +22,12 @@ function createPipe(point1, point2) {
   return gun
 }
 
+// TODO: merge geometry
+// TODO: razdvojiti primere: cevi, rusevine, lavirint...
 function createBlock(point1, point2) {
   const distance = new THREE.Vector2(0, 0).distanceTo(new THREE.Vector2(point1.x, point1.z))
   const width = randomInRange(2, 4)
-  const height = 22 - distance / 10 // randomInRange(2, 8)
+  const height = (20 - distance / 10) * 2 // randomInRange(2, 8)
   const depth = point1.distanceTo(point2)
   const geometry = new THREE.BoxGeometry(width, height, depth)
   geometry.translate(0, height / 2, depth / 2)
