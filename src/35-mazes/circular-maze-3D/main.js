@@ -1,9 +1,7 @@
-
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createMaze } from '/utils/circular-maze.js'
 import { renderCircularMaze } from './render-utils.js'
-import { centerObject } from '/utils/helpers.js'
 
 initLights()
 createOrbitControls()
@@ -14,7 +12,6 @@ const cellSize = 10
 const grid = createMaze({ size, cellSize })
 
 const mesh = renderCircularMaze(grid)
-centerObject(mesh)
 scene.add(mesh)
 
 /* LOOP */
