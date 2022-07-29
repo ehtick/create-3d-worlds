@@ -1,8 +1,8 @@
-export const createMaze = ({ width, rows, cellSize, lineWidth }) => {
+// credits to https://codepen.io/gnykka/pen/zYrbYmJ
+export const createMaze = ({ size, cellSize, center = 0 }) => {
+  const rows = Math.floor(size / 2 / cellSize)
 
   const positionCells = grid => {
-    const center = width / 2
-
     grid.forEach(row => {
       row.forEach(cell => {
         const angle = 2 * Math.PI / row.length
@@ -11,21 +11,21 @@ export const createMaze = ({ width, rows, cellSize, lineWidth }) => {
         const angleCcw = cell.col * angle
         const angleCw = (cell.col + 1) * angle
 
-        cell.innerCcwX = Math.round(center + (innerRadius * Math.cos(angleCcw))) + lineWidth / 2
-        cell.innerCcwY = Math.round(center + (innerRadius * Math.sin(angleCcw))) + lineWidth / 2
-        cell.outerCcwX = Math.round(center + (outerRadius * Math.cos(angleCcw))) + lineWidth / 2
-        cell.outerCcwY = Math.round(center + (outerRadius * Math.sin(angleCcw))) + lineWidth / 2
-        cell.innerCwX = Math.round(center + (innerRadius * Math.cos(angleCw))) + lineWidth / 2
-        cell.innerCwY = Math.round(center + (innerRadius * Math.sin(angleCw))) + lineWidth / 2
-        cell.outerCwX = Math.round(center + (outerRadius * Math.cos(angleCw))) + lineWidth / 2
-        cell.outerCwY = Math.round(center + (outerRadius * Math.sin(angleCw))) + lineWidth / 2
+        cell.innerCcwX = Math.round(center + (innerRadius * Math.cos(angleCcw)))
+        cell.innerCcwY = Math.round(center + (innerRadius * Math.sin(angleCcw)))
+        cell.outerCcwX = Math.round(center + (outerRadius * Math.cos(angleCcw)))
+        cell.outerCcwY = Math.round(center + (outerRadius * Math.sin(angleCcw)))
+        cell.innerCwX = Math.round(center + (innerRadius * Math.cos(angleCw)))
+        cell.innerCwY = Math.round(center + (innerRadius * Math.sin(angleCw)))
+        cell.outerCwX = Math.round(center + (outerRadius * Math.cos(angleCw)))
+        cell.outerCwY = Math.round(center + (outerRadius * Math.sin(angleCw)))
 
         const centerAngle = (angleCcw + angleCw) / 2
 
-        cell.centerX = (Math.round(center + (innerRadius * Math.cos(centerAngle))) + lineWidth / 2 +
-        Math.round(center + (outerRadius * Math.cos(centerAngle))) + lineWidth / 2) / 2
-        cell.centerY = (Math.round(center + (innerRadius * Math.sin(centerAngle))) + lineWidth / 2 +
-        Math.round(center + (outerRadius * Math.sin(centerAngle))) + lineWidth / 2) / 2
+        cell.centerX = (Math.round(center + (innerRadius * Math.cos(centerAngle))) +
+        Math.round(center + (outerRadius * Math.cos(centerAngle)))) / 2
+        cell.centerY = (Math.round(center + (innerRadius * Math.sin(centerAngle))) +
+        Math.round(center + (outerRadius * Math.sin(centerAngle)))) / 2
       })
     })
   }

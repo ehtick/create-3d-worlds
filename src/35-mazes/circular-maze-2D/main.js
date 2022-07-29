@@ -1,19 +1,18 @@
-import { createMaze } from './circular-maze.js'
+import { createMaze } from '/utils/circular-maze.js'
 import { calculateDistance, renderMaze, renderPath } from './render-utils.js'
 
 const canvas = document.querySelector('canvas')
 
-const width = 400
+const size = 400
 const cellSize = 10
-const rows = Math.floor(width / 2 / cellSize)
 
-canvas.width = width
-canvas.height = width
+canvas.width = size
+canvas.height = size
 
 let grid
 
 const newMaze = () => {
-  grid = createMaze({ width, rows, cellSize })
+  grid = createMaze({ size, cellSize, center: size / 2 })
   renderMaze(grid)
 }
 
