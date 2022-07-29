@@ -1,9 +1,9 @@
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { initLights } from '/utils/light.js'
+import { createSunLight } from '/utils/light.js'
 import { createMaze } from '/utils/circular-maze.js'
 import { renderCircularMaze } from './render-utils.js'
 
-initLights()
+scene.add(createSunLight())
 createOrbitControls()
 
 const size = 400
