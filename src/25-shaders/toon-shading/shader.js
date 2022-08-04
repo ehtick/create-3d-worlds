@@ -4,7 +4,7 @@ export const vertexShader = /* glsl */`
   varying vec3 vLightFront;
 
   #include <common>
-  #include <lights_pars>
+  #include <lights_pars_begin>
 
   void main() {
       #include <beginnormal_vertex>
