@@ -13,7 +13,9 @@ live-server
 
 ### General
 
-ECS:
+- toon shader https://sites.google.com/site/threejstuts/home/shader-toon
+- https://threejs.org/examples/?q=toon#webgl_materials_variations_toon
+- https://webgl-shaders.com/toon-example.html
 - [ ] prebaciti teren iz MMO u RPG
 - [ ] napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
 - [ ] napraviti sletanje na mesec 3d
@@ -26,6 +28,7 @@ ECS:
 - city https://alteredqualia.com/three/examples/webgl_city.html
 - let kroz svemir https://alteredqualia.com/xg/examples/deferred_particles_nebula.html
 - cestice https://github.com/hmans/three-vfx
+- postaviti fiziku u vučenje kocki https://threejs.org/examples/misc_controls_drag.html
 
 Čišćenje smeća:
 - modeli i ostalo iz simon-dev primera
@@ -342,6 +345,18 @@ Prevent OrbitControls bellow ground:
 controls.maxPolarAngle = Math.PI / 2 - 0.1
 ```
 
+updateMatrix:
+https://stackoverflow.com/questions/27022160/three-js-can-i-apply-position-rotation-and-scale-to-the-geometry
+
+Default order of transform: scale, rotate, translate (Three.js ignores order in code?)
+
+If we want to apply multiple transform:
+
+```
+gameObj.matrix = new THREE.Matrix4(....) // with params
+gameObj.matrixAutoUpdate = false // don't use internal transform system
+```
+
 ## Sources
 
 Examples are from theese great books and tutorials:
@@ -359,4 +374,4 @@ Examples are from theese great books and tutorials:
 Free 3D Models are from 3dwarehouse.sketchup.com, sketchfab.com, mixamo.com, archive3d.net, turbosquid.com and other respected sites.
 
 Textures
-- free textures with normalMaps https://opengameart.org/content/50-free-textures-4-normalmaps
+- Geometry airplane: https://classroom.udacity.com/courses/cs291/lessons/a06bfa94-60e2-403e-ab13-8e55009120b6/concepts/9408e461-2c9b-4cbb-a825-827051f5ed98

@@ -6,6 +6,8 @@ import { renderCircularMaze } from './render-utils.js'
 scene.add(createSunLight())
 createOrbitControls()
 
+camera.position.set(0, 100, 150)
+
 const size = 400
 const cellSize = 10
 

@@ -27,11 +27,11 @@ function createPipe(point1, point2) {
 function createBlock(point1, point2) {
   const distance = new THREE.Vector2(0, 0).distanceTo(new THREE.Vector2(point1.x, point1.z))
   const width = randomInRange(2, 4)
-  const height = (20 - distance / 10) * 2 // randomInRange(2, 8)
+  const height = (21 - distance / 10) * 5 // randomInRange(2, 8)
   const depth = point1.distanceTo(point2)
   const geometry = new THREE.BoxGeometry(width, height, depth)
   geometry.translate(0, height / 2, depth / 2)
-  const material = new THREE.MeshLambertMaterial({ color: 'gray' })
+  const material = new THREE.MeshLambertMaterial({ color: 'white' })
   material.transparent = true
   const gun = new THREE.Mesh(geometry, material)
   gun.position.copy(point1)
