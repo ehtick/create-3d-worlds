@@ -1,4 +1,8 @@
-/* global THREE, dat, $ */
+import * as THREE from '/node_modules/three127/build/three.module.js'
+import { OrbitControls } from '/node_modules/three127/examples/jsm/controls/OrbitControls.js'
+import { TeapotGeometry } from '/node_modules/three127/examples/jsm/geometries/TeapotGeometry.js'
+
+import { vertexShader, fragmentShader } from './shader.js'
 
 let camera, scene, renderer, light
 let cameraControls, effectController, phongMaterial
@@ -27,41 +31,30 @@ function fillScene() {
   phongMaterial.side = THREE.DoubleSide
 
   const teapot = new THREE.Mesh(
-    new THREE.TeapotGeometry(teapotSize, 20, true, true, true, true), phongMaterial)
+    new TeapotGeometry(teapotSize, 20, true, true, true, true), phongMaterial)
   scene.add(teapot)
 
 }
 
 function init() {
-  const canvasWidth = 846
-  const canvasHeight = 494
-  // For grading the window is fixed in size; here's general code:
-  // var canvasWidth = window.innerWidth;
-  // var canvasHeight = window.innerHeight;
+  const canvasWidth = window.innerWidth
+  const canvasHeight = window.innerHeight
   const canvasRatio = canvasWidth / canvasHeight
 
-  // RENDERER
   renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.gammaInput = true
   renderer.gammaOutput = true
   renderer.setSize(canvasWidth, canvasHeight)
-  renderer.setClearColorHex(0xAAAAAA, 1.0)
 
-  // CAMERA
   camera = new THREE.PerspectiveCamera(45, canvasRatio, 1, 80000)
   camera.position.set(-600, 900, 1300)
-  // CONTROLS
-  cameraControls = new THREE.OrbitAndPanControls(camera, renderer.domElement)
+
+  cameraControls = new OrbitControls(camera, renderer.domElement)
   cameraControls.target.set(0, 0, 0)
 }
 
 function addToDOM() {
-  const container = document.getElementById('container')
-  const canvas = container.getElementsByTagName('canvas')
-  if (canvas.length > 0)
-    container.removeChild(canvas[0])
-
-  container.appendChild(renderer.domElement)
+  document.body.appendChild(renderer.domElement)
 }
 
 function animate() {
@@ -93,18 +86,12 @@ function loadShader(shadertype) {
 }
 
 function createShaderMaterial(id, light) {
-
-  // could be a global, defined once, but here for convenience
   const shaderTypes = {
     'phongDiffuse': {
-
       uniforms: {
-
         'uDirLightPos':	{ type: 'v3', value: new THREE.Vector3() },
         'uDirLightColor': { type: 'c', value: new THREE.Color(0xFFFFFF) },
-
         'uMaterialColor': { type: 'c', value: new THREE.Color(0xFFFFFF) },
-
         uKd: {
           type: 'f',
           value: 0.7
@@ -121,21 +108,15 @@ function createShaderMaterial(id, light) {
 
   const u = THREE.UniformsUtils.clone(shader.uniforms)
 
-  // this line will load a shader that has an id of "vertex" from the .html file
-  const vs = loadShader('vertex')
-  // this line will load a shader that has an id of "fragment" from the .html file
-  const fs = loadShader('fragment')
-  const material = new THREE.ShaderMaterial({ uniforms: u, vertexShader: vs, fragmentShader: fs })
+  const material = new THREE.ShaderMaterial({ uniforms: u, vertexShader, fragmentShader })
 
   material.uniforms.uDirLightPos.value = light.position
   material.uniforms.uDirLightColor.value = light.color
 
   return material
-
 }
 
 function setupGui() {
-
   effectController = {
 
     kd: 0.7,
@@ -154,46 +135,11 @@ function setupGui() {
     lx: 0.32,
     ly: 0.39,
     lz: 0.7
-
   }
-
-  let h
-  const gui = new dat.GUI()
-
-  // material (attributes)
-  h = gui.addFolder('Material control')
-  h.add(effectController, 'kd', 0.0, 1.0, 0.025).name('Kd')
-  h.add(effectController, 'border', -1.0, 1.0, 0.025).name('border')
-
-  // material (color)
-  h = gui.addFolder('Material color')
-  h.add(effectController, 'hue', 0.0, 1.0, 0.025).name('hue')
-  h.add(effectController, 'saturation', 0.0, 1.0, 0.025).name('saturation')
-  h.add(effectController, 'lightness', 0.0, 1.0, 0.025).name('value')
-
-  // light (point)
-  h = gui.addFolder('Light color')
-  h.add(effectController, 'lhue', 0.0, 1.0, 0.025).name('hue')
-  h.add(effectController, 'lsaturation', 0.0, 1.0, 0.025).name('saturation')
-  h.add(effectController, 'llightness', 0.0, 1.0, 0.025).name('lightness')
-
-  // light (directional)
-  h = gui.addFolder('Light direction')
-  h.add(effectController, 'lx', -1.0, 1.0, 0.025).name('x')
-  h.add(effectController, 'ly', -1.0, 1.0, 0.025).name('y')
-  h.add(effectController, 'lz', -1.0, 1.0, 0.025).name('z')
-
 }
 
-// this is the main action sequence
-
-try {
-  init()
-  fillScene()
-  setupGui()
-  addToDOM()
-  animate()
-} catch (e) {
-  const errorReport = 'Your program encountered an unrecoverable error, can not draw on canvas. Error was:<br/><br/>'
-  $('#container').append(errorReport + e)
-}
+init()
+fillScene()
+setupGui()
+addToDOM()
+animate()
