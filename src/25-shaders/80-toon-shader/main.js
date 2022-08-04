@@ -9,8 +9,7 @@ const light = new THREE.DirectionalLight(0xFFFFFF, 1.0)
 light.position.set(0.32, 0.39, .7)
 scene.add(light)
 
-const teapot = new THREE.Mesh(new TeapotGeometry(), material)
-teapot.scale.set(0.025, 0.025, 0.025)
+const teapot = new THREE.Mesh(new TeapotGeometry(2), material)
 scene.add(teapot)
 
 material.uniforms.uDirLightColor.value = light.color

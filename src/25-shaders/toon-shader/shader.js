@@ -37,7 +37,7 @@ const fragmentShader = /* glsl */`
   }
 `
 
-export const uniforms = {
+const uniforms = {
   uLightDir: {
     type: 'v3',
     value: null
