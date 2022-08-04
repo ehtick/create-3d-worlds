@@ -1,4 +1,5 @@
 /* global THREE */
+// import {scene, camera, renderer } from '/utils/scene.js'
 import { vertexShader, cartoonFragmentShader, outlineFragmentShader } from './shader.js'
 
 const scene = new THREE.Scene()
