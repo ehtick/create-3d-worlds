@@ -34,7 +34,7 @@ export const fragmentShader = /* glsl */`
     // diffuse: N * L. Normal must be normalized, since it's interpolated.
     vec3 normal = normalize( vNormal );
     
-    // check the diffuse dot product against uBorder and adjust diffuse value accordingly.
+    // check the diffuse dot product against uBorder and adjust diffuse value
     float diffuse = dot( normal, lVector );
     diffuse = ( diffuse > uBorder ) ? 1.0 : 0.5;
 

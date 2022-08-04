@@ -1,10 +1,9 @@
 import * as THREE from '/node_modules/three127/build/three.module.js'
-import { OrbitControls } from '/node_modules/three127/examples/jsm/controls/OrbitControls.js'
 import { TeapotGeometry } from '/node_modules/three127/examples/jsm/geometries/TeapotGeometry.js'
-import { scene, camera, renderer } from '/utils/scene.js'
+import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 import { material } from './shader.js'
 
-new OrbitControls(camera, renderer.domElement)
+createOrbitControls()
 
 const light = new THREE.DirectionalLight(0xFFFFFF, 1.0)
 light.position.set(0.32, 0.39, .7)
