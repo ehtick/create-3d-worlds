@@ -1,3 +1,5 @@
+import * as THREE from '/node_modules/three127/build/three.module.js'
+
 export const vertexShader = /* glsl */`
   varying vec3 vNormal;
   varying vec3 vViewPosition;
@@ -45,3 +47,18 @@ export const fragmentShader = /* glsl */`
   }
 `
 
+const uniforms = {
+  'uDirLightPos':	{ type: 'v3', value: new THREE.Vector3() },
+  'uDirLightColor': { type: 'c', value: new THREE.Color(0xFFFFFF) },
+  'uMaterialColor': { type: 'c', value: new THREE.Color(0xFFFFFF) },
+  uKd: {
+    type: 'f',
+    value: 0.7
+  },
+  uBorder: {
+    type: 'f',
+    value: 0.4
+  }
+}
+
+export const material = new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader })
