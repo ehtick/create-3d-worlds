@@ -53,7 +53,7 @@ const uniforms = {
   'uMaterialColor': { type: 'c', value: new THREE.Color(0xFFFFFF) },
   uKd: {
     type: 'f',
-    value: 0.7
+    value: 0.75
   },
   uBorder: {
     type: 'f',
