@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js'
 import { RGBELoader } from '/node_modules/three/examples/jsm/loaders/RGBELoader.js'
 import { Pathfinding } from '../libs/three-pathfinding.module.js'
-
+import { scene, camera, renderer } from '/utils/scene.js'
 import { Player } from './Player.js'
 import { LoadingBar } from './LoadingBar.js'
 
@@ -16,10 +16,8 @@ class Game {
     this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 3000)
     this.camera.position.set(0, 32, 28)
 
-    this.scene = new THREE.Scene()
-
     const ambient = new THREE.HemisphereLight(0x555555, 0x999999)
-    this.scene.add(ambient)
+    scene.add(ambient)
 
     this.sun = new THREE.DirectionalLight(0xAAAAFF, 3.5)
     this.sun.castShadow = true
@@ -35,13 +33,13 @@ class Game {
     this.sun.shadow.mapSize.height = 1024
 
     this.sun.position.set(0, 10, 10)
-    this.scene.add(this.sun)
+    scene.add(this.sun)
 
     this.debug = { showShadowHelper: false, showPath: true, offset: 0.2 }
     // Create a helper for the shadow camera
     this.helper = new THREE.CameraHelper(this.sun.shadow.camera)
     this.helper.visible = this.debug.showShadowHelper
-    this.scene.add(this.helper)
+    scene.add(this.helper)
 
     this.renderer = new THREE.WebGLRenderer()
     this.renderer.setPixelRatio(window.devicePixelRatio)
@@ -95,7 +93,7 @@ class Game {
           player.position.copy(pt)
           self.fred.navMeshGroup = self.pathfinder.getGroup(self.ZONE, player.position)
           const closestNode = self.pathfinder.getClosestNode(player.position, self.ZONE, self.fred.navMeshGroup)
-          if (self.pathLines) self.scene.remove(self.pathLines)
+          if (self.pathLines) scene.remove(self.pathLines)
           if (self.calculatedPath) self.calculatedPath.length = 0
           self.fred.action = 'idle'
           return
@@ -117,7 +115,7 @@ class Game {
       const envMap = pmremGenerator.fromEquirectangular(texture).texture
       pmremGenerator.dispose()
 
-      self.scene.environment = envMap
+      scene.environment = envMap
 
     }, undefined, err => {
       console.error('An error occurred setting the environment')
@@ -135,7 +133,7 @@ class Game {
       // called when the resource is loaded
       gltf => {
 
-        self.scene.add(gltf.scene)
+        scene.add(gltf.scene)
 
         gltf.scene.traverse(child => {
           if (child.isMesh)
@@ -430,7 +428,7 @@ class Game {
     this.ghouls.forEach(ghoul => {
       ghoul.update(dt)
     })
-    this.renderer.render(this.scene, this.camera)
+    this.renderer.render(scene, this.camera)
   }
 }
 
