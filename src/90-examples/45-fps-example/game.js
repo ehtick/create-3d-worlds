@@ -1,5 +1,5 @@
-import * as THREE from '/node_modules/three127/build/three.module.js'
-import { Octree } from '/node_modules/three127/examples/jsm/math/Octree.js'
+import * as THREE from '/node_modules/three/build/three.module.js'
+import { Octree } from '/node_modules/three/examples/jsm/math/Octree.js'
 import { scene, clock, camera, renderer } from '/utils/scene.js'
 import { hemLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'

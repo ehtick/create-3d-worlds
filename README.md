@@ -27,8 +27,6 @@ live-server
 - assets/textures/terrain
 
 Shaders
-  - [x] shaders https://youtu.be/C8Cuwq1eqDw
-  - [x] shaders https://youtu.be/uwzEqeMd7uQ
   - [ ] The Book of Shaders https://thebookofshaders.com/
 
 Modeli
@@ -47,19 +45,10 @@ VISINSKE MAPE:
 - srediti boje mapa ovako https://elevationmap.net/
 
 Konačni automat
-  - [x] nakačiti kachujin na konačni automat
-  - [x] dodati kapuera animacije, bez mrdanja igrača
-  - [x] ispratiti tutorijal https://r105.threejsfundamentals.org/threejs/lessons/threejs-game.html
   - [ ] uskladiti animacije sa mrdanjem igrača
     - [ ] mrdati igrača napred za neke napade
     - [ ] onemogućiti mrdanje u skoku?
 
-- [x] ažurirati verziju (na 119)
-- [x] ažurirati verziju (na 127)
-  - [x] fix towers
-  - [x] fix and optimize city (merge geometries)
-  - [x] fix distort in createWorldSphere (ili napraviti alternativu)
-  - [x] fix terrainFromHeightmap
 - [ ] ažurirati verziju na poslednju (ukinuli su relativne importe pa puca, koristiti importmap)
   - [ ] probati nakon ažuriranja: https://threejs.org/examples/#webgl_points_nodes
 

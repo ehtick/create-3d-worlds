@@ -1,6 +1,6 @@
 // https://gamedevelopment.tutsplus.com/tutorials/a-beginners-guide-to-coding-graphics-shaders-part-3--cms-24351
-import * as THREE from '/node_modules/three127/build/three.module.js'
-import { OrbitControls } from '/node_modules/three127/examples/jsm/controls/OrbitControls.js'
+import * as THREE from '/node_modules/three/build/three.module.js'
+import { OrbitControls } from '/node_modules/three/examples/jsm/controls/OrbitControls.js'
 import { camera, scene, renderer } from '/utils/scene.js'
 import { material } from '/utils/shaders/bricks-texture.js'
 

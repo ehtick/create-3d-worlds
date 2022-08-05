@@ -1,5 +1,5 @@
-import * as THREE from '/node_modules/three127/build/three.module.js'
-import { FBXLoader } from '/node_modules/three127/examples/jsm/loaders/FBXLoader.js'
+import * as THREE from '/node_modules/three/build/three.module.js'
+import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js'
 
 import { FiniteStateMachine } from '../fsm/finite-state-machine.js'
 import { Component } from '../ecs/component.js'

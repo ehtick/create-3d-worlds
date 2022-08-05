@@ -1,5 +1,5 @@
 // https://stemkoski.github.io/Three.js/Shader-Heightmap-Textures.html
-import * as THREE from '/node_modules/three127/build/three.module.js'
+import * as THREE from '/node_modules/three/build/three.module.js'
 
 const loader = new THREE.TextureLoader()
 const oceanTexture = loader.load('/assets/textures/dirt-512.jpg')

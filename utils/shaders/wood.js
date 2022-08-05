@@ -1,5 +1,5 @@
 // https://2pha.com/demos/threejs/shaders/wood_grain.html
-import * as THREE from '/node_modules/three127/build/three.module.js'
+import * as THREE from '/node_modules/three/build/three.module.js'
 
 export const vertexShader = /* glsl */`
   uniform float scale;

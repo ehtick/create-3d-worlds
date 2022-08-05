@@ -1,5 +1,5 @@
-import * as THREE from '/node_modules/three127/build/three.module.js'
-import { OutlineEffect } from '/node_modules/three127/examples/jsm/effects/OutlineEffect.js'
+import * as THREE from '/node_modules/three/build/three.module.js'
+import { OutlineEffect } from '/node_modules/three/examples/jsm/effects/OutlineEffect.js'
 import { scene, camera, renderer } from '/utils/scene.js'
 
 camera.position.set(0, 100, 100 * 3.5)

@@ -1,11 +1,11 @@
 /* global Ammo */
-import * as THREE from '/node_modules/three127/build/three.module.js'
-import { OrbitControls } from '/node_modules/three127/examples/jsm/controls/OrbitControls.js'
+import * as THREE from '/node_modules/three/build/three.module.js'
+import { OrbitControls } from '/node_modules/three/examples/jsm/controls/OrbitControls.js'
 
-import Stats from '/node_modules/three127/examples/jsm/libs/stats.module.js'
+import Stats from '/node_modules/three/examples/jsm/libs/stats.module.js'
 
-import { ConvexObjectBreaker } from '/node_modules/three127/examples/jsm/misc/ConvexObjectBreaker.js'
-import { ConvexGeometry } from '/node_modules/three127/examples/jsm/geometries/ConvexGeometry.js'
+import { ConvexObjectBreaker } from '/node_modules/three/examples/jsm/misc/ConvexObjectBreaker.js'
+import { ConvexGeometry } from '/node_modules/three/examples/jsm/geometries/ConvexGeometry.js'
 
 // - Global variables -
 

@@ -1,5 +1,5 @@
-import * as THREE from '/node_modules/three127/build/three.module.js'
-import { BufferGeometryUtils } from '/node_modules/three127/examples/jsm/utils/BufferGeometryUtils.js'
+import * as THREE from '/node_modules/three/build/three.module.js'
+import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { createBox } from '/utils/geometry.js'
 
 const EMPTY = 0

@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three127/build/three.module.js'
+import * as THREE from '/node_modules/three/build/three.module.js'
 import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/loaders/GLTFLoader.js'
 import { OBJLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/loaders/OBJLoader.js'
 import { scene } from '/utils/scene.js'

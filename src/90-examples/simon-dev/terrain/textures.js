@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three127/build/three.module.js'
+import * as THREE from '/node_modules/three/build/three.module.js'
 import { renderer } from '/utils/scene.js'
 
 // Taken from https://github.com/mrdoob/three.js/issues/758

@@ -1,4 +1,4 @@
-import { FBXLoader } from '/node_modules/three127/examples/jsm/loaders/FBXLoader.js'
+import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js'
 
 import { Component } from '../ecs/component.js'
 
