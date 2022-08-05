@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { scene, camera, renderer } from '/utils/scene.js'
+import { scene } from '/utils/scene.js'
 
 class Player {
   constructor(options) {
@@ -74,7 +74,7 @@ class Player {
       this.setTargetDirection()
     } else {
       this.action = 'idle'
-      if (this.pathLines) this.app.scene.remove(this.pathLines)
+      if (this.pathLines) scene.remove(this.pathLines)
     }
   }
 

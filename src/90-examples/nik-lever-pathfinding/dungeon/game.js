@@ -10,11 +10,7 @@ const assetsPath = '../assets/'
 
 class Game {
   constructor() {
-    const container = document.createElement('div')
-    document.body.appendChild(container)
-
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 3000)
-    this.camera.position.set(0, 32, 28)
+    camera.position.set(0, 32, 28)
 
     const ambient = new THREE.HemisphereLight(0x555555, 0x999999)
     scene.add(ambient)
@@ -41,11 +37,6 @@ class Game {
     this.helper.visible = this.debug.showShadowHelper
     scene.add(this.helper)
 
-    this.renderer = new THREE.WebGLRenderer()
-    this.renderer.setPixelRatio(window.devicePixelRatio)
-    this.renderer.setSize(window.innerWidth, window.innerHeight)
-    this.renderer.shadowMap.enabled = true
-    container.appendChild(this.renderer.domElement)
     this.setSceneEnvironment()
 
     this.waypoints = [
@@ -65,7 +56,7 @@ class Game {
     this.loadEnvironment()
 
     const raycaster = new THREE.Raycaster()
-    this.renderer.domElement.addEventListener('click', raycast, false)
+    renderer.domElement.addEventListener('click', raycast, false)
 
     this.loading = true
 
@@ -79,7 +70,7 @@ class Game {
       mouse.y = - (e.clientY / window.innerHeight) * 2 + 1
 
       // 2. set the picking ray from the camera position and mouse coordinates
-      raycaster.setFromCamera(mouse, self.camera)
+      raycaster.setFromCamera(mouse, camera)
 
       // 3. compute intersections
       const intersects = raycaster.intersectObject(self.navmesh)
@@ -106,7 +97,7 @@ class Game {
 
   setSceneEnvironment() {
     const loader = new RGBELoader().setDataType(THREE.UnsignedByteType)
-    const pmremGenerator = new THREE.PMREMGenerator(this.renderer)
+    const pmremGenerator = new THREE.PMREMGenerator(renderer)
     pmremGenerator.compileEquirectangularShader()
 
     const self = this
@@ -231,7 +222,7 @@ class Game {
         self.fred.object.position.set(-1, 0, 2)
 
         const wide = new THREE.Object3D()
-        wide.position.copy(self.camera.position)
+        wide.position.copy(camera.position)
         wide.target = new THREE.Vector3(0, 0, 0)
         const rear = new THREE.Object3D()
         rear.position.set(0, 500, -500)
@@ -418,17 +409,17 @@ class Game {
     this.sun.position.z += 10
 
     if (this.activeCamera && this.controls === undefined) {
-      this.camera.position.lerp(this.activeCamera.getWorldPosition(new THREE.Vector3()), 0.1)
+      camera.position.lerp(this.activeCamera.getWorldPosition(new THREE.Vector3()), 0.1)
       const pos = this.activeCamera.target.clone()
       pos.y += 1.8
-      this.camera.lookAt(pos)
+      camera.lookAt(pos)
     }
 
     this.fred.update(dt)
     this.ghouls.forEach(ghoul => {
       ghoul.update(dt)
     })
-    this.renderer.render(scene, this.camera)
+    renderer.render(scene, camera)
   }
 }
 
