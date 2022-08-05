@@ -13,9 +13,6 @@ live-server
 
 ### General
 
-- [ ] pathfinding https://github.com/NikLever/three-pathfinding
-- [ ] pathfinding https://github.com/NikLever/ThreeJS-PathFinding-Examples
-- maze generator https://codepen.io/dragonir/pen/XgawQE
 - fireball shader https://alteredqualia.com/three/examples/webgl_shader_fireball.html
 - city https://alteredqualia.com/three/examples/webgl_city.html
 - let kroz svemir https://alteredqualia.com/xg/examples/deferred_particles_nebula.html
