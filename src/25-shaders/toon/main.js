@@ -1,4 +1,4 @@
-let scene, renderer, camera, lightmodel, teapotMaterial
+let scene, renderer, camera, lightmodel, material
 let angle = 0
 let pointLight
 
@@ -34,8 +34,8 @@ function init() {
     color: 0xffff00
   }))
   scene.add(lightmodel)
-  // ////////////////////////////////////////////////////////////////////
-  teapotMaterial = new THREE.ShaderMaterial({
+
+  material = new THREE.ShaderMaterial({
     uniforms: {
       lightpos: {
         type: 'v3',
@@ -47,7 +47,7 @@ function init() {
   })
 
   const geometry = new THREE.TeapotGeometry()
-  const teapot = new THREE.Mesh(geometry, teapotMaterial)
+  const teapot = new THREE.Mesh(geometry, material)
   teapot.scale.set(.21, .21, .21)
   teapot.position.set(50, 0, 0)
   const teapot2 = teapot.clone()
@@ -63,7 +63,7 @@ function animate() {
   angle += 0.01
   pointLight.position.set(40 * Math.cos(angle), 75, 40 * Math.sin(angle))
 
-  teapotMaterial.uniforms.lightpos.value.copy(pointLight.position)
+  material.uniforms.lightpos.value.copy(pointLight.position)
 
   lightmodel.position.copy(pointLight.position)
   requestAnimationFrame(animate)

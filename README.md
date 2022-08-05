@@ -13,9 +13,8 @@ live-server
 
 ### General
 
-- toon shader https://sites.google.com/site/threejstuts/home/shader-toon
-- https://threejs.org/examples/?q=toon#webgl_materials_variations_toon
-- https://webgl-shaders.com/toon-example.html
+- https://threejs.org/examples/webgl_materials_variations_toon
+- https://webgl-shaders.com/wave-example.html
 - [ ] prebaciti teren iz MMO u RPG
 - [ ] napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
 - [ ] napraviti sletanje na mesec 3d
