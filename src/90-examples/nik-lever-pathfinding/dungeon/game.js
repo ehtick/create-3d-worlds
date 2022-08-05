@@ -1,3 +1,4 @@
+/* dat */
 import * as THREE from 'three'
 import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js'
 import { RGBELoader } from '/node_modules/three/examples/jsm/loaders/RGBELoader.js'
@@ -10,7 +11,7 @@ const assetsPath = '../assets/'
 
 class Game {
   constructor() {
-    camera.position.set(0, 32, 28)
+    camera.position.set(0, 22, 18)
 
     const ambient = new THREE.HemisphereLight(0x555555, 0x999999)
     scene.add(ambient)
@@ -24,7 +25,6 @@ class Game {
     this.sun.shadow.camera.left = this.sun.shadow.camera.bottom = -lightSize
     this.sun.shadow.camera.right = this.sun.shadow.camera.top = lightSize
 
-    // this.sun.shadow.bias = 0.0039;
     this.sun.shadow.mapSize.width = 1024
     this.sun.shadow.mapSize.height = 1024
 
@@ -32,7 +32,7 @@ class Game {
     scene.add(this.sun)
 
     this.debug = { showShadowHelper: false, showPath: true, offset: 0.2 }
-    // Create a helper for the shadow camera
+
     this.helper = new THREE.CameraHelper(this.sun.shadow.camera)
     this.helper.visible = this.debug.showShadowHelper
     scene.add(this.helper)
@@ -235,13 +235,14 @@ class Game {
         self.cameras = { wide, rear, front }
         self.activeCamera = wide
 
+        const gui = new dat.GUI()
+        gui.add(self, 'switchCamera')
+
         self.loadGhoul()
       },
-      // called while loading is progressing
       xhr => {
         self.loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.33
       },
-      // called when loading has errors
       error => {
         console.error(error.message)
       }
@@ -309,11 +310,9 @@ class Game {
 
         self.loadingBar.visible = false
       },
-      // called while loading is progressing
       xhr => {
         self.loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.67
       },
-      // called when loading has errors
       error => {
         console.error(error.message)
       }
@@ -321,18 +320,15 @@ class Game {
   }
 
   cloneGLTF(gltf) {
-
     const clone = {
       animations: gltf.animations,
       scene: gltf.scene.clone(true)
     }
 
     const skinnedMeshes = {}
-
     gltf.scene.traverse(node => {
       if (node.isSkinnedMesh)
         skinnedMeshes[node.name] = node
-
     })
 
     const cloneBones = {}
@@ -344,7 +340,6 @@ class Game {
 
       if (node.isSkinnedMesh)
         cloneSkinnedMeshes[node.name] = node
-
     })
 
     for (const name in skinnedMeshes) {
@@ -360,31 +355,12 @@ class Game {
         new THREE.Skeleton(orderedCloneBones, skeleton.boneInverses),
         cloneSkinnedMesh.matrixWorld)
     }
-
     return clone
   }
 
   get randomWaypoint() {
     const index = Math.floor(Math.random() * this.waypoints.length)
     return this.waypoints[index]
-  }
-
-  set showPath(value) {
-    if (this.fred.pathLines) this.fred.pathLines.visible = value
-    this.debug.showPath = value
-  }
-
-  get showPath() {
-    return this.debug.showPath
-  }
-
-  set showShadowHelper(value) {
-    if (this.helper) this.helper.visible = value
-    this.debug.showShadowHelper = value
-  }
-
-  get showShadowHelper() {
-    return this.debug.showShadowHelper
   }
 
   switchCamera() {
@@ -394,7 +370,6 @@ class Game {
       this.activeCamera = this.cameras.front
     else if (this.activeCamera == this.cameras.front)
       this.activeCamera = this.cameras.wide
-
   }
 
   render() {

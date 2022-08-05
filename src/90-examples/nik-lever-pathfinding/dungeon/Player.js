@@ -3,8 +3,6 @@ import { scene } from '/utils/scene.js'
 
 class Player {
   constructor(options) {
-    const fps = options.fps || 30 // default fps
-
     this.assetsPath = options.assetsPath
     this.name = options.name || 'Player'
 
@@ -150,7 +148,6 @@ class Player {
       }
     } else
     if (this.npc && !this.dead) this.newPath(this.app.randomWaypoint)
-
   }
 }
 
