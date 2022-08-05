@@ -13,13 +13,6 @@ live-server
 
 ### General
 
-- https://threejs.org/examples/webgl_materials_variations_toon
-- https://webgl-shaders.com/wave-example.html
-- [ ] prebaciti teren iz MMO u RPG
-- [ ] napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
-- [ ] napraviti sletanje na mesec 3d
-- https://github.com/skolakoda/teorija-razvoja-igara
-- [ ] probati storybook https://github.com/jasonsturges/storybook-for-threejs
 - [ ] pathfinding https://github.com/NikLever/three-pathfinding
 - [ ] pathfinding https://github.com/NikLever/ThreeJS-PathFinding-Examples
 - maze generator https://codepen.io/dragonir/pen/XgawQE
@@ -28,6 +21,9 @@ live-server
 - let kroz svemir https://alteredqualia.com/xg/examples/deferred_particles_nebula.html
 - cestice https://github.com/hmans/three-vfx
 - postaviti fiziku u vučenje kocki https://threejs.org/examples/misc_controls_drag.html
+- [ ] prebaciti teren iz MMO u RPG
+- https://github.com/skolakoda/teorija-razvoja-igara
+- [ ] probati storybook https://github.com/jasonsturges/storybook-for-threejs
 
 Čišćenje smeća:
 - modeli i ostalo iz simon-dev primera
@@ -214,6 +210,7 @@ Konačni automat
   - [ ] dodati fiziku na steam tenk ili lokomotivu (vidi vozilo-physijs)
   - [ ] da gazi i gura prepreke
 - mozda korisno za ball-throwing-physijs https://codepen.io/tjoen/pen/BKxZMQ
+- [ ] napraviti sletanje na mesec 3d
 
 ### AI
 
@@ -306,6 +303,9 @@ Konačni automat
 - [x] Solar system
   - [x] ubaciti planete sa teksturom
   - [x] napraviti sunce sa teksturom
+
+- Partizani
+  - [ ] napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
 
 ### Ostalo
 
