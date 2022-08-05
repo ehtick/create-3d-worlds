@@ -7,9 +7,11 @@ import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { Player } from './Player.js'
 import { LoadingBar } from './LoadingBar.js'
 import { waypoints, fradAnims, ghoulAnims } from './data.js'
+import { initLights } from '/utils/light.js'
+import { normalizeMouse } from '/utils/helpers.js'
 
 const assetsPath = '../assets/'
-
+initLights()
 camera.position.set(0, 22, 18)
 
 class Game {
@@ -17,81 +19,52 @@ class Game {
     const ambient = new THREE.HemisphereLight(0x555555, 0x999999)
     scene.add(ambient)
 
-    this.sun = new THREE.DirectionalLight(0xAAAAFF, 3.5)
-    this.sun.castShadow = true
-    this.sun.position.set(0, 10, 10)
-    scene.add(this.sun)
-
-    this.setSceneEnvironment()
-
     this.loadingBar = new LoadingBar()
     this.loadEnvironment()
 
-    const raycaster = new THREE.Raycaster()
-    renderer.domElement.addEventListener('click', raycast, false)
-
     this.loading = true
+    const raycaster = new THREE.Raycaster()
 
-    const self = this
-    const mouse = { x: 0, y: 0 }
-
-    function raycast(e) {
-      if (self.loading) return
-
-      mouse.x = (e.clientX / window.innerWidth) * 2 - 1
-      mouse.y = - (e.clientY / window.innerHeight) * 2 + 1
+    const raycast = e => {
+      if (this.loading) return
+      const mouse = normalizeMouse(e)
 
       raycaster.setFromCamera(mouse, camera)
-      const intersects = raycaster.intersectObject(self.navmesh)
-
+      const intersects = raycaster.intersectObject(this.navmesh)
       if (intersects.length > 0) {
         const pt = intersects[0].point
-        self.fred.newPath(pt, true)
+        this.fred.newPath(pt, true)
       }
     }
-  }
-
-  setSceneEnvironment() {
-    const loader = new RGBELoader().setDataType(THREE.UnsignedByteType)
-    const pmremGenerator = new THREE.PMREMGenerator(renderer)
-    pmremGenerator.compileEquirectangularShader()
-
-    loader.load(`${assetsPath}venice_sunset_1k.hdr`, texture => {
-      const envMap = pmremGenerator.fromEquirectangular(texture).texture
-      pmremGenerator.dispose()
-      scene.environment = envMap
-    })
+    renderer.domElement.addEventListener('click', raycast, false)
   }
 
   loadEnvironment() {
     const loader = new GLTFLoader()
-    const self = this
     loader.load(`${assetsPath}dungeon.glb`, gltf => {
       scene.add(gltf.scene)
       gltf.scene.traverse(child => {
         if (child.isMesh)
           if (child.name == 'Navmesh') {
             child.material.visible = false
-            self.navmesh = child
+            this.navmesh = child
           } else {
             child.castShadow = false
             child.receiveShadow = true
           }
       })
-
-      self.pathfinder = new Pathfinding()
-      self.ZONE = 'dungeon'
-      self.pathfinder.setZoneData(self.ZONE, Pathfinding.createZone(self.navmesh.geometry))
-      self.loadFred()
+      this.pathfinder = new Pathfinding()
+      this.ZONE = 'dungeon'
+      this.pathfinder.setZoneData(this.ZONE, Pathfinding.createZone(this.navmesh.geometry))
+      this.loadFred()
     },
     xhr => {
-      self.loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.0
+      this.loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.0
     })
   }
 
   loadFred() {
     const loader = new GLTFLoader()
-    const self = this
 
     loader.load(`${assetsPath}fred.glb`, gltf => {
       const object = gltf.scene.children[0]
@@ -99,7 +72,6 @@ class Game {
         if (child.isMesh)
           child.castShadow = true
       })
-      self.sun.target = object
       const options = {
         object,
         speed: 5,
@@ -107,48 +79,46 @@ class Game {
         loader,
         anims: fradAnims,
         clip: gltf.animations[0],
-        app: self,
+        app: this,
         name: 'fred',
         npc: false
       }
-      self.fred = new Player(options)
-      self.loading = false
-      self.fred.action = 'idle'
+      this.fred = new Player(options)
+      this.loading = false
+      this.fred.action = 'idle'
       const scale = 0.015
-      self.fred.object.scale.set(scale, scale, scale)
-      self.fred.object.position.set(-1, 0, 2)
+      this.fred.object.scale.set(scale, scale, scale)
+      this.fred.object.position.set(-1, 0, 2)
 
       const wide = new THREE.Object3D()
       wide.position.copy(camera.position)
       wide.target = new THREE.Vector3(0, 0, 0)
       const rear = new THREE.Object3D()
       rear.position.set(0, 500, -500)
-      rear.target = self.fred.object.position
-      self.fred.object.add(rear)
+      rear.target = this.fred.object.position
+      this.fred.object.add(rear)
       const front = new THREE.Object3D()
       front.position.set(0, 500, 500)
-      front.target = self.fred.object.position
-      self.fred.object.add(front)
-      self.cameras = { wide, rear, front }
-      self.activeCamera = wide
+      front.target = this.fred.object.position
+      this.fred.object.add(front)
+      this.cameras = { wide, rear, front }
+      this.activeCamera = wide
 
       const gui = new dat.GUI()
-      gui.add(self, 'switchCamera')
-      self.loadGhoul()
+      gui.add(this, 'switchCamera')
+      this.loadGhoul()
     },
     xhr => {
-      self.loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.33
+      this.loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.33
     })
   }
 
   loadGhoul() {
     const loader = new GLTFLoader()
-    const self = this
-
     loader.load(`${assetsPath}ghoul.glb`, gltf => {
       const gltfs = [gltf]
-      for (let i = 0; i < 3; i++) gltfs.push(self.cloneGLTF(gltf))
-      self.ghouls = []
+      for (let i = 0; i < 3; i++) gltfs.push(this.cloneGLTF(gltf))
+      this.ghouls = []
 
       gltfs.forEach(gltf => {
         const object = gltf.scene.children[0]
@@ -164,7 +134,7 @@ class Game {
           loader,
           anims: ghoulAnims,
           clip: gltf.animations[0],
-          app: self,
+          app: this,
           name: 'ghoul',
           npc: true
         }
@@ -172,15 +142,15 @@ class Game {
         const ghoul = new Player(options)
         const scale = 0.015
         ghoul.object.scale.set(scale, scale, scale)
-        ghoul.object.position.copy(self.randomWaypoint)
-        ghoul.newPath(self.randomWaypoint)
-        self.ghouls.push(ghoul)
+        ghoul.object.position.copy(this.randomWaypoint)
+        ghoul.newPath(this.randomWaypoint)
+        this.ghouls.push(ghoul)
       })
-      self.render()
-      self.loadingBar.visible = false
+      this.render()
+      this.loadingBar.visible = false
     },
     xhr => {
-      self.loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.67
+      this.loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.67
     })
   }
 
@@ -237,13 +207,8 @@ class Game {
   }
 
   render() {
-    const dt = clock.getDelta()
-    const self = this
-    requestAnimationFrame(() => self.render())
-
-    this.sun.position.copy(this.fred.object.position)
-    this.sun.position.y += 10
-    this.sun.position.z += 10
+    const delta = clock.getDelta()
+    requestAnimationFrame(() => this.render())
 
     if (this.activeCamera && this.controls === undefined) {
       camera.position.lerp(this.activeCamera.getWorldPosition(new THREE.Vector3()), 0.1)
@@ -252,8 +217,8 @@ class Game {
       camera.lookAt(pos)
     }
 
-    this.fred.update(dt)
-    this.ghouls.forEach(ghoul => ghoul.update(dt))
+    this.fred.update(delta)
+    this.ghouls.forEach(ghoul => ghoul.update(delta))
     renderer.render(scene, camera)
   }
 }
