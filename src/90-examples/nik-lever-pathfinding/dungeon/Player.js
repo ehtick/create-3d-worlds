@@ -52,6 +52,7 @@ class Player {
   }
 
   newPath(pt) {
+    if (!pt) return
     const player = this.object
 
     if (this.pathfinder === undefined) {

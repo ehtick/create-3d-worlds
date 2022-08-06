@@ -1,4 +1,3 @@
-/* global dat */
 import * as THREE from 'three'
 import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js'
 import { Pathfinding } from '../libs/three-pathfinding.module.js'
@@ -11,48 +10,75 @@ import { getMouseIntersects } from '/utils/helpers.js'
 import { cloneGLTF } from './utils.js'
 
 const assetsPath = '../assets/'
-
 const loader = new GLTFLoader()
 const loadingBar = new LoadingBar()
 const pathfinder = new Pathfinding()
+const ghouls = []
 
-let fred
+const wide = new THREE.Object3D()
+wide.target = new THREE.Vector3(0, 0, 0)
+const front = new THREE.Object3D()
+front.position.set(0, 500, 500)
+const rear = new THREE.Object3D()
+rear.position.set(0, 500, -500)
+const cameras = { wide, rear, front }
+
+let fred, activeCamera, navmesh
+
+/* INIT */
 
 ambLight()
 initLights()
 camera.position.set(0, 22, 18)
+wide.position.copy(camera.position)
+
+/* FUNCTIONS */
 
 const randomWaypoint = () => {
   const i = Math.floor(Math.random() * waypoints.length)
   return waypoints[i]
 }
 
+const raycast = e => {
+  const intersects = getMouseIntersects(e, camera, navmesh)
+  if (intersects.length)
+    fred.newPath(intersects[0].point, true)
+}
+
+const switchCamera = () => {
+  if (activeCamera == cameras.wide)
+    activeCamera = cameras.rear
+  else if (activeCamera == cameras.rear)
+    activeCamera = cameras.front
+  else if (activeCamera == cameras.front)
+    activeCamera = cameras.wide
+}
+
+/* EVENTS */
+
+renderer.domElement.addEventListener('click', raycast, false)
+
+document.getElementById('camera').addEventListener('click', switchCamera)
+
 class Game {
   constructor() {
     this.loadEnvironment()
-    const raycast = e => {
-      const intersects = getMouseIntersects(e, camera, this.navmesh)
-      if (intersects.length)
-        fred.newPath(intersects[0].point, true)
-    }
-    renderer.domElement.addEventListener('click', raycast, false)
+    this.loadFred()
+    this.loadGhoul()
   }
 
   loadEnvironment() {
-    loader.load(`${assetsPath}dungeon.glb`, gltf => {
-      scene.add(gltf.scene)
-      gltf.scene.traverse(child => {
+    loader.load(`${assetsPath}dungeon.glb`, model => {
+      scene.add(model.scene)
+      model.scene.traverse(child => {
         if (child.isMesh)
           if (child.name == 'Navmesh') {
             child.material.visible = false
-            this.navmesh = child
-          } else {
-            child.castShadow = false
+            navmesh = child
+          } else
             child.receiveShadow = true
-          }
       })
-      pathfinder.setZoneData('dungeon', Pathfinding.createZone(this.navmesh.geometry))
-      this.loadFred()
+      pathfinder.setZoneData('dungeon', Pathfinding.createZone(navmesh.geometry))
     },
     xhr => {
       loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.0
@@ -60,8 +86,8 @@ class Game {
   }
 
   loadFred() {
-    loader.load(`${assetsPath}fred.glb`, gltf => {
-      const object = gltf.scene.children[0]
+    loader.load(`${assetsPath}fred.glb`, model => {
+      const object = model.scene.children[0]
       object.traverse(child => {
         if (child.isMesh) child.castShadow = true
       })
@@ -71,7 +97,7 @@ class Game {
         assetsPath,
         loader,
         anims: fradAnims,
-        clip: gltf.animations[0],
+        clip: model.animations[0],
         app: this,
         pathfinder,
         name: 'fred',
@@ -83,23 +109,11 @@ class Game {
       fred.object.scale.set(scale, scale, scale)
       fred.object.position.set(-1, 0, 2)
 
-      const wide = new THREE.Object3D()
-      wide.position.copy(camera.position)
-      wide.target = new THREE.Vector3(0, 0, 0)
-      const rear = new THREE.Object3D()
-      rear.position.set(0, 500, -500)
       rear.target = fred.object.position
       fred.object.add(rear)
-      const front = new THREE.Object3D()
-      front.position.set(0, 500, 500)
       front.target = fred.object.position
       fred.object.add(front)
-      this.cameras = { wide, rear, front }
-      this.activeCamera = wide
-
-      const gui = new dat.GUI()
-      gui.add(this, 'switchCamera')
-      this.loadGhoul()
+      activeCamera = wide
     },
     xhr => {
       loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.33
@@ -107,13 +121,12 @@ class Game {
   }
 
   loadGhoul() {
-    loader.load(`${assetsPath}ghoul.glb`, gltf => {
-      const gltfs = [gltf]
-      for (let i = 0; i < 3; i++) gltfs.push(cloneGLTF(gltf))
-      this.ghouls = []
+    loader.load(`${assetsPath}ghoul.glb`, model => {
+      const gltfs = [model]
+      for (let i = 0; i < 3; i++) gltfs.push(cloneGLTF(model))
 
-      gltfs.forEach(gltf => {
-        const object = gltf.scene.children[0]
+      gltfs.forEach(model => {
+        const object = model.scene.children[0]
         object.traverse(child => {
           if (child.isMesh) child.castShadow = true
         })
@@ -124,7 +137,7 @@ class Game {
           assetsPath,
           loader,
           anims: ghoulAnims,
-          clip: gltf.animations[0],
+          clip: model.animations[0],
           app: this,
           pathfinder,
           name: 'ghoul',
@@ -136,7 +149,7 @@ class Game {
         ghoul.object.scale.set(scale, scale, scale)
         ghoul.object.position.copy(randomWaypoint())
         ghoul.newPath(randomWaypoint())
-        this.ghouls.push(ghoul)
+        ghouls.push(ghoul)
       })
       this.render()
       loadingBar.visible = false
@@ -146,28 +159,19 @@ class Game {
     })
   }
 
-  switchCamera() {
-    if (this.activeCamera == this.cameras.wide)
-      this.activeCamera = this.cameras.rear
-    else if (this.activeCamera == this.cameras.rear)
-      this.activeCamera = this.cameras.front
-    else if (this.activeCamera == this.cameras.front)
-      this.activeCamera = this.cameras.wide
-  }
-
   render() {
     const delta = clock.getDelta()
     requestAnimationFrame(() => this.render())
 
-    if (this.activeCamera && this.controls === undefined) {
-      camera.position.lerp(this.activeCamera.getWorldPosition(new THREE.Vector3()), 0.1)
-      const pos = this.activeCamera.target.clone()
+    if (activeCamera && this.controls === undefined) {
+      camera.position.lerp(activeCamera.getWorldPosition(new THREE.Vector3()), 0.1)
+      const pos = activeCamera.target.clone()
       pos.y += 1.8
       camera.lookAt(pos)
     }
 
     fred.update(delta)
-    this.ghouls.forEach(ghoul => ghoul.update(delta))
+    ghouls.forEach(ghoul => ghoul.update(delta))
     renderer.render(scene, camera)
   }
 }
