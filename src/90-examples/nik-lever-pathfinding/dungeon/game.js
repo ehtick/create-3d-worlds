@@ -7,6 +7,7 @@ import { fradAnims, ghoulAnims } from './data.js'
 import { initLights, ambLight } from '/utils/light.js'
 import { getMouseIntersects } from '/utils/helpers.js'
 import { cloneGLTF, randomWaypoint } from './utils.js'
+import { loadModel } from '/utils/loaders.js'
 
 const assetsPath = '../assets/'
 const loader = new GLTFLoader()
@@ -131,9 +132,11 @@ function loadGhoul() {
   })
 }
 
+/* LOOP */
+
 function render() {
   const delta = clock.getDelta()
-  requestAnimationFrame(() => render())
+  requestAnimationFrame(render)
 
   if (activeCamera) {
     camera.position.lerp(activeCamera.getWorldPosition(new THREE.Vector3()), 0.1)
