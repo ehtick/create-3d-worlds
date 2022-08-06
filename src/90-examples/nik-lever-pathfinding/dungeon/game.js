@@ -17,6 +17,44 @@ ambLight()
 initLights()
 camera.position.set(0, 22, 18)
 
+function cloneGLTF(gltf) {
+  const clone = {
+    animations: gltf.animations,
+    scene: gltf.scene.clone(true)
+  }
+
+  const skinnedMeshes = {}
+  gltf.scene.traverse(node => {
+    if (node.isSkinnedMesh)
+      skinnedMeshes[node.name] = node
+  })
+
+  const cloneBones = {}
+  const cloneSkinnedMeshes = {}
+
+  clone.scene.traverse(node => {
+    if (node.isBone)
+      cloneBones[node.name] = node
+    if (node.isSkinnedMesh)
+      cloneSkinnedMeshes[node.name] = node
+  })
+
+  for (const name in skinnedMeshes) {
+    const skinnedMesh = skinnedMeshes[name]
+    const { skeleton } = skinnedMesh
+    const cloneSkinnedMesh = cloneSkinnedMeshes[name]
+    const orderedCloneBones = []
+    for (let i = 0; i < skeleton.bones.length; ++i) {
+      const cloneBone = cloneBones[skeleton.bones[i].name]
+      orderedCloneBones.push(cloneBone)
+    }
+    cloneSkinnedMesh.bind(
+      new THREE.Skeleton(orderedCloneBones, skeleton.boneInverses),
+      cloneSkinnedMesh.matrixWorld)
+  }
+  return clone
+}
+
 class Game {
   constructor() {
     this.loadEnvironment()
@@ -100,7 +138,7 @@ class Game {
   loadGhoul() {
     loader.load(`${assetsPath}ghoul.glb`, gltf => {
       const gltfs = [gltf]
-      for (let i = 0; i < 3; i++) gltfs.push(this.cloneGLTF(gltf))
+      for (let i = 0; i < 3; i++) gltfs.push(cloneGLTF(gltf))
       this.ghouls = []
 
       gltfs.forEach(gltf => {
@@ -134,44 +172,6 @@ class Game {
     xhr => {
       loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.67
     })
-  }
-
-  cloneGLTF(gltf) {
-    const clone = {
-      animations: gltf.animations,
-      scene: gltf.scene.clone(true)
-    }
-
-    const skinnedMeshes = {}
-    gltf.scene.traverse(node => {
-      if (node.isSkinnedMesh)
-        skinnedMeshes[node.name] = node
-    })
-
-    const cloneBones = {}
-    const cloneSkinnedMeshes = {}
-
-    clone.scene.traverse(node => {
-      if (node.isBone)
-        cloneBones[node.name] = node
-      if (node.isSkinnedMesh)
-        cloneSkinnedMeshes[node.name] = node
-    })
-
-    for (const name in skinnedMeshes) {
-      const skinnedMesh = skinnedMeshes[name]
-      const { skeleton } = skinnedMesh
-      const cloneSkinnedMesh = cloneSkinnedMeshes[name]
-      const orderedCloneBones = []
-      for (let i = 0; i < skeleton.bones.length; ++i) {
-        const cloneBone = cloneBones[skeleton.bones[i].name]
-        orderedCloneBones.push(cloneBone)
-      }
-      cloneSkinnedMesh.bind(
-        new THREE.Skeleton(orderedCloneBones, skeleton.boneInverses),
-        cloneSkinnedMesh.matrixWorld)
-    }
-    return clone
   }
 
   get randomWaypoint() {
