@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { scene } from '/utils/scene.js'
+import { randomWaypoint } from './utils.js'
 
 class Player {
   constructor(options) {
@@ -18,7 +19,6 @@ class Player {
     if (this.npc) this.dead = false
 
     this.speed = options.speed
-    this.app = options.app
     this.pathfinder = options.pathfinder
     this.navMeshGroup = this.pathfinder.getGroup('dungeon', this.object.position)
 
@@ -121,7 +121,7 @@ class Player {
         this.calculatedPath.shift()
         if (!this.calculatedPath.length)
           if (this.npc)
-            this.newPath(this.app.randomWaypoint)
+            this.newPath(randomWaypoint())
           else {
             player.position.copy(targetPosition)
             this.action = 'idle'
@@ -130,7 +130,7 @@ class Player {
           this.setTargetDirection()
       }
     } else
-    if (this.npc && !this.dead) this.newPath(this.app.randomWaypoint)
+    if (this.npc && !this.dead) this.newPath(randomWaypoint())
   }
 }
 

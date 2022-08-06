@@ -1,4 +1,10 @@
 import * as THREE from 'three'
+import { waypoints } from './data.js'
+
+export const randomWaypoint = () => {
+  const i = Math.floor(Math.random() * waypoints.length)
+  return waypoints[i]
+}
 
 export function cloneGLTF({ scene, animations }) {
   const clone = {

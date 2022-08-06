@@ -4,10 +4,10 @@ import { Pathfinding } from '../libs/three-pathfinding.module.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { Player } from './Player.js'
 import { LoadingBar } from './LoadingBar.js'
-import { waypoints, fradAnims, ghoulAnims } from './data.js'
+import { fradAnims, ghoulAnims } from './data.js'
 import { initLights, ambLight } from '/utils/light.js'
 import { getMouseIntersects } from '/utils/helpers.js'
-import { cloneGLTF } from './utils.js'
+import { cloneGLTF, randomWaypoint } from './utils.js'
 
 const assetsPath = '../assets/'
 const loader = new GLTFLoader()
@@ -33,11 +33,6 @@ camera.position.set(0, 22, 18)
 wide.position.copy(camera.position)
 
 /* FUNCTIONS */
-
-const randomWaypoint = () => {
-  const i = Math.floor(Math.random() * waypoints.length)
-  return waypoints[i]
-}
 
 const raycast = e => {
   const intersects = getMouseIntersects(e, camera, navmesh)
@@ -98,7 +93,6 @@ class Game {
         loader,
         anims: fradAnims,
         clip: model.animations[0],
-        app: this,
         pathfinder,
         name: 'fred',
         npc: false
@@ -138,7 +132,6 @@ class Game {
           loader,
           anims: ghoulAnims,
           clip: model.animations[0],
-          app: this,
           pathfinder,
           name: 'ghoul',
           npc: true
