@@ -4,7 +4,7 @@ import { Pathfinding } from '../libs/three-pathfinding.module.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { Player } from './Player.js'
 import { fradAnims, ghoulAnims } from './data.js'
-import { initLights, ambLight } from '/utils/light.js'
+import { createSunLight, ambLight } from '/utils/light.js'
 import { getMouseIntersects } from '/utils/helpers.js'
 import { cloneGLTF, randomWaypoint } from './utils.js'
 import { loadModel } from '/utils/loaders.js'
@@ -27,13 +27,22 @@ const cameras = { wideCamera, rearCamera, frontCamera }
 let fred, activeCamera, navmesh
 
 ambLight()
-initLights()
+scene.add(createSunLight({ x: -5, y: 10, z: 2 }))
 camera.position.set(0, 22, 18)
 wideCamera.position.copy(camera.position)
 
-loadEnvironment()
 loadFred()
 loadGhoul()
+
+const { mesh: dungeon } = await loadModel('world/dungeon.glb')
+scene.add(dungeon)
+dungeon.traverse(child => {
+  if (child.name == 'Navmesh') {
+    child.material.visible = false
+    navmesh = child
+  }
+})
+pathfinder.setZoneData('dungeon', Pathfinding.createZone(navmesh.geometry))
 
 /* FUNCTIONS */
 
@@ -50,21 +59,6 @@ const switchCamera = () => {
     activeCamera = cameras.frontCamera
   else if (activeCamera == cameras.frontCamera)
     activeCamera = cameras.wideCamera
-}
-
-function loadEnvironment() {
-  loader.load(`${assetsPath}dungeon.glb`, model => {
-    scene.add(model.scene)
-    model.scene.traverse(child => {
-      if (child.isMesh)
-        if (child.name == 'Navmesh') {
-          child.material.visible = false
-          navmesh = child
-        } else
-          child.receiveShadow = true
-    })
-    pathfinder.setZoneData('dungeon', Pathfinding.createZone(navmesh.geometry))
-  })
 }
 
 function loadFred() {

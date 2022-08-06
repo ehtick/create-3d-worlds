@@ -41,8 +41,7 @@ const prepareMesh = ({ resolve, model, size, angle, axis, animations, shouldCent
   if (shouldAdjustHeight) adjustHeight(model)
 
   model.traverse(child => {
-    if (!child.isMesh) return
-    child.castShadow = child.receiveShadow = true
+    if (child.isMesh) child.castShadow = child.receiveShadow = true
   })
   if (angle) model.rotateOnWorldAxis(new THREE.Vector3(...axis), angle)
 
@@ -79,7 +78,7 @@ export function loadGlb(params) {
   const gtflLoader = new GLTFLoader()
   return new Promise(resolve => {
     gtflLoader.load(`/assets/models/${params.file}`, ({ scene, animations }) => {
-      prepareMesh({ resolve, model: scene.children[0], animations, ...params })
+      prepareMesh({ resolve, model: scene, animations, ...params })
     })
   })
 }
