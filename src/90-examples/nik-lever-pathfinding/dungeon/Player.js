@@ -4,12 +4,12 @@ import { randomWaypoint } from './utils.js'
 import { fredAnims, ghoulAnims } from './data.js'
 
 class Player {
-  constructor({ name, object, speed, clip, npc, pathfinder }) {
+  constructor({ name, model, clip, speed, npc, pathfinder }) {
     this.name = name || 'Player'
     this.animations = {}
-    scene.add(object)
+    scene.add(model)
 
-    this.object = object
+    this.model = model
     this.pathLines = new THREE.Object3D()
     this.pathColor = new THREE.Color(0xFFFFFF)
     this.nodeRadius = 0.2
@@ -20,20 +20,20 @@ class Player {
 
     this.speed = speed
     this.pathfinder = pathfinder
-    this.navMeshGroup = this.pathfinder.getGroup('dungeon', this.object.position)
+    this.navMeshGroup = this.pathfinder.getGroup('dungeon', this.model.position)
 
-    const point = this.object.position.clone()
+    const point = this.model.position.clone()
     point.z += 10
-    this.object.lookAt(point)
+    this.model.lookAt(point)
 
     const anims = name == 'fred' ? fredAnims : ghoulAnims
-    this.mixer = new THREE.AnimationMixer(object)
+    this.mixer = new THREE.AnimationMixer(model)
     anims.forEach(anim => {
       this.animations[anim.name] = THREE.AnimationUtils.subclip(clip, anim.name, anim.start, anim.end)
     })
 
     // if (animations) {
-    //   this.mixer = new THREE.AnimationMixer(object)
+    //   this.mixer = new THREE.AnimationMixer(model)
     //   animations.forEach(animation => {
     //     this.animations[animation.name.toLowerCase()] = animation
     //   })
@@ -42,7 +42,7 @@ class Player {
 
   newPath(point) {
     if (!point) return
-    const player = this.object
+    const player = this.model
 
     if (this.pathfinder === undefined) {
       this.calculatedPath = [point.clone()]
@@ -62,7 +62,7 @@ class Player {
   }
 
   setTargetDirection() {
-    const player = this.object
+    const player = this.model
     const point = this.calculatedPath[0].clone()
     point.y = player.position.y
     const quaternion = player.quaternion.clone()
@@ -93,7 +93,7 @@ class Player {
 
   update(dt) {
     const { speed } = this
-    const player = this.object
+    const player = this.model
     if (this.mixer) this.mixer.update(dt)
 
     if (this.calculatedPath && this.calculatedPath.length) {
@@ -131,14 +131,14 @@ class Player {
 }
 
 class Fred extends Player {
-  constructor({ object, clip, pathfinder }) {
-    super({ name: 'fred', npc: false, speed: 5, object, clip, pathfinder })
+  constructor({ model, clip, pathfinder }) {
+    super({ name: 'fred', npc: false, speed: 5, model, clip, pathfinder })
   }
 }
 
 class Ghoul extends Player {
-  constructor({ object, clip, pathfinder }) {
-    super({ name: 'ghoul', npc: true, speed: 4, object, clip, pathfinder })
+  constructor({ model, clip, pathfinder }) {
+    super({ name: 'ghoul', npc: true, speed: 4, model, clip, pathfinder })
   }
 }
 

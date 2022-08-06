@@ -61,51 +61,51 @@ const switchCamera = () => {
 }
 
 function loadFred() {
-  loader.load(`${assetsPath}fred.glb`, model => {
-    const object = model.scene.children[0]
-    object.traverse(child => {
+  loader.load(`${assetsPath}fred.glb`, gltf => {
+    const model = gltf.scene.children[0]
+    model.traverse(child => {
       if (child.isMesh) child.castShadow = true
     })
     const options = {
-      object,
-      clip: model.animations[0],
+      model,
+      clip: gltf.animations[0],
       pathfinder,
     }
     fred = new Fred(options)
     fred.action = 'idle'
     const scale = 0.015
-    fred.object.scale.set(scale, scale, scale)
-    fred.object.position.set(-1, 0, 2)
+    fred.model.scale.set(scale, scale, scale)
+    fred.model.position.set(-1, 0, 2)
 
-    rearCamera.target = fred.object.position
-    fred.object.add(rearCamera)
-    frontCamera.target = fred.object.position
-    fred.object.add(frontCamera)
+    rearCamera.target = fred.model.position
+    fred.model.add(rearCamera)
+    frontCamera.target = fred.model.position
+    fred.model.add(frontCamera)
     activeCamera = wideCamera
   })
 }
 
 function loadGhoul() {
-  loader.load(`${assetsPath}ghoul.glb`, model => {
-    const gltfs = [model]
-    for (let i = 0; i < 3; i++) gltfs.push(cloneGLTF(model))
+  loader.load(`${assetsPath}ghoul.glb`, gltf => {
+    const gltfs = [gltf]
+    for (let i = 0; i < 3; i++) gltfs.push(cloneGLTF(gltf))
 
-    gltfs.forEach(model => {
-      const object = model.scene.children[0]
-      object.traverse(child => {
+    gltfs.forEach(gltf => {
+      const model = gltf.scene.children[0]
+      model.traverse(child => {
         if (child.isMesh) child.castShadow = true
       })
 
       const options = {
-        object,
-        clip: model.animations[0],
+        model,
+        clip: gltf.animations[0],
         pathfinder,
       }
 
       const ghoul = new Ghoul(options)
       const scale = 0.015
-      ghoul.object.scale.set(scale, scale, scale)
-      ghoul.object.position.copy(randomWaypoint())
+      ghoul.model.scale.set(scale, scale, scale)
+      ghoul.model.position.copy(randomWaypoint())
       ghoul.newPath(randomWaypoint())
       ghouls.push(ghoul)
     })
