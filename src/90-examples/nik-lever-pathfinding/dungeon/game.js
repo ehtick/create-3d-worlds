@@ -3,7 +3,6 @@ import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.
 import { Pathfinding } from '../libs/three-pathfinding.module.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { Player } from './Player.js'
-import { fradAnims, ghoulAnims } from './data.js'
 import { createSunLight, ambLight } from '/utils/light.js'
 import { getMouseIntersects } from '/utils/helpers.js'
 import { cloneGLTF, randomWaypoint } from './utils.js'
@@ -70,9 +69,6 @@ function loadFred() {
     const options = {
       object,
       speed: 5,
-      assetsPath,
-      loader,
-      anims: fradAnims,
       clip: model.animations[0],
       pathfinder,
       name: 'fred',
@@ -106,9 +102,6 @@ function loadGhoul() {
       const options = {
         object,
         speed: 4,
-        assetsPath,
-        loader,
-        anims: ghoulAnims,
         clip: model.animations[0],
         pathfinder,
         name: 'ghoul',

@@ -10,7 +10,7 @@ export const waypoints = [
   new THREE.Vector3(-22.2, 5.37, -0.15)
 ]
 
-export const fradAnims = [
+export const fredAnims = [
   { start: 30, end: 59, name: 'backpedal', loop: true },
   { start: 90, end: 129, name: 'bite', loop: false },
   { start: 164, end: 193, name: 'crawl', loop: true },

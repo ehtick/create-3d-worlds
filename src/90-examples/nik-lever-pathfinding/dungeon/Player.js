@@ -1,10 +1,10 @@
 import * as THREE from 'three'
 import { scene } from '/utils/scene.js'
 import { randomWaypoint } from './utils.js'
+import { fredAnims, ghoulAnims } from './data.js'
 
 class Player {
   constructor(options) {
-    this.assetsPath = options.assetsPath
     this.name = options.name || 'Player'
     this.animations = {}
     scene.add(options.object)
@@ -27,13 +27,11 @@ class Player {
     point.z += 10
     this.object.lookAt(point)
 
-    if (options.anims) {
-      // Use this option to crop a single animation into multiple clips
-      this.mixer = new THREE.AnimationMixer(options.object)
-      options.anims.forEach(anim => {
-        this.animations[anim.name] = THREE.AnimationUtils.subclip(clip, anim.name, anim.start, anim.end)
-      })
-    }
+    const anims = options.name == 'fred' ? fredAnims : ghoulAnims
+    this.mixer = new THREE.AnimationMixer(options.object)
+    anims.forEach(anim => {
+      this.animations[anim.name] = THREE.AnimationUtils.subclip(clip, anim.name, anim.start, anim.end)
+    })
 
     if (options.animations) {
       // Use this option to set multiple animations directly
