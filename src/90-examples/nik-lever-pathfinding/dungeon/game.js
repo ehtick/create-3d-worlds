@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js'
 import { Pathfinding } from '../libs/three-pathfinding.module.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { Player } from './Player.js'
+import { Fred, Ghoul } from './Player.js'
 import { createSunLight, ambLight } from '/utils/light.js'
 import { getMouseIntersects } from '/utils/helpers.js'
 import { cloneGLTF, randomWaypoint } from './utils.js'
@@ -68,13 +68,10 @@ function loadFred() {
     })
     const options = {
       object,
-      speed: 5,
       clip: model.animations[0],
       pathfinder,
-      name: 'fred',
-      npc: false
     }
-    fred = new Player(options)
+    fred = new Fred(options)
     fred.action = 'idle'
     const scale = 0.015
     fred.object.scale.set(scale, scale, scale)
@@ -101,14 +98,11 @@ function loadGhoul() {
 
       const options = {
         object,
-        speed: 4,
         clip: model.animations[0],
         pathfinder,
-        name: 'ghoul',
-        npc: true
       }
 
-      const ghoul = new Player(options)
+      const ghoul = new Ghoul(options)
       const scale = 0.015
       ghoul.object.scale.set(scale, scale, scale)
       ghoul.object.position.copy(randomWaypoint())

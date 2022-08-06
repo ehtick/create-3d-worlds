@@ -130,4 +130,16 @@ class Player {
   }
 }
 
-export { Player }
+class Fred extends Player {
+  constructor({ object, clip, pathfinder }) {
+    super({ name: 'fred', npc: false, speed: 5, object, clip, pathfinder })
+  }
+}
+
+class Ghoul extends Player {
+  constructor({ object, clip, pathfinder }) {
+    super({ name: 'ghoul', npc: true, speed: 4, object, clip, pathfinder })
+  }
+}
+
+export { Player, Fred, Ghoul }
