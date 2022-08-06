@@ -8,51 +8,23 @@ import { LoadingBar } from './LoadingBar.js'
 import { waypoints, fradAnims, ghoulAnims } from './data.js'
 import { initLights, ambLight } from '/utils/light.js'
 import { getMouseIntersects } from '/utils/helpers.js'
+import { cloneGLTF } from './utils.js'
+
+const assetsPath = '../assets/'
 
 const loader = new GLTFLoader()
 const loadingBar = new LoadingBar()
-const assetsPath = '../assets/'
+const pathfinder = new Pathfinding()
+
+let fred
 
 ambLight()
 initLights()
 camera.position.set(0, 22, 18)
 
-function cloneGLTF(gltf) {
-  const clone = {
-    animations: gltf.animations,
-    scene: gltf.scene.clone(true)
-  }
-
-  const skinnedMeshes = {}
-  gltf.scene.traverse(node => {
-    if (node.isSkinnedMesh)
-      skinnedMeshes[node.name] = node
-  })
-
-  const cloneBones = {}
-  const cloneSkinnedMeshes = {}
-
-  clone.scene.traverse(node => {
-    if (node.isBone)
-      cloneBones[node.name] = node
-    if (node.isSkinnedMesh)
-      cloneSkinnedMeshes[node.name] = node
-  })
-
-  for (const name in skinnedMeshes) {
-    const skinnedMesh = skinnedMeshes[name]
-    const { skeleton } = skinnedMesh
-    const cloneSkinnedMesh = cloneSkinnedMeshes[name]
-    const orderedCloneBones = []
-    for (let i = 0; i < skeleton.bones.length; ++i) {
-      const cloneBone = cloneBones[skeleton.bones[i].name]
-      orderedCloneBones.push(cloneBone)
-    }
-    cloneSkinnedMesh.bind(
-      new THREE.Skeleton(orderedCloneBones, skeleton.boneInverses),
-      cloneSkinnedMesh.matrixWorld)
-  }
-  return clone
+const randomWaypoint = () => {
+  const i = Math.floor(Math.random() * waypoints.length)
+  return waypoints[i]
 }
 
 class Game {
@@ -61,7 +33,7 @@ class Game {
     const raycast = e => {
       const intersects = getMouseIntersects(e, camera, this.navmesh)
       if (intersects.length)
-        this.fred.newPath(intersects[0].point, true)
+        fred.newPath(intersects[0].point, true)
     }
     renderer.domElement.addEventListener('click', raycast, false)
   }
@@ -79,9 +51,7 @@ class Game {
             child.receiveShadow = true
           }
       })
-      this.pathfinder = new Pathfinding()
-      this.ZONE = 'dungeon'
-      this.pathfinder.setZoneData(this.ZONE, Pathfinding.createZone(this.navmesh.geometry))
+      pathfinder.setZoneData('dungeon', Pathfinding.createZone(this.navmesh.geometry))
       this.loadFred()
     },
     xhr => {
@@ -103,26 +73,27 @@ class Game {
         anims: fradAnims,
         clip: gltf.animations[0],
         app: this,
+        pathfinder,
         name: 'fred',
         npc: false
       }
-      this.fred = new Player(options)
-      this.fred.action = 'idle'
+      fred = new Player(options)
+      fred.action = 'idle'
       const scale = 0.015
-      this.fred.object.scale.set(scale, scale, scale)
-      this.fred.object.position.set(-1, 0, 2)
+      fred.object.scale.set(scale, scale, scale)
+      fred.object.position.set(-1, 0, 2)
 
       const wide = new THREE.Object3D()
       wide.position.copy(camera.position)
       wide.target = new THREE.Vector3(0, 0, 0)
       const rear = new THREE.Object3D()
       rear.position.set(0, 500, -500)
-      rear.target = this.fred.object.position
-      this.fred.object.add(rear)
+      rear.target = fred.object.position
+      fred.object.add(rear)
       const front = new THREE.Object3D()
       front.position.set(0, 500, 500)
-      front.target = this.fred.object.position
-      this.fred.object.add(front)
+      front.target = fred.object.position
+      fred.object.add(front)
       this.cameras = { wide, rear, front }
       this.activeCamera = wide
 
@@ -155,6 +126,7 @@ class Game {
           anims: ghoulAnims,
           clip: gltf.animations[0],
           app: this,
+          pathfinder,
           name: 'ghoul',
           npc: true
         }
@@ -162,8 +134,8 @@ class Game {
         const ghoul = new Player(options)
         const scale = 0.015
         ghoul.object.scale.set(scale, scale, scale)
-        ghoul.object.position.copy(this.randomWaypoint)
-        ghoul.newPath(this.randomWaypoint)
+        ghoul.object.position.copy(randomWaypoint())
+        ghoul.newPath(randomWaypoint())
         this.ghouls.push(ghoul)
       })
       this.render()
@@ -172,11 +144,6 @@ class Game {
     xhr => {
       loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.67
     })
-  }
-
-  get randomWaypoint() {
-    const index = Math.floor(Math.random() * waypoints.length)
-    return waypoints[index]
   }
 
   switchCamera() {
@@ -199,7 +166,7 @@ class Game {
       camera.lookAt(pos)
     }
 
-    this.fred.update(delta)
+    fred.update(delta)
     this.ghouls.forEach(ghoul => ghoul.update(delta))
     renderer.render(scene, camera)
   }

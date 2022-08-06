@@ -24,11 +24,8 @@ class Player {
     this.speed = options.speed
     this.app = options.app
 
-    if (options.app.pathfinder) {
-      this.pathfinder = options.app.pathfinder
-      this.ZONE = options.app.ZONE
-      this.navMeshGroup = this.pathfinder.getGroup(this.ZONE, this.object.position)
-    }
+    this.pathfinder = options.pathfinder
+    this.navMeshGroup = this.pathfinder.getGroup('dungeon', this.object.position)
 
     const { clip } = options
     const self = this
@@ -64,7 +61,7 @@ class Player {
     }
 
     // Calculate a path to the target and store it
-    this.calculatedPath = this.pathfinder.findPath(player.position, pt, this.ZONE, this.navMeshGroup)
+    this.calculatedPath = this.pathfinder.findPath(player.position, pt, 'dungeon', this.navMeshGroup)
 
     if (this.calculatedPath && this.calculatedPath.length) {
       this.action = 'walk'
