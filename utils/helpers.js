@@ -155,15 +155,13 @@ export const directionBlocked = (mesh, solids, vector) => {
   return intersections.length > 0
 }
 
-export function getMouseIntersects(e, camera = defaultCamera, scene = defaultScene) {
-  const mouse3D = new THREE.Vector3(
-    e.clientX / window.innerWidth * 2 - 1,
-    -e.clientY / window.innerHeight * 2 + 1,
-    0
-  )
+export function getMouseIntersects(e, camera = defaultCamera, target = defaultScene) {
+  const mouse = normalizeMouse(e)
   const raycaster = new THREE.Raycaster()
-  raycaster.setFromCamera(mouse3D, camera)
-  const intersects = raycaster.intersectObjects(scene.children)
+  raycaster.setFromCamera(mouse, camera)
+  target = target.type === 'Scene' ? target.children : target // eslint-disable-line no-param-reassign
+  const method = target.length ? 'intersectObjects' : 'intersectObject'
+  const intersects = raycaster[method](target)
   return intersects
 }
 

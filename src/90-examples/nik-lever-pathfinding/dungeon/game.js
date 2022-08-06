@@ -1,36 +1,32 @@
 /* dat */
 import * as THREE from 'three'
 import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js'
-import { RGBELoader } from '/node_modules/three/examples/jsm/loaders/RGBELoader.js'
 import { Pathfinding } from '../libs/three-pathfinding.module.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { Player } from './Player.js'
 import { LoadingBar } from './LoadingBar.js'
 import { waypoints, fradAnims, ghoulAnims } from './data.js'
-import { initLights } from '/utils/light.js'
-import { normalizeMouse } from '/utils/helpers.js'
+import { initLights, ambLight } from '/utils/light.js'
+import { normalizeMouse, getMouseIntersects } from '/utils/helpers.js'
 
+const loader = new GLTFLoader()
 const assetsPath = '../assets/'
+
+ambLight()
 initLights()
 camera.position.set(0, 22, 18)
 
 class Game {
   constructor() {
-    const ambient = new THREE.HemisphereLight(0x555555, 0x999999)
-    scene.add(ambient)
 
     this.loadingBar = new LoadingBar()
     this.loadEnvironment()
 
     this.loading = true
-    const raycaster = new THREE.Raycaster()
 
     const raycast = e => {
       if (this.loading) return
-      const mouse = normalizeMouse(e)
-
-      raycaster.setFromCamera(mouse, camera)
-      const intersects = raycaster.intersectObject(this.navmesh)
+      const intersects = getMouseIntersects(e, camera, this.navmesh)
       if (intersects.length > 0) {
         const pt = intersects[0].point
         this.fred.newPath(pt, true)
@@ -40,7 +36,6 @@ class Game {
   }
 
   loadEnvironment() {
-    const loader = new GLTFLoader()
     loader.load(`${assetsPath}dungeon.glb`, gltf => {
       scene.add(gltf.scene)
       gltf.scene.traverse(child => {
@@ -64,13 +59,10 @@ class Game {
   }
 
   loadFred() {
-    const loader = new GLTFLoader()
-
     loader.load(`${assetsPath}fred.glb`, gltf => {
       const object = gltf.scene.children[0]
       object.traverse(child => {
-        if (child.isMesh)
-          child.castShadow = true
+        if (child.isMesh) child.castShadow = true
       })
       const options = {
         object,
@@ -114,7 +106,6 @@ class Game {
   }
 
   loadGhoul() {
-    const loader = new GLTFLoader()
     loader.load(`${assetsPath}ghoul.glb`, gltf => {
       const gltfs = [gltf]
       for (let i = 0; i < 3; i++) gltfs.push(this.cloneGLTF(gltf))
@@ -123,8 +114,7 @@ class Game {
       gltfs.forEach(gltf => {
         const object = gltf.scene.children[0]
         object.traverse(child => {
-          if (child.isMesh)
-            child.castShadow = true
+          if (child.isMesh) child.castShadow = true
         })
 
         const options = {
