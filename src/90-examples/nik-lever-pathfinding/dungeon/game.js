@@ -1,4 +1,4 @@
-/* dat */
+/* global dat */
 import * as THREE from 'three'
 import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js'
 import { Pathfinding } from '../libs/three-pathfinding.module.js'
@@ -21,16 +21,12 @@ class Game {
 
     this.loadingBar = new LoadingBar()
     this.loadEnvironment()
-
     this.loading = true
 
     const raycast = e => {
-      if (this.loading) return
       const intersects = getMouseIntersects(e, camera, this.navmesh)
-      if (intersects.length > 0) {
-        const pt = intersects[0].point
-        this.fred.newPath(pt, true)
-      }
+      if (intersects.length)
+        this.fred.newPath(intersects[0].point, true)
     }
     renderer.domElement.addEventListener('click', raycast, false)
   }
