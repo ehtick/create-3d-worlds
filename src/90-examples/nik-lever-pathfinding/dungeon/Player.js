@@ -4,42 +4,40 @@ import { randomWaypoint } from './utils.js'
 import { fredAnims, ghoulAnims } from './data.js'
 
 class Player {
-  constructor(options) {
-    this.name = options.name || 'Player'
+  constructor({ name, object, speed, clip, npc, pathfinder }) {
+    this.name = name || 'Player'
     this.animations = {}
-    scene.add(options.object)
+    scene.add(object)
 
-    this.object = options.object
+    this.object = object
     this.pathLines = new THREE.Object3D()
     this.pathColor = new THREE.Color(0xFFFFFF)
-    this.nodeRadius = (options.nodeRadius) ? options.nodeRadius : 0.2
+    this.nodeRadius = 0.2
     scene.add(this.pathLines)
 
-    this.npc = options.npc
+    this.npc = npc
     if (this.npc) this.dead = false
 
-    this.speed = options.speed
-    this.pathfinder = options.pathfinder
+    this.speed = speed
+    this.pathfinder = pathfinder
     this.navMeshGroup = this.pathfinder.getGroup('dungeon', this.object.position)
 
-    const { clip } = options
     const point = this.object.position.clone()
     point.z += 10
     this.object.lookAt(point)
 
-    const anims = options.name == 'fred' ? fredAnims : ghoulAnims
-    this.mixer = new THREE.AnimationMixer(options.object)
+    const anims = name == 'fred' ? fredAnims : ghoulAnims
+    this.mixer = new THREE.AnimationMixer(object)
     anims.forEach(anim => {
       this.animations[anim.name] = THREE.AnimationUtils.subclip(clip, anim.name, anim.start, anim.end)
     })
 
-    if (options.animations) {
-      // Use this option to set multiple animations directly
-      this.mixer = new THREE.AnimationMixer(options.object)
-      options.animations.forEach(animation => {
-        this.animations[animation.name.toLowerCase()] = animation
-      })
-    }
+    // if (animations) {
+    //   this.mixer = new THREE.AnimationMixer(object)
+    //   animations.forEach(animation => {
+    //     this.animations[animation.name.toLowerCase()] = animation
+    //   })
+    // }
   }
 
   newPath(point) {
