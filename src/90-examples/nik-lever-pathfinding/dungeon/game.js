@@ -7,9 +7,10 @@ import { Player } from './Player.js'
 import { LoadingBar } from './LoadingBar.js'
 import { waypoints, fradAnims, ghoulAnims } from './data.js'
 import { initLights, ambLight } from '/utils/light.js'
-import { normalizeMouse, getMouseIntersects } from '/utils/helpers.js'
+import { getMouseIntersects } from '/utils/helpers.js'
 
 const loader = new GLTFLoader()
+const loadingBar = new LoadingBar()
 const assetsPath = '../assets/'
 
 ambLight()
@@ -18,11 +19,7 @@ camera.position.set(0, 22, 18)
 
 class Game {
   constructor() {
-
-    this.loadingBar = new LoadingBar()
     this.loadEnvironment()
-    this.loading = true
-
     const raycast = e => {
       const intersects = getMouseIntersects(e, camera, this.navmesh)
       if (intersects.length)
@@ -50,7 +47,7 @@ class Game {
       this.loadFred()
     },
     xhr => {
-      this.loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.0
+      loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.0
     })
   }
 
@@ -72,7 +69,6 @@ class Game {
         npc: false
       }
       this.fred = new Player(options)
-      this.loading = false
       this.fred.action = 'idle'
       const scale = 0.015
       this.fred.object.scale.set(scale, scale, scale)
@@ -97,7 +93,7 @@ class Game {
       this.loadGhoul()
     },
     xhr => {
-      this.loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.33
+      loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.33
     })
   }
 
@@ -133,10 +129,10 @@ class Game {
         this.ghouls.push(ghoul)
       })
       this.render()
-      this.loadingBar.visible = false
+      loadingBar.visible = false
     },
     xhr => {
-      this.loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.67
+      loadingBar.progress = (xhr.loaded / xhr.total) * 0.33 + 0.67
     })
   }
 
