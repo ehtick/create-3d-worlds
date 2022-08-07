@@ -134,6 +134,7 @@ class Player {
 class Fred extends Player {
   constructor({ model, animations, pathfinder }) {
     super({ name: 'fred', npc: false, speed: 5, model, animations, pathfinder })
+    this.action = 'idle'
   }
 }
 

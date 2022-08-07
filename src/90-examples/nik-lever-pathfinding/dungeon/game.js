@@ -57,31 +57,22 @@ const switchCamera = () => {
     activeCamera = cameras.wideCamera
 }
 
-loadFred()
-function loadFred() {
-  loader.load(`${assetsPath}fred.glb`, gltf => {
-    const model = gltf.scene.children[0]
-    model.traverse(child => {
-      if (child.isMesh) child.castShadow = true
-    })
-    const options = {
-      model,
-      animations: gltf.animations,
-      pathfinder,
-    }
-    fred = new Fred(options)
-    fred.action = 'idle'
-    const scale = 0.015
-    fred.model.scale.set(scale, scale, scale)
-    fred.model.position.set(-1, 0, 2)
+const { mesh, animations } = await loadModel({ file: 'character/fred.glb' })
+const model = mesh.children[0].children[0]
 
-    rearCamera.target = fred.model.position
-    fred.model.add(rearCamera)
-    frontCamera.target = fred.model.position
-    fred.model.add(frontCamera)
-    activeCamera = wideCamera
-  })
-}
+fred = new Fred({
+  model,
+  animations,
+  pathfinder,
+})
+const scale = 0.015
+model.scale.set(scale, scale, scale)
+model.position.set(-1, 0, 2)
+
+model.add(rearCamera)
+model.add(frontCamera)
+rearCamera.target = frontCamera.target = model.position
+activeCamera = wideCamera
 
 loadGhoul()
 function loadGhoul() {
