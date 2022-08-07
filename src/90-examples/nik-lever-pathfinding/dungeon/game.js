@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js'
 import { Pathfinding } from '../libs/three-pathfinding.module.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { Fred, Ghoul } from './Player.js'
@@ -8,8 +7,6 @@ import { getMouseIntersects } from '/utils/helpers.js'
 import { cloneGLTF, randomWaypoint } from './utils.js'
 import { loadModel } from '/utils/loaders.js'
 
-const assetsPath = '../assets/'
-const loader = new GLTFLoader()
 const pathfinder = new Pathfinding()
 const ghouls = []
 const scale = 0.015
@@ -44,7 +41,6 @@ pathfinder.setZoneData('dungeon', Pathfinding.createZone(navmesh.geometry))
 
 const { mesh, animations } = await loadModel({ file: 'character/fred.glb' })
 const model = mesh.children[0].children[0]
-
 const fred = new Fred({
   model,
   animations,
@@ -54,6 +50,22 @@ model.scale.set(scale, scale, scale)
 model.position.set(-1, 0, 2)
 model.add(rearCamera, frontCamera)
 rearCamera.target = frontCamera.target = model.position
+
+const { mesh: ghoulScene, animations: ghoulAnimations } = await loadModel('character/ghoul.glb')
+
+for (let i = 0; i < 4; i++) {
+  const cloned = cloneGLTF(ghoulScene.children[0])
+  const model = cloned.children[0]
+  const ghoul = new Ghoul({
+    model,
+    animations: ghoulAnimations,
+    pathfinder,
+  })
+  ghoul.model.scale.set(scale, scale, scale)
+  ghoul.model.position.copy(randomWaypoint())
+  ghoul.newPath(randomWaypoint())
+  ghouls.push(ghoul)
+}
 
 /* FUNCTIONS */
 
@@ -72,33 +84,9 @@ const switchCamera = () => {
     activeCamera = cameras.wideCamera
 }
 
-loadGhoul()
-function loadGhoul() {
-  loader.load(`${assetsPath}ghoul.glb`, ({ scene, animations }) => {
-    for (let i = 0; i < 4; i++) {
-      const cloned = cloneGLTF(scene)
-      const model = cloned.children[0]
-      model.traverse(child => {
-        if (child.isMesh) child.castShadow = true
-      })
-
-      const ghoul = new Ghoul({
-        model,
-        animations,
-        pathfinder,
-      })
-      ghoul.model.scale.set(scale, scale, scale)
-      ghoul.model.position.copy(randomWaypoint())
-      ghoul.newPath(randomWaypoint())
-      ghouls.push(ghoul)
-    }
-    render()
-  })
-}
-
 /* LOOP */
 
-function render() {
+void function render() {
   const delta = clock.getDelta()
   requestAnimationFrame(render)
 
@@ -112,7 +100,7 @@ function render() {
   fred.update(delta)
   ghouls.forEach(ghoul => ghoul.update(delta))
   renderer.render(scene, camera)
-}
+}()
 
 /* EVENTS */
 
