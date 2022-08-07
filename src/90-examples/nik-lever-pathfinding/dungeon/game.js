@@ -23,7 +23,8 @@ const cameras = { wideCamera, rearCamera, frontCamera }
 
 /* INIT */
 
-let fred, activeCamera, navmesh
+let navmesh
+let activeCamera = wideCamera
 
 ambLight()
 scene.add(createSunLight({ x: -5, y: 10, z: 2 }))
@@ -39,6 +40,18 @@ dungeon.traverse(child => {
   }
 })
 pathfinder.setZoneData('dungeon', Pathfinding.createZone(navmesh.geometry))
+
+const { mesh, animations } = await loadModel({ file: 'character/fred.glb' })
+const model = mesh.children[0].children[0]
+
+const fred = new Fred({
+  model,
+  animations,
+  pathfinder,
+})
+model.position.set(-1, 0, 2)
+model.add(rearCamera, frontCamera)
+rearCamera.target = frontCamera.target = model.position
 
 /* FUNCTIONS */
 
@@ -56,23 +69,6 @@ const switchCamera = () => {
   else if (activeCamera == cameras.frontCamera)
     activeCamera = cameras.wideCamera
 }
-
-const { mesh, animations } = await loadModel({ file: 'character/fred.glb' })
-const model = mesh.children[0].children[0]
-
-fred = new Fred({
-  model,
-  animations,
-  pathfinder,
-})
-const scale = 0.015
-model.scale.set(scale, scale, scale)
-model.position.set(-1, 0, 2)
-
-model.add(rearCamera)
-model.add(frontCamera)
-rearCamera.target = frontCamera.target = model.position
-activeCamera = wideCamera
 
 loadGhoul()
 function loadGhoul() {
