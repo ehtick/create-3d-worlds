@@ -2,6 +2,7 @@ import * as THREE from '/node_modules/three/build/three.module.js'
 import { camera, scene, renderer } from '/utils/scene.js'
 import { createMoon, createSaturn } from '/utils/planets.js'
 
+const { randInt } = THREE.MathUtils
 const loader = new THREE.TextureLoader()
 
 const totalStars = 1000
@@ -25,10 +26,10 @@ scene.add(moon)
 const sphereBg = createBgSphere()
 scene.add(sphereBg)
 
-const terrain = createTerrain()
+const terrain = createEmptyTerrain()
 scene.add(terrain)
 
-const terrainLines = createTerrainLines(terrain.geometry)
+const terrainLines = createTerrainLines(terrain)
 scene.add(terrainLines)
 
 const stars = createStars()
@@ -36,36 +37,43 @@ scene.add(stars)
 
 /* FUNCTIONS */
 
-function createTerrainLines(geometry) {
+function createEmptyTerrain() {
+  const map = loader.load() // load no texture
+  const geometry = new THREE.PlaneBufferGeometry(70, 70, 20, 20)
+  const material = new THREE.MeshBasicMaterial({ map })
+  const terrain = new THREE.Mesh(geometry, material)
+  terrain.rotation.x = -0.47 * Math.PI
+  terrain.rotation.z = THREE.Math.degToRad(90)
+  return terrain
+}
+
+function createTerrainLines(terrain) {
+  const { geometry } = terrain
   const positionArray = geometry.getAttribute('position').array
   geometry.setAttribute('myZ', new THREE.BufferAttribute(new Float32Array(positionArray.length / 3), 1))
   const myZArray = geometry.getAttribute('myZ').array
 
   for (let i = 0; i < positionArray.length; i++)
-    myZArray[i] = THREE.MathUtils.randInt(0, 5)
+    myZArray[i] = randInt(0, 5)
 
   const lineSegments = new THREE.LineSegments(
     geometry,
-    new THREE.LineBasicMaterial({
-      color: '#fff',
-      fog: false
-    })
+    new THREE.LineBasicMaterial({ color: '#fff' })
   )
-  lineSegments.rotation.x = -0.47 * Math.PI
-  lineSegments.rotation.z = THREE.Math.degToRad(90)
+  lineSegments.rotation.copy(terrain.rotation)
   return lineSegments
 }
 
-function createTerrain() {
-  const texture = loader.load()
-  const geometry = new THREE.PlaneBufferGeometry(70, 70, 20, 20)
-  const material = new THREE.MeshBasicMaterial({
-    map: texture,
-  })
-  const terrain = new THREE.Mesh(geometry, material)
-  terrain.rotation.x = -0.47 * Math.PI
-  terrain.rotation.z = THREE.Math.degToRad(90)
-  return terrain
+function updateTerrain(terrainGeometry) {
+  const positionArray = terrainGeometry.getAttribute('position').array
+  const myZArray = terrainGeometry.getAttribute('myZ').array
+
+  for (let i = 0; i < positionArray.length; i++)
+    if (i >= 210 && i <= 250) positionArray[i * 3 + 2] = 0
+    else {
+      positionArray[i * 3 + 2] = Math.sin((i + count * 0.0003)) * (myZArray[i] - (myZArray[i] * 0.5))
+      count += 0.1
+    }
 }
 
 function createBgSphere() {
@@ -89,10 +97,10 @@ function createStars() {
   const velocityArray = geometry.getAttribute('velocity').array
 
   for (let i = 0; i < totalStars; i++) {
-    let x = THREE.MathUtils.randInt(-100, 100)
-    const y = THREE.MathUtils.randInt(10, 40)
+    let x = randInt(-100, 100)
+    const y = randInt(10, 40)
     if (x < 7 && x > -7 && y < 20) x += 14
-    const z = THREE.MathUtils.randInt(0, -300)
+    const z = randInt(0, -300)
     positionArray[6 * i + 0] = positionArray[6 * i + 3] = x
     positionArray[6 * i + 1] = positionArray[6 * i + 4] = y
     positionArray[6 * i + 2] = positionArray[6 * i + 5] = z
@@ -119,29 +127,17 @@ function updateStars(geometry) {
     positionArray[6 * i + 5] += velocityArray[2 * i + 1]
 
     if (positionArray[6 * i + 2] > 50) {
-      positionArray[6 * i + 2] = positionArray[6 * i + 5] = THREE.MathUtils.randInt(-200, 10)
+      positionArray[6 * i + 2] = positionArray[6 * i + 5] = randInt(-200, 10)
       velocityArray[2 * i] = 0
       velocityArray[2 * i + 1] = 0
     }
   }
 }
 
-function updateTerrain(terrainGeometry) {
-  const positionArray = terrainGeometry.getAttribute('position').array
-  const myZArray = terrainGeometry.getAttribute('myZ').array
-
-  for (let i = 0; i < positionArray.length; i++)
-    if (i >= 210 && i <= 250) positionArray[i * 3 + 2] = 0
-    else {
-      positionArray[i * 3 + 2] = Math.sin((i + count * 0.0003)) * (myZArray[i] - (myZArray[i] * 0.5))
-      count += 0.1
-    }
-}
-
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
 
   planet.rotation.y += 0.002
   sphereBg.rotation.x += 0.002
