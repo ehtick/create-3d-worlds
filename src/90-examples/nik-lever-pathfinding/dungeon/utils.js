@@ -6,11 +6,8 @@ export const randomWaypoint = () => {
   return waypoints[i]
 }
 
-export function cloneGLTF({ scene, animations }) {
-  const clone = {
-    animations,
-    scene: scene.clone(true)
-  }
+export function cloneGLTF(scene) {
+  const clonedScene = scene.clone(true)
 
   const skinnedMeshes = {}
   scene.traverse(node => {
@@ -21,7 +18,7 @@ export function cloneGLTF({ scene, animations }) {
   const cloneBones = {}
   const cloneSkinnedMeshes = {}
 
-  clone.scene.traverse(node => {
+  clonedScene.traverse(node => {
     if (node.isBone)
       cloneBones[node.name] = node
     if (node.isSkinnedMesh)
@@ -41,5 +38,5 @@ export function cloneGLTF({ scene, animations }) {
       new THREE.Skeleton(orderedCloneBones, skeleton.boneInverses),
       cloneSkinnedMesh.matrixWorld)
   }
-  return clone
+  return clonedScene
 }

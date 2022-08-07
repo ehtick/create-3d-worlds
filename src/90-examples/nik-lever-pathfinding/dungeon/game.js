@@ -72,11 +72,14 @@ const switchCamera = () => {
 
 loadGhoul()
 function loadGhoul() {
-  loader.load(`${assetsPath}ghoul.glb`, gltf => {
-    const gltfs = [gltf]
-    for (let i = 0; i < 3; i++) gltfs.push(cloneGLTF(gltf))
+  loader.load(`${assetsPath}ghoul.glb`, ({ scene, animations }) => {
+    const models = []
+    for (let i = 0; i < 4; i++) {
+      const clonedScene = cloneGLTF(scene)
+      models.push({ scene: clonedScene, animations })
+    }
 
-    gltfs.forEach(gltf => {
+    models.forEach(gltf => {
       const model = gltf.scene.children[0]
       model.traverse(child => {
         if (child.isMesh) child.castShadow = true
