@@ -41,6 +41,7 @@ pathfinder.setZoneData('dungeon', Pathfinding.createZone(navmesh.geometry))
 
 const { mesh, animations } = await loadModel({ file: 'character/fred.glb' })
 const model = mesh.children[0].children[0]
+model.rotateX(-Math.PI * .5)
 const fred = new Fred({
   model,
   animations,
@@ -70,8 +71,7 @@ for (let i = 0; i < 4; i++) {
 
 const raycast = e => {
   const intersects = getMouseIntersects(e, camera, navmesh)
-  if (intersects.length)
-    fred.newPath(intersects[0].point, true)
+  if (intersects.length) fred.newPath(intersects[0].point, true)
 }
 
 const switchCamera = () => {
