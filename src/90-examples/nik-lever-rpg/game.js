@@ -11,7 +11,7 @@ dirLight()
 scene.background = new THREE.Color(0x605050)
 renderer.outputEncoding = THREE.GammaEncoding
 
-let onAction, cameraTarget, collected, environmentProxy
+let onAction, cameraTarget, collected, environmentProxy, activeCamera, currentAction
 
 const anims = ['ascend-stairs', 'gather-objects', 'look-around', 'push-button', 'run']
 const collect = []
@@ -19,24 +19,30 @@ const player = {}
 const cameraFade = 0.05
 const actionBtn = document.getElementById('action-btn')
 
+const backCamera = new THREE.Object3D()
+backCamera.position.set(0, 100, -250)
+const collectCamera = new THREE.Object3D()
+collectCamera.position.set(40, 82, 94)
+const cameras = { back: backCamera, collect: collectCamera }
+
 // FUNCTION
 
 const setActiveCamera = object => {
-  player.cameras.active = object
+  activeCamera = object
 }
 
 const toggleBriefcase = () => {
   const briefcase = document.getElementById('briefcase')
-  briefcase.style.opacity = briefcase.style.opacity > 0 ? '0' : '1'
+  console.log(briefcase.style.opacity)
+  briefcase.style.opacity = Number(briefcase.style.opacity) ? 0 : 1
 }
 
 const setAction = name => {
-  if (player.action == name) return
+  if (currentAction == name) return
   const anim = player[name]
   const action = player.mixer.clipAction(anim, player.root)
   player.mixer.stopAllAction()
-  player.action = name
-  action.timeScale = (name == 'walk' && player.move && player.move.forward < 0) ? -0.3 : 1
+  currentAction = name
   action.time = 0
   action.fadeIn(0.5)
   if (name == 'push-button' || name == 'gather-objects') action.loop = THREE.LoopOnce
@@ -45,11 +51,11 @@ const setAction = name => {
 }
 
 function contextAction() {
-  if (onAction && onAction.action)
+  if (onAction?.action)
     setAction(onAction.action)
 
   if (onAction.mode == 'collect') {
-    setActiveCamera(player.cameras.collect)
+    setActiveCamera(cameras.collect)
     collect[onAction.index].visible = false
     if (!collected) collected = []
     collected.push(onAction.index)
@@ -62,12 +68,12 @@ const playerControl = (forward, turn) => {
   player.move = (forward == 0 && turn == 0) ? null : { forward, turn }
 
   if (forward > 0) {
-    if (player.action != 'walk' && player.action != 'run')
+    if (currentAction != 'walk' && currentAction != 'run')
       setAction('walk')
   } else if (forward < -0.2) {
-    if (player.action != 'walk') setAction('walk')
+    if (currentAction != 'walk') setAction('walk')
   } else
-  if (player.action == 'walk' || player.action == 'run')
+  if (currentAction == 'walk' || currentAction == 'run')
     setAction('look-around')
 }
 
@@ -98,7 +104,7 @@ function movePlayer(dt) {
 
   if (!blocked)
     if (player.move.forward > 0) {
-      const speed = (player.action == 'run') ? 200 : 100
+      const speed = (currentAction == 'run') ? 200 : 100
       player.object.translateZ(dt * speed)
     } else
       player.object.translateZ(-dt * 30)
@@ -153,8 +159,8 @@ player.object = girlMesh
 player.mixer = new THREE.AnimationMixer(girlMesh)
 player.mixer.addEventListener('finished', () => {
   setAction('look-around')
-  if (player.cameras.active == player.cameras.collect) {
-    setActiveCamera(player.cameras.back)
+  if (activeCamera == cameras.collect) {
+    setActiveCamera(cameras.back)
     toggleBriefcase()
   }
 })
@@ -195,14 +201,8 @@ player.object.position.y += 50
 
 // INIT
 
-const back = new THREE.Object3D()
-back.position.set(0, 100, -250)
-back.parent = player.object
-const collectCamera = new THREE.Object3D()
-collectCamera.position.set(40, 82, 94)
-collectCamera.parent = player.object
-player.cameras = { back, collect: collectCamera }
-setActiveCamera(player.cameras.back)
+collectCamera.parent = backCamera.parent = player.object
+setActiveCamera(backCamera)
 
 new JoyStick({ onMove: playerControl })
 
@@ -215,7 +215,7 @@ void function animate() {
 
   if (player.mixer) player.mixer.update(dt)
 
-  if (player.action == 'walk') {
+  if (currentAction == 'walk') {
     const elapsedTime = Date.now() - player.actionTime
     if (elapsedTime > 1000 && player.move.forward > 0) setAction('run')
   }
@@ -225,8 +225,8 @@ void function animate() {
     player.object.rotateY(player.move.turn * dt)
   }
 
-  if (player.cameras && player.cameras.active) {
-    camera.position.lerp(player.cameras.active.getWorldPosition(new THREE.Vector3()), cameraFade)
+  if (cameras && activeCamera) {
+    camera.position.lerp(activeCamera.getWorldPosition(new THREE.Vector3()), cameraFade)
     let pos
     if (cameraTarget) {
       camera.position.copy(cameraTarget.position)
