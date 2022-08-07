@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { Pathfinding } from '../libs/three-pathfinding.module.js'
+import { Pathfinding } from './libs/three-pathfinding.module.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { Fred, Ghoul } from './Player.js'
 import { createSunLight, ambLight } from '/utils/light.js'
