@@ -8,29 +8,21 @@ import JoyStick from '/classes/JoyStick.js'
 hemLight()
 dirLight()
 
-const color = 0x605050
-scene.background = new THREE.Color(color)
+scene.background = new THREE.Color(0x605050)
+renderer.outputEncoding = THREE.GammaEncoding
+
+let onAction, cameraTarget, collected, environmentProxy
 
 const anims = ['ascend-stairs', 'gather-objects', 'look-around', 'push-button', 'run']
 const collect = []
 const player = {}
-const tweens = []
 const cameraFade = 0.05
-let onAction, cameraTarget, collected, environmentProxy
+const actionBtn = document.getElementById('action-btn')
+
+// FUNCTION
 
 const setActiveCamera = object => {
   player.cameras.active = object
-}
-
-const createCameras = () => {
-  const back = new THREE.Object3D()
-  back.position.set(0, 100, -250)
-  back.parent = player.object
-  const collect = new THREE.Object3D()
-  collect.position.set(40, 82, 94)
-  collect.parent = player.object
-  player.cameras = { back, collect }
-  setActiveCamera(player.cameras.back)
 }
 
 const toggleBriefcase = () => {
@@ -52,8 +44,6 @@ const setAction = name => {
   player.actionTime = Date.now()
 }
 
-const actionBtn = document.getElementById('action-btn')
-
 function contextAction() {
   if (onAction && onAction.action)
     setAction(onAction.action)
@@ -66,57 +56,6 @@ function contextAction() {
     document.getElementById('briefcase').children[0].children[0].children[onAction.index].children[0].src = onAction.src
   }
 }
-
-// LOAD GIRL
-
-const { mesh: girlMesh, animations } = await loadModel('lost-treasure/girl-walk.fbx')
-player.object = girlMesh
-player.mixer = new THREE.AnimationMixer(girlMesh)
-player.mixer.addEventListener('finished', () => {
-  setAction('look-around')
-  if (player.cameras.active == player.cameras.collect) {
-    setActiveCamera(player.cameras.back)
-    toggleBriefcase()
-  }
-})
-player.root = player.mixer.getRoot()
-player.walk = animations[0]
-scene.add(girlMesh)
-
-createCameras()
-
-// LOAD ENVIRONMENT
-
-const { mesh: environmentMesh } = await loadModel({ file: 'lost-treasure/environment/scene.gltf', size: 1000 })
-scene.add(environmentMesh)
-
-environmentMesh.traverse(child => {
-  if (child.isMesh && child.name.includes('mentproxy')) {
-    child.material.visible = false
-    environmentProxy = child
-  }
-})
-
-// LOAD USB
-
-const { mesh: usbMesh } = await loadModel('item/ammunition-box/scene.gltf')
-usbMesh.name = 'usb'
-usbMesh.position.set(-416, 0.8, -472)
-collect.push(usbMesh)
-scene.add(usbMesh)
-
-// LOAD ANIMATIONS
-
-const otherAnims = await loadFbxAnimations(anims, 'lost-treasure/')
-otherAnims.forEach(clip => {
-  player[clip.name] = clip
-  if (clip.name == 'push-button') player[clip.name].loop = false
-})
-
-setAction('look-around')
-player.object.position.y += 50
-
-// CONTROLS
 
 const playerControl = (forward, turn) => {
   turn = -turn // eslint-disable-line no-param-reassign
@@ -131,8 +70,6 @@ const playerControl = (forward, turn) => {
   if (player.action == 'walk' || player.action == 'run')
     setAction('look-around')
 }
-
-new JoyStick({ onMove: playerControl })
 
 const checkKeyboard = () => {
   if (keyboard.pressed.mouse) return
@@ -209,16 +146,72 @@ function movePlayer(dt) {
   }
 }
 
+// LOAD GIRL
+
+const { mesh: girlMesh, animations } = await loadModel('lost-treasure/girl-walk.fbx')
+player.object = girlMesh
+player.mixer = new THREE.AnimationMixer(girlMesh)
+player.mixer.addEventListener('finished', () => {
+  setAction('look-around')
+  if (player.cameras.active == player.cameras.collect) {
+    setActiveCamera(player.cameras.back)
+    toggleBriefcase()
+  }
+})
+player.root = player.mixer.getRoot()
+player.walk = animations[0]
+scene.add(girlMesh)
+
+// LOAD ENVIRONMENT
+
+const { mesh: environmentMesh } = await loadModel({ file: 'lost-treasure/factory/scene.gltf', size: 1000 })
+scene.add(environmentMesh)
+
+environmentMesh.traverse(child => {
+  if (child.isMesh && child.name.includes('mentproxy')) {
+    child.material.visible = false
+    environmentProxy = child
+  }
+})
+
+// LOAD USB
+
+const { mesh: usbMesh } = await loadModel('item/ammunition-box/scene.gltf')
+usbMesh.name = 'usb'
+usbMesh.position.set(-416, 0.8, -472)
+collect.push(usbMesh)
+scene.add(usbMesh)
+
+// LOAD ANIMATIONS
+
+const otherAnims = await loadFbxAnimations(anims, 'lost-treasure/')
+otherAnims.forEach(clip => {
+  player[clip.name] = clip
+  if (clip.name == 'push-button') player[clip.name].loop = false
+})
+
+setAction('look-around')
+player.object.position.y += 50
+
+// INIT
+
+const back = new THREE.Object3D()
+back.position.set(0, 100, -250)
+back.parent = player.object
+const collectCamera = new THREE.Object3D()
+collectCamera.position.set(40, 82, 94)
+collectCamera.parent = player.object
+player.cameras = { back, collect: collectCamera }
+setActiveCamera(player.cameras.back)
+
+new JoyStick({ onMove: playerControl })
+
 /* LOOP */
 
 void function animate() {
   requestAnimationFrame(() => animate())
   const dt = clock.getDelta()
   checkKeyboard()
-
-  if (tweens.length) tweens.forEach(tween => {
-    tween.update(dt)
-  })
 
   if (player.mixer) player.mixer.update(dt)
 
