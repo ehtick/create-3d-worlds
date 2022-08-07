@@ -4,8 +4,8 @@ import { randomWaypoint } from './utils.js'
 import { fredAnims, ghoulAnims } from './data.js'
 
 class Player {
-  constructor({ name, model, clip, speed, npc, pathfinder }) {
-    this.name = name || 'Player'
+  constructor({ name, model, animations, speed, npc, pathfinder }) {
+    this.name = name
     this.animations = {}
     scene.add(model)
 
@@ -26,6 +26,7 @@ class Player {
     point.z += 10
     this.model.lookAt(point)
 
+    const clip = animations[0]
     const anims = name == 'fred' ? fredAnims : ghoulAnims
     this.mixer = new THREE.AnimationMixer(model)
     anims.forEach(anim => {
@@ -131,14 +132,14 @@ class Player {
 }
 
 class Fred extends Player {
-  constructor({ model, clip, pathfinder }) {
-    super({ name: 'fred', npc: false, speed: 5, model, clip, pathfinder })
+  constructor({ model, animations, pathfinder }) {
+    super({ name: 'fred', npc: false, speed: 5, model, animations, pathfinder })
   }
 }
 
 class Ghoul extends Player {
-  constructor({ model, clip, pathfinder }) {
-    super({ name: 'ghoul', npc: true, speed: 4, model, clip, pathfinder })
+  constructor({ model, animations, pathfinder }) {
+    super({ name: 'ghoul', npc: true, speed: 4, model, animations, pathfinder })
   }
 }
 

@@ -30,9 +30,6 @@ scene.add(createSunLight({ x: -5, y: 10, z: 2 }))
 camera.position.set(0, 22, 18)
 wideCamera.position.copy(camera.position)
 
-loadFred()
-loadGhoul()
-
 const { mesh: dungeon } = await loadModel('world/dungeon.glb')
 scene.add(dungeon)
 dungeon.traverse(child => {
@@ -60,6 +57,7 @@ const switchCamera = () => {
     activeCamera = cameras.wideCamera
 }
 
+loadFred()
 function loadFred() {
   loader.load(`${assetsPath}fred.glb`, gltf => {
     const model = gltf.scene.children[0]
@@ -68,7 +66,7 @@ function loadFred() {
     })
     const options = {
       model,
-      clip: gltf.animations[0],
+      animations: gltf.animations,
       pathfinder,
     }
     fred = new Fred(options)
@@ -85,6 +83,7 @@ function loadFred() {
   })
 }
 
+loadGhoul()
 function loadGhoul() {
   loader.load(`${assetsPath}ghoul.glb`, gltf => {
     const gltfs = [gltf]
@@ -98,7 +97,7 @@ function loadGhoul() {
 
       const options = {
         model,
-        clip: gltf.animations[0],
+        animations: gltf.animations,
         pathfinder,
       }
 
