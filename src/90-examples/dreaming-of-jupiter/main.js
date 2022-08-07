@@ -1,11 +1,12 @@
 import * as THREE from '/node_modules/three/build/three.module.js'
 import { camera, scene, renderer } from '/utils/scene.js'
+import { createMoon, createSaturn } from '/utils/planets.js'
 
 const loader = new THREE.TextureLoader()
 
 const totalStars = 1000
-let count = 0,
-  t = 0
+let count = 0
+let t = 0
 
 camera.position.set(0, 1, 32)
 
@@ -13,10 +14,12 @@ const light = new THREE.PointLight('#ffffff', 1, 0)
 light.position.set(0, 30, 30)
 scene.add(light)
 
-const planet = createPlanet()
+const planet = createSaturn()
+planet.position.set(0, 8, -30)
 scene.add(planet)
 
 const moon = createMoon()
+moon.position.set(0, 8, 0)
 scene.add(moon)
 
 const sphereBg = createBgSphere()
@@ -67,7 +70,7 @@ function createTerrain() {
 
 function createBgSphere() {
   const texture = loader.load('images/cosmos.jpg')
-  const geometry = new THREE.SphereBufferGeometry(150, 32, 32)
+  const geometry = new THREE.SphereGeometry(150, 32, 32)
   const material = new THREE.MeshBasicMaterial({
     side: THREE.BackSide,
     map: texture,
@@ -75,30 +78,6 @@ function createBgSphere() {
   const sphereBg = new THREE.Mesh(geometry, material)
   sphereBg.position.set(0, 50, 0)
   return sphereBg
-}
-
-function createPlanet() {
-  const texturePlanet = loader.load('images/saturn-texture.jpg')
-  texturePlanet.anisotropy = 16
-  const planetGeometry = new THREE.SphereBufferGeometry(10, 50, 50)
-  const planetMaterial = new THREE.MeshLambertMaterial({
-    map: texturePlanet,
-  })
-  const planet = new THREE.Mesh(planetGeometry, planetMaterial)
-  planet.position.set(0, 8, -30)
-  return planet
-}
-
-function createMoon() {
-  const textureMoon = loader.load('images/moon-texture.jpg')
-  textureMoon.anisotropy = 16
-  const moonGeometry = new THREE.SphereBufferGeometry(2, 32, 32)
-  const moonMaterial = new THREE.MeshPhongMaterial({
-    map: textureMoon,
-  })
-  const moon = new THREE.Mesh(moonGeometry, moonMaterial)
-  moon.position.set(0, 8, 0)
-  return moon
 }
 
 function createStars() {

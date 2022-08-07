@@ -7,7 +7,6 @@ textureLoader.setPath('/assets/textures/planets/')
 
 export function createEarth({ r = 15, segments = 64 } = {}) {
   const map = textureLoader.load('earthmap4k.jpg') // max width is 4096
-  // map.anisotropy = renderer.capabilities.getMaxAnisotropy()
   const bumpMap = textureLoader.load('earthbump4k.jpg')
   const specularMap = textureLoader.load('earthspec4k.jpg')
   const material = new THREE.MeshPhongMaterial({ map, specularMap, bumpMap, displacementMap: bumpMap, displacementScale: 1.75 })
@@ -67,4 +66,14 @@ function addGlow(sun, distance = 50) {
     spotlight.position.set(x, y, z)
     sun.add(spotlight)
   }
+}
+
+/* SATURN */
+
+export function createSaturn({ r = 10, segments = 32 } = {}) {
+  const map = textureLoader.load('saturn.jpg')
+  const planetGeometry = new THREE.SphereGeometry(r, segments, segments)
+  const planetMaterial = new THREE.MeshLambertMaterial({ map })
+  const planet = new THREE.Mesh(planetGeometry, planetMaterial)
+  return planet
 }
