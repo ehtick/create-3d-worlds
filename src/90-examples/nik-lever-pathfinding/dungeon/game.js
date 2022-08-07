@@ -79,15 +79,15 @@ function loadGhoul() {
       models.push({ scene: clonedScene, animations })
     }
 
-    models.forEach(gltf => {
-      const model = gltf.scene.children[0]
+    models.forEach(clone => {
+      const model = clone.scene.children[0]
       model.traverse(child => {
         if (child.isMesh) child.castShadow = true
       })
 
       const options = {
         model,
-        animations: gltf.animations,
+        animations: clone.animations,
         pathfinder,
       }
 
