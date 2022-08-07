@@ -54,8 +54,7 @@ rearCamera.target = frontCamera.target = model.position
 const { mesh: ghoulScene, animations: ghoulAnimations } = await loadModel('character/ghoul.glb')
 
 for (let i = 0; i < 4; i++) {
-  const cloned = cloneGLTF(ghoulScene.children[0])
-  const model = cloned.children[0]
+  const model = cloneGLTF(ghoulScene.children[0].children[0])
   const ghoul = new Ghoul({
     model,
     animations: ghoulAnimations,
@@ -90,12 +89,10 @@ void function render() {
   const delta = clock.getDelta()
   requestAnimationFrame(render)
 
-  if (activeCamera) {
-    camera.position.lerp(activeCamera.getWorldPosition(new THREE.Vector3()), 0.1)
-    const pos = activeCamera.target.clone()
-    pos.y += 1.8
-    camera.lookAt(pos)
-  }
+  camera.position.lerp(activeCamera.getWorldPosition(new THREE.Vector3()), 0.1)
+  const pos = activeCamera.target.clone()
+  pos.y += 1.8
+  camera.lookAt(pos)
 
   fred.update(delta)
   ghouls.forEach(ghoul => ghoul.update(delta))
