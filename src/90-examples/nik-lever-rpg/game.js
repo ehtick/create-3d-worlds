@@ -10,7 +10,6 @@ dirLight()
 
 const color = 0x605050
 scene.background = new THREE.Color(color)
-scene.fog = new THREE.Fog(color, 500, 1500)
 
 const anims = ['ascend-stairs', 'gather-objects', 'look-around', 'push-button', 'run']
 const collect = []
@@ -265,9 +264,6 @@ void function animate() {
 
 /* EVENTS */
 
-document.getElementById('briefcase-btn').onclick = () => {
-  toggleBriefcase()
-}
-document.getElementById('action-btn').onclick = () => {
-  contextAction()
-}
+document.getElementById('briefcase-btn').onclick = () => toggleBriefcase()
+
+document.getElementById('action-btn').onclick = () => contextAction()
