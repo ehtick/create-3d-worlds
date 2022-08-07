@@ -12,6 +12,7 @@ const assetsPath = '../assets/'
 const loader = new GLTFLoader()
 const pathfinder = new Pathfinding()
 const ghouls = []
+const scale = 0.015
 
 const wideCamera = new THREE.Object3D()
 wideCamera.target = new THREE.Vector3(0, 0, 0)
@@ -49,6 +50,7 @@ const fred = new Fred({
   animations,
   pathfinder,
 })
+model.scale.set(scale, scale, scale)
 model.position.set(-1, 0, 2)
 model.add(rearCamera, frontCamera)
 rearCamera.target = frontCamera.target = model.position
@@ -73,31 +75,23 @@ const switchCamera = () => {
 loadGhoul()
 function loadGhoul() {
   loader.load(`${assetsPath}ghoul.glb`, ({ scene, animations }) => {
-    const models = []
     for (let i = 0; i < 4; i++) {
-      const clonedScene = cloneGLTF(scene)
-      models.push({ scene: clonedScene, animations })
-    }
-
-    models.forEach(clone => {
-      const model = clone.scene.children[0]
+      const cloned = cloneGLTF(scene)
+      const model = cloned.children[0]
       model.traverse(child => {
         if (child.isMesh) child.castShadow = true
       })
 
-      const options = {
+      const ghoul = new Ghoul({
         model,
-        animations: clone.animations,
+        animations,
         pathfinder,
-      }
-
-      const ghoul = new Ghoul(options)
-      const scale = 0.015
+      })
       ghoul.model.scale.set(scale, scale, scale)
       ghoul.model.position.copy(randomWaypoint())
       ghoul.newPath(randomWaypoint())
       ghouls.push(ghoul)
-    })
+    }
     render()
   })
 }
