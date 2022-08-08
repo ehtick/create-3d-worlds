@@ -1,5 +1,5 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
-import { FBXLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/loaders/FBXLoader.js'
+import * as THREE from 'three'
+import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js'
 
 import { Component } from '../ecs/component.js'
 import { CHARACTER_MODELS } from '../03-MMORPG/shared/data.mjs'

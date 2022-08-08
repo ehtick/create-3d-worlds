@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 
 import { Component } from '../../../ecs/component.js'
 import { CHARACTER_MODELS } from '../../shared/data.mjs'

@@ -1,6 +1,6 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
-import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/loaders/GLTFLoader.js'
-import { OBJLoader } from 'https://cdn.jsdelivr.net/npm/three@0.127/examples/jsm/loaders/OBJLoader.js'
+import * as THREE from 'three'
+import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js'
+import { OBJLoader } from '/node_modules/three/examples/jsm/loaders/OBJLoader.js'
 import { scene } from '/utils/scene.js'
 import { Component } from '../ecs/component.js'
 
