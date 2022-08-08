@@ -11,8 +11,6 @@ npx live-server
 
 ## TODO
 
-- prebaciti teren iz MMO u RPG
-
 Shaders
   - The Book of Shaders https://thebookofshaders.com/
 
@@ -36,10 +34,6 @@ Konačni automat
 
 - ažurirati verziju na poslednju (ukinuli su relativne importe pa puca, koristiti importmap)
   - probati nakon ažuriranja: https://threejs.org/examples/#webgl_points_nodes
-
-Čišćenje smeća:
-- modeli i ostalo iz simon-dev primera
-- assets/textures/terrain
 
 ### Particles
 
