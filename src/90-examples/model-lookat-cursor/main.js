@@ -4,21 +4,17 @@ import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 
+let model, neck, waist, mixer, idle
+
 initLights()
-let model, neck, waist, possibleAnims, mixer, idle
-let currentlyAnimating = false
-
-const loader = new GLTFLoader()
-const raycaster = new THREE.Raycaster()
-const preloader = document.getElementById('js-loader')
-
 camera.position.set(0, -3, 30)
 
-const stacyTexture = new THREE.TextureLoader().load('stacy.jpg')
-stacyTexture.flipY = false
+const loader = new GLTFLoader()
+const texture = new THREE.TextureLoader().load('stacy.jpg')
+texture.flipY = false
 
 const stacy_mtl = new THREE.MeshPhongMaterial({
-  map: stacyTexture,
+  map: texture,
   skinning: true
 })
 
@@ -32,7 +28,6 @@ loader.load('stacy_lightweight.glb', gltf => {
       o.receiveShadow = true
       o.material = stacy_mtl
     }
-    // Reference the neck and waist bones
     if (o.isBone && o.name === 'mixamorigNeck')
       neck = o
     if (o.isBone && o.name === 'mixamorigSpine')
@@ -44,20 +39,8 @@ loader.load('stacy_lightweight.glb', gltf => {
 
   scene.add(model)
 
-  preloader.remove()
-
   mixer = new THREE.AnimationMixer(model)
 
-  const clips = fileAnimations.filter(val => val.name !== 'idle')
-  possibleAnims = clips.map(val => {
-    let clip = THREE.AnimationClip.findByName(clips, val.name)
-
-    clip.tracks.splice(3, 3)
-    clip.tracks.splice(9, 3)
-
-    clip = mixer.clipAction(clip)
-    return clip
-  })
   const idleAnim = THREE.AnimationClip.findByName(fileAnimations, 'idle')
   idleAnim.tracks.splice(3, 3)
   idleAnim.tracks.splice(9, 3)
@@ -68,63 +51,6 @@ loader.load('stacy_lightweight.glb', gltf => {
 const floor = createFloor({ color: 0xeeeeee })
 floor.position.y = -11
 scene.add(floor)
-
-function resizeRendererToDisplaySize(renderer) {
-  const canvas = renderer.domElement
-  const width = window.innerWidth
-  const height = window.innerHeight
-  const canvasPixelWidth = canvas.width / window.devicePixelRatio
-  const canvasPixelHeight = canvas.height / window.devicePixelRatio
-
-  const needResize = canvasPixelWidth !== width || canvasPixelHeight !== height
-  if (needResize)
-    renderer.setSize(width, height, false)
-
-  return needResize
-}
-
-window.addEventListener('click', e => raycast(e))
-window.addEventListener('touchend', e => raycast(e, true))
-
-function raycast(e, touch = false) {
-  const mouse = {}
-  if (touch) {
-    mouse.x = 2 * (e.changedTouches[0].clientX / window.innerWidth) - 1
-    mouse.y = 1 - 2 * (e.changedTouches[0].clientY / window.innerHeight)
-  } else {
-    mouse.x = 2 * (e.clientX / window.innerWidth) - 1
-    mouse.y = 1 - 2 * (e.clientY / window.innerHeight)
-  }
-  // update the picking ray with the camera and mouse position
-  raycaster.setFromCamera(mouse, camera)
-  // calculate objects intersecting the picking ray
-  const intersects = raycaster.intersectObjects(scene.children, true)
-  if (intersects[0]) {
-    const { object } = intersects[0]
-    if (object.name === 'stacy')
-      if (!currentlyAnimating) {
-        currentlyAnimating = true
-        playRandomAnimation()
-      }
-  }
-}
-
-function playRandomAnimation() {
-  const anim = Math.floor(Math.random() * possibleAnims.length) + 0
-  playModifierAnimation(idle, 0.25, possibleAnims[anim], 0.25)
-}
-
-function playModifierAnimation(from, fSpeed, to, tSpeed) {
-  to.setLoop(THREE.LoopOnce)
-  to.reset()
-  to.play()
-  from.crossFadeTo(to, fSpeed, true)
-  setTimeout(() => {
-    from.enabled = true
-    to.crossFadeTo(from, tSpeed, true)
-    currentlyAnimating = false
-  }, to._clip.duration * 1000 - (tSpeed + fSpeed) * 1000)
-}
 
 document.addEventListener('mousemove', e => {
   const mousecoords = getMousePos(e)
@@ -191,12 +117,6 @@ function getMouseDegrees(x, y, degreeLimit) {
 function update() {
   if (mixer)
     mixer.update(clock.getDelta())
-
-  if (resizeRendererToDisplaySize(renderer)) {
-    const canvas = renderer.domElement
-    camera.aspect = canvas.clientWidth / canvas.clientHeight
-    camera.updateProjectionMatrix()
-  }
 
   renderer.render(scene, camera)
   requestAnimationFrame(update)
