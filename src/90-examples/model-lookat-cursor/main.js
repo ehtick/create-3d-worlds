@@ -1,40 +1,26 @@
-/* global THREE */
+import * as THREE from '/node_modules/three/build/three.module.js'
+import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js'
+import { scene, camera, renderer, clock } from '/utils/scene.js'
+import { initLights } from '/utils/light.js'
+import { createFloor } from '/utils/ground.js'
 
+initLights()
 let model, neck, waist, possibleAnims, mixer, idle
 let currentlyAnimating = false
 
-const clock = new THREE.Clock()
+const loader = new GLTFLoader()
 const raycaster = new THREE.Raycaster()
-const loaderAnim = document.getElementById('js-loader')
-const canvas = document.querySelector('#c')
-const backgroundColor = 0xf1f1f1
-
-const scene = new THREE.Scene()
-scene.background = new THREE.Color(backgroundColor)
-scene.fog = new THREE.Fog(backgroundColor, 60, 100)
-
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
-renderer.shadowMap.enabled = true
-renderer.setPixelRatio(window.devicePixelRatio)
-document.body.appendChild(renderer.domElement)
-
-const camera = new THREE.PerspectiveCamera(
-  50,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000)
+const preloader = document.getElementById('js-loader')
 
 camera.position.set(0, -3, 30)
 
-const stacy_txt = new THREE.TextureLoader().load('stacy.jpg')
-stacy_txt.flipY = false
+const stacyTexture = new THREE.TextureLoader().load('stacy.jpg')
+stacyTexture.flipY = false
 
 const stacy_mtl = new THREE.MeshPhongMaterial({
-  map: stacy_txt,
+  map: stacyTexture,
   skinning: true
 })
-
-const loader = new THREE.GLTFLoader()
 
 loader.load('stacy_lightweight.glb', gltf => {
   model = gltf.scene
@@ -58,7 +44,7 @@ loader.load('stacy_lightweight.glb', gltf => {
 
   scene.add(model)
 
-  loaderAnim.remove()
+  preloader.remove()
 
   mixer = new THREE.AnimationMixer(model)
 
@@ -79,43 +65,9 @@ loader.load('stacy_lightweight.glb', gltf => {
   idle.play()
 })
 
-const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.61)
-hemiLight.position.set(0, 50, 0)
-scene.add(hemiLight)
-
-const d = 8.25
-const dirLight = new THREE.DirectionalLight(0xffffff, 0.54)
-dirLight.position.set(-8, 12, 8)
-dirLight.castShadow = true
-dirLight.shadow.mapSize = new THREE.Vector2(1024, 1024)
-dirLight.shadow.camera.near = 0.1
-dirLight.shadow.camera.far = 1500
-dirLight.shadow.camera.left = d * -1
-dirLight.shadow.camera.right = d
-dirLight.shadow.camera.top = d
-dirLight.shadow.camera.bottom = d * -1
-scene.add(dirLight)
-
-const floorGeometry = new THREE.PlaneGeometry(5000, 5000, 1, 1)
-const floorMaterial = new THREE.MeshPhongMaterial({
-  color: 0xeeeeee,
-  shininess: 0
-})
-
-const floor = new THREE.Mesh(floorGeometry, floorMaterial)
-floor.rotation.x = -0.5 * Math.PI
-floor.receiveShadow = true
+const floor = createFloor({ color: 0xeeeeee })
 floor.position.y = -11
 scene.add(floor)
-
-const geometry = new THREE.SphereGeometry(8, 32, 32)
-const material = new THREE.MeshBasicMaterial({ color: 0x9bffaf }) // 0xf2ce2e
-const sphere = new THREE.Mesh(geometry, material)
-
-sphere.position.z = -15
-sphere.position.y = -2.5
-sphere.position.x = -0.25
-scene.add(sphere)
 
 function resizeRendererToDisplaySize(renderer) {
   const canvas = renderer.domElement
@@ -124,8 +76,7 @@ function resizeRendererToDisplaySize(renderer) {
   const canvasPixelWidth = canvas.width / window.devicePixelRatio
   const canvasPixelHeight = canvas.height / window.devicePixelRatio
 
-  const needResize =
-    canvasPixelWidth !== width || canvasPixelHeight !== height
+  const needResize = canvasPixelWidth !== width || canvasPixelHeight !== height
   if (needResize)
     renderer.setSize(width, height, false)
 
@@ -153,13 +104,12 @@ function raycast(e, touch = false) {
     if (object.name === 'stacy')
       if (!currentlyAnimating) {
         currentlyAnimating = true
-        playOnClick()
+        playRandomAnimation()
       }
   }
 }
 
-// Get a random animation, and play it
-function playOnClick() {
+function playRandomAnimation() {
   const anim = Math.floor(Math.random() * possibleAnims.length) + 0
   playModifierAnimation(idle, 0.25, possibleAnims[anim], 0.25)
 }
@@ -179,7 +129,6 @@ function playModifierAnimation(from, fSpeed, to, tSpeed) {
 document.addEventListener('mousemove', e => {
   const mousecoords = getMousePos(e)
   if (neck && waist) {
-
     moveJoint(mousecoords, neck, 50)
     moveJoint(mousecoords, waist, 30)
   }
@@ -204,7 +153,6 @@ function getMouseDegrees(x, y, degreeLimit) {
     yPercentage
 
   const w = { x: window.innerWidth, y: window.innerHeight }
-
   // Left (Rotates neck left between 0 and -degreeLimit)
   // 1. If cursor is in the left half of screen
   if (x <= w.x / 2) {

@@ -19,8 +19,13 @@
     <canvas id="c"></canvas>
   </div>
 
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/108/three.min.js'></script>
-  <script src='https://cdn.jsdelivr.net/gh/mrdoob/Three.js@r92/examples/js/loaders/GLTFLoader.js'></script>
+  <script type="importmap">
+    {
+        "imports": {
+            "three": "/node_modules/three/build/three.module.js"
+        }
+    }
+  </script>
   <script src="main.js" type="module"></script>
 
 </body>
