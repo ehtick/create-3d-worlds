@@ -28,6 +28,7 @@ VISINSKE MAPE:
 - srediti boje mapa ovako https://elevationmap.net/
 
 Konačni automat
+- srediti capoeira girl
 - uskladiti animacije sa mrdanjem igrača
   - mrdati igrača napred za neke napade
   - onemogućiti mrdanje u skoku?
@@ -41,6 +42,7 @@ Konačni automat
 
 ### Physics
 
+- preraditi staru 2D fiziku u 3D
 - ujednačiti createTerrain i druga fizička pomagala sa standardnim
 - Razaranje zamka topom (možda može i model)
   - dodati proceduralni zamak (vidi zamak-fizika, gradjevina-physijs)
