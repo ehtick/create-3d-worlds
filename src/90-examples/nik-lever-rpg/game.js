@@ -13,9 +13,10 @@ renderer.outputEncoding = THREE.GammaEncoding
 
 let onAction, cameraTarget, environment, activeCamera, currentAction
 
-const anims = ['ascend-stairs', 'gather-objects', 'look-around', 'push-button', 'run']
-const collect = []
+const animNames = ['ascend-stairs', 'gather-objects', 'look-around', 'push-button', 'run']
+const collectables = []
 const player = {}
+const animations = {}
 const cameraFade = 0.05
 const actionBtn = document.getElementById('action-btn')
 const collected = []
@@ -39,7 +40,7 @@ const toggleBriefcase = () => {
 
 const setAction = name => {
   if (currentAction == name) return
-  const anim = player[name]
+  const anim = animations[name]
   const action = player.mixer.clipAction(anim)
   player.mixer.stopAllAction()
   currentAction = name
@@ -51,12 +52,13 @@ const setAction = name => {
 }
 
 function contextAction() {
-  if (onAction?.action)
-    setAction(onAction.action)
+  if (!onAction) return
+
+  setAction(onAction.action)
 
   if (onAction.mode == 'collect') {
     setActiveCamera(cameras.collect)
-    collect[onAction.index].visible = false
+    collectables[onAction.index].visible = false
     collected.push(onAction.index)
     document.getElementById('briefcase').children[0].children[0].children[onAction.index].children[0].src = onAction.src
   }
@@ -139,7 +141,7 @@ function movePlayer(dt) {
 
 // LOAD GIRL
 
-const { mesh: girlMesh, animations } = await loadModel('lost-treasure/girl-walk.fbx')
+const { mesh: girlMesh, animations: walkAnim } = await loadModel('lost-treasure/girl-walk.fbx')
 player.model = girlMesh
 player.mixer = new THREE.AnimationMixer(girlMesh)
 player.mixer.addEventListener('finished', () => {
@@ -147,7 +149,7 @@ player.mixer.addEventListener('finished', () => {
     setActiveCamera(cameras.back)
   setAction('look-around')
 })
-player.walk = animations[0]
+animations.walk = walkAnim[0]
 scene.add(girlMesh)
 
 // LOAD ENVIRONMENT
@@ -167,15 +169,15 @@ environmentMesh.traverse(child => {
 const { mesh: usbMesh } = await loadModel('item/ammunition-box/scene.gltf')
 usbMesh.name = 'usb'
 usbMesh.position.set(-416, 0.8, -472)
-collect.push(usbMesh)
+collectables.push(usbMesh)
 scene.add(usbMesh)
 
 // LOAD ANIMATIONS
 
-const otherAnims = await loadFbxAnimations(anims, 'lost-treasure/')
+const otherAnims = await loadFbxAnimations(animNames, 'lost-treasure/')
 otherAnims.forEach(clip => {
-  player[clip.name] = clip
-  if (clip.name == 'push-button') player[clip.name].loop = false
+  animations[clip.name] = clip
+  if (clip.name == 'push-button') clip.loop = false
 })
 
 setAction('look-around')
@@ -191,23 +193,22 @@ new JoyStick({ onMove: playerControl })
 /* LOOP */
 
 void function animate() {
-  requestAnimationFrame(() => animate())
+  requestAnimationFrame(animate)
   const dt = clock.getDelta()
   checkKeyboard(playerControl)
 
   if (player.mixer) player.mixer.update(dt)
 
   if (currentAction == 'walk') {
-    const elapsedTime = Date.now() - player.actionTime
-    if (elapsedTime > 1000 && player.move.forward > 0) setAction('run')
+    const walkingTime = Date.now() - player.actionTime
+    if (walkingTime > 1000 && player.move.forward > 0) setAction('run')
   }
   if (player.move) {
-    if (player.move.forward)
-      movePlayer(dt)
+    if (player.move.forward) movePlayer(dt)
     player.model.rotateY(player.move.turn * dt)
   }
 
-  if (cameras && activeCamera) {
+  if (activeCamera) {
     camera.position.lerp(activeCamera.getWorldPosition(new THREE.Vector3()), cameraFade)
     let pos
     if (cameraTarget) {
@@ -221,18 +222,14 @@ void function animate() {
   }
 
   actionBtn.style = 'display:none;'
-  let trigger = false
+  onAction = null
 
-  if (collect && !trigger)
-    collect.forEach(object => {
-      if (object.visible && player.model.position.distanceTo(object.position) < 100) {
-        actionBtn.style = 'display:block;'
-        onAction = { action: 'gather-objects', mode: 'collect', index: 0, src: 'usb.jpg' }
-        trigger = true
-      }
-    })
-
-  if (!trigger) onAction = null
+  collectables.forEach(object => {
+    if (object.visible && player.model.position.distanceTo(object.position) < 100) {
+      actionBtn.style = 'display:block;'
+      onAction = { action: 'gather-objects', mode: 'collect', index: 0, src: 'usb.jpg' }
+    }
+  })
 
   renderer.render(scene, camera)
 }()
