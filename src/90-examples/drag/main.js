@@ -1,8 +1,7 @@
 import * as THREE from 'three'
 import { DragControls } from '/node_modules/three/examples/jsm/controls/DragControls.js'
+import {scene, renderer, camera} from '/utils/scene.js'
 
-let container
-let camera, scene, renderer
 let controls, group
 let enableSelection = false
 
@@ -13,27 +12,11 @@ const mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster()
 init()
 
 function init() {
-  container = document.createElement('div')
-  document.body.appendChild(container)
-
-  camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 5000)
   camera.position.z = 1000
-
-  scene = new THREE.Scene()
-  scene.background = new THREE.Color(0xf0f0f0)
-
   scene.add(new THREE.AmbientLight(0x505050))
 
   const light = new THREE.SpotLight(0xffffff, 1.5)
   light.position.set(0, 500, 2000)
-  light.angle = Math.PI / 9
-
-  light.castShadow = true
-  light.shadow.camera.near = 1000
-  light.shadow.camera.far = 4000
-  light.shadow.mapSize.width = 1024
-  light.shadow.mapSize.height = 1024
-
   scene.add(light)
 
   group = new THREE.Group()
@@ -63,15 +46,6 @@ function init() {
 
     objects.push(object)
   }
-
-  renderer = new THREE.WebGLRenderer({ antialias: true })
-  renderer.setPixelRatio(window.devicePixelRatio)
-  renderer.setSize(window.innerWidth, window.innerHeight)
-
-  renderer.shadowMap.enabled = true
-  renderer.shadowMap.type = THREE.PCFShadowMap
-
-  container.appendChild(renderer.domElement)
 
   controls = new DragControls([... objects], camera, renderer.domElement)
   controls.addEventListener('drag', render)
