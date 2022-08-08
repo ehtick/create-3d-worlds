@@ -11,13 +11,14 @@ dirLight()
 scene.background = new THREE.Color(0x605050)
 renderer.outputEncoding = THREE.GammaEncoding
 
-let onAction, cameraTarget, collected, environmentProxy, activeCamera, currentAction
+let onAction, cameraTarget, environmentProxy, activeCamera, currentAction
 
 const anims = ['ascend-stairs', 'gather-objects', 'look-around', 'push-button', 'run']
 const collect = []
 const player = {}
 const cameraFade = 0.05
 const actionBtn = document.getElementById('action-btn')
+const collected = []
 
 const backCamera = new THREE.Object3D()
 backCamera.position.set(0, 100, -250)
@@ -33,14 +34,13 @@ const setActiveCamera = object => {
 
 const toggleBriefcase = () => {
   const briefcase = document.getElementById('briefcase')
-  console.log(briefcase.style.opacity)
   briefcase.style.opacity = Number(briefcase.style.opacity) ? 0 : 1
 }
 
 const setAction = name => {
   if (currentAction == name) return
   const anim = player[name]
-  const action = player.mixer.clipAction(anim, player.root)
+  const action = player.mixer.clipAction(anim)
   player.mixer.stopAllAction()
   currentAction = name
   action.time = 0
@@ -57,7 +57,6 @@ function contextAction() {
   if (onAction.mode == 'collect') {
     setActiveCamera(cameras.collect)
     collect[onAction.index].visible = false
-    if (!collected) collected = []
     collected.push(onAction.index)
     document.getElementById('briefcase').children[0].children[0].children[onAction.index].children[0].src = onAction.src
   }
@@ -77,21 +76,21 @@ const playerControl = (forward, turn) => {
     setAction('look-around')
 }
 
-const checkKeyboard = () => {
+const checkKeyboard = callback => {
   if (keyboard.pressed.mouse) return
   let forward = 0, turn = 0
   if (keyboard.up) forward = 1
   if (keyboard.down) forward = -1
   if (keyboard.left) turn = -1
   if (keyboard.right) turn = 1
-  playerControl(forward, turn)
+  callback(forward, turn)
 }
 
 function movePlayer(dt) {
-  const pos = player.object.position.clone()
+  const pos = player.model.position.clone()
   pos.y += 60
   const dir = new THREE.Vector3()
-  player.object.getWorldDirection(dir)
+  player.model.getWorldDirection(dir)
   if (player.move.forward < 0) dir.negate()
   let raycaster = new THREE.Raycaster(pos, dir)
   let blocked = false
@@ -105,26 +104,26 @@ function movePlayer(dt) {
   if (!blocked)
     if (player.move.forward > 0) {
       const speed = (currentAction == 'run') ? 200 : 100
-      player.object.translateZ(dt * speed)
+      player.model.translateZ(dt * speed)
     } else
-      player.object.translateZ(-dt * 30)
+      player.model.translateZ(-dt * 30)
 
   if (environmentProxy) {
     dir.set(-1, 0, 0) // cast left
-    dir.applyMatrix4(player.object.matrix)
+    dir.applyMatrix4(player.model.matrix)
     dir.normalize()
     raycaster = new THREE.Raycaster(pos, dir)
 
     let intersect = raycaster.intersectObject(box)
-    if (intersect.length > 0 && intersect[0].distance < 50) player.object.translateX(50 - intersect[0].distance)
+    if (intersect.length > 0 && intersect[0].distance < 50) player.model.translateX(50 - intersect[0].distance)
 
     dir.set(1, 0, 0) // cast right
-    dir.applyMatrix4(player.object.matrix)
+    dir.applyMatrix4(player.model.matrix)
     dir.normalize()
     raycaster = new THREE.Raycaster(pos, dir)
 
     intersect = raycaster.intersectObject(box)
-    if (intersect.length > 0 && intersect[0].distance < 50) player.object.translateX(intersect[0].distance - 50)
+    if (intersect.length > 0 && intersect[0].distance < 50) player.model.translateX(intersect[0].distance - 50)
 
     dir.set(0, -1, 0) // cast down
     pos.y += 200
@@ -134,18 +133,18 @@ function movePlayer(dt) {
     intersect = raycaster.intersectObject(box)
     if (intersect.length > 0) {
       const targetY = pos.y - intersect[0].distance
-      if (targetY > player.object.position.y) {
+      if (targetY > player.model.position.y) {
         // Going up
-        player.object.position.y = 0.8 * player.object.position.y + 0.2 * targetY
+        player.model.position.y = 0.8 * player.model.position.y + 0.2 * targetY
         player.velocityY = 0
-      } else if (targetY < player.object.position.y) {
+      } else if (targetY < player.model.position.y) {
         // Falling
         if (player.velocityY == undefined) player.velocityY = 0
         player.velocityY += dt * gravity
-        player.object.position.y -= player.velocityY
-        if (player.object.position.y < targetY) {
+        player.model.position.y -= player.velocityY
+        if (player.model.position.y < targetY) {
           player.velocityY = 0
-          player.object.position.y = targetY
+          player.model.position.y = targetY
         }
       }
     }
@@ -155,16 +154,13 @@ function movePlayer(dt) {
 // LOAD GIRL
 
 const { mesh: girlMesh, animations } = await loadModel('lost-treasure/girl-walk.fbx')
-player.object = girlMesh
+player.model = girlMesh
 player.mixer = new THREE.AnimationMixer(girlMesh)
 player.mixer.addEventListener('finished', () => {
-  setAction('look-around')
-  if (activeCamera == cameras.collect) {
+  if (activeCamera == cameras.collect)
     setActiveCamera(cameras.back)
-    toggleBriefcase()
-  }
+  setAction('look-around')
 })
-player.root = player.mixer.getRoot()
 player.walk = animations[0]
 scene.add(girlMesh)
 
@@ -197,11 +193,11 @@ otherAnims.forEach(clip => {
 })
 
 setAction('look-around')
-player.object.position.y += 50
+player.model.position.y += 50
 
 // INIT
 
-collectCamera.parent = backCamera.parent = player.object
+collectCamera.parent = backCamera.parent = player.model
 setActiveCamera(backCamera)
 
 new JoyStick({ onMove: playerControl })
@@ -211,7 +207,7 @@ new JoyStick({ onMove: playerControl })
 void function animate() {
   requestAnimationFrame(() => animate())
   const dt = clock.getDelta()
-  checkKeyboard()
+  checkKeyboard(playerControl)
 
   if (player.mixer) player.mixer.update(dt)
 
@@ -222,7 +218,7 @@ void function animate() {
   if (player.move) {
     if (player.move.forward)
       movePlayer(dt)
-    player.object.rotateY(player.move.turn * dt)
+    player.model.rotateY(player.move.turn * dt)
   }
 
   if (cameras && activeCamera) {
@@ -232,7 +228,7 @@ void function animate() {
       camera.position.copy(cameraTarget.position)
       pos = cameraTarget.target
     } else {
-      pos = player.object.position.clone()
+      pos = player.model.position.clone()
       pos.y += 60
     }
     camera.lookAt(pos)
@@ -243,7 +239,7 @@ void function animate() {
 
   if (collect && !trigger)
     collect.forEach(object => {
-      if (object.visible && player.object.position.distanceTo(object.position) < 100) {
+      if (object.visible && player.model.position.distanceTo(object.position) < 100) {
         actionBtn.style = 'display:block;'
         onAction = { action: 'gather-objects', mode: 'collect', index: 0, src: 'usb.jpg' }
         trigger = true

@@ -1,3 +1,10 @@
+
+const getMousePosition = e => {
+  const clientX = e.targetTouches ? e.targetTouches[0].pageX : e.clientX
+  const clientY = e.targetTouches ? e.targetTouches[0].pageY : e.clientY
+  return { x: clientX, y: clientY }
+}
+
 export default class JoyStick {
   constructor({ onMove, maxRadius = 40 } = {}) {
     const circle = document.createElement('div')
@@ -12,55 +19,29 @@ export default class JoyStick {
     this.onMove = onMove
     this.origin = { left: this.domElement.offsetLeft, top: this.domElement.offsetTop }
 
-    if (this.domElement) {
-      const joystick = this
-      if ('ontouchstart' in window)
-        this.domElement.addEventListener('touchstart', evt => {
-          joystick.tap(evt)
-        })
-      else
-        this.domElement.addEventListener('mousedown', evt => {
-          joystick.tap(evt)
-        })
-
-    }
+    if ('ontouchstart' in window)
+      this.domElement.addEventListener('touchstart', e => this.tap(e))
+    else
+      this.domElement.addEventListener('mousedown', e => this.tap(e))
   }
 
-  getMousePosition(evt) {
-    const clientX = evt.targetTouches ? evt.targetTouches[0].pageX : evt.clientX
-    const clientY = evt.targetTouches ? evt.targetTouches[0].pageY : evt.clientY
-    return { x: clientX, y: clientY }
-  }
-
-  tap(evt) {
-    evt = evt || window.event
+  tap(e) {
     // get the mouse cursor position at startup:
-    this.offset = this.getMousePosition(evt)
-    const joystick = this
+    this.offset = getMousePosition(e)
     if ('ontouchstart' in window) {
-      document.ontouchmove = function (evt) {
-        joystick.move(evt)
-      }
-      document.ontouchend = function (evt) {
-        joystick.up(evt)
-      }
+      document.ontouchmove = e => this.move(e)
+      document.ontouchend = e => this.up(e)
     } else {
-      document.onmousemove = function (evt) {
-        joystick.move(evt)
-      }
-      document.onmouseup = function (evt) {
-        joystick.up(evt)
-      }
+      document.onmousemove = e => this.move(e)
+      document.onmouseup = e => this.up(e)
     }
   }
 
-  move(evt) {
-    evt = evt || window.event
-    const mouse = this.getMousePosition(evt)
+  move(e) {
+    const mouse = getMousePosition(e)
     // calculate the new cursor position:
     let left = mouse.x - this.offset.x
     let top = mouse.y - this.offset.y
-    // this.offset = mouse;
 
     const sqMag = left * left + top * top
     if (sqMag > this.maxRadiusSquared) {
