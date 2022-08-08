@@ -1,5 +1,6 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import { OrbitControls } from '/node_modules/three/examples/jsm/controls/OrbitControls.js'
+import { vertexShader, fragmentShader } from './shader.js'
 
 let renderer, scene, camera, clock, controlParameters, uniforms, material, mesh
 
@@ -16,26 +17,20 @@ function init() {
 
   document.body.appendChild(renderer.domElement)
 
-  // Initialize the scene
   scene = new THREE.Scene()
 
-  // Initialize the camera
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000)
   camera.position.z = 30
 
-  // Initialize the camera controls
   const controls = new OrbitControls(camera, renderer.domElement)
   controls.enablePan = false
 
-  // Initialize the clock
   clock = new THREE.Clock(true)
 
-  // Initialize the control parameters
   controlParameters = {
     'Geometry': 'Torus knot'
   }
 
-  // Define the shader uniforms
   uniforms = {
     u_time: {
       type: 'f',
@@ -57,11 +52,10 @@ function init() {
     }
   }
 
-  // Create the shader material
   material = new THREE.ShaderMaterial({
     uniforms,
-    vertexShader: document.getElementById('vertexShader').textContent,
-    fragmentShader: document.getElementById('fragmentShader').textContent,
+    vertexShader,
+    fragmentShader,
     side: THREE.DoubleSide,
     transparent: true,
     extensions: {
@@ -69,10 +63,8 @@ function init() {
     }
   })
 
-  // Create the mesh and add it to the scene
   addMeshToScene()
 
-  // Add the event listeners
   renderer.domElement.addEventListener('mousemove', onMouseMove, false)
   renderer.domElement.addEventListener('touchstart', onTouchMove, false)
   renderer.domElement.addEventListener('touchmove', onTouchMove, false)
