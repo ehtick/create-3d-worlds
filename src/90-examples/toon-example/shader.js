@@ -1,4 +1,6 @@
-export const vertexShader = /* glsl */`
+import * as THREE from 'three'
+
+const vertexShader = /* glsl */`
   #define GLSLIFY 1
   varying vec3 v_position;
   varying vec3 v_normal;
@@ -11,7 +13,7 @@ export const vertexShader = /* glsl */`
   }
 `
 
-export const fragmentShader = /* glsl */`
+const fragmentShader = /* glsl */`
   #define GLSLIFY 1
   uniform vec2 u_resolution;
   uniform vec2 u_mouse;
@@ -53,3 +55,35 @@ export const fragmentShader = /* glsl */`
       gl_FragColor = vec4(vec3(surface_color), 1.0);
   }
 `
+
+const uniforms = {
+  u_time: {
+    type: 'f',
+    value: 0.0
+  },
+  u_frame: {
+    type: 'f',
+    value: 0.0
+  },
+  u_resolution: {
+    type: 'v2',
+    value: new THREE.Vector2(window.innerWidth, window.innerHeight)
+      .multiplyScalar(window.devicePixelRatio)
+  },
+  u_mouse: {
+    type: 'v2',
+    value: new THREE.Vector2(0.7 * window.innerWidth, window.innerHeight)
+      .multiplyScalar(window.devicePixelRatio)
+  }
+}
+
+export const material = new THREE.ShaderMaterial({
+  uniforms,
+  vertexShader,
+  fragmentShader,
+  side: THREE.DoubleSide,
+  transparent: true,
+  extensions: {
+    derivatives: true
+  }
+})
