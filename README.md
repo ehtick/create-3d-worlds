@@ -6,17 +6,11 @@ Create a 3D game with Three.js.
 
 ```
 npm i
-live-server
+npx live-server
 ```
 
 ## TODO
 
-### General
-
-- fireball shader https://alteredqualia.com/three/examples/webgl_shader_fireball.html
-- city https://alteredqualia.com/three/examples/webgl_city.html
-- let kroz svemir https://alteredqualia.com/xg/examples/deferred_particles_nebula.html
-- cestice https://github.com/hmans/three-vfx
 - postaviti fiziku u vučenje kocki https://threejs.org/examples/misc_controls_drag.html
 - [ ] prebaciti teren iz MMO u RPG
 - https://github.com/skolakoda/teorija-razvoja-igara
