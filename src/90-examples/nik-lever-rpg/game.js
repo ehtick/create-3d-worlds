@@ -11,7 +11,7 @@ dirLight()
 scene.background = new THREE.Color(0x605050)
 renderer.outputEncoding = THREE.GammaEncoding
 
-let onAction, cameraTarget, environmentProxy, activeCamera, currentAction
+let onAction, cameraTarget, environment, activeCamera, currentAction
 
 const anims = ['ascend-stairs', 'gather-objects', 'look-around', 'push-button', 'run']
 const collect = []
@@ -76,76 +76,62 @@ const playerControl = (forward, turn) => {
     setAction('look-around')
 }
 
-const checkKeyboard = callback => {
+const checkKeyboard = onMove => {
   if (keyboard.pressed.mouse) return
   let forward = 0, turn = 0
   if (keyboard.up) forward = 1
   if (keyboard.down) forward = -1
   if (keyboard.left) turn = -1
   if (keyboard.right) turn = 1
-  callback(forward, turn)
+  onMove(forward, turn)
 }
 
 function movePlayer(dt) {
+  if (!environment) return
+  let blocked = false
+  const step = 50
   const pos = player.model.position.clone()
   pos.y += 60
+
+  // cast forward
   const dir = new THREE.Vector3()
   player.model.getWorldDirection(dir)
   if (player.move.forward < 0) dir.negate()
   let raycaster = new THREE.Raycaster(pos, dir)
-  let blocked = false
-  const box = environmentProxy
 
-  if (environmentProxy) {
-    const intersect = raycaster.intersectObject(box)
-    if (intersect.length > 0 && intersect[0].distance < 50) blocked = true
+  let intersect = raycaster.intersectObject(environment)
+  if (intersect.length > 0 && intersect[0].distance < step)
+    blocked = true
+
+  if (!blocked) {
+    const speed = (currentAction == 'run') ? 200 : 100
+    if (player.move.forward > 0)
+      player.model.translateZ(dt * speed)
+    else
+      player.model.translateZ(-dt * speed * .5)
   }
 
-  if (!blocked)
-    if (player.move.forward > 0) {
-      const speed = (currentAction == 'run') ? 200 : 100
-      player.model.translateZ(dt * speed)
-    } else
-      player.model.translateZ(-dt * 30)
+  // cast down
+  dir.set(0, -1, 0)
+  pos.y += 200
+  raycaster = new THREE.Raycaster(pos, dir)
+  const gravity = 30
 
-  if (environmentProxy) {
-    dir.set(-1, 0, 0) // cast left
-    dir.applyMatrix4(player.model.matrix)
-    dir.normalize()
-    raycaster = new THREE.Raycaster(pos, dir)
-
-    let intersect = raycaster.intersectObject(box)
-    if (intersect.length > 0 && intersect[0].distance < 50) player.model.translateX(50 - intersect[0].distance)
-
-    dir.set(1, 0, 0) // cast right
-    dir.applyMatrix4(player.model.matrix)
-    dir.normalize()
-    raycaster = new THREE.Raycaster(pos, dir)
-
-    intersect = raycaster.intersectObject(box)
-    if (intersect.length > 0 && intersect[0].distance < 50) player.model.translateX(intersect[0].distance - 50)
-
-    dir.set(0, -1, 0) // cast down
-    pos.y += 200
-    raycaster = new THREE.Raycaster(pos, dir)
-    const gravity = 30
-
-    intersect = raycaster.intersectObject(box)
-    if (intersect.length > 0) {
-      const targetY = pos.y - intersect[0].distance
-      if (targetY > player.model.position.y) {
-        // Going up
-        player.model.position.y = 0.8 * player.model.position.y + 0.2 * targetY
+  intersect = raycaster.intersectObject(environment)
+  if (intersect.length) {
+    const targetY = pos.y - intersect[0].distance
+    if (targetY > player.model.position.y) {
+      // Going up
+      player.model.position.y = 0.8 * player.model.position.y + 0.2 * targetY
+      player.velocityY = 0
+    } else if (targetY < player.model.position.y) {
+      // Falling
+      if (player.velocityY == undefined) player.velocityY = 0
+      player.velocityY += dt * gravity
+      player.model.position.y -= player.velocityY
+      if (player.model.position.y < targetY) {
         player.velocityY = 0
-      } else if (targetY < player.model.position.y) {
-        // Falling
-        if (player.velocityY == undefined) player.velocityY = 0
-        player.velocityY += dt * gravity
-        player.model.position.y -= player.velocityY
-        if (player.model.position.y < targetY) {
-          player.velocityY = 0
-          player.model.position.y = targetY
-        }
+        player.model.position.y = targetY
       }
     }
   }
@@ -172,7 +158,7 @@ scene.add(environmentMesh)
 environmentMesh.traverse(child => {
   if (child.isMesh && child.name.includes('mentproxy')) {
     child.material.visible = false
-    environmentProxy = child
+    environment = child
   }
 })
 
