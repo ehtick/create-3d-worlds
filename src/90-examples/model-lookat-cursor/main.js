@@ -7,7 +7,7 @@ import { createFloor } from '/utils/ground.js'
 let model, neck, waist, mixer, idle
 
 initLights()
-camera.position.set(0, -3, 30)
+camera.position.set(0, 7, 19)
 
 const loader = new GLTFLoader()
 const texture = new THREE.TextureLoader().load('stacy.jpg')
@@ -35,8 +35,6 @@ loader.load('stacy_lightweight.glb', gltf => {
   })
 
   model.scale.set(7, 7, 7)
-  model.position.y = -11
-
   scene.add(model)
 
   mixer = new THREE.AnimationMixer(model)
@@ -49,7 +47,6 @@ loader.load('stacy_lightweight.glb', gltf => {
 })
 
 const floor = createFloor({ color: 0xeeeeee })
-floor.position.y = -11
 scene.add(floor)
 
 document.addEventListener('mousemove', e => {
@@ -114,12 +111,8 @@ function getMouseDegrees(x, y, degreeLimit) {
 
 /* LOOP */
 
-function update() {
-  if (mixer)
-    mixer.update(clock.getDelta())
-
+void function update() {
+  mixer?.update(clock.getDelta())
   renderer.render(scene, camera)
   requestAnimationFrame(update)
-}
-
-update()
+}()
