@@ -11,24 +11,8 @@ npx live-server
 
 ## TODO
 
-- https://larsberg.github.io/2018_nov_sketches/1003_gltf/index.html
-- https://larsberg.github.io/2018_nov_sketches/
-
 Shaders
   - The Book of Shaders https://thebookofshaders.com/
-
-Modeli
-- pokušati drugi model gleda kursor
-
-VOZILA:
-- ammo terenska voznja:
-  https://alteredqualia.com/xg/examples/animation_physics_terrain.html
-  https://alteredqualia.com/xg/examples/animation_physics_level.html
-- spojiti physijs teren + kola
-
-VISINSKE MAPE:
-- visinske mape za ceo svet https://tangrams.github.io/heightmapper/#8.3724/43.3401/19.5293
-- srediti boje mapa ovako https://elevationmap.net/
 
 Konačni automat
 - srediti capoeira girl
@@ -39,14 +23,18 @@ Konačni automat
 - ažurirati verziju na poslednju (ukinuli su relativne importe pa puca, koristiti importmap)
   - probati nakon ažuriranja: https://threejs.org/examples/#webgl_points_nodes
 
-### Particles
+### Teren
+- obojiti teren šejderom
+- srediti boje mapa ovako https://elevationmap.net/
 
-- kiša da prati igraca
+### Mazes
+- napraviti render za mazes
+- srediti kretanje da ne koristi raycasting
 
 ### Physics
-
 - preraditi staru 2D fiziku u 3D
 - ujednačiti createTerrain i druga fizička pomagala sa standardnim
+- spojiti physijs teren + kola
 - Razaranje zamka topom (možda može i model)
   - dodati proceduralni zamak (vidi zamak-fizika, gradjevina-physijs)
   - dodati top (ima model)
@@ -60,24 +48,21 @@ Konačni automat
 - dodati fiziku u vučenje kocki
 
 ### AI
-
 - odvojiti ai pomagala
 - postaviti ai scenu sa modelima
 
 ### Scenes & examples
 
-- [ ] Savo / FPS
-  - dodati NPC karaktere (vidi 80-primeri/80-nemesis)
+- [ ] Savo / Nemesis / FPS
+  - srediti koliziju
+  - dodati NPC karaktere (vidi nemesis i ai modele)
     - https://www.script-tutorials.com/demos/474/index3.html
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - dodati munje https://threejs.org/examples/?q=light#webgl_lightningstrike
   - dodati pucanje
   - integrisati fps i nemesis
-
-- Nemesis / FPS
-  - srediti koliziju
-  - dodati ai modele
+  - kiša da prati igraca
 
 - Svemir 
   - dodati model ring space-arcology
@@ -111,7 +96,7 @@ Konačni automat
 - Partizani
   - napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
 
-### Ostalo
+### Polishing
 
 - dodati UI komande redom
 - popraviti HTML margine
@@ -175,3 +160,6 @@ Free 3D Models are from 3dwarehouse.sketchup.com, sketchfab.com, mixamo.com, arc
 
 Textures
 - Geometry airplane: https://classroom.udacity.com/courses/cs291/lessons/a06bfa94-60e2-403e-ab13-8e55009120b6/concepts/9408e461-2c9b-4cbb-a825-827051f5ed98
+
+Geodata:
+- visinske mape za ceo svet https://tangrams.github.io/heightmapper/#8.3724/43.3401/19.5293
