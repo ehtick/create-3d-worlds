@@ -42,9 +42,12 @@ renderer.setPixelRatio(Math.min(2, window.devicePixelRatio))
 renderer.domElement.focus()
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
-// glb models light
-// renderer.gammaFactor = 2.2
-// renderer.outputEncoding = THREE.GammaEncoding
+
+// fix lights for some models (glb, fbx)
+export function gamaRender() {
+  renderer.gammaFactor = 2.2
+  renderer.outputEncoding = THREE.GammaEncoding
+}
 
 window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight)

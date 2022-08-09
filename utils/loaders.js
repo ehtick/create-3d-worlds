@@ -7,6 +7,7 @@ import { MD2Loader } from '/node_modules/three/examples/jsm/loaders/MD2Loader.js
 import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js'
 
 import { getHeight, centerObject, adjustHeight } from '/utils/helpers.js'
+import { gamaRender } from '/utils/scene.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -173,6 +174,7 @@ export const loadModel = param => {
     case 'md2':
       return loadMd2(params)
     case 'fbx':
+      gamaRender() // hack
       return loadFbx(params)
     default:
       throw new Error(`Unknown file extension: ${ext}`)
