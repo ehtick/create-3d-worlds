@@ -15,7 +15,6 @@ scene.add(mesh)
 void function loop() {
   requestAnimationFrame(loop)
   uniforms.u_time.value = clock.getElapsedTime()
-  uniforms.u_frame.value += 1.0
   renderer.render(scene, camera)
 }()
 
