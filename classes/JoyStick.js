@@ -1,5 +1,4 @@
-
-const getMousePosition = e => {
+export const getCursorPosition = e => {
   const clientX = e.targetTouches ? e.targetTouches[0].pageX : e.clientX
   const clientY = e.targetTouches ? e.targetTouches[0].pageY : e.clientY
   return { x: clientX, y: clientY }
@@ -27,7 +26,7 @@ export default class JoyStick {
 
   tap(e) {
     // get the mouse cursor position at startup:
-    this.offset = getMousePosition(e)
+    this.offset = getCursorPosition(e)
     if ('ontouchstart' in window) {
       document.ontouchmove = e => this.move(e)
       document.ontouchend = e => this.up(e)
@@ -38,7 +37,7 @@ export default class JoyStick {
   }
 
   move(e) {
-    const mouse = getMousePosition(e)
+    const mouse = getCursorPosition(e)
     // calculate the new cursor position:
     let left = mouse.x - this.offset.x
     let top = mouse.y - this.offset.y
