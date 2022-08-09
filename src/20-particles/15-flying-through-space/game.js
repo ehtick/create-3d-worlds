@@ -1,6 +1,8 @@
+import * as THREE from 'three'
 import { scene, camera, renderer } from '/utils/scene.js'
 import { createParticles } from '/utils/particles.js'
 
+scene.background = new THREE.Color(0x000000)
 camera.position.z = 500
 
 const stars = createParticles()

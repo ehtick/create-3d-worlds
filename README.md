@@ -23,8 +23,9 @@ Konačni automat
 - ažurirati verziju
 
 ### Teren
+- pokušati sinusne talase
 - obojiti teren šejderom
-- srediti boje mapa ovako https://elevationmap.net/
+  - srediti boje mapa ovako https://elevationmap.net/
 
 ### Mazes
 - napraviti render za mazes
