@@ -44,42 +44,23 @@ scene.add(floor)
 
 const getMousePos = e => ({ x: e.clientX, y: e.clientY })
 
-function getMouseDegrees(x, y, degreeLimit) {
+function mouseToDegrees(x, y, degreeMax) {
   let dx = 0, dy = 0
-  const screen = { x: window.innerWidth, y: window.innerHeight }
+  const halfX = window.innerWidth / 2
+  const halfY = window.innerHeight / 2
 
-  // 1. If cursor is in the left half of screen
-  if (x <= screen.x / 2) {
-    // 2. Get the difference between middle of screen and cursor position
-    const xdiff = screen.x / 2 - x
-    // 3. Find the percentage of that difference
-    const xPercentage = xdiff / (screen.x / 2) * 100
-    // 4. Convert that to a percentage of the maximum rotation we allow for the neck
-    dx = degreeLimit * xPercentage / 100 * -1
-  }
+  const xdiff = x - halfX
+  dx = degreeMax * xdiff / halfX
 
-  if (x >= screen.x / 2) {
-    const xdiff = x - screen.x / 2
-    const xPercentage = xdiff / (screen.x / 2) * 100
-    dx = degreeLimit * xPercentage / 100
-  }
+  const ydiff = y - halfY
+  if (ydiff < 0) degreeMax *= 0.5
+  dy = degreeMax * ydiff / halfY
 
-  if (y <= screen.y / 2) {
-    const ydiff = screen.y / 2 - y
-    const yPercentage = ydiff / (screen.y / 2) * 100
-    dy = degreeLimit * 0.5 * yPercentage / 100 * -1
-  }
-
-  if (y >= screen.y / 2) {
-    const ydiff = y - screen.y / 2
-    const yPercentage = ydiff / (screen.y / 2) * 100
-    dy = degreeLimit * yPercentage / 100
-  }
   return { x: dx, y: dy }
 }
 
-function moveJoint(mouse, joint, degreeLimit) {
-  const degrees = getMouseDegrees(mouse.x, mouse.y, degreeLimit)
+function moveJoint(mouse, joint, degreeMax) {
+  const degrees = mouseToDegrees(mouse.x, mouse.y, degreeMax)
   joint.rotation.y = THREE.Math.degToRad(degrees.x)
   joint.rotation.x = THREE.Math.degToRad(degrees.y)
 }
@@ -96,6 +77,6 @@ void function update() {
 
 document.addEventListener('mousemove', e => {
   const mouse = getMousePos(e)
-  moveJoint(mouse, neck, 60)
+  moveJoint(mouse, neck, 50)
   moveJoint(mouse, spine, 40)
 })

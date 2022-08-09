@@ -11,11 +11,14 @@ npx live-server
 
 ## TODO
 
+- https://larsberg.github.io/2018_nov_sketches/1003_gltf/index.html
+- https://larsberg.github.io/2018_nov_sketches/
+
 Shaders
   - The Book of Shaders https://thebookofshaders.com/
 
 Modeli
-- model gleda kursor https://tympanus.net/codrops/2019/10/14/how-to-create-an-interactive-3d-character-with-three-js/
+- pokušati drugi model gleda kursor
 
 VOZILA:
 - ammo terenska voznja:
