@@ -21,7 +21,6 @@ Konačni automat
   - onemogućiti mrdanje u skoku?
 
 - ažurirati verziju na poslednju (ukinuli su relativne importe pa puca, koristiti importmap)
-  - probati nakon ažuriranja: https://threejs.org/examples/#webgl_points_nodes
 
 ### Teren
 - obojiti teren šejderom
