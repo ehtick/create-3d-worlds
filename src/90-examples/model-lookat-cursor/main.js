@@ -3,6 +3,7 @@ import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
+import { getCursorPosition } from '/utils/helpers.js'
 
 let neck, spine
 
@@ -29,8 +30,6 @@ clip.tracks = clip.tracks.filter(t => !t.name.includes('Spine') && !t.name.inclu
 mixer.clipAction(clip).play()
 
 /* FUNCTIONS */
-
-const getMousePos = e => ({ x: e.clientX, y: e.clientY })
 
 function cursorToDegrees(cursor, degreeMax) {
   const { x, y } = cursor
@@ -65,7 +64,7 @@ void function update() {
 /* EVENTS */
 
 document.addEventListener('mousemove', e => {
-  const cursor = getMousePos(e)
+  const cursor = getCursorPosition(e)
   lookAt(cursor, neck, 40)
   lookAt(cursor, spine, 40)
 })

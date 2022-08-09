@@ -1,6 +1,6 @@
 import * as THREE from '/node_modules/three/build/three.module.js'
 import { renderer, scene, camera, clock } from '/utils/scene.js'
-import { getCursorPosition } from '/classes/Joystick.js'
+import { getCursorPosition } from '/utils/helpers.js'
 import { material, uniforms } from './shader.js'
 
 scene.background = new THREE.Color(0x000000)

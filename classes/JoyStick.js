@@ -1,8 +1,4 @@
-export const getCursorPosition = e => {
-  const clientX = e.targetTouches ? e.targetTouches[0].pageX : e.clientX
-  const clientY = e.targetTouches ? e.targetTouches[0].pageY : e.clientY
-  return { x: clientX, y: clientY }
-}
+import { getCursorPosition } from '/utils/helpers.js'
 
 export default class JoyStick {
   constructor({ onMove, maxRadius = 40 } = {}) {

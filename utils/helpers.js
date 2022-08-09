@@ -208,3 +208,11 @@ export function createChaseCamera(mesh, camera = defaultCamera) {
     camera.position.lerpVectors(camera.position, v, 0.05)
   }
 }
+
+/* CURSOR */
+
+export const getCursorPosition = e => {
+  const clientX = e.targetTouches ? e.targetTouches[0].pageX : e.clientX
+  const clientY = e.targetTouches ? e.targetTouches[0].pageY : e.clientY
+  return { x: clientX, y: clientY }
+}
