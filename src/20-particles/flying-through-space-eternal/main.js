@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from '/node_modules/three/examples/jsm/controls/OrbitControls.js'
-import { material } from './shader.js'
 import chroma from '/libs/chroma.js'
+import { material } from './shader.js'
 
 const conf = {
   el: 'canvas',

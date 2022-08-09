@@ -5,7 +5,7 @@ const textureLoader = new THREE.TextureLoader()
 
 /* PARTICLES (IN BOX) */
 
-export function createParticles({ num = 10000, file = 'star.png', color, size = .5, opacity = 1, unitAngle = 1, minRange = 100, maxRange = 1000, blending = THREE.AdditiveBlending } = {}) {
+export function createParticles({ num = 10000, file = 'ball.png', color, size = .5, opacity = 1, unitAngle = 1, minRange = 100, maxRange = 1000, blending = THREE.AdditiveBlending } = {}) {
 
   const geometry = new THREE.BufferGeometry()
   const positions = []
@@ -99,7 +99,7 @@ export const createRain = ({ file = 'raindrop.png' } = {}) =>
 
 export const createSnow = ({ file = 'snowflake.png' } = {}) => createParticles({ file, size: 5, color: 0xffffff })
 
-export const createStars = ({ file = 'star.png', color } = {}) =>
+export const createStars = ({ file = 'ball.png', color } = {}) =>
   createParticles({ num: 10000, color, size: .5, file, minRange: 100, maxRange: 1000 })
 
 /* STARS (IN SPHERE) */
