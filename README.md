@@ -20,7 +20,7 @@ Konačni automat
   - mrdati igrača napred za neke napade
   - onemogućiti mrdanje u skoku?
 
-- ažurirati verziju na poslednju (ukinuli su relativne importe pa puca, koristiti importmap)
+- ažurirati verziju
 
 ### Teren
 - obojiti teren šejderom
