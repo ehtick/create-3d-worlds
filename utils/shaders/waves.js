@@ -2,8 +2,6 @@
 import * as THREE from 'three'
 
 const vertexShader = /* glsl */`
-  #include <fog_pars_vertex>
-
   uniform float uTime;
 
   uniform float uBigWavesElevation;
@@ -17,9 +15,7 @@ const vertexShader = /* glsl */`
 
   varying float vElevation;
 
-  //	Classic Perlin 3D Noise 
-  //	by Stefan Gustavson
-  //
+  //	classic Perlin 3D noise, by Stefan Gustavson
   vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
   vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
   vec3 fade(vec3 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
@@ -93,42 +89,31 @@ const vertexShader = /* glsl */`
   }
 
   void main() {
-    #include <begin_vertex>
-    #include <project_vertex>
-    #include <fog_vertex>
     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
-    float elevation = 
-      sin(modelPosition.x * uBigWavesFrequency.x + uTime * uBigWaveSpeed) 
+
+    float elevation = sin(modelPosition.x * uBigWavesFrequency.x + uTime * uBigWaveSpeed) 
       * sin(modelPosition.z * uBigWavesFrequency.y + uTime * uBigWaveSpeed) 
       * uBigWavesElevation;
     
     for(float i = 1.0; i <= 10.0; i++) {
-      elevation -= abs(
-        cnoise(
-          vec3(modelPosition.xz * uSmallWavesFrequency * i, uTime * uSmallWavesSpeed)
-          ) 
-          * uSmallWavesElevation / i
-        );
-      if(i >= uSmallWavesIterations ) {
-        break;
-      }
+      elevation -= abs(cnoise(vec3(modelPosition.xz * uSmallWavesFrequency * i, uTime * uSmallWavesSpeed)) * uSmallWavesElevation / i);
+      if (i >= uSmallWavesIterations ) break;
     }
     
     modelPosition.y += elevation;
+    vElevation = elevation;
     vec4 viewPosition = viewMatrix * modelPosition;
     vec4 projectedPosition = projectionMatrix * viewPosition;
-    gl_Position = projectedPosition;
 
-    vElevation = elevation;
+    gl_Position = projectedPosition;
   }
 `
 
 const fragmentShader = /* glsl */`
-  #include <fog_pars_fragment>
   precision mediump float;
+
   uniform vec3 uDepthColor;
   uniform vec3 uSurfaceColor;
-
   uniform float uColorOffset;
   uniform float uColorMultiplier;
 
@@ -137,31 +122,30 @@ const fragmentShader = /* glsl */`
   void main() {
     float mixStrength = (vElevation + uColorOffset) * uColorMultiplier;
     vec3 color = mix(uDepthColor, uSurfaceColor, mixStrength);
+
     gl_FragColor = vec4(color, 1.0);
-    #include <fog_fragment>
   }
 `
+
+const uniforms = {
+  uTime: { value: 0 },
+  uBigWavesElevation: { value: 0.2 },
+  uBigWavesFrequency: { value: new THREE.Vector2(4, 2) },
+  uBigWaveSpeed: { value: 0.75 },
+
+  uSmallWavesElevation: { value: 0.15 },
+  uSmallWavesFrequency: { value: 3 },
+  uSmallWavesSpeed: { value: 0.2 },
+  uSmallWavesIterations: { value: 4 },
+
+  uDepthColor: { value: new THREE.Color('#1e4d40') },
+  uSurfaceColor: { value: new THREE.Color('#4d9aaa') },
+  uColorOffset: { value: 0.08 },
+  uColorMultiplier: { value: 5 },
+}
 
 export const material = new THREE.ShaderMaterial({
   vertexShader,
   fragmentShader,
-  fog: true,
-  uniforms: {
-    uTime: { value: 0 },
-    uMouse: { value: new THREE.Vector2() },
-    uBigWavesElevation: { value: 0.2 },
-    uBigWavesFrequency: { value: new THREE.Vector2(4, 2) },
-    uBigWaveSpeed: { value: 0.75 },
-    // Small Waves
-    uSmallWavesElevation: { value: 0.15 },
-    uSmallWavesFrequency: { value: 3 },
-    uSmallWavesSpeed: { value: 0.2 },
-    uSmallWavesIterations: { value: 4 },
-    // Color
-    uDepthColor: { value: new THREE.Color('#1e4d40') },
-    uSurfaceColor: { value: new THREE.Color('#4d9aaa') },
-    uColorOffset: { value: 0.08 },
-    uColorMultiplier: { value: 5 },
-    // Fog, contains fogColor, fogDensity, fogFar and fogNear
-    ...THREE.UniformsLib.fog }
+  uniforms
 })
