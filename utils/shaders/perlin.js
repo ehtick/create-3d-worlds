@@ -1,11 +1,6 @@
 // https://2pha.com/demos/threejs/shaders/perlin_noise_3d_vertex.html
 import * as THREE from 'three'
 
-// GLSL textureless classic 3D noise "cnoise",
-// with an RSL-style periodic variant "pnoise".
-// Author:  Stefan Gustavson. MIT license.
-// https://github.com/ashima/webgl-noise
-
 const vertexShader = /* glsl */`
   uniform float scale;
   uniform float displacement;
@@ -125,9 +120,8 @@ const uniforms = {
   displacement: { type: 'f', value: 20.0 }
 }
 
-export const material = new THREE.ShaderMaterial(
-  {
-    uniforms,
-    vertexShader,
-    fragmentShader,
-  })
+export const material = new THREE.ShaderMaterial({
+  uniforms,
+  vertexShader,
+  fragmentShader,
+})

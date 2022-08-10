@@ -12,8 +12,8 @@ scene.add(plane)
 
 void function loop() {
   requestAnimationFrame(loop)
-  time += .2
-  plane.material.uniforms.uTime.value = time
+
+  plane.material.uniforms.uTime.value = time += .2
 
   renderer.render(scene, camera)
 }()

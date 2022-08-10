@@ -2,20 +2,9 @@
 import * as THREE from 'three'
 
 const vertexShader = /* glsl */`
-  // attributes of our mesh
 	attribute vec3 position;
 	attribute vec2 uv;
 
-	// built-in uniforms from ThreeJS camera and Object3D
-	uniform mat4 projectionMatrix;
-	uniform mat4 modelViewMatrix;
-	uniform mat3 normalMatrix;
-
-	// custom uniforms to build up our tubes
-	uniform float uTime;
-	uniform vec2 uMousePosition;
-
-	// pass a few things along to the vertex shader
 	varying vec2 vUv;
 
 	void main() {
@@ -29,12 +18,10 @@ const fragmentShader = /* glsl */`
 	precision highp float;
 
   uniform float uTime;
-  uniform vec2 uMousePosition;
   uniform float uHue;
   uniform float uHueVariation;
   uniform float uDensity;
   uniform float uDisplacement;
-  uniform float uGradient;
 
   varying vec2 vUv;
 
@@ -147,11 +134,10 @@ const fragmentShader = /* glsl */`
   }
 
   void main () {
-    float mouseDistance = length(vUv - uMousePosition);
     float t = uTime * .005;
     float elevation =  vUv.y * uDensity * 30.0;
     
-    float shadow = smoothstep(0.0, .3 + sin(t * 5.0 * 3.14) * .1 , mouseDistance);
+    float shadow = smoothstep(0.0, .3 + sin(t * 5.0 * 3.14) * .1 , length(vUv));
     elevation += shadow * 5.0;
     
     float displacement = cnoise( vec2( t + vUv.y * 2.0, t + vUv.x * 3.0 )) * uDisplacement * 3.0 ;
@@ -178,7 +164,6 @@ const uniforms = {
   uTime: { type: 'f', value: 0 },
   uHue: { type: 'f', value: .5 },
   uHueVariation: { type: 'f', value: 1 },
-  uGradient: { type: 'f', value: 1 },
   uDensity: { type: 'f', value: 1 },
   uDisplacement: { type: 'f', value: 1 },
 }
