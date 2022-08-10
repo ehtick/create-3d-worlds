@@ -12,8 +12,6 @@ export function createWorldScene(groundParam, skyParam, lightParam, fogParam = {
   scene.add(createGround(groundParam))
   scene.add(createSkySphere(skyParam))
   const light = createSunLight(lightParam)
-  // const helper = new THREE.CameraHelper(light.shadow.camera)
-  // scene.add(helper)
   scene.add(light)
   const { color = 0xffffff, near = 1, far = 5000 } = fogParam
   scene.fog = new THREE.Fog(color, near, far)
