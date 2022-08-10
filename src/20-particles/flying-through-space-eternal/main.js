@@ -3,15 +3,13 @@ import * as THREE from 'three'
 import { renderer, scene, camera } from '/utils/scene.js'
 import { material } from './shader.js'
 
-const numPoints = 50000
-
-const mouse = new THREE.Vector2(0.2, 0.2)
 const { randFloat: rnd, randFloatSpread: rndFS } = THREE.Math
 
-camera.position.z = 400
-
+const numPoints = 50000
+const mouse = new THREE.Vector2(0.2, 0.2)
 const startTime = Date.now()
 
+camera.position.z = 400
 scene.background = new THREE.Color(0x00001a)
 
 const cscale = chroma.scale([0x00b9e0, 0xff880a, 0x5f1b90, 0x7ec08d])
@@ -21,12 +19,11 @@ const sizes = new Float32Array(numPoints)
 const rotations = new Float32Array(numPoints)
 const sCoef = new Float32Array(numPoints)
 const position = new THREE.Vector3()
-let color
 
 for (let i = 0; i < numPoints; i++) {
   position.set(rndFS(1000), rndFS(1000), rndFS(2000))
   position.toArray(positions, i * 3)
-  color = new THREE.Color(cscale(rnd(0, 1)).hex())
+  const color = new THREE.Color(cscale(rnd(0, 1)).hex())
   color.toArray(colors, i * 3)
   sizes[i] = rnd(5, 100)
   sCoef[i] = rnd(0.0005, 0.005)
@@ -48,9 +45,13 @@ scene.add(points)
 void function animate() {
   requestAnimationFrame(animate)
 
-  const time = Date.now() - startTime
-  points.material.uniforms.uTime.value = time
-  points.rotation.z += -mouse.x * 0.03
+  points.material.uniforms.uTime.value = Date.now() - startTime
+  points.material.uniforms.uMouse.value = mouse
 
   renderer.render(scene, camera)
 }()
+
+renderer.domElement.addEventListener('mousemove', e => {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1
+})

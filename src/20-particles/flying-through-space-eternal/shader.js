@@ -17,8 +17,8 @@ void main() {
   vRotation = rotation;
 
   vec3 p = vec3(position);
-  p.z = -1000. + mod(position.z + uTime*(sCoef*50.*uMouse.y), 2000.);
-  p.x = -500. + mod(position.x - uTime*(sCoef*50.*uMouse.x), 1000.);
+  p.z = -1000. + mod(position.z + uTime*(sCoef * 25. * uMouse.y), 2000.);
+  p.x = -500. + mod(position.x - uTime*(sCoef * 5. * uMouse.x), 1000.);
 
   vec4 mvPosition = modelViewMatrix * vec4(p, 1.);
   gl_Position = projectionMatrix * mvPosition;
