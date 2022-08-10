@@ -2,7 +2,7 @@
 // https://threejs.org/examples/webgl_loader_md2_control.html
 import { scene, renderer, camera, clock, createOrbitControls } from '/utils/scene.js'
 import { loadModel } from '/utils/loaders.js'
-import Player from '/classes/Player.js'
+import Player from '/utils/classes/Player.js'
 import { dupecheshAnimations } from '/data/animations.js'
 import { createGround } from '/utils/ground.js'
 import { dirLight } from '/utils/light.js'

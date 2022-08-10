@@ -2,8 +2,8 @@ import * as THREE from '/node_modules/three/build/three.module.js'
 import { scene, renderer, clock, camera, hemLight, addUIControls } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 import { createFirTrees } from '/utils/trees.js'
-import keyboard from '/classes/Keyboard.js'
-import Avatar from '/classes/Avatar.js'
+import keyboard from '/utils/classes/Keyboard.js'
+import Avatar from '/utils/classes/Avatar.js'
 
 hemLight({ intensity: 1.25 })
 

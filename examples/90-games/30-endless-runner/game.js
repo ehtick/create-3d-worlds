@@ -4,7 +4,7 @@ import { createBall, createWorldSphere } from '/utils/geometry.js'
 import { createFir } from '/utils/trees.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
 import { hemLight } from '/utils/light.js'
-import keyboard from '/classes/Keyboard.js'
+import keyboard from '/utils/classes/Keyboard.js'
 import { randomInRange, roll } from '/utils/helpers.js'
 
 const { random } = Math

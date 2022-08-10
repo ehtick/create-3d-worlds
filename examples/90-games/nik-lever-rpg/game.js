@@ -2,8 +2,8 @@ import * as THREE from '/node_modules/three/build/three.module.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
 import { hemLight, dirLight } from '/utils/light.js'
-import keyboard from '/classes/Keyboard.js'
-import JoyStick from '/classes/JoyStick.js'
+import keyboard from '/utils/classes/Keyboard.js'
+import JoyStick from '/utils/classes/JoyStick.js'
 
 hemLight()
 dirLight()

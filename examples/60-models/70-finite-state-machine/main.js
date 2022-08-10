@@ -1,13 +1,13 @@
 import * as THREE from '/node_modules/three/build/three.module.js'
 import Player from './Player.js'
 import StateMachine from './StateMachine.js'
-import ThirdPersonCamera from '/classes/ThirdPersonCamera.js'
+import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
 import { girlAnimations } from '/data/animations.js'
-import keyboard from '/classes/Keyboard.js'
+import keyboard from '/utils/classes/Keyboard.js'
 
 camera.position.set(25, 10, 25)
 

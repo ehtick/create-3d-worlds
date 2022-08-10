@@ -1,5 +1,5 @@
 // https://gamedevelopment.tutsplus.com/tutorials/when-worlds-collide-simulating-circle-circle-collisions--gamedev-769
-import Canvas from '/classes/2d/Canvas.js'
+import Canvas from '/utils/classes/2d/Canvas.js'
 
 const canvas = new Canvas()
 const { ctx } = canvas

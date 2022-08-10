@@ -1,10 +1,10 @@
-import game from './classes/GameEngine.js'
-import Mine from './classes/Mine.js'
-import Entity from './classes/Entity.js'
-import Mob from './classes/Mob.js'
-import Cloud from './classes/Cloud.js'
-import Bird from './classes/creatures/Bird.js'
-import Rabbit from './classes/creatures/Rabbit.js'
+import game from './utils/classes/GameEngine.js'
+import Mine from './utils/classes/Mine.js'
+import Entity from './utils/classes/Entity.js'
+import Mob from './utils/classes/Mob.js'
+import Cloud from './utils/classes/Cloud.js'
+import Bird from './utils/classes/creatures/Bird.js'
+import Rabbit from './utils/classes/creatures/Rabbit.js'
 import { loadModel } from '/utils/loaders.js'
 
 const HUNTERS = 2

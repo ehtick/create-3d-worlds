@@ -1,5 +1,5 @@
 import State from './State.js'
-import keyboard from '/classes/Keyboard.js'
+import keyboard from '/utils/classes/Keyboard.js'
 import { syncFrom } from './utils.js'
 import { kachujinMoves } from '/data/animations.js'
 

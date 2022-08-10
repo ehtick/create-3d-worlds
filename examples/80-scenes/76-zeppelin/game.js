@@ -3,7 +3,7 @@ import { createHillyTerrain } from '/utils/terrain/createHillyTerrain.js'
 import { createSkySphere } from '/utils/geometry.js'
 import { createSunLight } from '/utils/light.js'
 import { createWater } from '/utils/ground.js'
-import Zeppelin from '/classes/aircrafts/Zeppelin.js'
+import Zeppelin from '/utils/classes/aircrafts/Zeppelin.js'
 import { loadModel } from '/utils/loaders.js'
 
 camera.position.set(0, 10, 25)

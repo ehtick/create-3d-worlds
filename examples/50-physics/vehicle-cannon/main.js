@@ -3,7 +3,7 @@ import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { world, createGround, createObstacles } from '/utils/physics-cannon.js'
 import { createChaseCamera } from '/utils/helpers.js'
-import Vehicle from '/classes/Vehicle.js'
+import Vehicle from '/utils/classes/Vehicle.js'
 
 initLights()
 

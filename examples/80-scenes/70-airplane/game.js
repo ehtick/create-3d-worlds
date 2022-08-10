@@ -3,7 +3,7 @@ import { scene, renderer, camera } from '/utils/scene.js'
 import { createSkySphere } from '/utils/geometry.js'
 import { createTerrain } from '/utils/ground.js'
 import { createFirTrees } from '/utils/trees.js'
-import Airplane from '/classes/aircrafts/Airplane.js'
+import Airplane from '/utils/classes/aircrafts/Airplane.js'
 import { loadModel } from '/utils/loaders.js'
 import { createSunLight } from '/utils/light.js'
 

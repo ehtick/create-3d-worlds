@@ -8,7 +8,7 @@ import { dirLight } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 import { nemesis } from '/data/maps.js'
 import { create3DMap } from '/utils/mazes.js'
-import FPSRenderer from '/classes/2d/FPSRenderer.js'
+import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { handleInput } from '/utils/player.js'
 import { createBullet, createCrate } from '/utils/geometry.js'
 

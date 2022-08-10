@@ -1,5 +1,5 @@
 import * as THREE from '/node_modules/three/build/three.module.js'
-import keyboard from '/classes/Keyboard.js'
+import keyboard from '/utils/classes/Keyboard.js'
 
 export default class Player {
   constructor({ mesh }) {

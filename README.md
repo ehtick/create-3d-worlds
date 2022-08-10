@@ -11,6 +11,8 @@ npx live-server
 
 ## TODO
 
+- dodati lens flare na sunce
+
 Shaders
   - The Book of Shaders https://thebookofshaders.com/
 
@@ -77,6 +79,7 @@ Konačni automat
   - dodati park ili trg u centru
   - dodati drveće, za zeleni grad
   - ubaciti prvo lice u scenu
+  - neki random primer https://thatfrenchgamedev.com/citydemo.html#
 
 - Fantasy scena
   - dodati modele (vidi rad-sa-modelima)
@@ -163,3 +166,6 @@ Textures
 
 Geodata:
 - visinske mape za ceo svet https://tangrams.github.io/heightmapper/#8.3724/43.3401/19.5293
+- weighted random https://pixelero.wordpress.com/2008/04/24/various-functions-and-various-distributions-with-mathrandom/
+
+Sketch art: https://codepen.io/bartuc/pen/rdoVXd

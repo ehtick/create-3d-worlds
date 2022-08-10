@@ -2,7 +2,7 @@ import { camera, renderer } from '/utils/scene.js'
 import { scene, createGround } from '/utils/physics.js'
 import { ambLight } from '/utils/light.js'
 import { createBus } from './bus.js'
-import keyboard from '/classes/Keyboard.js'
+import keyboard from '/utils/classes/Keyboard.js'
 
 const { pressed } = keyboard
 

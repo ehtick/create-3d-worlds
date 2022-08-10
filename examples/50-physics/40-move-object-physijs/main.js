@@ -2,7 +2,7 @@ import * as THREE from '/node_modules/three/build/three.module.js'
 import { camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { scene, createGround, createBall } from '/utils/physics.js'
 import { dirLight, ambLight } from '/utils/light.js'
-import keyboard from '/classes/Keyboard.js'
+import keyboard from '/utils/classes/Keyboard.js'
 
 const forceAmount = 10
 

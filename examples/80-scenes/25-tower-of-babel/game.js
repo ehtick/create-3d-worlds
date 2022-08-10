@@ -1,6 +1,6 @@
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createTerrain } from '/utils/ground.js'
-import Avatar from '/classes/Avatar.js'
+import Avatar from '/utils/classes/Avatar.js'
 import { dirLight, hemLight } from '/utils/light.js'
 import { createBabelTower, spomenik, spaceStructure } from '/utils/towers.js'
 

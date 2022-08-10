@@ -1,7 +1,7 @@
 import * as THREE from '/node_modules/three/build/three.module.js'
 import { scene, renderer, camera, clock, createOrbitControls } from '/utils/scene.js'
 import { loadModel } from '/utils/loaders.js'
-import ParticleSystem from '/classes/ParticleSystem.js'
+import ParticleSystem from '/utils/classes/ParticleSystem.js'
 
 createOrbitControls()
 camera.position.z = 20

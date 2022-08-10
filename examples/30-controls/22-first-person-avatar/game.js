@@ -1,6 +1,6 @@
 import { createTrees } from '/utils/trees.js'
 import { renderer, camera, clock, createWorldScene } from '/utils/scene.js'
-import Avatar from '/classes/Avatar.js'
+import Avatar from '/utils/classes/Avatar.js'
 
 const scene = createWorldScene({ file: 'ground.jpg' })
 const avatar = new Avatar()

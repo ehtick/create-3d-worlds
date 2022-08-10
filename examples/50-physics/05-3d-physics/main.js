@@ -1,7 +1,7 @@
 import * as THREE from '/node_modules/three/build/three.module.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSphere } from '/utils/geometry.js'
-import Canvas from '/classes/2d/Canvas.js'
+import Canvas from '/utils/classes/2d/Canvas.js'
 
 const canvas = new Canvas()
 const { ctx } = canvas

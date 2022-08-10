@@ -1,4 +1,4 @@
-import Player from '/classes/Player.js'
+import Player from '/utils/classes/Player.js'
 import { createBox } from '/utils/geometry.js'
 import { camera } from '/utils/scene.js'
 

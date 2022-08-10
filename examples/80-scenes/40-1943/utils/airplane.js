@@ -1,4 +1,4 @@
-import keyboard from '/classes/Keyboard.js'
+import keyboard from '/utils/classes/Keyboard.js'
 
 const speed = 100
 const rotationSpeed = .5

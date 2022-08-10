@@ -6,7 +6,7 @@ import WalkState from './states/WalkState.js'
 import WalkBackwardState from './states/WalkBackwardState.js'
 import SpecialState from './states/SpecialState.js'
 import SpecialMirrorState from './states/SpecialMirrorState.js'
-import keyboard from '/classes/Keyboard.js'
+import keyboard from '/utils/classes/Keyboard.js'
 
 const states = {
   idle: IdleState,
