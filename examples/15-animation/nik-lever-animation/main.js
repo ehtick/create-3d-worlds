@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 
-class GrannyKnot extends THREE.Curve {
+class CustomCurve extends THREE.Curve {
   getPoint(t, optionalTarget) {
     const point = optionalTarget || new THREE.Vector3()
     t *= 2 * Math.PI
@@ -18,9 +18,9 @@ scene.background = new THREE.Color(0x000000)
 camera.position.set(0, 4, 57)// wide position
 camera.lookAt(0, 1.5, 0)
 
-const curve = new GrannyKnot()
+const curve = new CustomCurve()
 const geometry = new THREE.TubeGeometry(curve, 100, 2, 8, true)
-const material = new THREE.MeshBasicMaterial({ wireframe: true, side: THREE.DoubleSide })
+const material = new THREE.MeshNormalMaterial({ wireframe: true, side: THREE.DoubleSide })
 const tube = new THREE.Mesh(geometry, material)
 scene.add(tube)
 
@@ -28,7 +28,7 @@ scene.add(tube)
 
 function updateCamera() {
   const time = clock.getElapsedTime()
-  const looptime = 20
+  const looptime = 50
   const t = (time % looptime) / looptime
   const t2 = ((time + 0.1) % looptime) / looptime
 

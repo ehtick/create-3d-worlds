@@ -1,18 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <title>CodePen - Torus Tunnel</title>
-  <link rel="stylesheet" href="./style.css">
-
+  <title>Torus Tunnel</title>
+  <style>
+    body {
+      background: black;
+    }
+  </style>
 </head>
+
 <body>
-<!-- partial:index.partial.html -->
-<div id="container"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
-<!-- partial -->
-  <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r58/three.min.js'></script><script  src="./script.js"></script>
+
+  <!-- https://codepen.io/Mombasa/pen/kBdjqa -->
+
+  <script type="importmap">
+    {
+        "imports": {
+            "three": "/node_modules/three/build/three.module.js"
+        }
+    }
+  </script>
+  <script src="main.js" type="module"></script>
 
 </body>
+
 </html>
