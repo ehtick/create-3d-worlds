@@ -22,7 +22,6 @@ class Sketch {
 
     this.radId = null
     this.init()
-    window.addEventListener('resize', () => this.resize())
   }
 
   createCamera() {
@@ -36,7 +35,6 @@ class Sketch {
   }
 
   createLight() {
-    // this.light = new DirectionalLight(0xD90FFF, 2.5)
     this.light = new SpotLight(0xD90FFF, .75)
     this.light.penumbra = 1
     this.light.angle = .5
@@ -60,7 +58,7 @@ class Sketch {
   }
 
   getContext() {
-    return this.canvas.getContext('webgl') || this.canvas.getContext('experimental-webgl')
+    return this.canvas.getContext('webgl')
   }
 
   init() {
@@ -85,22 +83,10 @@ class Sketch {
     this.renderer.setPixelRatio(this.dpr)
   }
 
-  resize() {
-    W = window.innerWidth
-    H = window.innerHeight
-
-    this.camera.aspect = W / H
-    this.camera.updateProjectionMatrix()
-
-    this.renderer.setSize(W, H)
-    this.draw() // safari fix
-  }
-
-  draw() {
+  render() {
     this.segments.forEach(({ container }) => {
       if (container.position.z >= size)
         container.position.z = -1 * size * (count - 1)
-
       container.position.z += speed
     })
     this.renderer.render(this.scene, this.camera)
@@ -108,7 +94,7 @@ class Sketch {
 
   update() {
     this.radId = requestAnimationFrame(() => this.update())
-    this.draw()
+    this.render()
   }
 
   start() {
