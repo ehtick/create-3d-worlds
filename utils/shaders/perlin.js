@@ -3,15 +3,13 @@ import * as THREE from 'three'
 
 // GLSL textureless classic 3D noise "cnoise",
 // with an RSL-style periodic variant "pnoise".
-// Author:  Stefan Gustavson (stefan.gustavson@liu.se)
-// Version: 2011-10-11
-// Copyright (c) 2011 Stefan Gustavson. All rights reserved.
-// MIT license. https://github.com/ashima/webgl-noise
+// Author:  Stefan Gustavson. MIT license.
+// https://github.com/ashima/webgl-noise
 
 const vertexShader = /* glsl */`
   uniform float scale;
   uniform float displacement;
-  // send noise value to fragment with vNoise.
+
   varying float vNoise;
 
   vec3 mod289(vec3 x)
