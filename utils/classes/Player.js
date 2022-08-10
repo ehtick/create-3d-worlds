@@ -1,7 +1,7 @@
 import * as THREE from '/node_modules/three/build/three.module.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { createBox } from '/utils/geometry.js'
-import { addSolids, raycastGround } from '/utils/classes/actions/index.js'
+import { addSolids, raycastGround } from '/utils/classes/actions.js'
 import { getHeight, directionBlocked } from '/utils/helpers.js'
 import { dir } from '/utils/constants.js'
 

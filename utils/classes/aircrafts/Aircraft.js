@@ -1,6 +1,6 @@
 import * as THREE from '/node_modules/three/build/three.module.js'
 import keyboard from '/utils/classes/Keyboard.js'
-import { addSolids, raycastDown, raycastFront } from '/utils/classes/actions/index.js'
+import { addSolids, raycastDown, raycastFront } from '/utils/classes/actions.js'
 
 const clock = new THREE.Clock()
 
