@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import * as CANNON from '/libs/cannon-es.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { world } from '/utils/physics-cannon.js'

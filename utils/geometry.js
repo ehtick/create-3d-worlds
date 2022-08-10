@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import { randomInRange, randomNuance } from './helpers.js'
 import { material as skyMaterial } from '/utils/shaders/gradient-sky.js'
 

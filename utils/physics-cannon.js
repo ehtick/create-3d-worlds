@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import * as CANNON from '/libs/cannon-es.js'
 import { createFloor } from '/utils/ground.js'
 import { randomInRange } from '/utils/helpers.js'

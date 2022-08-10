@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import { camera, scene, renderer, clock } from '/utils/scene.js'
 import { material as marbleMaterial } from '/utils/shaders/marble.js'
 import { material as ledMaterial } from '/utils/shaders/led.js'
@@ -19,13 +19,13 @@ scene.add(ledBox, marbleBox)
 
 void function animate() {
   requestAnimationFrame(animate)
-  const delta = clock.getDelta()
+  const time = clock.getElapsedTime()
 
-  ledMaterial.uniforms.time.value += delta * 5
-  marbleMaterial.uniforms.time.value = clock.elapsedTime
+  marbleMaterial.uniforms.time.value = time
+  ledMaterial.uniforms.time.value = time * 3
 
-  marbleBox.rotation.y += delta * -0.5
-  ledBox.rotation.y += delta * 0.5
+  marbleBox.rotation.y = time * -0.5
+  ledBox.rotation.y = time * 0.5
 
   renderer.render(scene, camera)
 }()

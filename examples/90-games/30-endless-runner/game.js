@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import { camera, scene, renderer, clock, addScoreUI } from '/utils/scene.js'
 import { createBall, createWorldSphere } from '/utils/geometry.js'
 import { createFir } from '/utils/trees.js'

@@ -1,5 +1,5 @@
 /* global dat */
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import { scene, camera, renderer, hemLight } from '/utils/scene.js'
 
 hemLight()

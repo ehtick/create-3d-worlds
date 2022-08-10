@@ -6,7 +6,7 @@
 // - Converted to TypeScript
 // - Updated to support THREE.BufferGeometry (r125)
 // - Updated to use cannon-es
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import * as CANNON from '/libs/cannon-es.js'
 
 export default class CannonDebugRenderer {

@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import { randomInRange } from '/utils/helpers.js'
 
 // https://stackoverflow.com/questions/11638883/thickness-of-lines-using-three-linebasicmaterial

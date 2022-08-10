@@ -1,5 +1,5 @@
 import Physijs from '/libs/physi-ecma.js'
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import { scene } from '/utils/physics.js'
 import { loadModel } from '/utils/loaders.js'
 

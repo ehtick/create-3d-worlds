@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import { renderer, camera } from '/utils/scene.js'
 import { normalizeMouse } from '/utils/helpers.js'
 import { ambLight, dirLight } from '/utils/light.js'

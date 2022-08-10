@@ -1,6 +1,6 @@
 // Created by Inigo Quilez http://www.iquilezles.org/www/articles/voronoilines/voronoilines.htm
 // Altered for a Three.js by Chris Brown - blog.2pha.com
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 
 export const vertexShader = /* glsl */`
   varying vec2 vUv;

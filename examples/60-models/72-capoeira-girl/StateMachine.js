@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 
 import IdleState from './states/IdleState.js'
 import RunState from './states/RunState.js'

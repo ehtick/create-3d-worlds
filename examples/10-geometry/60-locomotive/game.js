@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import { camera, scene, renderer, hemLight, createOrbitControls } from '/utils/scene.js'
 import { createLocomotive } from '/utils/shapes.js'
 

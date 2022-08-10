@@ -1,5 +1,5 @@
 // https://2pha.com/demos/threejs/shaders/perlin_noise_3d_vertex.html
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 
 // GLSL textureless classic 3D noise "cnoise",
 // with an RSL-style periodic variant "pnoise".

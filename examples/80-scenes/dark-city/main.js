@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 import { scene, camera, renderer } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'

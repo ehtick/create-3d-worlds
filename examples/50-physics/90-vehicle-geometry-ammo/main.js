@@ -1,6 +1,6 @@
 /* global Ammo */
 /* eslint-disable new-cap */
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 
 const AMMO = await Ammo()

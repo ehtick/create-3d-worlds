@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import { OBJLoader } from '/node_modules/three/examples/jsm/loaders/OBJLoader.js'
 import { MTLLoader } from '/node_modules/three/examples/jsm/loaders/MTLLoader.js'
 import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js'

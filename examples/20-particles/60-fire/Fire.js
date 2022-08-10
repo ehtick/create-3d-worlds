@@ -8,7 +8,7 @@
 import {
   Clock, Color, DataTexture, LinearFilter, Math as _Math, Mesh, NearestFilter, NoToneMapping,
   OrthographicCamera, PlaneBufferGeometry, RGBAFormat, Scene, ShaderMaterial, Vector2, WebGLRenderTarget
-} from '/node_modules/three/build/three.module.js'
+} from 'three'
 
 const Fire = function(geometry, options = {}) {
 

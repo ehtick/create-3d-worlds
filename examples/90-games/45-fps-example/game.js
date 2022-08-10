@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import { Octree } from '/node_modules/three/examples/jsm/math/Octree.js'
 import { scene, clock, camera, renderer } from '/utils/scene.js'
 import { hemLight } from '/utils/light.js'

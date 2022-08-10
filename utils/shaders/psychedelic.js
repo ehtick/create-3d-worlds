@@ -1,5 +1,5 @@
 // https://codepen.io/Yakudoo/pen/rJjOJx
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 
 const vertexShader = /* glsl */`
   // attributes of our mesh

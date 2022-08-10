@@ -1,4 +1,4 @@
-import * as THREE from '/node_modules/three/build/three.module.js'
+import * as THREE from 'three'
 import { camera, scene } from '/utils/scene.js'
 import { UNITSIZE, BULLETMOVESPEED, PROJECTILEDAMAGE, MOVESPEED, mapWidth, mapHeight } from './constants.js'
 import { randomInt } from '/utils/helpers.js'

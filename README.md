@@ -15,7 +15,7 @@ npx live-server
 
 Shaders
   - The Book of Shaders https://thebookofshaders.com/
-  - napraviti shader za prozore zgrade (rect-rotate-multiple)
+  - napraviti shader za prozore zgrade (rect-rotate-multiple, live-texture)
 
 Konačni automat
 - srediti capoeira girl
