@@ -6,9 +6,7 @@ const {
 const { randFloat } = THREE.Math
 const { PI } = Math
 
-const n = 24
-const gap = 1
-const size = gap * (n - 1)
+import { n, gap, size } from './config.js'
 
 const f = (A, B, x, C = 0, D = 0) => A * Math.sin(B * x + C) + D
 
