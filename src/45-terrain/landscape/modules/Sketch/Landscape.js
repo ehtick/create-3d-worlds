@@ -1,23 +1,16 @@
-import {
-  Vector3,
-  LineBasicMaterial,
-  MeshPhongMaterial,
-  PlaneGeometry,
-  LineSegments,
-  Mesh,
-  Object3D,
-  BufferGeometry,
-  BufferAttribute,
-} from 'three'
+import * as THREE from 'three'
+const {
+  Vector3, LineBasicMaterial, MeshPhongMaterial, PlaneGeometry, LineSegments, Mesh,
+  Object3D, BufferGeometry, BufferAttribute,
+} = THREE
+const { randFloat } = THREE.Math
+const { PI } = Math
 
-import { n, gap, size } from './config.js'
-import rnd from '../../utils/random.js'
-
-const random = rnd.seed(42)
+const n = 24
+const gap = 1
+const size = gap * (n - 1)
 
 const f = (A, B, x, C = 0, D = 0) => A * Math.sin(B * x + C) + D
-
-const { PI } = Math
 
 const subdivide = (start, end, q) => {
   const points = [] // array of Vector3's
@@ -41,7 +34,7 @@ const planeMaterial = new MeshPhongMaterial({
 })
 
 class Landscape {
-  constructor(scene) {
+  constructor() {
     this.container = new Object3D()
     this.container.position.set(-(size / 2), -1.5, 0)
 
@@ -52,8 +45,7 @@ class Landscape {
     this.plane.rotation.x = -PI / 2
     this.plane.position.set((size / 2), -.001, -(size / 2), 0)
 
-    // lines
-    // horizontal
+    // lines horizontal
     {
       const positions = new Float32Array(n * n * 3)
       const indices = []
@@ -102,7 +94,7 @@ class Landscape {
 
     this.randoms = []
     for (let i = 0; i < n ** 2; i++)
-      this.randoms.push(random.range(-1.5, 0))
+      this.randoms.push(randFloat(-1.5, 0))
 
     this.update()
     this.container.add(
@@ -115,12 +107,12 @@ class Landscape {
   update() {
     for (let i = 0; i < n; i++) {
       let q = f(2, 4 * PI, i / (n - 1), -PI / 2) +
-					Math.abs(f(random.range(1, 2), PI, i / (n - 1), PI))
+					Math.abs(f(randFloat(1, 2), PI, i / (n - 1), PI))
 
       if (i === n - 1) q = -6 // meh
 
       for (let j = 0; j < n; j++) {
-        const w = f(random.range(4, 5), 3 * PI, j / (n - 1))
+        const w = f(randFloat(4, 5), 3 * PI, j / (n - 1))
         const offset = Math.max(1.5, w + q + this.randoms[i * n + j])
         this.horizontal.geometry.attributes.position.array[i * n * 3 + j * 3 + 1] = offset
         this.vertical.geometry.attributes.position.array[j * n * 3 + i * 3 + 1] = offset
