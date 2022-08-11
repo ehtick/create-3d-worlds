@@ -5,21 +5,17 @@ import { randomInRange } from '/utils/helpers.js'
 import { material } from '/utils/shaders/windows.js'
 
 const controls = createOrbitControls()
-camera.position.set(0, 75, 75)
+camera.position.set(0, 25, 50)
 renderer.setClearColor(0x070b34)
-
-const toonMaterial = new THREE.MeshToonMaterial({ color: 0x000000 })
 
 function createBuilding({
   width = randomInRange(8, 20), height = randomInRange(width * 2, width * 4),
 } = {}) {
   const geometry = new THREE.BoxGeometry(width, height, width)
-  geometry.translate(0, height * .5, 0)
+  const toonMaterial = new THREE.MeshToonMaterial({ color: 0x000000 })
 
-  const building = new THREE.Mesh(
-    geometry,
-    [material, material, toonMaterial, toonMaterial, material, material]
-  )
+  const materials = [material, material, toonMaterial, toonMaterial, material, material]
+  const building = new THREE.Mesh(geometry, materials)
   return building
 }
 
