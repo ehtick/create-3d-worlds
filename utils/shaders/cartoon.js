@@ -22,10 +22,9 @@ export const fragmentShader = /* glsl */`
   varying vec3 vNormal;
 
   void main() {
-    vec4 lightDirection = viewMatrix * vec4( uLightPos, 0.0 );
-    vec3 lVector = normalize( lightDirection.xyz );
+    vec4 lightDirection = viewMatrix * vec4(uLightPos, 0.0);
 
-    float diffuse = dot(normalize(vNormal), lVector);
+    float diffuse = dot(normalize(vNormal), normalize(lightDirection.xyz));
 
     // 2 tones version
     // diffuse = (diffuse > 0.4) ? 1.0 : 0.3;
@@ -45,7 +44,7 @@ export const uniforms = {
   uLightPos:	{ type: 'v3', value: new THREE.Vector3() },
   uLightColor: { type: 'c', value: new THREE.Color(0xFFFFFF) },
   uMaterialColor: { type: 'c', value: new THREE.Color(0xFFFFFF) },
-  uLightness: { type: 'f', value: 0.98 }
+  uLightness: { type: 'f', value: 0.95 }
 }
 
 export const material = new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader })
