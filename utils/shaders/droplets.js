@@ -1,8 +1,5 @@
 import * as THREE from 'three'
 
-const textureLoader = new THREE.TextureLoader()
-export const texture = await textureLoader.loadAsync('background.jpg')
-
 const vertexShader = /* glsl */`
   out vec2 uvInterpolator;
 
@@ -17,12 +14,10 @@ const fragmentShader = /* glsl */`
   uniform float u_time;
   uniform sampler2D u_texture;
 
-  // Generate a random float from a single input and seed.
   float Random11(float inputValue, float seed) {
     return fract(sin(inputValue * 345.456) * seed);
   }
 
-  // Generate a random float from a 2d input and seed.
   float Random21(vec2 inputValue, float seed) {
     return fract(sin(dot(inputValue, vec2(123.456, 43.12))) * seed);
   }
@@ -52,7 +47,7 @@ const fragmentShader = /* glsl */`
     float isDropShown = step(0.8, Random21(cellIndex, seed + 14244.324));
 
     // Decrease each drop intensity with time. Then make it appear again.
-    float dropIntensity = 1.0 - fract(u_time * 0.1 + Random21(cellIndex, seed + 32132.432) * 2.0) * 2.0;
+    float dropIntensity = 1.0 - fract(u_time + Random21(cellIndex, seed + 32132.432) * 2.0) * 2.0;
     dropIntensity = sign(dropIntensity) * abs(dropIntensity * dropIntensity * dropIntensity * dropIntensity);
     dropIntensity = clamp(dropIntensity, 0.0, 1.0);
 
@@ -87,11 +82,13 @@ const fragmentShader = /* glsl */`
   }
 `
 
+export const uniforms = {
+  u_time: { value: 0 },
+  u_texture: { value: null },
+}
+
 export const material = new THREE.ShaderMaterial({
   vertexShader,
   fragmentShader,
-  uniforms: {
-    u_time: { value: 0 },
-    u_texture: { value: texture },
-  },
+  uniforms,
 })

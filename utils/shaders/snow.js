@@ -3,30 +3,28 @@ import * as THREE from 'three'
 
 const loader = new THREE.TextureLoader()
 
-const texture = await loader.loadAsync('/assets/images/noise.png')
-texture.wrapS = THREE.RepeatWrapping
-texture.wrapT = THREE.RepeatWrapping
+const map = await loader.loadAsync('/assets/images/noise.png')
+map.wrapS = map.wrapT = THREE.RepeatWrapping
 
 const vertexShader = /* glsl */`
+
   void main() {
     gl_Position = vec4( position, 1.0 );
   }
 `
 
 const fragmentShader = /* glsl */`
+  #define PI 3.141592653589793
+  #define TAU 6.28
+  
   uniform vec2 u_resolution;
   uniform vec2 u_mouse;
   uniform float u_time;
   uniform sampler2D u_noise;
   
-  #define PI 3.141592653589793
-  #define TAU 6.
-  
   const float multiplier = 25.5;
-
   const float zoomSpeed = 10.;
   const int layers = 10;
-
   const int octaves = 5;
 
   vec2 hash2(vec2 p)
@@ -35,14 +33,12 @@ const fragmentShader = /* glsl */`
     return o;
   }
   
-  mat2 rotate2d(float _angle){
-      return mat2(cos(_angle),sin(_angle),
-                  -sin(_angle),cos(_angle));
+  mat2 rotate2d(float _angle) {
+      return mat2(cos(_angle), sin(_angle), -sin(_angle), cos(_angle));
   }
   
   vec3 hsb2rgb( in vec3 c ){
-    vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),
-                             6.0)-3.0)-1.0,
+    vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0), 6.0)-3.0)-1.0,
                      0.0,
                      1.0 );
     rgb = rgb*rgb*(3.0-2.0*rgb);
@@ -51,9 +47,9 @@ const fragmentShader = /* glsl */`
   
   float hash(vec2 p)
   {
-    float o = texture2D( u_noise, (p+0.5)/256.0, -100.0 ).x;
-    return o;
+    return texture2D( u_noise, (p+0.5)/256.0, -100.0 ).x;
   }
+
   float noise(vec2 uv) {
     vec2 id = floor(uv);
     vec2 subuv = fract(uv);
@@ -64,6 +60,7 @@ const fragmentShader = /* glsl */`
     float d = hash(id + vec2(1., 1.));
     return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
   }
+
   float fbm(in vec2 uv) {
     float s = .0;
     float m = .0;
@@ -78,49 +75,48 @@ const fragmentShader = /* glsl */`
   }
   
   vec3 domain(vec2 z){
-    return vec3(hsb2rgb(vec3(atan(z.y,z.x)/TAU,1.,1.)));
+    return vec3(hsb2rgb(vec3(atan(z.y,z.x) / TAU, 1., 1.)));
   }
   vec3 colour(vec2 z) {
       return domain(z);
   }
   
-  // The render function is where we render the pattern to be added to the layer
+  // render the pattern to be added to the layer
   vec3 render(vec2 uv, float scale, vec3 colour) {
     vec2 id = floor(uv);
     vec2 subuv = fract(uv);
     vec2 rand = hash2(id);
-    float bokeh = abs(scale) * 1.;
-    
+    float bokeh = abs(scale) * 1.;    
     float particle = 0.;
     
-    if(length(rand) > 1.3) {
+    if (length(rand) > 1.3) {
       vec2 pos = subuv-.5;
       float field = length(pos);
       particle = smoothstep(.3, 0., field);
       particle += smoothstep(.4, 0.34 * bokeh, field);
     }
-    return vec3(particle*2.);
+    return vec3(particle * 2.);
   }
   
   vec3 renderLayer(int layer, int layers, vec2 uv, inout float opacity, vec3 colour, float n) {
     vec2 _uv = uv;
-    // Scale
-    // Generating a scale value between zero and 1 based on a mod of u_time
-    // A frequency of 10 dixided by the layer index (10 / layers * layer)
+
+    // generate a scale value between zero and 1 based on a mod of u_time
+    // a frequency of 10 dixided by the layer index (10 / layers * layer)
     float scale = mod((u_time + zoomSpeed / float(layers) * float(layer)) / zoomSpeed, -1.);
-    uv *= 20.; // The initial scale. Increasing this makes the cells smaller and the "speed" apepar faster
-    uv *= scale*scale; // then modifying the overall scale by the generated amount
+    uv *= 20.; // The initial scale. Increasing this makes the flakes smaller and apepar faster
+    uv *= scale * scale; // then modifying the overall scale by the generated amount
     uv = rotate2d(u_time / 10.) * uv; // rotarting
-    uv += vec2(25. + sin(u_time*.1)) * float(layer); // ofsetting the UV by an arbitrary amount to make the layer appear different
+    uv += vec2(25. + sin(u_time*.1)) * float(layer); // ofsetting the UV by an arbitrary amount to make them different
 
     // render
     vec3 pass = render(uv * multiplier, scale, colour) * .2; // render the pass
 
-     // this is the opacity of the layer fading in from the "bottom"
+     // opacity of the layer fading in from the "bottom"
     opacity = 1. + scale;
     float _opacity = opacity;
     
-    // This is the opacity of the layer fading out at the top (we want this minimal, hence the smoothstep)
+    // opacity of the layer fading out at the top (we want this minimal, hence the smoothstep)
     float endOpacity = smoothstep(0., 0.4, scale * -1.);
     opacity += endOpacity;
 
@@ -147,7 +143,6 @@ const fragmentShader = /* glsl */`
       colour += renderLayer(i, layers, uv, opacity, colour, n);
       opacity_sum += opacity;
     }
-
     colour /= opacity_sum;
 
     gl_FragColor = vec4(clamp(colour * 20., 0., 1.),1.0);
@@ -157,7 +152,7 @@ const fragmentShader = /* glsl */`
 const uniforms = {
   u_time: { type: 'f', value: 1.0 },
   u_resolution: { type: 'v2', value: new THREE.Vector2() },
-  u_noise: { type: 't', value: texture },
+  u_noise: { type: 't', value: map },
 }
 
 uniforms.u_resolution.value.x = window.innerWidth

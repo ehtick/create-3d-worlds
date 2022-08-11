@@ -95,9 +95,8 @@ const vertexShader = /* glsl */`
       * sin(modelPosition.z * uBigWavesFrequency.y + uTime * uBigWaveSpeed) 
       * uBigWavesElevation;
     
-    for(float i = 1.0; i <= 10.0; i++) {
+    for(float i = 1.0; i <= uSmallWavesIterations; i++) {
       elevation -= cnoise(vec3(modelPosition.xz * uSmallWavesFrequency * i, uTime * uSmallWavesSpeed)) * uSmallWavesElevation / i;
-      if (i >= uSmallWavesIterations ) break;
     }
     
     modelPosition.y += elevation;
@@ -136,7 +135,7 @@ const uniforms = {
   uSmallWavesElevation: { value: 0.15 },
   uSmallWavesFrequency: { value: 3.0 },
   uSmallWavesSpeed: { value: 0.3 },
-  uSmallWavesIterations: { value: 4.0 },
+  uSmallWavesIterations: { value: 4 },
 
   uDepthColor: { value: new THREE.Color('#1e4d40') },
   uSurfaceColor: { value: new THREE.Color('#4d9aaa') },
