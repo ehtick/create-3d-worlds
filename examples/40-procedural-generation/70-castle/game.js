@@ -15,6 +15,6 @@ scene.add(castle, createGround())
 /* LOOP **/
 
 void function update() {
-  window.requestAnimationFrame(update)
+  requestAnimationFrame(update)
   renderer.render(scene, camera)
 }()

@@ -38,7 +38,7 @@ function createOneFloor(y, i) {
 /** LOOP **/
 
 void function update() {
-  window.requestAnimationFrame(update)
+  requestAnimationFrame(update)
   scene.simulate()
   renderer.render(scene, camera)
 }()

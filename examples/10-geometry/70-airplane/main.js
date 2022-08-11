@@ -27,7 +27,7 @@ gui.add(controller, 'z', -360, 360).name('Rotate z (roll)')
 /* LOOP */
 
 void function update() {
-  window.requestAnimationFrame(update)
+  requestAnimationFrame(update)
   airplane.rotation.x = controller.x * DEGREE // pitch
   airplane.rotation.y = controller.y * DEGREE // yaw
   airplane.rotation.z = controller.z * DEGREE // roll

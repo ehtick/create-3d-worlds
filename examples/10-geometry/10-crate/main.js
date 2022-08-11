@@ -9,7 +9,7 @@ const cube = createCrate()
 scene.add(cube)
 
 void function render() {
-  window.requestAnimationFrame(render)
+  requestAnimationFrame(render)
   cube.rotation.y += 0.01
   renderer.render(scene, camera)
 }()

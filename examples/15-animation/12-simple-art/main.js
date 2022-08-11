@@ -47,7 +47,7 @@ const drawCircle = () => {
 /** LOOP **/
 
 void function loop() {
-  window.requestAnimationFrame(loop)
+  requestAnimationFrame(loop)
   arcs.map(a => a.update())
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   ctx.translate(canvas.width / 2, canvas.height / 2)

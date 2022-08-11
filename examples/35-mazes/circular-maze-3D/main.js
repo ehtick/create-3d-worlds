@@ -19,6 +19,6 @@ scene.add(mesh)
 /* LOOP */
 
 void function render() {
-  window.requestAnimationFrame(render)
+  requestAnimationFrame(render)
   renderer.render(scene, camera)
 }()

@@ -13,7 +13,7 @@ dirLight({ scene })
 let timeStep = 0
 
 void function update() {
-  window.requestAnimationFrame(update)
+  requestAnimationFrame(update)
   scene.simulate()
   if (++timeStep % 100 == 0) {
     const box = createBox()

@@ -11,6 +11,6 @@ const mazeMesh = createMeshFromMatrix({ matrix })
 scene.add(mazeMesh)
 
 void function render() {
-  window.requestAnimationFrame(render)
+  requestAnimationFrame(render)
   renderer.render(scene, camera)
 }()

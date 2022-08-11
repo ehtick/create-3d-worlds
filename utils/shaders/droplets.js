@@ -1,3 +1,4 @@
+// https://github.com/NordicBeaver/rain-shader
 import * as THREE from 'three'
 
 const vertexShader = /* glsl */`
