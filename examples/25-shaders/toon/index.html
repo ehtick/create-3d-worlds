@@ -11,42 +11,14 @@
 
   <!-- https://jsfiddle.net/mudroljub/e80mak64/1/ -->
 
-  <script src="https://threejs.org/build/three.min.js"></script>
-  <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
-  <script src="https://raw.githack.com/mrdoob/three.js/dev/examples/js/geometries/TeapotGeometry.js"></script>
-
-  <script id="myVertexShader" type="x-shader/x-vertex">
-	uniform vec3 lightpos;
-  varying vec3 lightdir;
-  varying vec3 eyenorm;
-  
-  void main() {
-		gl_Position = projectionMatrix* modelViewMatrix * vec4( position, 1.0);
-    vec4 eyepos = modelViewMatrix * vec4 (position, 1.0);
-    vec4 lighteye = viewMatrix * vec4 (lightpos, 1.0);
-    lightdir = lighteye.xyz - eyepos.xyz;
-    eyenorm = normalMatrix * normal;
-  }
-</script>
-
-  <script id="myFragmentShader" type="x-shader/x-fragment">
-  varying vec3 lightdir;
-  varying vec3 eyenorm;
-  
-	void main() {
-		float nn = dot (normalize(lightdir), normalize(eyenorm));
-    if (nn > 0.8) {
-			nn= 1.0;
-		} else if (nn > 0.6) {
-			nn = 0.6;
-		} else {
-			nn = 0.2;
-		}
-		gl_FragColor = vec4 (nn,nn,nn, 1.0);
-	}
-</script>
-
-  <script src="main.js"></script>
+  <script type="importmap">
+    {
+        "imports": {
+            "three": "/node_modules/three/build/three.module.js"
+        }
+    }
+  </script>
+  <script src="main.js" type="module"></script>
 </body>
 
 </html>

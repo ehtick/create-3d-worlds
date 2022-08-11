@@ -13,7 +13,7 @@ const teapot = new THREE.Mesh(new TeapotGeometry(2), material)
 scene.add(teapot)
 
 uniforms.uDirLightColor.value = light.color
-uniforms.uDirLightPos.value = light.position
+uniforms.uLightPos.value = light.position
 uniforms.uMaterialColor.value = new THREE.Color('crimson')
 
 /* LOOP */
