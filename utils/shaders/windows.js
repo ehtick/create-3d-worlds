@@ -15,20 +15,10 @@ const fragmentShader = /* glsl */`
 
   float rect(vec2 pt, vec2 anchor, vec2 size, vec2 center){
     vec2 p = pt - center;
-    vec2 halfsize = size/2.0;
+    vec2 halfsize = size / 2.0;
     float horiz = step(-halfsize.x - anchor.x, p.x) - step(halfsize.x - anchor.x, p.x);
     float vert = step(-halfsize.y - anchor.y, p.y) - step(halfsize.y - anchor.y, p.y);
     return horiz * vert;
-  }
-
-  mat2 getRotationMatrix(float theta){
-    float s = sin(theta);
-    float c = cos(theta);
-    return mat2(c, -s, s, c);
-  }
-
-  mat2 getScaleMatrix(float scale){
-    return mat2(scale,0,0,scale);
   }
 
   void main (void)
@@ -37,7 +27,7 @@ const fragmentShader = /* glsl */`
     vec2 center = vec2(0.5);
     vec2 pt = fract(vUv * tilecount) - center;
     pt += center;
-    vec3 color = u_color * rect(pt, vec2(0.0), vec2(0.3), center);
+    vec3 color = u_color * rect(pt, vec2(0.0), vec2(0.33), center);
 
     gl_FragColor = vec4(color, 1.0); 
   }
