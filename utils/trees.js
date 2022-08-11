@@ -9,22 +9,12 @@ const randomBrown = () => browns[Math.floor(Math.random() * browns.length)]
 
 /* SIMPLE TREE */
 
-function createTrunk(size, color, sketch = false) {
+function createTrunk(size, color) {
   const geometry = new THREE.CylinderGeometry(size / 3.5, size / 3, size, 8)
   const material = new THREE.MeshToonMaterial({
     color: color || randomNuance({ h: 1.045, s: 0.5 })
   })
   const mesh = new THREE.Mesh(geometry, material)
-  if (sketch) {
-    const outlineSize = size * sketchSize
-    const outlineGeo = new THREE.CylinderGeometry(size / 3.5 + outlineSize, size / 3 + outlineSize, size + outlineSize, 8)
-    const outlineMat = new THREE.MeshBasicMaterial({
-      color: 0x0000000,
-      side: THREE.BackSide
-    })
-    const outline = new THREE.Mesh(outlineGeo, outlineMat)
-    mesh.add(outline)
-  }
   return mesh
 }
 
@@ -49,19 +39,17 @@ function createCrown(size, color, sketch = false) {
   return mesh
 }
 
-export function createTree({ x = 0, y = 0, z = 0, size = 5, trunkColor, crownColor, sketch = false } = {}) {
+export function createTree({ x = 0, y = 0, z = 0, size = 5, trunkColor, crownColor } = {}) {
   size = size * randomInRange(0.6, 1.4) // eslint-disable-line
-  const trunk = createTrunk(size, trunkColor, sketch)
+  const trunk = createTrunk(size, trunkColor)
   trunk.position.set(x, y, z)
   trunk.translateY(size / 2)
 
-  const crown = createCrown(size, crownColor, sketch)
+  const crown = createCrown(size, crownColor)
   crown.position.y = size + size / 4
   trunk.add(crown)
   return trunk
 }
-
-export const createSketchTree = ({ x, y, z, size, sketch = true } = {}) => createTree({ x, y, z, size, trunkColor: false, crownColor: false, sketch })
 
 /* FIR TREE */
 
@@ -167,9 +155,6 @@ export function createTrees(n = 50, mapSize = 100, size = 5, create = createTree
 
 export const createFirTrees = ({ n, mapSize, size } = {}) =>
   createTrees(n, mapSize, size, createFirTree)
-
-export const createSketchTrees = (n, mapSize, size) =>
-  createTrees(n, mapSize, size, createSketchTree)
 
 export const createTreesOnTerrain = ({ terrain, n = 100, mapSize = 400, size } = {}) => {
   const group = new THREE.Group()
