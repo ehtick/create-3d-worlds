@@ -11,8 +11,6 @@ npx live-server
 
 ## TODO
 
-- dodati lensflare na sunce
-
 Shaders
   - napraviti shader za prozore zgrade (rect-rotate-multiple, live-texture)
 

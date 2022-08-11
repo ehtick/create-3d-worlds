@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { Lensflare, LensflareElement } from '/node_modules/three/examples/jsm/objects/Lensflare.js'
 import { scene as defaultScene } from '/utils/scene.js'
 
 export function dirLight({ scene = defaultScene, position = [20, 50, 20], color = 0xffffff, intensity = 1 } = {}) {
@@ -46,8 +47,9 @@ export function initLights({ scene = defaultScene, position = [-10, 30, 40] } = 
   scene.add(ambientLight)
 }
 
-export function createSunLight({ x = 150, y = 350, z = 350, d = 400, far = 3500, color = 0xffffff, target } = {}) {
-  const light = new THREE.DirectionalLight(color, 1)
+export function createSunLight({ x = 150, y = 350, z = 350, d = 400, far = 3500, color = 0xffffff, intensity = 1.4, target } = {}) {
+  // const light = new THREE.DirectionalLight(color, intensity)
+  const light = new THREE.PointLight(color, intensity)
   light.position.set(x, y, z)
   light.castShadow = true
   // area of the shadow https://threejs.org/docs/#api/en/lights/shadows/DirectionalLightShadow
@@ -56,10 +58,15 @@ export function createSunLight({ x = 150, y = 350, z = 350, d = 400, far = 3500,
   // light.shadow.camera.top = d
   // light.shadow.camera.bottom = -d
   light.shadow.camera.far = far
-  // svetlo prati objekat
   if (target) light.target = target
   light.name = 'sunLight'
-  return light
+
+  const container = new THREE.Mesh(
+    new THREE.SphereGeometry(10),
+    new THREE.MeshToonMaterial({ color: 0xFCE570, shininess: 150 })
+  )
+  container.add(light)
+  return container
 }
 
 export function sunFollow(sun, pos) {

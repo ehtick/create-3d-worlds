@@ -29,8 +29,8 @@ const lightContainer = new THREE.Mesh(
 )
 scene.add(lightContainer)
 
-const pointLight = new THREE.PointLight(0xffffff, 2, 800)
-lightContainer.add(pointLight)
+const light = new THREE.PointLight(0xffffff, 2, 800)
+lightContainer.add(light)
 
 const effect = new OutlineEffect(renderer, { defaultThickness: 0.003 })
 

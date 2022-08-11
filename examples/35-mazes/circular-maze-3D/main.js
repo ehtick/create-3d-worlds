@@ -3,7 +3,9 @@ import { createSunLight } from '/utils/light.js'
 import { createMaze } from '/utils/circular-maze.js'
 import { renderCircularMaze } from './render-utils.js'
 
-scene.add(createSunLight())
+const sun = createSunLight()
+sun.position.set(0, 150, -200)
+scene.add(sun)
 createOrbitControls()
 
 camera.position.set(0, 100, 150)
