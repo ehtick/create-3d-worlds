@@ -1,12 +1,12 @@
 import * as THREE from 'three'
 
 const vertexShader = /* glsl */`
+  varying vec3 vNormal;
   varying vec4 mvPosition;
-  varying vec3 eyenorm;
 
   void main() {
     mvPosition = modelViewMatrix * vec4 (position, 1.0);
-    eyenorm = normalMatrix * normal;
+    vNormal = normalMatrix * normal;
 
 		gl_Position = projectionMatrix* modelViewMatrix * vec4( position, 1.0);
   }
@@ -16,17 +16,17 @@ const fragmentShader = /* glsl */`
 	uniform vec3 uLightPos;
 
   varying vec4 mvPosition;
-  varying vec3 eyenorm;
+  varying vec3 vNormal;
   
 	void main() {
     vec4 lightDirection = viewMatrix * vec4 (uLightPos, 1.0);
     vec3 lightdir = lightDirection.xyz - mvPosition.xyz;
 
-		float diffuse = dot (normalize(lightdir), normalize(eyenorm));
-    if (diffuse > 0.8) {
+		float diffuse = dot (normalize(vNormal), normalize(lightdir));
+    if (diffuse > 0.6) {
 			diffuse= 1.0;
-		} else if (diffuse > 0.6) {
-			diffuse = 0.6;
+		} else if (diffuse > 0.4) {
+			diffuse = 0.5;
 		} else {
 			diffuse = 0.2;
 		}
