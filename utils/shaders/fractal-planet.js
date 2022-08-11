@@ -3,18 +3,15 @@ import * as THREE from 'three'
 
 const loader = new THREE.TextureLoader()
 
-const texture = await loader.load('/assets/images/noise.png')
-texture.wrapS = THREE.RepeatWrapping
-texture.wrapT = THREE.RepeatWrapping
+const texture = loader.load('/assets/images/noise.png')
+texture.wrapS = texture.wrapT = THREE.RepeatWrapping
 
 const vertexShader = /* glsl */`
   varying vec2 vUv;
 
   void main() {
-
     vUv = uv;
     gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-
   }
 `
 
@@ -48,12 +45,13 @@ const fragmentShader = /* glsl */`
 		float cycle = mod(u_time/1000.,2.*pi) ;
 		c = c + vec2(cos(cycle),sin(cycle))*.01 ;
 		float m = julia(coord, c);
-		vec3 rgb = 0.5 + 0.5*cos(3.0 + 0.15*m + vec3(0.0, 0.6, 2.));
+		vec3 rgb = 0.5 + 0.5 * cos(3.0 + 0.15 * m + vec3(0.0, 0.6, 2.));
+
 		gl_FragColor = vec4(rgb, 1.0);
 	}
 `
 
-const uniforms = {
+export const uniforms = {
   u_time: { type: 'f', value: 1.0 },
 }
 

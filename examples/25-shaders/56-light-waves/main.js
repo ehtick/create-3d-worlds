@@ -4,9 +4,9 @@ import { getCursorPosition } from '/utils/helpers.js'
 import { material, uniforms } from './shader.js'
 
 scene.background = new THREE.Color(0x000000)
-camera.position.z = 30
+camera.position.z = 20
 
-const geometry = new THREE.TorusKnotGeometry(6.5, 2.3, 256, 32)
+const geometry = new THREE.TorusKnotGeometry(5, 2, 64, 32)
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
@@ -22,7 +22,7 @@ void function loop() {
 
 function onCursorMove(e) {
   const { x, y } = getCursorPosition(e)
-  uniforms.u_mouse.value.set(x, window.innerHeight - y).multiplyScalar(window.devicePixelRatio)
+  uniforms.u_mouse.value = new THREE.Vector2(x, window.innerHeight - y).multiplyScalar(window.devicePixelRatio)
 }
 
 renderer.domElement.addEventListener('mousemove', onCursorMove, false)
