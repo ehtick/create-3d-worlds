@@ -3,7 +3,7 @@ import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 import { randomInRange } from '/utils/helpers.js'
 import { initLights, hemLight } from '/utils/light.js'
 // import { createBuilding } from '/utils/city.js'
-import { material } from '/utils/shaders/rectangles.js'
+import { material } from '/utils/shaders/windows.js'
 
 initLights()
 hemLight()
