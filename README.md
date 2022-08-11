@@ -11,10 +11,9 @@ npx live-server
 
 ## TODO
 
-- dodati lens flare na sunce
+- dodati lensflare na sunce
 
 Shaders
-  - The Book of Shaders https://thebookofshaders.com/
   - napraviti shader za prozore zgrade (rect-rotate-multiple, live-texture)
 
 Konačni automat
@@ -26,7 +25,7 @@ Konačni automat
 - ažurirati verziju
 
 ### Teren
-- pokušati sinusne talase
+- pokušati sinusne talase, sabrati više talasa https://thebookofshaders.com/13/
 - obojiti teren šejderom
   - srediti boje mapa ovako https://elevationmap.net/
 
