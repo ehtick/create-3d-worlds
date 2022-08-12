@@ -2,6 +2,8 @@ import * as THREE from 'three'
 import { SimplexNoise } from '/libs/SimplexNoise.js'
 import { randomInRange, randomNuance, getTexture, similarColor } from '/utils/helpers.js'
 
+const simplex = new SimplexNoise()
+
 /* GROUND */
 
 export function createGroundMaterial({ color = 0x509f53, file, repeat } = {}) {
@@ -63,8 +65,6 @@ export function createTerrain({ size = 400, segments = 50, colorParam, factor = 
 }
 
 export function createCraters() {
-  const simplex = new SimplexNoise()
-
   const geometry = new THREE.PlaneGeometry(100, 100, 100, 100)
   const material = new THREE.MeshBasicMaterial({ color: 0x7a8a46, wireframe: true })
   const mesh = new THREE.Mesh(geometry, material)
@@ -79,16 +79,31 @@ export function createCraters() {
 
   for (let i = 0, l = position.count; i < l; i++) {
     vertex.fromBufferAttribute(position, i)
-
-    // const res = simplex.noise(vertex.x * .1, vertex.y * .1)
-    // vertex.z = res * 1.5
-
     const x = vertex.x / xZoom
     const y = vertex.y / yZoom
     let noise = simplex.noise(x, y) * noiseStrength
     noise = Math.round(noise)
-    if (noise > 2) continue
+    if (noise > 2.5) continue // cut mountain's peaks
     vertex.z = noise
+    position.setXYZ(i, vertex.x, vertex.y, vertex.z)
+  }
+  return mesh
+}
+
+export function createDunes() {
+  const geometry = new THREE.PlaneGeometry(100, 100, 100, 100)
+  const material = new THREE.MeshBasicMaterial({ color: 0xc2b280, wireframe: true })
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.rotateX(-Math.PI / 2)
+
+  const { position } = geometry.attributes
+  const vertex = new THREE.Vector3()
+
+  for (let i = 0, l = position.count; i < l; i++) {
+    vertex.fromBufferAttribute(position, i)
+
+    const res = simplex.noise(vertex.x * .1, vertex.y * .1)
+    vertex.z = res * 1.5
 
     position.setXYZ(i, vertex.x, vertex.y, vertex.z)
   }
