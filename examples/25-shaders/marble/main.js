@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { camera, scene, renderer } from '/utils/scene.js'
-import { material } from './marble.js'
+import { material } from '/utils/shaders/marble.js'
 
 const geometry = new THREE.PlaneGeometry(2, 2)
 
