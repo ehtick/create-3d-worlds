@@ -14,7 +14,7 @@ npx live-server
 - ažurirati verziju
 
 ### Teren
-- pokušati sinusne talase, sabrati više talasa https://thebookofshaders.com/13/
+- sabrati više talasa https://thebookofshaders.com/13/
 - obojiti teren šejderom
   - srediti boje mapa ovako https://elevationmap.net/
 
