@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
-import { createHillyTerrain } from '/utils/terrain/createHillyTerrain.js'
-import { createWater } from '/utils/ground.js'
+import { createHillyTerrain, createWater } from '/utils/ground.js'
 import { createTreesOnTerrain } from '/utils/trees.js'
 import { addTexture, getHeight } from '/utils/helpers.js'
 import { loadModel } from '/utils/loaders.js'
