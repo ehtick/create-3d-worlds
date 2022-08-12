@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { randomInRange } from '/utils/helpers.js'
 
-const { sin, cos } = Math
+const { sin } = Math
 
 createOrbitControls()
 
@@ -12,12 +12,12 @@ const mesh = new THREE.Mesh(geometry, material)
 mesh.rotateX(-Math.PI / 2)
 
 const { position } = geometry.attributes
-// const vertex = new THREE.Vector3()
-// for (let i = 0, l = position.count; i < l; i++) {
-//   vertex.fromBufferAttribute(position, i)
-//   vertex.z += randomInRange(-1, 1)
-//   position.setXYZ(i, vertex.x, vertex.y, vertex.z)
-// }
+const vertex = new THREE.Vector3()
+for (let i = 0, l = position.count; i < l; i++) {
+  vertex.fromBufferAttribute(position, i)
+  vertex.z += randomInRange(-1, 1)
+  position.setXYZ(i, vertex.x, vertex.y, vertex.z)
+}
 
 const oldPosition = position.clone()
 
@@ -33,21 +33,17 @@ function wave(geometry, time) {
     vertex.fromBufferAttribute(position, i)
     oldVertex.fromBufferAttribute(oldPosition, i)
     const { x, y } = vertex
-
     let change = 0
 
     // change X
-    change += amplitude * sin(x * frequency + time)
-    change += amplitude * sin(x * frequency * 2.1 + time)
-    change += 3 * amplitude * sin(x * frequency * 0.1 + time)
+    change += amplitude * sin(x * 2.1 * frequency + time)
+    change += 3 * amplitude * sin(x * 0.1 * frequency + time)
 
     // change Y
-    change += amplitude * sin((y + time) * frequency)
+    change += amplitude * sin(y * frequency + time)
     change += 2.8 * amplitude * sin(y * frequency * 0.2 + time)
-    change += 2.2 * amplitude * sin(y * frequency * 0.12 + time)
 
     change *= amplitude * 0.6
-
     vertex.z = change + oldVertex.z // preserve initial terrain
     position.setXYZ(i, vertex.x, vertex.y, vertex.z)
   }
