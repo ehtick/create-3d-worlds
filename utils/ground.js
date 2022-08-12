@@ -113,12 +113,12 @@ export function waveTerrain(geometry, time, amplitude = 1, frequency = 1) {
     let change = 0
 
     // change X
-    change += amplitude * Math.sin(x * 2.1 * frequency + time)
+    change += 0.32 * amplitude * Math.sin(x * 1.9 * frequency + time)
     change += 3 * amplitude * Math.sin(x * 0.1 * frequency + time)
 
     // change Y
-    change += amplitude * Math.sin(y * frequency + time)
-    change += 2.8 * amplitude * Math.sin(y * frequency * 0.2 + time)
+    change += .42 * amplitude * Math.sin(y * 2.1 * frequency + time)
+    change += 2.8 * amplitude * Math.sin(y * 0.2 * frequency + time)
 
     change *= amplitude * 0.6
     vertex.z = change + oldVertex.z // preserve initial terrain
