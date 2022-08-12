@@ -11,21 +11,18 @@ npx live-server
 
 ## TODO
 
-Shaders
-  - https://www.youtube.com/playlist?list=PLFky-gauhF452rW98W4cyZ8_2fXBjfGOT
-
-Konačni automat
-- srediti capoeira girl
-- uskladiti animacije sa mrdanjem igrača
-  - mrdati igrača napred za neke napade
-  - onemogućiti mrdanje u skoku?
-
 - ažurirati verziju
 
 ### Teren
 - pokušati sinusne talase, sabrati više talasa https://thebookofshaders.com/13/
 - obojiti teren šejderom
   - srediti boje mapa ovako https://elevationmap.net/
+
+## Konačni automat
+- srediti capoeira girl
+- uskladiti animacije sa mrdanjem igrača
+  - mrdati igrača napred za neke napade
+  - onemogućiti mrdanje u skoku?
 
 ### Mazes
 - napraviti render za mazes
