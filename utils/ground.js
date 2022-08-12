@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { SimplexNoise } from '/libs/SimplexNoise.js'
 import { randomInRange, randomNuance, getTexture, similarColor } from '/utils/helpers.js'
 
 /* GROUND */
@@ -61,6 +62,39 @@ export function createTerrain({ size = 400, segments = 50, colorParam, factor = 
   return mesh
 }
 
+export function createCraters() {
+  const simplex = new SimplexNoise()
+
+  const geometry = new THREE.PlaneGeometry(100, 100, 100, 100)
+  const material = new THREE.MeshBasicMaterial({ color: 0x7a8a46, wireframe: true })
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.rotateX(-Math.PI / 2)
+
+  const xZoom = 20
+  const yZoom = 20
+  const noiseStrength = 5
+
+  const { position } = geometry.attributes
+  const vertex = new THREE.Vector3()
+
+  for (let i = 0, l = position.count; i < l; i++) {
+    vertex.fromBufferAttribute(position, i)
+
+    // const res = simplex.noise(vertex.x * .1, vertex.y * .1)
+    // vertex.z = res * 1.5
+
+    const x = vertex.x / xZoom
+    const y = vertex.y / yZoom
+    let noise = simplex.noise(x, y) * noiseStrength
+    noise = Math.round(noise)
+    if (noise > 2) continue
+    vertex.z = noise
+
+    position.setXYZ(i, vertex.x, vertex.y, vertex.z)
+  }
+  return mesh
+}
+
 /* WATER */
 
 export const createWater = ({ size = 1200, segments = 20, opacity = .6, file = 'water512.jpg' } = {}) => {
@@ -99,7 +133,7 @@ export function createFloor({ color = 0x808080, circle = false, ...rest } = {}) 
 
 let oldPosition
 
-export function waveTerrain(geometry, time, amplitude = 1, frequency = 1) {
+export function wave(geometry, time, amplitude = 1, frequency = 1) {
   const { position } = geometry.attributes
   oldPosition = oldPosition || position.clone()
 

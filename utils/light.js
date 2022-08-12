@@ -47,10 +47,9 @@ export function initLights({ scene = defaultScene, position = [-10, 30, 40] } = 
   scene.add(ambientLight)
 }
 
-export function createSunLight({ x = 150, y = 350, z = 350, d = 400, far = 3500, color = 0xffffff, intensity = 1.4, target } = {}) {
+export function createSunLight({ d = 400, far = 3500, color = 0xffffff, intensity = 1.4, target } = {}) {
   // const light = new THREE.DirectionalLight(color, intensity)
   const light = new THREE.PointLight(color, intensity)
-  light.position.set(x, y, z)
   light.castShadow = true
   // area of the shadow https://threejs.org/docs/#api/en/lights/shadows/DirectionalLightShadow
   // light.shadow.camera.left = -d
@@ -59,13 +58,13 @@ export function createSunLight({ x = 150, y = 350, z = 350, d = 400, far = 3500,
   // light.shadow.camera.bottom = -d
   light.shadow.camera.far = far
   if (target) light.target = target
-  light.name = 'sunLight'
 
   const container = new THREE.Mesh(
     new THREE.SphereGeometry(10),
     new THREE.MeshToonMaterial({ color: 0xFCE570, shininess: 150 })
   )
   container.add(light)
+  container.position.set(150, 350, 350)
   return container
 }
 

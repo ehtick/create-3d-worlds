@@ -14,7 +14,6 @@ npx live-server
 - ažurirati verziju
 
 ### Teren
-- napraviti noise teren i talasati ga
 - obojiti teren šejderom
   - srediti boje mapa ovako https://elevationmap.net/
 

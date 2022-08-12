@@ -1,37 +1,21 @@
-import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
+import { createWater, wave } from '/utils/ground.js'
+import { createSunLight } from '/utils/light.js'
 
+scene.add(createSunLight())
+camera.position.set(0, 20, 20)
 createOrbitControls()
 
-const geometry = new THREE.PlaneGeometry(100, 100, 100, 100)
-const material = new THREE.MeshBasicMaterial({ color: 0x0000ff, wireframe: true })
-const mesh = new THREE.Mesh(geometry, material)
-mesh.rotateX(-Math.PI / 2)
-
-const frequency = .75
-const amplitude = 1.5
-
-function wave(geometry, time) {
-  const { position } = geometry.attributes
-  const vertex = new THREE.Vector3()
-
-  for (let i = 0, l = position.count; i < l; i++) {
-    vertex.fromBufferAttribute(position, i)
-    vertex.z = amplitude * Math.sin((vertex.x + time) * frequency)
-    position.setXYZ(i, vertex.x, vertex.y, vertex.z)
-  }
-  position.needsUpdate = true
-}
-
-scene.add(mesh)
+const water = createWater({ file: null, size: 100, segments: 100 })
+scene.add(water)
 
 /* LOOP */
 
 void function render() {
   requestAnimationFrame(render)
 
-  const elapsed = clock.getElapsedTime()
-  wave(geometry, elapsed)
+  const time = clock.getElapsedTime()
+  wave(water.geometry, time)
 
   renderer.render(scene, camera)
 }()
