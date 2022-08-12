@@ -2,7 +2,8 @@ import * as THREE from 'three'
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 import { randomInt, putOnTerrain, checkIntersect } from '/utils/helpers.js'
 import { hemLight, dirLight } from '/utils/light.js'
-import { createEnvironment } from '/utils/terrain/createHillyTerrain.js'
+import { createHillyTerrain } from '/utils/terrain/createHillyTerrain.js'
+import { createWater } from '/utils/ground.js'
 import Tree from './Tree.js'
 
 const TREES = 75
@@ -40,7 +41,12 @@ class GameEngine {
   }
 
   init() {
-    this.scene.add(createEnvironment())
+    const terrain = createHillyTerrain({ size: 1200, segments: 20 })
+    const group = new THREE.Object3D()
+    group.add(terrain)
+    group.add(createWater({ size: 1200, segments: 20 }))
+    group.receiveShadow = true
+    this.scene.add(group)
     this.initLights()
   }
 

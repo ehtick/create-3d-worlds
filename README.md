@@ -9,10 +9,6 @@ npm i
 npx live-server
 ```
 
-## TODO
-
-- ažurirati verziju
-
 ### Teren
 - obojiti teren šejderom
   - srediti boje mapa ovako https://elevationmap.net/

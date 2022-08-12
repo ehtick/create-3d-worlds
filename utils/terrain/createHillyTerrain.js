@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import { SimplexNoise } from '/libs/SimplexNoise.js'
 import { getTexture } from '/utils/helpers.js'
-import { createWater } from '/utils/ground.js'
 import chroma from '/libs/chroma.js'
 
 const noise = new SimplexNoise()
@@ -44,13 +43,4 @@ export const createHillyTerrain = (
   mesh.geometry.applyMatrix4(mesh.matrix)
   mesh.name = 'terrain'
   return mesh
-}
-
-export function createEnvironment({ size = 1200, segments = 20 } = {}) {
-  const terrain = createHillyTerrain({ size, segments })
-  const group = new THREE.Object3D()
-  group.add(terrain)
-  group.add(createWater({ size, segments }))
-  group.receiveShadow = true
-  return group
 }
