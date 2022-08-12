@@ -1,17 +1,22 @@
+// https://youtu.be/LrgyISOLCbg
 import * as THREE from 'three'
 
 const vertexShader = /* glsl */`
   varying vec2 vUv;
+  varying vec3 vNormal;
 
   void main() {	
-    vUv = uv;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+    vUv = uv; // coordinates from 0 to 1
+    vNormal = normal;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
   }
 `
 
 const fragmentShader = /* glsl */`
   uniform vec3 u_color;
+
   varying vec2 vUv;
+  varying vec3 vNormal;
 
   float rect(vec2 pt, vec2 anchor, vec2 size, vec2 center){
     vec2 p = pt - center;
@@ -23,7 +28,7 @@ const fragmentShader = /* glsl */`
 
   void main (void)
   {
-    float tilecount = 5.0;
+    vec2 tilecount = vec2(4.0, 5.0);
     vec2 center = vec2(0.5);
     vec2 pt = fract(vUv * tilecount) - center;
     pt += center;

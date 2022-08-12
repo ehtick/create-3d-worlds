@@ -12,7 +12,7 @@ npx live-server
 ## TODO
 
 Shaders
-  - napraviti shader za prozore zgrade (rect-rotate-multiple, live-texture)
+  - https://www.youtube.com/playlist?list=PLFky-gauhF452rW98W4cyZ8_2fXBjfGOT
 
 Konačni automat
 - srediti capoeira girl
