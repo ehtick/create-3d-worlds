@@ -1,9 +1,9 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { randomInRange } from '/utils/helpers.js'
+import { waveTerrain } from '/utils/ground.js'
 
-const { sin } = Math
-
+camera.position.set(0, 20, 20)
 createOrbitControls()
 
 const geometry = new THREE.PlaneGeometry(100, 100, 100, 100)
@@ -19,37 +19,6 @@ for (let i = 0, l = position.count; i < l; i++) {
   position.setXYZ(i, vertex.x, vertex.y, vertex.z)
 }
 
-const oldPosition = position.clone()
-
-const frequency = 1
-const amplitude = 1
-
-function wave(geometry, time) {
-  const { position } = geometry.attributes
-  const vertex = new THREE.Vector3()
-  const oldVertex = new THREE.Vector3()
-
-  for (let i = 0, l = position.count; i < l; i++) {
-    vertex.fromBufferAttribute(position, i)
-    oldVertex.fromBufferAttribute(oldPosition, i)
-    const { x, y } = vertex
-    let change = 0
-
-    // change X
-    change += amplitude * sin(x * 2.1 * frequency + time)
-    change += 3 * amplitude * sin(x * 0.1 * frequency + time)
-
-    // change Y
-    change += amplitude * sin(y * frequency + time)
-    change += 2.8 * amplitude * sin(y * frequency * 0.2 + time)
-
-    change *= amplitude * 0.6
-    vertex.z = change + oldVertex.z // preserve initial terrain
-    position.setXYZ(i, vertex.x, vertex.y, vertex.z)
-  }
-  position.needsUpdate = true
-}
-
 scene.add(mesh)
 
 /* LOOP */
@@ -57,8 +26,8 @@ scene.add(mesh)
 void function render() {
   requestAnimationFrame(render)
 
-  const elapsed = clock.getElapsedTime()
-  wave(geometry, elapsed)
+  const time = clock.getElapsedTime()
+  waveTerrain(geometry, time)
 
   renderer.render(scene, camera)
 }()

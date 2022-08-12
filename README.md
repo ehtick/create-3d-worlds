@@ -14,7 +14,7 @@ npx live-server
 - ažurirati verziju
 
 ### Teren
-- sabrati više talasa https://thebookofshaders.com/13/
+- napraviti noise teren i talasati ga
 - obojiti teren šejderom
   - srediti boje mapa ovako https://elevationmap.net/
 

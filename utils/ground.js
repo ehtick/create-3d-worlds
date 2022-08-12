@@ -94,3 +94,35 @@ export const createWater = ({ size = 1200, segments = 20, opacity = .6, file = '
 export function createFloor({ color = 0x808080, circle = false, ...rest } = {}) {
   return createGround({ color, circle, ...rest })
 }
+
+/* UPDATES */
+
+let oldPosition
+
+export function waveTerrain(geometry, time, amplitude = 1, frequency = 1) {
+  const { position } = geometry.attributes
+  oldPosition = oldPosition || position.clone()
+
+  const vertex = new THREE.Vector3()
+  const oldVertex = new THREE.Vector3()
+
+  for (let i = 0, l = position.count; i < l; i++) {
+    vertex.fromBufferAttribute(position, i)
+    oldVertex.fromBufferAttribute(oldPosition, i)
+    const { x, y } = vertex
+    let change = 0
+
+    // change X
+    change += amplitude * Math.sin(x * 2.1 * frequency + time)
+    change += 3 * amplitude * Math.sin(x * 0.1 * frequency + time)
+
+    // change Y
+    change += amplitude * Math.sin(y * frequency + time)
+    change += 2.8 * amplitude * Math.sin(y * frequency * 0.2 + time)
+
+    change *= amplitude * 0.6
+    vertex.z = change + oldVertex.z // preserve initial terrain
+    position.setXYZ(i, vertex.x, vertex.y, vertex.z)
+  }
+  position.needsUpdate = true
+}
