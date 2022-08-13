@@ -11,9 +11,10 @@ const controls = createOrbitControls()
 camera.position.y = 200
 
 const img = new Image()
-img.onload = () => {
-  const data = getHeightData(img)
+img.src = '/assets/heightmaps/wiki.png'
+img.addEventListener('load', () => {
   const { width, height } = img
+  const data = getHeightData(img)
 
   const geometry = new THREE.PlaneGeometry(width, height, width - 1, height - 1)
   geometry.rotateX(- Math.PI / 2)
@@ -29,8 +30,7 @@ img.onload = () => {
   const material = new THREE.MeshBasicMaterial({ color: 0x7a8a46, wireframe: true })
   const mesh = new THREE.Mesh(geometry, material)
   scene.add(mesh)
-}
-img.src = '/assets/heightmaps/wiki.png'
+})
 
 /* FUNCTIONS */
 
@@ -39,7 +39,6 @@ function getHeightData(img, scale = 1) {
   const canvas = document.createElement('canvas')
   canvas.width = img.width
   canvas.height = img.height
-  console.log('img:', canvas.width, canvas.height)
   const context = canvas.getContext('2d')
 
   const size = img.width * img.height
