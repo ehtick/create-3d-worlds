@@ -3,7 +3,7 @@ import { material } from '/utils/shaders/heightmap-terrain.js'
 
 const textureLoader = new THREE.TextureLoader()
 
-function terrainFromHeightmap({
+export function terrainFromHeightmap({
   file = 'wiki.png', textureFile = '', widthSegments = 100, heightSegments = 100, displacementScale = 100
 } = {}) {
   const geometry = new THREE.PlaneGeometry(1000, 1000, widthSegments, heightSegments)
@@ -33,5 +33,3 @@ export function shaderFromHeightmap({
   mesh.position.y = -.5
   return mesh
 }
-
-export default terrainFromHeightmap

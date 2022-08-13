@@ -11,6 +11,7 @@ npx live-server
 
 ### Teren
 - proveriti da li konta geometriju heightmap terena (obe verzije, šejder i terrainFromHeightmap)
+- https://codepen.io/BrendonC/pen/wEmWaP
 https://elevationmap.net/
 
 ## Konačni automat
