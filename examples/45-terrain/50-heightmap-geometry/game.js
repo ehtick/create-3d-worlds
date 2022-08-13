@@ -10,7 +10,7 @@ const textureLoader = new THREE.TextureLoader()
 const controls = createOrbitControls()
 camera.position.y = 200
 
-const { data, width, height, max } = await getHeightData('/assets/heightmaps/wiki.png')
+const { data, width, height } = await getHeightData('/assets/heightmaps/wiki.png')
 
 const geometry = new THREE.PlaneGeometry(width, height, width - 1, height - 1)
 geometry.rotateX(- Math.PI / 2)
@@ -25,7 +25,6 @@ for (let i = 0, l = position.count; i < l; i++) {
 
 material.uniforms.heightmap.value = textureLoader.load('/assets/heightmaps/wiki.png')
 
-// const material = new THREE.MeshBasicMaterial({ color: 0x7a8a46, wireframe: true })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
@@ -64,14 +63,7 @@ async function getHeightData(url, scale = 1) {
     data[j++] = all / (12 * scale)
   }
 
-  // get maximum height from data array
-  let max = 0
-  data.forEach(height => {
-    if (height > max) max = height
-  })
-  console.log('max height:', max)
-
-  return { data, width, height, max }
+  return { data, width, height }
 }
 
 /* LOOP */
