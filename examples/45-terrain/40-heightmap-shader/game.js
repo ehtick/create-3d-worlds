@@ -15,7 +15,7 @@ const terrain = terrainFromHeightmap({ file: 'wiki.png' })
 terrain.material = material
 scene.add(terrain)
 
-material.uniforms.bumpTexture = { type: 't', value: loader.load('/assets/heightmaps/wiki.png') }
+material.uniforms.heightmap.value = loader.load('/assets/heightmaps/wiki.png')
 
 /* LOOP */
 

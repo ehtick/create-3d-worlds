@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 const vertexShader = /* glsl */`
-	uniform sampler2D bumpTexture;
+	uniform sampler2D heightmap;
 	uniform float displacementScale;
 
 	varying float vAmount;
@@ -10,7 +10,7 @@ const vertexShader = /* glsl */`
 	void main() 
 	{ 
 		vUV = uv;
-		vec4 bumpData = texture2D(bumpTexture, uv);
+		vec4 bumpData = texture2D(heightmap, uv);
 		vAmount = bumpData.r; // map is grayscale so r, g, or b is the same.
 		
 		// move the position along the normal
@@ -20,7 +20,7 @@ const vertexShader = /* glsl */`
 `
 
 const fragmentShader = /* glsl */`
-  uniform sampler2D bumpTexture;
+  uniform sampler2D heightmap;
   uniform float seaLevel;
 
 	varying vec2 vUV;
@@ -48,13 +48,13 @@ const fragmentShader = /* glsl */`
 
   vec3 color_from_height_alt(const float height)
   {
-      vec3 water = (smoothstep(-0.1, 0.1, vAmount) - smoothstep(0.19, 0.2, vAmount)) * blue;
-      vec3 sand = (smoothstep(0.1, 0.3, vAmount) - smoothstep(0.39, 0.4, vAmount)) * yellow;
-      vec3 grass = (smoothstep(0.3, 0.5, vAmount) - smoothstep(0.59, 0.6, vAmount)) * green;
-      vec3 land = (smoothstep(0.5, 0.7, vAmount) - smoothstep(0.79, 0.8, vAmount)) * brown;
-      vec3 snow = (smoothstep(0.70, 0.8, vAmount)) * white;
+      vec3 water = (smoothstep(-0.1, 0.05, vAmount) - smoothstep(0.199, 0.2, vAmount)) * blue;
+      vec3 grass = (smoothstep(0.01, 0.35, vAmount) - smoothstep(0.44, 0.45, vAmount)) * green;
+      vec3 sand = (smoothstep(0.33, 0.5, vAmount) - smoothstep(0.55, 0.56, vAmount)) * yellow;
+      vec3 land = (smoothstep(0.4, 0.7, vAmount) - smoothstep(0.79, 0.8, vAmount)) * brown;
+      vec3 snow = (smoothstep(0.7, 0.83, vAmount)) * white;
 
-      return vec3(water + sand + grass + land + snow);
+      return vec3(water + grass + sand + land + snow);
   }
 
 	void main() 
@@ -67,6 +67,7 @@ const fragmentShader = /* glsl */`
 
 const uniforms = {
   seaLevel: { type: 'f', value: 0.05 },
+  heightmap: { type: 't', value: null },
   displacementScale: { type: 'f', value: 200.0 },
 }
 
