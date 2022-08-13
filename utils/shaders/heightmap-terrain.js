@@ -26,6 +26,7 @@ const fragmentShader = /* glsl */`
 	varying vec2 vUV;
 	varying float vAmount;
 
+  // color inspiration https://elevationmap.net/
   vec3 blue = vec3(0.592,0.824,0.89);
   vec3 green = vec3(0.29,0.651,0.239);
   vec3 yellow =  vec3(0.984,0.886,0.671);

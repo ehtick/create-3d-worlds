@@ -11,8 +11,7 @@ npx live-server
 
 ### Teren
 - proveriti da li konta geometriju heightmap terena (obe verzije, šejder i terrainFromHeightmap)
-- https://codepen.io/BrendonC/pen/wEmWaP
-https://elevationmap.net/
+- http://danni-three.blogspot.com/2013/09/threejs-heightmaps.html
 
 ## Konačni automat
 - srediti capoeira girl
