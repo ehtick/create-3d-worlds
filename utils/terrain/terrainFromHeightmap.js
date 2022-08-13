@@ -5,7 +5,7 @@ const textureLoader = new THREE.TextureLoader()
 function terrainFromHeightmap({
   file = 'wiki.png', textureFile = '', widthSegments = 100, heightSegments = 100, displacementScale = 100
 } = {}) {
-  const geometry = new THREE.PlaneBufferGeometry(1000, 1000, widthSegments, heightSegments)
+  const geometry = new THREE.PlaneGeometry(1000, 1000, widthSegments, heightSegments)
 
   const material = new THREE.MeshStandardMaterial({
     color: 0x666666,

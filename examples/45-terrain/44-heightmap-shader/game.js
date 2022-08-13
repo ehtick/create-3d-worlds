@@ -1,7 +1,8 @@
 import * as THREE from 'three'
 import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
-import { createWater } from '/utils/ground.js'
 import { material } from '/utils/shaders/heightmap-terrain.js'
+import terrainFromHeightmap from '/utils/terrain/terrainFromHeightmap.js'
+
 import { hemLight } from '/utils/light.js'
 
 const loader = new THREE.TextureLoader()
@@ -10,15 +11,11 @@ hemLight()
 createOrbitControls()
 camera.position.y = 150
 
-const water = createWater({ size: 1000, opacity: 0.60 })
-scene.add(water)
-
-const geometry = new THREE.PlaneGeometry(1000, 1000, 100, 100)
-geometry.rotateX(-Math.PI / 2)
-material.uniforms.bumpTexture = { type: 't', value: loader.load('/assets/heightmaps/stemkoski.png') }
-const terrain = new THREE.Mesh(geometry, material)
-terrain.position.y = -60
+const terrain = terrainFromHeightmap({ file: 'wiki.png' })
+terrain.material = material
 scene.add(terrain)
+
+material.uniforms.bumpTexture = { type: 't', value: loader.load('/assets/heightmaps/wiki.png') }
 
 /* LOOP */
 
