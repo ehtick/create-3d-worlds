@@ -69,7 +69,7 @@ const fragmentShader = /* glsl */`
 const uniforms = {
   seaLevel: { type: 'f', value: 0.05 },
   heightmap: { type: 't', value: null },
-  displacementScale: { type: 'f', value: 200.0 },
+  displacementScale: { type: 'f', value: 1.0 },
 }
 
 export const material = new THREE.ShaderMaterial({
