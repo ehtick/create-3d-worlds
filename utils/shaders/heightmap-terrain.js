@@ -26,33 +26,31 @@ const fragmentShader = /* glsl */`
 	varying vec2 vUV;
 	varying float vAmount;
 
+  // https://gamedev.stackexchange.com/questions/86805
   vec3 color_from_height( const float height )
   {
-      vec3 terrain_colours[4];
-      terrain_colours[0] = vec3(0.0,0.0,0.6);
-      terrain_colours[1] = vec3(0.1, 0.3, 0.1);
-      terrain_colours[2] =  vec3(0.4, 0.8, 0.4);
-      terrain_colours[3] = vec3(1.0,1.0,1.0);
-      if (height < 0.0)
-          return terrain_colours[0];
+      vec3 blue = vec3(0.592,0.824,0.89);
+      vec3 green = vec3(0.286,0.647,0.239);
+      vec3 yellow =  vec3(0.984,0.886,0.671);
+      vec3 brown = vec3(0.498,0.18,0.024);
+
+      if (height < 0.05)
+          return blue;
+
+      float hscaled = height * 2.0 - 1e-05; // hscaled should range in [0,2)
+      int hi = int(hscaled); // hi should be 0 or 1
+      float hfrac = hscaled - float(hi); // hfrac should range in [0,1]
+
+      if (hi == 0)
+          return mix(green, yellow, hfrac);
       else
-      {
-          float hscaled = height * 2.0 - 1e-05; // hscaled should range in [0,2)
-          int hi = int(hscaled); // hi should range in [0,1]
-          float hfrac = hscaled-float(hi); // hfrac should range in [0,1]
-          if ( hi == 0)
-              return mix(terrain_colours[1],terrain_colours[2],hfrac); // blends between the two colours    
-          else
-              return mix(terrain_colours[2],terrain_colours[3],hfrac); // blends between the two colours
-      }
-      return vec3(0.0,0.0,0.0);
+          return mix(yellow, brown, hfrac);
   }
 
 	void main() 
 	{
-    vec3 color = color_from_height(vAmount * 2.0-1.0);
+    vec3 color = color_from_height(vAmount);
 
-    // gl_FragColor = texture2D(bumpTexture, vUV);
     gl_FragColor = vec4(color, 1.0);
 	}
 `
