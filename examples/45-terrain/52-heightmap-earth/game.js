@@ -17,7 +17,7 @@ const geometry = new THREE.PlaneGeometry(1000, 1000, 100, 100)
 geometry.rotateX(-Math.PI / 2)
 
 material.uniforms.bumpTexture = { type: 't', value: loader.load('/assets/heightmaps/earth.png') }
-material.uniforms.bumpScale.value = 30.0
+material.uniforms.displacementScale.value = 30.0
 
 const terrain = new THREE.Mesh(geometry, material)
 // terrain.position.y = -60

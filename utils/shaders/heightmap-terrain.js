@@ -1,9 +1,8 @@
-// https://stemkoski.github.io/Three.js/Shader-Heightmap-Textures.html
 import * as THREE from 'three'
 
 const vertexShader = /* glsl */`
 	uniform sampler2D bumpTexture;
-	uniform float bumpScale;
+	uniform float displacementScale;
 
 	varying float vAmount;
 	varying vec2 vUV;
@@ -15,13 +14,14 @@ const vertexShader = /* glsl */`
 		vAmount = bumpData.r; // map is grayscale so r, g, or b is the same.
 		
 		// move the position along the normal
-		vec3 newPosition = position + normal * bumpScale * vAmount;
+		vec3 newPosition = position + normal * displacementScale * vAmount;
 		gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
 	}
 `
 
 const fragmentShader = /* glsl */`
   uniform sampler2D bumpTexture;
+  uniform float seaLevel;
 
 	varying vec2 vUV;
 	varying float vAmount;
@@ -30,21 +30,20 @@ const fragmentShader = /* glsl */`
   vec3 color_from_height( const float height )
   {
       vec3 blue = vec3(0.592,0.824,0.89);
-      vec3 green = vec3(0.286,0.647,0.239);
+      vec3 green = vec3(0.29,0.651,0.239);
       vec3 yellow =  vec3(0.984,0.886,0.671);
       vec3 brown = vec3(0.498,0.18,0.024);
+      vec3 snow = vec3(1.,0.98,0.98);
+      vec3 colors[4] = vec3[](green, yellow, brown, snow);
 
-      if (height < 0.05)
-          return blue;
+      if (height < seaLevel) return blue;
 
-      float hscaled = height * 2.0 - 1e-05; // hscaled should range in [0,2)
-      int hi = int(hscaled); // hi should be 0 or 1
-      float hfrac = hscaled - float(hi); // hfrac should range in [0,1]
+      float steps = 3.0;
+      float hscaled = height * steps - 1e-05;
+      int i = int(hscaled);
+      float frac = hscaled - float(i);
 
-      if (hi == 0)
-          return mix(green, yellow, hfrac);
-      else
-          return mix(yellow, brown, hfrac);
+      return mix(colors[i], colors[i+1], frac);
   }
 
 	void main() 
@@ -56,7 +55,8 @@ const fragmentShader = /* glsl */`
 `
 
 const uniforms = {
-  bumpScale: { type: 'f', value: 300.0 },
+  seaLevel: { type: 'f', value: 0.05 },
+  displacementScale: { type: 'f', value: 200.0 },
 }
 
 export const material = new THREE.ShaderMaterial({

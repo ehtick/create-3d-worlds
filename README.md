@@ -13,7 +13,6 @@ npx live-server
 - obojiti teren šejderom
   https://youtu.be/G0hWjD0n46c?t=352
   https://webglfundamentals.org/webgl/lessons/webgl-qna-drawing-a-heightmap.html
-  - srediti boje mapa ovako https://elevationmap.net/
 
 ## Konačni automat
 - srediti capoeira girl
