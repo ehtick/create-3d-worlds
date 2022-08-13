@@ -51,7 +51,7 @@ const fragmentShader = /* glsl */`
       vec3 water = (smoothstep(-0.1, 0.05, vAmount) - smoothstep(0.11, 0.12, vAmount)) * blue;
       vec3 grass = (smoothstep(0.0, 0.2, vAmount) - smoothstep(0.4, 0.41, vAmount)) * green;
       vec3 sand = (smoothstep(0.2, 0.5, vAmount) - smoothstep(0.55, 0.56, vAmount)) * yellow;
-      vec3 land = (smoothstep(0.45, 0.7, vAmount) - smoothstep(0.77, 0.78, vAmount)) * brown;
+      vec3 land = (smoothstep(0.42, 0.7, vAmount) - smoothstep(0.77, 0.78, vAmount)) * brown;
       vec3 snow = (smoothstep(0.66, 0.83, vAmount)) * white;
 
       return vec3(water + grass + sand + land + snow);
