@@ -9,6 +9,10 @@ npm i
 npx live-server
 ```
 
+### Teren
+- proveriti da li konta geometriju heightmap terena (obe verzije, šejder i terrainFromHeightmap)
+https://elevationmap.net/
+
 ## Konačni automat
 - srediti capoeira girl
 - uskladiti animacije sa mrdanjem igrača

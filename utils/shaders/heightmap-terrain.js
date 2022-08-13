@@ -38,7 +38,7 @@ const fragmentShader = /* glsl */`
       if (height < seaLevel) return blue;
 
       float steps = 3.0;
-      float hscaled = height * steps + 0.2; // snow offset
+      float hscaled = height * steps;
       int i = int(hscaled);
       float frac = hscaled - float(i);
       vec3 colors[4] = vec3[](green, yellow, brown, white);
@@ -59,7 +59,7 @@ const fragmentShader = /* glsl */`
 
 	void main() 
 	{
-    vec3 color = color_from_height_alt(vAmount);
+    vec3 color = color_from_height(vAmount);
 
     gl_FragColor = vec4(color, 1.0);
 	}
