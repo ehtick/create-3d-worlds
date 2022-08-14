@@ -2,10 +2,11 @@ import * as THREE from 'three'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 import { scene, camera, renderer } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
-import { createBuilding } from '/utils/city.js'
+import { createSimpleBuilding } from '/utils/city.js'
 
 const buildings = []
 const mapSize = 400
+scene.fog = new THREE.FogExp2(0xd0e0f0, 0.0025)
 
 camera.position.set(0, mapSize * .33, mapSize * .9)
 camera.lookAt(scene.position)
@@ -23,7 +24,7 @@ const floor = createFloor({ size: 600 })
 scene.add(floor)
 
 for (let i = 0; i < 100; i++) {
-  const building = createBuilding({ width: 10, height: 10 })
+  const building = createSimpleBuilding({ width: 10, height: 10 })
   buildings.push(building)
   scene.add(building)
 }

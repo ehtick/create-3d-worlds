@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { randomInRange, randomGrayish, randomInCircle, randomInSquare } from '/utils/helpers.js'
 import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
+import { material as winMaterial } from '/utils/shaders/windows.js'
 
 const basicMaterial = new THREE.MeshStandardMaterial({
   vertexColors: THREE.FaceColors,
@@ -92,6 +93,15 @@ export function createBuilding({
   return building
 }
 
+export function createSimpleBuilding({
+  width = randomInRange(8, 20), height = randomInRange(width * 2, width * 4), color,
+} = {}) {
+  const geometry = new THREE.BoxGeometry(width, height, width)
+  const materials = [winMaterial, winMaterial, basicMaterial, basicMaterial, winMaterial, winMaterial]
+  const building = new THREE.Mesh(geometry, materials)
+  return building
+}
+
 /* CITY */
 
 const shouldRotate = (rotateEvery, i) => rotateEvery && i % rotateEvery == 0
@@ -131,12 +141,12 @@ export function createCity({
   return city
 }
 
-const windowColor = () => {
-  const value = randomInRange(0, 84, true)
-  return `rgb(${value}, ${value}, ${value})`
-}
-
 function generateCityTexture() {
+  const windowColor = () => {
+    const value = randomInRange(0, 84, true)
+    return `rgb(${value}, ${value}, ${value})`
+  }
+
   const canvas = document.createElement('canvas')
   canvas.width = 32
   canvas.height = 64

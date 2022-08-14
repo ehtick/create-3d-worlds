@@ -1,11 +1,8 @@
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { createTerrain, createLavaGround } from '/utils/ground.js'
+import { createTerrain, createLava } from '/utils/ground.js'
 import Avatar from '/utils/classes/Avatar.js'
 import { dirLight, hemLight } from '/utils/light.js'
 import { createBabelTower, createBaradDur, createSpaceTower } from '/utils/towers.js'
-
-const lavaGround = createLavaGround()
-scene.add(lavaGround)
 
 dirLight({ intensity: .1 })
 hemLight({ intensity: .75 })
@@ -19,7 +16,10 @@ spaceTower.position.z = -200
 
 const terrain = createTerrain({ size: 1000, factor: 1 })
 
-scene.add(terrain, babelTower, baradDur, spaceTower)
+const lava = createLava({ size: 50 })
+lava.translateY(1.5)
+
+scene.add(terrain, lava, babelTower, baradDur, spaceTower)
 
 const avatar = new Avatar({ skin: 0 })
 avatar.position.set(60, 2, 0)

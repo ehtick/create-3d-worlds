@@ -152,14 +152,6 @@ export const createHillyTerrain = (
   return mesh
 }
 
-export function createLavaGround({ size = 50 } = {}) {
-  const geometry = new THREE.CircleGeometry(size)
-  geometry.rotateX(- Math.PI / 2)
-  const mesh = new THREE.Mesh(geometry, lavaMaterial)
-  mesh.translateY(1.5)
-  return mesh
-}
-
 /* WATER */
 
 export const createWater = ({ size = 1200, segments = 20, opacity = .6, file = 'water512.jpg' } = {}) => {
@@ -186,6 +178,15 @@ export const createWater = ({ size = 1200, segments = 20, opacity = .6, file = '
   water.name = 'water'
   water.rotateX(-Math.PI / 2)
   return water
+}
+
+/* LAVA */
+
+export function createLava({ size = 100 } = {}) {
+  const geometry = new THREE.CircleGeometry(size)
+  geometry.rotateX(- Math.PI / 2)
+  const mesh = new THREE.Mesh(geometry, lavaMaterial)
+  return mesh
 }
 
 /* ALIASES */
