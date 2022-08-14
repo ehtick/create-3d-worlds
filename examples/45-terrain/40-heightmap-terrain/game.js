@@ -6,7 +6,7 @@ hemLight()
 createOrbitControls()
 camera.position.y = 150
 
-const terrain = await terrainFromHeightmap({ file: 'wiki.png' })
+const terrain = await terrainFromHeightmap({ file: 'wiki.png', seaLevel: 0.05 })
 scene.add(terrain)
 
 /* LOOP */
