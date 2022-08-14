@@ -1,5 +1,5 @@
 // https://codepen.io/nik-lever/pen/gEoaez
-import * as THREE from 'three'
+import THREE from '/libs/shader-includes.js'
 
 const vshader = /* glsl */`
   varying vec3 v_position;
@@ -12,27 +12,23 @@ const vshader = /* glsl */`
 `
 const fshader = /* glsl */`
   varying vec3 v_position;
+  uniform float u_time;
 
   #include <noise>
 
   void main(){
     vec2 p = v_position.xy;
     float scale = 800.0;
-    vec3 color;
-    bool marble = true;
-
+    
     p *= scale;
 
-    if (marble){
-      float d = perlin(p.x, p.y) * scale; 
-      float u = p.x + d;
-      float v = p.y + d;
-      d = perlin(u, v) * scale;
-      float noise = perlin(p.x + d, p.y + d);
-      color = vec3(0.6 * (vec3(2.0 * noise) - vec3(noise * 0.1, noise * 0.2 - sin(u / 30.0) * 0.1, noise * 0.3 + sin(v / 40.0) * 0.2))); 
-    }else{
-      color = vec3(perlin(p.x, p.y));
-    }
+    float d = perlin(p.x, p.y) * scale; 
+    float u = p.x + d;
+    float v = p.y + d;
+    d = perlin(u, v) * scale;
+    float noise = perlin(p.x + d, p.y + d);
+
+    vec3 color = vec3(0.6 * (vec3(2.0 * noise) - vec3(noise * 0.1, noise * 0.2 - sin(u / 30.0) * 0.1, noise * 0.3 + sin(v / 40.0) * 0.2))); 
     gl_FragColor = vec4(color, 1.0);
   }
 `
@@ -45,6 +41,7 @@ export const uniforms = {
   u_NoiseScale: { value: 6.0 },
   u_RingScale: { value: 0.6 },
   u_Contrast: { value: 4.0 },
+  u_time: { value: 2.0 },
 }
 
 export const material = new THREE.ShaderMaterial({

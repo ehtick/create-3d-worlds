@@ -1,5 +1,5 @@
 // https://codepen.io/Yakudoo/pen/rJjOJx
-import * as THREE from 'three'
+import THREE from '/libs/shader-includes.js'
 
 const vertexShader = /* glsl */`
 	varying vec2 vUv;

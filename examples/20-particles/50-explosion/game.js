@@ -1,5 +1,3 @@
-import * as THREE from 'three'
-
 import { scene, camera, renderer } from '/utils/scene.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
 import { mouseToWorld } from '/utils/helpers.js'

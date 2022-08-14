@@ -1,5 +1,5 @@
 // https://codepen.io/Sanjeet-Nishad/full/oNZgGjw
-import * as THREE from 'three'
+import THREE from '/libs/shader-includes.js'
 
 const vertexShader = /* glsl */`
   #include <noise>

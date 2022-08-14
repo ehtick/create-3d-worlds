@@ -1,5 +1,5 @@
 // https://github.com/NikLever/GLSLfromScratch
-import * as THREE from 'three'
+import THREE from '/libs/shader-includes.js'
 
 export const vertexShader = /* glsl */`
   uniform float u_scale;

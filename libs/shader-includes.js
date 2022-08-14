@@ -1,13 +1,10 @@
 import * as THREE from 'three'
 /* add shader includes to THREE.ShaderChunk */
 
+// https://github.com/ashima/webgl-noise
+//      Author : Ian McEwan, Ashima Arts.
+//     License : MIT
 THREE.ShaderChunk.noise = /* glsl */`
-
-  // Description : Array and textureless GLSL 2D/3D/4D simplex noise functions.
-  //      Author : Ian McEwan, Ashima Arts.
-  //  Maintainer : stegu
-  //     License : MIT
-  //               https://github.com/ashima/webgl-noise
 
   vec3 mod289(vec3 x) {
     return x - floor(x * (1.0 / 289.0)) * 289.0;
@@ -794,7 +791,6 @@ THREE.ShaderChunk.noise = /* glsl */`
 `
 
 // Author : Liam Egan https://codepen.io/shubniggurath/pen/oPGyQw
-
 THREE.ShaderChunk.texture_noise = /* glsl */`
   vec2 hash2(vec2 p)
   {
@@ -890,3 +886,5 @@ THREE.ShaderChunk.texture_noise = /* glsl */`
     return pass * _opacity * endOpacity;
   }
 `
+
+export default THREE

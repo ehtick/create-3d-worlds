@@ -1,5 +1,5 @@
 // https://2pha.com/demos/threejs/shaders/perlin_noise_3d_vertex.html
-import * as THREE from 'three'
+import THREE from '/libs/shader-includes.js'
 
 const vertexShader = /* glsl */`
   #include <noise>
