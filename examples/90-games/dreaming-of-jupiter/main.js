@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { camera, scene, renderer } from '/utils/scene.js'
 import { createMoon, createSaturn } from '/utils/planets.js'
 
-const { randInt } = THREE.MathUtils
+const { randInt } = THREE.Math
 const loader = new THREE.TextureLoader()
 
 const totalStars = 1000

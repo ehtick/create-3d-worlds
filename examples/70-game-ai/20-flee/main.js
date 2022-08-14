@@ -5,7 +5,7 @@ import { ambLight } from '/utils/light.js'
 import { getMouseIntersects } from '/utils/helpers.js'
 import { loadModel, getMixer } from '/utils/loaders.js'
 
-const { randInt } = THREE.MathUtils
+const { randInt } = THREE.Math
 
 ambLight()
 

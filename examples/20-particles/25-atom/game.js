@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 
-const { randFloat } = THREE.MathUtils
+const { randFloat } = THREE.Math
 
 scene.background = new THREE.Color(0x000000)
 

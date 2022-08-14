@@ -4,7 +4,7 @@ import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
 import { createBox } from '/utils/geometry.js'
 
-const { randInt } = THREE.MathUtils
+const { randInt } = THREE.Math
 
 ambLight()
 

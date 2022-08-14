@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { similarColor, randomNuance, randomInSquare, findGroundRecursive } from './helpers.js'
 
-const { randFloat } = THREE.MathUtils
+const { randFloat } = THREE.Math
 
 const sketchSize = 0.04
 const browns = [0x3d2817, 0x664422, 0xA0522D, 0x886633, 0x966F33]

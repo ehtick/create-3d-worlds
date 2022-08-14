@@ -7,7 +7,7 @@ import { hemLight } from '/utils/light.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { roll } from '/utils/helpers.js'
 
-const { randFloat } = THREE.MathUtils
+const { randFloat } = THREE.Math
 const { random } = Math
 
 const heroSpeed = 4

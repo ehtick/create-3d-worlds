@@ -4,7 +4,7 @@ import { UNITSIZE, BULLETMOVESPEED, PROJECTILEDAMAGE, MOVESPEED, mapWidth, mapHe
 import { nemesis } from '/data/maps.js'
 import { getMapPosition } from '/utils/mazes.js'
 
-const { randInt } = THREE.MathUtils
+const { randInt } = THREE.Math
 
 const textureLoader = new THREE.TextureLoader()
 

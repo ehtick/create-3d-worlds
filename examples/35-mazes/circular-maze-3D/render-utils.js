@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-const { randFloat } = THREE.MathUtils
+const { randFloat } = THREE.Math
 
 // https://stackoverflow.com/questions/11638883/thickness-of-lines-using-three-linebasicmaterial
 // https://threejs.org/examples/#webgl_lines_fat

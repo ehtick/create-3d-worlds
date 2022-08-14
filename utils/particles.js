@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-const { randFloat } = THREE.MathUtils
+const { randFloat } = THREE.Math
 
 const textureLoader = new THREE.TextureLoader()
 

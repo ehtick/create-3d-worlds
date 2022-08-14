@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { scene as defaultScene, camera as defaultCamera } from '/utils/scene.js'
 import { dir } from '/utils/constants.js'
 
-const { randFloat } = THREE.MathUtils
+const { randFloat } = THREE.Math
 
 export const isEmpty = obj => Object.keys(obj).length === 0
 
@@ -40,8 +40,6 @@ export function randomInSquare(size, emptyCenter = 0) {
     : randFloat(-halfSize, halfSize)
   return randomBool() ? { x, z } : { x: z, z: x }
 }
-
-export const degToRad = degrees => degrees * Math.PI / 180
 
 /* returns 2D normalized device coordinates of the mouse, between -1 and 1. */
 export function normalizeMouse(e) {

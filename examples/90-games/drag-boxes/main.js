@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { DragControls } from '/node_modules/three/examples/jsm/controls/DragControls.js'
 import { scene, renderer, camera } from '/utils/scene.js'
 
-const { randInt, randFloat } = THREE.MathUtils
+const { randInt, randFloat } = THREE.Math
 
 const objects = []
 
