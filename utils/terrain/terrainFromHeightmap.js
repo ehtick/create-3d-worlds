@@ -3,6 +3,17 @@ import { material } from '/utils/shaders/heightmap-terrain.js'
 
 const textureLoader = new THREE.TextureLoader()
 
+export function shadeFromHeightmap({ file = 'wiki.png', size = 400, fragments = size, displacementScale = 100 } = {}) {
+  material.uniforms.heightmap.value = textureLoader.load(`/assets/heightmaps/${file}`)
+  material.uniforms.heightmap.displacementScale = displacementScale
+
+  const geometry = new THREE.PlaneGeometry(size, size, fragments, fragments)
+  geometry.rotateX(- Math.PI / 2)
+
+  const mesh = new THREE.Mesh(geometry, material)
+  return mesh
+}
+
 export async function terrainFromHeightmap({ file = 'wiki.png', scale = 1 } = {}) {
 
   const { data, width, height } = await getHeightData(`/assets/heightmaps/${file}`, scale)
