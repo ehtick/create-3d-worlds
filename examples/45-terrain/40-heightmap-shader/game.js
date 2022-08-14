@@ -1,12 +1,12 @@
 import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
-import { shaderFromHeightmap } from '/utils/terrain/terrainFromHeightmap.js'
+import { terrainFromHeightmap } from '/utils/terrain/terrainFromHeightmap.js'
 import { hemLight } from '/utils/light.js'
 
 hemLight()
 createOrbitControls()
 camera.position.y = 150
 
-const terrain = shaderFromHeightmap({ file: 'wiki.png' })
+const terrain = await terrainFromHeightmap({ file: 'wiki.png' })
 scene.add(terrain)
 
 /* LOOP */
