@@ -12,8 +12,6 @@ const vshader = /* glsl */`
 `
 const fshader = /* glsl */`
   varying vec3 v_position;
-  uniform float u_time;
-
   #include <noise>
 
   void main(){
@@ -41,7 +39,6 @@ export const uniforms = {
   u_NoiseScale: { value: 6.0 },
   u_RingScale: { value: 0.6 },
   u_Contrast: { value: 4.0 },
-  u_time: { value: 2.0 },
 }
 
 export const material = new THREE.ShaderMaterial({
