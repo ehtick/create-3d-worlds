@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { material } from '/utils/shaders/heightmap-terrain.js'
+import { material } from '/utils/shaders/heightmap-shader.js'
 
 const textureLoader = new THREE.TextureLoader()
 
