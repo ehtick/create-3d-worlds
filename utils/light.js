@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import { Lensflare, LensflareElement } from '/node_modules/three/examples/jsm/objects/Lensflare.js'
 import { scene as defaultScene } from '/utils/scene.js'
 
 export function dirLight({ scene = defaultScene, position = [20, 50, 20], color = 0xffffff, intensity = 1 } = {}) {
@@ -61,7 +60,7 @@ export function createSunLight({ d = 400, far = 3500, color = 0xffffff, intensit
 
   const container = new THREE.Mesh(
     new THREE.SphereGeometry(10),
-    new THREE.MeshToonMaterial({ color: 0xFCE570, shininess: 150 })
+    new THREE.MeshToonMaterial({ color: 0xFCE570 })
   )
   container.add(light)
   container.position.set(150, 350, 350)

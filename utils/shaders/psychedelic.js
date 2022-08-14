@@ -2,9 +2,6 @@
 import * as THREE from 'three'
 
 const vertexShader = /* glsl */`
-	attribute vec3 position;
-	attribute vec2 uv;
-
 	varying vec2 vUv;
 
 	void main() {
@@ -100,8 +97,8 @@ const uniforms = {
   uDisplacement: { type: 'f', value: 1 },
 }
 
-export const material = new THREE.RawShaderMaterial({
+export const material = new THREE.ShaderMaterial({
   vertexShader,
   fragmentShader,
-  uniforms
+  uniforms,
 })

@@ -9,6 +9,8 @@ npm i
 npx live-server
 ```
 
+- dodati towers u procedural
+
 ### Mazes
 - napraviti render za mazes
 - srediti kretanje da ne koristi raycasting
