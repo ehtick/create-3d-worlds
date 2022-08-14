@@ -2,8 +2,9 @@
 import { camera, scene, renderer, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { randomInRange } from '/utils/helpers.js'
 import { createBox } from '/utils/geometry.js'
+
+const { randInt } = THREE.MathUtils
 
 ambLight()
 
@@ -20,7 +21,7 @@ for (let i = 0; i < numEntities; i++) {
   const mesh = createBox({ size: 10, yModifier: 2 })
   const entity = new SteeringEntity(mesh)
   entity.maxSpeed = 1
-  entity.position.set(randomInRange(-500, 500), 0, randomInRange(-500, 500))
+  entity.position.set(randInt(-500, 500), 0, randInt(-500, 500))
   entities.push(entity)
   scene.add(entity)
 }

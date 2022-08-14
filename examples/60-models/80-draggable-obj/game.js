@@ -2,8 +2,9 @@ import * as THREE from 'three'
 import { OBJLoader } from '/node_modules/three/examples/jsm/loaders/OBJLoader.js'
 import { MTLLoader } from '/node_modules/three/examples/jsm/loaders/MTLLoader.js'
 import { scene, camera, renderer, initLights, createOrbitControls } from '/utils/scene.js'
-import { randomInRange } from '/utils/helpers.js'
 import { CIRCLE } from '/utils/constants.js'
+
+const { randFloat } = THREE.MathUtils
 
 let selectedItem, draggedItem, CHEST
 
@@ -43,7 +44,7 @@ loadOBJ('chest/chest.mtl', 'chest/chest.obj', model => {
 function placeModel(model, shouldRotate = false, itemsNum = 1) {
   for (let i = 0; i < itemsNum; i++) {
     const object = model.clone() // to add multiple items
-    object.position.set(randomInRange(-10, 10), 0, randomInRange(-5, 5))
+    object.position.set(randFloat(-10, 10), 0, randFloat(-5, 5))
     if (shouldRotate)
       object.rotation.z = Math.PI / 2
     object.rotation.y = Math.random() * CIRCLE

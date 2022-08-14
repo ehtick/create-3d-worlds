@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
-import { randomInRange } from '/utils/helpers.js'
+
+const { randFloat } = THREE.MathUtils
 
 scene.background = new THREE.Color(0x000000)
 
@@ -23,8 +24,8 @@ function createParticles() {
     const material = new THREE.SpriteMaterial({ map: texture, color: 0xffffff })
     const sprite = new THREE.Sprite(material)
     sprite.scale.set(32, 32, 1.0)
-    sprite.position.set(randomInRange(-.5, .5), randomInRange(-.5, .5), randomInRange(-.5, .5))
-    sprite.position.setLength(radiusRange * randomInRange(.9, 1))
+    sprite.position.set(randFloat(-.5, .5), randFloat(-.5, .5), randFloat(-.5, .5))
+    sprite.position.setLength(radiusRange * randFloat(.9, 1))
     sprite.material.color.setHSL(Math.random(), 0.9, 0.7)
     sprite.material.blending = THREE.AdditiveBlending // glowing
 

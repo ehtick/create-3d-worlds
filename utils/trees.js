@@ -1,5 +1,7 @@
 import * as THREE from 'three'
-import { randomInRange, similarColor, randomNuance, randomInSquare, findGroundRecursive } from './helpers.js'
+import { similarColor, randomNuance, randomInSquare, findGroundRecursive } from './helpers.js'
+
+const { randFloat } = THREE.MathUtils
 
 const sketchSize = 0.04
 const browns = [0x3d2817, 0x664422, 0xA0522D, 0x886633, 0x966F33]
@@ -25,7 +27,7 @@ function createCrown(size, color, sketch = false) {
     color: color || randomNuance()
   })
   const mesh = new THREE.Mesh(geometry, material)
-  mesh.rotation.y = randomInRange(0, Math.PI)
+  mesh.rotation.y = randFloat(0, Math.PI)
   if (sketch) {
     const outlineSize = size * sketchSize
     const outlineGeo = new Shape(size + outlineSize)
@@ -40,7 +42,7 @@ function createCrown(size, color, sketch = false) {
 }
 
 export function createTree({ x = 0, y = 0, z = 0, size = 5, trunkColor, crownColor } = {}) {
-  size = size * randomInRange(0.6, 1.4) // eslint-disable-line
+  size = size * randFloat(0.6, 1.4) // eslint-disable-line
   const trunk = createTrunk(size, trunkColor)
   trunk.position.set(x, y, z)
   trunk.translateY(size / 2)
@@ -74,7 +76,7 @@ export function createFirTree({ x = 0, y = 0, z = 0, size = 5 } = {}) {
   group.add(c3)
 
   const scale = size / 10
-  group.scale.set(scale, randomInRange(scale / 2, scale), scale)
+  group.scale.set(scale, randFloat(scale / 2, scale), scale)
   group.position.set(x, y, z)
   return group
 }
@@ -117,7 +119,7 @@ export function createFir({ x = 0, y = 0, z = 0, size = 5 } = {}) {
 
 // size = full height
 export function createSimpleFir({ size = 12, x = 0, y = 0, z = 0 } = {}) {
-  size = size * randomInRange(0.6, 1.4) // eslint-disable-line
+  size = size * randFloat(0.6, 1.4) // eslint-disable-line
   const treeData = {
     geom: {
       leaves: new THREE.CylinderGeometry(0, .31 * size, .75 * size, 4, 1),
@@ -148,7 +150,7 @@ export function createSimpleFir({ size = 12, x = 0, y = 0, z = 0 } = {}) {
 export function createTrees(n = 50, mapSize = 100, size = 5, create = createTree) {
   const min = -mapSize, max = mapSize
   const group = new THREE.Group()
-  const coords = Array(n).fill().map(() => [randomInRange(min, max), randomInRange(min, max)])
+  const coords = Array(n).fill().map(() => [randFloat(min, max), randFloat(min, max)])
   coords.forEach(([x, z]) => group.add(create({ x, y: 0, z, size })))
   return group
 }

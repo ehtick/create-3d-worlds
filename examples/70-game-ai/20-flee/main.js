@@ -2,8 +2,10 @@
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { randomInRange, getMouseIntersects } from '/utils/helpers.js'
+import { getMouseIntersects } from '/utils/helpers.js'
 import { loadModel, getMixer } from '/utils/loaders.js'
+
+const { randInt } = THREE.MathUtils
 
 ambLight()
 
@@ -17,13 +19,13 @@ const { mesh, animations } = await loadModel({ file: 'character/kachujin/Kachuji
 const runnerMixer = getMixer(mesh, animations, animations.length - 1)
 const runner = new SteeringEntity(mesh)
 runner.maxSpeed = 1.5
-runner.position.set(randomInRange(-500, 500), 0, randomInRange(-500, 500))
+runner.position.set(randInt(-500, 500), 0, randInt(-500, 500))
 scene.add(runner)
 
 const { mesh: ghostMesh, mixer: ghostMixer } = await loadModel({ file: 'character/ghost/scene.gltf' })
 const pursuer = new SteeringEntity(ghostMesh)
 pursuer.maxSpeed = 1
-pursuer.position.set(randomInRange(-500, 500), 0, randomInRange(-500, 500))
+pursuer.position.set(randInt(-500, 500), 0, randInt(-500, 500))
 scene.add(pursuer)
 
 const boundaries = new THREE.Box3(new THREE.Vector3(-500, 0, -500), new THREE.Vector3(500, 0, 500))

@@ -2,9 +2,10 @@
 import { camera, scene, renderer, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { createBall } from '/utils/geometry.js'
-import { createBox } from '/utils/geometry.js'
-import { randomInRange, getMouseIntersects } from '/utils/helpers.js'
+import { createBall, createBox } from '/utils/geometry.js'
+import { getMouseIntersects } from '/utils/helpers.js'
+
+const { randInt, randFloat } = THREE.MathUtils
 
 ambLight()
 
@@ -16,7 +17,7 @@ scene.add(floor)
 
 // Ball
 const ball = createBall({ r: 50 })
-ball.position.set(randomInRange(-5000, 5000), 50, randomInRange(-5000, 5000))
+ball.position.set(randInt(-5000, 5000), 50, randInt(-5000, 5000))
 scene.add(ball)
 
 // Entity Mesh
@@ -32,17 +33,17 @@ mesh3.position.setY(100)
 // Entities
 const entity1 = new SteeringEntity(mesh1)
 entity1.maxSpeed = 15
-entity1.position.set(randomInRange(-5000, 5000), 0, randomInRange(-5000, 5000))
+entity1.position.set(randInt(-5000, 5000), 0, randInt(-5000, 5000))
 scene.add(entity1)
 
 const entity2 = new SteeringEntity(mesh2)
 entity2.maxSpeed = 10
-entity2.position.set(randomInRange(-5000, 5000), 0, randomInRange(-5000, 5000))
+entity2.position.set(randInt(-5000, 5000), 0, randInt(-5000, 5000))
 scene.add(entity2)
 
 const entity3 = new SteeringEntity(mesh3)
 entity3.maxSpeed = 10
-entity3.position.set(randomInRange(-5000, 5000), 0, randomInRange(-5000, 5000))
+entity3.position.set(randInt(-5000, 5000), 0, randInt(-5000, 5000))
 scene.add(entity3)
 
 const boundaries = new THREE.Box3(new THREE.Vector3(-5000, 0, -5000), new THREE.Vector3(5000, 0, 5000))
@@ -98,9 +99,9 @@ document.addEventListener('mousemove', onMouseMove, true)
 function onClick(e) {
   const intersects = getMouseIntersects(e, camera, scene)
   if (intersects.length > 0) {
-    entity1.position.set(randomInRange(-5000, 5000), 0, randomInRange(-5000, 5000))
-    entity2.position.set(randomInRange(-5000, 5000), 0, randomInRange(-5000, 5000))
-    entity3.position.set(randomInRange(-5000, 5000), 0, randomInRange(-5000, 5000))
+    entity1.position.set(randInt(-5000, 5000), 0, randInt(-5000, 5000))
+    entity2.position.set(randInt(-5000, 5000), 0, randInt(-5000, 5000))
+    entity3.position.set(randInt(-5000, 5000), 0, randInt(-5000, 5000))
   }
 }
 

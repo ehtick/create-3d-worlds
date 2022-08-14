@@ -1,7 +1,9 @@
 import * as THREE from 'three'
-import { randomInRange, randomGrayish, randomInCircle, randomInSquare } from '/utils/helpers.js'
+import { randomGrayish, randomInCircle, randomInSquare } from '/utils/helpers.js'
 import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { material as winMaterial } from '/utils/shaders/windows.js'
+
+const { randInt, randFloat } = THREE.MathUtils
 
 const basicMaterial = new THREE.MeshStandardMaterial({
   vertexColors: THREE.FaceColors,
@@ -30,7 +32,7 @@ function createWindow(windowWidth, windowHeight) {
 function createWindows(bWidth, bHeight) {
   const windows = []
   const windowWidth = bWidth / 8
-  const windowHeight = randomInRange(4, 8)
+  const windowHeight = randFloat(4, 8)
   const floors = Math.floor(bHeight / (windowHeight * 2))
   const halfBWidth = bWidth * .5
 
@@ -71,8 +73,8 @@ function createWindows(bWidth, bHeight) {
 }
 
 export function createBuilding({
-  x = 0, z = 0, color = new THREE.Color(0x000000), width = randomInRange(10, 20, true),
-  height = randomInRange(width, width * 4, true), y = height * .5, addWindows = true, rotY = 0,
+  x = 0, z = 0, color = new THREE.Color(0x000000), width = randInt(10, 20),
+  height = randInt(width, width * 4), y = height * .5, addWindows = true, rotY = 0,
 } = {}) {
 
   const geometry = new THREE.BoxBufferGeometry(width, height, width)
@@ -94,7 +96,7 @@ export function createBuilding({
 }
 
 export function createSimpleBuilding({
-  width = randomInRange(8, 20), height = randomInRange(width * 2, width * 4), color,
+  width = randFloat(8, 20), height = randFloat(width * 2, width * 4), color,
 } = {}) {
   const geometry = new THREE.BoxGeometry(width, height, width)
   const materials = [winMaterial, winMaterial, basicMaterial, basicMaterial, winMaterial, winMaterial]
@@ -122,11 +124,11 @@ export function createCity({
 
     const rotY = shouldRotate(rotateEvery, i) ? Math.random() * Math.PI : 0
     const bWidth = shouldEnlarge(enlargeEvery, i)
-      ? randomInRange(10, 25, true)
-      : randomInRange(10, 20, true)
+      ? randFloat(10, 25)
+      : randFloat(10, 20)
     const bHeight = shouldEnlarge(enlargeEvery, i)
-      ? randomInRange(bWidth * 4, bWidth * 6, true)
-      : randomInRange(bWidth, bWidth * 4, true)
+      ? randFloat(bWidth * 4, bWidth * 6)
+      : randFloat(bWidth, bWidth * 4)
 
     const building = createBuilding({ color, x, z, rotY, addWindows, bWidth, bHeight, addTexture })
     buildings.push(building.geometry)
@@ -143,7 +145,7 @@ export function createCity({
 
 function generateCityTexture() {
   const windowColor = () => {
-    const value = randomInRange(0, 84, true)
+    const value = randInt(0, 84, true)
     return `rgb(${value}, ${value}, ${value})`
   }
 
@@ -196,8 +198,8 @@ function createLamppost({ x = 0, z = 0, height = 40 } = {}) {
   lamppost.target.position.set(x, 0, z)
   lamppost.target.updateMatrixWorld()
 
-  lamppost.angle = randomInRange(Math.PI / 6, Math.PI / 3)
-  lamppost.intensity = randomInRange(.5, 2) // 1.8 // 0-2
+  lamppost.angle = randFloat(Math.PI / 6, Math.PI / 3)
+  lamppost.intensity = randFloat(.5, 2) // 1.8 // 0-2
   lamppost.penumbra = 0.5
   lamppost.distance = height * 2
 

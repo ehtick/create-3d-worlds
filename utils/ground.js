@@ -1,8 +1,10 @@
 import * as THREE from 'three'
 import { SimplexNoise } from '/node_modules/three/examples/jsm/math/SimplexNoise.js'
-import { randomInRange, randomNuance, getTexture, similarColor } from '/utils/helpers.js'
+import { randomNuance, getTexture, similarColor } from '/utils/helpers.js'
 import chroma from '/libs/chroma.js'
 import { material as lavaMaterial } from '/utils/shaders/lava.js'
+
+const { randFloat } = THREE.MathUtils
 
 const simplex = new SimplexNoise()
 const greens = [0xA62A2A, 0x7a8a46, 0x228b22, 0xfffacd]
@@ -46,8 +48,8 @@ function randomDeform(geometry, factor) {
 
   for (let i = 0, l = position.count; i < l; i++) {
     vertex.fromBufferAttribute(position, i)
-    vertex.y += randomInRange(-factor * 5, factor * 7.5) * Math.random() * Math.random()
-    vertex.z += randomInRange(-factor, factor)
+    vertex.y += randFloat(-factor * 5, factor * 7.5) * Math.random() * Math.random()
+    vertex.z += randFloat(-factor, factor)
     position.setXYZ(i, vertex.x, vertex.y, vertex.z)
   }
 }

@@ -1,9 +1,11 @@
 /* global THREE, SteeringEntity */
 import { camera, scene, renderer, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
-import { randomInRange, getMouseIntersects } from '/utils/helpers.js'
+import { getMouseIntersects } from '/utils/helpers.js'
 import { createBall, createCrate } from '/utils/geometry.js'
 import { ambLight } from '/utils/light.js'
+
+const { randInt } = THREE.MathUtils
 
 ambLight()
 
@@ -19,7 +21,7 @@ scene.add(ball)
 const mesh = createCrate({ size: 10 })
 // Entity
 const entity = new SteeringEntity(mesh)
-entity.position.set(randomInRange(-500, 500), 0, randomInRange(-500, 500))
+entity.position.set(randInt(-500, 500), 0, randInt(-500, 500))
 entity.maxSpeed = 1
 scene.add(entity)
 

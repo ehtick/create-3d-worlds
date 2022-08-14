@@ -5,8 +5,9 @@ import { createFir } from '/utils/trees.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
 import { hemLight } from '/utils/light.js'
 import keyboard from '/utils/classes/Keyboard.js'
-import { randomInRange, roll } from '/utils/helpers.js'
+import { roll } from '/utils/helpers.js'
 
+const { randFloat } = THREE.MathUtils
 const { random } = Math
 
 const heroSpeed = 4
@@ -83,7 +84,7 @@ function addTree(tree, spherical) {
   const worldVector = earth.position.clone().normalize()
   const treeVector = tree.position.clone().normalize()
   tree.quaternion.setFromUnitVectors(treeVector, worldVector)
-  tree.rotation.x += randomInRange(-Math.PI / 10, Math.PI / 10)
+  tree.rotation.x += randFloat(-Math.PI / 10, Math.PI / 10)
   earth.add(tree)
 }
 

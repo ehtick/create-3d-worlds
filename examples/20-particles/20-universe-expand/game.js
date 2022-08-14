@@ -1,7 +1,8 @@
 import * as THREE from 'three'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 import { scene, camera, renderer } from '/utils/scene.js'
-import { randomInRange } from '/utils/helpers.js'
+
+const { randInt, randFloat } = THREE.MathUtils
 
 camera.position.z = 750
 scene.background = new THREE.Color(0x000040)
@@ -38,14 +39,14 @@ function generateTexture() {
 
 function tweenParticle(particle, delay = 0) {
   particle.position.set(0, 0, 0)
-  particle.scale.x = particle.scale.y = randomInRange(16, 48)
+  particle.scale.x = particle.scale.y = randFloat(16, 48)
 
   new TWEEN.Tween(particle.position)
     .delay(delay)
     .to({
-      x: randomInRange(-2000, 2000),
-      y: randomInRange(-500, 500),
-      z: randomInRange(-2000, 2000)
+      x: randInt(-2000, 2000),
+      y: randInt(-500, 500),
+      z: randInt(-2000, 2000)
     }, 10000)
     .start()
 

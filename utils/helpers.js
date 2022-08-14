@@ -2,25 +2,18 @@ import * as THREE from 'three'
 import { scene as defaultScene, camera as defaultCamera } from '/utils/scene.js'
 import { dir } from '/utils/constants.js'
 
+const { randFloat } = THREE.MathUtils
+
 export const isEmpty = obj => Object.keys(obj).length === 0
 
 /* MATH */
-
-/* Get random float between two values, < max */
-export function randomInRange(min, max, int = false) {
-  const random = Math.random() * (max - min) + min
-  return int ? Math.floor(random) : random
-}
-
-/* Get random int between two values, < max */
-export const randomInt = (min, max) => randomInRange(min, max, true)
 
 /* Get random int between two values, <= max (max inclusive) */
 export const roll = (max, min = 0) => Math.floor(Math.random() * (max - min + 1) + min)
 
 /* return 2D vector { x, z } */
 export function randomInCircle(radius, emptyCenter = 0) {
-  const random = emptyCenter ? randomInRange(emptyCenter, 1) : Math.random()
+  const random = emptyCenter ? randFloat(emptyCenter, 1) : Math.random()
   const r = Math.sqrt(random) * radius
   const angle = Math.random() * Math.PI * 2
   const x = Math.cos(angle) * r
@@ -30,21 +23,21 @@ export function randomInCircle(radius, emptyCenter = 0) {
 
 const randomBool = () => Math.random() < 0.5
 
-const randomInRangeExcluded = (min, max, minExclude, maxExclude, round = false) =>
-  randomBool() ? randomInRange(min, minExclude, round) : randomInRange(maxExclude, max, round)
+const randomInRangeExcluded = (min, max, minExclude, maxExclude) =>
+  randomBool() ? randFloat(min, minExclude) : randFloat(maxExclude, max)
 
 // export function randomInSquare(size) {
-//   const x = randomInRange(-size * .5, size * .5)
-//   const z = randomInRange(-size * .5, size * .5)
+//   const x = randFloat(-size * .5, size * .5)
+//   const z = randFloat(-size * .5, size * .5)
 //   return { x, z }
 // }
 
 export function randomInSquare(size, emptyCenter = 0) {
   const halfSize = size * .5
-  const x = randomInRange(-halfSize, halfSize)
+  const x = randFloat(-halfSize, halfSize)
   const z = x > -emptyCenter && x < emptyCenter
     ? randomInRangeExcluded(-halfSize, halfSize, -emptyCenter, emptyCenter)
-    : randomInRange(-halfSize, halfSize)
+    : randFloat(-halfSize, halfSize)
   return randomBool() ? { x, z } : { x: z, z: x }
 }
 
@@ -117,24 +110,24 @@ export const randomNuance = ({ h = .25, s = 0.5, l = 0.2 } = {}) =>
   new THREE.Color().setHSL(Math.random() * 0.1 + h, s, Math.random() * 0.25 + l)
 
 export function randomGrey(min = 75, max = 150) {
-  const v = (randomInRange(min, max) | 0).toString(16)
+  const v = (randFloat(min, max) | 0).toString(16)
   return '#' + v + v + v
 }
 
 // colorful = 0 for gray nianses only
 export function randomGrayish({ min = .3, max = .7, colorful = .02 } = {}) {
-  const gray = randomInRange(min, max)
+  const gray = randFloat(min, max)
   const color = new THREE.Color(
-    gray + randomInRange(-colorful, colorful),
-    gray + randomInRange(-colorful, colorful),
-    gray + randomInRange(-colorful, colorful)
+    gray + randFloat(-colorful, colorful),
+    gray + randFloat(-colorful, colorful),
+    gray + randFloat(-colorful, colorful)
   )
   return color
 }
 
 // @param color hex, return THREE.Color()
 export function similarColor(color, range = .25) {
-  const factor = randomInRange(-range, range)
+  const factor = randFloat(-range, range)
   const hsl = {}
   const { h, s, l } = new THREE.Color(color).getHSL(hsl)
   const newCol = new THREE.Color().setHSL(h + h * factor, s, l + l * factor / 4)

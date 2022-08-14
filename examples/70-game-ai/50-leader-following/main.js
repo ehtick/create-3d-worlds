@@ -3,7 +3,9 @@ import { camera, scene, renderer, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
 import { createBox } from '/utils/geometry.js'
-import { randomInRange, getMouseIntersects } from '/utils/helpers.js'
+import { getMouseIntersects } from '/utils/helpers.js'
+
+const { randInt, randFloat } = THREE.MathUtils
 
 ambLight()
 
@@ -16,7 +18,7 @@ scene.add(floor)
 const whiteBox = createBox({ size: 10, yModifier: 2 })
 const leader = new SteeringEntity(whiteBox)
 leader.maxSpeed = 1.5
-leader.position.set(randomInRange(-250, 250), 0, randomInRange(-250, 250))
+leader.position.set(randInt(-250, 250), 0, randInt(-250, 250))
 leader.wanderDistance = 5
 leader.wanderRadius = 2.5
 leader.wanderRange = .5
@@ -26,7 +28,7 @@ const followers = []
 for (let i = 0; i < 20; i++) {
   const mesh = createBox({ size: 10, yModifier: 2, color: 0x000000 })
   const entity = new SteeringEntity(mesh)
-  entity.position.set(randomInRange(-250, 250), 0, randomInRange(-250, 250))
+  entity.position.set(randInt(-250, 250), 0, randInt(-250, 250))
   entity.maxSpeed = 1.5,
   followers.push(entity)
   scene.add(entity)

@@ -1,7 +1,8 @@
 import * as THREE from 'three'
 import * as CANNON from '/libs/cannon-es.js'
 import { createFloor } from '/utils/ground.js'
-import { randomInRange } from '/utils/helpers.js'
+
+const { randInt, randFloat } = THREE.MathUtils
 
 const colors = [0xc2b280, 0xF2D16B, 0xedc9af, 0xfffacd, 0xF3CCAA, 0xf5deb3, 0xf0e68c]
 
@@ -32,8 +33,8 @@ export function createObstacles() {
   const obstacles = []
 
   for (let i = 0; i < 100; i++) {
-    const radiusBottom = randomInRange(2, 3, true)
-    const height = randomInRange(radiusBottom * .1, radiusBottom * .4)
+    const radiusBottom = randInt(2, 3)
+    const height = randFloat(radiusBottom * .1, radiusBottom * .4)
     const radialSegments = radiusBottom * 5
 
     const geometry = new THREE.CylinderGeometry(radiusTop, radiusBottom, height, radialSegments)

@@ -1,5 +1,6 @@
 import * as THREE from 'three'
-import { randomInRange } from '/utils/helpers.js'
+
+const { randFloat } = THREE.MathUtils
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -13,9 +14,9 @@ export function createParticles({ num = 10000, file = 'ball.png', color, size = 
   const velocities = new Float32Array(num)
 
   for (let i = 0; i < num; i++) {
-    const vertex = new THREE.Vector3(randomInRange(-unitAngle, unitAngle), randomInRange(-unitAngle, unitAngle), randomInRange(-unitAngle, unitAngle))
+    const vertex = new THREE.Vector3(randFloat(-unitAngle, unitAngle), randFloat(-unitAngle, unitAngle), randFloat(-unitAngle, unitAngle))
 
-    const scalar = randomInRange(minRange, maxRange)
+    const scalar = randFloat(minRange, maxRange)
     vertex.multiplyScalar(scalar)
     const { x, y, z } = vertex
     positions.push(x, y, z)
@@ -62,7 +63,7 @@ export function resetParticles({ particles, pos = [0, 0, 0], unitAngle = 1 } = {
   particles.position.set(...pos)
   const { array } = particles.geometry.attributes.position
   for (let i = 0, l = array.length; i < l; i++)
-    array[i] = randomInRange(-unitAngle, unitAngle)
+    array[i] = randFloat(-unitAngle, unitAngle)
 
   particles.geometry.attributes.position.needsUpdate = true
 }
@@ -72,7 +73,7 @@ export function resetParticles({ particles, pos = [0, 0, 0], unitAngle = 1 } = {
 export function addVelocity({ particles, min = .5, max = 3 } = {}) {
   const velocities = particles.geometry.attributes.velocity.array
   for (let i = 0, l = velocities.length; i < l; i++)
-    velocities[i] = randomInRange(min, max)
+    velocities[i] = randFloat(min, max)
   particles.geometry.attributes.velocity.needsUpdate = true
 }
 
@@ -108,7 +109,7 @@ export function createSimpleStars({ num = 10000, r = 1000, size = 3 } = {}) {
   const geometry = new THREE.BufferGeometry()
   const positions = []
   for (let i = 0; i < num; i++) {
-    const lat = randomInRange(-Math.PI / 2, Math.PI / 2)
+    const lat = randFloat(-Math.PI / 2, Math.PI / 2)
     const lon = 2 * Math.PI * Math.random()
     const x = r * Math.cos(lon) * Math.cos(lat)
     const y = r * Math.sin(lon) * Math.cos(lat)

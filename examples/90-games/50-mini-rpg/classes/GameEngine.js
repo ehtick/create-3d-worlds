@@ -1,9 +1,11 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { randomInt, putOnTerrain, checkIntersect } from '/utils/helpers.js'
+import { putOnTerrain, checkIntersect } from '/utils/helpers.js'
 import { hemLight, dirLight } from '/utils/light.js'
 import { createHillyTerrain, createWater } from '/utils/ground.js'
 import Tree from './Tree.js'
+
+const { randInt } = THREE.MathUtils
 
 const TREES = 75
 const { innerWidth, innerHeight } = window
@@ -83,7 +85,7 @@ class GameEngine {
   }
 
   randomPlaceEntity(entity) {
-    entity.mesh.position.set(randomInt(-550, 550), 0, randomInt(-550, 550))
+    entity.mesh.position.set(randInt(-550, 550), 0, randInt(-550, 550))
     const { x, y, z } = this.place(entity.mesh.position)
     entity.mesh.position.set(x, y, z)
     this.addEntity(entity)

@@ -1,9 +1,10 @@
 import * as THREE from 'three'
 import { camera, scene } from '/utils/scene.js'
 import { UNITSIZE, BULLETMOVESPEED, PROJECTILEDAMAGE, MOVESPEED, mapWidth, mapHeight } from './constants.js'
-import { randomInt } from '/utils/helpers.js'
 import { nemesis } from '/data/maps.js'
 import { getMapPosition } from '/utils/mazes.js'
+
+const { randInt } = THREE.MathUtils
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -56,8 +57,8 @@ export const randomXZ = () => {
   let x, z
   const c = getMapCell(camera.position)
   do {
-    x = randomInt(0, mapWidth - 1)
-    z = randomInt(0, mapHeight - 1)
+    x = randInt(0, mapWidth - 1)
+    z = randInt(0, mapHeight - 1)
   } while (nemesis[z][x] > 0 || (x == c.x && z == c.z))
 
   x = Math.floor(x - mapWidth / 2) * UNITSIZE
