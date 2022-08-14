@@ -70,11 +70,11 @@ function createWindows(bWidth, bHeight) {
 }
 
 export function createBuilding({
-  x = 0, z = 0, color = new THREE.Color(0x000000), bWidth = randomInRange(10, 20, true),
-  bHeight = randomInRange(bWidth, bWidth * 4, true), y = bHeight * .5, addWindows = true, rotY = 0,
+  x = 0, z = 0, color = new THREE.Color(0x000000), width = randomInRange(10, 20, true),
+  height = randomInRange(width, width * 4, true), y = height * .5, addWindows = true, rotY = 0,
 } = {}) {
 
-  const geometry = new THREE.BoxBufferGeometry(bWidth, bHeight, bWidth)
+  const geometry = new THREE.BoxBufferGeometry(width, height, width)
 
   const colors = []
   for (let i = 0, l = geometry.attributes.position.count; i < l; i ++)
@@ -82,7 +82,7 @@ export function createBuilding({
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 
   const mergedGeometry = addWindows
-    ? BufferGeometryUtils.mergeBufferGeometries([geometry, ...createWindows(bWidth, bHeight)])
+    ? BufferGeometryUtils.mergeBufferGeometries([geometry, ...createWindows(width, height)])
     : geometry
 
   mergedGeometry.translate(x, y, z) // needed for merge

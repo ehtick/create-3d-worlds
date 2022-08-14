@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 import { scene, camera, renderer } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
+import { createBuilding } from '/utils/city.js'
 
 const buildings = []
 const mapSize = 400
@@ -21,13 +22,10 @@ scene.add(light)
 const floor = createFloor({ size: 600 })
 scene.add(floor)
 
-const randColor = () => [0xfb3550, 0xffffff, 0x000000][Math.random() * 3 | 0]
-
-const geometry = new THREE.BoxGeometry(10, 10, 10)
 for (let i = 0; i < 100; i++) {
-  const material = new THREE.MeshPhongMaterial({ color: randColor() })
-  buildings.push(new THREE.Mesh(geometry, material))
-  scene.add(buildings[i])
+  const building = createBuilding({ width: 10, height: 10 })
+  buildings.push(building)
+  scene.add(building)
 }
 
 /* FUNCTIONS */

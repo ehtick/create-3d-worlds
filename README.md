@@ -9,8 +9,6 @@ npm i
 npx live-server
 ```
 
-- napraviti bolji lava teren
-
 ## Konačni automat
 - srediti capoeira girl
 - uskladiti animacije sa mrdanjem igrača
@@ -64,6 +62,7 @@ npx live-server
   - dodati proceduralnu planetu http://colordodge.com/ProceduralPlanet/?seed=Ridi%20Genow
 
 - Grad
+  - integrisati dark city
   - dodati park ili trg u centru
   - dodati drveće, za zeleni grad
   - ubaciti prvo lice u scenu
