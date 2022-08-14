@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
-import { scene, camera, renderer } from '/utils/scene.js'
+import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { createSimpleBuilding } from '/utils/city.js'
 
@@ -28,11 +28,11 @@ for (let i = 0; i < 100; i++) {
 /* FUNCTIONS */
 
 function grow() {
-  buildings.forEach(box => {
+  buildings.forEach(building => {
     const sec = Math.random() * 2 + 1
     const y = 1 + Math.random() * 20 + (Math.random() < 0.1 ? 15 : 0)
 
-    new TWEEN.Tween(box.scale)
+    new TWEEN.Tween(building.scale)
       .delay(sec)
       .to({
         x: 1 + Math.random() * 3,
@@ -41,7 +41,7 @@ function grow() {
       })
       .start()
 
-    new TWEEN.Tween(box.position)
+    new TWEEN.Tween(building.position)
       .delay(sec)
       .to({
         x: -mapSize * .5 + Math.random() * mapSize,
@@ -59,6 +59,13 @@ grow()
 void function animate() {
   requestAnimationFrame(animate)
   TWEEN.update()
+  const elapsed = clock.getElapsedTime()
+  buildings.forEach((building, i) => {
+    const time = elapsed
+    building.material.forEach(mat => {
+      if (mat.uniforms?.time) mat.uniforms.time.value = time
+    })
+  })
   renderer.render(scene, camera)
 }()
 

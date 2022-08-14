@@ -39,7 +39,7 @@ const fragmentShader = /* glsl */`
 `
 
 export const uniforms = {
-  u_color: { value: new THREE.Color(0xffff00) },
+  u_color: { value: new THREE.Color(0xFFFDD0) },
 }
 
 export const material = new THREE.ShaderMaterial({
