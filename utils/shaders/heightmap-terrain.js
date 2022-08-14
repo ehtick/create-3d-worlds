@@ -22,7 +22,7 @@ const vertexShader = /* glsl */`
 const fragmentShader = /* glsl */`
   uniform sampler2D heightmap;
   uniform float seaLevel;
-  uniform bool snow;
+  uniform bool showSnow;
 
 	varying vec2 vUV;
 	varying float vAmount;
@@ -39,7 +39,7 @@ const fragmentShader = /* glsl */`
   {
       if (height < seaLevel) return blue;
 
-      float steps = snow ? 3.0 : 2.0;
+      float steps = showSnow ? 3.0 : 2.0;
       float hscaled = height * steps;
       int i = int(hscaled);
       float frac = hscaled - float(i);
@@ -68,7 +68,7 @@ const fragmentShader = /* glsl */`
 `
 
 const uniforms = {
-  snow: { type: 'f', value: true },
+  showSnow: { type: 'f', value: true },
   seaLevel: { type: 'f', value: 0.05 },
   heightmap: { type: 't', value: null },
   displacementScale: { type: 'f', value: 1.0 },

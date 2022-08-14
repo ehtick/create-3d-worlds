@@ -4,13 +4,13 @@ import { material } from '/utils/shaders/heightmap-terrain.js'
 const textureLoader = new THREE.TextureLoader()
 
 export async function terrainFromHeightmap({
-  file = 'wiki.png', scale = 1, seaLevel = 0.001, snow = true } = {}
+  file = 'wiki.png', scale = 1, seaLevel = 0.001, showSnow = true } = {}
 ) {
   const { data, width, height } = await getHeightData(`/assets/heightmaps/${file}`, scale)
 
   material.uniforms.heightmap.value = await textureLoader.loadAsync(`/assets/heightmaps/${file}`)
   material.uniforms.seaLevel.value = seaLevel
-  material.uniforms.snow.value = snow
+  material.uniforms.showSnow.value = showSnow
 
   const geometry = new THREE.PlaneGeometry(width, height, width - 1, height - 1)
   geometry.rotateX(- Math.PI / 2)
