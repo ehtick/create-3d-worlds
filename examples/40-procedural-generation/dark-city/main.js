@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
-import { scene, camera, renderer, clock } from '/utils/scene.js'
+import { scene, camera, renderer } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { createSimpleBuilding } from '/utils/city.js'
 
@@ -59,13 +59,6 @@ grow()
 void function animate() {
   requestAnimationFrame(animate)
   TWEEN.update()
-  const elapsed = clock.getElapsedTime()
-  buildings.forEach((building, i) => {
-    const time = elapsed
-    building.material.forEach(mat => {
-      if (mat.uniforms?.time) mat.uniforms.time.value = time
-    })
-  })
   renderer.render(scene, camera)
 }()
 
