@@ -9,15 +9,15 @@ npm i
 npx live-server
 ```
 
+### Mazes
+- napraviti render za mazes
+- srediti kretanje da ne koristi raycasting
+
 ## Konačni automat
 - srediti capoeira girl
 - uskladiti animacije sa mrdanjem igrača
   - mrdati igrača napred za neke napade
   - onemogućiti mrdanje u skoku?
-
-### Mazes
-- napraviti render za mazes
-- srediti kretanje da ne koristi raycasting
 
 ### Physics
 - preraditi staru 2D fiziku u 3D
