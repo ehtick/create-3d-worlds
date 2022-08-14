@@ -2,6 +2,8 @@ import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { randomInRange } from '/utils/helpers.js'
 
+scene.background = new THREE.Color(0x000000)
+
 const totalParticles = 200
 const radiusRange = 50
 
