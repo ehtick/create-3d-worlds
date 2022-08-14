@@ -22,6 +22,7 @@ const vertexShader = /* glsl */`
 const fragmentShader = /* glsl */`
   uniform sampler2D heightmap;
   uniform float seaLevel;
+  uniform bool snow;
 
 	varying vec2 vUV;
 	varying float vAmount;
@@ -38,7 +39,7 @@ const fragmentShader = /* glsl */`
   {
       if (height < seaLevel) return blue;
 
-      float steps = 3.0;
+      float steps = snow ? 3.0 : 2.0;
       float hscaled = height * steps;
       int i = int(hscaled);
       float frac = hscaled - float(i);
@@ -50,9 +51,9 @@ const fragmentShader = /* glsl */`
   vec3 color_from_height_alt(const float height)
   {
       vec3 water = (smoothstep(-0.1, 0.05, vAmount) - smoothstep(0.11, 0.12, vAmount)) * blue;
-      vec3 grass = (smoothstep(0.0, 0.2, vAmount) - smoothstep(0.4, 0.41, vAmount)) * green;
+      vec3 grass = (smoothstep(0.01, 0.2, vAmount) - smoothstep(0.34, 0.35, vAmount)) * green;
       vec3 sand = (smoothstep(0.2, 0.5, vAmount) - smoothstep(0.55, 0.56, vAmount)) * yellow;
-      vec3 land = (smoothstep(0.42, 0.7, vAmount) - smoothstep(0.77, 0.78, vAmount)) * brown;
+      vec3 land = (smoothstep(0.4, 0.7, vAmount) - smoothstep(0.77, 0.78, vAmount)) * brown;
       vec3 snow = (smoothstep(0.66, 0.83, vAmount)) * white;
 
       return vec3(water + grass + sand + land + snow);
@@ -67,6 +68,7 @@ const fragmentShader = /* glsl */`
 `
 
 const uniforms = {
+  snow: { type: 'f', value: true },
   seaLevel: { type: 'f', value: 0.05 },
   heightmap: { type: 't', value: null },
   displacementScale: { type: 'f', value: 1.0 },
