@@ -36,7 +36,7 @@ export function createBaradDur({ floors = 6, size = 20, r = 5 } = {}) {
   return group
 }
 
-export function spaceStructure({ floors = 6, size = 5, r = 5 } = {}) {
+export function createSpaceTower({ floors = 6, size = 5, r = 5 } = {}) {
   const group = new THREE.Group()
   for (let i = 0; i < floors; i++)
     group.add(...createCircle({ r: r - i * 5, y: i * size * 2, size }))
