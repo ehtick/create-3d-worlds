@@ -37,7 +37,8 @@ const fragmentShader = /* glsl */`
   // https://gamedev.stackexchange.com/questions/86805
   vec3 color_from_height(const float height )
   {
-      if (height < seaLevel) return blue;
+      vec3 water = smoothstep(-0.1, seaLevel, vAmount) * blue;
+      if (height < seaLevel) return water;
 
       float steps = snow ? 3.0 : 2.0;
       float hscaled = height * steps;
@@ -46,17 +47,6 @@ const fragmentShader = /* glsl */`
       vec3 colors[4] = vec3[](green, yellow, brown, white);
 
       return mix(colors[i], colors[i+1], frac);
-  }
-
-  vec3 color_from_height_alt(const float height)
-  {
-      vec3 water = (smoothstep(-0.1, 0.05, vAmount) - smoothstep(0.11, 0.12, vAmount)) * blue;
-      vec3 grass = (smoothstep(0.01, 0.2, vAmount) - smoothstep(0.34, 0.35, vAmount)) * green;
-      vec3 sand = (smoothstep(0.2, 0.5, vAmount) - smoothstep(0.55, 0.56, vAmount)) * yellow;
-      vec3 land = (smoothstep(0.4, 0.7, vAmount) - smoothstep(0.77, 0.78, vAmount)) * brown;
-      vec3 snow = (smoothstep(0.66, 0.83, vAmount)) * white;
-
-      return vec3(water + grass + sand + land + snow);
   }
 
 	void main() 

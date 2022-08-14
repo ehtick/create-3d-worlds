@@ -7,14 +7,14 @@ const CIRCLE = Math.PI * 2
 
 // TOWER OF BABEL
 
-function createCircle({ r = 100, y = 0, size = 10 } = {}) {
+function createCircle({ r = 100, y = 0, size = 10, color } = {}) {
   const blocks = []
   const blocksInCirle = 15
   const step = CIRCLE / blocksInCirle
   for (let i = 0; i <= CIRCLE; i += step) {
     const x = Math.cos(i) * r
     const z = Math.sin(i) * r
-    const block = createBox({ size, zModifier: 2 })
+    const block = createBox({ size, zModifier: 2, color })
     block.position.set(x, y, z)
     block.rotateY(-i)
     blocks.push(block)
@@ -29,10 +29,10 @@ export function createBabelTower({ floors = 5, size = 10, r = 50 } = {}) {
   return group
 }
 
-export function spomenik({ floors = 6, size = 20, r = 5 } = {}) {
+export function createBaradDur({ floors = 6, size = 20, r = 5 } = {}) {
   const group = new THREE.Group()
   for (let i = 0; i < floors; i++)
-    group.add(...createCircle({ r: r - i * 5, y: i * size * .5, size }))
+    group.add(...createCircle({ r: r - i * 5, y: i * size * .5, size, color: 0x444444 }))
   return group
 }
 

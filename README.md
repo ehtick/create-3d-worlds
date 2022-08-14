@@ -9,6 +9,8 @@ npm i
 npx live-server
 ```
 
+- napraviti bolji lava teren
+
 ## Konačni automat
 - srediti capoeira girl
 - uskladiti animacije sa mrdanjem igrača

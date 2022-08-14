@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { SimplexNoise } from '/libs/SimplexNoise.js'
 import { randomInRange, randomNuance, getTexture, similarColor } from '/utils/helpers.js'
 import chroma from '/libs/chroma.js'
+import { material as lavaMaterial } from '/utils/shaders/lava.js'
 
 const simplex = new SimplexNoise()
 const greens = [0xA62A2A, 0x7a8a46, 0x228b22, 0xfffacd]
@@ -148,6 +149,14 @@ export const createHillyTerrain = (
   mesh.receiveShadow = true
   mesh.geometry.applyMatrix4(mesh.matrix)
   mesh.name = 'terrain'
+  return mesh
+}
+
+export function createLavaGround({ size = 50 } = {}) {
+  const geometry = new THREE.CircleGeometry(size)
+  geometry.rotateX(- Math.PI / 2)
+  const mesh = new THREE.Mesh(geometry, lavaMaterial)
+  mesh.translateY(1.5)
   return mesh
 }
 

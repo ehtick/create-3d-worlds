@@ -64,5 +64,6 @@ uniforms.texture2.value.wrapS = uniforms.texture2.value.wrapT = THREE.RepeatWrap
 export const material = new THREE.ShaderMaterial({
   uniforms,
   vertexShader,
-  fragmentShader
+  fragmentShader,
+  side: THREE.DoubleSide,
 })

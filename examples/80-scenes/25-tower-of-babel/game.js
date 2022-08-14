@@ -1,24 +1,30 @@
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { createTerrain } from '/utils/ground.js'
+import { createTerrain, createLavaGround } from '/utils/ground.js'
 import Avatar from '/utils/classes/Avatar.js'
 import { dirLight, hemLight } from '/utils/light.js'
-import { createBabelTower, spomenik, spaceStructure } from '/utils/towers.js'
+import { createBabelTower, createBaradDur, spaceStructure } from '/utils/towers.js'
 
-dirLight()
+const lavaGround = createLavaGround()
+scene.add(lavaGround)
+
+dirLight({ intensity: .1 })
 hemLight({ intensity: .75 })
 
 const tower = createBabelTower({ floors: 6 })
-const monument = spomenik()
-monument.position.x = 200
+const baradDur = createBaradDur()
+baradDur.position.x = 200
+
 const structure = spaceStructure()
 structure.position.z = -200
 
-const terrain = createTerrain()
-scene.add(terrain, tower, monument, structure)
+const terrain = createTerrain({ size: 1000, factor: 1 })
+
+scene.add(terrain, tower, baradDur, structure)
 
 const avatar = new Avatar({ skin: 0 })
 avatar.position.set(60, 2, 0)
-avatar.addSolids(terrain, tower, monument, structure)
+avatar.addSolids(terrain, tower, baradDur, structure)
+avatar.add(camera)
 scene.add(avatar.mesh)
 
 /* LOOP */
