@@ -4,20 +4,16 @@ import { scene, camera, renderer } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { createSimpleBuilding } from '/utils/city.js'
 
+renderer.setClearColor(0x070b34)
+
 const buildings = []
 const mapSize = 400
-scene.fog = new THREE.FogExp2(0xd0e0f0, 0.0025)
 
 camera.position.set(0, mapSize * .33, mapSize * .9)
 camera.lookAt(scene.position)
 
-scene.fog = new THREE.FogExp2(0x1E2630, 0.002)
-renderer.setClearColor(0x1E2630)
-
-let light = new THREE.DirectionalLight(0xffffff)
+const light = new THREE.DirectionalLight(0xffffff)
 light.position.set(1, 1, 1)
-scene.add(light)
-light = new THREE.AmbientLight(0x222222)
 scene.add(light)
 
 const floor = createFloor({ size: 600 })
