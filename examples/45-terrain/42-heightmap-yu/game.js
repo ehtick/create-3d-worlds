@@ -1,7 +1,7 @@
 import {
   scene, camera, renderer, createOrbitControls, hemLight
 } from '/utils/scene.js'
-import { terrainFromHeightmap } from '/utils/terrain/terrainFromHeightmap.js'
+import { terrainFromHeightmap } from '/utils/terrain/heightmap.js'
 import { dirLight } from '/utils/light.js'
 
 hemLight()

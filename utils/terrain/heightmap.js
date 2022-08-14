@@ -3,8 +3,9 @@ import { material } from '/utils/shaders/heightmap-terrain.js'
 
 const textureLoader = new THREE.TextureLoader()
 
-export async function terrainFromHeightmap({ file = 'wiki.png', scale = 1, seaLevel = 0.001, snow = true } = {}) {
-
+export async function terrainFromHeightmap({
+  file = 'wiki.png', scale = 1, seaLevel = 0.001, snow = true } = {}
+) {
   const { data, width, height } = await getHeightData(`/assets/heightmaps/${file}`, scale)
 
   material.uniforms.heightmap.value = await textureLoader.loadAsync(`/assets/heightmaps/${file}`)
