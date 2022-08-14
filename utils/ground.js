@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { SimplexNoise } from '/libs/SimplexNoise.js'
+import { SimplexNoise } from '/node_modules/three/examples/jsm/math/SimplexNoise.js'
 import { randomInRange, randomNuance, getTexture, similarColor } from '/utils/helpers.js'
 import chroma from '/libs/chroma.js'
 import { material as lavaMaterial } from '/utils/shaders/lava.js'
@@ -38,7 +38,7 @@ export function createGround({ size = 1000, color, circle, file, repeat = size /
   return mesh
 }
 
-/* RANDOM TERRAIN */
+/* NOISE HELPERS */
 
 function randomDeform(geometry, factor) {
   const { position } = geometry.attributes
@@ -51,30 +51,6 @@ function randomDeform(geometry, factor) {
     position.setXYZ(i, vertex.x, vertex.y, vertex.z)
   }
 }
-
-function randomColors(geometry, colorParam) {
-  const colors = []
-  for (let i = 0, l = geometry.attributes.position.count; i < l; i++) {
-    const color = randomNuance(colorParam)
-    colors.push(color.r, color.g, color.b)
-  }
-  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
-}
-
-export function createTerrain({ size = 400, segments = 50, colorParam, factor = 2 } = {}) {
-  const geometry = new THREE.PlaneGeometry(size, size, segments, segments)
-  geometry.rotateX(- Math.PI / 2)
-
-  randomDeform(geometry, factor)
-  randomColors(geometry, colorParam)
-
-  const material = new THREE.MeshLambertMaterial({ vertexColors: THREE.VertexColors })
-  const mesh = new THREE.Mesh(geometry, material)
-  mesh.receiveShadow = true
-  return mesh
-}
-
-/* CRATERS TERRAIN */
 
 function cratersNoise(geometry) {
   const xZoom = 20
@@ -96,18 +72,6 @@ function cratersNoise(geometry) {
   }
 }
 
-export function createCraters() {
-  const geometry = new THREE.PlaneGeometry(100, 100, 100, 100)
-  const material = new THREE.MeshBasicMaterial({ color: 0x7a8a46, wireframe: true })
-  const mesh = new THREE.Mesh(geometry, material)
-  mesh.rotateX(-Math.PI / 2)
-
-  cratersNoise(geometry)
-  return mesh
-}
-
-/* DUNES */
-
 function dunesNoise(geometry) {
   const { position } = geometry.attributes
   const vertex = new THREE.Vector3()
@@ -120,19 +84,6 @@ function dunesNoise(geometry) {
   }
 }
 
-export function createDunes() {
-  const geometry = new THREE.PlaneGeometry(100, 100, 100, 100)
-  const material = new THREE.MeshBasicMaterial({ color: 0xc2b280, wireframe: true })
-  const mesh = new THREE.Mesh(geometry, material)
-  mesh.rotateX(-Math.PI / 2)
-
-  dunesNoise(geometry)
-
-  return mesh
-}
-
-/* HILLY TERRAIN */
-
 function hillyNoise(geometry, segments, factorX, factorY, factorZ, aboveSea) {
   const { position } = geometry.attributes
   const vertex = new THREE.Vector3()
@@ -142,6 +93,17 @@ function hillyNoise(geometry, segments, factorX, factorY, factorZ, aboveSea) {
     vertex.y = factorY * (dist + aboveSea)
     position.setXYZ(i, vertex.x, vertex.y, vertex.z)
   }
+}
+
+/* COLOR HELPERS */
+
+function randomColors(geometry, colorParam) {
+  const colors = []
+  for (let i = 0, l = geometry.attributes.position.count; i < l; i++) {
+    const color = randomNuance(colorParam)
+    colors.push(color.r, color.g, color.b)
+  }
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 }
 
 function heightColors(geometry, factorY) {
@@ -157,6 +119,57 @@ function heightColors(geometry, factorY) {
   }
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 }
+
+function waterColors(geometry) {
+  const colors = []
+  for (let i = 0, l = geometry.attributes.position.count; i < l; i++) {
+    const color = similarColor(0x40E0D0, .15)
+    colors.push(color.r, color.g, color.b)
+  }
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+}
+
+/* RANDOM TERRAIN */
+
+export function createTerrain({ size = 400, segments = 50, colorParam, factor = 2 } = {}) {
+  const geometry = new THREE.PlaneGeometry(size, size, segments, segments)
+  geometry.rotateX(- Math.PI / 2)
+
+  randomDeform(geometry, factor)
+  randomColors(geometry, colorParam)
+
+  const material = new THREE.MeshLambertMaterial({ vertexColors: THREE.VertexColors })
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.receiveShadow = true
+  return mesh
+}
+
+/* CRATERS TERRAIN */
+
+export function createCraters() {
+  const geometry = new THREE.PlaneGeometry(100, 100, 100, 100)
+  const material = new THREE.MeshBasicMaterial({ color: 0x7a8a46, wireframe: true })
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.rotateX(-Math.PI / 2)
+
+  cratersNoise(geometry)
+  return mesh
+}
+
+/* DUNES */
+
+export function createDunes() {
+  const geometry = new THREE.PlaneGeometry(100, 100, 100, 100)
+  const material = new THREE.MeshBasicMaterial({ color: 0xc2b280, wireframe: true })
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.rotateX(-Math.PI / 2)
+
+  dunesNoise(geometry)
+
+  return mesh
+}
+
+/* HILLY TERRAIN */
 
 export const createHillyTerrain = (
   { size = 400, segments = size / 20, color = 0x4ae34a, factorX = size / 20, factorZ = size / 40, factorY = size / 10, file, aboveSea = .5 } = {}
@@ -181,15 +194,6 @@ export const createHillyTerrain = (
 }
 
 /* WATER */
-
-function waterColors(geometry) {
-  const colors = []
-  for (let i = 0, l = geometry.attributes.position.count; i < l; i++) {
-    const color = similarColor(0x40E0D0, .15)
-    colors.push(color.r, color.g, color.b)
-  }
-  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
-}
 
 export const createWater = ({ size = 1200, segments = 20, opacity = .6, file = 'water512.jpg' } = {}) => {
   const material = new THREE.MeshLambertMaterial({
