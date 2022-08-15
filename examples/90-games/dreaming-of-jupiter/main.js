@@ -5,8 +5,9 @@ import { createMoon, createSaturn } from '/utils/planets.js'
 const { randInt } = THREE.Math
 const loader = new THREE.TextureLoader()
 
+scene.background = new THREE.Color(0x000000)
+
 const totalStars = 1000
-let count = 0
 let t = 0
 
 camera.position.set(0, 1, 32)
@@ -38,12 +39,11 @@ scene.add(stars)
 /* FUNCTIONS */
 
 function createEmptyTerrain() {
-  const map = loader.load() // load no texture
   const geometry = new THREE.PlaneBufferGeometry(70, 70, 20, 20)
-  const material = new THREE.MeshBasicMaterial({ map })
+  const material = new THREE.MeshBasicMaterial({ wireframe: true })
   const terrain = new THREE.Mesh(geometry, material)
   terrain.rotation.x = -0.47 * Math.PI
-  terrain.rotation.z = THREE.Math.degToRad(90)
+  terrain.rotation.z = 0.5 * Math.PI
   return terrain
 }
 
@@ -51,10 +51,10 @@ function createTerrainLines(terrain) {
   const { geometry } = terrain
   const positionArray = geometry.getAttribute('position').array
   geometry.setAttribute('myZ', new THREE.BufferAttribute(new Float32Array(positionArray.length / 3), 1))
-  const myZArray = geometry.getAttribute('myZ').array
+  const zArray = geometry.getAttribute('myZ').array
 
   for (let i = 0; i < positionArray.length; i++)
-    myZArray[i] = randInt(0, 5)
+    zArray[i] = randInt(0, 5)
 
   const lineSegments = new THREE.LineSegments(
     geometry,
@@ -64,16 +64,18 @@ function createTerrainLines(terrain) {
   return lineSegments
 }
 
-function updateTerrain(terrainGeometry) {
-  const positionArray = terrainGeometry.getAttribute('position').array
-  const myZArray = terrainGeometry.getAttribute('myZ').array
-
-  for (let i = 0; i < positionArray.length; i++)
-    if (i >= 210 && i <= 250) positionArray[i * 3 + 2] = 0
-    else {
-      positionArray[i * 3 + 2] = Math.sin((i + count * 0.0003)) * (myZArray[i] - (myZArray[i] * 0.5))
-      count += 0.1
-    }
+function updateTerrain(geometry) {
+  const zArray = geometry.getAttribute('myZ').array
+  const { position } = geometry.attributes
+  const vertex = new THREE.Vector3()
+  for (let i = 0, l = position.count; i < l; i++) {
+    vertex.fromBufferAttribute(position, i)
+    vertex.z = (i >= 210 && i <= 250)
+      ? 0 // coridor
+      : Math.sin((i + t)) * (zArray[i] - (zArray[i] * 0.5))
+    position.setXYZ(i, vertex.x, vertex.y, vertex.z)
+  }
+  position.needsUpdate = true
 }
 
 function createBgSphere() {
@@ -132,6 +134,7 @@ function updateStars(geometry) {
       velocityArray[2 * i + 1] = 0
     }
   }
+  geometry.getAttribute('position').needsUpdate = true
 }
 
 /* LOOP */
@@ -140,9 +143,6 @@ void function loop() {
   requestAnimationFrame(loop)
 
   planet.rotation.y += 0.002
-  sphereBg.rotation.x += 0.002
-  sphereBg.rotation.y += 0.002
-  sphereBg.rotation.z += 0.002
 
   moon.rotation.y -= 0.007
   moon.rotation.x -= 0.007
@@ -150,9 +150,7 @@ void function loop() {
   moon.position.z = 20 * Math.sin(t) - 35
 
   updateTerrain(terrain.geometry)
-  terrain.geometry.attributes.position.needsUpdate = true
   updateStars(stars.geometry)
-  stars.geometry.getAttribute('position').needsUpdate = true
 
   t += 0.015
   renderer.render(scene, camera)
