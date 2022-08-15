@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { camera, scene, renderer } from '/utils/scene.js'
 import { createMoon, createSaturn } from '/utils/planets.js'
 
-const { randInt } = THREE.Math
+const { randInt, randFloat } = THREE.Math
 const loader = new THREE.TextureLoader()
 
 scene.background = new THREE.Color(0x000000)
@@ -35,34 +35,48 @@ scene.add(stars)
 
 /* FUNCTIONS */
 
-function addInitialHeight(geometry) {
+function setInitialHeight(geometry) {
+  const { position } = geometry.attributes
   const initialHeight = []
-  for (let i = 0; i < geometry.attributes.position.count; i++)
-    initialHeight.push(randInt(0, 5))
+  const vertex = new THREE.Vector3()
+  for (let i = 0; i < position.count; i++) {
+    vertex.fromBufferAttribute(position, i)
+    initialHeight.push(vertex.z)
+  }
   geometry.setAttribute('initialHeight', new THREE.Float32BufferAttribute(initialHeight, 1))
+}
+
+function randomDeform(geometry, factor = 5) {
+  const { position } = geometry.attributes
+  const vertex = new THREE.Vector3()
+
+  for (let i = 0, l = position.count; i < l; i++) {
+    vertex.fromBufferAttribute(position, i)
+    position.setZ(i, randFloat(0, factor))
+  }
 }
 
 function createTerrain() {
   const geometry = new THREE.PlaneBufferGeometry(70, 70, 20, 20)
+  randomDeform(geometry, 5)
 
   const material = new THREE.MeshBasicMaterial({ wireframe: true })
-  const terrain = new THREE.Mesh(geometry, material)
-  terrain.rotation.x = -0.47 * Math.PI
-  terrain.rotation.z = 0.5 * Math.PI
-
-  addInitialHeight(geometry)
-  return terrain
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.rotation.x = -0.47 * Math.PI
+  mesh.rotation.z = 0.5 * Math.PI
+  return mesh
 }
 
-function updateTerrain(geometry) {
-  const zArray = geometry.getAttribute('initialHeight').array
-  const { position } = geometry.attributes
+function earthShake(geometry) {
+  if (!geometry.attributes.initialHeight) setInitialHeight(geometry)
+
+  const { position, initialHeight } = geometry.attributes
   const vertex = new THREE.Vector3()
   for (let i = 0, l = position.count; i < l; i++) {
     vertex.fromBufferAttribute(position, i)
     vertex.z = (i >= 210 && i <= 250)
       ? 0 // coridor
-      : Math.sin((i + t)) * (zArray[i] - (zArray[i] * 0.5))
+      : Math.sin((i + t)) * (initialHeight.array[i] - (initialHeight.array[i] * 0.5))
     position.setXYZ(i, vertex.x, vertex.y, vertex.z)
   }
   position.needsUpdate = true
@@ -139,7 +153,7 @@ void function loop() {
   moon.position.x = 15 * Math.cos(t) + 0
   moon.position.z = 20 * Math.sin(t) - 35
 
-  updateTerrain(terrain.geometry)
+  earthShake(terrain.geometry)
   updateStars(stars.geometry)
 
   t += 0.015

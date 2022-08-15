@@ -44,15 +44,11 @@ export function createGround({ size = 1000, color, circle, file, repeat = size /
 
 /* NOISE HELPERS */
 
-function randomDeform(geometry, factor) {
+function randomDeform(geometry, max = 5, min = 0) {
   const { position } = geometry.attributes
-  const vertex = new THREE.Vector3()
-
   for (let i = 0, l = position.count; i < l; i++) {
-    vertex.fromBufferAttribute(position, i)
-    vertex.y += randFloat(-factor * 5, factor * 7.5) * Math.random() * Math.random()
-    vertex.z += randFloat(-factor, factor)
-    position.setXYZ(i, vertex.x, vertex.y, vertex.z)
+    const y = randFloat(min, max) * Math.random()
+    position.setY(i, y)
   }
 }
 
@@ -136,9 +132,9 @@ function createTerrainMesh({ size = 400, segments = 100 } = {}) {
   return mesh
 }
 
-export function createTerrain({ size = 400, segments = 50, colorParam = 0x44aa44, factor = 2 } = {}) {
+export function createTerrain({ size = 400, segments = 50, colorParam = 0x44aa44, factor = 1 } = {}) {
   const mesh = createTerrainMesh({ size, segments })
-  randomDeform(mesh.geometry, factor)
+  randomDeform(mesh.geometry, 7, -1)
   randomShades(mesh.geometry, colorParam)
   return mesh
 }
