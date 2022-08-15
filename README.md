@@ -9,6 +9,8 @@ npm i
 npx live-server
 ```
 
+- ideja za scenu, pesak i piramide https://codepen.io/karenbtlai/pen/aQOEzQ
+
 ### Mazes
 - napraviti render za mazes
 - srediti kretanje da ne koristi raycasting

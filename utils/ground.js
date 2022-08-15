@@ -213,18 +213,18 @@ export function createFloor({ color = 0x808080, circle = false, ...rest } = {}) 
 
 /* WAVE */
 
-let oldPosition
-
 export function wave(geometry, time, amplitude = 1, frequency = 1) {
   const { position } = geometry.attributes
-  oldPosition = oldPosition || position.clone()
+  // TODO: copy only z array
+  if (!geometry.attributes.initialPosition) geometry.setAttribute('initialPosition', position.clone())
+  const initialPosition = geometry.getAttribute('initialPosition')
 
   const vertex = new THREE.Vector3()
   const oldVertex = new THREE.Vector3()
 
   for (let i = 0, l = position.count; i < l; i++) {
     vertex.fromBufferAttribute(position, i)
-    oldVertex.fromBufferAttribute(oldPosition, i)
+    oldVertex.fromBufferAttribute(initialPosition, i)
     const { x, y } = vertex
     let change = 0
 

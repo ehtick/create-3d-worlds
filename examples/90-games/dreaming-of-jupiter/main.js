@@ -27,37 +27,32 @@ scene.add(moon)
 const sphereBg = createBgSphere()
 scene.add(sphereBg)
 
-const terrain = createEmptyTerrain()
+const terrain = createTerrain()
 scene.add(terrain)
-
-createTerrainLines(terrain)
 
 const stars = createStars()
 scene.add(stars)
 
 /* FUNCTIONS */
 
-function createEmptyTerrain() {
+function createTerrain() {
   const geometry = new THREE.PlaneBufferGeometry(70, 70, 20, 20)
+
   const material = new THREE.MeshBasicMaterial({ wireframe: true })
   const terrain = new THREE.Mesh(geometry, material)
   terrain.rotation.x = -0.47 * Math.PI
   terrain.rotation.z = 0.5 * Math.PI
+
+  const heights = []
+  for (let i = 0; i < geometry.attributes.position.count; i++)
+    heights.push(randInt(0, 5))
+  geometry.setAttribute('heights', new THREE.Float32BufferAttribute(heights, 1))
+
   return terrain
 }
 
-function createTerrainLines(terrain) {
-  const { geometry } = terrain
-  const positionArray = geometry.getAttribute('position').array
-  geometry.setAttribute('myZ', new THREE.BufferAttribute(new Float32Array(positionArray.length / 3), 1))
-  const zArray = geometry.getAttribute('myZ').array
-
-  for (let i = 0; i < positionArray.length; i++)
-    zArray[i] = randInt(0, 5)
-}
-
 function updateTerrain(geometry) {
-  const zArray = geometry.getAttribute('myZ').array
+  const zArray = geometry.getAttribute('heights').array
   const { position } = geometry.attributes
   const vertex = new THREE.Vector3()
   for (let i = 0, l = position.count; i < l; i++) {
