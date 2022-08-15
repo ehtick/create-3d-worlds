@@ -1,16 +1,32 @@
 <!DOCTYPE html>
 <html>
 
-    <body>
-            <title id="Title">Three.JS Buffer</title>
-            <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
-            <style> body {padding: 0; margin: 0;} </style>
-    <!--    External libraries: Only use urls/cdn links-->
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/97/three.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
-    
-    <!--    The "main" javascript file-->
-            <script src="sketch.js"></script>
-        <div id="render"></div>
-    </body>
+<head>
+  <title id="Title">Three.JS Buffer</title>
+  <meta name="viewport" width=device-width>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="render"></div>
+
+  <script type="importmap">
+    {
+        "imports": {
+            "three": "/node_modules/three/build/three.module.js"
+        }
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/97/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
+
+  <script src="main.js" type="module"></script>
+</body>
+
 </html>
