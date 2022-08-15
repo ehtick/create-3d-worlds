@@ -4,7 +4,7 @@ import { getTexture, similarColor } from '/utils/helpers.js'
 import chroma from '/libs/chroma.js'
 import { material as lavaMaterial } from '/utils/shaders/lava.js'
 
-const { randFloat } = THREE.Math
+const { randFloat, randInt } = THREE.Math
 const simplex = new SimplexNoise()
 
 const groundColors = [0xA62A2A, 0x7a8a46, 0x228b22, 0xfffacd]
@@ -213,32 +213,38 @@ export function createFloor({ color = 0x808080, circle = false, ...rest } = {}) 
 
 /* WAVE */
 
-export function wave(geometry, time, amplitude = 1, frequency = 1) {
+function setInitialHeight(geometry) {
   const { position } = geometry.attributes
-  // TODO: copy only z array
-  if (!geometry.attributes.initialPosition) geometry.setAttribute('initialPosition', position.clone())
-  const initialPosition = geometry.getAttribute('initialPosition')
-
+  const initialHeight = []
   const vertex = new THREE.Vector3()
-  const oldVertex = new THREE.Vector3()
+  for (let i = 0; i < position.count; i++) {
+    vertex.fromBufferAttribute(position, i)
+    initialHeight.push(vertex.z)
+  }
+  geometry.setAttribute('initialHeight', new THREE.Float32BufferAttribute(initialHeight, 1))
+}
+
+export function wave(geometry, time, amplitude = 1, frequency = 1) {
+  if (!geometry.attributes.initialHeight) setInitialHeight(geometry)
+
+  const { position, initialHeight } = geometry.attributes
+  const vertex = new THREE.Vector3()
 
   for (let i = 0, l = position.count; i < l; i++) {
     vertex.fromBufferAttribute(position, i)
-    oldVertex.fromBufferAttribute(initialPosition, i)
     const { x, y } = vertex
-    let change = 0
 
+    let change = 0
     // change X
     change += 0.32 * amplitude * Math.sin(x * 1.9 * frequency + time)
     change += 3 * amplitude * Math.sin(x * 0.1 * frequency + time)
-
     // change Y
     change += .42 * amplitude * Math.sin(y * 2.1 * frequency + time)
     change += 2.8 * amplitude * Math.sin(y * 0.2 * frequency + time)
-
     change *= amplitude * 0.6
-    vertex.z = change + oldVertex.z // preserve initial terrain
-    position.setXYZ(i, vertex.x, vertex.y, vertex.z)
+
+    vertex.z = change + initialHeight.array[i] // preserve initial topography
+    position.setXYZ(i, x, y, vertex.z)
   }
   position.needsUpdate = true
 }
