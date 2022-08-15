@@ -2,46 +2,34 @@ import * as THREE from 'three'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { createTank } from './tank.js'
-import { path, createPathVisual, createTarget } from './utils.js'
-
-camera.position.set(8, 4, 10).multiplyScalar(2)
-camera.lookAt(0, 0, 0)
+import { createAvatar, updateAvatar } from '/utils/avatar.js'
+import { path, createPathVisual } from './utils.js'
 
 initLights()
 
+camera.position.set(12, 6, 16)
+camera.lookAt(0, 0, 0)
+
 scene.add(createGround({ size: 50 }))
-
-const { tank, tankGun, wheels } = createTank()
-scene.add(tank)
-
-const { targetOrbit, targetMesh } = createTarget()
-scene.add(targetOrbit)
-
 scene.add(createPathVisual(path))
+
+const avatar = createAvatar()
+scene.add(avatar)
 
 /* LOOP */
 
-const targetPosition = new THREE.Vector3()
-const tankPosition = new THREE.Vector2()
-const tankNext = new THREE.Vector2()
+const currPosition = new THREE.Vector2()
+const nextPosition = new THREE.Vector2()
 
 void function loop() {
   const time = clock.getElapsedTime()
-  const tankTime = time * 0.05
+  const speed = time * 0.05
 
-  targetOrbit.rotation.y = time * .27
-  targetMesh.getWorldPosition(targetPosition)
-
-  path.getPointAt(tankTime % 1, tankPosition)
-  path.getPointAt((tankTime + 0.01) % 1, tankNext)
-  tank.position.set(tankPosition.x, 0, tankPosition.y)
-  tank.lookAt(tankNext.x, 0, tankNext.y)
-  tankGun.lookAt(targetPosition)
-
-  wheels.forEach(obj => {
-    obj.rotation.x = time * 3
-  })
+  path.getPointAt(speed % 1, currPosition)
+  path.getPointAt((speed + 0.01) % 1, nextPosition)
+  avatar.position.set(currPosition.x, 0, currPosition.y)
+  avatar.lookAt(nextPosition.x, 0, nextPosition.y)
+  updateAvatar(avatar, time * 5)
 
   renderer.render(scene, camera)
   requestAnimationFrame(loop)
