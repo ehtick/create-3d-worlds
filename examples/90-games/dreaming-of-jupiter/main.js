@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { camera, scene, renderer, createOrbitControls } from '/utils/scene.js'
+import { camera, scene, renderer } from '/utils/scene.js'
 import { createMoon, createSaturn } from '/utils/planets.js'
 import { createTerrain, wave, shake } from '/utils/ground.js'
 
@@ -11,7 +11,7 @@ scene.background = new THREE.Color(0x000000)
 const totalStars = 1000
 let t = 0
 
-camera.position.set(0, 1, 32)
+camera.position.set(0, 9, 32)
 
 const light = new THREE.PointLight('#ffffff', 1, 0)
 light.position.set(0, 30, 30)
@@ -25,12 +25,7 @@ const moon = createMoon()
 moon.position.set(0, 8, 0)
 scene.add(moon)
 
-const sphereBg = createBgSphere()
-scene.add(sphereBg)
-
 const terrain = createTerrain()
-terrain.rotateX(.2)
-terrain.translateY(-5)
 terrain.material.wireframe = true
 scene.add(terrain)
 
@@ -38,18 +33,6 @@ const stars = createStars()
 scene.add(stars)
 
 /* FUNCTIONS */
-
-function createBgSphere() {
-  const texture = loader.load('images/cosmos.jpg')
-  const geometry = new THREE.SphereGeometry(150, 32, 32)
-  const material = new THREE.MeshBasicMaterial({
-    side: THREE.BackSide,
-    map: texture,
-  })
-  const sphereBg = new THREE.Mesh(geometry, material)
-  sphereBg.position.set(0, 50, 0)
-  return sphereBg
-}
 
 function createStars() {
   const geometry = new THREE.BufferGeometry()
