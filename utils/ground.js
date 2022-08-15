@@ -66,13 +66,10 @@ function cratersNoise(geometry) {
 
   for (let i = 0, l = position.count; i < l; i++) {
     vertex.fromBufferAttribute(position, i)
-    const x = vertex.x / xZoom
-    const z = vertex.z / yZoom
-    let noise = simplex.noise(x, z) * noiseStrength
+    let noise = simplex.noise(vertex.x / xZoom, vertex.z / yZoom) * noiseStrength
     noise = Math.round(noise)
     if (noise > 2.5) continue // cut mountain's peaks
-    vertex.y = noise
-    position.setXYZ(i, vertex.x, vertex.y, vertex.z)
+    position.setY(i, noise)
   }
 }
 
@@ -84,7 +81,7 @@ function dunesNoise(geometry) {
     vertex.fromBufferAttribute(position, i)
     const noise = simplex.noise(vertex.x * .1, vertex.z * .1)
     vertex.y = noise * 1.5
-    position.setXYZ(i, vertex.x, vertex.y, vertex.z)
+    position.setY(i, noise * 1.5)
   }
 }
 
@@ -94,8 +91,7 @@ function hillyNoise(geometry, segments, factorX, factorY, factorZ, aboveSea) {
   for (let i = 0, l = position.count; i < l; i++) {
     vertex.fromBufferAttribute(position, i)
     const dist = simplex.noise(vertex.x / segments / factorX, vertex.z / segments / factorZ)
-    vertex.y = factorY * (dist + aboveSea)
-    position.setXYZ(i, vertex.x, vertex.y, vertex.z)
+    position.setY(i, factorY * (dist + aboveSea))
   }
 }
 
@@ -235,8 +231,18 @@ export function wave(geometry, time, amplitude = 1, frequency = 1) {
     change += 2.8 * amplitude * Math.sin(z * 0.2 * frequency + time)
     change *= amplitude * 0.6
 
-    vertex.y = change + initialHeight.array[i]
-    position.setY(i, vertex.y)
+    position.setY(i, change + initialHeight.array[i])
+  }
+  position.needsUpdate = true
+}
+
+export function shake(geometry, t) {
+  if (!geometry.attributes.initialHeight) setInitialHeight(geometry)
+
+  const { position, initialHeight } = geometry.attributes
+  for (let i = 0, l = position.count; i < l; i++) {
+    const y = Math.sin(i + t) * initialHeight.array[i] * 0.5
+    position.setY(i, y)
   }
   position.needsUpdate = true
 }

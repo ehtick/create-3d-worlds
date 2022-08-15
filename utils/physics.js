@@ -125,14 +125,8 @@ export function createTerrain(
   for (let i = 0, l = position.count; i < l; i ++) {
     vertex.fromBufferAttribute(position, i)
     const value = perlin.noise(vertex.x / 12, vertex.y / 12, 0)
-    vertex.z = value * 13
-    position.setXYZ(i, vertex.x, vertex.y, vertex.z)
+    position.setZ(i, value * 13)
   }
-
-  // geometry.vertices.forEach(vertex => {
-  //   const value = perlin.noise(vertex.x / 12, vertex.y / 12, 0)
-  //   vertex.z = value * 13
-  // })
 
   geometry.computeFaceNormals()
   geometry.computeVertexNormals()

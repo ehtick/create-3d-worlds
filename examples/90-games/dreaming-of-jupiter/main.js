@@ -1,8 +1,9 @@
 import * as THREE from 'three'
-import { camera, scene, renderer } from '/utils/scene.js'
+import { camera, scene, renderer, createOrbitControls } from '/utils/scene.js'
 import { createMoon, createSaturn } from '/utils/planets.js'
+import { createTerrain, wave, shake } from '/utils/ground.js'
 
-const { randInt, randFloat } = THREE.Math
+const { randInt } = THREE.Math
 const loader = new THREE.TextureLoader()
 
 scene.background = new THREE.Color(0x000000)
@@ -28,59 +29,15 @@ const sphereBg = createBgSphere()
 scene.add(sphereBg)
 
 const terrain = createTerrain()
+terrain.rotateX(.2)
+terrain.translateY(-5)
+terrain.material.wireframe = true
 scene.add(terrain)
 
 const stars = createStars()
 scene.add(stars)
 
 /* FUNCTIONS */
-
-function setInitialHeight(geometry) {
-  const { position } = geometry.attributes
-  const initialHeight = []
-  const vertex = new THREE.Vector3()
-  for (let i = 0; i < position.count; i++) {
-    vertex.fromBufferAttribute(position, i)
-    initialHeight.push(vertex.z)
-  }
-  geometry.setAttribute('initialHeight', new THREE.Float32BufferAttribute(initialHeight, 1))
-}
-
-function randomDeform(geometry, factor = 5) {
-  const { position } = geometry.attributes
-  const vertex = new THREE.Vector3()
-
-  for (let i = 0, l = position.count; i < l; i++) {
-    vertex.fromBufferAttribute(position, i)
-    position.setZ(i, randFloat(0, factor))
-  }
-}
-
-function createTerrain() {
-  const geometry = new THREE.PlaneBufferGeometry(70, 70, 20, 20)
-  randomDeform(geometry, 5)
-
-  const material = new THREE.MeshBasicMaterial({ wireframe: true })
-  const mesh = new THREE.Mesh(geometry, material)
-  mesh.rotation.x = -0.47 * Math.PI
-  mesh.rotation.z = 0.5 * Math.PI
-  return mesh
-}
-
-function earthShake(geometry) {
-  if (!geometry.attributes.initialHeight) setInitialHeight(geometry)
-
-  const { position, initialHeight } = geometry.attributes
-  const vertex = new THREE.Vector3()
-  for (let i = 0, l = position.count; i < l; i++) {
-    vertex.fromBufferAttribute(position, i)
-    vertex.z = (i >= 210 && i <= 250)
-      ? 0 // coridor
-      : Math.sin((i + t)) * (initialHeight.array[i] - (initialHeight.array[i] * 0.5))
-    position.setXYZ(i, vertex.x, vertex.y, vertex.z)
-  }
-  position.needsUpdate = true
-}
 
 function createBgSphere() {
   const texture = loader.load('images/cosmos.jpg')
@@ -141,19 +98,23 @@ function updateStars(geometry) {
   geometry.getAttribute('position').needsUpdate = true
 }
 
+function updateMoon(moon) {
+  moon.rotation.y -= 0.007
+  moon.rotation.x -= 0.007
+  moon.position.x = 15 * Math.cos(t) + 0
+  moon.position.z = 20 * Math.sin(t) - 35
+}
+
+const updateTerrain = Math.random() > .5 ? shake : wave
+
 /* LOOP */
 
 void function loop() {
   requestAnimationFrame(loop)
 
   planet.rotation.y += 0.002
-
-  moon.rotation.y -= 0.007
-  moon.rotation.x -= 0.007
-  moon.position.x = 15 * Math.cos(t) + 0
-  moon.position.z = 20 * Math.sin(t) - 35
-
-  earthShake(terrain.geometry)
+  updateMoon(moon)
+  updateTerrain(terrain.geometry, t)
   updateStars(stars.geometry)
 
   t += 0.015

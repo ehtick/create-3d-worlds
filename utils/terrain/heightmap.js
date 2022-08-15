@@ -15,13 +15,9 @@ export async function terrainFromHeightmap({
   const geometry = new THREE.PlaneGeometry(width, height, width - 1, height - 1)
   geometry.rotateX(- Math.PI / 2)
   const { position } = geometry.attributes
-  const vertex = new THREE.Vector3()
 
-  for (let i = 0, l = position.count; i < l; i++) {
-    vertex.fromBufferAttribute(position, i)
-    vertex.y = data[i]
-    position.setXYZ(i, vertex.x, vertex.y, vertex.z)
-  }
+  for (let i = 0, l = position.count; i < l; i++)
+    position.setY(i, data[i])
 
   const mesh = new THREE.Mesh(geometry, material)
   return mesh
