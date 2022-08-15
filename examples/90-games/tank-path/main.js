@@ -12,7 +12,7 @@ initLights()
 
 scene.add(createGround({ size: 50 }))
 
-const { tank, tankGun, wheelMeshes } = createTank()
+const { tank, tankGun, wheels } = createTank()
 scene.add(tank)
 
 const { targetOrbit, targetMesh } = createTarget()
@@ -39,7 +39,7 @@ void function loop() {
   tank.lookAt(tankNext.x, 0, tankNext.y)
   tankGun.lookAt(targetPosition)
 
-  wheelMeshes.forEach(obj => {
+  wheels.forEach(obj => {
     obj.rotation.x = time * 3
   })
 

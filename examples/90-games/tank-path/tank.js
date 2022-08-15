@@ -36,7 +36,7 @@ export function createTank() {
     [-carWidth / 2 - wheelThickness / 2, -carHeight / 2, -carLength / 3],
     [carWidth / 2 + wheelThickness / 2, -carHeight / 2, -carLength / 3]
   ]
-  const wheelMeshes = wheelPositions.map(position => {
+  const wheels = wheelPositions.map(position => {
     const mesh = new THREE.Mesh(wheelGeometry, wheelMaterial)
     mesh.position.set(...position)
     mesh.rotation.z = Math.PI * 0.5
@@ -85,5 +85,5 @@ export function createTank() {
   tankGun.add(turretMesh)
   bodyMesh.add(tankGun)
 
-  return { tank, wheelMeshes, tankGun }
+  return { tank, wheels, tankGun }
 }
