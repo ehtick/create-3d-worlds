@@ -122,7 +122,7 @@ function createCastle() {
     const gateWidth = 24
     const gateHeight = 36
 
-    const gateGeometry = new THREE.PlaneGeometry(gateWidth, gateHeight)
+    const gateGeometry = new THREE.PlaneBufferGeometry(gateWidth, gateHeight)
 
     const gate = new THREE.Mesh(gateGeometry, gateMaterial)
     gate.receiveShadow = true
@@ -165,7 +165,7 @@ function createCastle() {
     const roofHeight = 36
 
     function createRoof() {
-      const roof = new THREE.Mesh(new THREE.PlaneGeometry(buildingDepth, Math.sqrt(Math.pow(buildingWidth / 2, 2) + Math.pow(roofHeight, 2))), buildingRoofMaterial)
+      const roof = new THREE.Mesh(new THREE.PlaneBufferGeometry(buildingDepth, Math.sqrt(Math.pow(buildingWidth / 2, 2) + Math.pow(roofHeight, 2))), buildingRoofMaterial)
       roof.castShadow = true
 
       return roof
@@ -238,7 +238,7 @@ function createCastle() {
 
     // create door
 
-    const door = new THREE.Mesh(new THREE.PlaneGeometry(20, 26), doorMaterial)
+    const door = new THREE.Mesh(new THREE.PlaneBufferGeometry(20, 26), doorMaterial)
 
     door.position.z = buildingDepth / 2 + 0.2
     door.position.y = -10
@@ -297,7 +297,7 @@ function createCastle() {
   }
 
   function createRoad(length, width, material) {
-    const road = new THREE.Mesh(new THREE.PlaneGeometry(length, width), material)
+    const road = new THREE.Mesh(new THREE.PlaneBufferGeometry(length, width), material)
     road.receiveShadow = true
     road.rotation.x = -0.5 * Math.PI
     road.position.y = 0.2
@@ -389,7 +389,7 @@ function createCastle() {
 function createGround() {
   const size = 2000
 
-  const groundGeometry = new THREE.PlaneGeometry(size, size)
+  const groundGeometry = new THREE.PlaneBufferGeometry(size, size)
 
   const groundMaterial = new THREE.MeshLambertMaterial({
     map: createRepeatingTexture('assets/grass.jpg', 5, 5)
@@ -532,8 +532,7 @@ loader.load('assets/knight.json',
     }
   })
 
-// add the output of the renderer to the html element
-$('#WebGL-output').append(renderer.domElement)
+document.body.appendChild(renderer.domElement)
 
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
 camera.position.x = -70
