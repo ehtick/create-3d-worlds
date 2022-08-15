@@ -42,6 +42,10 @@ export function createGround({ size = 1000, color, circle, file, repeat = size /
   return mesh
 }
 
+export function createFloor({ color = 0x808080, circle = false, ...rest } = {}) {
+  return createGround({ color, circle, ...rest })
+}
+
 /* NOISE HELPERS */
 
 function randomDeform(geometry, max = 5, min = 0) {
@@ -181,15 +185,13 @@ export const createWater = ({ size = 1200, segments = 20, opacity = .6, file = '
     map: file ? getTexture({ file, repeat: 5 }) : null
   })
   const geometry = new THREE.PlaneGeometry(size, size, segments, segments)
-  geometry.dynamic = true
-  geometry.verticesNeedUpdate = true
+  geometry.rotateX(-Math.PI / 2)
 
   randomShades(geometry, 0x40E0D0, 0.15)
 
   const mesh = new THREE.Mesh(geometry, material)
   mesh.receiveShadow = true
   mesh.name = 'water'
-  mesh.rotateX(-Math.PI / 2)
   return mesh
 }
 
@@ -201,12 +203,6 @@ export function createLava({ size = 100 } = {}) {
   return new THREE.Mesh(geometry, lavaMaterial)
 }
 
-/* ALIASES */
-
-export function createFloor({ color = 0x808080, circle = false, ...rest } = {}) {
-  return createGround({ color, circle, ...rest })
-}
-
 /* WAVE */
 
 function setInitialHeight(geometry) {
@@ -215,7 +211,7 @@ function setInitialHeight(geometry) {
   const vertex = new THREE.Vector3()
   for (let i = 0; i < position.count; i++) {
     vertex.fromBufferAttribute(position, i)
-    initialHeight.push(vertex.z)
+    initialHeight.push(vertex.y)
   }
   geometry.setAttribute('initialHeight', new THREE.Float32BufferAttribute(initialHeight, 1))
 }
@@ -228,19 +224,19 @@ export function wave(geometry, time, amplitude = 1, frequency = 1) {
 
   for (let i = 0, l = position.count; i < l; i++) {
     vertex.fromBufferAttribute(position, i)
-    const { x, y } = vertex
+    const { x, z } = vertex
 
     let change = 0
     // change X
     change += 0.32 * amplitude * Math.sin(x * 1.9 * frequency + time)
     change += 3 * amplitude * Math.sin(x * 0.1 * frequency + time)
-    // change Y
-    change += .42 * amplitude * Math.sin(y * 2.1 * frequency + time)
-    change += 2.8 * amplitude * Math.sin(y * 0.2 * frequency + time)
+    // change Z
+    change += .42 * amplitude * Math.sin(z * 2.1 * frequency + time)
+    change += 2.8 * amplitude * Math.sin(z * 0.2 * frequency + time)
     change *= amplitude * 0.6
 
-    vertex.z = change + initialHeight.array[i] // preserve initial topography
-    position.setXYZ(i, x, y, vertex.z)
+    vertex.y = change + initialHeight.array[i]
+    position.setY(i, vertex.y)
   }
   position.needsUpdate = true
 }
