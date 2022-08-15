@@ -30,8 +30,7 @@ scene.add(sphereBg)
 const terrain = createEmptyTerrain()
 scene.add(terrain)
 
-const terrainLines = createTerrainLines(terrain)
-scene.add(terrainLines)
+createTerrainLines(terrain)
 
 const stars = createStars()
 scene.add(stars)
@@ -55,13 +54,6 @@ function createTerrainLines(terrain) {
 
   for (let i = 0; i < positionArray.length; i++)
     zArray[i] = randInt(0, 5)
-
-  const lineSegments = new THREE.LineSegments(
-    geometry,
-    new THREE.LineBasicMaterial({ color: '#fff' })
-  )
-  lineSegments.rotation.copy(terrain.rotation)
-  return lineSegments
 }
 
 function updateTerrain(geometry) {
