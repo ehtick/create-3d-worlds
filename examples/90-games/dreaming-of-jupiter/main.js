@@ -35,6 +35,13 @@ scene.add(stars)
 
 /* FUNCTIONS */
 
+function addInitialHeight(geometry) {
+  const initialHeight = []
+  for (let i = 0; i < geometry.attributes.position.count; i++)
+    initialHeight.push(randInt(0, 5))
+  geometry.setAttribute('initialHeight', new THREE.Float32BufferAttribute(initialHeight, 1))
+}
+
 function createTerrain() {
   const geometry = new THREE.PlaneBufferGeometry(70, 70, 20, 20)
 
@@ -43,16 +50,12 @@ function createTerrain() {
   terrain.rotation.x = -0.47 * Math.PI
   terrain.rotation.z = 0.5 * Math.PI
 
-  const heights = []
-  for (let i = 0; i < geometry.attributes.position.count; i++)
-    heights.push(randInt(0, 5))
-  geometry.setAttribute('heights', new THREE.Float32BufferAttribute(heights, 1))
-
+  addInitialHeight(geometry)
   return terrain
 }
 
 function updateTerrain(geometry) {
-  const zArray = geometry.getAttribute('heights').array
+  const zArray = geometry.getAttribute('initialHeight').array
   const { position } = geometry.attributes
   const vertex = new THREE.Vector3()
   for (let i = 0, l = position.count; i < l; i++) {
