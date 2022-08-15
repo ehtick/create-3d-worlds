@@ -7,7 +7,9 @@ import { material as lavaMaterial } from '/utils/shaders/lava.js'
 const { randFloat } = THREE.Math
 
 const simplex = new SimplexNoise()
-const greens = [0xA62A2A, 0x7a8a46, 0x228b22, 0xfffacd]
+const groundColors = [0xA62A2A, 0x7a8a46, 0x228b22, 0xfffacd]
+const sandColors = [0xc2b280, 0xF2D16B, 0xf0e68c, 0xfffacd]
+const cratersColors = [0x5C4033, 0xA62A2A, 0xc2b280]
 
 /* GROUND */
 
@@ -65,11 +67,11 @@ function cratersNoise(geometry) {
   for (let i = 0, l = position.count; i < l; i++) {
     vertex.fromBufferAttribute(position, i)
     const x = vertex.x / xZoom
-    const y = vertex.y / yZoom
-    let noise = simplex.noise(x, y) * noiseStrength
+    const z = vertex.z / yZoom
+    let noise = simplex.noise(x, z) * noiseStrength
     noise = Math.round(noise)
     if (noise > 2.5) continue // cut mountain's peaks
-    vertex.z = noise
+    vertex.y = noise
     position.setXYZ(i, vertex.x, vertex.y, vertex.z)
   }
 }
@@ -80,8 +82,8 @@ function dunesNoise(geometry) {
 
   for (let i = 0, l = position.count; i < l; i++) {
     vertex.fromBufferAttribute(position, i)
-    const noise = simplex.noise(vertex.x * .1, vertex.y * .1)
-    vertex.z = noise * 1.5
+    const noise = simplex.noise(vertex.x * .1, vertex.z * .1)
+    vertex.y = noise * 1.5
     position.setXYZ(i, vertex.x, vertex.y, vertex.z)
   }
 }
@@ -108,9 +110,18 @@ function randomColors(geometry, colorParam) {
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 }
 
-function heightColors(geometry, factorY) {
+function waterColors(geometry) {
   const colors = []
-  const f = chroma.scale(greens).domain([-factorY * .25, factorY * 1.5])
+  for (let i = 0, l = geometry.attributes.position.count; i < l; i++) {
+    const color = similarColor(0x40E0D0, .15)
+    colors.push(color.r, color.g, color.b)
+  }
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+}
+
+function heightColors({ geometry, maxY, minY = 0, domainColors = groundColors } = {}) {
+  const colors = []
+  const f = chroma.scale(domainColors).domain([minY, maxY])
 
   const { position } = geometry.attributes
   const vertex = new THREE.Vector3()
@@ -118,15 +129,6 @@ function heightColors(geometry, factorY) {
     vertex.fromBufferAttribute(position, i)
     const nuance = new THREE.Color(f(vertex.y).hex())
     colors.push(nuance.r, nuance.g, nuance.b)
-  }
-  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
-}
-
-function waterColors(geometry) {
-  const colors = []
-  for (let i = 0, l = geometry.attributes.position.count; i < l; i++) {
-    const color = similarColor(0x40E0D0, .15)
-    colors.push(color.r, color.g, color.b)
   }
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 }
@@ -150,11 +152,13 @@ export function createTerrain({ size = 400, segments = 50, colorParam, factor = 
 
 export function createCraters() {
   const geometry = new THREE.PlaneGeometry(100, 100, 100, 100)
-  const material = new THREE.MeshBasicMaterial({ color: 0x7a8a46, wireframe: true })
+  geometry.rotateX(- Math.PI / 2)
+  const material = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors })
   const mesh = new THREE.Mesh(geometry, material)
-  mesh.rotateX(-Math.PI / 2)
 
   cratersNoise(geometry)
+  heightColors({ geometry, minY: -2, maxY: 2, domainColors: cratersColors })
+
   return mesh
 }
 
@@ -162,11 +166,12 @@ export function createCraters() {
 
 export function createDunes() {
   const geometry = new THREE.PlaneGeometry(100, 100, 100, 100)
-  const material = new THREE.MeshBasicMaterial({ color: 0xc2b280, wireframe: true })
+  geometry.rotateX(- Math.PI / 2)
+  const material = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors })
   const mesh = new THREE.Mesh(geometry, material)
-  mesh.rotateX(-Math.PI / 2)
 
   dunesNoise(geometry)
+  heightColors({ geometry, maxY: 2, minY: -1.75, domainColors: sandColors })
 
   return mesh
 }
@@ -186,7 +191,7 @@ export const createHillyTerrain = (
   geometry.rotateX(-Math.PI / 2)
 
   hillyNoise(geometry, segments, factorX, factorY, factorZ, aboveSea)
-  heightColors(geometry, factorY)
+  heightColors({ geometry, maxY: factorY * 1.25, minY: -factorY * .25 })
 
   const mesh = new THREE.Mesh(geometry, material)
   mesh.receiveShadow = true

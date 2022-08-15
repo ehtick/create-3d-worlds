@@ -10,6 +10,7 @@ npx live-server
 ```
 
 - dodati towers u procedural
+- refactor terrains
 
 ### Mazes
 - napraviti render za mazes
