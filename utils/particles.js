@@ -13,8 +13,9 @@ export function createParticles({ num = 10000, file = 'ball.png', color, size = 
   const colors = []
 
   for (let i = 0; i < num; i++) {
-    const vertex = new THREE.Vector3(randFloat(-unitAngle, unitAngle), randFloat(-unitAngle, unitAngle), randFloat(-unitAngle, unitAngle))
-
+    const vertex = new THREE.Vector3(
+      randFloat(-unitAngle, unitAngle), randFloat(-unitAngle, unitAngle), randFloat(-unitAngle, unitAngle)
+    )
     const scalar = randFloat(minRange, maxRange)
     vertex.multiplyScalar(scalar)
     const { x, y, z } = vertex
@@ -75,22 +76,37 @@ function addVelocity({ geometry, min = .5, max = 3 } = {}) {
   geometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 1))
 }
 
-export function updateRain({ particles, minY = -300, maxY = 300 } = {}) {
+export function updateRain({ particles, min = -300, max = 300 } = {}) {
   const { geometry } = particles
   if (!geometry.attributes.velocity) addVelocity({ geometry, min: 0.5, max: 3 })
   const { position, velocity } = geometry.attributes
 
   velocity.array.forEach((vel, i) => {
     const yIndex = 3 * i + 1
-    position.array[yIndex] -= vel
-    if (position.array[yIndex] < minY) position.array[yIndex] = maxY
+    const newY = position.array[yIndex] - vel
+    position.array[yIndex] = (position.array[yIndex] < min) ? max : newY
   })
+
   position.needsUpdate = true
 }
 
-export function updateSnow({ particles, minY = -300, maxY = 300, rotateY = .003 } = {}) {
-  updateRain({ particles, minY, maxY })
+export function updateSnow({ particles, min = -300, max = 300, rotateY = .003 } = {}) {
+  updateRain({ particles, min, max })
   particles.rotateY(rotateY)
+}
+
+export function updateStars({ particles, min = -1000, max = 500 } = {}) {
+  const { geometry } = particles
+  if (!geometry.attributes.velocity) addVelocity({ geometry, min: 0.5, max: 3 })
+  const { position, velocity } = geometry.attributes
+
+  velocity.array.forEach((vel, i) => {
+    const zIndex = 3 * i + 2
+    const newZ = position.array[zIndex] + vel
+    position.array[zIndex] = (newZ > max) ? min : newZ
+  })
+
+  position.needsUpdate = true
 }
 
 /* ALIASES */
