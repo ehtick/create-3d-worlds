@@ -9,7 +9,6 @@ npm i
 npx live-server
 ```
 
-- dodati prosti random terrrain u primere
 - prepravi flying-through-space, vidi dreaming-of-jupiter
 - ideja za scenu, pesak i piramide https://codepen.io/karenbtlai/pen/aQOEzQ
 

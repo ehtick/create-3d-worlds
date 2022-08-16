@@ -4,14 +4,12 @@ import { createMoon, createSaturn } from '/utils/planets.js'
 import { createTerrain, wave, shake } from '/utils/ground.js'
 
 const { randInt } = THREE.Math
-const loader = new THREE.TextureLoader()
 
 scene.background = new THREE.Color(0x000000)
+camera.position.set(0, 9, 32)
 
 const totalStars = 1000
 let t = 0
-
-camera.position.set(0, 9, 32)
 
 const light = new THREE.PointLight('#ffffff', 1, 0)
 light.position.set(0, 30, 30)
@@ -81,10 +79,10 @@ function updateStars(geometry) {
   geometry.getAttribute('position').needsUpdate = true
 }
 
-function updateMoon(moon) {
+function orbit(moon, t) {
   moon.rotation.y -= 0.007
-  moon.rotation.x -= 0.007
-  moon.position.x = 15 * Math.cos(t) + 0
+
+  moon.position.x = 15 * Math.cos(t)
   moon.position.z = 20 * Math.sin(t) - 35
 }
 
@@ -96,7 +94,7 @@ void function loop() {
   requestAnimationFrame(loop)
 
   planet.rotation.y += 0.002
-  updateMoon(moon)
+  orbit(moon, t)
   updateTerrain(terrain.geometry, t)
   updateStars(stars.geometry)
 
