@@ -21,7 +21,8 @@ export function createParticles({ num = 10000, file = 'ball.png', color, size = 
     vertex.multiplyScalar(scalar)
     const { x, y, z } = vertex
     positions.push(x, y, z)
-    colors.push(x / scalar + 0.5, y / scalar + 0.5, z / scalar + 0.5)
+    const color = similarColor(0xf2c5f3)
+    colors.push(color.r, color.g, color.b)
   }
 
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
@@ -75,8 +76,8 @@ export const createRain = ({ file = 'raindrop.png' } = {}) =>
 
 export const createSnow = ({ file = 'snowflake.png' } = {}) => createParticles({ file, size: 5, color: 0xffffff })
 
-export const createStars = ({ file = 'ball.png', color } = {}) =>
-  createParticles({ num: 10000, color, size: .5, file, minRange: 100, maxRange: 1000 })
+export const createStars = ({ file = 'star.png', color } = {}) =>
+  createParticles({ num: 10000, color, size: 10, file, minRange: 100, maxRange: 1000 })
 
 /* STARS (SPHERE) */
 
@@ -150,6 +151,6 @@ export function updateStars({ particles, min = -500, max = 500 } = {}) {
     if (position.array[zIndex] > max)
       position.array[zIndex] = min
   })
-
   position.needsUpdate = true
+  particles.rotateZ(.001)
 }

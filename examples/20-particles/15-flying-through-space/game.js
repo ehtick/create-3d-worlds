@@ -1,10 +1,10 @@
 import * as THREE from 'three'
 import { scene, camera, renderer } from '/utils/scene.js'
-import { createRealStars, updateStars } from '/utils/particles.js'
+import { createStars, updateStars } from '/utils/particles.js'
 
 scene.background = new THREE.Color(0x000000)
 
-const stars = createRealStars()
+const stars = createStars()
 scene.add(stars)
 
 /* LOOP */
