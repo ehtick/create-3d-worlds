@@ -36,9 +36,7 @@ export function createParticles({ num = 10000, file = 'ball.png', color, size = 
   if (file) {
     material.map = textureLoader.load(`/assets/particles/${file}`)
     material.blending = blending
-    material.depthTest = false
-  } else
-    material.depthTest = true
+  }
 
   if (color)
     material.color = new THREE.Color(color)
@@ -76,8 +74,8 @@ export const createRain = ({ file = 'raindrop.png' } = {}) =>
 
 export const createSnow = ({ file = 'snowflake.png' } = {}) => createParticles({ file, size: 5, color: 0xffffff })
 
-export const createStars = ({ file = 'star.png', color } = {}) =>
-  createParticles({ num: 10000, color, size: 10, file, minRange: 100, maxRange: 1000 })
+export const createStars = ({ file = 'star.png', num = 10000, color } = {}) =>
+  createParticles({ num, color, size: 10, file, minRange: 100, maxRange: 1000 })
 
 /* STARS (SPHERE) */
 
@@ -108,7 +106,6 @@ export function createDistantStars({ num = 5000, r = 500, size = 10, file = 'sta
   if (file) {
     material.map = textureLoader.load(`/assets/particles/${file}`)
     material.blending = THREE.AdditiveBlending
-    material.depthTest = false
   }
   return new THREE.Points(geometry, material)
 }

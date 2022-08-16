@@ -132,9 +132,9 @@ function createTerrainMesh({ size = 400, segments = 100 } = {}) {
   return mesh
 }
 
-export function createTerrain({ size = 400, segments = 50, colorParam = 0x44aa44, factor = 1 } = {}) {
+export function createTerrain({ size = 400, segments = 50, colorParam = 0x44aa44, factor = 7 } = {}) {
   const mesh = createTerrainMesh({ size, segments })
-  randomDeform(mesh.geometry, 7, -1)
+  randomDeform(mesh.geometry, factor, -1)
   randomShades(mesh.geometry, colorParam)
   return mesh
 }
