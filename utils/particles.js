@@ -102,8 +102,9 @@ export function updateStars({ particles, min = -1000, max = 500 } = {}) {
 
   velocity.array.forEach((vel, i) => {
     const zIndex = 3 * i + 2
-    const newZ = position.array[zIndex] + vel
-    position.array[zIndex] = (newZ > max) ? min : newZ
+    position.array[zIndex] += vel
+    if (position.array[zIndex] > max)
+      position.array[zIndex] = min
   })
 
   position.needsUpdate = true
