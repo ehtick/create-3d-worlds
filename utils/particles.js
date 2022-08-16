@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { similarColor } from '/utils/helpers.js'
 
 const { randFloat } = THREE.Math
 
@@ -67,7 +68,67 @@ export function resetParticles({ particles, pos = [0, 0, 0], unitAngle = 1 } = {
   particles.geometry.attributes.position.needsUpdate = true
 }
 
-/* HELPERS */
+/* ALIASES */
+
+export const createRain = ({ file = 'raindrop.png' } = {}) =>
+  createParticles({ file, num: 10000, size: .7, opacity: 0.8, minRange: 50, maxRange: 500, color: 0x9999ff, blending: THREE.NormalBlending })
+
+export const createSnow = ({ file = 'snowflake.png' } = {}) => createParticles({ file, size: 5, color: 0xffffff })
+
+export const createStars = ({ file = 'ball.png', color } = {}) =>
+  createParticles({ num: 10000, color, size: .5, file, minRange: 100, maxRange: 1000 })
+
+/* STARS (SPHERE) */
+
+// pixelated when near
+export function createBgStars({ num = 10000, r = 1000, size = 3 } = {}) {
+  const geometry = new THREE.BufferGeometry()
+  const positions = []
+  for (let i = 0; i < num; i++) {
+    const lat = randFloat(-Math.PI / 2, Math.PI / 2)
+    const lon = 2 * Math.PI * Math.random()
+    const x = r * Math.cos(lon) * Math.cos(lat)
+    const y = r * Math.sin(lon) * Math.cos(lat)
+    const z = r * Math.sin(lat)
+    positions.push(x, y, z)
+  }
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+  const material = new THREE.PointsMaterial({ size })
+  return new THREE.Points(geometry, material)
+}
+
+export function createRealStars({ num = 5000, r = 500, size = 10, file = 'star.png', opacity = 1 } = {}) {
+  const geometry = new THREE.BufferGeometry()
+  const positions = []
+  const colors = []
+
+  for (let i = 0; i < num; i++) {
+    const lat = randFloat(-Math.PI / 2, Math.PI / 2)
+    const lon = 2 * Math.PI * Math.random()
+    const x = r * Math.cos(lon) * Math.cos(lat)
+    const y = r * Math.sin(lon) * Math.cos(lat)
+    const z = r * Math.sin(lat)
+    positions.push(x, y, z)
+    const color = similarColor(0xf2c5f3)
+    colors.push(color.r, color.g, color.b)
+  }
+
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+
+  const material = new THREE.PointsMaterial({
+    size,
+    transparent: true,
+    opacity,
+    map: textureLoader.load(`/assets/particles/${file}`),
+    blending: THREE.AdditiveBlending,
+    depthTest: false,
+    vertexColors: THREE.VertexColors,
+  })
+  return new THREE.Points(geometry, material)
+}
+
+/* UPDATES */
 
 function addVelocity({ geometry, min = .5, max = 3 } = {}) {
   const velocities = []
@@ -95,7 +156,7 @@ export function updateSnow({ particles, min = -300, max = 300, rotateY = .003 } 
   particles.rotateY(rotateY)
 }
 
-export function updateStars({ particles, min = -1000, max = 500 } = {}) {
+export function updateStars({ particles, min = -500, max = 500 } = {}) {
   const { geometry } = particles
   if (!geometry.attributes.velocity) addVelocity({ geometry, min: 0.5, max: 3 })
   const { position, velocity } = geometry.attributes
@@ -108,34 +169,4 @@ export function updateStars({ particles, min = -1000, max = 500 } = {}) {
   })
 
   position.needsUpdate = true
-}
-
-/* ALIASES */
-
-export const createRain = ({ file = 'raindrop.png' } = {}) =>
-  createParticles({ file, num: 10000, size: .7, opacity: 0.8, minRange: 50, maxRange: 500, color: 0x9999ff, blending: THREE.NormalBlending })
-
-export const createSnow = ({ file = 'snowflake.png' } = {}) => createParticles({ file, size: 5, color: 0xffffff })
-
-export const createStars = ({ file = 'ball.png', color } = {}) =>
-  createParticles({ num: 10000, color, size: .5, file, minRange: 100, maxRange: 1000 })
-
-/* STARS (SPHERE) */
-
-export function createSimpleStars({ num = 10000, r = 1000, size = 3 } = {}) {
-  const geometry = new THREE.BufferGeometry()
-  const positions = []
-  for (let i = 0; i < num; i++) {
-    const lat = randFloat(-Math.PI / 2, Math.PI / 2)
-    const lon = 2 * Math.PI * Math.random()
-    const x = r * Math.cos(lon) * Math.cos(lat)
-    const y = r * Math.sin(lon) * Math.cos(lat)
-    const z = r * Math.sin(lat)
-    positions.push(x, y, z)
-  }
-  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
-  const material = new THREE.PointsMaterial({
-    size,
-  })
-  return new THREE.Points(geometry, material)
 }

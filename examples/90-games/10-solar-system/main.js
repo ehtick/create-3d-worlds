@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { scene, renderer, addUIControls, createOrbitControls } from '/utils/scene.js'
-import { createSimpleStars } from '/utils/particles.js'
+import { createBgStars } from '/utils/particles.js'
 import { createEarth, createMoon, createSun } from '/utils/planets.js'
 
 createOrbitControls()
@@ -32,7 +32,7 @@ moon.position.set(0, 100, 0)
 const moonGroup = createMoonGroup(moon, earthToMoonCamera)
 earth.add(moonGroup)
 
-scene.add(createSimpleStars())
+scene.add(createBgStars())
 
 /* FUNCTIONS */
 
