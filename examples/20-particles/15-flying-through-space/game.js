@@ -12,6 +12,6 @@ scene.add(stars)
 
 void function render() {
   requestAnimationFrame(render)
-  camera.position.z -= .3
+  // camera.position.z -= .3
   renderer.render(scene, camera)
 }()

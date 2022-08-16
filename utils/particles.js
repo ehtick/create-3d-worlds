@@ -4,14 +4,13 @@ const { randFloat } = THREE.Math
 
 const textureLoader = new THREE.TextureLoader()
 
-/* PARTICLES (IN BOX) */
+/* PARTICLES (BOX) */
 
 export function createParticles({ num = 10000, file = 'ball.png', color, size = .5, opacity = 1, unitAngle = 1, minRange = 100, maxRange = 1000, blending = THREE.AdditiveBlending } = {}) {
 
   const geometry = new THREE.BufferGeometry()
   const positions = []
   const colors = []
-  const velocities = new Float32Array(num)
 
   for (let i = 0; i < num; i++) {
     const vertex = new THREE.Vector3(randFloat(-unitAngle, unitAngle), randFloat(-unitAngle, unitAngle), randFloat(-unitAngle, unitAngle))
@@ -25,7 +24,6 @@ export function createParticles({ num = 10000, file = 'ball.png', color, size = 
 
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
-  geometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 1))
 
   const material = new THREE.PointsMaterial({
     size,
@@ -70,22 +68,24 @@ export function resetParticles({ particles, pos = [0, 0, 0], unitAngle = 1 } = {
 
 /* HELPERS */
 
-export function addVelocity({ particles, min = .5, max = 3 } = {}) {
-  const velocities = particles.geometry.attributes.velocity.array
-  for (let i = 0, l = velocities.length; i < l; i++)
+function addVelocity({ geometry, min = .5, max = 3 } = {}) {
+  const velocities = []
+  for (let i = 0; i < geometry.attributes.position.count; i++)
     velocities[i] = randFloat(min, max)
-  particles.geometry.attributes.velocity.needsUpdate = true
+  geometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 1))
 }
 
 export function updateRain({ particles, minY = -300, maxY = 300 } = {}) {
-  const positions = particles.geometry.attributes.position.array
-  const velocities = particles.geometry.attributes.velocity.array
-  velocities.forEach((velocity, i) => {
+  const { geometry } = particles
+  if (!geometry.attributes.velocity) addVelocity({ geometry, min: 0.5, max: 3 })
+  const { position, velocity } = geometry.attributes
+
+  velocity.array.forEach((vel, i) => {
     const yIndex = 3 * i + 1
-    positions[yIndex] -= velocity
-    if (positions[yIndex] < minY) positions[yIndex] = maxY
+    position.array[yIndex] -= vel
+    if (position.array[yIndex] < minY) position.array[yIndex] = maxY
   })
-  particles.geometry.attributes.position.needsUpdate = true
+  position.needsUpdate = true
 }
 
 export function updateSnow({ particles, minY = -300, maxY = 300, rotateY = .003 } = {}) {
@@ -103,7 +103,7 @@ export const createSnow = ({ file = 'snowflake.png' } = {}) => createParticles({
 export const createStars = ({ file = 'ball.png', color } = {}) =>
   createParticles({ num: 10000, color, size: .5, file, minRange: 100, maxRange: 1000 })
 
-/* STARS (IN SPHERE) */
+/* STARS (SPHERE) */
 
 export function createSimpleStars({ num = 10000, r = 1000, size = 3 } = {}) {
   const geometry = new THREE.BufferGeometry()

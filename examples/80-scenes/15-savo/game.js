@@ -6,7 +6,7 @@ import Map2DRenderer from '/utils/classes/2d/Map2DRenderer.js'
 import Savo from '/utils/classes/Savo.js'
 import Tilemap from '/utils/classes/Tilemap.js'
 import { hemLight } from '/utils/light.js'
-import { createRain, addVelocity, updateRain } from '/utils/particles.js'
+import { createRain, updateRain } from '/utils/particles.js'
 
 hemLight()
 
@@ -31,7 +31,6 @@ player.addSolids(walls)
 scene.add(player.mesh)
 
 const rain = createRain()
-addVelocity({ particles: rain, min: 0.5, max: 3 })
 scene.add(rain)
 
 /* LOOP */
