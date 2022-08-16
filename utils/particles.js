@@ -80,24 +80,7 @@ export const createStars = ({ file = 'ball.png', color } = {}) =>
 
 /* STARS (SPHERE) */
 
-// pixelated when near
-export function createBgStars({ num = 10000, r = 1000, size = 3 } = {}) {
-  const geometry = new THREE.BufferGeometry()
-  const positions = []
-  for (let i = 0; i < num; i++) {
-    const lat = randFloat(-Math.PI / 2, Math.PI / 2)
-    const lon = 2 * Math.PI * Math.random()
-    const x = r * Math.cos(lon) * Math.cos(lat)
-    const y = r * Math.sin(lon) * Math.cos(lat)
-    const z = r * Math.sin(lat)
-    positions.push(x, y, z)
-  }
-  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
-  const material = new THREE.PointsMaterial({ size })
-  return new THREE.Points(geometry, material)
-}
-
-export function createRealStars({ num = 5000, r = 500, size = 10, file = 'star.png', opacity = 1 } = {}) {
+export function createRealStars({ num = 5000, r = 500, size = 10, file = 'star.png' } = {}) {
   const geometry = new THREE.BufferGeometry()
   const positions = []
   const colors = []
@@ -118,13 +101,13 @@ export function createRealStars({ num = 5000, r = 500, size = 10, file = 'star.p
 
   const material = new THREE.PointsMaterial({
     size,
-    transparent: true,
-    opacity,
-    map: textureLoader.load(`/assets/particles/${file}`),
-    blending: THREE.AdditiveBlending,
-    depthTest: false,
     vertexColors: THREE.VertexColors,
   })
+  if (file) {
+    material.map = textureLoader.load(`/assets/particles/${file}`)
+    material.blending = THREE.AdditiveBlending
+    material.depthTest = false
+  }
   return new THREE.Points(geometry, material)
 }
 
