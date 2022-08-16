@@ -81,7 +81,7 @@ export const createStars = ({ file = 'star.png', color } = {}) =>
 
 /* STARS (SPHERE) */
 
-export function createRealStars({ num = 5000, r = 500, size = 10, file = 'star.png' } = {}) {
+export function createDistantStars({ num = 5000, r = 500, size = 10, file = 'star.png' } = {}) {
   const geometry = new THREE.BufferGeometry()
   const positions = []
   const colors = []
@@ -92,6 +92,7 @@ export function createRealStars({ num = 5000, r = 500, size = 10, file = 'star.p
     const x = r * Math.cos(lon) * Math.cos(lat)
     const y = r * Math.sin(lon) * Math.cos(lat)
     const z = r * Math.sin(lat)
+
     positions.push(x, y, z)
     const color = similarColor(0xf2c5f3)
     colors.push(color.r, color.g, color.b)
