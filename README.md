@@ -9,10 +9,6 @@ npm i
 npx live-server
 ```
 
-- prepravi flying-through-space, vidi dreaming-of-jupiter
-  - update delta time
-- ideja za scenu, pesak i piramide https://codepen.io/karenbtlai/pen/aQOEzQ
-
 ### Mazes
 - napraviti render za mazes
 - srediti kretanje da ne koristi raycasting
