@@ -36,6 +36,7 @@ export function createParticles({ num = 10000, file = 'ball.png', color, size = 
   if (file) {
     material.map = textureLoader.load(`/assets/particles/${file}`)
     material.blending = blending
+    material.depthWrite = false // for explosion
   }
 
   if (color)
