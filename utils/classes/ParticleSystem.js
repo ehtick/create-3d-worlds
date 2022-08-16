@@ -3,31 +3,31 @@ import { material } from '/utils/shaders/thrust.js'
 
 class LinearSpline {
   constructor(lerp) {
-    this._points = []
+    this.points = []
     this._lerp = lerp
   }
 
   addPoint(t, d) {
-    this._points.push([t, d])
+    this.points.push([t, d])
   }
 
   get(t) {
     let p1 = 0
 
-    for (let i = 0; i < this._points.length; i++) {
-      if (this._points[i][0] >= t)
+    for (let i = 0; i < this.points.length; i++) {
+      if (this.points[i][0] >= t)
         break
       p1 = i
     }
 
-    const p2 = Math.min(this._points.length - 1, p1 + 1)
+    const p2 = Math.min(this.points.length - 1, p1 + 1)
 
-    if (p1 == p2) return this._points[p1][1]
+    if (p1 == p2) return this.points[p1][1]
 
     return this._lerp(
-      (t - this._points[p1][0]) / (this._points[p2][0] - this._points[p1][0]),
-      this._points[p1][1],
-      this._points[p2][1]
+      (t - this.points[p1][0]) / (this.points[p2][0] - this.points[p1][0]),
+      this.points[p1][1],
+      this.points[p2][1]
     )
   }
 }
@@ -36,18 +36,18 @@ export default class ParticleSystem {
   constructor({ parent, camera, texture = '/assets/particles/fire.png' } = {}) {
     material.uniforms.diffuseTexture.value = new THREE.TextureLoader().load(texture)
 
-    this._camera = camera
-    this._particles = []
+    this.camera = camera
+    this.particles = []
 
-    this._geometry = new THREE.BufferGeometry()
-    this._geometry.setAttribute('position', new THREE.Float32BufferAttribute([], 3))
-    this._geometry.setAttribute('size', new THREE.Float32BufferAttribute([], 1))
-    this._geometry.setAttribute('colour', new THREE.Float32BufferAttribute([], 4))
-    this._geometry.setAttribute('angle', new THREE.Float32BufferAttribute([], 1))
+    this.geometry = new THREE.BufferGeometry()
+    this.geometry.setAttribute('position', new THREE.Float32BufferAttribute([], 3))
+    this.geometry.setAttribute('size', new THREE.Float32BufferAttribute([], 1))
+    this.geometry.setAttribute('colour', new THREE.Float32BufferAttribute([], 4))
+    this.geometry.setAttribute('angle', new THREE.Float32BufferAttribute([], 1))
 
-    this._points = new THREE.Points(this._geometry, material)
+    this.points = new THREE.Points(this.geometry, material)
 
-    parent.add(this._points)
+    parent.add(this.points)
 
     this._alphaSpline = new LinearSpline((t, a, b) => a + t * (b - a))
     this._alphaSpline.addPoint(0.0, 0.0)
@@ -74,7 +74,7 @@ export default class ParticleSystem {
 
     for (let i = 0; i < n; i++) {
       const life = (Math.random() * 0.75 + 0.25) * 10.0
-      this._particles.push({
+      this.particles.push({
         position: new THREE.Vector3(
           (Math.random() * 2 - 1) * 1.0,
           (Math.random() * 2 - 1) * 1.0,
@@ -96,31 +96,31 @@ export default class ParticleSystem {
     const colours = []
     const angles = []
 
-    for (const p of this._particles) {
+    for (const p of this.particles) {
       positions.push(p.position.x, p.position.y, p.position.z)
       colours.push(p.colour.r, p.colour.g, p.colour.b, p.alpha)
       sizes.push(p.currentSize)
       angles.push(p.rotation)
     }
 
-    this._geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
-    this._geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1))
-    this._geometry.setAttribute('colour', new THREE.Float32BufferAttribute(colours, 4))
-    this._geometry.setAttribute('angle', new THREE.Float32BufferAttribute(angles, 1))
+    this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+    this.geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1))
+    this.geometry.setAttribute('colour', new THREE.Float32BufferAttribute(colours, 4))
+    this.geometry.setAttribute('angle', new THREE.Float32BufferAttribute(angles, 1))
 
-    this._geometry.attributes.position.needsUpdate = true
-    this._geometry.attributes.size.needsUpdate = true
-    this._geometry.attributes.colour.needsUpdate = true
-    this._geometry.attributes.angle.needsUpdate = true
+    this.geometry.attributes.position.needsUpdate = true
+    this.geometry.attributes.size.needsUpdate = true
+    this.geometry.attributes.colour.needsUpdate = true
+    this.geometry.attributes.angle.needsUpdate = true
   }
 
   _UpdateParticles(deltaTime) {
-    for (const p of this._particles)
+    for (const p of this.particles)
       p.life -= deltaTime
 
-    this._particles = this._particles.filter(p => p.life > 0.0)
+    this.particles = this.particles.filter(p => p.life > 0.0)
 
-    for (const p of this._particles) {
+    for (const p of this.particles) {
       const t = 1.0 - p.life / p.maxLife
 
       p.rotation += deltaTime * 0.5
@@ -138,9 +138,9 @@ export default class ParticleSystem {
       p.velocity.sub(drag)
     }
 
-    this._particles.sort((a, b) => {
-      const d1 = this._camera.position.distanceTo(a.position)
-      const d2 = this._camera.position.distanceTo(b.position)
+    this.particles.sort((a, b) => {
+      const d1 = this.camera.position.distanceTo(a.position)
+      const d2 = this.camera.position.distanceTo(b.position)
 
       if (d1 > d2) return -1
       if (d1 < d2) return 1

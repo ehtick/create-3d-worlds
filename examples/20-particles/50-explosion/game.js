@@ -4,7 +4,7 @@ import { mouseToWorld } from '/utils/helpers.js'
 
 renderer.setClearColor(0x000000)
 
-const particles = createParticles({ num: 30, file: 'fireball.png', color: 0xfffafa, size: 0.4, unitAngle: 0.1 })
+const particles = createParticles({ num: 30, file: 'fireball.png', size: 0.4, unitAngle: 0.1 })
 scene.add(particles)
 
 /* LOOP */
