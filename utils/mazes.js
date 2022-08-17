@@ -170,20 +170,21 @@ export function create3DMap({ matrix = randomMatrix(), size = 1, yModifier } = {
   return group
 }
 
-export function createMeshFromMatrix({ matrix, size = 1, texture = 'brick.png' } = {}) {
+export function createMazeMesh({ matrix, size = 1, texture = 'brick.png' } = {}) {
   const map = textureLoader.load(`/assets/textures/${texture}`)
   const geometries = []
   for (let i = 0; i < matrix.length; i++)
     for (let j = 0; j < matrix[0].length; j++)
-      if (matrix[i][j]) {
+      if (matrix[j][i]) {
         const geometry = new THREE.BoxGeometry(size, size, size)
         geometry.translate(i, j, size * .5)
         geometries.push(geometry)
       }
 
-  const merged = BufferGeometryUtils.mergeBufferGeometries(geometries)
+  const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
+  geometry.rotateX(Math.PI / 2)
   const material = new THREE.MeshPhongMaterial({ map })
-  const mesh = new THREE.Mesh(merged, material)
+  const mesh = new THREE.Mesh(geometry, material)
   return mesh
 }
 
