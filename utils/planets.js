@@ -29,9 +29,8 @@ export function createEarthClouds({ r = 15.2, segments = 64 } = {}) {
 
 /* MOON */
 
-export const createMoon = ({ r = 2, segments = 32 } = {}) => createSphere({
-  r, segments, file: 'planets/moon_1024.jpg', bumpFile: 'planets/moon_1024_bump.jpg'
-})
+export const createMoon = ({ r = 2, segments = 32 } = {}) =>
+  createSphere({ r, segments, file: 'planets/moon.jpg' })
 
 /* SUN */
 
@@ -73,7 +72,7 @@ function createRing(radius, tube, color) {
 
 export function createSaturn() {
   const group = new THREE.Group()
-  group.add(createSphere({ color: 0xDDBC77 }))
+  group.add(createSphere({ file: 'planets/saturn.jpg' })) // color: 0xDDBC77
   group.add(createRing(1.4, .2, 0x665E4E))
   group.add(createRing(1.9, .2, 0x7C776B))
   group.add(createRing(2.4, .2, 0x645F52))
