@@ -1,7 +1,7 @@
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 import { createSunLight } from '/utils/light.js'
 import { createMaze } from '/utils/circular-maze.js'
-import { renderCircularMaze } from './render-utils.js'
+import { createCircularCity } from '/utils/mazes.js'
 
 const sun = createSunLight()
 sun.position.set(0, 150, -200)
@@ -15,7 +15,7 @@ const cellSize = 10
 
 const grid = createMaze({ size, cellSize })
 
-const mesh = renderCircularMaze(grid)
+const mesh = createCircularCity(grid)
 scene.add(mesh)
 
 /* LOOP */

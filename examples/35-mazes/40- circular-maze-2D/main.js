@@ -13,6 +13,7 @@ let grid
 
 const newMaze = () => {
   grid = createMaze({ size, cellSize, center: size / 2 })
+  console.log(grid)
   renderMaze(grid)
 }
 

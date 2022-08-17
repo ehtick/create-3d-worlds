@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { createBox } from '/utils/geometry.js'
 
-const { randInt } = THREE.Math
+const { randInt, randFloat } = THREE.Math
 
 const EMPTY = 0
 const WALL = 1
@@ -218,3 +218,76 @@ export function randomMatrix(size = 10, wallPercent = .3) {
   }
   return matrix
 }
+
+/* CIRCULAR MAZE */
+
+const isLinked = (cellA, cellB) => {
+  const link = cellA.links.find(l => l.row === cellB.row && l.col === cellB.col)
+  return !!link
+}
+
+function createPipe(point1, point2) {
+  const h = point1.distanceTo(point2)
+  const geometry = new THREE.CylinderGeometry(1, 1, h, 12)
+  geometry.translate(0, -h / 2, 0)
+  geometry.rotateX(-Math.PI / 2)
+  const material = new THREE.MeshLambertMaterial({ color: 'gray' })
+  material.transparent = true
+  const gun = new THREE.Mesh(geometry, material)
+  gun.position.copy(point1)
+  gun.lookAt(point2)
+  return gun
+}
+
+// TODO: merge geometry
+function createBlock(point1, point2, castle = true) {
+  const distance = new THREE.Vector2(0, 0).distanceTo(new THREE.Vector2(point1.x, point1.z))
+  const width = randFloat(2, 4)
+  const height = castle ? (21 - distance / 10) * 5 : randFloat(2, 8)
+  const depth = point1.distanceTo(point2)
+  const geometry = new THREE.BoxGeometry(width, height, depth)
+  geometry.translate(0, height / 2, depth / 2)
+  const material = new THREE.MeshLambertMaterial({ color: 'white' })
+  material.transparent = true
+  const gun = new THREE.Mesh(geometry, material)
+  gun.position.copy(point1)
+  gun.lookAt(point2)
+  return gun
+}
+
+export const createCircularMazeMesh = (grid, connect = createBlock) => {
+  const group = new THREE.Group()
+  for (const row of grid)
+    for (const cell of row)
+      if (cell.row) {
+        if (!cell.inward || !isLinked(cell, cell.inward)) {
+          const point1 = new THREE.Vector3(cell.innerCcwX, 0, cell.innerCcwY)
+          const point2 = new THREE.Vector3(cell.innerCwX, 0, cell.innerCwY)
+          const line = connect(point1, point2)
+          group.add(line)
+        }
+
+        if (!cell.cw || !isLinked(cell, cell.cw)) {
+          const point1 = new THREE.Vector3(cell.innerCwX, 0, cell.innerCwY)
+          const point2 = new THREE.Vector3(cell.outerCwX, 0, cell.outerCwY)
+          const line = connect(point1, point2)
+          group.add(line)
+        }
+
+        if (cell.row === grid.length - 1 && cell.col !== row.length * 0.75) {
+          const point1 = new THREE.Vector3(cell.outerCcwX, 0, cell.outerCcwY)
+          const point2 = new THREE.Vector3(cell.outerCwX, 0, cell.outerCwY)
+          const line = connect(point1, point2)
+          group.add(line)
+        }
+      }
+  return group
+}
+
+/* ALIASES */
+
+export const createCircularCity = grid => createCircularMazeMesh(grid, createBlock)
+
+export const createCircularPipes = grid => createCircularMazeMesh(grid, createPipe)
+
+export const createCircularRuins = grid => createCircularMazeMesh(grid, (p1, p2) => createBlock(p1, p2, false))

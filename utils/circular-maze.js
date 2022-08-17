@@ -123,7 +123,6 @@ export const createMaze = ({ size, cellSize, center = 0 }) => {
               break loop
             }
           }
-
       }
     }
   }
