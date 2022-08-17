@@ -5,7 +5,6 @@ import { initLights } from '/utils/light.js'
 
 initLights()
 scene.background = new THREE.Color(0x000000)
-
 camera.position.set(0, 0, 5)
 
 const saturn = createSaturn()

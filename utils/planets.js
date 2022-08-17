@@ -32,12 +32,9 @@ export function createEarthClouds({ r = 15.2, segments = 64 } = {}) {
 /* MOON */
 
 export function createMoon({ r = 2, segments = 32 } = {}) {
-  const map = textureLoader.load('moon_1024.jpg')
-  const bumpMap = textureLoader.load('moon_cloud.png')
-  const material = new THREE.MeshPhongMaterial({ map, bumpMap })
-  const geometry = new THREE.SphereGeometry(r, segments, segments)
-  geometry.rotateZ(Math.PI / 2)
-  const mesh = new THREE.Mesh(geometry, material)
+  const mesh = createSphere({ r, segments })
+  mesh.material.map = textureLoader.load('moon_1024.jpg')
+  mesh.material.bumpMap = textureLoader.load('moon_cloud.png')
   return mesh
 }
 
@@ -91,9 +88,7 @@ export function createSaturn() {
 /* JUPITER */
 
 export function createJupiter({ r = 10, segments = 32 } = {}) {
-  const map = textureLoader.load('jupiter.jpg')
-  const planetGeometry = new THREE.SphereGeometry(r, segments, segments)
-  const planetMaterial = new THREE.MeshLambertMaterial({ map })
-  const planet = new THREE.Mesh(planetGeometry, planetMaterial)
+  const planet = createSphere({ r, segments })
+  planet.material.map = textureLoader.load('jupiter.jpg')
   return planet
 }

@@ -58,10 +58,10 @@ export function createBuilding({ width = 2, height = 1, depth = 1, color = 0x999
 /* SPHERES */
 
 export function createSphere({
-  r = 1, widthSegments = 32, heightSegments = widthSegments, color = 0xff0000,
+  r = 1, segments = 32, color,
   castShadow = true, receiveShadow = true } = {}
 ) {
-  const geometry = new THREE.SphereGeometry(r, widthSegments, heightSegments)
+  const geometry = new THREE.SphereGeometry(r, segments, segments)
   const material = new THREE.MeshStandardMaterial({
     color,
   })

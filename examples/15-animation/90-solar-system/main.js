@@ -28,6 +28,7 @@ const earthGroup = createEarthGroup(earth, earthToSunCamera)
 sun.add(earthGroup)
 
 const moon = createMoon({ r: 15 })
+moon.rotateZ(Math.PI / 2)
 moon.position.set(0, 100, 0)
 const moonGroup = createMoonGroup(moon, earthToMoonCamera)
 earth.add(moonGroup)
