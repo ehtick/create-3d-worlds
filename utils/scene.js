@@ -7,6 +7,7 @@ import { baseCommands } from '/data/commands.js'
 
 export const clock = new THREE.Clock()
 export const scene = new THREE.Scene()
+scene.background = new THREE.Color(0x87CEEB)
 
 export function createWorldScene(groundParam, skyParam, lightParam, fogParam = {}) {
   scene.add(createGround(groundParam))

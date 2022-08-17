@@ -8,7 +8,7 @@ hemLight()
 camera.position.set(0, 7, 10)
 const controls = createOrbitControls()
 
-scene.add(createGround({ file: 'ground.jpg' }))
+scene.add(createGround({ file: 'ground.jpg', size: 100 }))
 
 const map = create3DMap({ matrix, size: 1 })
 scene.add(map)
