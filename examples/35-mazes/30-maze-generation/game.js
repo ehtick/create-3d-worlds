@@ -1,17 +1,17 @@
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
-import { create3DMap } from '/utils/mazes.js'
-import { createGround } from '/utils/ground.js'
-import matrix from '/data/small-map.js'
+import { generateMaze, createMazeMesh } from '/utils/mazes.js'
 
 hemLight()
 
 camera.position.set(0, 7, 10)
 const controls = createOrbitControls()
 
-scene.add(createGround({ file: 'ground.jpg' }))
+const matrix = generateMaze(20, 20)
+console.log(matrix)
+const maze = createMazeMesh({ matrix })
+scene.add(maze)
 
-const map = create3DMap({ matrix, size: 1 })
-scene.add(map)
+/* LOOP */
 
 void function gameLoop() {
   requestAnimationFrame(gameLoop)

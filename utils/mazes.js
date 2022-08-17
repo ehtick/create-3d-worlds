@@ -152,7 +152,7 @@ export function generateMaze(cols = 60, rows = 60) {
 
 /* MESH FROM MATRIX */
 
-// TODO: merge geometries with textures
+// TODO: merge geometries with different textures if possible
 export function create3DMap({ matrix = randomMatrix(), size = 1, yModifier } = {}) {
   const origin = {
     x: -matrix[0].length * size * .5,
@@ -164,25 +164,25 @@ export function create3DMap({ matrix = randomMatrix(), size = 1, yModifier } = {
     if (!val) return
     const x = (columnIndex * size) + origin.x
     const z = (rowIndex * size) + origin.z
-    const box = createBox({ x, z, size, file: textures[val - 1], yModifier })
+    const file = textures[val - 1] || textures[0]
+    const box = createBox({ x, z, size, file, yModifier })
     box.position.set(x, 0, z)
     group.add(box)
   }))
   return group
 }
 
-export function createMazeMesh({ matrix, size = 1, texture = 'brick.png' } = {}) {
+export function createMazeMesh({ matrix, size = 1, texture = 'concrete.jpg' } = {}) {
   const map = textureLoader.load(`/assets/textures/${texture}`)
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     const geometry = new THREE.BoxGeometry(size, size, size)
-    geometry.translate(i, j, size * .5)
+    geometry.translate(i, size * .5, j)
     geometries.push(geometry)
   }))
 
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
-  geometry.rotateX(Math.PI * .5)
   geometry.translate(-matrix[0].length * size * .5, 0, -matrix.length * size * .5)
   const material = new THREE.MeshPhongMaterial({ map })
   const mesh = new THREE.Mesh(geometry, material)
