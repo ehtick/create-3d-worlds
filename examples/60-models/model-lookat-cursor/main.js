@@ -16,16 +16,16 @@ scene.add(createGround())
 const { mesh: model } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 2 })
 const animations = await loadFbxAnimations({ idle: 'Dwarf-Idle' }, 'character/kachujin/')
 
-model.traverse(o => {
-  if (o.name === 'mixamorigNeck') neck = o
-  if (o.name === 'mixamorigSpine') spine = o
+model.traverse(child => {
+  if (child.name === 'mixamorigNeck') neck = child
+  if (child.name === 'mixamorigSpine') spine = child
 })
 
 scene.add(model)
 
 const mixer = new THREE.AnimationMixer(model)
 const clip = animations[0]
-// removes spine and neck from animation (takes manual control)
+// removes spine and neck from animation
 clip.tracks = clip.tracks.filter(t => !t.name.includes('Spine') && !t.name.includes('Neck'))
 mixer.clipAction(clip).play()
 
