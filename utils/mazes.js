@@ -152,10 +152,11 @@ export function generateMaze(cols = 60, rows = 60) {
 
 /* MESH FROM MATRIX */
 
+// TODO: merge geometries with textures
 export function create3DMap({ matrix = randomMatrix(), size = 1, yModifier } = {}) {
   const origin = {
-    x: -matrix[0].length * size / 2,
-    z: -matrix.length * size / 2
+    x: -matrix[0].length * size * .5,
+    z: -matrix.length * size * .5
   }
   const textures = ['concrete.jpg', 'crate.gif', 'brick.png']
   const group = new THREE.Group()
@@ -173,16 +174,16 @@ export function create3DMap({ matrix = randomMatrix(), size = 1, yModifier } = {
 export function createMazeMesh({ matrix, size = 1, texture = 'brick.png' } = {}) {
   const map = textureLoader.load(`/assets/textures/${texture}`)
   const geometries = []
-  for (let i = 0; i < matrix.length; i++)
-    for (let j = 0; j < matrix[0].length; j++)
-      if (matrix[j][i]) {
-        const geometry = new THREE.BoxGeometry(size, size, size)
-        geometry.translate(i, j, size * .5)
-        geometries.push(geometry)
-      }
+  matrix.forEach((row, j) => row.forEach((val, i) => {
+    if (!val) return
+    const geometry = new THREE.BoxGeometry(size, size, size)
+    geometry.translate(i, j, size * .5)
+    geometries.push(geometry)
+  }))
 
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
-  geometry.rotateX(Math.PI / 2)
+  geometry.rotateX(Math.PI * .5)
+  geometry.translate(-matrix[0].length * size * .5, 0, -matrix.length * size * .5)
   const material = new THREE.MeshPhongMaterial({ map })
   const mesh = new THREE.Mesh(geometry, material)
   return mesh
@@ -200,8 +201,8 @@ export const getMapPosition = ({ obj, map, cellSize }) => {
   const mapWidth = map.length
   const mapHeight = map[0].length
   return {
-    x: Math.floor((obj.x + cellSize / 2) / cellSize + mapHeight / 2),
-    z: Math.floor((obj.z + cellSize / 2) / cellSize + mapWidth / 2)
+    x: Math.floor((obj.x + cellSize * .5) / cellSize + mapHeight * .5),
+    z: Math.floor((obj.z + cellSize * .5) / cellSize + mapWidth * .5)
   }
 }
 

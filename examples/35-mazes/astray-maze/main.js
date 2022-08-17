@@ -6,7 +6,6 @@ initLights()
 createOrbitControls()
 
 const matrix = generateSquareMaze(15)
-console.log(matrix)
 
 const mazeMesh = createMazeMesh({ matrix })
 scene.add(mazeMesh)
