@@ -1,10 +1,5 @@
 /* global THREE */
-
-const NORTH = 1,
-  EAST = -0.5,
-  SOUTH = 2,
-  WEST = 0.5,
-  LEAP = 240
+import { NORTH, EAST, WEST, LEAP, cluster } from './data.js'
 
 let camera,
   scene,
@@ -14,117 +9,12 @@ let camera,
   mouse = new THREE.Vector2(),
   raycaster = new THREE.Raycaster(),
   carList = [],
-  manager = new THREE.LoadingManager(),
-  loader = new THREE.GLTFLoader(manager)
-
-const clusterNames = [
-  'factory',
-  'house2',
-  'shoparea',
-  'house',
-  'apartments',
-  'shops',
-  'fastfood',
-  'house3',
-  'stadium',
-  'gas',
-  'supermarket',
-  'coffeeshop',
-  'residence',
-  'bus',
-  'park',
-  'supermarket',
-]
-
-const cluster = [
-  { x: 1, z: 0, cluster: 'road' },
-
-  { x: 2, z: 2, cluster: clusterNames[0], direction: SOUTH },
-  { x: 2, z: 1, cluster: clusterNames[1], direction: SOUTH },
-  { x: 2, z: 0, cluster: clusterNames[2], direction: SOUTH },
-  { x: 2, z: -1, cluster: clusterNames[3], direction: SOUTH },
-  { x: 2, z: -2, cluster: clusterNames[0], direction: SOUTH },
-  { x: 2, z: -3, cluster: clusterNames[1], direction: SOUTH },
-  { x: 2, z: -4, cluster: clusterNames[2], direction: SOUTH },
-  { x: 2, z: -5, cluster: clusterNames[3], direction: SOUTH },
-
-  { x: 1, z: 2, cluster: clusterNames[4], direction: SOUTH },
-  { x: 1, z: 1, cluster: clusterNames[7], direction: SOUTH },
-  { x: 1, z: 0, cluster: clusterNames[8], direction: SOUTH },
-  { x: 1, z: -1, cluster: clusterNames[9], direction: SOUTH },
-  { x: 1, z: -2, cluster: clusterNames[4], direction: SOUTH },
-  { x: 1, z: -3, cluster: clusterNames[7], direction: SOUTH },
-  { x: 1, z: -4, cluster: clusterNames[8], direction: SOUTH },
-  { x: 1, z: -5, cluster: clusterNames[9], direction: SOUTH },
-
-  { x: 0, z: 2, cluster: clusterNames[5], direction: SOUTH },
-  { x: 0, z: 1, cluster: clusterNames[10], direction: SOUTH },
-  { x: 0, z: 0, cluster: clusterNames[12], direction: SOUTH },
-  { x: 0, z: -1, cluster: clusterNames[13], direction: SOUTH },
-  { x: 0, z: -2, cluster: clusterNames[5], direction: SOUTH },
-  { x: 0, z: -3, cluster: clusterNames[10], direction: SOUTH },
-  { x: 0, z: -4, cluster: clusterNames[12], direction: SOUTH },
-  { x: 0, z: -5, cluster: clusterNames[13], direction: SOUTH },
-
-  { x: -1, z: 2, cluster: clusterNames[6], direction: SOUTH },
-  { x: -1, z: 1, cluster: clusterNames[11], direction: SOUTH },
-  { x: -1, z: 0, cluster: clusterNames[14], direction: SOUTH },
-  { x: -1, z: -1, cluster: clusterNames[15], direction: SOUTH },
-  { x: -1, z: -2, cluster: clusterNames[6], direction: SOUTH },
-  { x: -1, z: -3, cluster: clusterNames[11], direction: SOUTH },
-  { x: -1, z: -4, cluster: clusterNames[14], direction: SOUTH },
-  { x: -1, z: -5, cluster: clusterNames[15], direction: SOUTH },
-
-  { x: -2, z: 2, cluster: clusterNames[0], direction: SOUTH },
-  { x: -2, z: 1, cluster: clusterNames[1], direction: SOUTH },
-  { x: -2, z: 0, cluster: clusterNames[2], direction: SOUTH },
-  { x: -2, z: -1, cluster: clusterNames[3], direction: SOUTH },
-  { x: -2, z: -2, cluster: clusterNames[0], direction: SOUTH },
-  { x: -2, z: -3, cluster: clusterNames[1], direction: SOUTH },
-  { x: -2, z: -4, cluster: clusterNames[2], direction: SOUTH },
-  { x: -2, z: -5, cluster: clusterNames[3], direction: SOUTH },
-
-  { x: -3, z: 2, cluster: clusterNames[4], direction: SOUTH },
-  { x: -3, z: 1, cluster: clusterNames[7], direction: SOUTH },
-  { x: -3, z: 0, cluster: clusterNames[8], direction: SOUTH },
-  { x: -3, z: -1, cluster: clusterNames[9], direction: SOUTH },
-  { x: -3, z: -2, cluster: clusterNames[4], direction: SOUTH },
-  { x: -3, z: -3, cluster: clusterNames[7], direction: SOUTH },
-  { x: -3, z: -4, cluster: clusterNames[8], direction: SOUTH },
-  { x: -3, z: -5, cluster: clusterNames[9], direction: SOUTH },
-
-  { x: -4, z: 2, cluster: clusterNames[5], direction: SOUTH },
-  { x: -4, z: 1, cluster: clusterNames[10], direction: SOUTH },
-  { x: -4, z: 0, cluster: clusterNames[12], direction: SOUTH },
-  { x: -4, z: -1, cluster: clusterNames[13], direction: SOUTH },
-  { x: -4, z: -2, cluster: clusterNames[5], direction: SOUTH },
-  { x: -4, z: -3, cluster: clusterNames[10], direction: SOUTH },
-  { x: -4, z: -4, cluster: clusterNames[12], direction: SOUTH },
-  { x: -4, z: -5, cluster: clusterNames[13], direction: SOUTH },
-
-  { x: -5, z: 2, cluster: clusterNames[6], direction: SOUTH },
-  { x: -5, z: 1, cluster: clusterNames[11], direction: SOUTH },
-  { x: -5, z: 0, cluster: clusterNames[14], direction: SOUTH },
-  { x: -5, z: -1, cluster: clusterNames[15], direction: SOUTH },
-  { x: -5, z: -2, cluster: clusterNames[6], direction: SOUTH },
-  { x: -5, z: -3, cluster: clusterNames[11], direction: SOUTH },
-  { x: -5, z: -4, cluster: clusterNames[14], direction: SOUTH },
-  { x: -5, z: -5, cluster: clusterNames[15], direction: SOUTH },
-]
+  loader = new THREE.GLTFLoader()
 
 initCity()
 animate()
 
 function initCity() {
-  // Manager settings
-  manager.onProgress = (url, i, all) =>
-  (document.querySelector('p').textContent = `${Math.ceil(
-    (i / all) * 100
-  )}%`)
-  manager.onLoad = () => {
-    document.querySelector('.load').remove()
-  }
-
   // Scene settings
   scene = new THREE.Scene()
   scene.background = new THREE.Color(0x000000)
