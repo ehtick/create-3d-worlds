@@ -57,7 +57,7 @@ export function generateSquareMaze(size) {
   https://stackoverflow.com/questions/54613229
 */
 
-export function generateMaze(cols = 60, rows = 60) {
+export function primsAlgorithm(cols = 60, rows = 60) {
   // 1. Start with a grid full of walls.
   const maze = []
   for (let i = 0; i < cols; i++) {
