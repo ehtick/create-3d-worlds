@@ -15,7 +15,6 @@ export function createEarth({ r = 15, segments = 64 } = {}) {
   const geometry = new THREE.SphereGeometry(r, segments, segments)
   const mesh = new THREE.Mesh(geometry, material)
   mesh.castShadow = mesh.receiveShadow = true
-  mesh.name = 'earth'
   return mesh
 }
 
@@ -25,29 +24,25 @@ export function createEarthClouds({ r = 15.2, segments = 64 } = {}) {
 
   const geometry = new THREE.SphereGeometry(r, segments, segments)
   const clouds = new THREE.Mesh(geometry, material)
-  clouds.name = 'clouds'
   return clouds
 }
 
 /* MOON */
 
-export function createMoon({ r = 2, segments = 32 } = {}) {
-  const mesh = createSphere({ r, segments })
-  mesh.material.map = textureLoader.load('moon_1024.jpg')
-  mesh.material.bumpMap = textureLoader.load('moon_cloud.png')
-  return mesh
-}
+export const createMoon = ({ r = 2, segments = 32 } = {}) => createSphere({
+  r, segments, file: 'planets/moon_1024.jpg', bumpFile: 'planets/moon_1024_bump.jpg'
+})
 
 /* SUN */
 
 export function createSun({ r = 50, segments = 32 } = {}) {
-  const material = new THREE.MeshStandardMaterial({ map: textureLoader.load('sun.jpg'), color: 0xFFD700 })
-  const geometry = new THREE.SphereGeometry(r, segments, segments)
-  geometry.rotateX(Math.PI / 2)
-  const mesh = new THREE.Mesh(geometry, material)
+  const mesh = createSphere({ r, segments, color: 0xFFD700, file: 'planets/sun.jpg' })
+  mesh.geometry.rotateX(Math.PI / 2)
+
   const sunLight = new THREE.PointLight(0xffffff, 5, 1000)
   mesh.add(sunLight)
   addGlow(mesh, r * 3)
+
   return mesh
 }
 
@@ -87,8 +82,5 @@ export function createSaturn() {
 
 /* JUPITER */
 
-export function createJupiter({ r = 10, segments = 32 } = {}) {
-  const planet = createSphere({ r, segments })
-  planet.material.map = textureLoader.load('jupiter.jpg')
-  return planet
-}
+export const createJupiter = ({ r = 10, segments = 32 } = {}) =>
+  createSphere({ r, segments, file: 'planets/jupiter.jpg' })
