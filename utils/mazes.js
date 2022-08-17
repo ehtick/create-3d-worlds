@@ -2,6 +2,8 @@ import * as THREE from 'three'
 import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { createBox } from '/utils/geometry.js'
 
+const { randInt } = THREE.Math
+
 const EMPTY = 0
 const WALL = 1
 
@@ -172,13 +174,14 @@ export function create3DMap({ matrix = randomMatrix(), size = 1, yModifier } = {
   return group
 }
 
-export function createMazeMesh({ matrix, size = 1, texture = 'concrete.jpg' } = {}) {
+export function createMazeMesh({ matrix, size = 1, maxSize = size, texture = 'concrete.jpg' } = {}) {
   const map = textureLoader.load(`/assets/textures/${texture}`)
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
-    const geometry = new THREE.BoxGeometry(size, size, size)
-    geometry.translate(i, size * .5, j)
+    const height = randInt(size, maxSize)
+    const geometry = new THREE.BoxGeometry(size, height, size)
+    geometry.translate(i, height * .5, j)
     geometries.push(geometry)
   }))
 
