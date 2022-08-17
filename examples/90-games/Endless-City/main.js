@@ -1,105 +1,74 @@
-/* global THREE */
+import * as THREE from 'three'
+import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js'
+import { MapControls } from '/node_modules/three/examples/jsm/controls/OrbitControls.js'
+import { scene, camera, renderer } from '/utils/scene.js'
+import { initLights } from '/utils/light.js'
+import { normalizeMouse } from '/utils/helpers.js'
 import { NORTH, EAST, WEST, LEAP, cluster } from './data.js'
 
-const mouse = new THREE.Vector2()
+renderer.outputEncoding = THREE.GammaEncoding
+camera.position.set(0, 50, 10)
+
+let mouse = new THREE.Vector2()
 const raycaster = new THREE.Raycaster()
 const cars = []
-const loader = new THREE.GLTFLoader()
+const loader = new GLTFLoader()
 
-const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x000000)
-scene.fog = new THREE.Fog(new THREE.Color(0x000000), 200, 300)
-
-const camera = new THREE.PerspectiveCamera(
-  40,
-  window.innerWidth / window.innerHeight,
-  50,
-  200
-)
-camera.position.set(10, 100, 10)
-const controls = new THREE.MapControls(camera)
-
-const light = new THREE.DirectionalLight(0x9a9a9a, 1)
-light.position.set(-300, 750, -300)
-light.castShadow = true
-light.shadow.mapSize.width = light.shadow.mapSize.height = 4096
-light.shadow.camera.near = 1
-light.shadow.camera.far = 1000
-light.shadow.camera.left = light.shadow.camera.bottom = -200
-light.shadow.camera.right = light.shadow.camera.top = 200
-scene.add(light)
-scene.add(new THREE.HemisphereLight(0xefefef, 0xffffff, 1))
-
-const renderer = new THREE.WebGLRenderer({
-  canvas: document.querySelector('canvas'),
-  antialias: true,
-})
-renderer.shadowMap.enabled = true
-renderer.gammaInput = renderer.gammaOutput = true
-renderer.gammaFactor = 2.0
-renderer.setSize(window.innerWidth, window.innerHeight)
-
-window.addEventListener('mousemove', onMouseMove, false)
+initLights()
+const controls = new MapControls(camera, renderer.domElement)
 
 cluster.forEach(cls => loadCluster(cls))
 
-if (screen.width > 768)
-  loadCars({ x: 1, z: 0, cluster: 'cars' })
-
-function onMouseMove(event) {
-  event.preventDefault()
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
-}
+loadCars({ x: 1, z: 0, cluster: 'cars' })
 
 function loadCluster({ x, z, cluster, direction }) {
-  loader.load(`models/${cluster}.glb`, gltf => {
-    gltf.scene.traverse(child => {
+  loader.load(`models/${cluster}.glb`, ({ scene: model }) => {
+    model.traverse(child => {
       if (child.isMesh) {
         child.receiveShadow = true
         child.castShadow = true
       }
     })
 
-    gltf.scene.position.set(x * 60, 0, z * 60)
-    if (direction) gltf.scene.rotation.y = Math.PI * direction
-    else if (direction === EAST) gltf.scene.position.x += 20
-    else if (direction === WEST) gltf.scene.position.z += 20
+    model.position.set(x * 60, 0, z * 60)
+    if (direction) model.rotation.y = Math.PI * direction
+    else if (direction === EAST) model.position.x += 20
+    else if (direction === WEST) model.position.z += 20
     else if (direction === NORTH)
-      gltf.scene.position.set(
-        gltf.scene.position.x + 20,
+      model.position.set(
+        model.position.x + 20,
         0,
-        ogltfbj.scene.position.z + 20
+        model.position.z + 20
       )
 
-    scene.add(gltf.scene)
+    scene.add(model)
   })
 }
 
 function loadCars({ x, z, cluster, direction }) {
-  loader.load(`models/${cluster}.gltf`, gltf => {
-    gltf.scene.traverse(child => {
+  loader.load(`models/${cluster}.gltf`, ({ scene: model }) => {
+    model.traverse(child => {
       if (child.isMesh) {
         child.receiveShadow = true
         child.castShadow = true
       }
     })
 
-    gltf.scene.position.set(x * 60, 0, z * 60)
+    model.position.set(x * 60, 0, z * 60)
 
-    if (direction) gltf.scene.rotation.y = Math.PI * direction
-    else if (direction === EAST) gltf.scene.position.x += 20
-    else if (direction === WEST) gltf.scene.position.z += 20
+    if (direction) model.rotation.y = Math.PI * direction
+    else if (direction === EAST) model.position.x += 20
+    else if (direction === WEST) model.position.z += 20
     else if (direction === NORTH)
-      gltf.scene.position.set(
-        gltf.scene.position.x + 20,
+      model.position.set(
+        model.position.x + 20,
         0,
-        ogltfbj.scene.position.z + 20
+        model.position.z + 20
       )
 
-    scene.add(gltf.scene)
+    scene.add(model)
 
-    gltf.scene.children.forEach(e => {
+    model.children.forEach(e => {
       e.distance = 0
       e.maxSpeed = 0.3
       e.speed = e.maxSpeed
@@ -113,6 +82,8 @@ function loadCars({ x, z, cluster, direction }) {
     })
   })
 }
+
+/* LOOP */
 
 void function loop() {
   requestAnimationFrame(loop)
@@ -162,3 +133,9 @@ void function loop() {
   })
   renderer.render(scene, camera)
 }()
+
+/* EVENTS */
+
+window.addEventListener('mousemove', e => {
+  mouse = normalizeMouse(e)
+})

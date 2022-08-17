@@ -9,12 +9,13 @@
 
 <body>
 
-  <canvas></canvas>
-
-  <script src="libs/three.js"></script>
-  <script src="libs/MapControls.js"></script>
-  <script src="libs/inflate.min.js"></script>
-  <script src="libs/GLTFLoader.js"></script>
+  <script type="importmap">
+    {
+        "imports": {
+            "three": "/node_modules/three/build/three.module.js"
+        }
+    }
+  </script>
   <script src="main.js" type="module"></script>
 
 </body>
