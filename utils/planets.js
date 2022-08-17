@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { createSphere } from '/utils/geometry.js'
 
 const textureLoader = new THREE.TextureLoader()
 textureLoader.setPath('/assets/textures/planets/')
@@ -70,7 +71,26 @@ function addGlow(sun, distance = 50) {
 
 /* SATURN */
 
-export function createSaturn({ r = 10, segments = 32 } = {}) {
+function createRing(radius, tube, color) {
+  const geometry = new THREE.TorusGeometry(radius, tube, 2, 35)
+  const material = new THREE.MeshBasicMaterial({ color })
+  const ring = new THREE.Mesh(geometry, material)
+  ring.rotation.x = Math.PI * .5
+  return ring
+}
+
+export function createSaturn() {
+  const group = new THREE.Group()
+  group.add(createSphere({ color: 0xDDBC77 }))
+  group.add(createRing(1.4, .2, 0x665E4E))
+  group.add(createRing(1.9, .2, 0x7C776B))
+  group.add(createRing(2.4, .2, 0x645F52))
+  return group
+}
+
+/* JUPITER */
+
+export function createJupiter({ r = 10, segments = 32 } = {}) {
   const map = textureLoader.load('jupiter.jpg')
   const planetGeometry = new THREE.SphereGeometry(r, segments, segments)
   const planetMaterial = new THREE.MeshLambertMaterial({ map })

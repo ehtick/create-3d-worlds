@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { camera, scene, renderer } from '/utils/scene.js'
-import { createMoon, createSaturn } from '/utils/planets.js'
+import { createMoon, createJupiter } from '/utils/planets.js'
 import { createTerrain, wave, shake } from '/utils/ground.js'
 import { createStars, updateStars } from '/utils/particles.js'
 
@@ -13,7 +13,7 @@ const light = new THREE.PointLight('#ffffff', 1, 0)
 light.position.set(0, 30, 30)
 scene.add(light)
 
-const planet = createSaturn()
+const planet = createJupiter()
 planet.position.set(0, 8, -30)
 scene.add(planet)
 
