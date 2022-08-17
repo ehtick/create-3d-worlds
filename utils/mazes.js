@@ -231,15 +231,16 @@ function createPipe(point1, point2) {
   const geometry = new THREE.CylinderGeometry(1, 1, h, 12)
   geometry.translate(0, -h / 2, 0)
   geometry.rotateX(-Math.PI / 2)
-  const material = new THREE.MeshLambertMaterial({ color: 'gray' })
-  material.transparent = true
-  const gun = new THREE.Mesh(geometry, material)
-  gun.position.copy(point1)
-  gun.lookAt(point2)
-  return gun
+
+  const mesh = new THREE.Mesh(geometry)
+  mesh.position.copy(point1)
+  mesh.lookAt(point2)
+  mesh.updateMatrix()
+
+  geometry.applyMatrix4(mesh.matrix)
+  return geometry
 }
 
-// TODO: merge geometry
 function createBlock(point1, point2, castle = true) {
   const distance = new THREE.Vector2(0, 0).distanceTo(new THREE.Vector2(point1.x, point1.z))
   const width = randFloat(2, 4)
@@ -247,16 +248,20 @@ function createBlock(point1, point2, castle = true) {
   const depth = point1.distanceTo(point2)
   const geometry = new THREE.BoxGeometry(width, height, depth)
   geometry.translate(0, height / 2, depth / 2)
-  const material = new THREE.MeshLambertMaterial({ color: 'white' })
-  material.transparent = true
-  const gun = new THREE.Mesh(geometry, material)
-  gun.position.copy(point1)
-  gun.lookAt(point2)
-  return gun
+
+  // TODO: lookAt without mesh
+  const mesh = new THREE.Mesh(geometry)
+  mesh.position.copy(point1)
+  mesh.lookAt(point2)
+  mesh.updateMatrix()
+
+  geometry.applyMatrix4(mesh.matrix)
+  return geometry
 }
 
 export const createCircularMazeMesh = (grid, connect = createBlock) => {
-  const group = new THREE.Group()
+  const geometries = []
+
   for (const row of grid)
     for (const cell of row)
       if (cell.row) {
@@ -264,24 +269,26 @@ export const createCircularMazeMesh = (grid, connect = createBlock) => {
           const point1 = new THREE.Vector3(cell.innerCcwX, 0, cell.innerCcwY)
           const point2 = new THREE.Vector3(cell.innerCwX, 0, cell.innerCwY)
           const line = connect(point1, point2)
-          group.add(line)
+          geometries.push(line)
         }
 
         if (!cell.cw || !isLinked(cell, cell.cw)) {
           const point1 = new THREE.Vector3(cell.innerCwX, 0, cell.innerCwY)
           const point2 = new THREE.Vector3(cell.outerCwX, 0, cell.outerCwY)
           const line = connect(point1, point2)
-          group.add(line)
+          geometries.push(line)
         }
 
         if (cell.row === grid.length - 1 && cell.col !== row.length * 0.75) {
           const point1 = new THREE.Vector3(cell.outerCcwX, 0, cell.outerCcwY)
           const point2 = new THREE.Vector3(cell.outerCwX, 0, cell.outerCwY)
           const line = connect(point1, point2)
-          group.add(line)
+          geometries.push(line)
         }
       }
-  return group
+  const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
+  const material = new THREE.MeshLambertMaterial({ color: 'white' })
+  return new THREE.Mesh(geometry, material)
 }
 
 /* ALIASES */
