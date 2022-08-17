@@ -226,36 +226,35 @@ const isLinked = (cellA, cellB) => {
   return !!link
 }
 
-function createPipe(point1, point2) {
-  const h = point1.distanceTo(point2)
+// TODO: implement without a mesh
+const lookAt = (geometry, p1, p2) => {
+  const mesh = new THREE.Mesh(geometry)
+  mesh.position.copy(p1)
+  mesh.lookAt(p2)
+  mesh.updateMatrix()
+
+  geometry.applyMatrix4(mesh.matrix)
+}
+
+function createPipe(p1, p2) {
+  const h = p1.distanceTo(p2)
   const geometry = new THREE.CylinderGeometry(1, 1, h, 12)
   geometry.translate(0, -h / 2, 0)
   geometry.rotateX(-Math.PI / 2)
 
-  const mesh = new THREE.Mesh(geometry)
-  mesh.position.copy(point1)
-  mesh.lookAt(point2)
-  mesh.updateMatrix()
-
-  geometry.applyMatrix4(mesh.matrix)
+  lookAt(geometry, p1, p2)
   return geometry
 }
 
-function createBlock(point1, point2, castle = true) {
-  const distance = new THREE.Vector2(0, 0).distanceTo(new THREE.Vector2(point1.x, point1.z))
+function createBlock(p1, p2, castle = true) {
+  const distance = new THREE.Vector2(0, 0).distanceTo(new THREE.Vector2(p1.x, p1.z))
   const width = randFloat(2, 4)
   const height = castle ? (21 - distance / 10) * 5 : randFloat(2, 8)
-  const depth = point1.distanceTo(point2)
+  const depth = p1.distanceTo(p2)
   const geometry = new THREE.BoxGeometry(width, height, depth)
   geometry.translate(0, height / 2, depth / 2)
 
-  // TODO: lookAt without mesh
-  const mesh = new THREE.Mesh(geometry)
-  mesh.position.copy(point1)
-  mesh.lookAt(point2)
-  mesh.updateMatrix()
-
-  geometry.applyMatrix4(mesh.matrix)
+  lookAt(geometry, p1, p2)
   return geometry
 }
 
@@ -266,23 +265,23 @@ export const createCircularMazeMesh = (grid, connect = createBlock) => {
     for (const cell of row)
       if (cell.row) {
         if (!cell.inward || !isLinked(cell, cell.inward)) {
-          const point1 = new THREE.Vector3(cell.innerCcwX, 0, cell.innerCcwY)
-          const point2 = new THREE.Vector3(cell.innerCwX, 0, cell.innerCwY)
-          const line = connect(point1, point2)
+          const p1 = new THREE.Vector3(cell.innerCcwX, 0, cell.innerCcwY)
+          const p2 = new THREE.Vector3(cell.innerCwX, 0, cell.innerCwY)
+          const line = connect(p1, p2)
           geometries.push(line)
         }
 
         if (!cell.cw || !isLinked(cell, cell.cw)) {
-          const point1 = new THREE.Vector3(cell.innerCwX, 0, cell.innerCwY)
-          const point2 = new THREE.Vector3(cell.outerCwX, 0, cell.outerCwY)
-          const line = connect(point1, point2)
+          const p1 = new THREE.Vector3(cell.innerCwX, 0, cell.innerCwY)
+          const p2 = new THREE.Vector3(cell.outerCwX, 0, cell.outerCwY)
+          const line = connect(p1, p2)
           geometries.push(line)
         }
 
         if (cell.row === grid.length - 1 && cell.col !== row.length * 0.75) {
-          const point1 = new THREE.Vector3(cell.outerCcwX, 0, cell.outerCcwY)
-          const point2 = new THREE.Vector3(cell.outerCwX, 0, cell.outerCwY)
-          const line = connect(point1, point2)
+          const p1 = new THREE.Vector3(cell.outerCcwX, 0, cell.outerCcwY)
+          const p2 = new THREE.Vector3(cell.outerCwX, 0, cell.outerCwY)
+          const line = connect(p1, p2)
           geometries.push(line)
         }
       }
