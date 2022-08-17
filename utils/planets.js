@@ -71,7 +71,7 @@ function addGlow(sun, distance = 50) {
 /* SATURN */
 
 export function createSaturn({ r = 10, segments = 32 } = {}) {
-  const map = textureLoader.load('saturn.jpg')
+  const map = textureLoader.load('jupiter.jpg')
   const planetGeometry = new THREE.SphereGeometry(r, segments, segments)
   const planetMaterial = new THREE.MeshLambertMaterial({ map })
   const planet = new THREE.Mesh(planetGeometry, planetMaterial)

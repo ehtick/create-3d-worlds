@@ -8,7 +8,7 @@ scene.background = new THREE.Color(0x000000)
 
 camera.position.set(0, 0, 5)
 
-const saturn = createJupiter()
+const saturn = createSaturn()
 scene.add(saturn)
 
 function createRing(radius, tube, color) {
@@ -19,7 +19,7 @@ function createRing(radius, tube, color) {
   return ring
 }
 
-function createJupiter() {
+function createSaturn() {
   const group = new THREE.Group()
   group.add(createSphere({ color: 0xDDBC77 }))
   group.add(createRing(1.4, .2, 0x665E4E))
