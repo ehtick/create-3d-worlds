@@ -14,6 +14,7 @@ const size = 400
 const cellSize = 10
 
 const grid = createMaze({ size, cellSize })
+console.log(grid)
 
 const mesh = createCircularRuins(grid)
 scene.add(mesh)

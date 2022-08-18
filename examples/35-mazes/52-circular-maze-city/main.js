@@ -7,8 +7,8 @@ import { OutlineEffect } from '/node_modules/three/examples/jsm/effects/OutlineE
 const sun = createSunLight()
 sun.position.set(50, 150, 200)
 scene.add(sun)
-createOrbitControls()
 
+createOrbitControls()
 camera.position.set(0, 100, 150)
 
 const size = 400
