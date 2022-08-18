@@ -52,7 +52,5 @@ export default class RecursiveDivision {
 export function recursiveDivision(rows, columns) {
   const grid = new Grid(rows, columns)
   RecursiveDivision.on(grid)
-  console.log(grid)
-  console.log(grid.toString())
   return grid.toMatrix()
 }

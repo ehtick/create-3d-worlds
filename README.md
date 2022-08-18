@@ -9,6 +9,8 @@ npm i
 npx live-server
 ```
 
+- createBox: ukinuti zModifier
+
 ### Mazes
 - napraviti render za mazes
 - srediti kretanje da ne koristi raycasting

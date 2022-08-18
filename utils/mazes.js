@@ -17,7 +17,6 @@ const textureLoader = new THREE.TextureLoader()
  * https://github.com/wwwtyro/Astray/blob/master/maze.js
  */
 export function generateSquareMaze(size) {
-
   let matrix = new Array(size)
   for (let i = 0; i < size; i++) {
     matrix[i] = new Array(size)
