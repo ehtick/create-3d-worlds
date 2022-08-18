@@ -1,12 +1,8 @@
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { createMazeMesh } from '/utils/mazes.js'
-import Grid from '../mazes/Grid.js'
-import Ellers from '../mazes/algorithms/Ellers.js'
+import { ellers } from '../mazes/algorithms/Ellers.js'
 
-const grid = new Grid(20)
-Ellers.on(grid)
-
-const matrix = grid.toMatrix()
+const matrix = ellers(20)
 
 hemLight()
 

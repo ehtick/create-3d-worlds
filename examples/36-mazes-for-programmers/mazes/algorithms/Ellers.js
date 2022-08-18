@@ -1,3 +1,4 @@
+import Grid from '../Grid.js'
 import { shuffle } from '../utils.js'
 
 class RowState {
@@ -74,4 +75,10 @@ export default class Ellers {
       }
     }
   }
+}
+
+export function ellers(rows, columns) {
+  const grid = new Grid(rows, columns)
+  Ellers.on(grid)
+  return grid.toMatrix()
 }

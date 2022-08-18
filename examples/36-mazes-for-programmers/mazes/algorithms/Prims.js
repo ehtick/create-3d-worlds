@@ -1,3 +1,4 @@
+import Grid from '../Grid.js'
 import { sample } from '../utils.js'
 
 export class SimplifiedPrims {
@@ -41,4 +42,16 @@ export class TruePrims {
         active = active.filter(c => c.id != cell.id)
     }
   }
+}
+
+export function simplifiedPrims(rows, columns) {
+  const grid = new Grid(rows, columns)
+  SimplifiedPrims.on(grid)
+  return grid.toMatrix()
+}
+
+export function truePrims(rows, columns) {
+  const grid = new Grid(rows, columns)
+  TruePrims.on(grid)
+  return grid.toMatrix()
 }

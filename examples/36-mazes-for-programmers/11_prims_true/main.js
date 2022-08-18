@@ -1,13 +1,9 @@
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { createMazeMesh } from '/utils/mazes.js'
 
-import { TruePrims } from '../mazes/algorithms/Prims.js'
-import Grid from '../mazes/Grid.js'
+import { truePrims } from '../mazes/algorithms/Prims.js'
 
-const grid = new Grid(20)
-TruePrims.on(grid)
-
-const matrix = grid.toMatrix()
+const matrix = truePrims(20)
 
 hemLight()
 
