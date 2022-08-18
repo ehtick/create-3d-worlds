@@ -5,27 +5,27 @@ export const createMaze = ({ size, cellSize, center = 0 }) => {
   const positionCells = grid => {
     grid.forEach(row => {
       row.forEach(cell => {
-        const angle = 2 * Math.PI / row.length
-        const innerRadius = cell.row * cellSize
-        const outerRadius = (cell.row + 1) * cellSize
-        const angleCcw = cell.col * angle
-        const angleCw = (cell.col + 1) * angle
+        const theta = 2 * Math.PI / row.length
+        const inner_radius = cell.row * cellSize
+        const outer_radius = (cell.row + 1) * cellSize
+        const theta_ccw = cell.col * theta
+        const theta_cw = (cell.col + 1) * theta
 
-        cell.innerCcwX = Math.round(center + (innerRadius * Math.cos(angleCcw)))
-        cell.innerCcwY = Math.round(center + (innerRadius * Math.sin(angleCcw)))
-        cell.outerCcwX = Math.round(center + (outerRadius * Math.cos(angleCcw)))
-        cell.outerCcwY = Math.round(center + (outerRadius * Math.sin(angleCcw)))
-        cell.innerCwX = Math.round(center + (innerRadius * Math.cos(angleCw)))
-        cell.innerCwY = Math.round(center + (innerRadius * Math.sin(angleCw)))
-        cell.outerCwX = Math.round(center + (outerRadius * Math.cos(angleCw)))
-        cell.outerCwY = Math.round(center + (outerRadius * Math.sin(angleCw)))
+        cell.innerCcwX = Math.round(center + (inner_radius * Math.cos(theta_ccw)))
+        cell.innerCcwY = Math.round(center + (inner_radius * Math.sin(theta_ccw)))
+        cell.outerCcwX = Math.round(center + (outer_radius * Math.cos(theta_ccw)))
+        cell.outerCcwY = Math.round(center + (outer_radius * Math.sin(theta_ccw)))
+        cell.innerCwX = Math.round(center + (inner_radius * Math.cos(theta_cw)))
+        cell.innerCwY = Math.round(center + (inner_radius * Math.sin(theta_cw)))
+        cell.outerCwX = Math.round(center + (outer_radius * Math.cos(theta_cw)))
+        cell.outerCwY = Math.round(center + (outer_radius * Math.sin(theta_cw)))
 
-        const centerAngle = (angleCcw + angleCw) / 2
+        const centerAngle = (theta_ccw + theta_cw) / 2
 
-        cell.centerX = (Math.round(center + (innerRadius * Math.cos(centerAngle))) +
-        Math.round(center + (outerRadius * Math.cos(centerAngle)))) / 2
-        cell.centerY = (Math.round(center + (innerRadius * Math.sin(centerAngle))) +
-        Math.round(center + (outerRadius * Math.sin(centerAngle)))) / 2
+        cell.centerX = (Math.round(center + (inner_radius * Math.cos(centerAngle))) +
+        Math.round(center + (outer_radius * Math.cos(centerAngle)))) / 2
+        cell.centerY = (Math.round(center + (inner_radius * Math.sin(centerAngle))) +
+        Math.round(center + (outer_radius * Math.sin(centerAngle)))) / 2
       })
     })
   }

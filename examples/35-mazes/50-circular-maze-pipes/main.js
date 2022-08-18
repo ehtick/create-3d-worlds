@@ -13,6 +13,7 @@ const size = 250
 const cellSize = 10
 
 const grid = createMaze({ size, cellSize })
+console.log(grid)
 
 const mesh = createCircularPipes(grid)
 scene.add(mesh)

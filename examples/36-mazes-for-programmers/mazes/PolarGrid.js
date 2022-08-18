@@ -71,26 +71,26 @@ export default class PolarGrid extends Grid {
     return this.grid[row].length
   }
 
-  draw_indicator(centerX, centerY, ring_height, cell) {
+  draw_indicator(centerX, centerY, cellSize, cell) {
     ctx.strokeStyle = ctx.fillStyle = this.background_color_for(cell)
     ctx.beginPath()
-    ctx.arc(centerX, centerY, ring_height * .2, 0, 2 * Math.PI)
+    ctx.arc(centerX, centerY, cellSize * .2, 0, 2 * Math.PI)
     ctx.fill()
     ctx.stroke()
   }
 
-  draw(ring_height = 20) {
-    const center = this.rows * ring_height
+  draw(cellSize = 10) {
+    const center = this.rows * cellSize
 
     for (const cell of this.each_cell()) {
       if (cell.row == 0) {
-        this.draw_indicator(center, center, ring_height, cell)
+        this.draw_indicator(center, center, cellSize, cell)
         continue // no walls in center
       }
 
       const theta = 2 * Math.PI / this.cell_count(cell.row)
-      const inner_radius = cell.row * ring_height
-      const outer_radius = (cell.row + 1) * ring_height
+      const inner_radius = cell.row * cellSize
+      const outer_radius = (cell.row + 1) * cellSize
       const theta_ccw = cell.column * theta // counter-clockwise (left) wall
       const theta_cw = (cell.column + 1) * theta // clockwise (right) wall
 
@@ -98,7 +98,7 @@ export default class PolarGrid extends Grid {
       const radiusMid = (inner_radius + outer_radius) / 2
       const centerX = center + Math.floor(radiusMid * Math.cos(thetaMid))
       const centerY = center + Math.floor(radiusMid * Math.sin(thetaMid))
-      this.draw_indicator(centerX, centerY, ring_height, cell)
+      this.draw_indicator(centerX, centerY, cellSize, cell)
 
       const ax = center + Math.floor(inner_radius * Math.cos(theta_ccw))
       const ay = center + Math.floor(inner_radius * Math.sin(theta_ccw))
@@ -121,7 +121,7 @@ export default class PolarGrid extends Grid {
       ctx.stroke()
     } // end for
 
-    ctx.arc(center, center, this.rows * ring_height, 0, 2 * Math.PI)
+    ctx.arc(center, center, this.rows * cellSize, 0, 2 * Math.PI)
     ctx.stroke()
   }
 }
