@@ -1,27 +1,18 @@
 import Grid from '../mazes/Grid.js'
 import BinaryTree from '../mazes/algorithms/BinaryTree.js'
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
-import { primsAlgorithm, createMazeMesh } from '/utils/mazes.js'
+import { createMazeMesh } from '/utils/mazes.js'
 
-const h = 8
-const w = 8
-const grid = new Grid(h, w)
+const grid = new Grid(10)
 BinaryTree.on(grid)
-
-console.log(grid.toMatrix())
-
-const cellSize = 20
-
-grid.draw(cellSize)
-
-/* 3D */
+const matrix = grid.toMatrix()
 
 hemLight()
 
 camera.position.set(0, 7, 10)
 const controls = createOrbitControls()
 
-const maze = createMazeMesh({ matrix: grid.toMatrix() })
+const maze = createMazeMesh({ matrix })
 scene.add(maze)
 
 /* LOOP */
