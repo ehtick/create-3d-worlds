@@ -82,6 +82,30 @@ export default class Grid {
     return this.cell(row, column)
   }
 
+  get deadends() {
+    const list = []
+    for (const cell of this.each_cell())
+      if (cell.links_length == 1)
+        list.push(cell)
+    return list
+  }
+
+  braid(percent = 0.5) {
+    const { deadends } = this
+    shuffle(deadends)
+    deadends.forEach(cell => {
+      if (cell.links_length != 1 || Math.random() > percent)
+        return
+
+      const neighbors = cell.neighbors.filter(c => !c.linked(cell))
+      let best = neighbors.filter(c => c.links_length == 1)
+      if (best.length == 0) best = neighbors
+
+      const neighbor = best[Math.floor(Math.random() * best.length)]
+      cell.link(neighbor)
+    })
+  }
+
   contents_of(cell) {
     const distance = this.distances?.get(cell)
     if (distance >= 0)
@@ -127,29 +151,5 @@ export default class Grid {
       matrix.push(bottom)
     }
     return matrix
-  }
-
-  get deadends() {
-    const list = []
-    for (const cell of this.each_cell())
-      if (cell.links_length == 1)
-        list.push(cell)
-    return list
-  }
-
-  braid(percent = 1.0) {
-    const { deadends } = this
-    shuffle(deadends)
-    deadends.forEach(cell => {
-      if (cell.links_length != 1 || Math.random() > percent)
-        return
-
-      const neighbors = cell.neighbors.filter(c => !c.linked(cell))
-      let best = neighbors.filter(c => c.links_length == 1)
-      if (best.length == 0) best = neighbors
-
-      const neighbor = best[Math.floor(Math.random() * best.length)]
-      cell.link(neighbor)
-    })
   }
 }

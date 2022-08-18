@@ -22,6 +22,5 @@ export default class SideWinder {
 export function sideWinder(rows, columns) {
   const grid = new Grid(rows, columns)
   SideWinder.on(grid)
-  const matrix = grid.toMatrix()
-  return matrix
+  return grid.toMatrix()
 }

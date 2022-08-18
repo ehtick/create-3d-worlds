@@ -1,3 +1,5 @@
+import Grid from '../Grid.js'
+
 export default class RecursiveDivision {
   static on(grid) {
     this.grid = grid
@@ -45,4 +47,12 @@ export default class RecursiveDivision {
     this.divide(row, column, height, divide_east_of + 1)
     this.divide(row, column + divide_east_of + 1, height, width - divide_east_of - 1)
   }
+}
+
+export function recursiveDivision(rows, columns) {
+  const grid = new Grid(rows, columns)
+  RecursiveDivision.on(grid)
+  console.log(grid)
+  console.log(grid.toString())
+  return grid.toMatrix()
 }
