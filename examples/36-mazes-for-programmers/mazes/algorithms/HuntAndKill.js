@@ -1,3 +1,4 @@
+import Grid from '../Grid.js'
 import { sample } from '../utils.js'
 
 export default class HuntAndKill {
@@ -27,4 +28,10 @@ export default class HuntAndKill {
       }
     } // end while
   }
+}
+
+export function huntAndKill(rows, columns) {
+  const grid = new Grid(rows, columns)
+  HuntAndKill.on(grid)
+  return grid.toMatrix()
 }

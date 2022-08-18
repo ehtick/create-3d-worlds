@@ -1,12 +1,8 @@
-import Grid from '../mazes/Grid.js'
-import RecursiveBacktracker from '../mazes/algorithms/RecursiveBacktracker.js'
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { createMazeMesh } from '/utils/mazes.js'
+import { wilsons } from '../mazes/algorithms/Wilsons.js'
 
-const grid = new Grid(20)
-RecursiveBacktracker.on(grid)
-
-const matrix = grid.toMatrix()
+const matrix = wilsons(20)
 
 hemLight()
 

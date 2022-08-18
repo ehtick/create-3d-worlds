@@ -1,3 +1,4 @@
+import Grid from '../Grid.js'
 import { sample } from '../utils.js'
 
 export default class Wilsons {
@@ -28,4 +29,10 @@ export default class Wilsons {
       }
     }
   }
+}
+
+export function wilsons(rows, columns) {
+  const grid = new Grid(rows, columns)
+  Wilsons.on(grid)
+  return grid.toMatrix()
 }

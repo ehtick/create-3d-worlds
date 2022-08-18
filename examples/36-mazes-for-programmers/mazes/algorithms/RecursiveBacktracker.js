@@ -1,3 +1,4 @@
+import Grid from '../Grid.js'
 import { sample } from '../utils.js'
 
 /* depth-first search */
@@ -17,4 +18,10 @@ export default class RecursiveBacktracker {
       }
     }
   }
+}
+
+export function recursiveBacktracker(rows, columns) {
+  const grid = new Grid(rows, columns)
+  RecursiveBacktracker.on(grid)
+  return grid.toMatrix()
 }

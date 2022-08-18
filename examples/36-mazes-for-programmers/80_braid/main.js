@@ -1,13 +1,11 @@
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { createMazeMesh } from '/utils/mazes.js'
-
 import Grid from '../mazes/Grid.js'
-import HuntAndKill from '../mazes/algorithms/HuntAndKill.js'
+import RecursiveBacktracker from '../mazes/algorithms/RecursiveBacktracker.js'
 
 const grid = new Grid(20)
-console.log(grid)
-HuntAndKill.on(grid)
-
+RecursiveBacktracker.on(grid)
+grid.braid(0.5) // remove deadends
 const matrix = grid.toMatrix()
 
 hemLight()
