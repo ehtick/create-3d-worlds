@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { createBox } from '/utils/geometry.js'
 
+const { Vector2, Vector3 } = THREE
 const { randInt, randFloat } = THREE.Math
 
 const EMPTY = 0
@@ -226,13 +227,12 @@ const isLinked = (cellA, cellB) => {
   return !!link
 }
 
-// TODO: implement without a mesh
-const lookAt = (geometry, p1, p2) => {
+// TODO: implement without a mesh?
+const turnTo = (geometry, p1, p2) => {
   const mesh = new THREE.Mesh(geometry)
-  mesh.position.copy(p1)
+  mesh.position.set(p1.x, 0, p1.z)
   mesh.lookAt(p2)
   mesh.updateMatrix()
-
   geometry.applyMatrix4(mesh.matrix)
 }
 
@@ -242,51 +242,48 @@ function createPipe(p1, p2) {
   geometry.translate(0, -h / 2, 0)
   geometry.rotateX(-Math.PI / 2)
 
-  lookAt(geometry, p1, p2)
+  turnTo(geometry, p1, p2)
   return geometry
 }
 
 function createBlock(p1, p2, castle = true) {
-  const distance = new THREE.Vector2(0, 0).distanceTo(new THREE.Vector2(p1.x, p1.z))
+  const distanceToCenter = new Vector2(0, 0).distanceTo(new Vector2(p1.x, p1.z))
   const width = randFloat(2, 4)
-  const height = castle ? (21 - distance / 10) * 5 : randFloat(2, 8)
+  const height = castle ? (21 - distanceToCenter / 10) * 5 : randFloat(2, 8)
   const depth = p1.distanceTo(p2)
   const geometry = new THREE.BoxGeometry(width, height, depth)
   geometry.translate(0, height / 2, depth / 2)
 
-  lookAt(geometry, p1, p2)
+  turnTo(geometry, p1, p2)
   return geometry
 }
 
-export const createCircularMazeMesh = (grid, connect = createBlock) => {
+export const createCircularMazeMesh = (grid, connect = createBlock, color = 'white') => {
   const geometries = []
 
   for (const row of grid)
     for (const cell of row)
       if (cell.row) {
         if (!cell.inward || !isLinked(cell, cell.inward)) {
-          const p1 = new THREE.Vector3(cell.innerCcwX, 0, cell.innerCcwY)
-          const p2 = new THREE.Vector3(cell.innerCwX, 0, cell.innerCwY)
-          const line = connect(p1, p2)
-          geometries.push(line)
+          const p1 = new Vector3(cell.innerCcwX, 0, cell.innerCcwY)
+          const p2 = new Vector3(cell.innerCwX, 0, cell.innerCwY)
+          geometries.push(connect(p1, p2))
         }
 
         if (!cell.cw || !isLinked(cell, cell.cw)) {
-          const p1 = new THREE.Vector3(cell.innerCwX, 0, cell.innerCwY)
-          const p2 = new THREE.Vector3(cell.outerCwX, 0, cell.outerCwY)
-          const line = connect(p1, p2)
-          geometries.push(line)
+          const p1 = new Vector3(cell.innerCwX, 0, cell.innerCwY)
+          const p2 = new Vector3(cell.outerCwX, 0, cell.outerCwY)
+          geometries.push(connect(p1, p2))
         }
 
         if (cell.row === grid.length - 1 && cell.col !== row.length * 0.75) {
-          const p1 = new THREE.Vector3(cell.outerCcwX, 0, cell.outerCcwY)
-          const p2 = new THREE.Vector3(cell.outerCwX, 0, cell.outerCwY)
-          const line = connect(p1, p2)
-          geometries.push(line)
+          const p1 = new Vector3(cell.outerCcwX, 0, cell.outerCcwY)
+          const p2 = new Vector3(cell.outerCwX, 0, cell.outerCwY)
+          geometries.push(connect(p1, p2))
         }
       }
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
-  const material = new THREE.MeshLambertMaterial({ color: 'white' })
+  const material = new THREE.MeshLambertMaterial({ color })
   return new THREE.Mesh(geometry, material)
 }
 
@@ -294,6 +291,6 @@ export const createCircularMazeMesh = (grid, connect = createBlock) => {
 
 export const createCircularCity = grid => createCircularMazeMesh(grid, createBlock)
 
-export const createCircularPipes = grid => createCircularMazeMesh(grid, createPipe)
+export const createCircularPipes = grid => createCircularMazeMesh(grid, createPipe, 'gray')
 
 export const createCircularRuins = grid => createCircularMazeMesh(grid, (p1, p2) => createBlock(p1, p2, false))

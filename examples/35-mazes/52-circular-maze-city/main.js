@@ -2,9 +2,10 @@ import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 import { createSunLight } from '/utils/light.js'
 import { createMaze } from '/utils/circular-maze.js'
 import { createCircularCity } from '/utils/mazes.js'
+import { OutlineEffect } from '/node_modules/three/examples/jsm/effects/OutlineEffect.js'
 
 const sun = createSunLight()
-sun.position.set(0, 150, -200)
+sun.position.set(50, 150, 200)
 scene.add(sun)
 createOrbitControls()
 
@@ -20,7 +21,9 @@ scene.add(mesh)
 
 /* LOOP */
 
+const effect = new OutlineEffect(renderer, { defaultThickness: 0.003 })
+
 void function render() {
   requestAnimationFrame(render)
-  renderer.render(scene, camera)
+  effect.render(scene, camera)
 }()
