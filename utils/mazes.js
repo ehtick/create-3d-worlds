@@ -181,6 +181,7 @@ export function createMazeMesh({ matrix, size = 1, maxSize = size, texture = 'co
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     if (val > 0) {
+      console.log(val)
       // render wall
       const height = randInt(size, maxSize)
       const geometry = new THREE.BoxGeometry(size, height, size)
@@ -231,7 +232,8 @@ export function randomMatrix(size = 10, wallPercent = .3) {
 /* CIRCULAR MAZE */
 
 const isLinked = (cellA, cellB) => {
-  const link = cellA.links.find(l => l.row === cellB.row && l.col === cellB.col)
+  const cellLinks = Array.isArray(cellA.links) ? cellA.links : Object.values(cellA.links)
+  const link = cellLinks.find(l => l.row === cellB.row && l.col === cellB.col)
   return !!link
 }
 
@@ -266,27 +268,42 @@ function createBlock(p1, p2, castle = true) {
   return geometry
 }
 
-export const createCircularMazeMesh = (grid, connect = createBlock, color = 'white') => {
+export const createCircularMazeMesh = (grid, connect = createBlock, color = 'white', cellSize = 10) => {
+  const center = 0
   const geometries = []
-
   for (const row of grid)
     for (const cell of row)
       if (cell.row) {
+        const theta = 2 * Math.PI / row.length
+        const inner_radius = cell.row * cellSize
+        const outer_radius = (cell.row + 1) * cellSize
+        const theta_ccw = cell.col * theta
+        const theta_cw = (cell.col + 1) * theta
+
+        const innerCcwX = Math.round(center + (inner_radius * Math.cos(theta_ccw)))
+        const innerCcwY = Math.round(center + (inner_radius * Math.sin(theta_ccw)))
+        const outerCcwX = Math.round(center + (outer_radius * Math.cos(theta_ccw)))
+        const outerCcwY = Math.round(center + (outer_radius * Math.sin(theta_ccw)))
+        const innerCwX = Math.round(center + (inner_radius * Math.cos(theta_cw)))
+        const innerCwY = Math.round(center + (inner_radius * Math.sin(theta_cw)))
+        const outerCwX = Math.round(center + (outer_radius * Math.cos(theta_cw)))
+        const outerCwY = Math.round(center + (outer_radius * Math.sin(theta_cw)))
+
         if (!cell.inward || !isLinked(cell, cell.inward)) {
-          const p1 = new Vector3(cell.innerCcwX, 0, cell.innerCcwY)
-          const p2 = new Vector3(cell.innerCwX, 0, cell.innerCwY)
+          const p1 = new Vector3(innerCcwX, 0, innerCcwY)
+          const p2 = new Vector3(innerCwX, 0, innerCwY)
           geometries.push(connect(p1, p2))
         }
 
         if (!cell.cw || !isLinked(cell, cell.cw)) {
-          const p1 = new Vector3(cell.innerCwX, 0, cell.innerCwY)
-          const p2 = new Vector3(cell.outerCwX, 0, cell.outerCwY)
+          const p1 = new Vector3(innerCwX, 0, innerCwY)
+          const p2 = new Vector3(outerCwX, 0, outerCwY)
           geometries.push(connect(p1, p2))
         }
 
         if (cell.row === grid.length - 1 && cell.col !== row.length * 0.75) {
-          const p1 = new Vector3(cell.outerCcwX, 0, cell.outerCcwY)
-          const p2 = new Vector3(cell.outerCwX, 0, cell.outerCwY)
+          const p1 = new Vector3(outerCcwX, 0, outerCcwY)
+          const p2 = new Vector3(outerCwX, 0, outerCwY)
           geometries.push(connect(p1, p2))
         }
       }
