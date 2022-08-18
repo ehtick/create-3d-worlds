@@ -181,7 +181,6 @@ export function createMazeMesh({ matrix, size = 1, maxSize = size, texture = 'co
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     if (val > 0) {
-      console.log(val)
       // render wall
       const height = randInt(size, maxSize)
       const geometry = new THREE.BoxGeometry(size, height, size)

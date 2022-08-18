@@ -1,4 +1,5 @@
 import { sample } from '../utils.js'
+import Grid from '../Grid.js'
 
 export default class BinaryTree {
   static on(grid) {
@@ -10,4 +11,11 @@ export default class BinaryTree {
       if (neighbor) cell.link(neighbor)
     }
   }
+}
+
+export function binaryTree(rows, columns) {
+  const grid = new Grid(rows, columns)
+  BinaryTree.on(grid)
+  const matrix = grid.toMatrix()
+  return matrix
 }
