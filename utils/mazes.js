@@ -179,11 +179,17 @@ export function createMazeMesh({ matrix, size = 1, maxSize = size, texture = 'co
   const map = textureLoader.load(`/assets/textures/${texture}`)
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
-    if (!val) return
-    const height = randInt(size, maxSize)
-    const geometry = new THREE.BoxGeometry(size, height, size)
-    geometry.translate(i, height * .5, j)
-    geometries.push(geometry)
+    if (!Number(val)) return
+    if (val > 0) {
+      const height = randInt(size, maxSize)
+      const geometry = new THREE.BoxGeometry(size, height, size)
+      geometry.translate(i, height * .5, j)
+      geometries.push(geometry)
+    } else {
+      const geometry = new THREE.SphereGeometry(size * .1)
+      geometry.translate(i, size * .05, j)
+      geometries.push(geometry)
+    }
   }))
 
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
