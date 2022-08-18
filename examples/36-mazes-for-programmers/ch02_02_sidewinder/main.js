@@ -1,11 +1,8 @@
-import Grid from '../mazes/Grid.js'
-import SideWinder from '../mazes/algorithms/SideWinder.js'
+import { sideWinder } from '../mazes/algorithms/SideWinder.js'
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { createMazeMesh } from '/utils/mazes.js'
 
-const grid = new Grid(10)
-SideWinder.on(grid)
-const matrix = grid.toMatrix()
+const matrix = sideWinder(10)
 
 hemLight()
 

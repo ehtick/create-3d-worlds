@@ -1,13 +1,8 @@
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { createMazeMesh } from '/utils/mazes.js'
+import { aldousBroder } from '../mazes/algorithms/AldousBroder.js'
 
-import AldousBroder from '../mazes/algorithms/AldousBroder.js'
-import Grid from '../mazes/Grid.js'
-
-const grid = new Grid(20)
-AldousBroder.on(grid)
-
-const matrix = grid.toMatrix()
+const matrix = aldousBroder(20)
 
 hemLight()
 

@@ -3,7 +3,7 @@ import { sample } from './utils.js'
 export default class Distances {
   constructor(root) {
     this.root = root
-    this.cells = {} // cell_id: distance
+    this.cells = {} // {cell_id: distance}
     this.cells[root.id] = 0
   }
 

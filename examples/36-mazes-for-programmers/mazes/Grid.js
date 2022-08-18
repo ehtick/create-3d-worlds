@@ -1,14 +1,5 @@
-import { shadeOfGreen, shadeOfPurple, shuffle } from './utils.js'
+import { shuffle } from './utils.js'
 import Cell from './Cell.js'
-
-const defaultCanvas = document.getElementById('output')
-const defaultContext = defaultCanvas?.getContext('2d')
-if (defaultCanvas) {
-  defaultCanvas.width = 800
-  defaultCanvas.height = 600
-}
-
-const shade = Math.random() > 0.5 ? shadeOfGreen : shadeOfPurple
 
 export default class Grid {
   constructor(rows = 20, columns = rows) {
@@ -23,7 +14,7 @@ export default class Grid {
     for (let i = 0; i < this.rows; i += 1) {
       this.grid[i] = new Array(this.columns)
       for (let j = 0; j < this.columns; j += 1)
-        this.grid[i][j] = new Cell(i, j, this) // this is needed for OverCell
+        this.grid[i][j] = new Cell(i, j)
     }
   }
 
@@ -91,14 +82,6 @@ export default class Grid {
     return this.cell(row, column)
   }
 
-  init_distances(cell = this.middle_cell) {
-    this.distances = cell.distances
-  }
-
-  init_path(start = this.first_cell, end = this.last_cell) {
-    this.distances = start.distances.path_to(end)
-  }
-
   contents_of(cell) {
     const distance = this.distances?.get(cell)
     if (distance >= 0)
@@ -144,86 +127,6 @@ export default class Grid {
       matrix.push(bottom)
     }
     return matrix
-  }
-
-  background_color_for(cell) {
-    if (cell.weight > 1) return 'red'
-    const distance = this.distances?.get(cell)
-    if (distance === undefined) return 'white'
-    return shade(this.maximum, distance)
-  }
-
-  draw(cellSize = 20, inset = 0, ctx = defaultContext) {
-    inset = Math.floor(cellSize * inset)
-
-    for (const cell of this.each_cell()) {
-      const x = cell.column * cellSize
-      const y = cell.row * cellSize
-      this.draw_cell(ctx, cell, cellSize, x, y, inset)
-    }
-  }
-
-  draw_cell(ctx, cell, cellSize, x1, y1, inset) {
-    const x2 = x1 + inset
-    const x4 = x1 + cellSize
-    const x3 = x4 - inset
-
-    const y2 = y1 + inset
-    const y4 = y1 + cellSize
-    const y3 = y4 - inset
-
-    ctx.fillStyle = this.background_color_for(cell)
-    ctx.fillRect(x1, y1, cellSize, cellSize)
-
-    if (cell.linked(cell.north)) {
-      ctx.moveTo(x2, y1)
-      ctx.lineTo(x2, y2)
-      ctx.moveTo(x3, y1)
-      ctx.lineTo(x3, y2)
-      ctx.stroke()
-    } else {
-      ctx.moveTo(x2, y2)
-      ctx.lineTo(x3, y2)
-      ctx.stroke()
-    }
-    if (cell.linked(cell.south)) {
-      ctx.moveTo(x2, y3)
-      ctx.lineTo(x2, y4)
-      ctx.moveTo(x3, y3)
-      ctx.lineTo(x3, y4)
-      ctx.stroke()
-    } else {
-      ctx.moveTo(x2, y3)
-      ctx.lineTo(x3, y3)
-      ctx.stroke()
-    }
-    if (cell.linked(cell.west)) {
-      ctx.moveTo(x1, y2)
-      ctx.lineTo(x2, y2)
-      ctx.moveTo(x1, y3)
-      ctx.lineTo(x2, y3)
-      ctx.stroke()
-    } else {
-      ctx.moveTo(x2, y2)
-      ctx.lineTo(x2, y3)
-      ctx.stroke()
-    }
-    if (cell.linked(cell.east)) {
-      ctx.moveTo(x3, y2)
-      ctx.lineTo(x4, y2)
-      ctx.moveTo(x3, y3)
-      ctx.lineTo(x4, y3)
-      ctx.stroke()
-    } else {
-      ctx.moveTo(x3, y2)
-      ctx.lineTo(x3, y3)
-      ctx.stroke()
-    }
-  }
-
-  resize_canvas(canvas, cellSize) {
-    canvas.width = cellSize * this.columns + 1
-    canvas.height = cellSize * this.rows + 1
   }
 
   get deadends() {

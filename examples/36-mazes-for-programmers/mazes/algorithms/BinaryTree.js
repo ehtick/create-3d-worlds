@@ -16,6 +16,5 @@ export default class BinaryTree {
 export function binaryTree(rows, columns) {
   const grid = new Grid(rows, columns)
   BinaryTree.on(grid)
-  const matrix = grid.toMatrix()
-  return matrix
+  return grid.toMatrix()
 }

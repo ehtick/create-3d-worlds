@@ -5,10 +5,8 @@ import { createMazeMesh } from '/utils/mazes.js'
 
 const grid = new Grid(8, 8)
 BinaryTree.on(grid)
-
-const { first_cell } = grid
-grid.distances = first_cell.distances.path_to(grid.cell(grid.rows - 1, 0))
-
+const first_cell = grid.cell(0, 0)
+grid.distances = first_cell.distances.path_to(grid.cell(4, 4))
 const matrix = grid.toMatrix()
 
 hemLight()

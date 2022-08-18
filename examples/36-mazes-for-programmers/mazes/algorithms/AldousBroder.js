@@ -1,3 +1,4 @@
+import Grid from '../Grid.js'
 import { sample } from '../utils.js'
 
 export default class AldousBroder {
@@ -14,4 +15,10 @@ export default class AldousBroder {
       cell = neighbor
     }
   }
+}
+
+export function aldousBroder(rows, columns) {
+  const grid = new Grid(rows, columns)
+  AldousBroder.on(grid)
+  return grid.toMatrix()
 }
