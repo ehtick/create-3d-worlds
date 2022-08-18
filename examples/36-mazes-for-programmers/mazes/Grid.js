@@ -152,10 +152,9 @@ export default class Grid {
       const bottom = [1]
       for (const cell of row) {
         if (!cell) continue
-        const distance = -this.distances?.get(cell)
-        const body = distance
+        const val = -this.distances?.get(cell)
         const east_boundary = cell.linked(cell.east) ? 0 : 1
-        top.push(body, east_boundary)
+        top.push(val, east_boundary)
         const south_boundary = cell.linked(cell.south) ? 0 : 1
         const corner = 1
         bottom.push(south_boundary, corner)
