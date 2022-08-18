@@ -278,30 +278,30 @@ export const createCircularMazeMesh = (grid, connect = createBlock, color = 'whi
         const theta_ccw = cell.col * theta
         const theta_cw = (cell.col + 1) * theta
 
-        const innerCcwX = Math.round(center + (inner_radius * Math.cos(theta_ccw)))
-        const innerCcwY = Math.round(center + (inner_radius * Math.sin(theta_ccw)))
-        const outerCcwX = Math.round(center + (outer_radius * Math.cos(theta_ccw)))
-        const outerCcwY = Math.round(center + (outer_radius * Math.sin(theta_ccw)))
-        const innerCwX = Math.round(center + (inner_radius * Math.cos(theta_cw)))
-        const innerCwY = Math.round(center + (inner_radius * Math.sin(theta_cw)))
-        const outerCwX = Math.round(center + (outer_radius * Math.cos(theta_cw)))
-        const outerCwY = Math.round(center + (outer_radius * Math.sin(theta_cw)))
+        const ax = Math.round(center + (inner_radius * Math.cos(theta_ccw)))
+        const ay = Math.round(center + (inner_radius * Math.sin(theta_ccw)))
+        const bx = Math.round(center + (outer_radius * Math.cos(theta_ccw)))
+        const by = Math.round(center + (outer_radius * Math.sin(theta_ccw)))
+        const cx = Math.round(center + (inner_radius * Math.cos(theta_cw)))
+        const cy = Math.round(center + (inner_radius * Math.sin(theta_cw)))
+        const dx = Math.round(center + (outer_radius * Math.cos(theta_cw)))
+        const dy = Math.round(center + (outer_radius * Math.sin(theta_cw)))
 
         if (!cell.inward || !isLinked(cell, cell.inward)) {
-          const p1 = new Vector3(innerCcwX, 0, innerCcwY)
-          const p2 = new Vector3(innerCwX, 0, innerCwY)
+          const p1 = new Vector3(ax, 0, ay)
+          const p2 = new Vector3(cx, 0, cy)
           geometries.push(connect(p1, p2))
         }
 
         if (!cell.cw || !isLinked(cell, cell.cw)) {
-          const p1 = new Vector3(innerCwX, 0, innerCwY)
-          const p2 = new Vector3(outerCwX, 0, outerCwY)
+          const p1 = new Vector3(cx, 0, cy)
+          const p2 = new Vector3(dx, 0, dy)
           geometries.push(connect(p1, p2))
         }
 
         if (cell.row === grid.length - 1 && cell.col !== row.length * 0.75) {
-          const p1 = new Vector3(outerCcwX, 0, outerCcwY)
-          const p2 = new Vector3(outerCwX, 0, outerCwY)
+          const p1 = new Vector3(bx, 0, by)
+          const p2 = new Vector3(dx, 0, dy)
           geometries.push(connect(p1, p2))
         }
       }
