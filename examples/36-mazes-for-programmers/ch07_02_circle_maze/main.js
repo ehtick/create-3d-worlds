@@ -1,17 +1,16 @@
 import * as THREE from 'three'
 import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
-
 import PolarGrid from '../mazes/PolarGrid.js'
 import RecursiveBacktracker from '../mazes/algorithms/RecursiveBacktracker.js'
+import {centerObject} from '/utils/helpers.js'
 
-const { Vector2, Vector3 } = THREE
-const { randFloat } = THREE.Math
+const { Vector3 } = THREE
 
 const grid = new PolarGrid(10)
 RecursiveBacktracker.on(grid)
 
-grid.init_path()
+// grid.init_path()
 grid.draw(20)
 
 /* CIRCULAR MAZE */
@@ -85,14 +84,13 @@ const createCircularMazeMesh = ({ grid, cellSize = 10, rows } = {}) => {
   return new THREE.Mesh(geometry, material)
 }
 
-console.log(grid)
-
 const mesh = createCircularMazeMesh({ grid: grid.grid, rows: grid.rows })
+centerObject(mesh)
 scene.add(mesh)
 
 hemLight()
 
-camera.position.set(0, 7, 10)
+camera.position.set(0, 150, 10)
 const controls = createOrbitControls()
 
 /* LOOP */

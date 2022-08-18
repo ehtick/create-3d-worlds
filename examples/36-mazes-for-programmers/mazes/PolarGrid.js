@@ -2,9 +2,11 @@ import Grid from './Grid.js'
 import PolarCell from './PolarCell.js'
 
 const canvas = document.getElementById('output')
-const ctx = canvas.getContext('2d')
-canvas.width = 800
-canvas.height = 600
+const ctx = canvas?.getContext('2d')
+if (canvas) {
+  canvas.width = 400
+  canvas.height = 400
+}
 
 export default class PolarGrid extends Grid {
   constructor(rows) {
