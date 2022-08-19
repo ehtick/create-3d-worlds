@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { OBJLoader } from '/node_modules/three/examples/jsm/loaders/OBJLoader.js'
 import { MTLLoader } from '/node_modules/three/examples/jsm/loaders/MTLLoader.js'
 import { scene, camera, renderer, initLights, createOrbitControls } from '/utils/scene.js'
-import { CIRCLE } from '/utils/constants.js'
+import { CIRCLE } from '/data/constants.js'
 
 const { randFloat } = THREE.Math
 

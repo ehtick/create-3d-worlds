@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { renderer, camera } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
-import { CIRCLE } from '/utils/constants.js'
+import { CIRCLE } from '/data/constants.js'
 import { scene, createTerrain, createBall, createCrate } from '/utils/physics.js'
 
 camera.position.set(80, 40, 80)

@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { ImprovedNoise } from '/node_modules/three/examples/jsm/math/ImprovedNoise.js'
-import { DEGREE } from '/utils/constants.js'
+import { DEGREE } from '/data/constants.js'
 import { createGroundMaterial, crateGroundGeometry } from '/utils/ground.js'
 
 import Physijs from '/libs/physi-ecma.js'

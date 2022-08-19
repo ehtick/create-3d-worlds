@@ -3,7 +3,7 @@ import keyboard from '/utils/classes/Keyboard.js'
 import { createBox } from '/utils/geometry.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
 import { getHeight, directionBlocked } from '/utils/helpers.js'
-import { dir } from '/utils/constants.js'
+import { dir } from '/data/constants.js'
 
 const { pressed } = keyboard
 const { LoopOnce, LoopRepeat, AnimationMixer } = THREE

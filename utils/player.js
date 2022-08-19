@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import keyboard from '/utils/classes/Keyboard.js'
-import { RIGHT_ANGLE } from '/utils/constants.js'
+import { RIGHT_ANGLE } from '/data/constants.js'
 
 const GRAVITY = .9
 const FRICTION = .5

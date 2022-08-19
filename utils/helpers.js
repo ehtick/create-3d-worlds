@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { scene as defaultScene, camera as defaultCamera } from '/utils/scene.js'
-import { dir } from '/utils/constants.js'
+import { dir } from '/data/constants.js'
 
 const { randFloat } = THREE.Math
 

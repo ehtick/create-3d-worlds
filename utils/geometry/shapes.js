@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { DEGREE, RIGHT_ANGLE } from '/utils/constants.js'
+import { DEGREE, RIGHT_ANGLE } from '/data/constants.js'
 
 /*  AIRPLANE */
 

@@ -1,7 +1,7 @@
 /* global dat */
 import * as THREE from 'three'
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { DEGREE } from '/utils/constants.js'
+import { DEGREE } from '/data/constants.js'
 import { createAirplane } from '/utils/geometry/shapes.js'
 
 /* INIT */

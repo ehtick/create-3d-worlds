@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import Physijs from '/libs/physi-ecma.js'
 import { renderer, camera } from '/utils/scene.js'
 import { dirLight } from '/utils/light.js'
-import { RIGHT_ANGLE } from '/utils/constants.js'
+import { RIGHT_ANGLE } from '/data/constants.js'
 import { scene, createGround } from '/utils/physics.js'
 
 scene.addEventListener('update', () => scene.simulate(undefined, 2))
