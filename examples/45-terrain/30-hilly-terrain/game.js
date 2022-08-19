@@ -1,6 +1,6 @@
 import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { createWater, createHillyTerrain } from '/utils/ground.js'
-import { createTreesOnTerrain } from '/utils/trees.js'
+import { createTreesOnTerrain } from '/utils/geometry/trees.js'
 import { hemLight } from '/utils/light.js'
 
 hemLight()

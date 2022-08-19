@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { scene, renderer, clock, camera, hemLight, addUIControls } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
-import { createFirTrees } from '/utils/trees.js'
+import { createFirTrees } from '/utils/geometry/trees.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import Avatar from '/utils/classes/Avatar.js'
 

@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { camera, scene, renderer, createOrbitControls } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 import { createCrate, createBarrel, createWoodBarrel } from '/utils/geometry.js'
-import { createMoon } from '/utils/planets.js'
+import { createMoon } from '/utils/geometry/planets.js'
 
 createOrbitControls()
 

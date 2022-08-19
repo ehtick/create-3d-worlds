@@ -1,4 +1,4 @@
-import { createSimpleFir } from '/utils/trees.js'
+import { createSimpleFir } from '/utils/geometry/trees.js'
 
 import Entity from './Entity.js'
 

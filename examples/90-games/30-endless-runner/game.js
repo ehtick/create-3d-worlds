@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { camera, scene, renderer, clock, addScoreUI } from '/utils/scene.js'
 import { createBall, createWorldSphere } from '/utils/geometry.js'
-import { createFir } from '/utils/trees.js'
+import { createFir } from '/utils/geometry/trees.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
 import { hemLight } from '/utils/light.js'
 import keyboard from '/utils/classes/Keyboard.js'

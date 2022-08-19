@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { camera, scene, renderer } from '/utils/scene.js'
-import { createMoon, createJupiter } from '/utils/planets.js'
+import { createMoon, createJupiter } from '/utils/geometry/planets.js'
 import { createTerrain, wave, shake } from '/utils/ground.js'
 import { createStars, updateStars } from '/utils/particles.js'
 

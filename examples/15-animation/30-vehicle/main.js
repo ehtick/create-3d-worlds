@@ -1,7 +1,7 @@
 import { scene, renderer, camera, clock } from '/utils/scene.js'
 import { createSunLight } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { createTank } from '/utils/shapes.js'
+import { createTank } from '/utils/geometry/shapes.js'
 
 const sun = createSunLight()
 scene.add(sun)

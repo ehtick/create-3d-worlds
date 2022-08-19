@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { scene, renderer, addUIControls, createOrbitControls } from '/utils/scene.js'
 import { createDistantStars } from '/utils/particles.js'
-import { createEarth, createMoon, createSun } from '/utils/planets.js'
+import { createEarth, createMoon, createSun } from '/utils/geometry/planets.js'
 
 createOrbitControls()
 renderer.setClearColor(0x000000)

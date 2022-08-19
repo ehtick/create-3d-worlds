@@ -2,7 +2,7 @@
 import * as THREE from 'three'
 import { OutlineEffect } from '/node_modules/three/examples/jsm/effects/OutlineEffect.js'
 import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
-import { createTrees } from '/utils/trees.js'
+import { createTrees } from '/utils/geometry/trees.js'
 import { createSunLight } from '/utils/light.js'
 
 const sun = createSunLight()

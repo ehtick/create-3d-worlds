@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { similarColor, randomNuance, randomInSquare, findGroundRecursive } from './helpers.js'
+import { similarColor, randomNuance, randomInSquare, findGroundRecursive } from '../helpers.js'
 
 const { randFloat } = THREE.Math
 

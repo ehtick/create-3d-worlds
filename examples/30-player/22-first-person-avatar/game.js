@@ -1,4 +1,4 @@
-import { createTrees } from '/utils/trees.js'
+import { createTrees } from '/utils/geometry/trees.js'
 import { renderer, camera, clock, createWorldScene } from '/utils/scene.js'
 import Avatar from '/utils/classes/Avatar.js'
 

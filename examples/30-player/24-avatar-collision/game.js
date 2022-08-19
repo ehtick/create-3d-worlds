@@ -1,6 +1,6 @@
 import Avatar from '/utils/classes/Avatar.js'
 import { createWorldScene, renderer, camera, clock } from '/utils/scene.js'
-import { createFirTrees } from '/utils/trees.js'
+import { createFirTrees } from '/utils/geometry/trees.js'
 
 const scene = createWorldScene()
 const avatar = new Avatar()

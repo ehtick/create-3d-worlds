@@ -1,5 +1,5 @@
 import { createWorldScene, renderer, camera, createOrbitControls } from '/utils/scene.js'
-import { createTree, createSketchTree, createFirTree, createFir, createSimpleFir } from '/utils/trees.js'
+import { createTree, createSketchTree, createFirTree, createFir, createSimpleFir } from '/utils/geometry/trees.js'
 
 const scene = createWorldScene()
 createOrbitControls()
