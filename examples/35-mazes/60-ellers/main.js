@@ -1,6 +1,6 @@
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { meshFromMatrix } from '/utils/mazes.js'
-import { ellers } from '../mazes/algorithms/Ellers.js'
+import { ellers } from '/utils/mazes/algorithms/Ellers.js'
 
 const matrix = ellers(20)
 

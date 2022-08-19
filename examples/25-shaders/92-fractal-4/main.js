@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
-import { material, uniforms } from '../../../utils/shaders/fractal-4.js'
+import { material, uniforms } from '/utils/shaders/fractal-4.js'
 
 camera.position.z = 1
 

@@ -1,4 +1,4 @@
-import { binaryTree } from '../mazes/algorithms/BinaryTree.js'
+import { binaryTree } from '/utils/mazes/algorithms/BinaryTree.js'
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { meshFromMatrix } from '/utils/mazes.js'
 

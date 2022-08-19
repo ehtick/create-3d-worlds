@@ -1,6 +1,6 @@
 import { polarMazeRuins } from '/utils/mazes.js'
-import PolarGrid from '../mazes/PolarGrid.js'
-import RecursiveBacktracker from '../mazes/algorithms/RecursiveBacktracker.js'
+import PolarGrid from '/utils/mazes/PolarGrid.js'
+import RecursiveBacktracker from '/utils/mazes/algorithms/RecursiveBacktracker.js'
 import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { createSunLight } from '/utils/light.js'
 

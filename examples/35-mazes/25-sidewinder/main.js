@@ -1,4 +1,4 @@
-import { sideWinder } from '../mazes/algorithms/SideWinder.js'
+import { sideWinder } from '/utils/mazes/algorithms/SideWinder.js'
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { meshFromMatrix } from '/utils/mazes.js'
 

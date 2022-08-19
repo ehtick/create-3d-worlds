@@ -1,6 +1,6 @@
-import Grid from '../mazes/Grid.js'
+import Grid from '/utils/mazes/Grid.js'
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
-import RecursiveDivision from '../mazes/algorithms/RecursiveDivision.js'
+import RecursiveDivision from '/utils/mazes/algorithms/RecursiveDivision.js'
 import { meshFromGrid } from '/utils/mazes.js'
 
 hemLight()

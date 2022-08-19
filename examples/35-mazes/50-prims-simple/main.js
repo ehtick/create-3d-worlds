@@ -1,6 +1,6 @@
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { meshFromMatrix } from '/utils/mazes.js'
-import { simplifiedPrims } from '../mazes/algorithms/Prims.js'
+import { simplifiedPrims } from '/utils/mazes/algorithms/Prims.js'
 
 const matrix = simplifiedPrims(20)
 

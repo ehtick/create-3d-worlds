@@ -1,6 +1,6 @@
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { meshFromMatrix } from '/utils/mazes.js'
-import { aldousBroder } from '../mazes/algorithms/AldousBroder.js'
+import { aldousBroder } from '/utils/mazes/algorithms/AldousBroder.js'
 
 const matrix = aldousBroder(10)
 

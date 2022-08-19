@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import Machine from '../libs/Machine.js'
-import { rndInt } from '../utils/helpers.js'
+import { rndInt } from '/utils/helpers.js'
 
 export default class Entity {
   constructor(model) {

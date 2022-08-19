@@ -1,5 +1,5 @@
-import Grid from '../mazes/Grid.js'
-import HuntAndKill from '../mazes/algorithms/HuntAndKill.js'
+import Grid from '/utils/mazes/Grid.js'
+import HuntAndKill from '/utils/mazes/algorithms/HuntAndKill.js'
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { meshFromMatrix } from '/utils/mazes.js'
 

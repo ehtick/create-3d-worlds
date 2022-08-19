@@ -1,6 +1,6 @@
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { meshFromMatrix } from '/utils/mazes.js'
-import { wilsons } from '../mazes/algorithms/Wilsons.js'
+import { wilsons } from '/utils/mazes/algorithms/Wilsons.js'
 
 const matrix = wilsons(20)
 

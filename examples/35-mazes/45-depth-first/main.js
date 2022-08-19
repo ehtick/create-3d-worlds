@@ -1,4 +1,4 @@
-import { recursiveBacktracker } from '../mazes/algorithms/RecursiveBacktracker.js'
+import { recursiveBacktracker } from '/utils/mazes/algorithms/RecursiveBacktracker.js'
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { meshFromMatrix } from '/utils/mazes.js'
 

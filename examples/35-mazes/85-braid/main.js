@@ -1,7 +1,7 @@
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { meshFromMatrix } from '/utils/mazes.js'
-import Grid from '../mazes/Grid.js'
-import RecursiveBacktracker from '../mazes/algorithms/RecursiveBacktracker.js'
+import Grid from '/utils/mazes/Grid.js'
+import RecursiveBacktracker from '/utils/mazes/algorithms/RecursiveBacktracker.js'
 
 const grid = new Grid(20)
 RecursiveBacktracker.on(grid)
