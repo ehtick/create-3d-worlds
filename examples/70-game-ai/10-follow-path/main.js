@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { createAvatar, updateAvatar } from '/utils/avatar.js'
+import { createAvatar, updateAvatar } from '/utils/geometry/avatar.js'
 import { path, createPathVisual } from './utils.js'
 
 initLights()

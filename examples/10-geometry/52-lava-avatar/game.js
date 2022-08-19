@@ -1,5 +1,5 @@
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
-import { createAvatar, skins, uniforms } from '/utils/avatar.js'
+import { createAvatar, skins, uniforms } from '/utils/geometry/avatar.js'
 
 createOrbitControls()
 

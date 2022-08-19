@@ -1,6 +1,6 @@
 import { clock } from '/utils/scene.js'
 import Player from '/utils/classes/Player.js'
-import { createAvatar, uniforms, skins } from '/utils/avatar.js'
+import { createAvatar, uniforms, skins } from '/utils/geometry/avatar.js'
 
 export default class Avatar extends Player {
   constructor({ skin = skins.STONE, size, ...params } = {}) {
