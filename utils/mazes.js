@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { createBox } from '/utils/geometry.js'
+import { centerObject } from '/utils/helpers.js'
 
 const { Vector2, Vector3 } = THREE
 const { randInt, randFloat } = THREE.Math
@@ -317,3 +318,97 @@ export const createCircularCity = grid => createCircularMazeMesh(grid, createBlo
 export const createCircularPipes = grid => createCircularMazeMesh(grid, createPipe, 'gray')
 
 export const createCircularRuins = grid => createCircularMazeMesh(grid, (p1, p2) => createBlock(p1, p2, false))
+
+/* MESH FROM GRID */
+
+export function meshFromGrid(grid, cellSize = 10, connect = createPipe, color = 'white') {
+  const geometries = []
+
+  for (const row of grid.grid)
+    for (const cell of row) {
+      const x1 = cell.column * cellSize
+      const y1 = cell.row * cellSize
+      const x2 = (cell.column + 1) * cellSize
+      const y2 = (cell.row + 1) * cellSize
+
+      if (!cell.north) {
+        const p1 = new Vector3(x1, 0, y1)
+        const p2 = new Vector3(x2, 0, y1)
+        geometries.push(connect(p1, p2))
+      }
+      if (!cell.west) {
+        const p1 = new Vector3(x1, 0, y1)
+        const p2 = new Vector3(x1, 0, y2)
+        geometries.push(connect(p1, p2))
+      }
+      if ((cell.east && !cell.linked(cell.east)) || !cell.east) {
+        const p1 = new Vector3(x2, 0, y1)
+        const p2 = new Vector3(x2, 0, y2)
+        geometries.push(connect(p1, p2))
+      }
+      if ((cell.south && !cell.linked(cell.south)) || !cell.south) {
+        const p1 = new Vector3(x1, 0, y2)
+        const p2 = new Vector3(x2, 0, y2)
+        geometries.push(connect(p1, p2))
+      }
+    }
+
+  const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
+  const material = new THREE.MeshLambertMaterial({ color })
+  const mesh = new THREE.Mesh(geometry, material)
+  centerObject(mesh)
+  return mesh
+}
+
+/* MESH FROM POLAR GRID */
+
+export function meshFromPolarGrid(grid, cellSize = 10, connect = createPipe, color = 'gray') {
+  const geometries = []
+  const img_size = 2 * grid.rows * cellSize
+  const center = img_size / 2
+
+  for (const row of grid.grid)
+    for (const cell of row) {
+      if (cell.row == 0) continue // center cell is empty
+
+      const cell_count = grid.grid[cell.row].length
+      const theta = 2 * Math.PI / cell_count
+      const inner_radius = cell.row * cellSize
+      const outer_radius = (cell.row + 1) * cellSize
+      const theta_ccw = cell.column * theta // counter-clockwise wall
+      const theta_cw = (cell.column + 1) * theta // clockwise wall
+
+      const ax = Math.round(center + (inner_radius * Math.cos(theta_ccw)))
+      const ay = Math.round(center + (inner_radius * Math.sin(theta_ccw)))
+      const bx = Math.round(center + (outer_radius * Math.cos(theta_ccw)))
+      const by = Math.round(center + (outer_radius * Math.sin(theta_ccw)))
+      const cx = Math.round(center + (inner_radius * Math.cos(theta_cw)))
+      const cy = Math.round(center + (inner_radius * Math.sin(theta_cw)))
+      const dx = Math.round(center + (outer_radius * Math.cos(theta_cw)))
+      const dy = Math.round(center + (outer_radius * Math.sin(theta_cw)))
+
+      if (!cell.linked(cell.inward)) {
+        const p1 = new Vector3(ax, 0, ay)
+        const p2 = new Vector3(cx, 0, cy)
+        geometries.push(connect(p1, p2))
+      }
+      if (!cell.linked(cell.cw)) {
+        const p1 = new Vector3(cx, 0, cy)
+        const p2 = new Vector3(dx, 0, dy)
+        geometries.push(connect(p1, p2))
+      }
+
+      // last ring with entrance
+      if (cell.row === grid.size - 1 && cell.column !== row.length * 0.75) {
+        const p1 = new Vector3(bx, 0, by)
+        const p2 = new Vector3(dx, 0, dy)
+        geometries.push(connect(p1, p2))
+      }
+    }
+
+  const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
+  const material = new THREE.MeshLambertMaterial({ color })
+  const mesh = new THREE.Mesh(geometry, material)
+  centerObject(mesh)
+  return mesh
+}
