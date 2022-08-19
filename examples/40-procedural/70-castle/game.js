@@ -1,5 +1,5 @@
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { buildCastle } from '/utils/towers.js'
+import { buildCastle } from '/utils/geometry/towers.js'
 import { hemLight } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 

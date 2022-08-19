@@ -1,5 +1,5 @@
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { createSpiralStairs } from '/utils/towers.js'
+import { createSpiralStairs } from '/utils/geometry/towers.js'
 import { createGround } from '/utils/ground.js'
 import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
 import Player from '/utils/classes/Player.js'

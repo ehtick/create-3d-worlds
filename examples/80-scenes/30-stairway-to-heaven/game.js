@@ -1,5 +1,5 @@
 import { createWorldScene, camera, renderer, clock } from '/utils/scene.js'
-import { createSpiralStairs } from '/utils/towers.js'
+import { createSpiralStairs } from '/utils/geometry/towers.js'
 import { createTerrain } from '/utils/ground.js'
 import Avatar from '/utils/classes/Avatar.js'
 
