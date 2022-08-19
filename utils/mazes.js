@@ -36,50 +36,6 @@ export function randomMatrix(size = 10, wallPercent = .3) {
   return matrix
 }
 
-/* MAZE GENERATION */
-
-/**
- * Generates a square maze, with a path from one corner to another.
- * https://github.com/wwwtyro/Astray/blob/master/maze.js
- */
-export function generateSquareMaze(size) {
-  let matrix = new Array(size)
-  for (let i = 0; i < size; i++) {
-    matrix[i] = new Array(size)
-    for (let j = 0; j < size; j++)
-      matrix[i][j] = WALL
-  }
-
-  function iterate(matrix, x, y) {
-    matrix[x][y] = EMPTY
-    while (true) {
-      const directions = []
-      if (x > 1 && matrix[x - 2][y] == WALL)
-        directions.push([-1, 0])
-
-      if (x < size - 2 && matrix[x + 2][y] == WALL)
-        directions.push([1, 0])
-
-      if (y > 1 && matrix[x][y - 2] == WALL)
-        directions.push([0, -1])
-
-      if (y < size - 2 && matrix[x][y + 2] == WALL)
-        directions.push([0, 1])
-
-      if (directions.length == 0) return matrix
-
-      const dir = directions[Math.floor(Math.random() * directions.length)]
-      matrix[x + dir[0]][y + dir[1]] = EMPTY
-      iterate(matrix, x + dir[0] * 2, y + dir[1] * 2) // recursion
-    }
-  }
-
-  matrix = iterate(matrix, 1, 1)
-
-  matrix[size - 1][size - 2] = EMPTY // exit hole
-  return matrix
-}
-
 /* MESH FROM MATRIX */
 
 // TODO: add support for multiple textures
