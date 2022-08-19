@@ -1,5 +1,5 @@
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { generateSquareMaze, createMazeMesh } from '/utils/mazes.js'
+import { generateSquareMaze, meshFromMatrix } from '/utils/mazes.js'
 import { initLights } from '/utils/light.js'
 
 initLights()
@@ -9,7 +9,7 @@ createOrbitControls()
 
 const matrix = generateSquareMaze(15)
 
-const mazeMesh = createMazeMesh({ matrix, maxSize: 5 })
+const mazeMesh = meshFromMatrix({ matrix, maxSize: 5 })
 scene.add(mazeMesh)
 
 void function render() {

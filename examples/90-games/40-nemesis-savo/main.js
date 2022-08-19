@@ -7,7 +7,7 @@ import { UNITSIZE, NUM_AI, INITIAL_HEALTH, mapWidth } from './constants.js'
 import { dirLight } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 import { nemesis } from '/data/maps.js'
-import { create3DMap } from '/utils/mazes.js'
+import { meshFromMatrix } from '/utils/mazes.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { handleInput } from '/utils/player.js'
 import { createBullet, createCrate } from '/utils/geometry.js'
@@ -27,7 +27,7 @@ dirLight({ color: 0xF7EFBE, intensity: 0.7, position: [0.5, 1, 0.5] })
 dirLight({ color: 0xF7EFBE, intensity: 0.5, position: [-0.5, -1, -0.5] })
 
 const floor = createFloor({ size: mapWidth * UNITSIZE, file: 'ground.jpg' })
-const walls = create3DMap({ matrix: nemesis, size: UNITSIZE })
+const walls = meshFromMatrix({ matrix: nemesis, size: UNITSIZE })
 scene.add(floor, walls)
 
 camera.position.set(0, 1.5, 0)

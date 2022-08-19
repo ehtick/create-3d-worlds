@@ -1,5 +1,5 @@
 import { createGround } from '/utils/ground.js'
-import { create3DMap } from '/utils/mazes.js'
+import { meshFromMatrix } from '/utils/mazes.js'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
 import Avatar from '/utils/classes/Avatar.js'
 import matrix from '/data/small-map.js'
@@ -11,7 +11,7 @@ const avatar = new Avatar({ size: 1, skin: 'lava' })
 avatar.position.set(12, 0, 12)
 
 const floor = createGround({ file: 'ground.jpg' })
-const walls = create3DMap({ matrix, size: 4 })
+const walls = meshFromMatrix({ matrix, size: 4 })
 
 scene.add(avatar.mesh, floor, walls)
 

@@ -1,6 +1,6 @@
 import { binaryTree } from '../mazes/algorithms/BinaryTree.js'
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
-import { createMazeMesh } from '/utils/mazes.js'
+import { meshFromMatrix } from '/utils/mazes.js'
 
 hemLight()
 
@@ -8,7 +8,7 @@ camera.position.set(0, 7, 10)
 const controls = createOrbitControls()
 
 const matrix = binaryTree(10)
-const maze = createMazeMesh({ matrix })
+const maze = meshFromMatrix({ matrix })
 scene.add(maze)
 
 /* LOOP */

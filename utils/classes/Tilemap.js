@@ -1,4 +1,4 @@
-import { randomMatrix, randomField, create3DMap } from '/utils/mazes.js'
+import { randomMatrix, randomField, meshFromMatrix } from '/utils/mazes.js'
 
 export default class Tilemap {
   constructor(matrix = randomMatrix(), cellSize = 250, origin) {
@@ -40,7 +40,7 @@ export default class Tilemap {
     return { x, z }
   }
 
-  create3DMap({ yModifier } = {}) {
-    return create3DMap({ matrix: this.matrix, size: this.cellSize, yModifier, origin: this.origin })
+  meshFromMatrix({ yModifier } = {}) {
+    return meshFromMatrix({ matrix: this.matrix, size: this.cellSize, yModifier, origin: this.origin })
   }
 }
