@@ -356,16 +356,14 @@ export function meshFromGrid(grid, cellSize = 10, connect = createPipe, color = 
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
   const material = new THREE.MeshLambertMaterial({ color })
   const mesh = new THREE.Mesh(geometry, material)
-  centerObject(mesh)
   return mesh
 }
 
 /* MESH FROM POLAR GRID */
 
-export function meshFromPolarGrid(grid, cellSize = 10, connect = createPipe, color = 'gray') {
+export function meshFromPolarGrid(grid, connect = createPipe, color = 'gray', cellSize = 10) {
+  const center = 0
   const geometries = []
-  const img_size = 2 * grid.rows * cellSize
-  const center = img_size / 2
 
   for (const row of grid.grid)
     for (const cell of row) {
@@ -409,6 +407,11 @@ export function meshFromPolarGrid(grid, cellSize = 10, connect = createPipe, col
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
   const material = new THREE.MeshLambertMaterial({ color })
   const mesh = new THREE.Mesh(geometry, material)
-  centerObject(mesh)
   return mesh
 }
+
+export const polarMazeCity = grid => meshFromPolarGrid(grid, createBlock, 'white')
+
+export const polarMazePipes = grid => meshFromPolarGrid(grid, createPipe, 'gray')
+
+export const polarMazeRuins = grid => meshFromPolarGrid(grid, (p1, p2) => createBlock(p1, p2, false), 'white')
