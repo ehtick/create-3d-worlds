@@ -38,6 +38,8 @@ export function randomMatrix(size = 10, wallPercent = .3) {
 
 /* MESH FROM MATRIX */
 
+const ifFence = (row, j, i) => i == 0 || j == 0 || j == row.length - 1 || i == row.length - 1
+
 // TODO: add support for multiple textures
 // const textures = ['concrete.jpg', 'crate.gif', 'brick.png']
 export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = size, texture = 'concrete.jpg' } = {}) {
@@ -46,8 +48,7 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     if (val > 0) {
-      // render wall
-      const height = randInt(size, maxSize)
+      const height = ifFence(row, j, i) ? size : randInt(size, maxSize)
       const geometry = new THREE.BoxGeometry(size, height, size)
       geometry.translate(i, height * .5, j)
       geometries.push(geometry)
