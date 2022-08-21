@@ -38,17 +38,32 @@ export function randomMatrix(size = 10, wallPercent = .3) {
 
 /* MESH FROM MATRIX */
 
-const ifFence = (row, j, i) => i == 0 || j == 0 || j == row.length - 1 || i == row.length - 1
+const scale = (value, range1, range2) =>
+  (value - range1[0]) * (range2[1] - range2[0]) / (range1[1] - range1[0]) + range2[0]
 
-// TODO: add support for multiple textures
+const isRing = (row, j, i, ringIndex) => i == ringIndex || j == ringIndex || j == row.length - (1 + ringIndex) || i == row.length - (1 + ringIndex)
+
+const pyramidHeight = (row, j, i, size, maxSize) => {
+  const flatRoof = 2
+  const cityCenter = row.length / 2 - flatRoof
+  let height = size
+  for (let ringIndex = 0; ringIndex < cityCenter; ringIndex++) {
+    height = scale(ringIndex, [0, cityCenter], [size, maxSize])
+    if (isRing(row, j, i, ringIndex)) return height
+  }
+  return height
+}
+
+const randomHeight = (row, j, i, size, maxSize) => isRing(row, j, i, 0) ? size : randInt(size, maxSize)
+
 // const textures = ['concrete.jpg', 'crate.gif', 'brick.png']
-export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = size, texture = 'concrete.jpg' } = {}) {
+export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = size, texture = 'concrete.jpg', getHeight = randomHeight } = {}) {
   const map = textureLoader.load(`/assets/textures/${texture}`)
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     if (val > 0) {
-      const height = ifFence(row, j, i) ? size : randInt(size, maxSize)
+      const height = getHeight(row, j, i, size, maxSize)
       const geometry = new THREE.BoxGeometry(size, height, size)
       geometry.translate(i, height * .5, j)
       geometries.push(geometry)
@@ -66,6 +81,10 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
   const mesh = new THREE.Mesh(geometry, material)
   return mesh
 }
+
+export const pyramidFromMatrix = ({ matrix, size, maxSize, texture } = {}) => meshFromMatrix({ matrix, size, maxSize, texture, getHeight: pyramidHeight })
+
+export const randHeightFromMatrix = ({ matrix, size, maxSize, texture } = {}) => meshFromMatrix({ matrix, size, maxSize, texture, getHeight: randomHeight })
 
 /* MESH FROM GRID */
 
@@ -174,7 +193,7 @@ export function meshFromPolarGrid(grid, connect = createPipe, color = 'gray', ce
         geometries.push(connect(p1, p2))
       }
 
-      // last ring with entrance
+      // last ringIndex with entrance
       if (cell.row === grid.size - 1 && cell.column !== row.length * 0.75) {
         const p1 = new Vector3(bx, 0, by)
         const p2 = new Vector3(dx, 0, dy)

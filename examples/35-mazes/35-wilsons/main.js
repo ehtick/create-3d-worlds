@@ -1,15 +1,15 @@
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
-import { meshFromMatrix } from '/utils/mazes.js'
+import { pyramidFromMatrix } from '/utils/mazes.js'
 import { wilsons } from '/utils/mazes/algorithms/Wilsons.js'
 
-const matrix = wilsons(20)
+const matrix = wilsons(12)
 
 hemLight()
 
 camera.position.set(0, 7, 10)
 const controls = createOrbitControls()
 
-const maze = meshFromMatrix({ matrix })
+const maze = pyramidFromMatrix({ matrix, maxSize: 8 })
 scene.add(maze)
 
 /* LOOP */
