@@ -82,9 +82,7 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
   return mesh
 }
 
-export const pyramidFromMatrix = ({ matrix, size, maxSize, texture } = {}) => meshFromMatrix({ matrix, size, maxSize, texture, getHeight: pyramidHeight })
-
-export const randHeightFromMatrix = ({ matrix, size, maxSize, texture } = {}) => meshFromMatrix({ matrix, size, maxSize, texture, getHeight: randomHeight })
+export const pyramidFromMatrix = ({ matrix, size, maxSize = matrix.length * .33, texture } = {}) => meshFromMatrix({ matrix, size, maxSize, texture, getHeight: pyramidHeight })
 
 /* MESH FROM GRID */
 

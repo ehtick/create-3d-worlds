@@ -9,7 +9,7 @@ hemLight()
 camera.position.set(0, 7, 10)
 const controls = createOrbitControls()
 
-const maze = pyramidFromMatrix({ matrix, maxSize: 8 })
+const maze = pyramidFromMatrix({ matrix })
 scene.add(maze)
 
 /* LOOP */
