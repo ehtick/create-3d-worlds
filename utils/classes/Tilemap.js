@@ -40,7 +40,7 @@ export default class Tilemap {
     return { x, z }
   }
 
-  meshFromMatrix({ yModifier } = {}) {
-    return meshFromMatrix({ matrix: this.matrix, size: this.cellSize, yModifier, origin: this.origin })
+  meshFromMatrix() {
+    return meshFromMatrix({ matrix: this.matrix, size: this.cellSize, origin: this.origin })
   }
 }

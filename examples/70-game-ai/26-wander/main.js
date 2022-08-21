@@ -18,7 +18,7 @@ const numEntities = 20
 
 const entities = []
 for (let i = 0; i < numEntities; i++) {
-  const mesh = createBox({ size: 10, yModifier: 2 })
+  const mesh = createBox({ size: 10, height: 20 })
   const entity = new SteeringEntity(mesh)
   entity.maxSpeed = 1
   entity.position.set(randInt(-500, 500), 0, randInt(-500, 500))

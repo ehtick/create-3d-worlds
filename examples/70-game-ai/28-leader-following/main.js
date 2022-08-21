@@ -15,7 +15,7 @@ camera.position.set(0, 100, 100)
 const floor = createFloor({ size: 1000 })
 scene.add(floor)
 
-const whiteBox = createBox({ size: 10, yModifier: 2 })
+const whiteBox = createBox({ size: 10, height: 20 })
 const leader = new SteeringEntity(whiteBox)
 leader.maxSpeed = 1.5
 leader.position.set(randInt(-250, 250), 0, randInt(-250, 250))
@@ -26,7 +26,7 @@ scene.add(leader)
 
 const followers = []
 for (let i = 0; i < 20; i++) {
-  const mesh = createBox({ size: 10, yModifier: 2, color: 0x000000 })
+  const mesh = createBox({ size: 10, height: 20, color: 0x000000 })
   const entity = new SteeringEntity(mesh)
   entity.position.set(randInt(-250, 250), 0, randInt(-250, 250))
   entity.maxSpeed = 1.5,
