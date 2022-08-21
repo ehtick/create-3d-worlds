@@ -54,21 +54,21 @@ const pyramidHeight = (row, j, i, size, maxSize) => {
   return height
 }
 
-const randomHeight = (row, j, i, size, maxSize) => isRing(row, j, i, 0) ? size : randInt(size, maxSize)
+const randomHeight = (row, j, i, size, maxSize) => isRing(row, j, i, 0) ? size : randFloat(size, maxSize)
 
 // const textures = ['concrete.jpg', 'crate.gif', 'brick.png']
-export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = size, texture = 'concrete.jpg', getHeight = randomHeight } = {}) {
+export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = size, texture = 'concrete.jpg', calcHeight = randomHeight, material } = {}) {
   const map = textureLoader.load(`/assets/textures/${texture}`)
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     if (val > 0) {
-      const height = getHeight(row, j, i, size, maxSize)
+      const height = calcHeight(row, j, i, size, maxSize)
       const geometry = new THREE.BoxGeometry(size, height, size)
       geometry.translate(i, height * .5, j)
       geometries.push(geometry)
     } else {
-      // render path
+      // render path if exists
       const geometry = new THREE.SphereGeometry(size * .1)
       geometry.translate(i, size * .05, j)
       geometries.push(geometry)
@@ -77,12 +77,11 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
 
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
   geometry.translate(-matrix[0].length * size * .5, 0, -matrix.length * size * .5)
-  const material = new THREE.MeshPhongMaterial({ map })
-  const mesh = new THREE.Mesh(geometry, material)
+  const mesh = new THREE.Mesh(geometry, material || new THREE.MeshPhongMaterial({ map }))
   return mesh
 }
 
-export const pyramidFromMatrix = ({ matrix, size, maxSize = matrix.length * .33, texture } = {}) => meshFromMatrix({ matrix, size, maxSize, texture, getHeight: pyramidHeight })
+export const pyramidFromMatrix = ({ matrix, size, material, maxSize = matrix.length * .33, texture } = {}) => meshFromMatrix({ matrix, size, material, maxSize, texture, calcHeight: pyramidHeight })
 
 /* MESH FROM GRID */
 

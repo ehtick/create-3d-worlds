@@ -1,6 +1,7 @@
 import { recursiveBacktracker } from '/utils/mazes/algorithms/RecursiveBacktracker.js'
 import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
 import { meshFromMatrix } from '/utils/mazes.js'
+import { material } from '/utils/shaders/bricks-texture.js'
 
 const matrix = recursiveBacktracker(20)
 
@@ -9,7 +10,7 @@ hemLight()
 camera.position.set(0, 7, 10)
 const controls = createOrbitControls()
 
-const maze = meshFromMatrix({ matrix })
+const maze = meshFromMatrix({ matrix, material })
 scene.add(maze)
 
 /* LOOP */

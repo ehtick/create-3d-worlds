@@ -12,7 +12,7 @@ npx live-server
 - createBox: ukinuti zModifier
 
 ### Mazes
-- meshFromMatrix: add support for multiple textures
+- probati razne shadere sa lavirintima
 - srediti kretanje da ne koristi raycasting
 
 ## Konačni automat

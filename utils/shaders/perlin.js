@@ -24,8 +24,8 @@ const fragmentShader = /* glsl */`
 `
 
 const uniforms = {
-  scale: { type: 'f', value: 10.0 },
-  displacement: { type: 'f', value: 20.0 }
+  scale: { type: 'f', value: 4.2 },
+  displacement: { type: 'f', value: 0.4 }
 }
 
 export const material = new THREE.ShaderMaterial({
