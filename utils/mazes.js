@@ -56,7 +56,6 @@ const pyramidHeight = (row, j, i, size, maxSize) => {
 
 const randomHeight = (row, j, i, size, maxSize) => isRing(row, j, i, 0) ? size : randFloat(size, maxSize)
 
-// const textures = ['concrete.jpg', 'crate.gif', 'brick.png']
 export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = size, texture = 'concrete.jpg', calcHeight = randomHeight, material } = {}) {
   const map = textureLoader.load(`/assets/textures/${texture}`)
   const geometries = []
@@ -68,7 +67,7 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
       geometry.translate(i, height * .5, j)
       geometries.push(geometry)
     } else {
-      // render path if exists
+      // render path helper if exists
       const geometry = new THREE.SphereGeometry(size * .1)
       geometry.translate(i, size * .05, j)
       geometries.push(geometry)

@@ -12,7 +12,6 @@ npx live-server
 - createBox: ukinuti zModifier
 
 ### Mazes
-- probati razne shadere sa lavirintima
 - srediti kretanje da ne koristi raycasting
 
 ## Konačni automat
