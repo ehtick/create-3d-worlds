@@ -14,7 +14,7 @@ camera.position.y = 15
 
 const floor = createGround({ file: 'ground.jpg' })
 scene.add(floor)
-const stairs = createSpiralStairs({ radius: 25, stairsInCirle: 50, floorHeight: 15, blockSize: 2, zModifier: 5, xModifier: 2 })
+const stairs = createSpiralStairs({ radius: 25, stairsInCirle: 50, floorHeight: 15, depth: 5, size: 4 })
 scene.add(stairs)
 
 const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 4, axis: [0, 1, 0], angle: Math.PI })

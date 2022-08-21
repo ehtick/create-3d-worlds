@@ -14,7 +14,7 @@ function createCircle({ r = 100, y = 0, size = 10, color } = {}) {
   for (let i = 0; i <= CIRCLE; i += step) {
     const x = Math.cos(i) * r
     const z = Math.sin(i) * r
-    const block = createBox({ size, zModifier: 2, color })
+    const block = createBox({ size, depth: 2 * size, color })
     block.position.set(x, y, z)
     block.rotateY(-i)
     blocks.push(block)
@@ -45,14 +45,14 @@ export function createSpaceTower({ floors = 6, size = 5, r = 5 } = {}) {
 
 // STAIRWAY TO HEAVEN
 
-export function createSpiralStairs({ floors = 5, radius = 30, stairsInCirle = 30, floorHeight = 20, blockSize = 4, zModifier = 2, xModifier = 1 } = {}) {
+export function createSpiralStairs({ floors = 5, radius = 30, stairsInCirle = 30, floorHeight = 20, depth = 6, size = 4 } = {}) {
   const stairs = new THREE.Group
   const step = CIRCLE / stairsInCirle
 
   for (let i = 0; i <= CIRCLE * floors; i += step) {
     const x = Math.cos(i) * radius
     const z = Math.sin(i) * radius
-    const block = createBox({ zModifier, xModifier, size: blockSize })
+    const block = createBox({ depth, size })
     block.position.set(x, i * floorHeight, z)
     block.rotateY(Math.PI / 2 - i)
     stairs.add(block)

@@ -7,11 +7,8 @@ const textureLoader = new THREE.TextureLoader()
 
 /* BOXES */
 
-export function createBox({ size = 1, file, bumpFile, color = randomNuance({ h: 0.1, s: 0.01, l: .75 }), zModifier = 1, yModifier = 1, xModifier = 1 } = {}) {
-  const xSize = size * xModifier
-  const ySize = size * yModifier
-  const zSize = size * zModifier
-  const geometry = new THREE.BoxGeometry(xSize, ySize, zSize)
+export function createBox({ size = 1, height = size, depth = size, file, bumpFile, color = randomNuance({ h: 0.1, s: 0.01, l: .75 }) } = {}) {
+  const geometry = new THREE.BoxGeometry(size, height, depth)
   const options = {
     map: file ? textureLoader.load(`/assets/textures/${file}`) : null,
     color: !file ? color : null,
@@ -19,7 +16,7 @@ export function createBox({ size = 1, file, bumpFile, color = randomNuance({ h: 
   }
   const material = new THREE.MeshPhongMaterial(options)
   const mesh = new THREE.Mesh(geometry, material)
-  mesh.translateY(ySize / 2)
+  mesh.translateY(height / 2)
   mesh.updateMatrix()
   mesh.geometry.applyMatrix4(mesh.matrix)
   return mesh
