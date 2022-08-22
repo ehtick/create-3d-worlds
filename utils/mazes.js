@@ -60,6 +60,7 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
   const map = textureLoader.load(`/assets/textures/${texture}`)
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
+<<<<<<< Updated upstream
     if (!val) return
     if (val > 0) {
       const height = calcHeight(row, j, i, size, maxSize)
@@ -72,6 +73,21 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
       geometry.translate(i, size * .05, j)
       geometries.push(geometry)
     }
+=======
+    let height = val > 0
+      ? calcHeight(row, j, i, size, maxSize)
+      : calcHeight(row, j, i, size, maxSize) - 2
+    if (height < 0) height = 0
+    const geometry = new THREE.BoxGeometry(size, height, size)
+    geometry.translate(i, height * .5, j)
+    geometries.push(geometry)
+    // else {
+    //   // render path if exists
+    //   const geometry = new THREE.SphereGeometry(size * .1)
+    //   geometry.translate(i, size * .05, j)
+    //   geometries.push(geometry)
+    // }
+>>>>>>> Stashed changes
   }))
 
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
