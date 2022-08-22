@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
-import { centerMesh } from '/utils/helpers.js'
+import { centerGeometry } from '/utils/helpers.js'
 import chroma from '/libs/chroma.js'
 
 const { Vector2, Vector3 } = THREE
@@ -36,14 +36,6 @@ export function randomMatrix(size = 10, wallPercent = .3) {
       matrix[y][x] = Math.random() < wallPercent ? WALL : EMPTY
   }
   return matrix
-}
-
-export function getFieldValue(matrix, playerX, playerZ, size) {
-  const x = Math.floor(playerX / size + matrix.length / 2)
-  const y = Math.floor(playerZ / size + matrix.length / 2)
-  if (x < 0 || x >= matrix[0].length || y < 0 || y >= matrix.length)
-    return -1
-  return matrix[y][x]
 }
 
 /* MESH FROM MATRIX */
@@ -94,13 +86,13 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
   }))
 
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
+  centerGeometry(geometry)
 
   const options = {
     vertexColors: !texture,
     map: texture ? textureLoader.load(`/assets/textures/${texture}`) : null
   }
   const mesh = new THREE.Mesh(geometry, material || new THREE.MeshPhongMaterial(options))
-  centerMesh(mesh)
   return mesh
 }
 

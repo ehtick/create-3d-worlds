@@ -10,7 +10,7 @@ npx live-server
 ```
 
 ### Mazes
-- srediti kretanje da ne koristi raycasting
+- dodati igrača da ide po lavirintima
 
 ## Konačni automat
 - srediti capoeira girl

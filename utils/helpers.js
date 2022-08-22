@@ -78,6 +78,14 @@ export const centerMesh = mesh => {
   mesh.position.multiplyScalar(-1)
 }
 
+// different from geometry.center() - not adjusting height
+export const centerGeometry = geometry => {
+  const _offset = new THREE.Vector3()
+  geometry.computeBoundingBox()
+  geometry.boundingBox.getCenter(_offset).negate()
+  geometry.translate(_offset.x, 0, _offset.z)
+}
+
 export const adjustHeight = mesh => {
   mesh.translateY(getHeight(mesh) / 2)
 }

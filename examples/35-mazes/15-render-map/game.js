@@ -1,8 +1,8 @@
-import { scene, renderer, camera, hemLight } from '/utils/scene.js'
-import { meshFromMatrix, getFieldValue } from '/utils/mazes.js'
+import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
+import { meshFromMatrix } from '/utils/mazes.js'
 import { createGround } from '/utils/ground.js'
+import { hemLight } from '/utils/light.js'
 import matrix from '/data/small-map.js'
-import Avatar from '/utils/classes/Avatar.js'
 
 hemLight()
 
@@ -10,20 +10,15 @@ camera.position.set(0, 7, 10)
 
 scene.add(createGround({ file: 'ground.jpg', size: 100 }))
 
-const map = meshFromMatrix({ matrix, size: 10 })
+const map = meshFromMatrix({ matrix, texture: 'concrete.jpg' })
 scene.add(map)
 
-const player = new Avatar()
-player.add(camera)
-scene.add(player.mesh)
+const controls = createOrbitControls()
 
 /* LOOP */
 
 void function gameLoop() {
   requestAnimationFrame(gameLoop)
-  player.update()
-  const { x, z } = player.position
-  const val = getFieldValue(matrix, x, z, 10)
-  console.log(val)
+  controls.update()
   renderer.render(scene, camera)
 }()
