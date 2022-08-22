@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
+import chroma from '/libs/chroma.js'
 
 const { Vector2, Vector3 } = THREE
 const { randInt, randFloat } = THREE.Math
@@ -56,43 +57,39 @@ const pyramidHeight = (row, j, i, size, maxSize) => {
 
 const randomHeight = (row, j, i, size, maxSize) => isRing(row, j, i, 0) ? size : randFloat(size, maxSize)
 
-export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = size, texture = 'concrete.jpg', calcHeight = randomHeight, material } = {}) {
-  const map = textureLoader.load(`/assets/textures/${texture}`)
+export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = size, texture, calcHeight = randomHeight, material } = {}) {
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
-<<<<<<< Updated upstream
     if (!val) return
     if (val > 0) {
       const height = calcHeight(row, j, i, size, maxSize)
       const geometry = new THREE.BoxGeometry(size, height, size)
       geometry.translate(i, height * .5, j)
+
+      const f = chroma.scale([0x999999, 0xffffff]).domain([0, maxSize])
+      const color = new THREE.Color(f(height).hex())
+      const colors = []
+      for (let i = 0, l = geometry.attributes.position.count; i < l; i ++)
+        colors.push(color.r, color.g, color.b)
+      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+
       geometries.push(geometry)
     } else {
-      // render path helper if exists
+      // render path if exists
       const geometry = new THREE.SphereGeometry(size * .1)
       geometry.translate(i, size * .05, j)
       geometries.push(geometry)
     }
-=======
-    let height = val > 0
-      ? calcHeight(row, j, i, size, maxSize)
-      : calcHeight(row, j, i, size, maxSize) - 2
-    if (height < 0) height = 0
-    const geometry = new THREE.BoxGeometry(size, height, size)
-    geometry.translate(i, height * .5, j)
-    geometries.push(geometry)
-    // else {
-    //   // render path if exists
-    //   const geometry = new THREE.SphereGeometry(size * .1)
-    //   geometry.translate(i, size * .05, j)
-    //   geometries.push(geometry)
-    // }
->>>>>>> Stashed changes
   }))
 
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
   geometry.translate(-matrix[0].length * size * .5, 0, -matrix.length * size * .5)
-  const mesh = new THREE.Mesh(geometry, material || new THREE.MeshPhongMaterial({ map }))
+
+  const options = {
+    vertexColors: THREE.FaceColors,
+    map: texture ? textureLoader.load(`/assets/textures/${texture}`) : null
+  }
+  const mesh = new THREE.Mesh(geometry, material || new THREE.MeshPhongMaterial(options))
   return mesh
 }
 
