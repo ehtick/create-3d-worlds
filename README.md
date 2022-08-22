@@ -11,6 +11,7 @@ npx live-server
 
 ### Mazes
 - dodati igrača da ide po lavirintima
+- dodati tween avataru kada usporava, da ne prekine korak naglo
 
 ## Konačni automat
 - srediti capoeira girl

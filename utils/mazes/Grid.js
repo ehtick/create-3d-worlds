@@ -150,6 +150,8 @@ export default class Grid {
       matrix.push(top)
       matrix.push(bottom)
     }
+    // matrix[0][1] = 0 // enter in first row
+    matrix[matrix.length - 1][matrix.length - 2] = 0 // enter in last row
     return matrix
   }
 }
