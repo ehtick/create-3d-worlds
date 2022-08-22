@@ -1,4 +1,12 @@
-import { randomMatrix, randomField, meshFromMatrix, getFieldValue } from '/utils/mazes.js'
+import { randomMatrix, randomField, meshFromMatrix } from '/utils/mazes.js'
+
+function getFieldValue(matrix, x, z) {
+  x = Math.floor(x) // eslint-disable-line no-param-reassign
+  z = Math.floor(z) // eslint-disable-line no-param-reassign
+  if (x < 0 || x >= matrix[0].length || z < 0 || z >= matrix.length)
+    return -1
+  return matrix[z][x]
+}
 
 export default class Tilemap {
   constructor(matrix = randomMatrix(), cellSize = 250, origin) {
