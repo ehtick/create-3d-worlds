@@ -72,7 +72,7 @@ export const getSize = (mesh, key) => {
 export const getHeight = mesh => getSize(mesh, 'y')
 
 // https://stackoverflow.com/questions/28848863/, geometry.center() not working for groups
-export const centerObject = mesh => {
+export const centerMesh = mesh => {
   const box = new THREE.Box3().setFromObject(mesh)
   box.getCenter(mesh.position) // re-sets mesh position
   mesh.position.multiplyScalar(-1)

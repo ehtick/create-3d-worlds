@@ -10,7 +10,7 @@ const controls = createOrbitControls()
 
 scene.add(createGround({ file: 'ground.jpg', size: 100 }))
 
-const map = meshFromMatrix({ matrix, size: 1 })
+const map = meshFromMatrix({ matrix, size: 10 })
 scene.add(map)
 
 void function gameLoop() {

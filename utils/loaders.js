@@ -6,7 +6,7 @@ import { ColladaLoader } from '/node_modules/three/examples/jsm/loaders/ColladaL
 import { MD2Loader } from '/node_modules/three/examples/jsm/loaders/MD2Loader.js'
 import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js'
 
-import { getHeight, centerObject, adjustHeight } from '/utils/helpers.js'
+import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
 import { gamaRender } from '/utils/scene.js'
 
 const textureLoader = new THREE.TextureLoader()
@@ -38,7 +38,7 @@ const prepareMesh = ({ resolve, model, size, angle, axis, animations, shouldCent
   model.scale.set(scale, scale, scale)
 
   // https://stackoverflow.com/questions/28848863/
-  if (shouldCenter) centerObject(model)
+  if (shouldCenter) centerMesh(model)
   if (shouldAdjustHeight) adjustHeight(model)
 
   model.traverse(child => {

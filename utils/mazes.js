@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
+import { centerMesh } from '/utils/helpers.js'
 import chroma from '/libs/chroma.js'
 
 const { Vector2, Vector3 } = THREE
@@ -75,14 +76,13 @@ const addColors = (geometry, height, maxSize) => {
 }
 
 export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = size, texture, calcHeight = randomHeight, material } = {}) {
-  const origin = { x: -matrix.length, z: -matrix[0].length }
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     if (val > 0) {
       const height = calcHeight(row, j, i, size, maxSize)
       const geometry = new THREE.BoxGeometry(size, height, size)
-      geometry.translate(origin.x * size * .5 + i * size, height * .5, origin.z * size * .5 + j * size)
+      geometry.translate(i * size, height * .5, j * size)
       if (!texture) addColors(geometry, height, maxSize)
       geometries.push(geometry)
     } else {
@@ -100,6 +100,7 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
     map: texture ? textureLoader.load(`/assets/textures/${texture}`) : null
   }
   const mesh = new THREE.Mesh(geometry, material || new THREE.MeshPhongMaterial(options))
+  centerMesh(mesh)
   return mesh
 }
 

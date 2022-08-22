@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { createBox } from '/utils/geometry.js'
-import { centerObject, adjustHeight } from '/utils/helpers.js'
+import { centerMesh, adjustHeight } from '/utils/helpers.js'
 import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 
 const CIRCLE = Math.PI * 2
@@ -128,7 +128,7 @@ export function buildCastle({ rows = 10, brickInWall = 30, rowSize = 10, towerRa
   const merged = BufferGeometryUtils.mergeBufferGeometries(geometries)
   merged.rotateY(-Math.PI / 2)
   const castle = new THREE.Mesh(merged, new THREE.MeshNormalMaterial())
-  centerObject(castle)
+  centerMesh(castle)
   adjustHeight(castle)
   return castle
 }
