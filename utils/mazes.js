@@ -38,12 +38,12 @@ export function randomMatrix(size = 10, wallPercent = .3) {
   return matrix
 }
 
-export function getFieldValue(matrix, x, y) {
+export function getFieldValue(matrix, x, z) {
   x = Math.floor(x) // eslint-disable-line no-param-reassign
-  y = Math.floor(y) // eslint-disable-line no-param-reassign
-  if (x < 0 || x >= matrix[0].length || y < 0 || y >= matrix.length)
+  z = Math.floor(z) // eslint-disable-line no-param-reassign
+  if (x < 0 || x >= matrix[0].length || z < 0 || z >= matrix.length)
     return -1
-  return matrix[y][x]
+  return matrix[z][x]
 }
 
 /* MESH FROM MATRIX */
