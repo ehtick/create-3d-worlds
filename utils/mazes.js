@@ -57,6 +57,15 @@ const pyramidHeight = (row, j, i, size, maxSize) => {
 
 const randomHeight = (row, j, i, size, maxSize) => isRing(row, j, i, 0) ? size : randFloat(size, maxSize)
 
+const addColors = (geometry, height, maxSize) => {
+  const f = chroma.scale([0x999999, 0xffffff]).domain([0, maxSize])
+  const color = new THREE.Color(f(height).hex())
+  const colors = []
+  for (let i = 0, l = geometry.attributes.position.count; i < l; i ++)
+    colors.push(color.r, color.g, color.b)
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+}
+
 export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = size, texture, calcHeight = randomHeight, material } = {}) {
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
@@ -65,14 +74,7 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
       const height = calcHeight(row, j, i, size, maxSize)
       const geometry = new THREE.BoxGeometry(size, height, size)
       geometry.translate(i, height * .5, j)
-
-      const f = chroma.scale([0x999999, 0xffffff]).domain([0, maxSize])
-      const color = new THREE.Color(f(height).hex())
-      const colors = []
-      for (let i = 0, l = geometry.attributes.position.count; i < l; i ++)
-        colors.push(color.r, color.g, color.b)
-      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
-
+      if (!texture) addColors(geometry, height, maxSize)
       geometries.push(geometry)
     } else {
       // render path if exists
@@ -86,7 +88,7 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
   geometry.translate(-matrix[0].length * size * .5, 0, -matrix.length * size * .5)
 
   const options = {
-    vertexColors: THREE.FaceColors,
+    vertexColors: !texture,
     map: texture ? textureLoader.load(`/assets/textures/${texture}`) : null
   }
   const mesh = new THREE.Mesh(geometry, material || new THREE.MeshPhongMaterial(options))
