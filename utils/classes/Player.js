@@ -65,8 +65,8 @@ export default class Player {
       if (this.directionBlocked(dir.up))
         this.fall()
 
-      if (keyboard.up) this.walk()
-      if (keyboard.down) this.walk(1)
+      if (keyboard.up) this.move()
+      if (keyboard.down) this.move(1)
       if (keyboard.left) this.turn(1)
       if (keyboard.right) this.turn()
       this.jump()
@@ -79,10 +79,10 @@ export default class Player {
     if (pressed.mouse2) this.special()
 
     if (keyboard.up)
-      if (!this.directionBlocked(dir.forward)) this.walk()
+      if (!this.directionBlocked(dir.forward)) this.move()
 
     if (keyboard.down)
-      if (!this.directionBlocked(dir.backward)) this.walk(1)
+      if (!this.directionBlocked(dir.backward)) this.move(1)
 
     if (pressed.KeyQ)
       if (!this.directionBlocked(dir.left)) this.sideWalk()
@@ -97,7 +97,7 @@ export default class Player {
     this.playAnimation(this.animNames.idle, LoopRepeat)
   }
 
-  walk(dir = -1) {
+  move(dir = -1) {
     this.mesh.translateZ(this.step * dir)
     if (this.running && this.animNames.run)
       return this.playAnimation(this.animNames.run || this.animNames.walk, LoopRepeat)

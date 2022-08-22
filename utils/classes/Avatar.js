@@ -18,6 +18,11 @@ export default class Avatar extends Player {
     })
   }
 
+  move(dir) {
+    super.move(dir)
+    this.walkAnim()
+  }
+
   jump() {
     super.jump()
     this.limbs.forEach(limb => {
@@ -28,11 +33,6 @@ export default class Avatar extends Player {
   fall() {
     super.fall()
     this.idle()
-  }
-
-  walk(dir) {
-    super.walk(dir)
-    this.walkAnim()
   }
 
   walkAnim() {
