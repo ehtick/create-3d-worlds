@@ -123,6 +123,12 @@ export const pyramidFromMatrix = (
 ) =>
   meshFromMatrix({ matrix, size, material, maxSize, texture, calcHeight: pyramidHeight })
 
+export function putInMaze(mesh, matrix, size) {
+  const { x, z } = firstCellPos(matrix, size)
+  mesh.position.set(x, 0, z)
+  mesh.lookAt(x, 0, z - 1)
+}
+
 /* MESH FROM GRID */
 
 const turnTo = (geometry, p1, p2) => {

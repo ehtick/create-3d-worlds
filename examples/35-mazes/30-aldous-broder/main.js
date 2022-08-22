@@ -1,6 +1,6 @@
 import { scene, renderer, camera } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
-import { meshFromMatrix, firstCellPos } from '/utils/mazes.js'
+import { meshFromMatrix, putInMaze } from '/utils/mazes.js'
 import { aldousBroder } from '/utils/mazes/algorithms/AldousBroder.js'
 import Avatar from '/utils/classes/Avatar.js'
 import { material } from '/utils/shaders/windows.js'
@@ -22,9 +22,7 @@ player.add(camera)
 player.addSolids(maze)
 scene.add(player.mesh)
 
-const { x, z } = firstCellPos(matrix, size)
-player.mesh.position.set(x, 0, z)
-player.mesh.lookAt(x, 0, z - 1)
+putInMaze(player.mesh, matrix, size)
 
 /* LOOP */
 

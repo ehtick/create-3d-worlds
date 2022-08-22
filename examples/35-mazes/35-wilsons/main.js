@@ -1,5 +1,5 @@
 import { scene, renderer, camera } from '/utils/scene.js'
-import { pyramidFromMatrix, firstCellPos } from '/utils/mazes.js'
+import { pyramidFromMatrix, putInMaze } from '/utils/mazes.js'
 import { wilsons } from '/utils/mazes/algorithms/Wilsons.js'
 import Avatar from '/utils/classes/Avatar.js'
 import { hemLight } from '/utils/light.js'
@@ -21,9 +21,7 @@ player.add(camera)
 player.addSolids(maze)
 scene.add(player.mesh)
 
-const { x, z } = firstCellPos(matrix, size)
-player.mesh.position.set(x, 0, z)
-player.mesh.lookAt(x, 0, z - 1)
+putInMaze(player.mesh, matrix, size)
 
 /* LOOP */
 
