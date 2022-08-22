@@ -143,7 +143,7 @@ export function createCity({
   return city
 }
 
-export function generateCityTexture() {
+function generateCityTexture() {
   const windowColor = () => {
     const value = randInt(0, 84, true)
     return `rgb(${value}, ${value}, ${value})`
