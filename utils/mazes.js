@@ -73,13 +73,13 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
     if (val > 0) {
       const height = calcHeight(row, j, i, size, maxSize)
       const geometry = new THREE.BoxGeometry(size, height, size)
-      geometry.translate(i, height * .5, j)
+      geometry.translate(i * size, height * .5, j * size)
       if (!texture) addColors(geometry, height, maxSize)
       geometries.push(geometry)
     } else {
       // render path if exists
       const geometry = new THREE.SphereGeometry(size * .1)
-      geometry.translate(i, size * .05, j)
+      geometry.translate(i * size, size * .05, j * size)
       geometries.push(geometry)
     }
   }))
@@ -95,7 +95,8 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
   return mesh
 }
 
-export const pyramidFromMatrix = ({ matrix, size, material, maxSize = matrix.length * .33, texture } = {}) => meshFromMatrix({ matrix, size, material, maxSize, texture, calcHeight: pyramidHeight })
+export const pyramidFromMatrix = ({ matrix, size, material, maxSize = matrix.length * .33, texture } = {}) =>
+  meshFromMatrix({ matrix, size, material, maxSize, texture, calcHeight: pyramidHeight })
 
 /* MESH FROM GRID */
 
