@@ -80,7 +80,7 @@ export const fragmentShader = /* glsl */`
 
 const uniforms = {
   size: { type: 'f', value: 1.0 },
-  color: { type: 'c', value: new THREE.Color(0xffffff) },
+  color: { type: 'c', value: new THREE.Color(0xFFC00F) },
   borderColor: { type: 'c', value: new THREE.Color(0x000000) },
   borderWidth: { type: 'f', value: 10.0 },
 }
