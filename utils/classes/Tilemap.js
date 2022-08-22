@@ -1,4 +1,4 @@
-import { randomMatrix, randomField, meshFromMatrix } from '/utils/mazes.js'
+import { randomMatrix, randomField, meshFromMatrix, getFieldValue } from '/utils/mazes.js'
 
 export default class Tilemap {
   constructor(matrix = randomMatrix(), cellSize = 250, origin) {
@@ -10,14 +10,6 @@ export default class Tilemap {
     this.cellSize = cellSize
     this.mapSize = (matrix.length - 1) * cellSize
     this.origin = origin ? origin : defaultOrigin
-  }
-
-  getFieldValue(x, y) {
-    x = Math.floor(x) // eslint-disable-line
-    y = Math.floor(y) // eslint-disable-line
-    if (x < 0 || x >= this.matrix[0].length || y < 0 || y >= this.matrix.length)
-      return -1
-    return this.matrix[y][x]
   }
 
   getRelativePos(player) {
@@ -38,6 +30,10 @@ export default class Tilemap {
     const x = randFieldX * this.cellSize + this.origin.x
     const z = randFieldZ * this.cellSize + this.origin.z
     return { x, z }
+  }
+
+  getFieldValue(x, y) {
+    return getFieldValue(this.matrix, x, y)
   }
 
   meshFromMatrix() {

@@ -37,6 +37,14 @@ export function randomMatrix(size = 10, wallPercent = .3) {
   return matrix
 }
 
+export function getFieldValue(matrix, x, y) {
+  x = Math.floor(x) // eslint-disable-line no-param-reassign
+  y = Math.floor(y) // eslint-disable-line no-param-reassign
+  if (x < 0 || x >= matrix[0].length || y < 0 || y >= matrix.length)
+    return -1
+  return matrix[y][x]
+}
+
 /* MESH FROM MATRIX */
 
 const scale = (value, range1, range2) =>
@@ -67,13 +75,14 @@ const addColors = (geometry, height, maxSize) => {
 }
 
 export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = size, texture, calcHeight = randomHeight, material } = {}) {
+  const origin = { x: -matrix.length, z: -matrix[0].length }
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     if (val > 0) {
       const height = calcHeight(row, j, i, size, maxSize)
       const geometry = new THREE.BoxGeometry(size, height, size)
-      geometry.translate(i * size, height * .5, j * size)
+      geometry.translate(origin.x * size * .5 + i * size, height * .5, origin.z * size * .5 + j * size)
       if (!texture) addColors(geometry, height, maxSize)
       geometries.push(geometry)
     } else {
@@ -85,7 +94,6 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
   }))
 
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
-  geometry.translate(-matrix[0].length * size * .5, 0, -matrix.length * size * .5)
 
   const options = {
     vertexColors: !texture,
