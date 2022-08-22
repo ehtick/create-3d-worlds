@@ -13,7 +13,7 @@ const { LoopOnce, LoopRepeat, AnimationMixer } = THREE
  * (loadModel handles size and rotation)
  */
 export default class Player {
-  constructor({ mesh = createBox({ size: 2 }), speed, animations, animNames = {} } = {}) {
+  constructor({ mesh = createBox({ size: 2 }), speed, camera, scene, animations, animNames = {} } = {}) {
     this.mesh = mesh
     this.size = getHeight(mesh)
     this.speed = speed || this.size * 2
@@ -23,6 +23,11 @@ export default class Player {
     this.mixer = new AnimationMixer(mesh.type === 'Group' ? mesh.children[0] : mesh)
     this.animNames = animNames
     this.animations = animations
+    if (camera) {
+      this.add(camera)
+      camera.position.set(0, 1, 1.5)
+    }
+    if (scene) scene.add(this.mesh)
   }
 
   inAir(step = this.size * .2) {

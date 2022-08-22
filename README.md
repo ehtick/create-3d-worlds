@@ -9,6 +9,8 @@ npm i
 npx live-server
 ```
 
+- probati ThirdPersonCamera
+
 ### Mazes
 - dodati igrača da ide po lavirintima
 - dodati tween avataru kada usporava, da ne prekine korak naglo

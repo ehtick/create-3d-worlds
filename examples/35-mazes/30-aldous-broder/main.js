@@ -6,22 +6,17 @@ import Avatar from '/utils/classes/Avatar.js'
 import { material } from '/utils/shaders/windows.js'
 import { hemLight } from '/utils/light.js'
 
-hemLight()
-
 const size = 3
-camera.position.set(0, 1, 1.5)
 
+hemLight()
 scene.add(createFloor())
 
 const matrix = aldousBroder(10)
 const maze = meshFromMatrix({ matrix, size, maxSize: size * 3, material })
 scene.add(maze)
 
-const player = new Avatar({ size: .5 })
-player.add(camera)
+const player = new Avatar({ size: .5, camera, scene })
 player.addSolids(maze)
-scene.add(player.mesh)
-
 putInMaze(player.mesh, matrix, size)
 
 /* LOOP */
