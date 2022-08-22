@@ -1,4 +1,4 @@
-import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
+import { scene, renderer, camera } from '/utils/scene.js'
 import { pyramidFromMatrix, firstCellPos } from '/utils/mazes.js'
 import { wilsons } from '/utils/mazes/algorithms/Wilsons.js'
 import Avatar from '/utils/classes/Avatar.js'
@@ -11,7 +11,6 @@ const size = 3
 hemLight()
 
 camera.position.set(0, 1, 1.5)
-// const controls = createOrbitControls()
 
 const maze = pyramidFromMatrix({ matrix, size, texture: 'mayan.jpg' })
 scene.add(maze)
@@ -30,7 +29,6 @@ player.mesh.lookAt(x, 0, z - 1)
 
 void function gameLoop() {
   requestAnimationFrame(gameLoop)
-  // controls.update()
   player.update()
   renderer.render(scene, camera)
 }()
