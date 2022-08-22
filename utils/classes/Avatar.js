@@ -1,11 +1,10 @@
 import { clock } from '/utils/scene.js'
 import Player from '/utils/classes/Player.js'
-import { createAvatar, uniforms, skins } from '/utils/geometry/avatar.js'
+import { createAvatar, updateAvatar, uniforms, skins } from '/utils/geometry/avatar.js'
 
 export default class Avatar extends Player {
-  constructor({ skin = skins.STONE, size, ...params } = {}) {
+  constructor({ skin = skins.STONE, size = 1, ...params } = {}) {
     super({ mesh: createAvatar({ skin, r: size }), ...params })
-    this.speed = this.size * 3
     this.limbs = [
       this.mesh.getObjectByName('leftHand'), this.mesh.getObjectByName('rightHand'),
       this.mesh.getObjectByName('leftLeg'), this.mesh.getObjectByName('rightLeg')
@@ -39,9 +38,7 @@ export default class Avatar extends Player {
     const r = this.size * .666
     const speedFactor = this.running ? 8 : 5
     const elapsed = Math.sin(clock.getElapsedTime() * speedFactor) * r
-    this.limbs.forEach((limb, i) => {
-      limb.position.z = i % 2 ? elapsed : -elapsed
-    })
+    updateAvatar(this.mesh, elapsed)
   }
 
   sideWalk(dir) {

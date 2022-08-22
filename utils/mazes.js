@@ -38,6 +38,25 @@ export function randomMatrix(size = 10, wallPercent = .3) {
   return matrix
 }
 
+// function getFieldValue(matrix, playerX, playerZ, size) {
+//   const x = Math.floor(playerX / size + matrix.length / 2)
+//   const y = Math.floor(playerZ / size + matrix.length / 2)
+//   if (x < 0 || x >= matrix[0].length || y < 0 || y >= matrix.length)
+//     return -1
+//   return matrix[y][x]
+// }
+
+// default origin {0, 0}
+export const cellToPos = (matrix, size, cell) => {
+  const origin = {
+    x: size * matrix.length / 2,
+    z: size * matrix[0].length / 2
+  }
+  const x = -origin.x + cell[0] * size + size * .5
+  const z = -origin.z + cell[1] * size + size * .5
+  return { x, z }
+}
+
 /* MESH FROM MATRIX */
 
 const scale = (value, range1, range2) =>
