@@ -102,6 +102,7 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
       // render path if exists
       const geometry = new THREE.SphereGeometry(size * .1)
       geometry.translate(i * size, size * .05, j * size)
+      if (!texture) addColors(geometry, 0, maxSize)
       geometries.push(geometry)
     }
   }))
