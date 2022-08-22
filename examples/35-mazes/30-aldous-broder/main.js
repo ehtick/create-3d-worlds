@@ -1,4 +1,4 @@
-import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
+import { scene, renderer, camera } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { meshFromMatrix, firstCellPos } from '/utils/mazes.js'
 import { aldousBroder } from '/utils/mazes/algorithms/AldousBroder.js'
@@ -7,7 +7,6 @@ import { material } from '/utils/shaders/windows.js'
 import { hemLight } from '/utils/light.js'
 
 hemLight()
-createOrbitControls()
 
 const size = 3
 camera.position.set(0, 1, 1.5)
