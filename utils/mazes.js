@@ -47,7 +47,7 @@ export function randomMatrix(size = 10, wallPercent = .3) {
 // }
 
 // default origin {0, 0}
-export const cellToPos = (matrix, size, cell) => {
+export const cellToPos = (matrix, cell, size = 1) => {
   const origin = {
     x: size * matrix.length / 2,
     z: size * matrix[0].length / 2
@@ -56,6 +56,8 @@ export const cellToPos = (matrix, size, cell) => {
   const z = -origin.z + cell[1] * size + size * .5
   return { x, z }
 }
+
+export const firstCellPos = (matrix, size) => cellToPos(matrix, [1, 1], size)
 
 /* MESH FROM MATRIX */
 
