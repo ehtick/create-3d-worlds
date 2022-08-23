@@ -2,14 +2,14 @@ import * as THREE from 'three'
 import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { colorfulCityFromMatrix } from '/utils/mazes.js'
 import { createCityLights } from '/utils/city.js'
-import { ellers } from '/utils/mazes/algorithms/Ellers.js'
+import { ellersMatrix } from '/utils/mazes/algorithms.js'
 import { createFloor } from '/utils/ground.js'
 import { hemLight } from '/utils/light.js'
 
 const buildingSize = 3
 const matrixSize = 15
 
-const matrix = ellers(matrixSize)
+const matrix = ellersMatrix(matrixSize)
 
 hemLight({ intensity: 1.25 })
 scene.background = new THREE.Color(0x070b34)

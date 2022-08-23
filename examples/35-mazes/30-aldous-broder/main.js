@@ -1,7 +1,7 @@
 import { scene, renderer, camera } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { meshFromMatrix, putInMaze } from '/utils/mazes.js'
-import { aldousBroder } from '/utils/mazes/algorithms/AldousBroder.js'
+import { aldousBroderMatrix } from '/utils/mazes/algorithms.js'
 import Avatar from '/utils/classes/Avatar.js'
 import { material } from '/utils/shaders/windows.js'
 import { hemLight } from '/utils/light.js'
@@ -11,7 +11,7 @@ const size = 3
 hemLight()
 scene.add(createFloor())
 
-const matrix = aldousBroder(10)
+const matrix = aldousBroderMatrix(10)
 const maze = meshFromMatrix({ matrix, size, maxHeight: size * 3, material })
 scene.add(maze)
 
