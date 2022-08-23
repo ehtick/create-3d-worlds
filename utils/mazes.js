@@ -5,7 +5,7 @@ import { createBuildingGeometry } from '/utils/city.js'
 import chroma from '/libs/chroma.js'
 
 const { Vector2, Vector3 } = THREE
-const { randFloat } = THREE.Math
+const { randInt, randFloat } = THREE.Math
 
 const EMPTY = 0
 const WALL = 1
@@ -94,8 +94,8 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = 
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     if (val > 0) {
-      const height = maxHeight ? calcHeight(row, j, i, size, maxHeight) : undefined
-      const y = maxHeight ? height * .5 : 0
+      const height = maxHeight ? calcHeight(row, j, i, size, maxHeight) : randInt(size, size * 4)
+      const y = city ? 0 : height * .5
       const geometry = city
         ? createBuildingGeometry({ width: size, height })
         : new THREE.BoxGeometry(size, height, size)
