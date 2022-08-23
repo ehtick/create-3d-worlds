@@ -72,18 +72,18 @@ const pyramidHeight = (row, j, i, size, maxHeight) => {
 
 const randomHeight = (row, j, i, size, maxHeight) => isRing(row, j, i, 0) ? size : randFloat(size, maxHeight)
 
-const addColors = (geometry, height, maxHeight) => {
+const addColors = ({ geometry, color, height, maxHeight } = {}) => {
   const f = chroma.scale([0x999999, 0xffffff]).domain([0, maxHeight])
-  const color = new THREE.Color(f(height).hex())
+  const shade = new THREE.Color(color || f(height).hex())
   const colors = []
   for (let i = 0, l = geometry.attributes.position.count; i < l; i ++)
-    colors.push(color.r, color.g, color.b)
+    colors.push(shade.r, shade.g, shade.b)
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 }
 
 const createBoxGeometry = ({ size, height, maxHeight, texture }) => {
   const geometry = new THREE.BoxGeometry(size, height, size)
-  if (!texture) addColors(geometry, height, maxHeight)
+  if (!texture) addColors({ geometry, height, maxHeight })
   return geometry
 }
 
@@ -94,17 +94,17 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = 
     if (val > 0) {
       const height = maxHeight ? calcHeight(row, j, i, size, maxHeight) : randInt(size, size * 4)
       const buildingColor = colorParams ? randomGrayish(colorParams) : new THREE.Color(0x000000)
-      const geometry = city
+      const block = city
         ? createBuildingGeometry({ width: size, height, color: buildingColor })
         : createBoxGeometry({ size, height, maxHeight, texture })
-      geometry.translate(i * size, city ? 0 : height * .5, j * size)
-      geometries.push(geometry)
+      block.translate(i * size, city ? 0 : height * .5, j * size)
+      geometries.push(block)
     } else {
       // render path if exists
-      const geometry = new THREE.SphereGeometry(size * .1)
-      geometry.translate(i * size, size * .05, j * size)
-      if (!texture && !city) addColors(geometry, 0, maxHeight)
-      geometries.push(geometry)
+      const ball = new THREE.SphereGeometry(size * .1)
+      ball.translate(i * size, size * .05, j * size)
+      if (!texture && !city) addColors({ geometry: ball, color: 0xff0000 })
+      geometries.push(ball)
     }
   }))
 
