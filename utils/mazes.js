@@ -123,13 +123,11 @@ export function cityFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = 
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
-    if (val > 0) {
-      const height = calcHeight(row, j, i, size, maxHeight)
-      const x = i * size, y = height * .5, z = j * size
-      const building = createBuilding({ width: size, height, x, y, z })
-      const { geometry } = building
-      geometries.push(geometry)
-    }
+    const height = calcHeight(row, j, i, size, maxHeight)
+    const x = i * size, y = height * .5, z = j * size
+    const building = createBuilding({ width: size, height, x, y, z })
+    const { geometry } = building
+    geometries.push(geometry)
   }))
 
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)

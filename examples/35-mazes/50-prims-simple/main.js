@@ -19,8 +19,7 @@ const controls = createOrbitControls()
 const maze = cityFromMatrix({ matrix, size: buildingSize, maxHeight: buildingSize * 1.66 })
 scene.add(maze)
 
-const numLampposts = 12 // max num of spotlights is 16
-const numCityLights = 16 - numLampposts
+const numCityLights = 8 // max is 16
 
 const mapSize = buildingSize * matrixSize * 2
 
