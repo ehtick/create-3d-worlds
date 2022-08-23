@@ -128,9 +128,8 @@ export const cityFromMatrix = params => meshFromMatrix({ city: true, maxHeight: 
 export const colorfulCityFromMatrix = params => cityFromMatrix({ colorParams: { min: 0, max: .1, colorful: .1 }, ...params })
 
 export const pyramidFromMatrix = (
-  { matrix, size = 1, material, maxHeight = size * matrix.length * .33, texture } = {}
-) =>
-  meshFromMatrix({ matrix, size, material, maxHeight, texture, calcHeight: pyramidHeight })
+  { matrix, size = 1, maxHeight = size * matrix.length * .33, ...params } = {}
+) => meshFromMatrix({ matrix, size, maxHeight, calcHeight: pyramidHeight, ...params })
 
 export function putInMaze(mesh, matrix, size) {
   const { x, z } = firstCellPos(matrix, size)
