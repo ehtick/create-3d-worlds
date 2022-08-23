@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
-import { centerGeometry } from '/utils/helpers.js'
+import { centerGeometry, randomGrayish } from '/utils/helpers.js'
 import { createBuildingGeometry } from '/utils/city.js'
 import chroma from '/libs/chroma.js'
 
@@ -80,7 +80,7 @@ const pyramidHeight = (row, j, i, size, maxHeight) => {
 
 const randomHeight = (row, j, i, size, maxHeight) => isRing(row, j, i, 0) ? size : randFloat(size, maxHeight)
 
-const addColors = (geometry, height, maxHeight) => {
+const addColors = (geometry, height, maxHeight, colorParams) => {
   const f = chroma.scale([0x999999, 0xffffff]).domain([0, maxHeight])
   const color = new THREE.Color(f(height).hex())
   const colors = []
@@ -89,18 +89,19 @@ const addColors = (geometry, height, maxHeight) => {
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 }
 
-export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size, texture, calcHeight = randomHeight, material, city = false } = {}) {
+export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size, texture, calcHeight = randomHeight, material, city = false, colorParams } = {}) {
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     if (val > 0) {
       const height = maxHeight ? calcHeight(row, j, i, size, maxHeight) : randInt(size, size * 4)
       const y = city ? 0 : height * .5
+      const color = colorParams ? randomGrayish(colorParams) : new THREE.Color(0x000000)
       const geometry = city
-        ? createBuildingGeometry({ width: size, height })
+        ? createBuildingGeometry({ width: size, height, color })
         : new THREE.BoxGeometry(size, height, size)
       geometry.translate(i * size, y, j * size)
-      if (!texture && !city) addColors(geometry, height, maxHeight)
+      if (!texture && !city) addColors(geometry, height, maxHeight, colorParams)
       geometries.push(geometry)
     } else {
       // render path if exists
@@ -122,9 +123,9 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = 
   return mesh
 }
 
-export function cityFromMatrix({ ...params } = {}) {
-  return meshFromMatrix({ city: true, maxHeight: 0, ...params })
-}
+export const cityFromMatrix = params => meshFromMatrix({ city: true, maxHeight: 0, ...params })
+
+export const colorfulCityFromMatrix = params => cityFromMatrix({ colorParams: { min: 0, max: .1, colorful: .1 }, ...params })
 
 export const pyramidFromMatrix = (
   { matrix, size = 1, material, maxHeight = size * matrix.length * .33, texture } = {}
