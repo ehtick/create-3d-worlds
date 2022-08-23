@@ -94,6 +94,7 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = 
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     if (val > 0) {
+
       const height = maxHeight ? calcHeight(row, j, i, size, maxHeight) : randInt(size, size * 4)
       const y = city ? 0 : height * .5
       const color = colorParams ? randomGrayish(colorParams) : new THREE.Color(0x000000)
@@ -103,6 +104,7 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = 
       geometry.translate(i * size, y, j * size)
       if (!texture && !city) addColors(geometry, height, maxHeight, colorParams)
       geometries.push(geometry)
+
     } else {
       // render path if exists
       const geometry = new THREE.SphereGeometry(size * .1)
@@ -157,7 +159,7 @@ function createPipe(p1, p2) {
   return geometry
 }
 
-function createBlock(p1, p2, castle = true) {
+function createWall(p1, p2, castle = true) {
   const distanceToCenter = new Vector2(0, 0).distanceTo(new Vector2(p1.x, p1.z))
   const width = randFloat(2, 4)
   const height = castle ? (21 - distanceToCenter / 10) * 5 : randFloat(2, 8)
@@ -258,8 +260,8 @@ export function meshFromPolarGrid(grid, connect = createPipe, color = 'gray', ce
   return mesh
 }
 
-export const polarMazeCity = grid => meshFromPolarGrid(grid, createBlock, 'white')
+export const polarMazeCity = grid => meshFromPolarGrid(grid, createWall, 'white')
 
 export const polarMazePipes = grid => meshFromPolarGrid(grid, createPipe, 'gray')
 
-export const polarMazeRuins = grid => meshFromPolarGrid(grid, (p1, p2) => createBlock(p1, p2, false), 'white')
+export const polarMazeRuins = grid => meshFromPolarGrid(grid, (p1, p2) => createWall(p1, p2, false), 'white')
