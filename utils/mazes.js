@@ -39,15 +39,7 @@ export function randomMatrix(size = 10, wallPercent = .3) {
   return matrix
 }
 
-// function getFieldValue(matrix, playerX, playerZ, size) {
-//   const x = Math.floor(playerX / size + matrix.length / 2)
-//   const y = Math.floor(playerZ / size + matrix.length / 2)
-//   if (x < 0 || x >= matrix[0].length || y < 0 || y >= matrix.length)
-//     return -1
-//   return matrix[y][x]
-// }
-
-// default origin {0, 0}
+// only if origin is {0, 0}
 export const cellToPos = (matrix, cell, size = 1) => {
   const origin = {
     x: size * matrix.length / 2,
@@ -80,7 +72,7 @@ const pyramidHeight = (row, j, i, size, maxHeight) => {
 
 const randomHeight = (row, j, i, size, maxHeight) => isRing(row, j, i, 0) ? size : randFloat(size, maxHeight)
 
-const addColors = (geometry, height, maxHeight, colorParams) => {
+const addColors = (geometry, height, maxHeight) => {
   const f = chroma.scale([0x999999, 0xffffff]).domain([0, maxHeight])
   const color = new THREE.Color(f(height).hex())
   const colors = []
@@ -89,22 +81,24 @@ const addColors = (geometry, height, maxHeight, colorParams) => {
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 }
 
+const createBoxGeometry = ({ size, height, maxHeight, texture }) => {
+  const geometry = new THREE.BoxGeometry(size, height, size)
+  if (!texture) addColors(geometry, height, maxHeight)
+  return geometry
+}
+
 export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size, texture, calcHeight = randomHeight, material, city = false, colorParams } = {}) {
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     if (val > 0) {
-
       const height = maxHeight ? calcHeight(row, j, i, size, maxHeight) : randInt(size, size * 4)
-      const y = city ? 0 : height * .5
-      const color = colorParams ? randomGrayish(colorParams) : new THREE.Color(0x000000)
+      const buildingColor = colorParams ? randomGrayish(colorParams) : new THREE.Color(0x000000)
       const geometry = city
-        ? createBuildingGeometry({ width: size, height, color })
-        : new THREE.BoxGeometry(size, height, size)
-      geometry.translate(i * size, y, j * size)
-      if (!texture && !city) addColors(geometry, height, maxHeight, colorParams)
+        ? createBuildingGeometry({ width: size, height, color: buildingColor })
+        : createBoxGeometry({ size, height, maxHeight, texture })
+      geometry.translate(i * size, city ? 0 : height * .5, j * size)
       geometries.push(geometry)
-
     } else {
       // render path if exists
       const geometry = new THREE.SphereGeometry(size * .1)
