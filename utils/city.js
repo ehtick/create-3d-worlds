@@ -73,8 +73,8 @@ function createWindows(bWidth, bHeight) {
 }
 
 export function createBuilding({
-  x = 0, z = 0, color = new THREE.Color(0x000000), width = randInt(10, 20),
-  height = randInt(width, width * 4), y = height * .5, addWindows = true, rotY = 0,
+  color = new THREE.Color(0x000000), width = randInt(10, 20),
+  height = randInt(width, width * 4), x = 0, z = 0, y = height * .5, addWindows = true, rotY = 0,
 } = {}) {
 
   const geometry = new THREE.BoxBufferGeometry(width, height, width)
