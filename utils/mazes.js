@@ -116,7 +116,6 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = 
 
   const options = {
     vertexColors: !texture,
-    side: THREE.DoubleSide,
     map: texture ? textureLoader.load(`/assets/textures/${texture}`) : null
   }
   const mesh = new THREE.Mesh(geometry, material || new THREE.MeshPhongMaterial(options))

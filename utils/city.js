@@ -7,7 +7,6 @@ const { randInt, randFloat } = THREE.Math
 
 const basicMaterial = new THREE.MeshStandardMaterial({
   vertexColors: THREE.FaceColors,
-  side: THREE.DoubleSide
 })
 
 /* BUILDING */
@@ -59,6 +58,7 @@ function createWindows(bWidth, bHeight) {
     geometry.translate(currX, 0, halfBWidth)
   })
   createSideWindows((geometry, currX) => {
+    geometry.rotateY(Math.PI)
     geometry.translate(currX, 0, -halfBWidth)
   })
   createSideWindows((geometry, currX) => {
@@ -66,7 +66,7 @@ function createWindows(bWidth, bHeight) {
     geometry.translate(halfBWidth, 0, currX)
   })
   createSideWindows((geometry, currX) => {
-    geometry.rotateY(Math.PI * .5)
+    geometry.rotateY(-Math.PI * .5)
     geometry.translate(-halfBWidth, 0, currX)
   })
   return windows
