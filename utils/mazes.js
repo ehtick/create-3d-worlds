@@ -1,10 +1,11 @@
 import * as THREE from 'three'
 import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { centerGeometry } from '/utils/helpers.js'
+import { createBuilding } from '/utils/city.js'
 import chroma from '/libs/chroma.js'
 
 const { Vector2, Vector3 } = THREE
-const { randInt, randFloat } = THREE.Math
+const { randFloat } = THREE.Math
 
 const EMPTY = 0
 const WALL = 1
@@ -66,21 +67,21 @@ const scale = (value, range1, range2) =>
 
 const isRing = (row, j, i, ringIndex) => i == ringIndex || j == ringIndex || j == row.length - (1 + ringIndex) || i == row.length - (1 + ringIndex)
 
-const pyramidHeight = (row, j, i, size, maxSize) => {
+const pyramidHeight = (row, j, i, size, maxHeight) => {
   const flatRoof = 2
   const cityCenter = row.length / 2 - flatRoof
   let height = size
   for (let ringIndex = 0; ringIndex < cityCenter; ringIndex++) {
-    height = scale(ringIndex, [0, cityCenter], [size, maxSize])
+    height = scale(ringIndex, [0, cityCenter], [size, maxHeight])
     if (isRing(row, j, i, ringIndex)) return height
   }
   return height
 }
 
-const randomHeight = (row, j, i, size, maxSize) => isRing(row, j, i, 0) ? size : randFloat(size, maxSize)
+const randomHeight = (row, j, i, size, maxHeight) => isRing(row, j, i, 0) ? size : randFloat(size, maxHeight)
 
-const addColors = (geometry, height, maxSize) => {
-  const f = chroma.scale([0x999999, 0xffffff]).domain([0, maxSize])
+const addColors = (geometry, height, maxHeight) => {
+  const f = chroma.scale([0x999999, 0xffffff]).domain([0, maxHeight])
   const color = new THREE.Color(f(height).hex())
   const colors = []
   for (let i = 0, l = geometry.attributes.position.count; i < l; i ++)
@@ -88,21 +89,21 @@ const addColors = (geometry, height, maxSize) => {
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 }
 
-export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = size, texture, calcHeight = randomHeight, material } = {}) {
+export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size, texture, calcHeight = randomHeight, material } = {}) {
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     if (val > 0) {
-      const height = calcHeight(row, j, i, size, maxSize)
+      const height = calcHeight(row, j, i, size, maxHeight)
       const geometry = new THREE.BoxGeometry(size, height, size)
       geometry.translate(i * size, height * .5, j * size)
-      if (!texture) addColors(geometry, height, maxSize)
+      if (!texture) addColors(geometry, height, maxHeight)
       geometries.push(geometry)
     } else {
       // render path if exists
       const geometry = new THREE.SphereGeometry(size * .1)
       geometry.translate(i * size, size * .05, j * size)
-      if (!texture) addColors(geometry, 0, maxSize)
+      if (!texture) addColors(geometry, 0, maxHeight)
       geometries.push(geometry)
     }
   }))
@@ -118,10 +119,34 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxSize = si
   return mesh
 }
 
+export function cityFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size * 2, calcHeight = randomHeight } = {}) {
+  const geometries = []
+  matrix.forEach((row, j) => row.forEach((val, i) => {
+    if (!val) return
+    if (val > 0) {
+      const height = calcHeight(row, j, i, size, maxHeight)
+      const x = i * size, y = height * .5, z = j * size
+      const building = createBuilding({ width: size, height, x, y, z })
+      const { geometry } = building
+      geometries.push(geometry)
+    }
+  }))
+
+  const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
+  centerGeometry(geometry)
+
+  const options = {
+    vertexColors: true,
+    side: THREE.DoubleSide,
+  }
+  const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial(options))
+  return mesh
+}
+
 export const pyramidFromMatrix = (
-  { matrix, size = 1, material, maxSize = size * matrix.length * .33, texture } = {}
+  { matrix, size = 1, material, maxHeight = size * matrix.length * .33, texture } = {}
 ) =>
-  meshFromMatrix({ matrix, size, material, maxSize, texture, calcHeight: pyramidHeight })
+  meshFromMatrix({ matrix, size, material, maxHeight, texture, calcHeight: pyramidHeight })
 
 export function putInMaze(mesh, matrix, size) {
   const { x, z } = firstCellPos(matrix, size)

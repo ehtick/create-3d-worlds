@@ -12,7 +12,7 @@ hemLight()
 scene.add(createFloor())
 
 const matrix = aldousBroder(10)
-const maze = meshFromMatrix({ matrix, size, maxSize: size * 3, material })
+const maze = meshFromMatrix({ matrix, size, maxHeight: size * 3, material })
 scene.add(maze)
 
 const player = new Avatar({ size: .5, camera, scene })
