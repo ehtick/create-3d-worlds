@@ -130,7 +130,7 @@ export function createCity({
       ? randFloat(bWidth * 4, bWidth * 6)
       : randFloat(bWidth, bWidth * 4)
 
-    const building = createBuilding({ color, x, z, rotY, addWindows, bWidth, bHeight, addTexture })
+    const building = createBuilding({ color, x, z, rotY, addWindows, width: bWidth, height: bHeight, addTexture })
     buildings.push(building.geometry)
   }
 
