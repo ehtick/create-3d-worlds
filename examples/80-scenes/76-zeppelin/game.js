@@ -15,7 +15,7 @@ const water = createWater({ color: 0x003133 })
 scene.add(water)
 
 // file
-const ground = createHillyTerrain({ size: 10000, y: 100, factorX: 5, factorZ: 2.5, factorY: 350, file: 'grass-512.jpg' })
+const ground = createHillyTerrain({ size: 10000, y: 100, factorX: 5, factorZ: 2.5, factorY: 350, file: 'terrain/grass.jpg' })
 scene.add(ground)
 
 const { mesh } = await loadModel({

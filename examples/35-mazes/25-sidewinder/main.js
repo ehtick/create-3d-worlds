@@ -9,7 +9,7 @@ hemLight()
 camera.position.set(0, 7, 10)
 const controls = createOrbitControls()
 
-const maze = meshFromMatrix({ matrix, texture: 'concrete.jpg' })
+const maze = meshFromMatrix({ matrix, texture: 'terrain/concrete.jpg' })
 scene.add(maze)
 
 /* LOOP */

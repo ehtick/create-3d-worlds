@@ -6,7 +6,7 @@ import { hemLight } from '/utils/light.js'
 
 hemLight()
 
-const floor = createGround({ file: 'ground.jpg' })
+const floor = createGround({ file: 'terrain/ground.jpg' })
 scene.add(floor)
 const boxes = createRandomBoxes()
 scene.add(boxes)

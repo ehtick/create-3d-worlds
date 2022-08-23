@@ -12,7 +12,7 @@ camera.lookAt(scene.position)
 
 dirLight({ scene, position: [20, 40, -15] })
 
-const ground = createGround({ friction: 1.5, bounciness: .4, file: 'rocks.jpg' })
+const ground = createGround({ friction: 1.5, bounciness: .4, file: 'terrain/rocks.jpg' })
 scene.add(ground)
 
 const car = addCar(scene)

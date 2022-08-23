@@ -19,7 +19,7 @@ const map = new Tilemap(matrix, 20)
 const smallMap = new Tilemap(matrix, 20)
 const smallMapRenderer = new Map2DRenderer(smallMap)
 
-scene.add(createGround({ file: 'ground.jpg' }))
+scene.add(createGround({ file: 'terrain/ground.jpg' }))
 const walls = map.meshFromMatrix()
 scene.add(walls)
 

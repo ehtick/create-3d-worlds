@@ -10,7 +10,7 @@ camera.position.set(0, 50, 100)
 
 ambLight({ scene, intensity: 0.85 })
 
-const ground = createGround({ friction: 2, bounciness: .1, file: 'asphalt.jpg' })
+const ground = createGround({ friction: 2, bounciness: .1, file: 'terrain/asphalt.jpg' })
 scene.add(ground)
 
 const greenBus = await createBus('green')

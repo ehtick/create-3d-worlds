@@ -10,7 +10,7 @@ hemLight()
 const avatar = new Avatar({ size: 1, skin: 'lava' })
 avatar.position.set(12, 0, 12)
 
-const floor = createGround({ file: 'ground.jpg' })
+const floor = createGround({ file: 'terrain/ground.jpg' })
 const walls = meshFromMatrix({ matrix, size: 4 })
 
 scene.add(avatar.mesh, floor, walls)

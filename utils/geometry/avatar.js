@@ -11,7 +11,7 @@ const { STONE, LAVA, DISCO } = skins
 
 const createMaterial = skin => {
   if (skin == STONE) return new THREE.MeshStandardMaterial({
-    map: new THREE.TextureLoader().load('/assets/textures/snow-512.jpg')
+    map: new THREE.TextureLoader().load('/assets/textures/terrain/snow.jpg')
   })
   if (skin == LAVA) return material
   return new THREE.MeshNormalMaterial({

@@ -38,8 +38,8 @@ const fragmentShader = /* glsl */`
 
 const uniforms = {}
 uniforms.u_light = { value: new THREE.Vector3(0.5, 0.8, 0.1) }
-uniforms.u_diffuse_map = { value: textureLoader.load('/assets/textures/bricks-diffuse.png') }
-uniforms.u_normal_map = { value: textureLoader.load('/assets/textures/bricks-normal.png') }
+uniforms.u_diffuse_map = { value: textureLoader.load('/assets/textures/terrain/rock.jpg') }
+uniforms.u_normal_map = { value: textureLoader.load('/assets/textures/terrain/rock_n.jpg') }
 
 export const material = new THREE.ShaderMaterial({
   uniforms,

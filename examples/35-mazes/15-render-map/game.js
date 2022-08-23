@@ -8,9 +8,9 @@ hemLight()
 
 camera.position.set(0, 7, 10)
 
-scene.add(createGround({ file: 'ground.jpg', size: 100 }))
+scene.add(createGround({ file: 'terrain/ground.jpg', size: 100 }))
 
-const map = meshFromMatrix({ matrix, texture: 'concrete.jpg' })
+const map = meshFromMatrix({ matrix, texture: 'terrain/concrete.jpg' })
 scene.add(map)
 
 const controls = createOrbitControls()

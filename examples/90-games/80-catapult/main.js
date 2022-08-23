@@ -24,7 +24,7 @@ let pause = true
 const world = new CANNON.World()
 world.gravity.set(0, -9.82, 0)
 
-const ground = createGround({ size: 512, file: 'grass-512.jpg' })
+const ground = createGround({ size: 512, file: 'terrain/grass.jpg' })
 scene.add(ground)
 world.addBody(ground.body)
 

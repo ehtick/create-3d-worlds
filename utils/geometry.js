@@ -24,7 +24,7 @@ export function createBox({ size = 1, height = size, depth = size, file, bumpFil
 
 export const createCrate = ({ size, file = 'crate.gif' } = {}) => createBox({ size, file })
 
-export const createBumpBox = ({ size, file = 'bricks.jpg', bumpFile = 'gray-bricks.jpg' } = {}) =>
+export const createBumpBox = ({ size, file = 'walls/bricks.jpg', bumpFile = 'walls/bricks-gray.jpg' } = {}) =>
   createBox({ size, file, bumpFile })
 
 export function createBuilding({ width = 2, height = 1, depth = 1, color = 0x999999, frontFile, backFile, rightFile, leftFile, topFile, bumpScale = .015 } = {}) {
@@ -37,7 +37,7 @@ export function createBuilding({ width = 2, height = 1, depth = 1, color = 0x999
   const leftTexture = textureLoader.load(`/assets/textures/buildings/${leftFile || frontFile}`)
   if (!leftFile) leftTexture.repeat.set(.5, 1)
 
-  const topTexture = textureLoader.load(`/assets/textures/${topFile || 'rocks.jpg'}`)
+  const topTexture = textureLoader.load(`/assets/textures/${topFile || 'terrain/rocks.jpg'}`)
 
   const materials = [
     new THREE.MeshPhongMaterial({ map: rightTexture, bumpMap: rightTexture, bumpScale }),

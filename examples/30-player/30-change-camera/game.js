@@ -14,7 +14,7 @@ const fpsCamera = camera.clone()
 let currentCamera = camera
 
 const avatar = new Avatar({ size: 2, autoCamera: false })
-scene.add(avatar.mesh, createGround({ file: 'ground.jpg' }), createFirTrees())
+scene.add(avatar.mesh, createGround({ file: 'terrain/ground.jpg' }), createFirTrees())
 
 const commands = {
   '1': 'Distant camera',

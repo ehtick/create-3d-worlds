@@ -6,7 +6,7 @@ initLights()
 createOrbitControls()
 camera.position.set(0, 15, 30)
 
-const ground = createGround({ size: 512, file: 'grass-512.jpg' })
+const ground = createGround({ size: 512, file: 'terrain/grass.jpg' })
 scene.add(ground)
 
 scene.background = createSkyBox()

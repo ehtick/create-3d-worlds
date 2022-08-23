@@ -18,14 +18,14 @@ scene.add(light2)
 const floor = createGround()
 scene.add(floor)
 
-const warehouse = createBuilding({ frontFile: 'warehouse.jpg', backFile: 'warehouse.jpg', topFile: 'concrete.jpg', bumpScale: .03 })
+const warehouse = createBuilding({ frontFile: 'warehouse.jpg', backFile: 'warehouse.jpg', topFile: 'terrain/concrete.jpg', bumpScale: .03 })
 scene.add(warehouse)
 warehouse.translateX(-2)
 
-const warRuin = createBuilding({ width: 1.2, frontFile: 'ruin-01.jpg', backFile: 'ruin-02.jpg', rightFile: 'ruin-03.jpg', leftFile: 'ruin-04.jpg', topFile: 'beton-krater.jpg', bumpScale: .03 })
+const warRuin = createBuilding({ width: 1.2, frontFile: 'ruin-01.jpg', backFile: 'ruin-02.jpg', rightFile: 'ruin-03.jpg', leftFile: 'ruin-04.jpg', topFile: 'terrain/beton-krater.jpg', bumpScale: .03 })
 scene.add(warRuin)
 
-const airport = createBuilding({ frontFile: 'airport.png', backFile: 'airport.png', rightFile: 'airport-side.png', leftFile: 'airport-side.png', topFile: 'beton.gif', bumpScale: .01 })
+const airport = createBuilding({ frontFile: 'airport.png', backFile: 'airport.png', rightFile: 'airport-side.png', leftFile: 'airport-side.png', topFile: 'terrain/beton.gif', bumpScale: .01 })
 scene.add(airport)
 airport.translateZ(-1.5)
 

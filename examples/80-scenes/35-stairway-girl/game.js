@@ -12,7 +12,7 @@ dirLight({ intensity: 1.5 })
 camera.position.z = 30
 camera.position.y = 15
 
-const floor = createGround({ file: 'ground.jpg' })
+const floor = createGround({ file: 'terrain/ground.jpg' })
 scene.add(floor)
 const stairs = createSpiralStairs({ radius: 25, stairsInCirle: 50, floorHeight: 15, depth: 5, size: 4 })
 scene.add(stairs)

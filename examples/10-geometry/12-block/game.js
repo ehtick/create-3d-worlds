@@ -9,7 +9,7 @@ initLights()
 
 /* CUBE */
 
-const cube = createBox({ file: 'bricks.jpg' })
+const cube = createBox({ file: 'walls/bricks.jpg' })
 cube.position.set(-1, 0, 0)
 scene.add(cube)
 

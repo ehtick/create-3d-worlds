@@ -26,7 +26,7 @@ scene.add(player)
 dirLight({ color: 0xF7EFBE, intensity: 0.7, position: [0.5, 1, 0.5] })
 dirLight({ color: 0xF7EFBE, intensity: 0.5, position: [-0.5, -1, -0.5] })
 
-const floor = createFloor({ size: mapWidth * UNITSIZE, file: 'ground.jpg' })
+const floor = createFloor({ size: mapWidth * UNITSIZE, file: 'terrain/ground.jpg' })
 const walls = meshFromMatrix({ matrix: nemesis, size: UNITSIZE })
 scene.add(floor, walls)
 

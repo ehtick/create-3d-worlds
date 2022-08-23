@@ -11,7 +11,7 @@ hemLight()
 scene.add(createGround())
 
 const matrix = wilsons(12)
-const maze = pyramidFromMatrix({ matrix, size, texture: 'mayan.jpg' })
+const maze = pyramidFromMatrix({ matrix, size, texture: 'walls/mayan.jpg' })
 scene.add(maze)
 
 const player = new Avatar({ size: .5, camera, scene })
