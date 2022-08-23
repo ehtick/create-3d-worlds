@@ -20,7 +20,6 @@ const maze = cityFromMatrix({ matrix, size: buildingSize, maxHeight: buildingSiz
 scene.add(maze)
 
 const numCityLights = 8 // max is 16
-
 const mapSize = buildingSize * matrixSize * 2
 
 const streetLights = createCityLights({ size: mapSize, numLights: numCityLights })

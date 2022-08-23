@@ -119,12 +119,12 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = 
   return mesh
 }
 
-export function cityFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size * 2, calcHeight = randomHeight } = {}) {
+export function cityFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight, calcHeight = randomHeight } = {}) {
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
-    const height = calcHeight(row, j, i, size, maxHeight)
-    const x = i * size, y = height * .5, z = j * size
+    const height = maxHeight ? calcHeight(row, j, i, size, maxHeight) : undefined
+    const x = i * size, y = maxHeight ? height * .5 : undefined, z = j * size
     const building = createBuilding({ width: size, height, x, y, z })
     const { geometry } = building
     geometries.push(geometry)
