@@ -32,7 +32,7 @@ function createWindow(windowWidth, windowHeight) {
 function createWindows(bWidth, bHeight) {
   const windows = []
   const windowWidth = bWidth / 8
-  const windowHeight = randFloat(4, 8)
+  const windowHeight = randFloat(bHeight / 16, bHeight / 8)
   const floors = Math.floor(bHeight / (windowHeight * 2))
   const halfBWidth = bWidth * .5
 
