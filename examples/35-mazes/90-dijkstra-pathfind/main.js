@@ -1,7 +1,8 @@
 import Grid from '/utils/mazes/Grid.js'
 import HuntAndKill from '/utils/mazes/algorithms/HuntAndKill.js'
-import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
+import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { meshFromMatrix } from '/utils/mazes.js'
+import { hemLight } from '/utils/light.js'
 
 const grid = new Grid(10)
 HuntAndKill.on(grid)

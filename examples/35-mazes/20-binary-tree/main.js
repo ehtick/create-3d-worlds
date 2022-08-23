@@ -1,6 +1,7 @@
 import { binaryTree } from '/utils/mazes/algorithms/BinaryTree.js'
-import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
+import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { meshFromMatrix } from '/utils/mazes.js'
+import { hemLight } from '/utils/light.js'
 
 hemLight()
 

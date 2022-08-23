@@ -26,6 +26,10 @@ export const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window
 camera.position.z = 4
 camera.position.y = 2
 
+export const setBackground = color => {
+  scene.background = new THREE.Color(color)
+}
+
 // RENDERER
 
 export const renderer = new THREE.WebGLRenderer({

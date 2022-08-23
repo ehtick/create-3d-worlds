@@ -1,6 +1,7 @@
-import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
+import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { pyramidFromMatrix } from '/utils/mazes.js'
 import { huntAndKill } from '/utils/mazes/algorithms/HuntAndKill.js'
+import { hemLight } from '/utils/light.js'
 
 const matrix = huntAndKill(20)
 

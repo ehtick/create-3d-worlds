@@ -1,7 +1,8 @@
 import { recursiveBacktracker } from '/utils/mazes/algorithms/RecursiveBacktracker.js'
-import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
+import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { meshFromMatrix } from '/utils/mazes.js'
 import { material } from '/utils/shaders/texture.js'
+import { hemLight } from '/utils/light.js'
 
 const matrix = recursiveBacktracker(20)
 
