@@ -89,21 +89,24 @@ const addColors = (geometry, height, maxHeight) => {
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 }
 
-export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size, texture, calcHeight = randomHeight, material } = {}) {
+export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size, texture, calcHeight = randomHeight, material, city = false } = {}) {
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     if (val > 0) {
-      const height = calcHeight(row, j, i, size, maxHeight)
-      const geometry = new THREE.BoxGeometry(size, height, size)
-      geometry.translate(i * size, height * .5, j * size)
-      if (!texture) addColors(geometry, height, maxHeight)
+      const height = maxHeight ? calcHeight(row, j, i, size, maxHeight) : undefined
+      const y = maxHeight ? height * .5 : 0
+      const geometry = city
+        ? createBuildingGeometry({ width: size, height })
+        : new THREE.BoxGeometry(size, height, size)
+      geometry.translate(i * size, y, j * size)
+      if (!texture && !city) addColors(geometry, height, maxHeight)
       geometries.push(geometry)
     } else {
       // render path if exists
       const geometry = new THREE.SphereGeometry(size * .1)
       geometry.translate(i * size, size * .05, j * size)
-      if (!texture) addColors(geometry, 0, maxHeight)
+      if (!texture && !city) addColors(geometry, 0, maxHeight)
       geometries.push(geometry)
     }
   }))
@@ -113,32 +116,15 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = 
 
   const options = {
     vertexColors: !texture,
+    side: THREE.DoubleSide,
     map: texture ? textureLoader.load(`/assets/textures/${texture}`) : null
   }
   const mesh = new THREE.Mesh(geometry, material || new THREE.MeshPhongMaterial(options))
   return mesh
 }
 
-// TODO: refactor to alias
-export function cityFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight, calcHeight = randomHeight } = {}) {
-  const geometries = []
-  matrix.forEach((row, j) => row.forEach((val, i) => {
-    if (!val) return
-    const height = maxHeight ? calcHeight(row, j, i, size, maxHeight) : undefined
-    const x = i * size, y = maxHeight ? height * .5 : undefined, z = j * size
-    const geometry = createBuildingGeometry({ width: size, height, x, y, z })
-    geometries.push(geometry)
-  }))
-
-  const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
-  centerGeometry(geometry)
-
-  const options = {
-    vertexColors: true,
-    side: THREE.DoubleSide,
-  }
-  const mesh = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial(options))
-  return mesh
+export function cityFromMatrix({ ...params } = {}) {
+  return meshFromMatrix({ city: true, maxHeight: 0, ...params })
 }
 
 export const pyramidFromMatrix = (
