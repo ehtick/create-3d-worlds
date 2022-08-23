@@ -1,9 +1,9 @@
-import { sideWinder } from '/utils/mazes/algorithms/SideWinder.js'
+import { sideWinderMatrix } from '/utils/mazes/algorithms.js'
 import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { meshFromMatrix } from '/utils/mazes.js'
 import { hemLight } from '/utils/light.js'
 
-const matrix = sideWinder(10)
+const matrix = sideWinderMatrix(10)
 
 hemLight()
 

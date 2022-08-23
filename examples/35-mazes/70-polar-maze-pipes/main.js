@@ -1,6 +1,6 @@
 import { meshFromPolarGrid } from '/utils/mazes.js'
 import PolarGrid from '/utils/mazes/PolarGrid.js'
-import RecursiveBacktracker from '/utils/mazes/algorithms/RecursiveBacktracker.js'
+import { recursiveBacktracker } from '/utils/mazes/algorithms.js'
 import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { createSunLight } from '/utils/light.js'
 
@@ -11,7 +11,7 @@ camera.position.set(0, 25, 50)
 const controls = createOrbitControls()
 
 const grid = new PolarGrid(10)
-RecursiveBacktracker.on(grid)
+recursiveBacktracker(grid)
 
 const mesh = meshFromPolarGrid(grid)
 scene.add(mesh)
