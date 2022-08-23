@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { centerGeometry } from '/utils/helpers.js'
-import { createBuilding } from '/utils/city.js'
+import { createBuildingGeometry } from '/utils/city.js'
 import chroma from '/libs/chroma.js'
 
 const { Vector2, Vector3 } = THREE
@@ -119,14 +119,14 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = 
   return mesh
 }
 
+// TODO: refactor to alias
 export function cityFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight, calcHeight = randomHeight } = {}) {
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     const height = maxHeight ? calcHeight(row, j, i, size, maxHeight) : undefined
     const x = i * size, y = maxHeight ? height * .5 : undefined, z = j * size
-    const building = createBuilding({ width: size, height, x, y, z })
-    const { geometry } = building
+    const geometry = createBuildingGeometry({ width: size, height, x, y, z })
     geometries.push(geometry)
   }))
 

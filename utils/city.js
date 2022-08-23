@@ -72,7 +72,7 @@ function createWindows(bWidth, bHeight) {
   return windows
 }
 
-export function createBuilding({
+export function createBuildingGeometry({
   color = new THREE.Color(0x000000), width = randInt(10, 20),
   height = randInt(width, width * 4), x = 0, z = 0, y = height * .5, addWindows = true, rotY = 0,
 } = {}) {
@@ -91,8 +91,12 @@ export function createBuilding({
   mergedGeometry.translate(x, y, z) // needed for merge
   if (rotY) mergedGeometry.rotateY(rotY)
 
-  const building = new THREE.Mesh(mergedGeometry, basicMaterial)
-  return building
+  return mergedGeometry
+}
+
+export function createBuilding(params) {
+  const geometry = createBuildingGeometry(params)
+  return new THREE.Mesh(geometry, basicMaterial)
 }
 
 export function createSimpleBuilding({
@@ -130,8 +134,8 @@ export function createCity({
       ? randFloat(bWidth * 4, bWidth * 6)
       : randFloat(bWidth, bWidth * 4)
 
-    const building = createBuilding({ color, x, z, rotY, addWindows, width: bWidth, height: bHeight, addTexture })
-    buildings.push(building.geometry)
+    const geometry = createBuildingGeometry({ color, x, z, rotY, addWindows, width: bWidth, height: bHeight, addTexture })
+    buildings.push(geometry)
   }
 
   const merged = BufferGeometryUtils.mergeBufferGeometries(buildings)
