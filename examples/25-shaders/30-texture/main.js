@@ -2,7 +2,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from '/node_modules/three/examples/jsm/controls/OrbitControls.js'
 import { camera, scene, renderer } from '/utils/scene.js'
-import { material } from '/utils/shaders/bricks-texture.js'
+import { material } from '/utils/shaders/texture.js'
 
 camera.position.z = 2
 
