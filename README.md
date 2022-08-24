@@ -11,7 +11,6 @@ npx live-server
 
 - probati ThirdPersonCamera
 - bug: avatar prolazi kroz zidove
-- tween camera iz daljine ka avataru u polar-maze-city
 - shadertoy u threejs
 
 ### Mazes

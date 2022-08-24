@@ -1,3 +1,4 @@
+import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 import { OutlineEffect } from '/node_modules/three/examples/jsm/effects/OutlineEffect.js'
 import { polarMazeCity } from '/utils/mazes.js'
 import PolarGrid from '/utils/mazes/PolarGrid.js'
@@ -20,8 +21,6 @@ const sun = createSunLight()
 sun.position.set(50, 150, 200)
 scene.add(sun)
 
-// camera.position.set(0, 100, 150)
-
 const grid = new PolarGrid(gridSize)
 recursiveBacktracker(grid)
 
@@ -34,10 +33,17 @@ player.mesh.lookAt(0, 0, -groundSize * 2)
 
 const effect = new OutlineEffect(renderer, { defaultThickness: 0.003 })
 
+camera.position.set(0, 100, 150)
+
+new TWEEN.Tween(camera.position)
+  .to({ x: 0, y: 1, z: 1.5 }, 5000)
+  .start()
+
 /* LOOP */
 
 void function gameLoop() {
   requestAnimationFrame(gameLoop)
+  TWEEN.update()
   player.update()
   effect.render(scene, camera)
 }()
