@@ -15,7 +15,7 @@ scene.add(createGround())
 const grid = new PolarGrid(10)
 recursiveBacktracker(grid)
 
-const maze = meshFromPolarGrid({grid, cellSize: 5})
+const maze = meshFromPolarGrid({ grid, cellSize: 5 })
 scene.add(maze)
 
 const player = new Avatar({ size: .5, scene, camera, solids: maze })

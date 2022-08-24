@@ -11,6 +11,15 @@ const groundColors = [0xA62A2A, 0x7a8a46, 0x228b22, 0xfffacd]
 const sandColors = [0xc2b280, 0xF2D16B, 0xf0e68c, 0xfffacd]
 const cratersColors = [0x5C4033, 0xA62A2A, 0xc2b280]
 
+/* HILL */
+
+export function createHill(r, height = r * .4) {
+  const geometry = new THREE.ConeGeometry(r, height, 32)
+  const material = new THREE.MeshPhongMaterial({ color: 0x509f53 })
+  const cone = new THREE.Mesh(geometry, material)
+  return cone
+}
+
 /* GROUND */
 
 export function createGroundMaterial({ color = 0x509f53, file, repeat } = {}) {
