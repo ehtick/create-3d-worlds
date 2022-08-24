@@ -4,12 +4,12 @@ import PolarGrid from '/utils/mazes/PolarGrid.js'
 import { recursiveBacktracker } from '/utils/mazes/algorithms.js'
 import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { createSunLight } from '/utils/light.js'
-import { createCamoGround } from '/utils/ground.js'
+import { createDunes } from '/utils/ground.js'
 
 const sun = createSunLight()
 scene.add(sun)
 
-const ground = createCamoGround()
+const ground = createDunes({size: 1000})
 scene.add(ground)
 camera.position.set(0, 25, 50)
 const controls = createOrbitControls()

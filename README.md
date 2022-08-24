@@ -11,7 +11,6 @@ npx live-server
 
 - shadertoy u threejs
 - probati ThirdPersonCamera
-- obojiti ground pomoću noise
 
 ### Mazes
 - bug: avatar prolazi kroz zidove
