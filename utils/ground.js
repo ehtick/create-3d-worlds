@@ -10,6 +10,7 @@ const simplex = new SimplexNoise()
 const groundColors = [0xA62A2A, 0x7a8a46, 0x228b22, 0xfffacd]
 const sandColors = [0xc2b280, 0xF2D16B, 0xf0e68c, 0xfffacd]
 const cratersColors = [0x5C4033, 0xA62A2A, 0xc2b280]
+const camoColors = [0x7a8a46, 0x228b22, 0x509f53]
 
 /* HILL */
 
@@ -33,9 +34,9 @@ export function createGroundMaterial({ color = 0x509f53, file, repeat } = {}) {
   return material
 }
 
-export function crateGroundGeometry({ size, circle = true }) {
+export function crateGroundGeometry({ size, segments = 32, circle = true }) {
   const geometry = circle
-    ? new THREE.CircleGeometry(size, 32)
+    ? new THREE.CircleGeometry(size, segments)
     : new THREE.PlaneGeometry(size, size)
 
   geometry.rotateX(-Math.PI * 0.5)
@@ -53,6 +54,25 @@ export function createGround({ size = 1000, color, circle, file, repeat = size /
 
 export function createFloor({ color = 0x808080, circle = false, ...rest } = {}) {
   return createGround({ color, circle, ...rest })
+}
+
+export function createCamoGround({ size, segments, domainColors = camoColors, noiseFactor = 2.2 } = {}) {
+  const ground = createTerrainMesh({ size, segments })
+  const f = chroma.scale(domainColors).domain([-1.75, 2])
+
+  const { geometry } = ground
+  const { position } = geometry.attributes
+  const colors = []
+
+  const vertex = new THREE.Vector3()
+  for (let i = 0, l = position.count; i < l; i++) {
+    vertex.fromBufferAttribute(position, i)
+    const noise = simplex.noise(vertex.x * .05, vertex.z * .05)
+    const shade = new THREE.Color(f(noise * noiseFactor).hex())
+    colors.push(shade.r, shade.g, shade.b)
+  }
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+  return ground
 }
 
 /* NOISE HELPERS */
@@ -88,8 +108,7 @@ function dunesNoise(geometry) {
 
   for (let i = 0, l = position.count; i < l; i++) {
     vertex.fromBufferAttribute(position, i)
-    const noise = simplex.noise(vertex.x * .1, vertex.z * .1)
-    vertex.y = noise * 1.5
+    const noise = simplex.noise(vertex.x * .05, vertex.z * .05)
     position.setY(i, noise * 1.5)
   }
 }
@@ -131,7 +150,7 @@ function heightColors({ geometry, maxY, minY = 0, domainColors = groundColors } 
 
 /* TERRAIN */
 
-function createTerrainMesh({ size = 400, segments = 100 } = {}) {
+export function createTerrainMesh({ size = 400, segments = 100 } = {}) {
   const geometry = new THREE.PlaneGeometry(size, size, segments, segments)
   geometry.rotateX(- Math.PI / 2)
 

@@ -36,7 +36,7 @@ export const fragmentShader = /* glsl */`
 `
 
 export const uniforms = {
-  uLightPos:	{ type: 'v3', value: new THREE.Vector3() },
+  uLightPos:	{ type: 'v3', value: new THREE.Vector3(0, 100, 0) },
   uLightColor: { type: 'c', value: new THREE.Color(0xFFFFFF) },
   uMaterialColor: { type: 'c', value: new THREE.Color(0xFFFFFF) },
   uLightness: { type: 'f', value: 0.98 }

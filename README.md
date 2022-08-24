@@ -9,12 +9,12 @@ npm i
 npx live-server
 ```
 
-- probati ThirdPersonCamera
-- bug: avatar prolazi kroz zidove
 - shadertoy u threejs
+- probati ThirdPersonCamera
+- obojiti ground pomoću noise
 
 ### Mazes
-- dodati igrača da ide po lavirintima
+- bug: avatar prolazi kroz zidove
 - dodati tween avataru kada usporava, da ne prekine korak naglo
 
 ## Konačni automat
