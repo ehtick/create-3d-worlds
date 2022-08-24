@@ -255,8 +255,8 @@ export function meshFromPolarGrid({ grid, connect = createPipe, color = 'gray', 
   return mesh
 }
 
-export const polarMazeCity = grid => meshFromPolarGrid({ grid, connect: createWall, color: 'white' })
+export const polarMazeCity = ({ grid, ...params }) => meshFromPolarGrid({ grid, connect: createWall, color: 'white', ...params })
 
-export const polarMazePipes = grid => meshFromPolarGrid({ grid, connect: createPipe, color: 'gray' })
+export const polarMazePipes = ({ grid, ...params }) => meshFromPolarGrid({ grid, connect: createPipe, color: 'gray', ...params })
 
-export const polarMazeRuins = grid => meshFromPolarGrid({ grid, connect: (p1, p2) => createWall(p1, p2, false), color: 'white' })
+export const polarMazeRuins = ({ grid, ...params }) => meshFromPolarGrid({ grid, connect: (p1, p2) => createWall(p1, p2, false), color: 'white', ...params })

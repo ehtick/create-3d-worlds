@@ -13,7 +13,7 @@ const controls = createOrbitControls()
 const grid = new PolarGrid(10)
 recursiveBacktracker(grid)
 
-const mesh = polarMazeRuins(grid)
+const mesh = polarMazeRuins({ grid })
 scene.add(mesh)
 
 /* LOOP */

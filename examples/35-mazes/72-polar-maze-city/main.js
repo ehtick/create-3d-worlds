@@ -24,7 +24,7 @@ scene.add(sun)
 const grid = new PolarGrid(gridSize)
 recursiveBacktracker(grid)
 
-const maze = polarMazeCity(grid)
+const maze = polarMazeCity({ grid })
 scene.add(maze)
 
 const player = new Avatar({ size: .5, scene, camera, solids: [maze, hill] })
@@ -33,10 +33,12 @@ player.mesh.lookAt(0, 0, -groundSize * 2)
 
 const effect = new OutlineEffect(renderer, { defaultThickness: 0.003 })
 
+/* ANIMATION */
+
 camera.position.set(0, 100, 150)
 
 new TWEEN.Tween(camera.position)
-  .to({ x: 0, y: 1, z: 1.5 }, 5000)
+  .to({ x: 0, y: 1, z: 1.5 }, 4000)
   .start()
 
 /* LOOP */

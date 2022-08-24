@@ -1,4 +1,4 @@
-import { meshFromPolarGrid } from '/utils/mazes.js'
+import { polarMazePipes } from '/utils/mazes.js'
 import PolarGrid from '/utils/mazes/PolarGrid.js'
 import { recursiveBacktracker } from '/utils/mazes/algorithms.js'
 import { scene, renderer, camera } from '/utils/scene.js'
@@ -15,7 +15,7 @@ scene.add(createGround())
 const grid = new PolarGrid(10)
 recursiveBacktracker(grid)
 
-const maze = meshFromPolarGrid({ grid, cellSize: 5 })
+const maze = polarMazePipes({ grid, cellSize: 5 })
 scene.add(maze)
 
 const player = new Avatar({ size: .5, scene, camera, solids: maze })
