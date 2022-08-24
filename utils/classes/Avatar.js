@@ -4,7 +4,7 @@ import { createAvatar, updateAvatar, uniforms, skins } from '/utils/geometry/ava
 
 export default class Avatar extends Player {
   constructor({ skin = skins.STONE, size = 1, ...params } = {}) {
-    super({ mesh: createAvatar({ skin, r: size }), ...params })
+    super({ mesh: createAvatar({ skin, r: size, speed: size * 3 }), ...params })
     this.limbs = [
       this.mesh.getObjectByName('leftHand'), this.mesh.getObjectByName('rightHand'),
       this.mesh.getObjectByName('leftLeg'), this.mesh.getObjectByName('rightLeg')
@@ -35,8 +35,8 @@ export default class Avatar extends Player {
   }
 
   walkAnim() {
-    const r = this.size * .666
-    const speedFactor = this.running ? 8 : 5
+    const r = this.size * .5
+    const speedFactor = this.running ? 8 : 6
     const elapsed = Math.sin(clock.getElapsedTime() * speedFactor) * r
     updateAvatar(this.mesh, elapsed)
   }

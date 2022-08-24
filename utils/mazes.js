@@ -144,9 +144,9 @@ const turnTo = (geometry, p1, p2) => {
 }
 
 function createPipe(p1, p2) {
-  const h = p1.distanceTo(p2)
-  const geometry = new THREE.CylinderGeometry(1, 1, h, 12)
-  geometry.translate(0, -h / 2, 0)
+  const distance = p1.distanceTo(p2)
+  const geometry = new THREE.CylinderGeometry(1, 1, distance, 12)
+  geometry.translate(0, -distance / 2, 0)
   geometry.rotateX(-Math.PI / 2)
 
   turnTo(geometry, p1, p2)
@@ -249,6 +249,7 @@ export function meshFromPolarGrid(grid, connect = createPipe, color = 'gray', ce
     }
 
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
+  geometry.translate(0, .5, 0)
   const material = new THREE.MeshLambertMaterial({ color })
   const mesh = new THREE.Mesh(geometry, material)
   return mesh
