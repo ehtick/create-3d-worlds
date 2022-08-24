@@ -165,7 +165,7 @@ function createWall(p1, p2, castle = true) {
   return geometry
 }
 
-export function meshFromGrid(grid, cellSize = 10, connect = createPipe, color = 'white') {
+export function meshFromGrid({ grid, cellSize = 10, connect = createPipe, color = 'white' } = {}) {
   const geometries = []
 
   for (const row of grid.grid)
@@ -198,6 +198,8 @@ export function meshFromGrid(grid, cellSize = 10, connect = createPipe, color = 
     }
 
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
+  geometry.translate(0, .5, 0)
+  centerGeometry(geometry)
   const material = new THREE.MeshLambertMaterial({ color })
   const mesh = new THREE.Mesh(geometry, material)
   return mesh

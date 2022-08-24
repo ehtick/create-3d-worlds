@@ -56,7 +56,7 @@ export function createFloor({ color = 0x808080, circle = false, ...rest } = {}) 
   return createGround({ color, circle, ...rest })
 }
 
-export function createCamoGround({ size, segments, domainColors = camoColors, noiseFactor = 2.2 } = {}) {
+export function createCamoGround({ size, segments, domainColors = camoColors, noiseFactor = 1.2 } = {}) {
   const ground = createTerrainMesh({ size, segments })
   const f = chroma.scale(domainColors).domain([-1.75, 2])
 
