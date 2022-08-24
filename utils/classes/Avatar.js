@@ -4,7 +4,7 @@ import { createAvatar, updateAvatar, uniforms, skins } from '/utils/geometry/ava
 
 export default class Avatar extends Player {
   constructor({ skin = skins.STONE, size = 1, ...params } = {}) {
-    super({ mesh: createAvatar({ skin, r: size, speed: size * 3 }), ...params })
+    super({ mesh: createAvatar({ skin, r: size, speed: size * 4 }), ...params })
     this.limbs = [
       this.mesh.getObjectByName('leftHand'), this.mesh.getObjectByName('rightHand'),
       this.mesh.getObjectByName('leftLeg'), this.mesh.getObjectByName('rightLeg')

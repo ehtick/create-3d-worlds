@@ -76,7 +76,7 @@ const addColors = ({ geometry, color, height, maxHeight } = {}) => {
   const f = chroma.scale([0x999999, 0xffffff]).domain([0, maxHeight])
   const shade = new THREE.Color(color || f(height).hex())
   const colors = []
-  for (let i = 0, l = geometry.attributes.position.count; i < l; i ++)
+  for (let i = 0, l = geometry.attributes.position.count; i < l; i++)
     colors.push(shade.r, shade.g, shade.b)
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 }
@@ -205,7 +205,7 @@ export function meshFromGrid(grid, cellSize = 10, connect = createPipe, color = 
 
 /* MESH FROM POLAR GRID */
 
-export function meshFromPolarGrid(grid, connect = createPipe, color = 'gray', cellSize = 10) {
+export function meshFromPolarGrid({ grid, connect = createPipe, color = 'gray', cellSize = 10 } = {}) {
   const center = 0
   const geometries = []
 
@@ -255,8 +255,8 @@ export function meshFromPolarGrid(grid, connect = createPipe, color = 'gray', ce
   return mesh
 }
 
-export const polarMazeCity = grid => meshFromPolarGrid(grid, createWall, 'white')
+export const polarMazeCity = grid => meshFromPolarGrid({ grid, connect: createWall, color: 'white' })
 
-export const polarMazePipes = grid => meshFromPolarGrid(grid, createPipe, 'gray')
+export const polarMazePipes = grid => meshFromPolarGrid({ grid, connect: createPipe, color: 'gray' })
 
-export const polarMazeRuins = grid => meshFromPolarGrid(grid, (p1, p2) => createWall(p1, p2, false), 'white')
+export const polarMazeRuins = grid => meshFromPolarGrid({ grid, connect: (p1, p2) => createWall(p1, p2, false), color: 'white' })

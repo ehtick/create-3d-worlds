@@ -6,15 +6,16 @@ import { createSunLight, hemLight } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import Avatar from '/utils/classes/Avatar.js'
 
+hemLight({ intensity: .6 })
 const sun = createSunLight()
 scene.add(sun)
+
 scene.add(createGround())
 
-hemLight({ intensity: .6 })
 const grid = new PolarGrid(10)
 recursiveBacktracker(grid)
 
-const maze = meshFromPolarGrid(grid)
+const maze = meshFromPolarGrid({grid, cellSize: 5})
 scene.add(maze)
 
 const player = new Avatar({ size: .5, scene, camera, solids: maze })
