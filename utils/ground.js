@@ -10,7 +10,7 @@ const simplex = new SimplexNoise()
 const groundColors = [0xA62A2A, 0x7a8a46, 0x228b22, 0xfffacd]
 const sandColors = [0xc2b280, 0xF2D16B, 0xf0e68c, 0xfffacd]
 const cratersColors = [0x5C4033, 0xA62A2A, 0xc2b280]
-const camoColors = [0x7a8a46, 0x228b22, 0x509f53]
+const camoColors = [0x7a8a46, 0xf0e68c, 0x228b22, 0x509f53]
 
 /* HILL */
 
@@ -56,22 +56,9 @@ export function createFloor({ color = 0x808080, circle = false, ...rest } = {}) 
   return createGround({ color, circle, ...rest })
 }
 
-export function createCamoGround({ size, segments, domainColors = camoColors, noiseFactor = 1.2 } = {}) {
+export function createCamoGround({ size, segments, domainColors } = {}) {
   const ground = createTerrainMesh({ size, segments })
-  const f = chroma.scale(domainColors).domain([-1.75, 2])
-
-  const { geometry } = ground
-  const { position } = geometry.attributes
-  const colors = []
-
-  const vertex = new THREE.Vector3()
-  for (let i = 0, l = position.count; i < l; i++) {
-    vertex.fromBufferAttribute(position, i)
-    const noise = simplex.noise(vertex.x * .05, vertex.z * .05)
-    const shade = new THREE.Color(f(noise * noiseFactor).hex())
-    colors.push(shade.r, shade.g, shade.b)
-  }
-  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+  addCamoColors({ geometry: ground.geometry, domainColors })
   return ground
 }
 
@@ -135,15 +122,30 @@ function randomShades(geometry, colorParam, range) { // h = .25, s = 0.5, l = 0.
 }
 
 function heightColors({ geometry, maxY, minY = 0, domainColors = groundColors } = {}) {
-  const colors = []
-  const f = chroma.scale(domainColors).domain([minY, maxY])
-
   const { position } = geometry.attributes
+  const f = chroma.scale(domainColors).domain([minY, maxY])
+  const colors = []
   const vertex = new THREE.Vector3()
+
   for (let i = 0, l = position.count; i < l; i++) {
     vertex.fromBufferAttribute(position, i)
     const nuance = new THREE.Color(f(vertex.y).hex())
     colors.push(nuance.r, nuance.g, nuance.b)
+  }
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+}
+
+function addCamoColors({ geometry, domainColors = camoColors } = {}) {
+  const { position } = geometry.attributes
+  const colors = []
+  const vertex = new THREE.Vector3()
+
+  for (let i = 0, l = position.count; i < l; i++) {
+    vertex.fromBufferAttribute(position, i)
+    const noise = simplex.noise(vertex.x * .05, vertex.z * .05)
+    const index = Math.floor(noise * domainColors.length * .5 + domainColors.length * .5)
+    const shade = new THREE.Color(domainColors[index])
+    colors.push(shade.r, shade.g, shade.b)
   }
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 }
