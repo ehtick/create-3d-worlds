@@ -6,12 +6,13 @@ import { hemLight } from '/utils/light.js'
 import { createDunes } from '/utils/ground.js'
 
 hemLight()
+
 camera.position.set(0, 7, 10)
 const controls = createOrbitControls()
 
 const grid = new Grid(10)
 recursiveDivision(grid)
-const mesh = meshFromGrid({ grid, texture: 'terrain/concrete.jpg' })
+const mesh = meshFromGrid({ grid })
 scene.add(mesh)
 
 scene.add(createDunes())

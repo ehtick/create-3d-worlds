@@ -9,12 +9,10 @@ npm i
 npx live-server
 ```
 
-- shadertoy u threejs
-- probati ThirdPersonCamera
-
-### Mazes
 - bug: avatar prolazi kroz zidove
 - dodati tween avataru kada usporava, da ne prekine korak naglo
+- probati ThirdPersonCamera
+- shadertoy u threejs
 
 ## Konačni automat
 - srediti capoeira girl

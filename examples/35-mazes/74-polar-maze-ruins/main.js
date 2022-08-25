@@ -8,7 +8,7 @@ import { createDunes } from '/utils/ground.js'
 const sun = createSunLight()
 scene.add(sun)
 
-const ground = createDunes({size: 1000})
+const ground = createDunes({ size: 1000 })
 scene.add(ground)
 camera.position.set(0, 25, 50)
 const controls = createOrbitControls()
