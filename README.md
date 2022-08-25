@@ -9,7 +9,6 @@ npm i
 npx live-server
 ```
 
-- dodati tween avataru kada usporava, da ne prekine korak naglo
 - probati ThirdPersonCamera
 - shadertoy u threejs
 

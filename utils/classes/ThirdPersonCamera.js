@@ -1,30 +1,31 @@
+// credit to simon dev
 import * as THREE from 'three'
 
 const calc = (mesh, pos) => new THREE.Vector3(...pos)
   .applyQuaternion(mesh.quaternion)
   .add(mesh.position)
 
-// credit to simon dev
 export default class ThirdPersonCamera {
-  constructor({ camera, mesh }) { // with position and rotation
-    this._mesh = mesh
-    this._camera = camera
-    this._currentPosition = new THREE.Vector3()
-    this._currentLookat = new THREE.Vector3()
+  constructor({ camera, mesh, offset = [0, 1, 1.5], lookAt = [0, 1, 0] }) {
+    this.mesh = mesh
+    this.camera = camera
+    this.offset = offset
+    this.lookAt = lookAt
+    this.currentPosition = new THREE.Vector3()
+    this.currentLookat = new THREE.Vector3()
   }
 
   update(delta) {
-    const idealOffset = calc(this._mesh, [-5, 15, -20])
-    const idealLookat = calc(this._mesh, [0, 10, 50])
+    const idealOffset = calc(this.mesh, this.offset)
+    const idealLookat = calc(this.mesh, this.lookAt)
 
-    // const t = 0.05;        // naive
-    // const t = 4.0 * delta; // better
-    const t = 1.0 - Math.pow(0.001, delta) // best
+    // const t = 4.0 * delta
+    const t = 1.0 - Math.pow(0.001, delta)
 
-    this._currentPosition.lerp(idealOffset, t)
-    this._currentLookat.lerp(idealLookat, t)
+    this.currentPosition.lerp(idealOffset, t)
+    this.currentLookat.lerp(idealLookat, t)
 
-    this._camera.position.copy(this._currentPosition)
-    this._camera.lookAt(this._currentLookat)
+    this.camera.position.copy(this.currentPosition)
+    this.camera.lookAt(this.currentLookat)
   }
 }
