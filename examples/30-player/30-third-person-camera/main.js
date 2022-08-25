@@ -28,9 +28,11 @@ void function update() {
   if (keyboard.pressed.mouse)
     controls.target = player.mesh.position.clone().add(new THREE.Vector3(0, 2, 0))
 
-  // TODO: lagano vraćanje kad pusti
-  if (!keyboard.pressed.mouse)
-    thirdPersonCamera.update(delta)
+  // TODO: dodati default kameru na avatara
 
+  if (!keyboard.pressed.mouse) {
+    thirdPersonCamera.currentPosition = camera.position.clone()
+    thirdPersonCamera.update(delta)
+  }
   renderer.render(scene, camera)
 }()
