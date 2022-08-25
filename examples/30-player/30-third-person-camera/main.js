@@ -3,22 +3,19 @@ import Avatar from '/utils/classes/Avatar.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
-import { createFloor } from '/utils/ground.js'
+import { createGround } from '/utils/ground.js'
 import keyboard from '/utils/classes/Keyboard.js'
-
-camera.position.set(0, 1, 1.5)
 
 initLights()
 const controls = createOrbitControls()
 
 scene.background = new THREE.Color(0x8FBCD4)
-scene.add(createFloor({ size: 100 }))
+scene.add(createGround({ size: 100 }))
 
 const player = new Avatar()
 scene.add(player.mesh)
 
 const thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: player.mesh, offset: [0, 2, 3], lookAt: [0, 2, 0] })
-controls.target = player.mesh.position
 
 /* LOOP */
 
@@ -27,6 +24,11 @@ void function update() {
   const delta = clock.getDelta()
 
   player.update(delta)
+
+  if (keyboard.pressed.mouse)
+    controls.target = player.mesh.position.clone().add(new THREE.Vector3(0, 2, 0))
+
+  // TODO: lagano vraćanje kad pusti
   if (!keyboard.pressed.mouse)
     thirdPersonCamera.update(delta)
 
