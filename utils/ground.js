@@ -10,7 +10,7 @@ const simplex = new SimplexNoise()
 const groundColors = [0xA62A2A, 0x7a8a46, 0x228b22, 0xfffacd]
 const sandColors = [0xc2b280, 0xF2D16B, 0xf0e68c, 0xfffacd]
 const cratersColors = [0x5C4033, 0xA62A2A, 0xc2b280]
-const camoColors = [0x7a8a46, 0xf0e68c, 0x228b22, 0x509f53]
+const camoColors = [0x7a8a46, 0x87CEEB, 0x228b22, 0x509f53]
 
 /* HILL */
 
@@ -56,6 +56,7 @@ export function createFloor({ color = 0x808080, circle = false, ...rest } = {}) 
   return createGround({ color, circle, ...rest })
 }
 
+// TODO: delete if unused
 export function createCamoGround({ size, segments, domainColors } = {}) {
   const ground = createTerrainMesh({ size, segments })
   addCamoColors({ geometry: ground.geometry, domainColors })
@@ -180,7 +181,7 @@ export function createCraters({ size = 100, segments = 100 } = {}) {
 
 /* DUNES */
 
-export function createDunes({ size = 100, segments = 100 } = {}) {
+export function createDunes({ size = 400, segments = 100 } = {}) {
   const mesh = createTerrainMesh({ size, segments })
   dunesNoise(mesh.geometry)
   heightColors({ geometry: mesh.geometry, maxY: 2, minY: -1.75, domainColors: sandColors })

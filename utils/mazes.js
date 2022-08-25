@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
-import { centerGeometry, randomGrayish } from '/utils/helpers.js'
+import { centerGeometry, randomGrayish, getTexture } from '/utils/helpers.js'
 import { createBuildingGeometry } from '/utils/city.js'
 import chroma from '/libs/chroma.js'
 
@@ -167,7 +167,7 @@ function createCityWall(p1, p2, castle = true) {
 
 const createRandomWall = (p1, p2) => createCityWall(p1, p2, false)
 
-export function meshFromGrid({ grid, cellSize = 10, connect = createRandomWall, color = 'white' } = {}) {
+export function meshFromGrid({ grid, cellSize = 10, connect = createRandomWall, color = 'white', texture } = {}) {
   const geometries = []
 
   for (const row of grid.grid)
@@ -202,7 +202,10 @@ export function meshFromGrid({ grid, cellSize = 10, connect = createRandomWall, 
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
   geometry.translate(0, .5, 0)
   centerGeometry(geometry)
-  const material = new THREE.MeshLambertMaterial({ color })
+  const material = new THREE.MeshLambertMaterial({
+    color,
+    map: texture ? getTexture({ file: texture }) : null
+  })
   const mesh = new THREE.Mesh(geometry, material)
   return mesh
 }

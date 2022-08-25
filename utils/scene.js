@@ -1,5 +1,7 @@
 import * as THREE from 'three'
+import { OutlineEffect } from '/node_modules/three/examples/jsm/effects/OutlineEffect.js'
 import { OrbitControls } from '/node_modules/three/examples/jsm/controls/OrbitControls.js'
+
 import { createSkySphere } from './geometry.js'
 import { createGround } from './ground.js'
 import { initLights, hemLight, createSunLight } from './light.js'
@@ -46,12 +48,6 @@ renderer.domElement.focus()
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
-// fix lights for some models (glb, fbx)
-export function gamaRender() {
-  renderer.gammaFactor = 2.2
-  renderer.outputEncoding = THREE.GammaEncoding
-}
-
 window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight)
   camera.aspect = window.innerWidth / window.innerHeight
@@ -59,6 +55,16 @@ window.addEventListener('resize', () => {
 })
 
 renderer.domElement.addEventListener('contextmenu', e => e.preventDefault())
+
+// fix lights for some models (glb, fbx)
+export function gamaRender() {
+  renderer.gammaFactor = 2.2
+  renderer.outputEncoding = THREE.GammaEncoding
+}
+
+export function createToonRenderer({ defaultThickness = 0.003 } = {}) {
+  return new OutlineEffect(renderer, { defaultThickness })
+}
 
 /* CONTROLS */
 
