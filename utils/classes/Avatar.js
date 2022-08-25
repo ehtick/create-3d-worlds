@@ -12,8 +12,11 @@ export default class Avatar extends Player {
   }
 
   idle() {
-    this.limbs.forEach(limb => {
-      limb.position.z = Math.sin(clock.getElapsedTime()) * .03
+    const idleRange = .03
+    this.limbs.forEach(({ position }) => {
+      position.z = position.z > idleRange
+        ? position.z * .9
+        : Math.sin(clock.getElapsedTime()) * idleRange
     })
   }
 
