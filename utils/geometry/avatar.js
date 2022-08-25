@@ -60,14 +60,14 @@ export function createAvatar({ skin = STONE, r = 1.2 } = {}) {
   return group
 }
 
-export function updateAvatar(mesh, time) {
+export function updateAvatar(mesh, time, axis = 'z') {
   const limbs = [
     mesh.getObjectByName('leftHand'), mesh.getObjectByName('rightHand'),
     mesh.getObjectByName('leftLeg'), mesh.getObjectByName('rightLeg')
   ]
   const elapsed = Math.sin(time) * .666
   limbs.forEach((limb, i) => {
-    limb.position.z = i % 2 ? elapsed : -elapsed
+    limb.position[axis] = i % 2 ? elapsed : -elapsed
   })
 }
 

@@ -9,7 +9,6 @@ npm i
 npx live-server
 ```
 
-- bug: avatar prolazi kroz zidove
 - dodati tween avataru kada usporava, da ne prekine korak naglo
 - probati ThirdPersonCamera
 - shadertoy u threejs

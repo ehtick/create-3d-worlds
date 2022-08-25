@@ -71,7 +71,7 @@ export default class Player {
       if (this.directionBlocked(dir.up))
         this.fall()
 
-      if (keyboard.up) this.move()
+      if (keyboard.up && !this.directionBlocked(dir.forward)) this.move()
       if (keyboard.down) this.move(1)
       if (keyboard.left) this.turn(1)
       if (keyboard.right) this.turn()
