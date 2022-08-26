@@ -18,7 +18,7 @@ export default class ThirdPersonCamera {
   }
 
   update(delta) {
-    const speed = (!keyboard.keyPressed) ? this.speed * 3 : this.speed
+    const speed = keyboard.keyPressed ? this.speed : this.speed * 3
     const t = speed * delta
 
     this.currentPosition.lerp(calc(this.mesh, this.offset), t)
