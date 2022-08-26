@@ -9,15 +9,13 @@ import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
 import { girlAnimations } from '/data/animations.js'
 import keyboard from '/utils/classes/Keyboard.js'
 
-camera.position.set(25, 10, 25)
-
 initLights()
 const controls = createOrbitControls()
 
 scene.background = new THREE.Color(0x8FBCD4)
 scene.add(createFloor({ size: 100 }))
 
-const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 10 })
+const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 2, angle: Math.PI, axis: [0, 1, 0] })
 const animations = await loadFbxAnimations(girlAnimations, 'character/kachujin/')
 
 const mixer = new THREE.AnimationMixer(mesh)
@@ -32,7 +30,7 @@ const stateMachine = new StateMachine(actions)
 
 scene.add(mesh)
 
-const thirdPersonCamera = new ThirdPersonCamera({ camera, mesh })
+const thirdPersonCamera = new ThirdPersonCamera({ camera, mesh, offset: [0, 2, 3], lookAt: [0, 2, 0] })
 controls.target = mesh.position
 
 /* LOOP */
@@ -43,8 +41,10 @@ void function update() {
 
   player.update(delta)
   mixer.update(delta)
-  if (!keyboard.pressed.mouse) thirdPersonCamera.update(delta)
   stateMachine.update()
+
+  if (!keyboard.pressed.mouse)
+    thirdPersonCamera.update(delta)
 
   renderer.render(scene, camera)
 }()

@@ -1,4 +1,6 @@
 import * as THREE from 'three'
+import { camera as defaultCamera, createOrbitControls } from '/utils/scene.js'
+import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { createBox } from '/utils/geometry.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
@@ -19,14 +21,19 @@ export default class Player {
     this.speed = speed || this.size * 2
     this.solids = []
     this.groundY = 0
-    // some animation not work in group
-    this.mixer = new AnimationMixer(mesh.type === 'Group' ? mesh.children[0] : mesh)
-    this.animNames = animNames
-    this.animations = animations
+
     if (camera) {
-      this.add(camera)
-      camera.position.set(0, 1, 1.5)
+      this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh, offset: [0, 2, 3], lookAt: [0, 2, 0] })
+      this.controls = createOrbitControls()
     }
+
+    if (animations) {
+      this.animations = animations
+      this.animNames = animNames
+      // some animation not work in group
+      this.mixer = new AnimationMixer(mesh.type === 'Group' ? mesh.children[0] : mesh)
+    }
+
     if (scene) scene.add(this.mesh)
     if (solids) this.addSolids(solids)
   }
@@ -100,19 +107,19 @@ export default class Player {
   /* MOVEMENTS */
 
   idle() {
-    this.playAnimation(this.animNames.idle, LoopRepeat)
+    this.playAnimation(this.animNames?.idle, LoopRepeat)
   }
 
   move(dir = -1) {
     this.mesh.translateZ(this.step * dir)
-    if (this.running && this.animNames.run)
-      return this.playAnimation(this.animNames.run || this.animNames.walk, LoopRepeat)
-    this.playAnimation(this.animNames.walk, LoopRepeat)
+    if (this.running && this.animNames?.run)
+      return this.playAnimation(this.animNames?.run || this.animNames?.walk, LoopRepeat)
+    this.playAnimation(this.animNames?.walk, LoopRepeat)
   }
 
   sideWalk(dir = -1) {
     this.mesh.translateX(this.step * dir)
-    this.playAnimation(this.animNames.walk, LoopRepeat)
+    this.playAnimation(this.animNames?.walk, LoopRepeat)
   }
 
   turn(dir = -1) {
@@ -124,21 +131,21 @@ export default class Player {
 
     if (this.position.y - this.jumpStep >= this.groundY) {
       this.mesh.translateY(-this.jumpStep)
-      this.playAnimation(this.animNames.fall || this.animNames.jump, LoopRepeat)
+      this.playAnimation(this.animNames?.fall || this.animNames?.jump, LoopRepeat)
     }
   }
 
   jump() {
     this.mesh.translateY(this.jumpStep)
-    this.playAnimation(this.animNames.jump, LoopRepeat)
+    this.playAnimation(this.animNames?.jump, LoopRepeat)
   }
 
   attack() {
-    this.playAnimation(this.animNames.attack, LoopOnce)
+    this.playAnimation(this.animNames?.attack, LoopOnce)
   }
 
   special() {
-    this.playAnimation(this.animNames.special, LoopOnce)
+    this.playAnimation(this.animNames?.special, LoopOnce)
   }
 
   /* ANIMATIONS */
@@ -206,12 +213,17 @@ export default class Player {
     this.updateGround()
     this.handleInput(delta)
 
-    if (this.controls) {
-      this.controls.target = this.mesh.position
-      this.controls.update()
+    if (this.thirdPersonCamera) {
+      if (keyboard.pressed.mouse)
+        this.controls.target = this.mesh.position.clone().add(new THREE.Vector3(0, 2, 0))
+
+      if (!keyboard.pressed.mouse) {
+        this.thirdPersonCamera.currentPosition = defaultCamera.position.clone()
+        this.thirdPersonCamera.update(delta)
+      }
     }
 
-    const runDelta = (this.running && !this.animNames.run) ? delta * 2 : delta
+    const runDelta = (this.running && !this.animNames?.run) ? delta * 2 : delta
     if (this.mixer) this.mixer.update(runDelta)
   }
 }

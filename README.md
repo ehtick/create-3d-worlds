@@ -9,7 +9,7 @@ npm i
 npx live-server
 ```
 
-- probati ThirdPersonCamera
+- srediti kameru za skok i padanje 70-polar-maze-pipes/
 - shadertoy u threejs
 
 ## Konačni automat

@@ -1,4 +1,4 @@
-// credit to simon dev
+/* credit to simon dev */
 import * as THREE from 'three'
 
 const calc = (mesh, pos) => new THREE.Vector3(...pos)
@@ -16,14 +16,11 @@ export default class ThirdPersonCamera {
   }
 
   update(delta) {
-    const idealOffset = calc(this.mesh, this.offset)
-    const idealLookat = calc(this.mesh, this.lookAt)
-
     // const t = 4.0 * delta
     const t = 1.0 - Math.pow(0.001, delta)
 
-    this.currentPosition.lerp(idealOffset, t)
-    this.currentLookat.lerp(idealLookat, t)
+    this.currentPosition.lerp(calc(this.mesh, this.offset), t)
+    this.currentLookat.lerp(calc(this.mesh, this.lookAt), t)
 
     this.camera.position.copy(this.currentPosition)
     this.camera.lookAt(this.currentLookat)

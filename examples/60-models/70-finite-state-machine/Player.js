@@ -5,7 +5,7 @@ export default class Player {
   constructor({ mesh }) {
     this.mesh = mesh
     this._decceleration = new THREE.Vector3(-0.0005, -0.0001, -5.0)
-    this._acceleration = new THREE.Vector3(1, 0.25, 50.0)
+    this._acceleration = new THREE.Vector3(1, 0.1, 10)
     this._velocity = new THREE.Vector3(0, 0, 0)
   }
 
@@ -44,8 +44,8 @@ export default class Player {
   }
 
   update(timeInSeconds) {
-    if (keyboard.up) this.walk(timeInSeconds, 1)
-    if (keyboard.down) this.walk(timeInSeconds, -1)
+    if (keyboard.up) this.walk(timeInSeconds, -1)
+    if (keyboard.down) this.walk(timeInSeconds, 1)
 
     if (keyboard.left) this.turn(timeInSeconds, 1)
     if (keyboard.right) this.turn(timeInSeconds, -1)
