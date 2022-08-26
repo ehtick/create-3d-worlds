@@ -23,7 +23,7 @@ export default class Player {
     this.groundY = 0
 
     if (camera) {
-      this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh, offset: [0, 2, 3], lookAt: [0, 2, 0] })
+      this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh })
       this.controls = createOrbitControls()
     }
 
@@ -213,15 +213,13 @@ export default class Player {
     this.updateGround()
     this.handleInput(delta)
 
-    if (this.thirdPersonCamera) {
+    if (this.thirdPersonCamera)
       if (keyboard.pressed.mouse)
-        this.controls.target = this.mesh.position.clone().add(new THREE.Vector3(0, 2, 0))
-
-      if (!keyboard.pressed.mouse) {
+        this.controls.target = this.mesh.position.clone().add(new THREE.Vector3(0, this.size, 0))
+      else {
         this.thirdPersonCamera.currentPosition = defaultCamera.position.clone()
         this.thirdPersonCamera.update(delta)
       }
-    }
 
     const runDelta = (this.running && !this.animNames?.run) ? delta * 2 : delta
     if (this.mixer) this.mixer.update(runDelta)
