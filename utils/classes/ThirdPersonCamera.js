@@ -1,6 +1,5 @@
 /* credit to simon dev */
 import * as THREE from 'three'
-import keyboard from '/utils/classes/Keyboard.js'
 
 const calc = (mesh, pos) => new THREE.Vector3(...pos)
   .applyQuaternion(mesh.quaternion)
@@ -18,11 +17,16 @@ export default class ThirdPersonCamera {
   }
 
   update(delta) {
-    const speed = keyboard.keyPressed ? this.speed : this.speed * 3
+    const newPosition = calc(this.mesh, this.offset)
+    const newLookAt = calc(this.mesh, this.lookAt)
+
+    const heightDiff = newPosition.y - this.currentPosition.y
+
+    const speed = this.speed * (1 + Math.abs(heightDiff) * 3)
     const t = speed * delta
 
-    this.currentPosition.lerp(calc(this.mesh, this.offset), t)
-    this.currentLookat.lerp(calc(this.mesh, this.lookAt), t)
+    this.currentPosition.lerp(newPosition, t)
+    this.currentLookat.lerp(newLookAt, t)
 
     this.camera.position.copy(this.currentPosition)
     this.camera.lookAt(this.currentLookat)
