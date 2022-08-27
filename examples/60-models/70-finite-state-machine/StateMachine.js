@@ -1,3 +1,6 @@
+import * as THREE from 'three'
+import { animationsToActions } from '/utils/helpers.js'
+
 import IdleState from './states/IdleState.js'
 import WalkState from './states/WalkState.js'
 import RunState from './states/RunState.js'
@@ -13,8 +16,10 @@ const states = {
 }
 
 export default class StateMachine {
-  constructor(actions) {
-    this._actions = actions
+  constructor({ mesh, animations }) {
+    this._mesh = mesh
+    this._mixer = new THREE.AnimationMixer(mesh)
+    this._actions = animationsToActions(animations, this._mixer)
     this.setState('idle')
   }
 
@@ -24,11 +29,13 @@ export default class StateMachine {
       if (oldState.name == name) return
       oldState.exit()
     }
-    this._currentState = new states[name](this, name)
+    const State = states[name] || SpecialState
+    this._currentState = new State(this, name)
     this._currentState.enter(oldState)
   }
 
-  update() {
+  update(timeElapsedS) {
     this._currentState.update()
+    this._mixer.update(timeElapsedS)
   }
-};
+}

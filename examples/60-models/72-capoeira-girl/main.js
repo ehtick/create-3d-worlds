@@ -13,7 +13,6 @@ scene.add(createFloor({ size: 100 }))
 const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 3, axis: [0, 1, 0], angle: Math.PI })
 
 const animations = await loadFbxAnimations(kachujinAnimations, 'character/kachujin/')
-
 const stateMachine = new StateMachine({ mesh, animations })
 
 scene.add(mesh)
