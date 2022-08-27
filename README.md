@@ -9,12 +9,9 @@ npm i
 npx live-server
 ```
 
-- shadertoy u threejs
-  https://r105.threejsfundamentals.org/threejs/lessons/threejs-shadertoy.html
-  https://stackoverflow.com/questions/24820004/how-to-implement-a-shadertoy-shader-in-three-js
-
 ## Konačni automat
-- srediti capoeira girl
+- 70-finite-state-machine/ da bude opšte namene sa standardnim akcijama
+- capoeira girl da bude zaseban projekat sa specijalnim udarcima
 - uskladiti animacije sa mrdanjem igrača
   - mrdati igrača napred za neke napade
   - onemogućiti mrdanje u skoku?

@@ -215,3 +215,8 @@ export const getCursorPosition = e => {
   const clientY = e.targetTouches ? e.targetTouches[0].pageY : e.clientY
   return { x: clientX, y: clientY }
 }
+
+export const animationsToActions = (animations, mixer) => animations.reduce((dict, clip) => ({
+  ...dict,
+  [clip.name]: mixer.clipAction(clip)
+}), {})

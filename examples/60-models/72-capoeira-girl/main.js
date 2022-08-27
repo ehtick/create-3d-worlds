@@ -1,4 +1,3 @@
-import * as THREE from 'three'
 import StateMachine from './StateMachine.js'
 
 import { scene, renderer, camera, clock, addUIControls } from '/utils/scene.js'
@@ -9,7 +8,6 @@ import { kachujinAnimations, kachujinMoves } from '/data/animations.js'
 
 initLights()
 
-scene.background = new THREE.Color(0x8FBCD4)
 scene.add(createFloor({ size: 100 }))
 
 const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 3, axis: [0, 1, 0], angle: Math.PI })

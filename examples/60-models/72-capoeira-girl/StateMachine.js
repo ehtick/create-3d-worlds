@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { animationsToActions } from '/utils/helpers.js'
 
 import IdleState from './states/IdleState.js'
 import RunState from './states/RunState.js'
@@ -6,7 +7,6 @@ import WalkState from './states/WalkState.js'
 import WalkBackwardState from './states/WalkBackwardState.js'
 import SpecialState from './states/SpecialState.js'
 import SpecialMirrorState from './states/SpecialMirrorState.js'
-import keyboard from '/utils/classes/Keyboard.js'
 
 const states = {
   idle: IdleState,
@@ -20,10 +20,7 @@ export default class StateMachine {
   constructor({ mesh, animations }) {
     this._mesh = mesh
     this._mixer = new THREE.AnimationMixer(mesh)
-    this._actions = animations.reduce((dict, clip) => ({
-      ...dict,
-      [clip.name]: this._mixer.clipAction(clip)
-    }), {})
+    this._actions = animationsToActions(animations, this._mixer)
     this.setState('idle')
   }
 
@@ -33,7 +30,7 @@ export default class StateMachine {
       if (oldState.name == name) return
       oldState.exit()
     }
-    const State = states[name] || (keyboard.capsLock ? SpecialMirrorState : SpecialState)
+    const State = states[name] || SpecialState
     this._currentState = new State(this, name)
     this._currentState.enter(oldState)
   }
@@ -42,4 +39,4 @@ export default class StateMachine {
     this._currentState.update()
     this._mixer.update(timeElapsedS)
   }
-};
+}
