@@ -14,6 +14,7 @@ const states = {
   run: RunState,
   'walk backward': WalkBackwardState,
   'Esquiva Left': SpecialMirrorState,
+  'Au Right': SpecialMirrorState,
 }
 
 export default class StateMachine {
@@ -35,8 +36,8 @@ export default class StateMachine {
     this._currentState.enter(oldState)
   }
 
-  update(timeElapsedS) {
+  update(delta) {
     this._currentState.update()
-    this._mixer.update(timeElapsedS)
+    this._mixer.update(delta)
   }
 }

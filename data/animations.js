@@ -39,8 +39,10 @@ export const kachujinAnimations = {
   idle: 'Ginga', // Dwarf-Idle, Ginga, Ginga-Variation-2
   run: 'Slow-Run',
   walk: 'Walking',
+  jump: 'Backflip', // Jump
   'walk backward': 'Walking',
-  'Au': 'Au',
+  'Au Left': 'Au',
+  'Au Right': 'Au',
   Martelo: 'Martelo',
   Bencao: 'Bencao',
   Armada: 'Armada',
@@ -65,8 +67,10 @@ export const kachujinAnimations = {
 
 // keycode : state name
 export const kachujinMoves = {
-  Space: 'Au',
+  Space: 'jump',
   Enter: 'Bencao',
+  KeyQ: 'Au Left',
+  KeyE: 'Au Right',
   KeyV: 'Queshada',
   KeyX: 'Martelo',
   KeyB: 'Armada',

@@ -34,8 +34,8 @@ export default class StateMachine {
     this._currentState.enter(oldState)
   }
 
-  update(timeElapsedS) {
+  update(delta) {
     this._currentState.update()
-    this._mixer.update(timeElapsedS)
+    this._mixer.update(delta)
   }
 }
