@@ -144,4 +144,7 @@ class Keyboard {
 
 }
 
-export default new Keyboard
+const keyboard = new Keyboard
+
+export { keyboard }
+export default keyboard

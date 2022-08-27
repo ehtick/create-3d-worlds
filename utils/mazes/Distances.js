@@ -1,4 +1,4 @@
-import { sample } from './utils.js'
+import { sample } from '/utils/helpers.js'
 
 export default class Distances {
   constructor(root) {

@@ -216,6 +216,10 @@ export const getCursorPosition = e => {
   return { x: clientX, y: clientY }
 }
 
+/* ARRAYS */
+
+export const sample = arr => arr[Math.floor(Math.random() * arr.length)]
+
 export const animationsToActions = (animations, mixer) => animations.reduce((dict, clip) => ({
   ...dict,
   [clip.name]: mixer.clipAction(clip)

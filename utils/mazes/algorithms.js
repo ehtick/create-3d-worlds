@@ -1,5 +1,6 @@
+import { sample } from '/utils/helpers.js'
+import { shuffle } from './utils.js'
 import Grid from './Grid.js'
-import { sample, shuffle } from './utils.js'
 
 /* BINARY TREE */
 
