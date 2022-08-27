@@ -10,6 +10,8 @@ npx live-server
 ```
 
 - shadertoy u threejs
+  https://r105.threejsfundamentals.org/threejs/lessons/threejs-shadertoy.html
+  https://stackoverflow.com/questions/24820004/how-to-implement-a-shadertoy-shader-in-three-js
 
 ## Konačni automat
 - srediti capoeira girl
