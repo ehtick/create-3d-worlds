@@ -1,8 +1,10 @@
-import { scene, renderer, camera, clock, addUIControls } from '/utils/scene.js'
+import { scene, renderer, camera, clock, addUIControls, createOrbitControls } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 import { sample } from '/utils/helpers.js'
 import { keyboard } from '/utils/classes/Keyboard.js'
+
+createOrbitControls()
 
 import StateMachine from './StateMachine.js'
 import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
@@ -27,7 +29,7 @@ addUIControls({ commands: kachujinMoves })
 
 /* FUNCTIONS */
 
-const playAction = (key, now, autoplay = false) => {
+const pressKey = (key, now, autoplay = false) => {
   lastTime = now
   h1.innerHTML = kachujinMoves[key]
 
@@ -36,9 +38,10 @@ const playAction = (key, now, autoplay = false) => {
     setTimeout(() => keyboard.reset(), 100)
   }, 500)
 
+  // TODO: ako je započet novi potez da ne briše
   setTimeout(() => {
     h1.innerHTML = ''
-  }, 3000)
+  }, 2500)
 }
 
 /* LOOP */
@@ -47,12 +50,12 @@ void function loop(now) {
   requestAnimationFrame(loop)
   const delta = clock.getDelta()
 
-  const keyPressed = Object.keys(keyboard.pressed)[0]
+  const key = Object.keys(keyboard.pressed)[0]
 
-  if (kachujinMoves[keyPressed])
-    playAction(keyPressed, now)
+  if (kachujinMoves[key])
+    pressKey(key, now)
   else if (now - lastTime >= 8000)
-    playAction(sample(moves), now, true)
+    pressKey(sample(moves), now, true)
 
   stateMachine.update(delta)
   renderer.render(scene, camera)
