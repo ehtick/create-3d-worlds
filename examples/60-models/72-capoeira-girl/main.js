@@ -8,6 +8,8 @@ import StateMachine from './StateMachine.js'
 import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
 import { kachujinAnimations, kachujinMoves } from '/data/animations.js'
 
+const h1 = document.getElementById('move')
+
 initLights()
 
 scene.add(createFloor({ size: 100 }))
@@ -23,30 +25,34 @@ addUIControls({ commands: kachujinMoves })
 
 const keys = Object.keys(kachujinMoves)
 
+const playAction = (key) => {
+  h1.innerHTML = kachujinMoves[key]
+
+  setTimeout(() => {
+    keyboard.pressed[key] = true
+    setTimeout(() => keyboard.reset(), 100)
+  }, 500)
+
+  setTimeout(() => {
+    h1.innerHTML = ''
+  }, 3000)
+}
+
 /* LOOP */
 
 let last = 0
-const h1 = document.getElementById('move')
 
 void function loop(now) {
   requestAnimationFrame(loop)
   const delta = clock.getDelta()
 
+  console.log(Object.keys(keyboard.pressed))
+
   // TODO: if automode
   if (now - last >= 8000) {
     last = now
     const key = sample(keys)
-
-    h1.innerHTML = kachujinMoves[key]
-
-    setTimeout(() => {
-      keyboard.pressed[key] = true
-      setTimeout(() => keyboard.reset(), 100)
-    }, 500)
-
-    setTimeout(() => {
-      h1.innerHTML = ''
-    }, 3000)
+    playAction(key)
   }
 
   stateMachine.update(delta)

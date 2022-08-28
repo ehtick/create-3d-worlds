@@ -20,44 +20,38 @@ class Keyboard {
       this.pressed[e.code] = true
     })
     document.addEventListener('keyup', e => {
-      this.pressed[e.code] = false
+      delete this.pressed[e.code]
       this.capsLock = e.getModifierState('CapsLock')
     })
 
-    document.addEventListener('pointerdown', e => {
-      this.pressed.mouse = e.button === 0
-      this.pressed.mouse2 = e.button === 2
-      startX = e.pageX
-      startY = e.pageY
-    })
-    document.addEventListener('pointerup', e => {
-      if (e.button === 0) {
-        this.pressed.mouse = false
-        this.resetSwipe()
-      }
-      if (e.button === 2)
-        this.pressed.mouse2 = false
-    })
+    document.addEventListener('pointerdown', e => this.handleMouseDown(e))
+    document.addEventListener('pointerup', e => this.handleMouseUp(e))
     document.addEventListener('pointermove', e => this.checkDirection(e))
 
-    document.addEventListener('mousedown', e => {
-      this.pressed.mouse = e.button === 0
-      this.pressed.mouse2 = e.button === 2
-      startX = e.pageX
-      startY = e.pageY
-    })
-    document.addEventListener('mouseup', e => {
-      if (e.button === 0) {
-        this.pressed.mouse = false
-        this.resetSwipe()
-      }
-      if (e.button === 2)
-        this.pressed.mouse2 = false
-    })
+    document.addEventListener('mousedown', e => this.handleMouseDown(e))
+    document.addEventListener('mouseup', e => this.handleMouseUp(e))
     document.addEventListener('mousemove', e => this.checkDirection(e))
 
     document.addEventListener('visibilitychange', () => this.reset())
     window.addEventListener('blur', () => this.reset())
+  }
+
+  handleMouseDown(e) {
+    if (e.button === 0)
+      this.pressed.mouse = true
+    if (e.button === 2)
+      this.pressed.mouse2 = true
+    startX = e.pageX
+    startY = e.pageY
+  }
+
+  handleMouseUp(e) {
+    if (e.button === 0) {
+      delete this.pressed.mouse
+      this.resetSwipe()
+    }
+    if (e.button === 2)
+      delete this.pressed.mouse2
   }
 
   checkDirection(e) {
@@ -71,7 +65,7 @@ class Keyboard {
   }
 
   reset() {
-    for (const key in this.pressed) this.pressed[key] = false
+    for (const key in this.pressed) delete this.pressed[key]
   }
 
   preventShake(e) {
