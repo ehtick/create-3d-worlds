@@ -64,6 +64,8 @@ export const kachujinAnimations = {
   Martelo: 'Martelo',
   Queshada: 'Queshada',
   Ponteira: 'Ponteira',
+  'Armada To Esquiva': 'Armada To Esquiva',
+  'Martelo Do Chau Sem Mao': 'Martelo Do Chau Sem Mao',
   Troca: 'Troca',
 }
 
@@ -72,7 +74,7 @@ export const kachujinMoves = {
   Space: 'Backflip',
   KeyQ: 'Au To Role',
   KeyE: 'Au',
-  // Enter
+  Enter: 'Armada To Esquiva',
 
   KeyA: 'Armada',
   KeyB: 'Bencao',
@@ -81,15 +83,14 @@ export const kachujinMoves = {
   KeyF: 'Chapaeu De Couro',
   KeyG: 'Chapa Giratoria',
   KeyH: 'Chapa Giratoria Back',
-  // KeyI
-  KeyJ: 'Meia Lua De Frente',
-  KeyK: 'Meia Lua De Compasso',
-  KeyL: 'Meia Lua De Compasso Back',
-  KeyM: 'Martelo',
-  KeyN: 'Martelo Do Chau',
+  KeyI: 'Meia Lua De Frente',
+  KeyJ: 'Meia Lua De Compasso',
+  KeyK: 'Meia Lua De Compasso Back',
+  KeyL: 'Martelo',
+  KeyM: 'Martelo Do Chau',
+  KeyN: 'Martelo Do Chau Sem Mao',
   KeyP: 'Ponteira',
   KeyR: 'Rasteira',
-  // KeyS
   KeyT: 'Troca',
   // KeyU
   KeyV: 'Queshada',
