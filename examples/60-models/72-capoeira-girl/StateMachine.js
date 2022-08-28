@@ -6,15 +6,12 @@ import RunState from './states/RunState.js'
 import WalkState from './states/WalkState.js'
 import WalkBackwardState from './states/WalkBackwardState.js'
 import SpecialState from './states/SpecialState.js'
-import SpecialMirrorState from './states/SpecialMirrorState.js'
 
 const states = {
   idle: IdleState,
   walk: WalkState,
   run: RunState,
   'walk backward': WalkBackwardState,
-  'Esquiva Left': SpecialMirrorState,
-  'Au Right': SpecialMirrorState,
 }
 
 export default class StateMachine {

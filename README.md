@@ -10,11 +10,12 @@ npx live-server
 ```
 
 ## Konačni automat
-- 70-finite-state-machine/ da bude opšte namene sa standardnim akcijama
-- capoeira girl da bude zaseban projekat sa specijalnim udarcima
 - uskladiti animacije sa mrdanjem igrača
   - mrdati igrača napred za neke napade
   - onemogućiti mrdanje u skoku?
+
+- capoeira girl
+ - izbaciti SpecialMirrorState, napraviti mirror animacije?
 
 ### Physics
 - preraditi staru 2D fiziku u 3D
