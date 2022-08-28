@@ -132,6 +132,7 @@ export function loadFbx(params) {
   })
 }
 
+// TODO: refactor to promise all
 export async function loadFbxAnimations(names, prefix = '') {
   const animations = []
   if (Array.isArray (names))

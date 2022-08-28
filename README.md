@@ -9,13 +9,20 @@ npm i
 npx live-server
 ```
 
+- refactor loadFbxAnimations (vidi capoeira girl pravi waterfall)
+- refactor loaders to async / await
+
+export async function loadHouse() {
+  const houseData = await gltfLoader.loadAsync('/assets/models/House-c.glb')
+  const house = setupModel(houseData)
+  return { house }
+}
+
 ## Konačni automat
+- spojiti StateMachine capoeira girl i fps
 - uskladiti animacije sa mrdanjem igrača
   - mrdati igrača napred za neke napade
   - onemogućiti mrdanje u skoku?
-
-- capoeira girl
- - izbaciti SpecialMirrorState, napraviti mirror animacije?
 
 ### Physics
 - preraditi staru 2D fiziku u 3D

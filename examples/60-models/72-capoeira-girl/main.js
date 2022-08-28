@@ -8,7 +8,7 @@ import StateMachine from './StateMachine.js'
 import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
 import { kachujinAnimations, kachujinMoves } from '/data/animations.js'
 
-// dodati neku kameru (orbit ili 3rd)
+// dodati kameru (orbit ili 3rd)
 const h1 = document.getElementById('move')
 const toggle = document.getElementById('checkbox')
 

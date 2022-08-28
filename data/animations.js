@@ -71,16 +71,14 @@ export const kachujinAnimations = {
 
 // keycode : state name
 export const kachujinMoves = {
-  Space: 'Backflip',
   KeyQ: 'Au To Role',
   KeyE: 'Au',
-  Enter: 'Armada To Esquiva',
 
   KeyA: 'Armada',
   KeyB: 'Bencao',
   KeyC: 'Chapa',
-  // KeyD
-  KeyF: 'Chapaeu De Couro',
+  KeyD: 'Chapaeu De Couro',
+  // KeyF
   KeyG: 'Chapa Giratoria',
   KeyH: 'Chapa Giratoria Back',
   KeyI: 'Meia Lua De Frente',
@@ -91,6 +89,7 @@ export const kachujinMoves = {
   KeyN: 'Martelo Do Chau Sem Mao',
   KeyP: 'Ponteira',
   KeyR: 'Rasteira',
+  // KeyS
   KeyT: 'Troca',
   // KeyU
   KeyV: 'Queshada',
@@ -103,4 +102,6 @@ export const kachujinMoves = {
   ArrowDown: 'Cocorinha',
   ArrowLeft: 'Esquiva Baixa',
   ArrowRight: 'Esquiva Lateral',
+  Enter: 'Armada To Esquiva',
+  Space: 'Backflip',
 }
