@@ -36,9 +36,14 @@ void function loop(now) {
   if (now - last >= 8000) {
     last = now
     const key = sample(keys)
-    keyboard.pressed[key] = true
+
     h1.innerHTML = kachujinMoves[key]
-    setTimeout(() => keyboard.reset(), 100)
+
+    setTimeout(() => {
+      keyboard.pressed[key] = true
+      setTimeout(() => keyboard.reset(), 100)
+    }, 500)
+
     setTimeout(() => {
       h1.innerHTML = ''
     }, 3000)
