@@ -63,6 +63,7 @@ export const kachujinAnimations = {
   Chapa: 'Chapa',
   Martelo: 'Martelo',
   Queshada: 'Queshada',
+  Ponteira: 'Ponteira',
   Troca: 'Troca',
 }
 
@@ -76,20 +77,26 @@ export const kachujinMoves = {
   KeyA: 'Armada',
   KeyB: 'Bencao',
   KeyC: 'Chapa',
+  // KeyD
   KeyF: 'Chapaeu De Couro',
   KeyG: 'Chapa Giratoria',
   KeyH: 'Chapa Giratoria Back',
+  // KeyI
   KeyJ: 'Meia Lua De Frente',
   KeyK: 'Meia Lua De Compasso',
   KeyL: 'Meia Lua De Compasso Back',
   KeyM: 'Martelo',
   KeyN: 'Martelo Do Chau',
-  KeyO: 'Macaco',
-  KeyP: 'Macaco Lateral',
+  KeyP: 'Ponteira',
   KeyR: 'Rasteira',
+  // KeyS
   KeyT: 'Troca',
+  // KeyU
   KeyV: 'Queshada',
+  // KeyW
   KeyX: 'Martelo Do Chau Double',
+  KeyY: 'Macaco',
+  KeyZ: 'Macaco Lateral',
 
   ArrowUp: 'Passo A Frente',
   ArrowDown: 'Cocorinha',
