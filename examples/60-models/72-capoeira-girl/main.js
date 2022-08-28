@@ -29,6 +29,7 @@ addUIControls({ commands: kachujinMoves })
 
 /* FUNCTIONS */
 
+// TODO: ako je potez u toku, ne pritiskati opet
 const pressKey = (key, now, autoplay = false) => {
   lastTime = now
   h1.innerHTML = kachujinMoves[key]

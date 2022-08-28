@@ -26,7 +26,7 @@ export const dupecheshAnimations = {
 /* ANIM KACHUJIN */
 
 export const girlAnimations = {
-  idle: 'Ginga', // Dwarf-Idle, Ginga, Ginga-Variation-2
+  idle: 'Ginga', // Dwarf-Idle, Ginga
   run: 'Slow-Run',
   walk: 'Walking',
   jump: 'Jump', // Jumping
@@ -36,7 +36,7 @@ export const girlAnimations = {
 
 // state name : file name
 export const kachujinAnimations = {
-  idle: 'Ginga', // Dwarf-Idle, Ginga, Ginga-Variation-2
+  idle: 'Ginga',
   run: 'Slow-Run',
   walk: 'Walking',
   Backflip: 'Backflip', // Jump
@@ -58,6 +58,7 @@ export const kachujinAnimations = {
   'Meia Lua De Compasso': 'Meia Lua De Compasso',
   'Meia Lua De Frente': 'Meia Lua De Frente',
   Armada: 'Armada',
+  Rasteira: 'Rasteira',
   Bencao: 'Bencao',
   Chapa: 'Chapa',
   Martelo: 'Martelo',
@@ -85,6 +86,7 @@ export const kachujinMoves = {
   KeyN: 'Martelo Do Chau',
   KeyO: 'Macaco',
   KeyP: 'Macaco Lateral',
+  KeyR: 'Rasteira',
   KeyT: 'Troca',
   KeyV: 'Queshada',
   KeyX: 'Martelo Do Chau Double',
