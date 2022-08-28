@@ -1,18 +1,20 @@
-import { scene, renderer, camera, clock, addUIControls, createOrbitControls } from '/utils/scene.js'
+import { scene, renderer, camera, clock, addUIControls } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 import { sample } from '/utils/helpers.js'
 import { keyboard } from '/utils/classes/Keyboard.js'
 
-createOrbitControls()
-
 import StateMachine from './StateMachine.js'
 import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
 import { kachujinAnimations, kachujinMoves } from '/data/animations.js'
 
-let lastTime = 0
+// dodati neku kameru (orbit ili 3rd)
 const h1 = document.getElementById('move')
+const toggle = document.getElementById('checkbox')
+
 const moves = Object.keys(kachujinMoves)
+let lastTime = 0
+let autoplay = toggle.checked = true
 
 initLights()
 
@@ -55,9 +57,15 @@ void function loop(now) {
 
   if (kachujinMoves[key])
     pressKey(key, now)
-  else if (now - lastTime >= 8000)
+  else if (autoplay && now - lastTime >= 8000)
     pressKey(sample(moves), now, true)
 
   stateMachine.update(delta)
   renderer.render(scene, camera)
 }()
+
+/* EVENTS */
+
+toggle.addEventListener('click', () => {
+  autoplay = !autoplay
+})
