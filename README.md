@@ -18,7 +18,7 @@ npx live-server
 - ulepšati scenu
 - dugme full screen
 - muziku
-- optimizovati učitavanje
+- optimizovati učitavanje (možda kamera zoom)
 - odvojiti  projekat
 
 ## Konačni automat

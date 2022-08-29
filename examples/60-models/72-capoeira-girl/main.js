@@ -10,9 +10,9 @@ import StateMachine from '/utils/fsm/StateMachine.js'
 import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
 import { kachujinAnimations, kachujinKeys } from '/data/animations.js'
 
-// dodati kameru (orbit ili 3rd), mozda dugme za promenu kamere
 const h1 = document.getElementById('move')
 const toggle = document.getElementById('checkbox')
+const cameraBtn = document.getElementById('camera')
 
 const moves = Object.keys(kachujinKeys)
 let stateMachine
@@ -55,25 +55,11 @@ const pressKey = (key, now, autoplay = false) => {
   requestWakeLock()
 }
 
-const updateCamera = () => {
-  if (keyboard.pressed.Digit1) {
-    camera.position.z = 4
-    light.position.z = 40
-  }
-  if (keyboard.pressed.Digit2) {
-    camera.position.z = -6
-    light.position.z = -40
-  }
-  camera.lookAt(new THREE.Vector3(0, 2, 0))
-}
-
 /* LOOP */
 
 void function loop(now) {
   requestAnimationFrame(loop)
   const delta = clock.getDelta()
-
-  updateCamera()
 
   const key = Object.keys(keyboard.pressed)[0]
 
@@ -90,6 +76,12 @@ void function loop(now) {
 
 toggle.addEventListener('click', () => {
   autoplay = !autoplay
+})
+
+cameraBtn.addEventListener('click', () => {
+  light.position.z = -light.position.z
+  camera.position.z = light.position.z < 0 ? -6 : 4
+  camera.lookAt(new THREE.Vector3(0, 2, 0))
 })
 
 /* DEFFER LOAD */

@@ -6,16 +6,33 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
   <style>
     #move {
+      color: white;
       font-size: 50px;
       left: 0;
       margin-top: 70px;
       position: absolute;
       right: 0;
       text-align: center;
-      color: white;
     }
 
     #switch {
+      align-items: center;
+      cursor: pointer;
+      display: flex;
+      position: absolute;
+      right: 8px;
+    }
+
+    #checkbox {
+      height: 14px;
+      width: 14px;
+    }
+
+    #camera {
+      background: transparent;
+      bottom: 0;
+      cursor: pointer;
+      font-size: 22px;
       position: absolute;
       right: 8px;
     }
@@ -26,7 +43,9 @@
 
   <h1 id="move"></h1>
 
-<label id="switch"><input id="checkbox" type="checkbox"> Autoplay</label>
+  <label id="switch"><input id="checkbox" type="checkbox"> Autoplay</label>
+
+  <button id="camera">📷</button>
 
   <script type="importmap">
     {
