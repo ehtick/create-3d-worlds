@@ -13,19 +13,13 @@ const h1 = document.getElementById('move')
 const toggle = document.getElementById('checkbox')
 
 const moves = Object.keys(kachujinKeys)
+let stateMachine
 let lastTime = 0
 let autoplay = toggle.checked = true
 
 initLights()
 
 scene.add(createGround({ size: 100, color: 0xF2D16B }))
-
-const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 3, axis: [0, 1, 0], angle: Math.PI })
-
-const animations = await loadFbxAnimations(kachujinAnimations, 'character/kachujin/')
-const stateMachine = new StateMachine({ mesh, animations, animKeys: kachujinKeys })
-
-scene.add(mesh)
 
 addUIControls({ commands: kachujinKeys, title: '' })
 
@@ -70,7 +64,7 @@ void function loop(now) {
   else if (autoplay && now - lastTime >= 8000)
     pressKey(sample(moves), now, true)
 
-  stateMachine.update(delta)
+  stateMachine?.update(delta)
   renderer.render(scene, camera)
 }()
 
@@ -79,3 +73,12 @@ void function loop(now) {
 toggle.addEventListener('click', () => {
   autoplay = !autoplay
 })
+
+/* DEFFER LOAD */
+
+const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 3, axis: [0, 1, 0], angle: Math.PI })
+
+const animations = await loadFbxAnimations(kachujinAnimations, 'character/kachujin/')
+stateMachine = new StateMachine({ mesh, animations, animKeys: kachujinKeys })
+
+scene.add(mesh)
