@@ -1,3 +1,5 @@
+import * as THREE from 'three'
+
 import { scene, renderer, camera, clock, addUIControls } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
@@ -17,11 +19,13 @@ let stateMachine
 let lastTime = 0
 let autoplay = toggle.checked = true
 
-initLights()
+const light = initLights()
 
 scene.add(createGround({ size: 100, color: 0xF2D16B }))
 
 addUIControls({ commands: kachujinKeys, title: '' })
+
+const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 3, axis: [0, 1, 0], angle: Math.PI })
 
 /* FUNCTIONS */
 
@@ -51,11 +55,25 @@ const pressKey = (key, now, autoplay = false) => {
   requestWakeLock()
 }
 
+const updateCamera = () => {
+  if (keyboard.pressed.Digit1) {
+    camera.position.z = 4
+    light.position.z = 40
+  }
+  if (keyboard.pressed.Digit2) {
+    camera.position.z = -6
+    light.position.z = -40
+  }
+  camera.lookAt(new THREE.Vector3(0, 2, 0))
+}
+
 /* LOOP */
 
 void function loop(now) {
   requestAnimationFrame(loop)
   const delta = clock.getDelta()
+
+  updateCamera()
 
   const key = Object.keys(keyboard.pressed)[0]
 
@@ -75,8 +93,6 @@ toggle.addEventListener('click', () => {
 })
 
 /* DEFFER LOAD */
-
-const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 3, axis: [0, 1, 0], angle: Math.PI })
 
 const animations = await loadFbxAnimations(kachujinAnimations, 'character/kachujin/')
 stateMachine = new StateMachine({ mesh, animations, animKeys: kachujinKeys })

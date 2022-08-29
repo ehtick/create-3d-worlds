@@ -44,6 +44,7 @@ export function initLights({ scene = defaultScene, position = [-10, 30, 40] } = 
   const ambientLight = new THREE.AmbientLight(0x343434)
   ambientLight.name = 'ambientLight'
   scene.add(ambientLight)
+  return spotLight
 }
 
 export function createSunLight({ d = 400, far = 3500, color = 0xffffff, intensity = 1.4, target } = {}) {

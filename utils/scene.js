@@ -106,12 +106,15 @@ export function addUIControls({ commands = baseCommands, title = 'COMMANDS' } = 
     top: 4px;
   `
   const rowStyle = `
-    margin-top:4px;
-    margin-bottom:4px
+    margin-top: 2px;
+    margin-bottom: 2px;
   `
   const btnStyle = `
     border:1px solid #fff;
     padding: 1px 2px;
+    min-width: 12px;
+    display: inline-block;
+    text-align: center;
   `
   const div = document.createElement('div')
   div.style = divStyle
