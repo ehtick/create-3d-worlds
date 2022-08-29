@@ -29,6 +29,9 @@ export default class IdleState extends State {
     if (keyboard.pressed.Enter)
       this._fsm.setState('attack')
 
+    if (keyboard.pressed.ControlLeft)
+      this._fsm.setState('special')
+
     if (this._fsm.animKeys)
       for (const key in this._fsm.animKeys)
         if (pressed[key]) this._fsm.setState(this._fsm.animKeys[key])
