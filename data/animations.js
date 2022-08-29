@@ -34,7 +34,7 @@ export const girlAnimations = {
   walk: 'Walking',
 }
 
-// state name : file name
+// {state name : file name}
 export const kachujinAnimations = {
   attack: 'Armada To Esquiva',
   idle: 'Ginga',
@@ -69,7 +69,7 @@ export const kachujinAnimations = {
   Troca: 'Troca',
 }
 
-// keycode : state name
+// {keycode : state name}
 export const kachujinKeys = {
   KeyQ: 'Au To Role',
   KeyE: 'Au',
@@ -89,11 +89,9 @@ export const kachujinKeys = {
   KeyN: 'Martelo Do Chau Sem Mao',
   KeyP: 'Ponteira',
   KeyR: 'Rasteira',
-  // KeyS
   KeyT: 'Troca',
   // KeyU
   KeyV: 'Queshada',
-  // KeyW
   KeyX: 'Martelo Do Chau Double',
   KeyY: 'Macaco',
   KeyZ: 'Macaco Lateral',
