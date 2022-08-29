@@ -12,6 +12,12 @@ npx live-server
 - ažurirati verziju
 - isprobati transformation matrix, igrati se
   https://www.khanacademy.org/math/linear-algebra/matrix-transformations/lin-trans-examples/v/linear-transformation-examples-scaling-and-reflections?modal=1
+- pokušati kloniranje modela
+
+## Kapuera girl
+- ulepšati scenu
+- optimizovati učitavanje
+- odvojiti  projekat
 
 ## Konačni automat
 - uskladiti animacije sa mrdanjem igrača

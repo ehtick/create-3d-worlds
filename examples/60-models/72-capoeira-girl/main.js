@@ -8,7 +8,7 @@ import StateMachine from '/utils/fsm/StateMachine.js'
 import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
 import { kachujinAnimations, kachujinKeys } from '/data/animations.js'
 
-// dodati kameru (orbit ili 3rd)
+// dodati kameru (orbit ili 3rd), mozda dugme za promenu kamere
 const h1 = document.getElementById('move')
 const toggle = document.getElementById('checkbox')
 
@@ -27,12 +27,13 @@ const stateMachine = new StateMachine({ mesh, animations, animKeys: kachujinKeys
 
 scene.add(mesh)
 
-addUIControls({ commands: kachujinKeys })
+addUIControls({ commands: kachujinKeys, title: 'MOVES' })
 
 /* FUNCTIONS */
 
-// TODO: ako je potez u toku, ne pritiskati opet
 const pressKey = (key, now, autoplay = false) => {
+  if (stateMachine.currentState.name !== 'idle') return
+
   lastTime = now
   h1.innerHTML = kachujinKeys[key]
 
@@ -41,7 +42,6 @@ const pressKey = (key, now, autoplay = false) => {
     setTimeout(() => keyboard.reset(), 100)
   }, 500)
 
-  // TODO: ako je započet novi potez da ne briše
   setTimeout(() => {
     h1.innerHTML = ''
   }, 2500)

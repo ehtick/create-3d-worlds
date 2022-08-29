@@ -114,7 +114,7 @@ export function addUIControls({ commands = baseCommands, title = 'COMMANDS' } = 
   const div = document.createElement('div')
   Object.assign(div.style, style)
   div.innerHTML = Object.keys(commands).reduce(
-    (acc, key) => acc + `<p style="${margins}">${translateKey(key)}: ${commands[key]}</p>`,
+    (acc, key) => acc + `<p style="${margins}"><b>${translateKey(key)}</b>: ${commands[key]}</p>`,
     `<h3 style="${margins}">${title}</h2>`
   )
   document.body.appendChild(div)
