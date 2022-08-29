@@ -16,6 +16,8 @@ npx live-server
 
 ## Kapuera girl
 - ulepšati scenu
+- dugme full screen
+- muziku
 - optimizovati učitavanje
 - odvojiti  projekat
 

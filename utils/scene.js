@@ -99,23 +99,25 @@ export function addUIControls({ commands = baseCommands, title = 'COMMANDS' } = 
     }
   }
 
-  const style = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    color: '#fff',
-    paddingTop: '4px',
-    paddingBottom: '4px',
-  }
-  const margins = `
+  const divStyle = `
+    color: #fff;
+    left: 8px;
+    position: absolute;
+    top: 8px;
+  `
+  const rowStyle = `
     margin-top:4px;
     margin-bottom:4px
   `
+  const btnStyle = `
+    border:1px solid #fff;
+    padding: 2px;
+  `
   const div = document.createElement('div')
-  Object.assign(div.style, style)
+  div.style = divStyle
   div.innerHTML = Object.keys(commands).reduce(
-    (acc, key) => acc + `<p style="${margins}"><b>${translateKey(key)}</b>: ${commands[key]}</p>`,
-    `<h3 style="${margins}">${title}</h2>`
+    (acc, key) => acc + `<p style="${rowStyle}"><b style="${btnStyle}">${translateKey(key)}</b> ${commands[key]}</p>`,
+    `<h3 style="${rowStyle}">${title}</h2>`
   )
   document.body.appendChild(div)
 }

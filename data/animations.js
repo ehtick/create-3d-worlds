@@ -36,16 +36,18 @@ export const girlAnimations = {
 
 // {state name : file name}
 export const kachujinAnimations = {
-  'Armada To Esquiva': 'Armada To Esquiva',
   idle: 'Ginga',
-  'Backflip': 'Backflip', // Jump
   run: 'Slow-Run',
-  walk: 'Walking',
 
+  'Armada To Esquiva': 'Armada To Esquiva',
+  'Armada': 'Armada',
   'Au To Role': 'Au To Role',
   'Au': 'Au',
+  'Backflip': 'Backflip',
+  'Bencao': 'Bencao',
   'Chapa Giratoria Back': 'Chapa Giratoria Back',
   'Chapa Giratoria': 'Chapa Giratoria',
+  'Chapa': 'Chapa',
   'Chapaeu De Couro': 'Chapaeu De Couro',
   'Cocorinha': 'Cocorinha',
   'Esquiva Baixa': 'Esquiva Baixa',
@@ -55,44 +57,38 @@ export const kachujinAnimations = {
   'Martelo Do Chau Double': 'Martelo Do Chau Double',
   'Martelo Do Chau Sem Mao': 'Martelo Do Chau Sem Mao',
   'Martelo Do Chau': 'Martelo Do Chau',
+  'Martelo': 'Martelo',
   'Meia Lua De Compasso Back': 'Meia Lua De Compasso Back',
   'Meia Lua De Compasso': 'Meia Lua De Compasso',
   'Meia Lua De Frente': 'Meia Lua De Frente',
   'Passo A Frente': 'Passo A Frente',
-  Armada: 'Armada',
-  Bencao: 'Bencao',
-  Chapa: 'Chapa',
-  Martelo: 'Martelo',
-  Ponteira: 'Ponteira',
-  Queshada: 'Queshada',
-  Rasteira: 'Rasteira',
-  Troca: 'Troca',
+  'Ponteira': 'Ponteira',
+  'Queshada': 'Queshada',
+  'Rasteira': 'Rasteira',
+  'Troca': 'Troca',
 }
 
 // {keycode : state name}
 export const kachujinKeys = {
-  KeyQ: 'Au To Role',
-  KeyE: 'Au',
-
   KeyA: 'Armada',
   KeyB: 'Bencao',
   KeyC: 'Chapa',
   KeyD: 'Chapaeu De Couro',
-  // KeyF
+  KeyE: 'Au',
   KeyG: 'Chapa Giratoria',
   KeyH: 'Chapa Giratoria Back',
   KeyI: 'Meia Lua De Frente',
   KeyJ: 'Meia Lua De Compasso',
   KeyK: 'Meia Lua De Compasso Back',
-  KeyL: 'Martelo',
+  KeyL: 'Martelo Do Chau Double',
   KeyM: 'Martelo Do Chau',
   KeyN: 'Martelo Do Chau Sem Mao',
   KeyP: 'Ponteira',
+  KeyQ: 'Au To Role',
   KeyR: 'Rasteira',
+  KeyS: 'Queshada',
   KeyT: 'Troca',
-  // KeyU
-  KeyV: 'Queshada',
-  KeyX: 'Martelo Do Chau Double',
+  KeyW: 'Martelo',
   KeyY: 'Macaco',
   KeyZ: 'Macaco Lateral',
 

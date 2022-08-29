@@ -1,6 +1,6 @@
 import { scene, renderer, camera, clock, addUIControls } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
-import { createFloor } from '/utils/ground.js'
+import { createGround } from '/utils/ground.js'
 import { sample } from '/utils/helpers.js'
 import { keyboard } from '/utils/classes/Keyboard.js'
 
@@ -18,7 +18,7 @@ let autoplay = toggle.checked = true
 
 initLights()
 
-scene.add(createFloor({ size: 100 }))
+scene.add(createGround({ size: 100, color: 0xF2D16B }))
 
 const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 3, axis: [0, 1, 0], angle: Math.PI })
 
@@ -27,9 +27,17 @@ const stateMachine = new StateMachine({ mesh, animations, animKeys: kachujinKeys
 
 scene.add(mesh)
 
-addUIControls({ commands: kachujinKeys, title: 'MOVES' })
+addUIControls({ commands: kachujinKeys, title: '' })
 
 /* FUNCTIONS */
+
+const requestWakeLock = async() => {
+  try {
+    await navigator.wakeLock.request('screen')
+  } catch (err) {
+    console.error(`${err.name}, ${err.message}`)
+  }
+}
 
 const pressKey = (key, now, autoplay = false) => {
   if (stateMachine.currentState.name !== 'idle') return
@@ -45,6 +53,8 @@ const pressKey = (key, now, autoplay = false) => {
   setTimeout(() => {
     h1.innerHTML = ''
   }, 2500)
+
+  requestWakeLock()
 }
 
 /* LOOP */
