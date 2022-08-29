@@ -1,5 +1,5 @@
 import Player from './Player.js'
-import StateMachine from './StateMachine.js'
+import StateMachine from '/utils/fsm/StateMachine.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'

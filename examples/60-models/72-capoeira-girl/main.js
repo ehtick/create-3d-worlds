@@ -4,15 +4,15 @@ import { createFloor } from '/utils/ground.js'
 import { sample } from '/utils/helpers.js'
 import { keyboard } from '/utils/classes/Keyboard.js'
 
-import StateMachine from './StateMachine.js'
+import StateMachine from '/utils/fsm/StateMachine.js'
 import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
-import { kachujinAnimations, kachujinMoves } from '/data/animations.js'
+import { kachujinAnimations, kachujinKeys } from '/data/animations.js'
 
 // dodati kameru (orbit ili 3rd)
 const h1 = document.getElementById('move')
 const toggle = document.getElementById('checkbox')
 
-const moves = Object.keys(kachujinMoves)
+const moves = Object.keys(kachujinKeys)
 let lastTime = 0
 let autoplay = toggle.checked = true
 
@@ -23,18 +23,18 @@ scene.add(createFloor({ size: 100 }))
 const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 3, axis: [0, 1, 0], angle: Math.PI })
 
 const animations = await loadFbxAnimations(kachujinAnimations, 'character/kachujin/')
-const stateMachine = new StateMachine({ mesh, animations })
+const stateMachine = new StateMachine({ mesh, animations, animKeys: kachujinKeys })
 
 scene.add(mesh)
 
-addUIControls({ commands: kachujinMoves })
+addUIControls({ commands: kachujinKeys })
 
 /* FUNCTIONS */
 
 // TODO: ako je potez u toku, ne pritiskati opet
 const pressKey = (key, now, autoplay = false) => {
   lastTime = now
-  h1.innerHTML = kachujinMoves[key]
+  h1.innerHTML = kachujinKeys[key]
 
   if (autoplay) setTimeout(() => {
     keyboard.pressed[key] = true
@@ -55,7 +55,7 @@ void function loop(now) {
 
   const key = Object.keys(keyboard.pressed)[0]
 
-  if (kachujinMoves[key])
+  if (kachujinKeys[key])
     pressKey(key, now)
   else if (autoplay && now - lastTime >= 8000)
     pressKey(sample(moves), now, true)

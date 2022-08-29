@@ -1,7 +1,6 @@
 import State from './State.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { syncFrom } from './utils.js'
-import { kachujinMoves } from '/data/animations.js'
 
 const { pressed } = keyboard
 
@@ -10,19 +9,28 @@ export default class IdleState extends State {
     const curAction = this._actions.idle
     if (oldState) {
       const oldAction = this._actions[oldState.name]
-      syncFrom(['walk', 'run'], oldState, oldAction, curAction)
+      syncFrom(['walk', 'run', 'walkBackward'], oldState, oldAction, curAction)
     }
     curAction.play()
   }
 
   update() {
+    // mozda keyboard.up
     if (pressed.KeyW)
       this._fsm.setState('walk')
 
+    // mozda keyboard.down
     if (pressed.KeyS)
-      this._fsm.setState('walk backward')
+      this._fsm.setState('walkBackward')
 
-    for (const key in kachujinMoves)
-      if (pressed[key]) this._fsm.setState(kachujinMoves[key])
+    if (keyboard.pressed.Space)
+      this._fsm.setState('jump')
+
+    if (keyboard.pressed.Enter)
+      this._fsm.setState('attack')
+
+    if (this._fsm.animKeys)
+      for (const key in this._fsm.animKeys)
+        if (pressed[key]) this._fsm.setState(this._fsm.animKeys[key])
   }
-};
+}

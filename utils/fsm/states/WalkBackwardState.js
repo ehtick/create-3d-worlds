@@ -4,7 +4,7 @@ import { syncFrom } from './utils.js'
 
 export default class WalkBackwardState extends State {
   enter(oldState) {
-    const curAction = this._actions['walk backward']
+    const curAction = this._actions.walk
     if (oldState) {
       const oldAction = this._actions[oldState.name]
       syncFrom(['idle'], oldState, oldAction, curAction)

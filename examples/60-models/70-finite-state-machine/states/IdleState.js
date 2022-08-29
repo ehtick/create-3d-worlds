@@ -16,11 +16,11 @@ export default class IdleState extends State {
     if (keyboard.up || keyboard.down)
       this._fsm.setState('walk')
 
-    if (keyboard.pressed.Enter)
-      this._fsm.setState('attack')
-
     if (keyboard.pressed.Space)
       this._fsm.setState('jump')
+
+    if (keyboard.pressed.Enter)
+      this._fsm.setState('attack')
 
     if (keyboard.pressed.KeyV)
       this._fsm.setState('special')

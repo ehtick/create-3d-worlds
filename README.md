@@ -9,6 +9,10 @@ npm i
 npx live-server
 ```
 
+- ažurirati verziju
+- isprobati negde transformation matrix, igrati se
+  https://www.khanacademy.org/math/linear-algebra/matrix-transformations/lin-trans-examples/v/linear-transformation-examples-scaling-and-reflections?modal=1
+
 ## Konačni automat
 - spojiti StateMachine capoeira girl i fps
 - uskladiti animacije sa mrdanjem igrača

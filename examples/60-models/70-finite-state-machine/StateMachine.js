@@ -10,9 +10,6 @@ const states = {
   idle: IdleState,
   walk: WalkState,
   run: RunState,
-  special: SpecialState,
-  jump: SpecialState,
-  attack: SpecialState,
 }
 
 export default class StateMachine {

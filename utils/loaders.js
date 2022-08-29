@@ -108,10 +108,9 @@ export async function loadFbx(params) {
       if (child.isMesh) child.material.map = map
     })
   }
-  if (model.animations.length) {
+  if (model.animations.length)
     model.animations[0].name = params.name
-    console.log(model.animations)
-  }
+
   return prepareMesh({ model, animations: model.animations, ...params })
 }
 

@@ -26,51 +26,51 @@ export const dupecheshAnimations = {
 /* ANIM KACHUJIN */
 
 export const girlAnimations = {
-  idle: 'Ginga', // Dwarf-Idle, Ginga
-  run: 'Slow-Run',
-  walk: 'Walking',
-  jump: 'Jump', // Jumping
   attack: 'Bencao',
+  idle: 'Ginga', // Dwarf-Idle
+  jump: 'Jump', // Jumping
+  run: 'Slow-Run',
   special: 'Queshada',
+  walk: 'Walking',
 }
 
 // state name : file name
 export const kachujinAnimations = {
+  attack: 'Armada To Esquiva',
   idle: 'Ginga',
+  jump: 'Backflip', // Jump
   run: 'Slow-Run',
   walk: 'Walking',
-  Backflip: 'Backflip', // Jump
-  'walk backward': 'Walking',
+
   'Au To Role': 'Au To Role',
   'Au': 'Au',
   'Chapa Giratoria Back': 'Chapa Giratoria Back',
   'Chapa Giratoria': 'Chapa Giratoria',
   'Chapaeu De Couro': 'Chapaeu De Couro',
-  'Macaco': 'Macaco',
-  'Esquiva Baixa': 'Esquiva Baixa',
   'Cocorinha': 'Cocorinha',
-  'Passo A Frente': 'Passo A Frente',
+  'Esquiva Baixa': 'Esquiva Baixa',
   'Esquiva Lateral': 'Esquiva Lateral',
   'Macaco Lateral': 'Macaco Lateral',
+  'Macaco': 'Macaco',
   'Martelo Do Chau Double': 'Martelo Do Chau Double',
+  'Martelo Do Chau Sem Mao': 'Martelo Do Chau Sem Mao',
   'Martelo Do Chau': 'Martelo Do Chau',
   'Meia Lua De Compasso Back': 'Meia Lua De Compasso Back',
   'Meia Lua De Compasso': 'Meia Lua De Compasso',
   'Meia Lua De Frente': 'Meia Lua De Frente',
+  'Passo A Frente': 'Passo A Frente',
   Armada: 'Armada',
-  Rasteira: 'Rasteira',
   Bencao: 'Bencao',
   Chapa: 'Chapa',
   Martelo: 'Martelo',
-  Queshada: 'Queshada',
   Ponteira: 'Ponteira',
-  'Armada To Esquiva': 'Armada To Esquiva',
-  'Martelo Do Chau Sem Mao': 'Martelo Do Chau Sem Mao',
+  Queshada: 'Queshada',
+  Rasteira: 'Rasteira',
   Troca: 'Troca',
 }
 
 // keycode : state name
-export const kachujinMoves = {
+export const kachujinKeys = {
   KeyQ: 'Au To Role',
   KeyE: 'Au',
 
@@ -102,6 +102,4 @@ export const kachujinMoves = {
   ArrowDown: 'Cocorinha',
   ArrowLeft: 'Esquiva Baixa',
   ArrowRight: 'Esquiva Lateral',
-  Enter: 'Armada To Esquiva',
-  Space: 'Backflip',
 }

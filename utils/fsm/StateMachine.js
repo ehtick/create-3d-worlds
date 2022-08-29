@@ -9,16 +9,18 @@ import SpecialState from './states/SpecialState.js'
 
 const states = {
   idle: IdleState,
-  walk: WalkState,
   run: RunState,
-  'walk backward': WalkBackwardState,
+  walk: WalkState,
+  walkBackward: WalkBackwardState,
 }
 
 export default class StateMachine {
-  constructor({ mesh, animations }) {
+  constructor({ mesh, animations, animKeys }) {
     this._mesh = mesh
     this._mixer = new THREE.AnimationMixer(mesh)
     this._actions = animationsToActions(animations, this._mixer)
+    if (this._actions.walk) this._actions.walkBackward = this._actions.walk
+    this.animKeys = animKeys
     this.setState('idle')
   }
 
