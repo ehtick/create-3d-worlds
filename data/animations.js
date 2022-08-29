@@ -36,9 +36,9 @@ export const girlAnimations = {
 
 // {state name : file name}
 export const kachujinAnimations = {
-  attack: 'Armada To Esquiva',
+  'Armada To Esquiva': 'Armada To Esquiva',
   idle: 'Ginga',
-  jump: 'Backflip', // Jump
+  'Backflip': 'Backflip', // Jump
   run: 'Slow-Run',
   walk: 'Walking',
 
@@ -100,4 +100,6 @@ export const kachujinKeys = {
   ArrowDown: 'Cocorinha',
   ArrowLeft: 'Esquiva Baixa',
   ArrowRight: 'Esquiva Lateral',
+  Enter: 'Armada To Esquiva',
+  Space: 'Backflip',
 }

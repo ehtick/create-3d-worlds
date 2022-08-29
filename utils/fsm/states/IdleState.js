@@ -23,7 +23,7 @@ export default class IdleState extends State {
     if (pressed.KeyS)
       this.fsm.setState('walkBackward')
 
-    if (keyboard.pressed.Space)
+    if (this.actions.jump && keyboard.pressed.Space)
       this.fsm.setState('jump')
 
     if (this.actions.attack && keyboard.pressed.Enter)

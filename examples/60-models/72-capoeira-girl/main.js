@@ -31,8 +31,6 @@ addUIControls({ commands: kachujinKeys })
 
 /* FUNCTIONS */
 
-// TODO: prikazivati naziv za defaulta akcije (attack, jump), i u h1 i u gui kontrolama
-
 // TODO: ako je potez u toku, ne pritiskati opet
 const pressKey = (key, now, autoplay = false) => {
   lastTime = now
