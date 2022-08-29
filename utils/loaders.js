@@ -130,8 +130,8 @@ export async function loadFbxAnimations(names, prefix = '') {
       promises.push(promise)
     }
 
-  const res = await Promise.all(promises)
-  return res.map(obj => obj.animations[0])
+  const responses = await Promise.all(promises)
+  return responses.map(res => res.animations[0])
 }
 
 /* MASTER LOADER */
