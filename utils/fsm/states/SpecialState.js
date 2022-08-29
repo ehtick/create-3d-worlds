@@ -10,12 +10,12 @@ export default class SpecialState extends State {
   }
 
   enter(oldState) {
-    const curAction = this._actions[this.name]
+    const curAction = this.actions[this.name]
     const mixer = curAction.getMixer()
     mixer.addEventListener('finished', this._FinishedCallback)
 
     if (oldState) {
-      const oldAction = this._actions[oldState.name]
+      const oldAction = this.actions[oldState.name]
       curAction.reset()
       curAction.setLoop(THREE.LoopOnce, 1)
       curAction.clampWhenFinished = true
@@ -25,15 +25,15 @@ export default class SpecialState extends State {
   }
 
   _Cleanup() {
-    this._actions[this.name].getMixer().removeEventListener('finished', this._FinishedCallback)
+    this.actions[this.name].getMixer().removeEventListener('finished', this._FinishedCallback)
   }
 
   _FinishedCallback() {
     this._Cleanup()
-    this._fsm.setState('idle')
+    this.fsm.setState('idle')
   }
 
   exit() {
     this._Cleanup()
   }
-};
+}

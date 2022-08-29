@@ -6,34 +6,34 @@ const { pressed } = keyboard
 
 export default class IdleState extends State {
   enter(oldState) {
-    const curAction = this._actions.idle
+    const curAction = this.actions.idle
     if (oldState) {
-      const oldAction = this._actions[oldState.name]
+      const oldAction = this.actions[oldState.name]
       syncFrom(['walk', 'run', 'walkBackward'], oldState, oldAction, curAction)
     }
     curAction.play()
   }
 
   update() {
-    // mozda keyboard.up
+    // mozda keyboard.up?
     if (pressed.KeyW)
-      this._fsm.setState('walk')
+      this.fsm.setState('walk')
 
-    // mozda keyboard.down
+    // mozda keyboard.down?
     if (pressed.KeyS)
-      this._fsm.setState('walkBackward')
+      this.fsm.setState('walkBackward')
 
     if (keyboard.pressed.Space)
-      this._fsm.setState('jump')
+      this.fsm.setState('jump')
 
-    if (keyboard.pressed.Enter)
-      this._fsm.setState('attack')
+    if (this.actions.attack && keyboard.pressed.Enter)
+      this.fsm.setState('attack')
 
-    if (keyboard.pressed.ControlLeft)
-      this._fsm.setState('special')
+    if (this.actions.special && keyboard.pressed.ControlLeft)
+      this.fsm.setState('special')
 
-    if (this._fsm.animKeys)
-      for (const key in this._fsm.animKeys)
-        if (pressed[key]) this._fsm.setState(this._fsm.animKeys[key])
+    if (this.fsm.animKeys)
+      for (const key in this.fsm.animKeys)
+        if (pressed[key]) this.fsm.setState(this.fsm.animKeys[key])
   }
 }

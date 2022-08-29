@@ -4,9 +4,9 @@ import { syncFrom } from './utils.js'
 
 export default class WalkBackwardState extends State {
   enter(oldState) {
-    const curAction = this._actions.walk
+    const curAction = this.actions.walk
     if (oldState) {
-      const oldAction = this._actions[oldState.name]
+      const oldAction = this.actions[oldState.name]
       syncFrom(['idle'], oldState, oldAction, curAction)
     }
     curAction.play()
@@ -16,6 +16,6 @@ export default class WalkBackwardState extends State {
   update() {
     if (keyboard.down) return
 
-    this._fsm.setState('idle')
+    this.fsm.setState('idle')
   }
-};
+}

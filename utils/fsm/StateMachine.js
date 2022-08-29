@@ -16,27 +16,27 @@ const states = {
 
 export default class StateMachine {
   constructor({ mesh, animations, animKeys }) {
-    this._mesh = mesh
-    this._mixer = new THREE.AnimationMixer(mesh)
-    this._actions = animationsToActions(animations, this._mixer)
-    if (this._actions.walk) this._actions.walkBackward = this._actions.walk
+    this.mesh = mesh
+    this.mixer = new THREE.AnimationMixer(mesh)
+    this.actions = animationsToActions(animations, this.mixer)
+    if (this.actions.walk) this.actions.walkBackward = this.actions.walk
     this.animKeys = animKeys
     this.setState('idle')
   }
 
   setState(name) {
-    const oldState = this._currentState
+    const oldState = this.currentState
     if (oldState) {
       if (oldState.name == name) return
       oldState.exit()
     }
     const State = states[name] || SpecialState
-    this._currentState = new State(this, name)
-    this._currentState.enter(oldState)
+    this.currentState = new State(this, name)
+    this.currentState.enter(oldState)
   }
 
   update(delta) {
-    this._currentState.update()
-    this._mixer.update(delta)
+    this.currentState.update()
+    this.mixer.update(delta)
   }
 }

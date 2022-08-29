@@ -4,9 +4,9 @@ import { syncFrom } from './utils.js'
 
 export default class WalkState extends State {
   enter(oldState) {
-    const curAction = this._actions.walk
+    const curAction = this.actions.walk
     if (oldState) {
-      const oldAction = this._actions[oldState.name]
+      const oldAction = this.actions[oldState.name]
       syncFrom(['idle', 'run'], oldState, oldAction, curAction)
     }
     curAction.play()
@@ -14,17 +14,17 @@ export default class WalkState extends State {
 
   update() {
     if (keyboard.pressed.Space)
-      this._fsm.setState('jump')
+      this.fsm.setState('jump')
 
     if (keyboard.pressed.Enter)
-      this._fsm.setState('bencao')
+      this.fsm.setState('bencao')
 
     if (keyboard.up) {
       if (keyboard.capsLock)
-        this._fsm.setState('run')
+        this.fsm.setState('run')
       return
     }
 
-    this._fsm.setState('idle')
+    this.fsm.setState('idle')
   }
-};
+}
