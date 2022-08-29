@@ -33,7 +33,7 @@ const createGroup = model => {
   return group
 }
 
-const prepareMesh = ({ resolve, model, size, angle, axis, animations, shouldCenter, shouldAdjustHeight }) => {
+const prepareMesh = ({ model, size, angle, axis, animations, shouldCenter, shouldAdjustHeight }) => {
   const scale = size ? getScale(model, size) : 1
   model.scale.set(scale, scale, scale)
 
@@ -48,88 +48,67 @@ const prepareMesh = ({ resolve, model, size, angle, axis, animations, shouldCent
 
   const mixer = animations && animations.length ? getMixer(model, animations) : null
 
-  resolve({ mesh: createGroup(model), animations, mixer })
+  return { mesh: createGroup(model), animations, mixer }
 }
 
 /* OBJ */
 
-export const loadObj = params => {
+export const loadObj = async params => {
   const { file, mtl } = params
   const objLoader = new OBJLoader()
   const mtlLoader = new MTLLoader()
   mtlLoader.setMaterialOptions({ side: THREE.DoubleSide })
 
-  return new Promise(resolve => {
-    mtl
-      ? mtlLoader.load(`/assets/models/${mtl}`, materials => {
-        objLoader.setMaterials(materials)
-        objLoader.load(`/assets/models/${file}`, model => {
-          prepareMesh({ resolve, model, ...params })
-        })
-      })
-      : objLoader.load(`/assets/models/${file}`, model => {
-        prepareMesh({ resolve, model, ...params })
-      })
-  })
+  if (mtl) {
+    const materials = await mtlLoader.loadAsync(`/assets/models/${mtl}`)
+    objLoader.setMaterials(materials)
+  }
+  const model = await objLoader.loadAsync(`/assets/models/${file}`)
+  return prepareMesh({ model, ...params })
 }
 
 /* GLB */
 
-export function loadGlb(params) {
+export async function loadGlb(params) {
   const gtflLoader = new GLTFLoader()
-  return new Promise(resolve => {
-    gtflLoader.load(`/assets/models/${params.file}`, ({ scene, animations }) => {
-      prepareMesh({ resolve, model: scene, animations, ...params })
-    })
-  })
+  const { scene, animations } = await gtflLoader.loadAsync(`/assets/models/${params.file}`)
+  return prepareMesh({ model: scene, animations, ...params })
 }
 
 /* DAE */
 
-export function loadDae(params) {
+export async function loadDae(params) {
   const colladaLoader = new ColladaLoader()
-  return new Promise(resolve => {
-    colladaLoader.load(`/assets/models/${params.file}`, ({ scene }) => {
-      prepareMesh({ resolve, model: scene, animations: scene.animations, ...params })
-    })
-  })
+  const { scene } = await colladaLoader.loadAsync(`/assets/models/${params.file}`)
+  return prepareMesh({ model: scene, animations: scene.animations, ...params })
 }
 
 /* MD2 */
 
-export function loadMd2(params) {
+export async function loadMd2(params) {
   const { file, texture } = params
   const loader = new MD2Loader()
-  const map = textureLoader.load(`/assets/models/${texture}`)
-
-  return new Promise(resolve => {
-    loader.load(`/assets/models/${file}`, geometry => {
-      const { animations } = geometry
-      const material = new THREE.MeshLambertMaterial({ map, morphTargets: true }) // morphNormals: true
-      const model = new THREE.Mesh(geometry, material)
-      model.name = 'model' // ?
-      prepareMesh({ resolve, model, animations, ...params })
-    })
-  })
+  const map = await textureLoader.loadAsync(`/assets/models/${texture}`)
+  const geometry = await loader.loadAsync(`/assets/models/${file}`)
+  const { animations } = geometry
+  const material = new THREE.MeshLambertMaterial({ map, morphTargets: true }) // morphNormals: true
+  const model = new THREE.Mesh(geometry, material)
+  return prepareMesh({ model, animations, ...params })
 }
 
 /* FBX */
 
-export function loadFbx(params) {
+export async function loadFbx(params) {
   const loader = new FBXLoader()
   const { file, texture } = params
-
-  return new Promise(resolve => {
-    loader.load(`/assets/models/${file}`, model => {
-      if (texture) {
-        const map = textureLoader.load(`/assets/models/${texture}`)
-        model.traverse(child => {
-          if (child.isMesh) child.material.map = map
-        })
-      }
-      prepareMesh({ resolve, model, animations: model.animations, ...params })
+  const model = await loader.loadAsync(`/assets/models/${file}`)
+  if (texture) {
+    const map = await textureLoader.loadAsync(`/assets/models/${texture}`)
+    model.traverse(child => {
+      if (child.isMesh) child.material.map = map
     })
-  })
+  }
+  return prepareMesh({ model, animations: model.animations, ...params })
 }
 
 // TODO: refactor to promise all
