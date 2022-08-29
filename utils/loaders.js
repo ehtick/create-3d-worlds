@@ -108,27 +108,30 @@ export async function loadFbx(params) {
       if (child.isMesh) child.material.map = map
     })
   }
+  if (model.animations.length) {
+    model.animations[0].name = params.name
+    console.log(model.animations)
+  }
   return prepareMesh({ model, animations: model.animations, ...params })
 }
 
-// TODO: refactor to promise all
 export async function loadFbxAnimations(names, prefix = '') {
-  const animations = []
+  const promises = []
+
   if (Array.isArray (names))
     for (const name of names) {
-      const res = await loadFbx({ file: prefix + name + '.fbx' })
-      res.animations[0].name = name
-      animations.push(res.animations[0])
+      const promise = loadFbx({ name, file: prefix + name + '.fbx' })
+      promises.push(promise)
     }
 
   if (typeof names === 'object')
     for (const name in names) {
-      const res = await loadFbx({ file: prefix + names[name] + '.fbx' })
-      res.animations[0].name = name
-      animations.push(res.animations[0])
+      const promise = loadFbx({ name, file: prefix + names[name] + '.fbx' })
+      promises.push(promise)
     }
 
-  return animations
+  const res = await Promise.all(promises)
+  return res.map(obj => obj.animations[0])
 }
 
 /* MASTER LOADER */
