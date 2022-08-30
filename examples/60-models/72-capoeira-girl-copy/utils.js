@@ -3,16 +3,14 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 
 export const clock = new THREE.Clock()
 export const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x87CEEB)
 
-// CAMERA
+/* CAMERA */
 
 export const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000)
-camera.position.set(0, 2, 4)
 
-// RENDERER
+/* RENDERER */
 
-export const renderer = new THREE.WebGLRenderer()
+export const renderer = new THREE.WebGLRenderer({ alpha: true })
 document.body.appendChild(renderer.domElement)
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.domElement.focus()
@@ -75,7 +73,7 @@ export function addUIControls({ commands = {}, title = 'COMMANDS' } = {}) {
   document.body.appendChild(div)
 }
 
-// LIGHTS
+/* LIGHTS */
 
 export function initLights({ scene, position = [-10, 30, 40], r = 1 } = {}) {
   const spotLight = new THREE.SpotLight(0xffffff)
@@ -169,7 +167,7 @@ export async function loadFbx(params) {
 export async function loadFbxAnimations(names, prefix = '') {
   const promises = []
 
-  if (Array.isArray (names))
+  if (Array.isArray(names))
     for (const name of names) {
       const promise = loadFbx({ name, file: prefix + name + '.fbx' })
       promises.push(promise)
@@ -183,6 +181,20 @@ export async function loadFbxAnimations(names, prefix = '') {
 
   const responses = await Promise.all(promises)
   return responses.map(res => res.animations[0])
+}
+
+export const syncFrom = (names, oldState, oldAction, curAction, duration = .75) => {
+  curAction.enabled = true
+  curAction.timeScale = 1
+  if (names.includes(oldState.name)) {
+    const ratio = curAction.getClip().duration / oldAction.getClip().duration
+    curAction.time = oldAction.time * ratio // sync legs
+  } else {
+    curAction.time = 0.0
+    curAction.setEffectiveTimeScale(1)
+    curAction.setEffectiveWeight(1)
+  }
+  curAction.crossFadeFrom(oldAction, duration, true)
 }
 
 export const sample = arr => arr[Math.floor(Math.random() * arr.length)]

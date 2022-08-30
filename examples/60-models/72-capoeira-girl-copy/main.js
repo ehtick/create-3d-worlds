@@ -3,8 +3,7 @@ import * as THREE from 'three'
 import { scene, renderer, camera, clock, addUIControls, initLights, createGround, sample, loadFbx, loadFbxAnimations } from './utils.js'
 import { kachujinAnimations, kachujinKeys } from './data.js'
 import StateMachine from './fsm/StateMachine.js'
-
-import { keyboard } from '/utils/classes/Keyboard.js'
+import keyboard from './Keyboard.js'
 
 const moveName = document.getElementById('move')
 const toggleBtn = document.getElementById('checkbox')

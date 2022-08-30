@@ -1,6 +1,6 @@
 import State from './State.js'
-import keyboard from '/utils/classes/Keyboard.js'
-import { syncFrom } from './utils.js'
+import keyboard from '../../Keyboard.js'
+import { syncFrom } from '../../utils.js'
 
 const { pressed } = keyboard
 
@@ -15,11 +15,9 @@ export default class IdleState extends State {
   }
 
   update() {
-    // mozda keyboard.up?
     if (this.actions.walk && pressed.KeyW)
       this.fsm.setState('walk')
 
-    // mozda keyboard.down?
     if (this.actions.walkBackward && pressed.KeyS)
       this.fsm.setState('walkBackward')
 

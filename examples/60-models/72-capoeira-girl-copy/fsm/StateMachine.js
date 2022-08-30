@@ -1,18 +1,16 @@
 import * as THREE from 'three'
-import { animationsToActions } from '/utils/helpers.js'
 
 import IdleState from './states/IdleState.js'
-import RunState from './states/RunState.js'
-import WalkState from './states/WalkState.js'
-import WalkBackwardState from './states/WalkBackwardState.js'
 import SpecialState from './states/SpecialState.js'
 
 const states = {
   idle: IdleState,
-  run: RunState,
-  walk: WalkState,
-  walkBackward: WalkBackwardState,
 }
+
+export const animationsToActions = (animations, mixer) => animations.reduce((dict, clip) => ({
+  ...dict,
+  [clip.name]: mixer.clipAction(clip)
+}), {})
 
 export default class StateMachine {
   constructor({ mesh, animations, animKeys }) {
