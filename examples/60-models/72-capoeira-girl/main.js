@@ -19,12 +19,13 @@ let lastTime = 0
 let autoplay = toggleBtn.checked = true
 
 const light = initLights()
+camera.position.set(0, 1, 3)
 
 scene.add(createGround({ size: 100, color: 0xF2D16B }))
 
 addUIControls({ commands: kachujinKeys, title: '' })
 
-const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 3, axis: [0, 1, 0], angle: Math.PI })
+const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 2, axis: [0, 1, 0], angle: Math.PI })
 
 scene.add(mesh)
 
@@ -81,8 +82,8 @@ toggleBtn.addEventListener('click', () => {
 
 cameraBtn.addEventListener('click', () => {
   light.position.z = -light.position.z
-  camera.position.z = light.position.z < 0 ? -6 : 4
-  camera.lookAt(new THREE.Vector3(0, 2, 0))
+  camera.position.z = light.position.z < 0 ? -4.5 : 3
+  camera.lookAt(new THREE.Vector3(0, camera.position.y, 0))
 })
 
 /* DEFFER LOAD */

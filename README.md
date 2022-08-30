@@ -15,7 +15,9 @@ npx live-server
 - pokušati kloniranje modela
 
 ## Kapuera girl
+- ako nije autoplay (random) da ponavlja poslednji potez
 - odvojiti  projekat
+- testirati mobilni
 
 ## Konačni automat
 - uskladiti animacije sa mrdanjem igrača

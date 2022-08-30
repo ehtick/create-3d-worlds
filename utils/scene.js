@@ -25,8 +25,7 @@ export function createWorldScene(groundParam, skyParam, lightParam, fogParam = {
 // CAMERA
 
 export const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000)
-camera.position.y = 2
-camera.position.z = 4
+camera.position.set(0, 2, 4)
 
 export const setBackground = color => {
   scene.background = new THREE.Color(color)

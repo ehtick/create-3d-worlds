@@ -16,7 +16,7 @@ class Keyboard {
     this.SwipeY = 0
 
     document.addEventListener('keydown', e => {
-      this.preventShake(e)
+      this.preventSome(e)
       this.pressed[e.code] = true
     })
     document.addEventListener('keyup', e => {
@@ -68,8 +68,9 @@ class Keyboard {
     for (const key in this.pressed) delete this.pressed[key]
   }
 
-  preventShake(e) {
-    if (e.code == 'Space' || e.code.startsWith('Arrow')) e.preventDefault()
+  preventSome(e) {
+    // prevent shake and random btn click on enter
+    if (e.code == 'Space' || e.code == 'Enter' || e.code.startsWith('Arrow')) e.preventDefault()
   }
 
   /* GETTERS */
