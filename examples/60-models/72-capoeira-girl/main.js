@@ -11,8 +11,6 @@ import { kachujinAnimations, kachujinKeys } from '/data/animations.js'
 
 const moveName = document.getElementById('move')
 const toggleBtn = document.getElementById('checkbox')
-const cameraBtn = document.getElementById('camera')
-const preloader = document.getElementById('preloader')
 
 let stateMachine, lastKey, lastTime = 0
 let autoplay = toggleBtn.checked = true
@@ -30,22 +28,14 @@ scene.add(mesh)
 
 /* FUNCTIONS */
 
-const requestWakeLock = async() => {
-  try {
-    await navigator.wakeLock.request('screen')
-  } catch (err) {
-    console.error(`${err.name}, ${err.message}`)
-  }
-}
-
-const pressKey = (key, now, autoplay = false) => {
+const pressKey = async(key, now, simulateKey = false) => {
   if (stateMachine.currentState.name !== 'idle') return
 
   lastTime = now
   lastKey = key
   moveName.innerHTML = kachujinKeys[key]
 
-  if (autoplay) setTimeout(() => {
+  if (simulateKey) setTimeout(() => {
     keyboard.pressed[key] = true
     setTimeout(() => keyboard.reset(), 100)
   }, 500)
@@ -54,7 +44,7 @@ const pressKey = (key, now, autoplay = false) => {
     moveName.innerHTML = ''
   }, 2500)
 
-  requestWakeLock()
+  await navigator.wakeLock?.request('screen')
 }
 
 /* LOOP */
@@ -67,7 +57,7 @@ void function loop(now) {
 
   if (kachujinKeys[key])
     pressKey(key, now)
-  else if (now - lastTime >= 8500)
+  else if (now - lastTime >= 7500)
     if (autoplay) pressKey(sample(Object.keys(kachujinKeys)), now, true)
     else if (lastKey) pressKey(lastKey, now, true)
 
@@ -82,15 +72,15 @@ toggleBtn.addEventListener('click', () => {
   lastKey = null
 })
 
-cameraBtn.addEventListener('click', () => {
+document.getElementById('camera').addEventListener('click', () => {
   light.position.z = -light.position.z
   camera.position.z = light.position.z < 0 ? -4.5 : 3
   camera.lookAt(new THREE.Vector3(0, camera.position.y, 0))
 })
 
-/* DEFFER LOAD */
+/* LATE LOAD */
 
 const animations = await loadFbxAnimations(kachujinAnimations, 'character/kachujin/')
 stateMachine = new StateMachine({ mesh, animations, animKeys: kachujinKeys })
 
-preloader.style.display = 'none'
+document.getElementById('preloader').style.display = 'none'

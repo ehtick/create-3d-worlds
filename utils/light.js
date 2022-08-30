@@ -29,22 +29,25 @@ export function ambLight({ scene = defaultScene, color = 0xffffff, intensity = 1
   scene.add(ambient)
 }
 
-export function initLights({ scene = defaultScene, position = [-10, 30, 40] } = {}) {
+export function initLights({ scene = defaultScene, position = [-10, 30, 40], r = 1 } = {}) {
   const spotLight = new THREE.SpotLight(0xffffff)
-  spotLight.position.set(...position)
   spotLight.shadow.mapSize.width = 2048
   spotLight.shadow.mapSize.height = 2048
   spotLight.shadow.camera.fov = 15
   spotLight.castShadow = true
   spotLight.decay = 2
   spotLight.penumbra = 0.05
-  spotLight.name = 'spotLight'
-  scene.add(spotLight)
 
   const ambientLight = new THREE.AmbientLight(0x343434)
-  ambientLight.name = 'ambientLight'
-  scene.add(ambientLight)
-  return spotLight
+
+  const container = new THREE.Mesh(
+    new THREE.SphereGeometry(r),
+    new THREE.MeshToonMaterial({ color: 0xFCE570 })
+  )
+  container.add(spotLight, ambientLight)
+  container.position.set(...position)
+  scene.add(container)
+  return container
 }
 
 export function createSunLight({ d = 400, far = 3500, color = 0xffffff, intensity = 1.4, target } = {}) {
