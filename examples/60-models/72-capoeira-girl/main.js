@@ -14,8 +14,7 @@ const toggleBtn = document.getElementById('checkbox')
 const cameraBtn = document.getElementById('camera')
 const preloader = document.getElementById('preloader')
 
-let stateMachine
-let lastTime = 0
+let stateMachine, lastKey, lastTime = 0
 let autoplay = toggleBtn.checked = true
 
 const light = initLights()
@@ -43,6 +42,7 @@ const pressKey = (key, now, autoplay = false) => {
   if (stateMachine.currentState.name !== 'idle') return
 
   lastTime = now
+  lastKey = key
   moveName.innerHTML = kachujinKeys[key]
 
   if (autoplay) setTimeout(() => {
@@ -67,8 +67,9 @@ void function loop(now) {
 
   if (kachujinKeys[key])
     pressKey(key, now)
-  else if (autoplay && now - lastTime >= 8000)
-    pressKey(sample(Object.keys(kachujinKeys)), now, true)
+  else if (now - lastTime >= 8000)
+    if (autoplay) pressKey(sample(Object.keys(kachujinKeys)), now, true)
+    else if (lastKey) pressKey(lastKey, now, true)
 
   stateMachine?.update(delta)
   renderer.render(scene, camera)
@@ -78,6 +79,7 @@ void function loop(now) {
 
 toggleBtn.addEventListener('click', () => {
   autoplay = !autoplay
+  lastKey = null
 })
 
 cameraBtn.addEventListener('click', () => {
