@@ -16,7 +16,6 @@ npx live-server
 - pauk primer https://rdpa01.xl.digital/
 
 ## Kapuera girl
-- odvojiti  projekat
 - testirati mobilni
 
 ## Konačni automat
