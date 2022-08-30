@@ -15,10 +15,6 @@ npx live-server
 - pokušati kloniranje modela
 
 ## Kapuera girl
-- ulepšati scenu
-- dugme full screen
-- muziku
-- optimizovati učitavanje (možda kamera zoom)
 - odvojiti  projekat
 
 ## Konačni automat

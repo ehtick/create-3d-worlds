@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-
 import { scene, renderer, camera, clock, addUIControls } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
@@ -10,14 +9,14 @@ import StateMachine from '/utils/fsm/StateMachine.js'
 import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
 import { kachujinAnimations, kachujinKeys } from '/data/animations.js'
 
-const h1 = document.getElementById('move')
-const toggle = document.getElementById('checkbox')
+const moveName = document.getElementById('move')
+const toggleBtn = document.getElementById('checkbox')
 const cameraBtn = document.getElementById('camera')
+const preloader = document.getElementById('preloader')
 
-const moves = Object.keys(kachujinKeys)
 let stateMachine
 let lastTime = 0
-let autoplay = toggle.checked = true
+let autoplay = toggleBtn.checked = true
 
 const light = initLights()
 
@@ -26,6 +25,8 @@ scene.add(createGround({ size: 100, color: 0xF2D16B }))
 addUIControls({ commands: kachujinKeys, title: '' })
 
 const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 3, axis: [0, 1, 0], angle: Math.PI })
+
+scene.add(mesh)
 
 /* FUNCTIONS */
 
@@ -41,7 +42,7 @@ const pressKey = (key, now, autoplay = false) => {
   if (stateMachine.currentState.name !== 'idle') return
 
   lastTime = now
-  h1.innerHTML = kachujinKeys[key]
+  moveName.innerHTML = kachujinKeys[key]
 
   if (autoplay) setTimeout(() => {
     keyboard.pressed[key] = true
@@ -49,7 +50,7 @@ const pressKey = (key, now, autoplay = false) => {
   }, 500)
 
   setTimeout(() => {
-    h1.innerHTML = ''
+    moveName.innerHTML = ''
   }, 2500)
 
   requestWakeLock()
@@ -66,7 +67,7 @@ void function loop(now) {
   if (kachujinKeys[key])
     pressKey(key, now)
   else if (autoplay && now - lastTime >= 8000)
-    pressKey(sample(moves), now, true)
+    pressKey(sample(Object.keys(kachujinKeys)), now, true)
 
   stateMachine?.update(delta)
   renderer.render(scene, camera)
@@ -74,7 +75,7 @@ void function loop(now) {
 
 /* EVENTS */
 
-toggle.addEventListener('click', () => {
+toggleBtn.addEventListener('click', () => {
   autoplay = !autoplay
 })
 
@@ -89,4 +90,4 @@ cameraBtn.addEventListener('click', () => {
 const animations = await loadFbxAnimations(kachujinAnimations, 'character/kachujin/')
 stateMachine = new StateMachine({ mesh, animations, animKeys: kachujinKeys })
 
-scene.add(mesh)
+preloader.style.display = 'none'
