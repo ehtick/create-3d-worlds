@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import * as CANNON from '/libs/cannon-es.js'
 import { createFloor } from '/utils/ground.js'
 
-const { randInt, randFloat } = THREE.Math
+const { randInt, randFloat } = THREE.MathUtils
 
 const colors = [0xc2b280, 0xF2D16B, 0xedc9af, 0xfffacd, 0xF3CCAA, 0xf5deb3, 0xf0e68c]
 

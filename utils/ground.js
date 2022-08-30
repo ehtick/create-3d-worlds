@@ -4,7 +4,7 @@ import { getTexture, similarColor } from '/utils/helpers.js'
 import chroma from '/libs/chroma.js'
 import { material as lavaMaterial } from '/utils/shaders/lava.js'
 
-const { randFloat } = THREE.Math
+const { randFloat } = THREE.MathUtils
 const simplex = new SimplexNoise()
 
 const groundColors = [0xA62A2A, 0x7a8a46, 0x228b22, 0xfffacd]

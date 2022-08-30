@@ -3,7 +3,7 @@ import { DragControls } from '/node_modules/three/examples/jsm/controls/DragCont
 import { camera, scene, renderer } from '/utils/scene.js'
 import { createCrate } from '/utils/geometry.js'
 
-const { randInt } = THREE.Math
+const { randInt } = THREE.MathUtils
 
 const light = new THREE.AmbientLight(0xffffff)
 scene.add(light)

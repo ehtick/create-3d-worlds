@@ -5,7 +5,7 @@ import { hemLight, dirLight } from '/utils/light.js'
 import { createHillyTerrain, createWater } from '/utils/ground.js'
 import Tree from './Tree.js'
 
-const { randInt } = THREE.Math
+const { randInt } = THREE.MathUtils
 
 const TREES = 75
 const { innerWidth, innerHeight } = window

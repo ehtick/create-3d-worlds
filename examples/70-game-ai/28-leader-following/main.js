@@ -5,7 +5,7 @@ import { ambLight } from '/utils/light.js'
 import { createBox } from '/utils/geometry.js'
 import { getMouseIntersects } from '/utils/helpers.js'
 
-const { randInt, randFloat } = THREE.Math
+const { randInt, randFloat } = THREE.MathUtils
 
 ambLight()
 

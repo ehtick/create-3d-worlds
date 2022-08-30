@@ -1,11 +1,11 @@
 import * as THREE from 'three'
-import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
+import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { centerGeometry, randomGrayish, getTexture } from '/utils/helpers.js'
 import { createBuildingGeometry } from '/utils/city.js'
 import chroma from '/libs/chroma.js'
 
 const { Vector2, Vector3 } = THREE
-const { randInt, randFloat } = THREE.Math
+const { randInt, randFloat } = THREE.MathUtils
 
 const EMPTY = 0
 const WALL = 1

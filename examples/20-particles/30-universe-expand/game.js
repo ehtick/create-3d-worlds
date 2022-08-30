@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 import { scene, camera, renderer } from '/utils/scene.js'
 
-const { randInt, randFloat } = THREE.Math
+const { randInt, randFloat } = THREE.MathUtils
 const textureLoader = new THREE.TextureLoader()
 
 camera.position.z = 750

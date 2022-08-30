@@ -49,8 +49,8 @@ function cursorToDegrees(cursor, degreeMax) {
 
 function lookAt(cursor, joint, degreeMax) {
   const degrees = cursorToDegrees(cursor, degreeMax)
-  joint.rotation.y = THREE.Math.degToRad(degrees.x)
-  joint.rotation.x = THREE.Math.degToRad(degrees.y)
+  joint.rotation.y = THREE.MathUtils.degToRad(degrees.x)
+  joint.rotation.x = THREE.MathUtils.degToRad(degrees.y)
 }
 
 /* LOOP */

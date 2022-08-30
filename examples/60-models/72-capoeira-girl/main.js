@@ -8,7 +8,7 @@ import { keyboard } from '/utils/classes/Keyboard.js'
 import StateMachine from '/utils/fsm/StateMachine.js'
 import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
 import { kachujinAnimations, kachujinKeys } from '/data/animations.js'
-
+// scene.background.convertSRGBToLinear()
 const moveName = document.getElementById('move')
 const toggleBtn = document.getElementById('checkbox')
 

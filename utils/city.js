@@ -1,9 +1,9 @@
 import * as THREE from 'three'
 import { randomGrayish, randomInCircle, randomInSquare } from '/utils/helpers.js'
-import { BufferGeometryUtils } from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
+import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { material as winMaterial } from '/utils/shaders/windows.js'
 
-const { randInt, randFloat } = THREE.Math
+const { randInt, randFloat } = THREE.MathUtils
 
 const basicMaterial = new THREE.MeshStandardMaterial({
   vertexColors: THREE.FaceColors,

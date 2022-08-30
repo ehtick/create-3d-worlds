@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { randomNuance } from './helpers.js'
 import { material as skyMaterial } from '/utils/shaders/gradient-sky.js'
 
-const { randFloat } = THREE.Math
+const { randFloat } = THREE.MathUtils
 const textureLoader = new THREE.TextureLoader()
 
 /* BOXES */

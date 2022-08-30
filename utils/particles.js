@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { similarColor } from '/utils/helpers.js'
 
-const { randFloat } = THREE.Math
+const { randFloat } = THREE.MathUtils
 
 const textureLoader = new THREE.TextureLoader()
 

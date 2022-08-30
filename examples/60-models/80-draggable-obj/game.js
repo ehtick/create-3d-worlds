@@ -4,7 +4,7 @@ import { MTLLoader } from '/node_modules/three/examples/jsm/loaders/MTLLoader.js
 import { scene, camera, renderer, initLights, createOrbitControls } from '/utils/scene.js'
 import { CIRCLE } from '/data/constants.js'
 
-const { randFloat } = THREE.Math
+const { randFloat } = THREE.MathUtils
 
 let selectedItem, draggedItem, CHEST
 

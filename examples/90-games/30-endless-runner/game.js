@@ -7,7 +7,7 @@ import { hemLight } from '/utils/light.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { roll } from '/utils/helpers.js'
 
-const { randFloat } = THREE.Math
+const { randFloat } = THREE.MathUtils
 const { random } = Math
 
 const heroSpeed = 4
@@ -135,7 +135,7 @@ function updatePlayer() {
     bounceValue = random() * 0.04 + 0.005
   }
   player.position.y += bounceValue
-  player.position.x = THREE.Math.lerp(player.position.x, lanes[laneIndex], heroSpeed * clock.getDelta())
+  player.position.x = THREE.MathUtils.lerp(player.position.x, lanes[laneIndex], heroSpeed * clock.getDelta())
   bounceValue -= gravity
 }
 

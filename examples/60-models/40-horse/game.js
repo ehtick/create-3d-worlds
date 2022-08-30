@@ -19,8 +19,8 @@ action.play()
 function rotateCamera() {
   const radius = 3
   theta += 0.2
-  camera.position.x = radius * Math.sin(THREE.Math.degToRad(theta))
-  camera.position.z = radius * Math.cos(THREE.Math.degToRad(theta))
+  camera.position.x = radius * Math.sin(THREE.MathUtils.degToRad(theta))
+  camera.position.z = radius * Math.cos(THREE.MathUtils.degToRad(theta))
   camera.lookAt(new THREE.Vector3(0, 2, 0))
 }
 

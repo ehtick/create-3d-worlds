@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 
-const { randFloat, randFloatSpread } = THREE.Math
+const { randFloat, randFloatSpread } = THREE.MathUtils
 const textureLoader = new THREE.TextureLoader()
 const controls = createOrbitControls()
 
