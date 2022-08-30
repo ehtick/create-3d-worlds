@@ -33,7 +33,7 @@ const createGroup = model => {
   return group
 }
 
-const prepareMesh = ({ model, size, angle, axis, animations, shouldCenter, shouldAdjustHeight }) => {
+const prepareMesh = ({ model, size = 2, angle, axis, animations, shouldCenter, shouldAdjustHeight }) => {
   const scale = size ? getScale(model, size) : 1
   model.scale.set(scale, scale, scale)
 

@@ -24,7 +24,7 @@ scene.add(createGround({ size: 100, color: 0xF2D16B }))
 
 addUIControls({ commands: kachujinKeys, title: '' })
 
-const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 2, axis: [0, 1, 0], angle: Math.PI })
+const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', axis: [0, 1, 0], angle: Math.PI })
 
 scene.add(mesh)
 
@@ -67,7 +67,7 @@ void function loop(now) {
 
   if (kachujinKeys[key])
     pressKey(key, now)
-  else if (now - lastTime >= 8000)
+  else if (now - lastTime >= 8500)
     if (autoplay) pressKey(sample(Object.keys(kachujinKeys)), now, true)
     else if (lastKey) pressKey(lastKey, now, true)
 
