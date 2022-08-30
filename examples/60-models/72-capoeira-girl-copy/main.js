@@ -1,13 +1,10 @@
 import * as THREE from 'three'
-import { scene, renderer, camera, clock, addUIControls } from '/utils/scene.js'
-import { initLights } from '/utils/light.js'
-import { createGround } from '/utils/ground.js'
-import { sample } from '/utils/helpers.js'
-import { keyboard } from '/utils/classes/Keyboard.js'
 
-import StateMachine from '/utils/fsm/StateMachine.js'
-import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
-import { kachujinAnimations, kachujinKeys } from '/data/animations.js'
+import { scene, renderer, camera, clock, addUIControls, initLights, createGround, sample, loadFbx, loadFbxAnimations } from './utils.js'
+import { kachujinAnimations, kachujinKeys } from './data.js'
+import StateMachine from './fsm/StateMachine.js'
+
+import { keyboard } from '/utils/classes/Keyboard.js'
 
 const moveName = document.getElementById('move')
 const toggleBtn = document.getElementById('checkbox')
@@ -15,14 +12,14 @@ const toggleBtn = document.getElementById('checkbox')
 let stateMachine, lastKey, lastTime = 0
 let autoplay = toggleBtn.checked = true
 
-const light = initLights()
+const light = initLights({ scene })
 camera.position.set(0, 1, 3)
 
 scene.add(createGround({ size: 100, color: 0xF2D16B }))
 
 addUIControls({ commands: kachujinKeys, title: '' })
 
-const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', axis: [0, 1, 0], angle: Math.PI })
+const { mesh } = await loadFbx({ file: 'character/kachujin/Kachujin.fbx', axis: [0, 1, 0], angle: Math.PI })
 
 scene.add(mesh)
 

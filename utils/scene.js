@@ -8,6 +8,9 @@ import { initLights, hemLight, createSunLight } from './light.js'
 import { baseCommands } from '/data/commands.js'
 
 export const clock = new THREE.Clock()
+
+// SCENE
+
 export const scene = new THREE.Scene()
 scene.background = new THREE.Color(0x87CEEB)
 
@@ -22,14 +25,14 @@ export function createWorldScene(groundParam, skyParam, lightParam, fogParam = {
   return scene
 }
 
+export const setBackground = color => {
+  scene.background = new THREE.Color(color)
+}
+
 // CAMERA
 
 export const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000)
 camera.position.set(0, 2, 4)
-
-export const setBackground = color => {
-  scene.background = new THREE.Color(color)
-}
 
 // RENDERER
 
