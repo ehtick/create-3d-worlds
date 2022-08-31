@@ -157,7 +157,7 @@ export function createTerrainMesh({ size = 400, segments = 100 } = {}) {
   const geometry = new THREE.PlaneGeometry(size, size, segments, segments)
   geometry.rotateX(- Math.PI / 2)
 
-  const material = new THREE.MeshLambertMaterial({ vertexColors: THREE.VertexColors })
+  const material = new THREE.MeshLambertMaterial({ vertexColors: true })
   const mesh = new THREE.Mesh(geometry, material)
   mesh.receiveShadow = true
   return mesh
@@ -208,7 +208,7 @@ export const createWater = ({ size = 1200, segments = 20, opacity = .6, file = '
     color: 0x6699ff,
     opacity,
     transparent: true,
-    vertexColors: THREE.FaceColors,
+    vertexColors: true,
     map: file ? getTexture({ file, repeat: 5 }) : null
   })
   const geometry = new THREE.PlaneGeometry(size, size, segments, segments)

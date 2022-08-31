@@ -102,7 +102,7 @@ export function createDistantStars({ num = 5000, r = 500, size = 10, file = 'sta
 
   const material = new THREE.PointsMaterial({
     size,
-    vertexColors: THREE.VertexColors,
+    vertexColors: true,
   })
   if (file) {
     material.map = textureLoader.load(`/assets/particles/${file}`)

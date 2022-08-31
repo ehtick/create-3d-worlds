@@ -7,7 +7,6 @@ import { MD2Loader } from '/node_modules/three/examples/jsm/loaders/MD2Loader.js
 import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js'
 
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
-import { gamaRender } from '/utils/scene.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -91,7 +90,7 @@ export async function loadMd2(params) {
   const map = await textureLoader.loadAsync(`/assets/models/${texture}`)
   const geometry = await loader.loadAsync(`/assets/models/${file}`)
   const { animations } = geometry
-  const material = new THREE.MeshLambertMaterial({ map, morphTargets: true }) // morphNormals: true
+  const material = new THREE.MeshLambertMaterial({ map })
   const model = new THREE.Mesh(geometry, material)
   return prepareMesh({ model, animations, ...params })
 }
@@ -156,7 +155,6 @@ export const loadModel = param => {
     case 'md2':
       return loadMd2(params)
     case 'fbx':
-      gamaRender() // hack
       return loadFbx(params)
     default:
       throw new Error(`Unknown file extension: ${ext}`)

@@ -6,7 +6,7 @@ import { material as winMaterial } from '/utils/shaders/windows.js'
 const { randInt, randFloat } = THREE.MathUtils
 
 const basicMaterial = new THREE.MeshStandardMaterial({
-  vertexColors: THREE.FaceColors,
+  vertexColors: true,
 })
 
 /* BUILDING */

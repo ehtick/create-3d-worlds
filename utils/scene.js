@@ -58,12 +58,6 @@ window.addEventListener('resize', () => {
 
 renderer.domElement.addEventListener('contextmenu', e => e.preventDefault())
 
-// fix lights for some models (glb, fbx)
-export function gamaRender() {
-  renderer.gammaFactor = 2.2
-  renderer.outputEncoding = THREE.GammaEncoding
-}
-
 export function createToonRenderer({ defaultThickness = 0.003 } = {}) {
   return new OutlineEffect(renderer, { defaultThickness })
 }

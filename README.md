@@ -9,14 +9,10 @@ npm i
 npx live-server
 ```
 
-- ažurirati verziju
 - pokušati kloniranje modela
 - isprobati transformation matrix, igrati se
   https://www.khanacademy.org/math/linear-algebra/matrix-transformations/lin-trans-examples/v/linear-transformation-examples-scaling-and-reflections?modal=1
 - pauk primer https://rdpa01.xl.digital/
-
-## Kapuera girl
-- testirati mobilni
 
 ## Konačni automat
 - uskladiti animacije sa mrdanjem igrača
