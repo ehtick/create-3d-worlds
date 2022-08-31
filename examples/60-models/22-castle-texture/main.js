@@ -20,7 +20,7 @@ directLight.position.set(0, 0, 1)
 scene.add(directLight)
 
 const { mesh } = await loadModel({ file: 'castle/magic-castle.obj', size: 50, shouldAdjust: true })
-mesh.translateY(getHeight(mesh) / 4)
+mesh.translateY(25)
 addTexture({ mesh, file: 'terrain/concrete.jpg' })
 scene.add(mesh)
 
