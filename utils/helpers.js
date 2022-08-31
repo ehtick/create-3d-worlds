@@ -104,7 +104,10 @@ export const getTexture = ({ file, repeat = 1 } = {}) => {
 export const addTexture = ({ mesh, file = 'terrain/concrete.jpg', repeat = 1 } = {}) => {
   const texture = getTexture({ file, repeat })
   mesh.traverse(child => {
-    if (child.isMesh) child.material.map = texture
+    if (child.isMesh) {
+      child.material = new THREE.MeshLambertMaterial()
+      child.material.map = texture
+    }
   })
 }
 
