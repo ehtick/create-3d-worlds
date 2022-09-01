@@ -18,7 +18,7 @@ const control = {
   x: 2,
   y: 1,
   z: 1,
-  theta: 0.1,
+  theta: 0.2,
 
   applyTranslation() {
     matrix.set(
@@ -28,7 +28,7 @@ const control = {
       0, 0, 0, 1
     )
     cube.applyMatrix4(matrix)
-    // or cube.geometry.applyMatrix4(matrix)
+    cube.verticesNeedUpdate = true
   },
 
   applyScale() {
@@ -63,10 +63,10 @@ function addControls(controlObject) {
   gui.add(controlObject, 'x', -5, 5).step(0.1)
   gui.add(controlObject, 'y', -5, 5).step(0.1)
   gui.add(controlObject, 'z', -5, 5).step(0.1)
-  gui.add(controlObject, 'theta', -Math.PI, Math.PI).step(0.1)
   gui.add(controlObject, 'applyScale')
-  gui.add(controlObject, 'applyRotationY')
   gui.add(controlObject, 'applyTranslation')
+  gui.add(controlObject, 'theta', -Math.PI, Math.PI).step(0.1)
+  gui.add(controlObject, 'applyRotationY')
 }
 
 /* LOOP */
