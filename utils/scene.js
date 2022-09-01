@@ -12,7 +12,6 @@ export const clock = new THREE.Clock()
 // SCENE
 
 export const scene = new THREE.Scene()
-scene.background = new THREE.Color(0x87CEEB)
 
 export function createWorldScene(groundParam, skyParam, lightParam, fogParam = {}) {
   scene.add(createGround(groundParam))
@@ -27,6 +26,7 @@ export function createWorldScene(groundParam, skyParam, lightParam, fogParam = {
 
 export const setBackground = color => {
   scene.background = new THREE.Color(color)
+  // renderer.setClearColor(color)
 }
 
 // CAMERA
@@ -49,6 +49,8 @@ renderer.setPixelRatio(Math.min(2, window.devicePixelRatio))
 renderer.domElement.focus()
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
+
+renderer.setClearColor(0x87CEEB)
 
 window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight)

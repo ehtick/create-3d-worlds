@@ -9,9 +9,11 @@ npm i
 npx live-server
 ```
 
-- isprobati transformation matrix, igrati se
-  https://www.khanacademy.org/math/linear-algebra/matrix-transformations/lin-trans-examples/v/linear-transformation-examples-scaling-and-reflections?modal=1
 - pauk primer https://rdpa01.xl.digital/
+
+## Matrix Transformations
+- isprobati matrix transformation, igrati se
+- https://www.khanacademy.org/math/linear-algebra/matrix-transformations/lin-trans-examples/v/linear-transformation-examples-scaling-and-reflections?modal=1
 
 ## Konačni automat
 - uskladiti animacije sa mrdanjem igrača
