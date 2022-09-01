@@ -1,15 +1,20 @@
+import * as THREE from 'three'
 import { loadModel } from '/utils/loaders.js'
-import { createWorldScene, camera, renderer, createOrbitControls } from '/utils/scene.js'
+import { createWorldScene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { randomInCircle } from '/utils/helpers.js'
+
+const mixers = []
 
 const scene = createWorldScene()
 const controls = createOrbitControls()
 camera.position.set(0, 20, 30)
 
-const OGRES = 2
-const BIRDS = 10
 const HORSES = 10
+const OGRES = 3
+const BIRDS = 10
 const HOUSES = 3
+
+/* FUNCTIONS */
 
 const randomPos = mesh => {
   const { x, z } = randomInCircle(30)
@@ -17,42 +22,42 @@ const randomPos = mesh => {
   return mesh
 }
 
-{
-  const { mesh } = await loadModel({ file: 'animal/flamingo.glb', shouldAdjustHeight: true })
-  for (let i = 0; i < BIRDS; i++) {
-    const bird = mesh.clone()
-    scene.add(randomPos(bird))
-  }
+function createMixer(mesh, animation) {
+  const mixer = new THREE.AnimationMixer(mesh)
+  const action = mixer.clipAction(animation)
+  action.play()
+  mixers.push(mixer)
 }
 
-{
-  const { mesh } = await loadModel({ file: 'castle/wizard-isle/scene.gltf', size: 15 })
-  const tower = mesh.clone()
-  scene.add(randomPos(tower))
+/* LOAD */
+
+const { mesh: towerModel } = await loadModel({ file: 'castle/wizard-isle/scene.gltf', size: 15 })
+scene.add(randomPos(towerModel))
+
+const { mesh: houseModel } = await loadModel({ file: 'building/medieval-house/house1-01.obj', mtl: 'building/medieval-house/house1-01.mtl' })
+for (let i = 0; i < HOUSES; i++) {
+  const house = houseModel.clone()
+  scene.add(randomPos(house))
 }
 
-{
-  const { mesh } = await loadModel({ file: 'character/ogro/ogro.md2', texture: 'character/ogro/skins/arboshak.png', shouldCenter: true, shouldAdjustHeight: true })
-  for (let i = 0; i < OGRES; i++) {
-    const hunter = mesh.clone()
-    scene.add(randomPos(hunter))
-  }
+const { mesh: birdModel } = await loadModel({ file: 'animal/flamingo.glb', shouldAdjustHeight: true })
+for (let i = 0; i < BIRDS; i++) {
+  const bird = birdModel.clone()
+  scene.add(randomPos(bird))
 }
 
-{
-  const { mesh } = await loadModel({ file: 'animal/horse.glb' })
-  for (let i = 0; i < HORSES; i++) {
-    const horse = mesh.clone()
-    scene.add(randomPos(horse))
-  }
+const { mesh: ogreModel, animations: ogreAnimations } = await loadModel({ file: 'character/ogro/ogro.md2', texture: 'character/ogro/skins/arboshak.png', shouldCenter: true, shouldAdjustHeight: true })
+for (let i = 0; i < OGRES; i++) {
+  const ogre = ogreModel.clone()
+  createMixer(ogre.children[0], ogreAnimations[i])
+  scene.add(randomPos(ogre))
 }
 
-{
-  const { mesh } = await loadModel({ file: 'building/medieval-house/house1-01.obj', mtl: 'building/medieval-house/house1-01.mtl' })
-  for (let i = 0; i < HOUSES; i++) {
-    const house = mesh.clone()
-    scene.add(randomPos(house))
-  }
+const { mesh: horseModel, animations: horseAnimations } = await loadModel({ file: 'animal/horse.glb' })
+for (let i = 0; i < HORSES; i++) {
+  const horse = horseModel.clone()
+  createMixer(horse, horseAnimations[0])
+  scene.add(randomPos(horse))
 }
 
 /* LOOP */
@@ -60,5 +65,7 @@ const randomPos = mesh => {
 void function animate() {
   requestAnimationFrame(animate)
   controls.update()
+  const delta = clock.getDelta()
+  mixers.forEach(mixer => mixer.update(delta))
   renderer.render(scene, camera)
 }()
