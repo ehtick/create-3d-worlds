@@ -14,13 +14,13 @@ scene.add(cube)
 
 const matrix = new THREE.Matrix4()
 
-const control = new function() {
-  this.x = 2
-  this.y = 1
-  this.z = 1
-  this.theta = 0.1
+const control = {
+  x: 2,
+  y: 1,
+  z: 1,
+  theta: 0.1,
 
-  this.applyTranslation = function() {
+  applyTranslation() {
     matrix.set(
       1, 0, 0, control.x,
       0, 1, 0, control.y,
@@ -29,9 +29,9 @@ const control = new function() {
     )
     cube.applyMatrix4(matrix)
     // or cube.geometry.applyMatrix4(matrix)
-  }
+  },
 
-  this.applyScale = function() {
+  applyScale() {
     matrix.set(
       control.x, 0, 0, 0,
       0, control.y, 0, 0,
@@ -40,11 +40,11 @@ const control = new function() {
     )
     cube.geometry.applyMatrix4(matrix)
     cube.geometry.verticesNeedUpdate = true
-  }
+  },
 
-  this.applyRotationY = function() {
-    const cos = Math.cos(this.theta)
-    const sin = Math.sin(this.theta)
+  applyRotationY() {
+    const cos = Math.cos(control.theta)
+    const sin = Math.sin(control.theta)
     matrix.set(
       cos, 0, sin, 0,
       0, 1, 0, 0,
@@ -53,7 +53,7 @@ const control = new function() {
     )
     cube.geometry.applyMatrix4(matrix)
     cube.geometry.verticesNeedUpdate = true
-  }
+  },
 }
 
 addControls(control)
