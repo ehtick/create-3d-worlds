@@ -4,21 +4,21 @@ import { randomInCircle } from '/utils/helpers.js'
 
 const scene = createWorldScene()
 const controls = createOrbitControls()
-camera.position.set(0, 50, 50)
+camera.position.set(0, 20, 30)
 
-const HUNTERS = 2
+const OGRES = 2
 const BIRDS = 10
 const HORSES = 10
 const HOUSES = 3
 
 const randomPos = mesh => {
-  const { x, z } = randomInCircle(50)
+  const { x, z } = randomInCircle(30)
   mesh.position.set(x, 0, z)
   return mesh
 }
 
 {
-  const { mesh } = await loadModel({ file: 'animal/flamingo.glb', size: 5, shouldCenter: true, shouldAdjustHeight: true })
+  const { mesh } = await loadModel({ file: 'animal/flamingo.glb', shouldAdjustHeight: true })
   for (let i = 0; i < BIRDS; i++) {
     const bird = mesh.clone()
     scene.add(randomPos(bird))
@@ -26,21 +26,21 @@ const randomPos = mesh => {
 }
 
 {
-  const { mesh } = await loadModel({ file: 'castle/wizard-isle/scene.gltf', size: 25 })
+  const { mesh } = await loadModel({ file: 'castle/wizard-isle/scene.gltf', size: 15 })
   const tower = mesh.clone()
   scene.add(randomPos(tower))
 }
 
 {
-  const { mesh } = await loadModel({ file: 'character/ogro/ogro.md2', texture: 'character/ogro/skins/arboshak.png', size: 5, axis: [0, 1, 0], angle: -Math.PI * .5, shouldCenter: true, shouldAdjustHeight: true })
-  for (let i = 0; i < HUNTERS; i++) {
+  const { mesh } = await loadModel({ file: 'character/ogro/ogro.md2', texture: 'character/ogro/skins/arboshak.png', shouldCenter: true, shouldAdjustHeight: true })
+  for (let i = 0; i < OGRES; i++) {
     const hunter = mesh.clone()
     scene.add(randomPos(hunter))
   }
 }
 
 {
-  const { mesh } = await loadModel({ file: 'animal/horse.glb', size: 5 })
+  const { mesh } = await loadModel({ file: 'animal/horse.glb' })
   for (let i = 0; i < HORSES; i++) {
     const horse = mesh.clone()
     scene.add(randomPos(horse))
@@ -48,7 +48,7 @@ const randomPos = mesh => {
 }
 
 {
-  const { mesh } = await loadModel({ file: 'building/medieval-house/house1-01.obj', mtl: 'building/medieval-house/house1-01.mtl', size: 5 })
+  const { mesh } = await loadModel({ file: 'building/medieval-house/house1-01.obj', mtl: 'building/medieval-house/house1-01.mtl' })
   for (let i = 0; i < HOUSES; i++) {
     const house = mesh.clone()
     scene.add(randomPos(house))

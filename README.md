@@ -9,7 +9,7 @@ npm i
 npx live-server
 ```
 
-- pokušati kloniranje modela
+- klonirati modele sa animacijom
 - isprobati transformation matrix, igrati se
   https://www.khanacademy.org/math/linear-algebra/matrix-transformations/lin-trans-examples/v/linear-transformation-examples-scaling-and-reflections?modal=1
 - pauk primer https://rdpa01.xl.digital/
