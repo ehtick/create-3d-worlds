@@ -50,23 +50,18 @@ export function initLights({ scene = defaultScene, position = [-10, 30, 40], r =
   return container
 }
 
-export function createSun({ d = 400, far = 3500, color = 0xffffff, intensity = 1.4, target } = {}) {
-  // const light = new THREE.DirectionalLight(color, intensity)
-  const light = new THREE.PointLight(color, intensity)
-  light.castShadow = true
-  // area of the shadow https://threejs.org/docs/#api/en/lights/shadows/DirectionalLightShadow
-  // light.shadow.camera.left = -d
-  // light.shadow.camera.right = d
-  // light.shadow.camera.top = d
-  // light.shadow.camera.bottom = -d
-  light.shadow.camera.far = far
-  if (target) light.target = target
+export function createSun({ color = 0xffffff, intensity = 1.4, far = 3500, target } = {}) {
+  const sun = new THREE.PointLight(color, intensity)
+  sun.castShadow = true
+  sun.shadow.camera.far = far
+  if (target) sun.target = target
 
   const container = new THREE.Mesh(
     new THREE.SphereGeometry(10),
     new THREE.MeshToonMaterial({ color: 0xFCE570 })
   )
-  container.add(light)
+  const ambientLight = new THREE.AmbientLight(0xfffee1, .4)
+  container.add(sun, ambientLight)
   container.position.set(150, 350, 350)
   return container
 }

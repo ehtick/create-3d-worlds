@@ -19,7 +19,9 @@ const BIRDS = 10
 const HOUSES = 3
 const GIRLS = 4
 
-scene.add(createGround(), createSun())
+const sun = createSun()
+sun.position.set(50, 150, 150)
+scene.add(createGround(), sun)
 
 /* FUNCTIONS */
 
