@@ -1,9 +1,9 @@
 import { scene, renderer, camera, clock } from '/utils/scene.js'
-import { createSunLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { createTank } from '/utils/geometry/shapes.js'
 
-const sun = createSunLight()
+const sun = createSun()
 scene.add(sun)
 
 camera.position.set(8, 4, 10).multiplyScalar(2)

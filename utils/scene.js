@@ -4,7 +4,7 @@ import { OrbitControls } from '/node_modules/three/examples/jsm/controls/OrbitCo
 
 import { createSkySphere } from './geometry.js'
 import { createGround } from './ground.js'
-import { initLights, hemLight, createSunLight } from './light.js'
+import { initLights, hemLight, createSun } from './light.js'
 import { baseCommands } from '/data/commands.js'
 
 export const clock = new THREE.Clock()
@@ -17,7 +17,7 @@ scene.background = new THREE.Color(0x87CEEB)
 export function createWorldScene(groundParam, skyParam, lightParam, fogParam = {}) {
   scene.add(createGround(groundParam))
   scene.add(createSkySphere(skyParam))
-  const light = createSunLight(lightParam)
+  const light = createSun(lightParam)
   scene.add(light)
   const { color = 0xffffff, near = 1, far = 5000 } = fogParam
   scene.fog = new THREE.Fog(color, near, far)

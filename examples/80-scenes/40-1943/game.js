@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { OrbitControls } from '/node_modules/three/examples/jsm/controls/OrbitControls.js'
 
 import { scene, renderer, camera, clock } from '/utils/scene.js'
-import { createSunLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { createGround, rotateGround } from '/utils/terrain/cylinder-ground.js'
 import { updatePlane, normalizePlane } from './utils/airplane.js'
@@ -11,7 +11,7 @@ scene.fog = new THREE.Fog(0xE5C5AB, 200, 950)
 
 scene.add(
   new THREE.HemisphereLight(0xD7D2D2, 0x302B2F, .9),
-  createSunLight({ x: 150, y: 350, z: -150 })
+  createSun({ x: 150, y: 350, z: -150 })
 )
 
 camera.position.set(-68, 143, -90)

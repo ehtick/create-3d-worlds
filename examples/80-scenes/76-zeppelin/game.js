@@ -1,14 +1,14 @@
 import { camera, scene, renderer, addUIControls } from '/utils/scene.js'
 import { createHillyTerrain, createWater } from '/utils/ground.js'
 import { createSkySphere } from '/utils/geometry.js'
-import { createSunLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 import Zeppelin from '/utils/classes/aircrafts/Zeppelin.js'
 import { loadModel } from '/utils/loaders.js'
 
 camera.position.set(0, 10, 25)
 
 scene.add(createSkySphere({ r: 5000 }))
-const light = createSunLight({ x: 500, y: 2000, z: 100, far: 5000 })
+const light = createSun({ x: 500, y: 2000, z: 100, far: 5000 })
 scene.add(light)
 
 const water = createWater({ color: 0x003133 })

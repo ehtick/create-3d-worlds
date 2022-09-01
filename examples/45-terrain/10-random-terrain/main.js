@@ -1,8 +1,8 @@
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 import { createTerrain } from '/utils/ground.js'
-import { createSunLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 
-scene.add(createSunLight())
+scene.add(createSun())
 
 camera.position.set(0, 10, 20)
 createOrbitControls()

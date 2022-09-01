@@ -5,13 +5,13 @@ import { createTerrain } from '/utils/ground.js'
 import { createFirTrees } from '/utils/geometry/trees.js'
 import Airplane from '/utils/classes/aircrafts/Airplane.js'
 import { loadModel } from '/utils/loaders.js'
-import { createSunLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 
 const terrain = createTerrain({ size: 8000, segments: 200 })
 const trees = createFirTrees({ n: 500, mapSize: 4000, size: 25 })
 
 scene.fog = new THREE.Fog(0xE5C5AB, 1, 5000)
-scene.add(createSkySphere(), createSunLight(), terrain, trees)
+scene.add(createSkySphere(), createSun(), terrain, trees)
 
 const { mesh } = await loadModel({
   file: 'aircraft/ww1-biplane/scene.gltf',

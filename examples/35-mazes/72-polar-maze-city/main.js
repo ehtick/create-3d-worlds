@@ -2,7 +2,7 @@ import { polarMazeCity } from '/utils/mazes.js'
 import PolarGrid from '/utils/mazes/PolarGrid.js'
 import { recursiveBacktracker } from '/utils/mazes/algorithms.js'
 import { scene, createToonRenderer, camera } from '/utils/scene.js'
-import { createSunLight, hemLight, ambLight } from '/utils/light.js'
+import { createSun, hemLight, ambLight } from '/utils/light.js'
 import { createHill } from '/utils/ground.js'
 import Avatar from '/utils/classes/Avatar.js'
 
@@ -15,7 +15,7 @@ scene.add(hill)
 
 hemLight({ intensity: .5 })
 ambLight({ intensity: .5 })
-const sun = createSunLight()
+const sun = createSun()
 sun.position.set(50, 150, 200)
 scene.add(sun)
 

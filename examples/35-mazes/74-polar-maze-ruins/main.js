@@ -2,10 +2,10 @@ import { polarMazeRuins } from '/utils/mazes.js'
 import PolarGrid from '/utils/mazes/PolarGrid.js'
 import { recursiveBacktracker } from '/utils/mazes/algorithms.js'
 import { scene, camera, createOrbitControls, createToonRenderer } from '/utils/scene.js'
-import { createSunLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 import { createDunes } from '/utils/ground.js'
 
-const sun = createSunLight()
+const sun = createSun()
 scene.add(sun)
 
 const ground = createDunes({ size: 1000 })

@@ -3,9 +3,9 @@ import * as THREE from 'three'
 import { OutlineEffect } from '/node_modules/three/examples/jsm/effects/OutlineEffect.js'
 import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { createTrees } from '/utils/geometry/trees.js'
-import { createSunLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 
-const sun = createSunLight()
+const sun = createSun()
 scene.add(sun)
 
 scene.background = new THREE.Color('skyblue')

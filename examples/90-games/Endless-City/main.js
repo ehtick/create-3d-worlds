@@ -2,10 +2,10 @@ import * as THREE from 'three'
 import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js'
 import { MapControls } from '/node_modules/three/examples/jsm/controls/OrbitControls.js'
 import { scene, camera, renderer } from '/utils/scene.js'
-import { createSunLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 import { SOUTH, LEAP, cluster } from './data.js'
 
-const sun = createSunLight()
+const sun = createSun()
 sun.position.set(-120, 175, -150)
 scene.add(sun)
 

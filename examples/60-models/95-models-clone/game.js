@@ -1,11 +1,12 @@
 import * as THREE from 'three'
 import { loadModel } from '/utils/loaders.js'
-import { createWorldScene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
+import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { randomInCircle } from '/utils/helpers.js'
+import { createGround } from '/utils/ground.js'
+import { createSun } from '/utils/light.js'
 
 const mixers = []
 
-const scene = createWorldScene()
 const controls = createOrbitControls()
 camera.position.set(0, 20, 30)
 
@@ -13,6 +14,8 @@ const HORSES = 10
 const OGRES = 3
 const BIRDS = 10
 const HOUSES = 3
+
+scene.add(createGround(), createSun())
 
 /* FUNCTIONS */
 
@@ -40,9 +43,10 @@ for (let i = 0; i < HOUSES; i++) {
   scene.add(randomPos(house))
 }
 
-const { mesh: birdModel } = await loadModel({ file: 'animal/flamingo.glb', shouldAdjustHeight: true })
+const { mesh: birdModel, animations: birdAnimations } = await loadModel({ file: 'animal/flamingo.glb', shouldAdjustHeight: true })
 for (let i = 0; i < BIRDS; i++) {
   const bird = birdModel.clone()
+  createMixer(bird, birdAnimations[0])
   scene.add(randomPos(bird))
 }
 

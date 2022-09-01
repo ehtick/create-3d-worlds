@@ -50,7 +50,7 @@ export function initLights({ scene = defaultScene, position = [-10, 30, 40], r =
   return container
 }
 
-export function createSunLight({ d = 400, far = 3500, color = 0xffffff, intensity = 1.4, target } = {}) {
+export function createSun({ d = 400, far = 3500, color = 0xffffff, intensity = 1.4, target } = {}) {
   // const light = new THREE.DirectionalLight(color, intensity)
   const light = new THREE.PointLight(color, intensity)
   light.castShadow = true

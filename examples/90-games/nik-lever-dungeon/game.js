@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { Pathfinding } from './libs/three-pathfinding.module.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { Fred, Ghoul } from './Player.js'
-import { createSunLight, ambLight } from '/utils/light.js'
+import { createSun, ambLight } from '/utils/light.js'
 import { getMouseIntersects } from '/utils/helpers.js'
 import { cloneGLTF, randomWaypoint } from './utils.js'
 import { loadModel } from '/utils/loaders.js'
@@ -25,7 +25,7 @@ let navmesh
 let activeCamera = wideCamera
 
 ambLight()
-scene.add(createSunLight({ x: -5, y: 10, z: 2 }))
+scene.add(createSun({ x: -5, y: 10, z: 2 }))
 camera.position.set(0, 22, 18)
 wideCamera.position.copy(camera.position)
 
