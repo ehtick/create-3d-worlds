@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import { animationsToActions } from '/utils/helpers.js'
 
 import IdleState from './states/IdleState.js'
 import RunState from './states/RunState.js'
@@ -16,12 +15,27 @@ const states = {
   jump: JumpState,
 }
 
+const animationsToActions = (animations, mixer) => animations.reduce((actions, clip) => ({
+  ...actions,
+  [clip.name]: mixer.clipAction(clip)
+}), {})
+
+const distToActions = (animations, mixer, dict) => {
+  for (const key in dict) {
+    const clip = animations.find(anim => anim.name == dict[key])
+    dict[key] = mixer.clipAction(clip)
+  }
+  return dict
+}
+
 // Player class
 export default class StateMachine {
-  constructor({ mesh, animations }) {
+  constructor({ mesh, animations, dict }) {
     this.mesh = mesh
     this.mixer = new THREE.AnimationMixer(mesh)
-    this.actions = animationsToActions(animations, this.mixer)
+    this.actions = dict
+      ? distToActions (animations, this.mixer, dict)
+      : animationsToActions(animations, this.mixer)
     if (this.actions.walk) this.actions.walkBackward = this.actions.walk
     this.setState('idle')
   }

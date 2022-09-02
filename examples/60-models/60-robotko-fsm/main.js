@@ -11,9 +11,7 @@ camera.position.set(0, 3, 5)
 createOrbitControls()
 
 const { mesh, animations } = await loadModel({ file: 'character/robot/robot.glb', size: 2, axis: [0, 1, 0], angle: Math.PI })
-console.log(animations)
-
-const stateMachine = new StateMachine({ mesh, animations })
+const stateMachine = new StateMachine({ mesh, animations, dict: robotAnimations })
 
 scene.add(mesh)
 
