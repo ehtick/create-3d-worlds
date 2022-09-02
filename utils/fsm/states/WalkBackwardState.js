@@ -13,9 +13,16 @@ export default class WalkBackwardState extends State {
     curAction.timeScale = -1
   }
 
-  update() {
-    if (keyboard.down) return
+  update(delta) {
+    this.turn(delta, 1)
+    this.move(delta, 1)
 
-    this.fsm.setState('idle')
+    if (keyboard.pressed.Space)
+      this.fsm.setState('jump')
+
+    if (keyboard.pressed.Enter)
+      this.fsm.setState('attack')
+
+    if (!keyboard.down) this.fsm.setState('idle')
   }
 }

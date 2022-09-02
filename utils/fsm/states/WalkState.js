@@ -12,19 +12,19 @@ export default class WalkState extends State {
     curAction.play()
   }
 
-  update() {
+  update(delta) {
+    this.turn(delta)
+    this.move(delta)
+
     if (keyboard.pressed.Space)
       this.fsm.setState('jump')
 
     if (keyboard.pressed.Enter)
-      this.fsm.setState('bencao')
+      this.fsm.setState('attack')
 
-    if (keyboard.up) {
-      if (keyboard.capsLock)
-        this.fsm.setState('run')
-      return
-    }
+    if (keyboard.capsLock)
+      this.fsm.setState('run')
 
-    this.fsm.setState('idle')
+    if (!keyboard.up) this.fsm.setState('idle')
   }
 }

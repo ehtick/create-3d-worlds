@@ -12,15 +12,14 @@ export default class RunState extends State {
     curAction.play()
   }
 
-  update() {
+  update(delta) {
+    this.turn(delta)
+    this.move(delta)
+
     if (keyboard.pressed.Space)
       this.fsm.setState('jump')
 
-    if (keyboard.up) {
-      if (!keyboard.capsLock)
-        this.fsm.setState('walk')
-      return
-    }
-    this.fsm.setState('idle')
+    if (!keyboard.capsLock) this.fsm.setState('walk')
+    if (!keyboard.up) this.fsm.setState('idle')
   }
 }

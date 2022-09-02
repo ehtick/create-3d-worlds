@@ -14,13 +14,13 @@ export default class IdleState extends State {
     curAction.play()
   }
 
-  update() {
-    // mozda keyboard.up?
-    if (this.actions.walk && pressed.KeyW)
+  update(delta) {
+    this.turn(delta)
+
+    if (this.actions.walk && keyboard.up)
       this.fsm.setState('walk')
 
-    // mozda keyboard.down?
-    if (this.actions.walkBackward && pressed.KeyS)
+    if (this.actions.walkBackward && keyboard.down)
       this.fsm.setState('walkBackward')
 
     if (this.actions.jump && keyboard.pressed.Space)

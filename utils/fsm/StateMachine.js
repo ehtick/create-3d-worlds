@@ -9,9 +9,9 @@ import SpecialState from './states/SpecialState.js'
 
 const states = {
   idle: IdleState,
-  run: RunState,
   walk: WalkState,
   walkBackward: WalkBackwardState,
+  run: RunState,
 }
 
 export default class StateMachine {
@@ -36,7 +36,7 @@ export default class StateMachine {
   }
 
   update(delta) {
-    this.currentState.update()
+    this.currentState.update(delta)
     this.mixer.update(delta)
   }
 }
