@@ -18,8 +18,7 @@ export default class WalkState extends State {
 
   update(delta) {
     this.turn(delta)
-    speed = Math.min(speed + .05, walkSpeed)
-    this.move(delta, -1, speed)
+    this.move(delta, -1, Math.min(speed += .05, walkSpeed))
 
     if (keyboard.pressed.Space)
       this.fsm.setState('jump')

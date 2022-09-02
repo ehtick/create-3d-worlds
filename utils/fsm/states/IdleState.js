@@ -17,6 +17,8 @@ export default class IdleState extends State {
   update(delta) {
     this.turn(delta)
 
+    // ako je iz skoka u idle usporavanje
+
     if (this.actions.walk && keyboard.up)
       this.fsm.setState('walk')
 
