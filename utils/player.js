@@ -35,8 +35,6 @@ const updateMove = (mesh, deltaTime) => {
 export function handleInput(mesh, deltaTime, speed = 4, maxJumpImpulse = speed * 4) {
   const rotateDelta = RIGHT_ANGLE * deltaTime // 90 degrees per second
 
-  updateMove(mesh, deltaTime)
-
   if (keyboard.pressed.Space) {
     if (!onGround) return
     if (jumpImpulse < maxJumpImpulse) jumpImpulse += maxJumpImpulse * .1
@@ -57,6 +55,7 @@ export function handleInput(mesh, deltaTime, speed = 4, maxJumpImpulse = speed *
   if (keyboard.right)
     mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateDelta)
 
+  updateMove(mesh, deltaTime)
 }
 
 export function moveCamera(camera, delta, speed = 5) {
