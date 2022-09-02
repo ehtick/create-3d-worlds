@@ -25,9 +25,7 @@ const checkGround = mesh => {
 const updateMove = (mesh, deltaTime) => {
   velocity.y -= GRAVITY
   mesh.translateY(velocity.y * deltaTime)
-  velocity.x *= FRICTION
   velocity.z *= FRICTION
-  mesh.translateX(velocity.x * deltaTime)
   mesh.translateZ(velocity.z * deltaTime)
   checkGround(mesh)
 }
@@ -45,10 +43,6 @@ export function handleInput(mesh, deltaTime, speed = 4, maxJumpImpulse = speed *
     velocity.z -= speed
   if (keyboard.down)
     velocity.z += speed
-  if (keyboard.pressed.KeyQ)
-    velocity.x -= speed
-  if (keyboard.pressed.KeyE)
-    velocity.x += speed
 
   if (keyboard.left)
     mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotateDelta)
@@ -56,18 +50,6 @@ export function handleInput(mesh, deltaTime, speed = 4, maxJumpImpulse = speed *
     mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), -rotateDelta)
 
   updateMove(mesh, deltaTime)
-}
-
-export function moveCamera(camera, delta, speed = 5) {
-  const step = speed * delta // pixels per second
-  const angle = Math.PI / 4 * delta // radians per second
-
-  if (keyboard.left) camera.rotateY(angle)
-  if (keyboard.right) camera.rotateY(-angle)
-  if (keyboard.up) camera.translateZ(-step)
-  if (keyboard.down) camera.translateZ(step)
-  if (keyboard.pressed.KeyQ) camera.translateX(-step)
-  if (keyboard.pressed.KeyE) camera.translateX(step)
 }
 
 /* EVENTS */

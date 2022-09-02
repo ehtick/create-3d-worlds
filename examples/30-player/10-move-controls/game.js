@@ -17,8 +17,6 @@ const commands = {
   'S': 'Translate Backward',
   'A': 'Rotate Left',
   'D': 'Rotate Right',
-  'Q': 'Translate Left',
-  'E': 'Translate Right',
 }
 addUIControls({ commands })
 
