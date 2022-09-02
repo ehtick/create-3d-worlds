@@ -9,7 +9,7 @@ const maxSpeed = 2
 
 export default class WalkState extends State {
   enter(oldState) {
-    speed = 0
+    if (oldState.name === 'idle') speed = 0
     const curAction = this.actions.walk
     if (oldState) {
       const oldAction = this.actions[oldState.name]
