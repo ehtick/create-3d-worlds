@@ -14,7 +14,7 @@ export default class RunState extends State {
 
   update(delta) {
     this.turn(delta)
-    this.move(delta)
+    this.move(delta, -1, 4)
 
     if (keyboard.pressed.Space)
       this.fsm.setState('jump')

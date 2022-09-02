@@ -2,9 +2,13 @@ import * as THREE from 'three'
 import { RIGHT_ANGLE } from '/data/constants.js'
 import keyboard from '/utils/classes/Keyboard.js'
 
+const FRICTION = .5
+
 let velocity = 0
-const speed = 2
-const FRICTION = .3
+
+/* TODO:
+- skok i pomeranje u skoku
+*/
 
 export default class State {
   constructor(fsm, name) {
@@ -13,7 +17,7 @@ export default class State {
     this.name = name
   }
 
-  move(delta, sign = -1) {
+  move(delta, sign = -1, speed = 2) {
     velocity += speed * sign
     velocity *= FRICTION
     this.fsm.mesh.translateZ(velocity * delta)

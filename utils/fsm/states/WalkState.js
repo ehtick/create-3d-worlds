@@ -1,9 +1,15 @@
+import * as THREE from 'three'
+
 import State from './State.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { syncFrom } from './utils.js'
 
+let speed = 0
+const maxSpeed = 2
+
 export default class WalkState extends State {
   enter(oldState) {
+    speed = 0
     const curAction = this.actions.walk
     if (oldState) {
       const oldAction = this.actions[oldState.name]
@@ -14,7 +20,8 @@ export default class WalkState extends State {
 
   update(delta) {
     this.turn(delta)
-    this.move(delta)
+    speed = Math.min(speed + .05, maxSpeed)
+    this.move(delta, -1, speed)
 
     if (keyboard.pressed.Space)
       this.fsm.setState('jump')
