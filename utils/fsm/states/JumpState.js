@@ -1,12 +1,14 @@
 import SpecialState from './SpecialState.js'
 
-let speed = 2
+let speed = 0
 
 export default class JumpState extends SpecialState {
 
   enter(oldState) {
     super.enter(oldState)
-    speed = (oldState.name === 'run') ? 4 : 2
+    speed = 0
+    if (oldState.name === 'walk') speed = 2
+    if (oldState.name === 'run') speed = 4
   }
 
   update(delta) {

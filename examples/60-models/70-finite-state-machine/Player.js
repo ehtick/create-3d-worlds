@@ -52,4 +52,4 @@ export default class Player {
 
     this.deaccelerate(timeInSeconds)
   }
-};
+}
