@@ -10,9 +10,11 @@ npx live-server
 ```
 
 ## Konačni automat
-- uskladiti animacije sa mrdanjem igrača
-  - mrdati igrača napred za neke napade
-  - onemogućiti mrdanje u skoku?
+- skok da bude visočiji ako se drži space
+  - pokušati na robotku
+- integrisati player.js i Player.js
+- proveriti ostale modele (Robotko, Dupečeš)
+- mrdati igrača napred za neke napade?
 
 ### Physics
 - preraditi staru 2D fiziku u 3D

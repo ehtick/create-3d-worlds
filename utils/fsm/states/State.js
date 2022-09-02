@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { RIGHT_ANGLE } from '/data/constants.js'
 import keyboard from '/utils/classes/Keyboard.js'
 
-const FRICTION = .5
+const INERTIA = .5
 
 let velocity = 0
 
@@ -14,9 +14,13 @@ export default class State {
     this.prevState = ''
   }
 
+  enter(oldState) {
+    this.prevState = oldState?.name
+  }
+
   move(delta, sign = -1, speed = 2) {
     velocity += speed * sign
-    velocity *= FRICTION
+    velocity *= INERTIA
     this.fsm.mesh.translateZ(velocity * delta)
   }
 
@@ -26,10 +30,6 @@ export default class State {
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -sign)
     if (keyboard.right)
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * sign)
-  }
-
-  enter(oldState) {
-    this.prevState = oldState?.name
   }
 
   exit() {}

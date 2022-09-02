@@ -18,8 +18,8 @@ export default class IdleState extends State {
 
   update(delta) {
     this.turn(delta)
-    if (this.prevState === 'walk')
-      this.move(delta, -1, Math.max(this.speed -= .05, 0))
+    if (this.prevState === 'walk' || this.prevState === 'run' || this.prevState === 'walkBackward')
+      this.move(delta, this.prevState === 'walkBackward' ? 1 : -1, Math.max(this.speed -= .05, 0))
 
     if (keyboard.up && this.actions.walk)
       this.fsm.setState('walk')

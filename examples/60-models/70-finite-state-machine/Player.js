@@ -9,47 +9,47 @@ export default class Player {
     this._velocity = new THREE.Vector3(0, 0, 0)
   }
 
-  walk(timeInSeconds, dir = 1) {
+  move(delta, dir = 1) {
     const acceleration = this._acceleration.clone()
     if (keyboard.capsLock) acceleration.multiplyScalar(2.0)
 
-    this._velocity.z += dir * acceleration.z * timeInSeconds
+    this._velocity.z += dir * acceleration.z * delta
 
     const forward = new THREE.Vector3(0, 0, 1)
       .applyQuaternion(this.mesh.quaternion).normalize()
-      .multiplyScalar(this._velocity.z * timeInSeconds)
+      .multiplyScalar(this._velocity.z * delta)
     this.mesh.position.add(forward)
   }
 
-  turn(timeInSeconds, dir = 1) {
+  turn(delta, dir = 1) {
     const _A = new THREE.Vector3().set(0, 1, 0)
     const _Q = new THREE.Quaternion()
-      .setFromAxisAngle(_A, dir * 4 * Math.PI * timeInSeconds * this._acceleration.y)
+      .setFromAxisAngle(_A, dir * 4 * Math.PI * delta * this._acceleration.y)
     const _R = this.mesh.quaternion.clone().multiply(_Q)
     this.mesh.quaternion.copy(_R)
 
     const sideways = new THREE.Vector3(1, 0, 0)
       .applyQuaternion(this.mesh.quaternion).normalize()
-      .multiplyScalar(this._velocity.x * timeInSeconds)
+      .multiplyScalar(this._velocity.x * delta)
     this.mesh.position.add(sideways)
   }
 
-  deaccelerate(timeInSeconds) {
+  deaccelerate(delta) {
     const frameDecceleration = new THREE.Vector3()
-      .multiplyVectors(this._velocity, this._decceleration).multiplyScalar(timeInSeconds)
+      .multiplyVectors(this._velocity, this._decceleration).multiplyScalar(delta)
 
     const { z } = frameDecceleration
     frameDecceleration.z = Math.sign(z) * Math.min(Math.abs(z), Math.abs(this._velocity.z))
     this._velocity.add(frameDecceleration)
   }
 
-  update(timeInSeconds) {
-    if (keyboard.up) this.walk(timeInSeconds, -1)
-    if (keyboard.down) this.walk(timeInSeconds, 1)
+  update(delta) {
+    if (keyboard.up) this.move(delta, -1)
+    if (keyboard.down) this.move(delta, 1)
 
-    if (keyboard.left) this.turn(timeInSeconds, 1)
-    if (keyboard.right) this.turn(timeInSeconds, -1)
+    if (keyboard.left) this.turn(delta, 1)
+    if (keyboard.right) this.turn(delta, -1)
 
-    this.deaccelerate(timeInSeconds)
+    this.deaccelerate(delta)
   }
 }
