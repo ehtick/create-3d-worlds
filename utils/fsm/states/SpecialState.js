@@ -6,10 +6,12 @@ const duration = .25
 export default class SpecialState extends State {
   constructor(...args) {
     super(...args)
+    this.prevState = ''
     this._FinishedCallback = this._FinishedCallback.bind(this)
   }
 
   enter(oldState) {
+    this.prevState = oldState.name
     const curAction = this.actions[this.name]
     const mixer = curAction.getMixer()
     mixer.addEventListener('finished', this._FinishedCallback)
@@ -30,7 +32,7 @@ export default class SpecialState extends State {
 
   _FinishedCallback() {
     this._Cleanup()
-    this.fsm.setState('idle')
+    this.fsm.setState(this.prevState || 'idle')
   }
 
   exit() {

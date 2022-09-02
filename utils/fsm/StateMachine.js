@@ -5,6 +5,7 @@ import IdleState from './states/IdleState.js'
 import RunState from './states/RunState.js'
 import WalkState from './states/WalkState.js'
 import WalkBackwardState from './states/WalkBackwardState.js'
+import JumpState from './states/JumpState.js'
 import SpecialState from './states/SpecialState.js'
 
 const states = {
@@ -12,6 +13,7 @@ const states = {
   walk: WalkState,
   walkBackward: WalkBackwardState,
   run: RunState,
+  jump: JumpState,
 }
 
 export default class StateMachine {

@@ -7,7 +7,7 @@ const FRICTION = .5
 let velocity = 0
 
 /* TODO:
-- skok i pomeranje u skoku
+- lagano usporavanje iz skoka u idle
 */
 
 export default class State {
