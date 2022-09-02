@@ -2,18 +2,18 @@ import State from './State.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { syncFrom } from './utils.js'
 
-const { pressed } = keyboard
-
 export default class IdleState extends State {
   enter(oldState) {
     super.enter(oldState)
-    this.speed = 2
+    this.speed = 2 // maybe rename to acceleration
+
+    // ANIMATION
     const curAction = this.actions.idle
     if (oldState) {
       const oldAction = this.actions[oldState.name]
       syncFrom(['walk', 'run', 'walkBackward'], oldState, oldAction, curAction)
     }
-    curAction.play()
+    curAction?.play()
   }
 
   update(delta) {
@@ -35,9 +35,5 @@ export default class IdleState extends State {
 
     if (keyboard.pressed.ControlLeft && this.actions.special)
       this.fsm.setState('special')
-
-    if (this.fsm.animKeys)
-      for (const key in this.fsm.animKeys)
-        if (pressed[key]) this.fsm.setState(this.fsm.animKeys[key])
   }
 }

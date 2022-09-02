@@ -16,13 +16,13 @@ const states = {
   jump: JumpState,
 }
 
+// Player class
 export default class StateMachine {
-  constructor({ mesh, animations, animKeys }) {
+  constructor({ mesh, animations }) {
     this.mesh = mesh
     this.mixer = new THREE.AnimationMixer(mesh)
     this.actions = animationsToActions(animations, this.mixer)
     if (this.actions.walk) this.actions.walkBackward = this.actions.walk
-    this.animKeys = animKeys
     this.setState('idle')
   }
 

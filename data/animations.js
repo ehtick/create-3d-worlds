@@ -1,3 +1,12 @@
+export const girlAnimations = {
+  idle: 'Dwarf-Idle',
+  walk: 'Walking',
+  run: 'Running',
+  jump: 'Jumping',
+  attack: 'Bencao',
+  special: 'Queshada',
+}
+
 export const robotAnimations = {
   idle: 'Idle',
   walk: 'Walking',
@@ -19,13 +28,4 @@ export const dupecheshAnimations = {
   death: 'deathc', // deatha, deathb, deathc, crdeath
   special: 'flip', // sniffsniff
   // paina, painb, painc, crpain
-}
-
-export const girlAnimations = {
-  idle: 'Dwarf-Idle',
-  walk: 'Walking',
-  run: 'Running',
-  jump: 'Jumping',
-  attack: 'Bencao',
-  special: 'Queshada',
 }
