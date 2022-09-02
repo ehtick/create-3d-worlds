@@ -32,6 +32,8 @@ export default class SpecialState extends State {
 
   _FinishedCallback() {
     this._Cleanup()
+    // skok se vraća u prethodno stanje
+    // ako nije pritisnuto ništa treba u idle
     this.fsm.setState(this.prevState || 'idle')
   }
 

@@ -6,8 +6,6 @@ const FRICTION = .5
 
 let velocity = 0
 
-// usporavanje iz skoka u idle
-
 export default class State {
   constructor(fsm, name) {
     this.fsm = fsm
@@ -31,7 +29,7 @@ export default class State {
   }
 
   enter(oldState) {
-    this.prevState = oldState
+    this.prevState = oldState?.name
   }
 
   exit() {}

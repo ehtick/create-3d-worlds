@@ -7,6 +7,7 @@ const { pressed } = keyboard
 export default class IdleState extends State {
   enter(oldState) {
     super.enter(oldState)
+    this.speed = 2
     const curAction = this.actions.idle
     if (oldState) {
       const oldAction = this.actions[oldState.name]
@@ -17,22 +18,22 @@ export default class IdleState extends State {
 
   update(delta) {
     this.turn(delta)
+    if (this.prevState === 'walk')
+      this.move(delta, -1, Math.max(this.speed -= .05, 0))
 
-    // ako je iz skoka u idle usporavanje
-
-    if (this.actions.walk && keyboard.up)
+    if (keyboard.up && this.actions.walk)
       this.fsm.setState('walk')
 
-    if (this.actions.walkBackward && keyboard.down)
+    if (keyboard.down && this.actions.walkBackward)
       this.fsm.setState('walkBackward')
 
-    if (this.actions.jump && keyboard.pressed.Space)
+    if (keyboard.pressed.Space && this.actions.jump)
       this.fsm.setState('jump')
 
-    if (this.actions.attack && keyboard.pressed.Enter)
+    if (keyboard.pressed.Enter && this.actions.attack)
       this.fsm.setState('attack')
 
-    if (this.actions.special && keyboard.pressed.ControlLeft)
+    if (keyboard.pressed.ControlLeft && this.actions.special)
       this.fsm.setState('special')
 
     if (this.fsm.animKeys)
