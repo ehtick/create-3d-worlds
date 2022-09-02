@@ -13,6 +13,7 @@ export default class State {
     this.fsm = fsm
     this.actions = fsm.actions
     this.name = name
+    this.prevState = ''
   }
 
   move(delta, sign = -1, speed = 2) {
@@ -29,7 +30,9 @@ export default class State {
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * sign)
   }
 
-  enter() {}
+  enter(oldState) {
+    this.prevState = oldState
+  }
 
   exit() {}
 

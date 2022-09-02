@@ -6,6 +6,7 @@ const { pressed } = keyboard
 
 export default class IdleState extends State {
   enter(oldState) {
+    super.enter(oldState)
     const curAction = this.actions.idle
     if (oldState) {
       const oldAction = this.actions[oldState.name]
