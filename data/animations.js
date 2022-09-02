@@ -24,7 +24,7 @@ export const dupecheshAnimations = {
 export const girlAnimations = {
   idle: 'Dwarf-Idle',
   walk: 'Walking',
-  run: 'Slow-Run',
+  run: 'Running',
   jump: 'Jumping',
   attack: 'Bencao',
   special: 'Queshada',
