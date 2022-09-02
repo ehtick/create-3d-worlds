@@ -9,11 +9,8 @@ npm i
 npx live-server
 ```
 
+- učitati model na praznu stranu i proveriti kako radi rotiranje i komande
 - pauk primer https://rdpa01.xl.digital/
-
-## Matrix Transformations
-- isprobati matrix transformation, igrati se
-- https://www.khanacademy.org/math/linear-algebra/matrix-transformations/lin-trans-examples/v/linear-transformation-examples-scaling-and-reflections?modal=1
 
 ## Konačni automat
 - uskladiti animacije sa mrdanjem igrača

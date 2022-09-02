@@ -64,6 +64,10 @@ export function createToonRenderer({ defaultThickness = 0.003 } = {}) {
   return new OutlineEffect(renderer, { defaultThickness })
 }
 
+export const fixColors = () => {
+  renderer.outputEncoding = THREE.sRGBEncoding
+}
+
 /* CONTROLS */
 
 export function createOrbitControls(cam = camera, el = renderer.domElement) {

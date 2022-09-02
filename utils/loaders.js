@@ -6,6 +6,7 @@ import { ColladaLoader } from '/node_modules/three/examples/jsm/loaders/ColladaL
 import { MD2Loader } from '/node_modules/three/examples/jsm/loaders/MD2Loader.js'
 import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js'
 
+import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
 
 const textureLoader = new THREE.TextureLoader()
@@ -153,6 +154,7 @@ export const loadModel = param => {
     case 'md2':
       return loadMd2(params)
     case 'fbx':
+      fixColors() // hack
       return loadFbx(params)
     default:
       throw new Error(`Unknown file extension: ${ext}`)
