@@ -9,10 +9,6 @@ npm i
 npx live-server
 ```
 
-- učitati model na praznu stranu i proveriti kako radi rotiranje i komande
-- proveriti komande i rotaciju na običnoj kocki
-- pauk primer https://rdpa01.xl.digital/
-
 ## Konačni automat
 - uskladiti animacije sa mrdanjem igrača
   - mrdati igrača napred za neke napade
