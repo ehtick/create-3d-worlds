@@ -10,7 +10,7 @@ npx live-server
 ```
 
 ## Konačni automat
-- skok da bude visočiji ako se drži space
+- skok da bude visočiji ako se drži space (dodati FlyJumpState)
   - pokušati na robotku
 - integrisati player.js i Player.js
 - proveriti ostale modele (Robotko, Dupečeš)

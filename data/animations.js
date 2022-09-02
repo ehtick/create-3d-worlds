@@ -13,8 +13,8 @@ export const robotAnimations = {
   run: 'Running',
   jump: 'Jump',
   attack: 'Punch',
-  death: 'Death',
   special: 'Wave',
+  death: 'Death',
   // ThumbsUp, WalkJump, Yes, No, Dance
 }
 
