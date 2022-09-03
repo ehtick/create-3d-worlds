@@ -4,15 +4,16 @@ import IdleState from './states/IdleState.js'
 import RunState from './states/RunState.js'
 import WalkState from './states/WalkState.js'
 import WalkBackwardState from './states/WalkBackwardState.js'
-import JumpState from './states/JumpState.js'
 import SpecialState from './states/SpecialState.js'
+import JumpState from './states/JumpState.js'
+import FlyJumpState from './states/FlyJumpState.js'
 
 const states = {
   idle: IdleState,
   walk: WalkState,
   walkBackward: WalkBackwardState,
   run: RunState,
-  jump: JumpState,
+  jump: FlyJumpState,
 }
 
 /* map animations with states */
@@ -27,7 +28,7 @@ const mapAnims = (animations, mixer, dict) => {
 export default class StateMachine {
   constructor({ mesh, animations, dict }) {
     this.mesh = mesh
-    this.mixer = new THREE.AnimationMixer(mesh)
+    this.mixer = new THREE.AnimationMixer(mesh.isGroup ? mesh.children[0] : mesh)
     this.actions = mapAnims (animations, this.mixer, dict)
     if (this.actions.walk) this.actions.walkBackward = this.actions.walk
     this.setState('idle')
