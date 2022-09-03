@@ -10,6 +10,7 @@ npx live-server
 ```
 
 ## Konačni automat
+- speed (velocity) da ide na State
 - skok da bude visočiji ako se drži space (dodati FlyJumpState)
   - pokušati na robotku
 - integrisati player.js i Player.js

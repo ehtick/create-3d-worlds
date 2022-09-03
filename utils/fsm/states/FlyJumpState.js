@@ -12,6 +12,9 @@ const getSpeed = state => {
 export default class FlyJumpState extends State {
   enter(oldState) {
     super.enter(oldState)
+    this.onGround = false
+
+    // ANIMATION
     const curAction = this.actions.jump
     if (oldState) {
       const oldAction = this.actions[oldState.name]
@@ -20,10 +23,24 @@ export default class FlyJumpState extends State {
     curAction.play()
   }
 
+  checkGround() {
+    if (this.fsm.mesh.position.y < 0) {
+      this.fsm.mesh.position.y = 0
+      this.onGround = true
+    }
+  }
+
   update(delta) {
     this.move(delta, -1, getSpeed(this.prevState))
 
-    if (!keyboard.pressed.Space)
+    if (keyboard.pressed.Space)
+      this.fsm.mesh.translateY(.1)
+    else
+      this.fsm.mesh.translateY(-.1)
+
+    this.checkGround()
+
+    if (this.onGround)
       this.fsm.setState(this.prevState || 'idle')
   }
 }
