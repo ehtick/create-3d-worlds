@@ -2,6 +2,11 @@ import State from './State.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { syncFrom } from './utils.js'
 
+let jumpImpulse = 0
+const maxJumpImpulse = 8
+const jumpStep = .05
+const impulseStep = .09
+
 const getSpeed = state => {
   if (state === 'walk') return 2
   if (state === 'walkBackward') return -2
@@ -12,35 +17,38 @@ const getSpeed = state => {
 export default class FlyJumpState extends State {
   enter(oldState) {
     super.enter(oldState)
-    this.onGround = false
 
     // ANIMATION
-    const curAction = this.actions.jump
-    if (oldState) {
-      const oldAction = this.actions[oldState.name]
-      syncFrom(['idle', 'run'], oldState, oldAction, curAction)
-    }
-    curAction.play()
+    // const curAction = this.actions.jump
+    // if (oldState) {
+    //   const oldAction = this.actions[oldState.name]
+    //   syncFrom(['idle', 'run'], oldState, oldAction, curAction)
+    // }
+    // curAction.play()
   }
 
-  checkGround() {
-    if (this.fsm.mesh.position.y < 0) {
-      this.fsm.mesh.position.y = 0
-      this.onGround = true
+  jump(delta) {
+    const { mesh } = this.fsm
+
+    if (mesh.position.y < jumpImpulse)
+      mesh.translateY(jumpStep)
+    else {
+      jumpImpulse = 0
+      mesh.translateY(-jumpStep)
     }
+
+    if (mesh.position.y <= 0) mesh.position.y = 0
   }
 
   update(delta) {
     this.move(delta, -1, getSpeed(this.prevState))
 
     if (keyboard.pressed.Space)
-      this.fsm.mesh.translateY(.1)
+      jumpImpulse += impulseStep
     else
-      this.fsm.mesh.translateY(-.1)
+      this.jump(delta)
 
-    this.checkGround()
-
-    if (this.onGround)
+    if (jumpImpulse === 0 && this.fsm.mesh.position.y === 0)
       this.fsm.setState(this.prevState || 'idle')
   }
 }
