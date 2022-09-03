@@ -5,6 +5,7 @@ import { syncFrom } from './utils.js'
 let jumpImpulse = 0
 const maxJumpImpulse = 1.25
 const impulseStep = .09
+
 const jumpStep = 2
 
 const getSpeed = state => {
