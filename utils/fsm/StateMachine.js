@@ -15,14 +15,8 @@ const states = {
   jump: JumpState,
 }
 
-/* array of animations with proper names */
-const animationsToActions = (animations, mixer) => animations.reduce((actions, clip) => ({
-  ...actions,
-  [clip.name]: mixer.clipAction(clip)
-}), {})
-
-/* array of animations plus dist with proper names */
-const dictToActions = (animations, mixer, dict) => {
+/* map animations with states */
+const mapAnims = (animations, mixer, dict) => {
   for (const key in dict) {
     const clip = animations.find(anim => anim.name == dict[key])
     dict[key] = mixer.clipAction(clip)
@@ -30,14 +24,11 @@ const dictToActions = (animations, mixer, dict) => {
   return dict
 }
 
-// Player class
 export default class StateMachine {
   constructor({ mesh, animations, dict }) {
     this.mesh = mesh
     this.mixer = new THREE.AnimationMixer(mesh)
-    this.actions = dict
-      ? dictToActions (animations, this.mixer, dict)
-      : animationsToActions(animations, this.mixer)
+    this.actions = mapAnims (animations, this.mixer, dict)
     if (this.actions.walk) this.actions.walkBackward = this.actions.walk
     this.setState('idle')
   }

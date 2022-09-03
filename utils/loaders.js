@@ -123,7 +123,7 @@ export async function loadFbxAnimations(names, prefix = '') {
       promises.push(promise)
     } else if (typeof names === 'object')
     for (const key in names) {
-      const promise = loadFbx({ name: key, file: prefix + names[key] + '.fbx' })
+      const promise = loadFbx({ name: names[key], file: prefix + names[key] + '.fbx' })
       promises.push(promise)
     }
 
