@@ -1,3 +1,4 @@
+import * as THREE from 'three'
 import State from './State.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { syncFrom } from './utils.js'
@@ -17,15 +18,16 @@ const getSpeed = state => {
 
 export default class FlyJumpState extends State {
   enter(oldState) {
-    super.enter(oldState)
+    this.prevState = oldState.name
 
-    // ANIMATION
-    // const curAction = this.actions.jump
-    // if (oldState) {
-    //   const oldAction = this.actions[oldState.name]
-    //   syncFrom(['idle', 'run'], oldState, oldAction, curAction)
-    // }
-    // curAction.play()
+    const curAction = this.actions[this.name]
+    const oldAction = this.actions[oldState.name]
+
+    curAction.reset()
+    curAction.setLoop(THREE.LoopOnce, 1)
+    curAction.clampWhenFinished = true
+    curAction.crossFadeFrom(oldAction, .25, true)
+    curAction.play()
   }
 
   jump(delta) {
