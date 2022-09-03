@@ -3,9 +3,9 @@ import keyboard from '/utils/classes/Keyboard.js'
 import { syncFrom } from './utils.js'
 
 let jumpImpulse = 0
-const maxJumpImpulse = 1.5
-const jumpStep = .05
+const maxJumpImpulse = 1.25
 const impulseStep = .09
+const jumpStep = 2
 
 const getSpeed = state => {
   if (state === 'walk') return 2
@@ -31,10 +31,10 @@ export default class FlyJumpState extends State {
     const { mesh } = this.fsm
 
     if (mesh.position.y < jumpImpulse)
-      mesh.translateY(jumpStep)
+      mesh.translateY(jumpStep * delta)
     else {
       jumpImpulse = 0
-      mesh.translateY(-jumpStep)
+      mesh.translateY(-jumpStep * delta)
     }
 
     if (mesh.position.y <= 0) mesh.position.y = 0
