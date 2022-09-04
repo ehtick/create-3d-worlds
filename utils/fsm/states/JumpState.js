@@ -10,4 +10,8 @@ export default class JumpState extends SpecialState {
   update(delta) {
     this.move(delta)
   }
+
+  exit() {
+    this.speed *= .75
+  }
 }

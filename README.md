@@ -10,7 +10,6 @@ npx live-server
 ```
 
 ## Konačni automat
-- speed (acceleration) da ide na State
 - dodati gravitaciju na skok
 
 ### Physics

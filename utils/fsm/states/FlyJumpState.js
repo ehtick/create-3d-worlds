@@ -52,4 +52,8 @@ export default class FlyJumpState extends State {
     if (jumpImpulse === 0 && this.fsm.mesh.position.y === 0)
       this.fsm.setState(this.prevState || 'idle')
   }
+
+  exit() {
+    this.speed *= .75
+  }
 }
