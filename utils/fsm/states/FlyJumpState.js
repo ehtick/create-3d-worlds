@@ -20,8 +20,8 @@ export default class FlyJumpState extends State {
   enter(oldState) {
     this.prevState = oldState.name
 
-    const curAction = this.actions[this.name]
     const oldAction = this.actions[oldState.name]
+    const curAction = this.actions[this.name]
 
     curAction.reset()
     curAction.setLoop(THREE.LoopOnce, 1)
@@ -32,6 +32,12 @@ export default class FlyJumpState extends State {
 
   jump(delta) {
     const { mesh } = this.fsm
+    // scale animation
+    if (jumpImpulse) {
+      const jumpTime = jumpImpulse * jumpStep
+      const scale = this.actions[this.name]._clip.duration / jumpTime
+      this.actions[this.name].setEffectiveTimeScale(scale)
+    }
 
     if (mesh.position.y < jumpImpulse)
       mesh.translateY(jumpStep * delta)
