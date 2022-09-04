@@ -1,10 +1,12 @@
 import State from './State.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { syncAnimation } from './utils.js'
+import { lerp } from '/utils/helpers.js'
+
+const backwardSpeed = -2
 
 export default class WalkBackwardState extends State {
   enter(oldState) {
-    this.speed = -2
     if (oldState) {
       const oldAction = this.actions[oldState.name]
       syncAnimation(['idle'], oldState, oldAction, this.action)
@@ -14,6 +16,9 @@ export default class WalkBackwardState extends State {
   }
 
   update(delta) {
+    super.update(delta)
+    this.speed = lerp(this.speed, backwardSpeed, this.t)
+
     this.turn(delta, 1)
     this.move(delta)
 

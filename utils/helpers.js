@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { scene as defaultScene, camera as defaultCamera } from '/utils/scene.js'
 import { dir } from '/data/constants.js'
 
-const { randFloat } = THREE.MathUtils
+const { randFloat, lerp } = THREE.MathUtils
 
 export const isEmpty = obj => Object.keys(obj).length === 0
 
@@ -222,3 +222,5 @@ export const getCursorPosition = e => {
 /* ARRAYS */
 
 export const sample = arr => arr[Math.floor(Math.random() * arr.length)]
+
+export { lerp }

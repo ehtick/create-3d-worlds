@@ -1,12 +1,14 @@
 import State from './State.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { syncAnimation } from './utils.js'
+import { lerp } from '/utils/helpers.js'
 
 const walkSpeed = 2
 
 export default class WalkState extends State {
   enter(oldState) {
     if (oldState) {
+      this.oldSpeed = oldState.speed
       const oldAction = this.actions[oldState.name]
       syncAnimation(['idle', 'run'], oldState, oldAction, this.action)
     }
@@ -14,8 +16,10 @@ export default class WalkState extends State {
   }
 
   update(delta) {
+    super.update(delta)
+    this.speed = lerp(this.oldSpeed, walkSpeed, this.t)
+
     this.turn(delta)
-    this.speed = Math.min(this.speed + .05, walkSpeed)
     this.move(delta)
 
     if (keyboard.pressed.Space)

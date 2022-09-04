@@ -13,7 +13,8 @@ export default class State {
     this.name = name
     this.action = this.actions[name]
     this.prevState = ''
-    this.speed = 2
+    this.t = 0
+    this.speed = 0
   }
 
   enter(oldState) {
@@ -36,5 +37,7 @@ export default class State {
 
   exit() {}
 
-  update() {}
+  update(delta) {
+    this.t = Math.min(this.t + delta, 1) // t is for lerp, 1 is lerp limit
+  }
 }

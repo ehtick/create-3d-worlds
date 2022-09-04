@@ -1,11 +1,13 @@
 import State from './State.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { syncAnimation } from './utils.js'
+import { lerp } from '/utils/helpers.js'
 
 export default class IdleState extends State {
   enter(oldState) {
     super.enter(oldState)
-
+    console.log(oldState?.speed)
+    this.oldSpeed = oldState?.speed || 0
     if (oldState) {
       const oldAction = this.actions[oldState.name]
       syncAnimation(['walk', 'run', 'walkBackward'], oldState, oldAction, this.action)
@@ -14,11 +16,11 @@ export default class IdleState extends State {
   }
 
   update(delta) {
+    super.update(delta)
+    this.speed = lerp(this.oldSpeed, 0, this.t)
+
     this.turn(delta)
-    if (this.prevState === 'walk' || this.prevState === 'run' || this.prevState === 'walkBackward') {
-      this.speed = Math.max(this.speed - .05, 0)
-      this.move(delta, this.prevState === 'walkBackward' ? 1 : -1)
-    }
+    this.move(delta)
 
     if (keyboard.up && this.actions.walk)
       this.fsm.setState('walk')

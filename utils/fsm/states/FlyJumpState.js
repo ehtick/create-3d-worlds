@@ -10,6 +10,7 @@ const jumpStep = 2
 
 export default class FlyJumpState extends State {
   enter(oldState) {
+    this.speed = oldState.speed
     this.prevState = oldState.name
     const oldAction = this.actions[oldState.name]
 
