@@ -4,12 +4,11 @@ import { syncFrom } from './utils.js'
 
 export default class RunState extends State {
   enter(oldState) {
-    const curAction = this.actions.run
     if (oldState) {
       const oldAction = this.actions[oldState.name]
-      syncFrom('walk', oldState, oldAction, curAction)
+      syncFrom('walk', oldState, oldAction, this.action)
     }
-    curAction.play()
+    this.action.play()
   }
 
   update(delta) {

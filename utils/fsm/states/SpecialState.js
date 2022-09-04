@@ -12,18 +12,17 @@ export default class SpecialState extends State {
 
   enter(oldState) {
     this.prevState = oldState.name
-    const curAction = this.actions[this.name]
-    const mixer = curAction.getMixer()
+    const mixer = this.action.getMixer()
     mixer.addEventListener('finished', this._FinishedCallback)
 
     if (oldState) {
       const oldAction = this.actions[oldState.name]
-      curAction.reset()
-      curAction.setLoop(THREE.LoopOnce, 1)
-      curAction.clampWhenFinished = true
-      curAction.crossFadeFrom(oldAction, duration, true)
+      this.action.reset()
+      this.action.setLoop(THREE.LoopOnce, 1)
+      this.action.clampWhenFinished = true
+      this.action.crossFadeFrom(oldAction, duration, true)
     }
-    curAction.play()
+    this.action.play()
   }
 
   _Cleanup() {

@@ -7,12 +7,11 @@ const walkSpeed = 2
 export default class WalkState extends State {
   enter(oldState) {
     this.speed = (oldState.name === 'idle') ? 0 : walkSpeed
-    const curAction = this.actions.walk
     if (oldState) {
       const oldAction = this.actions[oldState.name]
-      syncFrom(['idle', 'run'], oldState, oldAction, curAction)
+      syncFrom(['idle', 'run'], oldState, oldAction, this.action)
     }
-    curAction.play()
+    this.action.play()
   }
 
   update(delta) {

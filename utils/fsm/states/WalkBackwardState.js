@@ -4,13 +4,12 @@ import { syncFrom } from './utils.js'
 
 export default class WalkBackwardState extends State {
   enter(oldState) {
-    const curAction = this.actions.walk
     if (oldState) {
       const oldAction = this.actions[oldState.name]
-      syncFrom(['idle'], oldState, oldAction, curAction)
+      syncFrom(['idle'], oldState, oldAction, this.action)
     }
-    curAction.play()
-    curAction.timeScale = -1
+    this.action.play()
+    this.action.timeScale = -1
   }
 
   update(delta) {

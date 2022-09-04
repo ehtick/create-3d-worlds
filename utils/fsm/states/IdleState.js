@@ -5,15 +5,14 @@ import { syncFrom } from './utils.js'
 export default class IdleState extends State {
   enter(oldState) {
     super.enter(oldState)
-    this.speed = 2 // maybe rename to acceleration
+    this.speed = 2 // rename to acceleration?
 
     // ANIMATION
-    const curAction = this.actions.idle
     if (oldState) {
       const oldAction = this.actions[oldState.name]
-      syncFrom(['walk', 'run', 'walkBackward'], oldState, oldAction, curAction)
+      syncFrom(['walk', 'run', 'walkBackward'], oldState, oldAction, this.action)
     }
-    curAction?.play()
+    this.action.play()
   }
 
   update(delta) {
