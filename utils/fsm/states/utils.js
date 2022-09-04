@@ -1,5 +1,5 @@
 /* @param names: string or array of strings */
-export const syncFrom = (names, oldState, oldAction, curAction, duration = .75) => {
+export const syncAnimation = (names, oldState, oldAction, curAction, duration = .75) => {
   curAction.enabled = true
   curAction.timeScale = 1
   if (names.includes(oldState.name)) {

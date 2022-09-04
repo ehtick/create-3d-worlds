@@ -13,14 +13,15 @@ export default class State {
     this.name = name
     this.action = this.actions[name]
     this.prevState = ''
+    this.speed = 2
   }
 
   enter(oldState) {
     this.prevState = oldState?.name
   }
 
-  move(delta, sign = -1, speed = 2) {
-    velocity += speed * sign
+  move(delta, sign = -1) {
+    velocity += this.speed * sign
     velocity *= INERTIA
     this.fsm.mesh.translateZ(velocity * delta)
   }

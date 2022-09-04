@@ -1,12 +1,13 @@
 import State from './State.js'
 import keyboard from '/utils/classes/Keyboard.js'
-import { syncFrom } from './utils.js'
+import { syncAnimation } from './utils.js'
 
 export default class WalkBackwardState extends State {
   enter(oldState) {
+    this.speed = -2
     if (oldState) {
       const oldAction = this.actions[oldState.name]
-      syncFrom(['idle'], oldState, oldAction, this.action)
+      syncAnimation(['idle'], oldState, oldAction, this.action)
     }
     this.action.play()
     this.action.timeScale = -1
@@ -14,7 +15,7 @@ export default class WalkBackwardState extends State {
 
   update(delta) {
     this.turn(delta, 1)
-    this.move(delta, 1)
+    this.move(delta)
 
     if (keyboard.pressed.Space)
       this.fsm.setState('jump')

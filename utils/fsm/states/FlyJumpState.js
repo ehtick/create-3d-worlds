@@ -8,13 +8,6 @@ const impulseStep = .09
 
 const jumpStep = 2
 
-const getSpeed = state => {
-  if (state === 'walk') return 2
-  if (state === 'walkBackward') return -2
-  if (state === 'run') return 4
-  return 0
-}
-
 export default class FlyJumpState extends State {
   enter(oldState) {
     this.prevState = oldState.name
@@ -48,7 +41,7 @@ export default class FlyJumpState extends State {
 
   update(delta) {
     const { mesh } = this.fsm
-    this.move(delta, -1, getSpeed(this.prevState))
+    this.move(delta)
 
     if (keyboard.pressed.Space && mesh.position.y === 0 && jumpImpulse <= maxJumpImpulse)
       jumpImpulse += impulseStep

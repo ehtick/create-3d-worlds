@@ -1,22 +1,22 @@
 import State from './State.js'
 import keyboard from '/utils/classes/Keyboard.js'
-import { syncFrom } from './utils.js'
+import { syncAnimation } from './utils.js'
 
 const walkSpeed = 2
 
 export default class WalkState extends State {
   enter(oldState) {
-    this.speed = (oldState.name === 'idle') ? 0 : walkSpeed
     if (oldState) {
       const oldAction = this.actions[oldState.name]
-      syncFrom(['idle', 'run'], oldState, oldAction, this.action)
+      syncAnimation(['idle', 'run'], oldState, oldAction, this.action)
     }
     this.action.play()
   }
 
   update(delta) {
     this.turn(delta)
-    this.move(delta, -1, Math.min(this.speed += .05, walkSpeed))
+    this.speed = Math.min(this.speed + .05, walkSpeed)
+    this.move(delta)
 
     if (keyboard.pressed.Space)
       this.fsm.setState('jump')
