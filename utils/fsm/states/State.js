@@ -11,6 +11,7 @@ export default class State {
     this.fsm = fsm
     this.actions = fsm.actions
     this.name = name
+    this.action = this.actions[name]
     this.prevState = ''
   }
 

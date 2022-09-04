@@ -19,15 +19,13 @@ const getSpeed = state => {
 export default class FlyJumpState extends State {
   enter(oldState) {
     this.prevState = oldState.name
-
     const oldAction = this.actions[oldState.name]
-    const curAction = this.actions[this.name]
 
-    curAction.reset()
-    curAction.setLoop(THREE.LoopOnce, 1)
-    curAction.clampWhenFinished = true
-    curAction.crossFadeFrom(oldAction, .25, true)
-    curAction.play()
+    this.action.reset()
+    this.action.setLoop(THREE.LoopOnce, 1)
+    this.action.clampWhenFinished = true
+    this.action.crossFadeFrom(oldAction, .25, true)
+    this.action.play()
   }
 
   jump(delta) {
@@ -35,8 +33,8 @@ export default class FlyJumpState extends State {
     // scale animation
     if (jumpImpulse) {
       const jumpTime = jumpImpulse * jumpStep
-      const scale = this.actions[this.name]._clip.duration / jumpTime
-      this.actions[this.name].setEffectiveTimeScale(scale)
+      const scale = this.action._clip.duration / jumpTime
+      this.action.setEffectiveTimeScale(scale)
     }
 
     if (mesh.position.y < jumpImpulse)
