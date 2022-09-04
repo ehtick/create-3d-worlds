@@ -9,8 +9,12 @@ npm i
 npx live-server
 ```
 
-## Konačni automat
-- dodati gravitaciju na skok
+- isprobati sve karakter modele
+
+### AI
+- odvojiti ai pomagala
+- postaviti ai scenu sa modelima
+- reuse fsm for ai
 
 ### Physics
 - preraditi staru 2D fiziku u 3D
@@ -27,10 +31,6 @@ npx live-server
 - mozda korisno za ball-throwing-physijs https://codepen.io/tjoen/pen/BKxZMQ
 - napraviti sletanje na mesec 3d
 - dodati fiziku u vučenje kocki
-
-### AI
-- odvojiti ai pomagala
-- postaviti ai scenu sa modelima
 
 ### Scenes & examples
 

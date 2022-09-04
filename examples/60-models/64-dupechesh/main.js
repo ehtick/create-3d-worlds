@@ -1,8 +1,6 @@
-// https://threejs.org/examples/webgl_loader_md2.html
-// https://threejs.org/examples/webgl_loader_md2_control.html
 import { scene, renderer, camera, clock, createOrbitControls } from '/utils/scene.js'
 import { loadModel } from '/utils/loaders.js'
-import Player from '/utils/classes/Player.js'
+import StateMachine from '/utils/fsm/StateMachine.js'
 import { dupecheshAnimations } from '/data/animations.js'
 import { createGround } from '/utils/ground.js'
 import { dirLight } from '/utils/light.js'
@@ -13,7 +11,7 @@ camera.position.set(0, 2, 3)
 
 const { mesh, animations } = await loadModel({ file: 'character/ogro/ogro.md2', texture: 'character/ogro/skins/arboshak.png', size: 2, axis: [0, 1, 0], angle: Math.PI * .5, shouldCenter: true, shouldAdjustHeight: true })
 
-const player = new Player({ mesh, animations, animNames: dupecheshAnimations })
+const player = new StateMachine({ mesh, animations, dict: dupecheshAnimations })
 scene.add(mesh)
 
 controls.target = mesh.position
