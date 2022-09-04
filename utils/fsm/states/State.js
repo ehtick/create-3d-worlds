@@ -14,7 +14,7 @@ export default class State {
     this.action = this.actions[name]
     this.prevState = ''
     this.t = 0
-    this.speed = 0
+    // this.speed = 0
   }
 
   enter(oldState) {

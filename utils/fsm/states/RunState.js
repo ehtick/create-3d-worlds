@@ -7,11 +7,9 @@ const runSpeed = 4
 
 export default class RunState extends State {
   enter(oldState) {
-    if (oldState) {
-      this.oldSpeed = oldState.speed
-      const oldAction = this.actions[oldState.name]
-      syncAnimation('walk', oldState, oldAction, this.action)
-    }
+    this.oldSpeed = oldState.speed
+    const oldAction = this.actions[oldState.name]
+    syncAnimation('walk', oldState, oldAction, this.action)
     this.action.play()
   }
 

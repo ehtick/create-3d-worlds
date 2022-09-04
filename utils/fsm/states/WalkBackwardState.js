@@ -7,17 +7,16 @@ const backwardSpeed = -2
 
 export default class WalkBackwardState extends State {
   enter(oldState) {
-    if (oldState) {
-      const oldAction = this.actions[oldState.name]
-      syncAnimation(['idle'], oldState, oldAction, this.action)
-    }
+    this.oldSpeed = oldState.speed
+    const oldAction = this.actions[oldState.name]
+    syncAnimation(['idle'], oldState, oldAction, this.action)
     this.action.play()
     this.action.timeScale = -1
   }
 
   update(delta) {
     super.update(delta)
-    this.speed = lerp(this.speed, backwardSpeed, this.t)
+    this.speed = lerp(this.oldSpeed, backwardSpeed, this.t)
 
     this.turn(delta, 1)
     this.move(delta)

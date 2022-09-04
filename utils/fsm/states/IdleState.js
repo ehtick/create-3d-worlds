@@ -6,7 +6,6 @@ import { lerp } from '/utils/helpers.js'
 export default class IdleState extends State {
   enter(oldState) {
     super.enter(oldState)
-    console.log(oldState?.speed)
     this.oldSpeed = oldState?.speed || 0
     if (oldState) {
       const oldAction = this.actions[oldState.name]
