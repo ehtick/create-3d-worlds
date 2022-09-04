@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import State from './State.js'
 import keyboard from '/utils/classes/Keyboard.js'
-import { syncFrom } from './utils.js'
 
 let jumpImpulse = 0
 const maxJumpImpulse = 1.25

@@ -10,12 +10,8 @@ npx live-server
 ```
 
 ## Konačni automat
-- speed (velocity) da ide na State
-- skok da bude visočiji ako se drži space (dodati FlyJumpState)
-  - pokušati na robotku
-- integrisati player.js i Player.js
-- proveriti ostale modele (Robotko, Dupečeš)
-- mrdati igrača napred za neke napade?
+- speed (acceleration) da ide na State
+- dodati gravitaciju na skok
 
 ### Physics
 - preraditi staru 2D fiziku u 3D
