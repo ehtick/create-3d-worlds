@@ -44,7 +44,7 @@ const { mesh: towerModel } = await loadModel({ file: 'castle/wizard-isle/scene.g
 scene.add(randomPos(towerModel))
 
 const girlModel = await fbxLoader.loadAsync('/assets/models/character/kachujin/Kachujin.fbx')
-const girlAnimations = await loadFbxAnimations(['Ginga', 'Au', 'Troca', 'Backflip'], 'character/kachujin/')
+const girlAnimations = await loadFbxAnimations(['Dwarf-Idle', 'Bencao', 'Queshada', 'Walking'], 'character/kachujin/')
 for (let i = 0; i < GIRLS; i++) {
   const girl = SkeletonUtils.clone(girlModel)
   girl.scale.set(.01, .01, .01)

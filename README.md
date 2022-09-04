@@ -10,6 +10,7 @@ npx live-server
 ```
 
 - isprobati sve karakter modele
+- popraviti draggable-obj
 
 ### AI
 - odvojiti ai pomagala

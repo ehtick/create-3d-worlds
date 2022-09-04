@@ -145,16 +145,18 @@ export const loadModel = param => {
   const ext = params.file.split('.').pop()
   switch (ext) {
     case 'obj':
+      fixColors()
       return loadObj(params)
     case 'glb':
     case 'gltf':
+      fixColors()
       return loadGlb(params)
     case 'dae':
       return loadDae(params)
     case 'md2':
       return loadMd2(params)
     case 'fbx':
-      fixColors() // hack
+      fixColors()
       return loadFbx(params)
     default:
       throw new Error(`Unknown file extension: ${ext}`)

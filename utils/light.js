@@ -60,7 +60,7 @@ export function createSun({ color = 0xffffff, intensity = 1.4, far = 3500, targe
     new THREE.SphereGeometry(10),
     new THREE.MeshToonMaterial({ color: 0xFCE570 })
   )
-  const ambientLight = new THREE.AmbientLight(0xfffee1, .4)
+  const ambientLight = new THREE.AmbientLight(0xfffee1, .25)
   container.add(sun, ambientLight)
   container.position.set(150, 350, 350)
   return container
