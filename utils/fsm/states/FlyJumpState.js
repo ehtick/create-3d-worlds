@@ -3,8 +3,9 @@ import State from './State.js'
 import keyboard from '/utils/classes/Keyboard.js'
 
 const GRAVITY = 9
-const maxVelocity = 5
-const velocityStep = .9
+const maxVelocity = 4.5
+const minVelocity = 1
+const velocityStep = .5
 
 let velocity = 0
 let jumpTime = 0
@@ -13,6 +14,7 @@ export default class FlyJumpState extends State {
   enter(oldState) {
     this.speed = oldState.speed
     this.prevState = oldState.name
+    velocity = minVelocity
 
     if (!this.actions) return
     const oldAction = this.actions[oldState.name]
@@ -48,10 +50,8 @@ export default class FlyJumpState extends State {
 
     if (mesh.position.y <= 0) {
       mesh.position.y = 0
-      velocity = 0
+      this.fsm.setState(this.prevState || 'idle')
     }
-
-    if (velocity <= 0 && this.onGround()) this.fsm.setState(this.prevState || 'idle')
   }
 
   exit() {
