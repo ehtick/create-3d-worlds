@@ -9,7 +9,7 @@ const velocity = new THREE.Vector3()
 let jumpImpulse = 0
 let onGround = false
 
-function endJump() {
+function startJump() {
   velocity.y = jumpImpulse
   jumpImpulse = 0
 }
@@ -33,9 +33,8 @@ const updateMove = (mesh, deltaTime) => {
 export function handleInput(mesh, deltaTime, speed = 4, maxJumpImpulse = speed * 4) {
   const rotateDelta = RIGHT_ANGLE * deltaTime // 90 degrees per second
 
-  if (keyboard.pressed.Space) {
-    if (!onGround) return
-    if (jumpImpulse < maxJumpImpulse) jumpImpulse += maxJumpImpulse * .1
+  if (keyboard.pressed.Space && onGround && jumpImpulse < maxJumpImpulse) {
+    jumpImpulse += maxJumpImpulse * .1
     onGround = false
   }
 
@@ -55,5 +54,5 @@ export function handleInput(mesh, deltaTime, speed = 4, maxJumpImpulse = speed *
 /* EVENTS */
 
 window.addEventListener('keyup', e => {
-  if (e.code == 'Space') endJump()
+  if (e.code == 'Space') startJump()
 })

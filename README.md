@@ -9,8 +9,7 @@ npm i
 npx live-server
 ```
 
-- isprobati sve karakter modele
-- better jump https://gamedev.stackexchange.com/questions/29617/how-to-make-a-character-jump
+- better jump (isključiti animacije) https://gamedev.stackexchange.com/questions/29617/how-to-make-a-character-jump
 - 3rd person camera to fsm
 
 ### AI
@@ -140,13 +139,14 @@ Examples are from theese great books and tutorials:
 * [Three.js Cookbook](https://github.com/josdirksen/threejs-cookbook) (Jos Dirksen)
 * [How to Design 3D Games with Web Technology - Book 01: Three. Js - HTML5 and WebGL](https://thefiveplanets.org/b01/) (Jordi Josa)
 
-Free 3D Models are from 3dwarehouse.sketchup.com, sketchfab.com, mixamo.com, archive3d.net, turbosquid.com and other respected sites.
-
-Textures
-- Geometry airplane: https://classroom.udacity.com/courses/cs291/lessons/a06bfa94-60e2-403e-ab13-8e55009120b6/concepts/9408e461-2c9b-4cbb-a825-827051f5ed98
+Free 3D Models are from: 
+- 3dwarehouse.sketchup.com
+- sketchfab.com
+- mixamo.com
+- archive3d.net
+- turbosquid.com 
+and other respected sites.
 
 Geodata:
 - visinske mape za ceo svet https://tangrams.github.io/heightmapper/#8.3724/43.3401/19.5293
 - weighted random https://pixelero.wordpress.com/2008/04/24/various-functions-and-various-distributions-with-mathrandom/
-
-Sketch art: https://codepen.io/bartuc/pen/rdoVXd

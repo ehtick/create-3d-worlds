@@ -2,11 +2,12 @@ import * as THREE from 'three'
 import State from './State.js'
 import keyboard from '/utils/classes/Keyboard.js'
 
-let jumpImpulse = 0
-const maxJumpImpulse = 1.25
-const impulseStep = .09
+const GRAVITY = 9
+const maxVelocity = 5
+const velocityStep = .9
 
-const jumpStep = 2
+let velocity = 0
+let jumpTime = 0
 
 export default class FlyJumpState extends State {
   enter(oldState) {
@@ -22,36 +23,35 @@ export default class FlyJumpState extends State {
     this.action.play()
   }
 
-  jump(delta) {
-    const { mesh } = this.fsm
-    // scale animation
-    if (jumpImpulse && this.action) {
-      const jumpTime = jumpImpulse * jumpStep
-      const scale = this.action._clip.duration / jumpTime
-      this.action.setEffectiveTimeScale(scale)
-    }
-
-    if (mesh.position.y < jumpImpulse)
-      mesh.translateY(jumpStep * delta)
-    else {
-      jumpImpulse = 0
-      mesh.translateY(-jumpStep * delta)
-    }
-
-    if (mesh.position.y <= 0) mesh.position.y = 0
+  onGround() {
+    return this.fsm.mesh.position.y === 0
   }
 
   update(delta) {
     const { mesh } = this.fsm
+
     this.move(delta)
 
-    if (keyboard.pressed.Space && mesh.position.y === 0 && jumpImpulse <= maxJumpImpulse)
-      jumpImpulse += impulseStep
-    else
-      this.jump(delta)
+    if (keyboard.pressed.Space && this.onGround() && velocity <= maxVelocity) {
+      velocity += velocityStep
+      jumpTime = velocity * GRAVITY * delta * 2
+      return
+    }
 
-    if (jumpImpulse === 0 && this.fsm.mesh.position.y === 0)
-      this.fsm.setState(this.prevState || 'idle')
+    if (this.action && jumpTime) {
+      const scale = this.action._clip.duration / jumpTime
+      this.action.setEffectiveTimeScale(scale)
+    }
+
+    this.fsm.mesh.translateY(velocity * delta)
+    velocity -= GRAVITY * delta
+
+    if (mesh.position.y <= 0) {
+      mesh.position.y = 0
+      velocity = 0
+    }
+
+    if (velocity <= 0 && this.onGround()) this.fsm.setState(this.prevState || 'idle')
   }
 
   exit() {
