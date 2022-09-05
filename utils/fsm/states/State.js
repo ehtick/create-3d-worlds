@@ -9,9 +9,9 @@ let velocity = 0
 export default class State {
   constructor(fsm, name) {
     this.fsm = fsm
-    this.actions = fsm.actions
     this.name = name
-    this.action = this.actions[name]
+    this.actions = fsm.actions
+    if (fsm.actions) this.action = fsm.actions[name]
     this.prevState = ''
     this.t = 0
   }
@@ -34,7 +34,7 @@ export default class State {
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * sign)
   }
 
-  exit() {}
+  exit() { }
 
   update(delta) {
     this.t = Math.min(this.t + delta, 1) // t is for lerp, 1 is lerp limit

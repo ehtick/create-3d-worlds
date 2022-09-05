@@ -11,7 +11,7 @@ export default class IdleState extends State {
       const oldAction = this.actions[oldState.name]
       syncAnimation(['walk', 'run', 'walkBackward'], oldState, oldAction, this.action)
     }
-    this.action.play()
+    if (this.action) this.action.play()
   }
 
   update(delta) {

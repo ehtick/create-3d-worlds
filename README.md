@@ -11,6 +11,7 @@ npx live-server
 
 - isprobati sve karakter modele
 - popraviti draggable-obj
+- 3rd person camera to fsm
 
 ### AI
 - odvojiti ai pomagala
