@@ -9,7 +9,6 @@ npm i
 npx live-server
 ```
 
-- better jump (isključiti animacije) https://gamedev.stackexchange.com/questions/29617/how-to-make-a-character-jump
 - 3rd person camera to fsm
 
 ### AI
