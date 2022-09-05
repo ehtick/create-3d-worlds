@@ -8,6 +8,8 @@ const backwardSpeed = -2
 export default class WalkBackwardState extends State {
   enter(oldState) {
     this.oldSpeed = oldState.speed
+
+    if (!this.actions) return
     const oldAction = this.actions[oldState.name]
     syncAnimation(['idle'], oldState, oldAction, this.action)
     this.action.play()

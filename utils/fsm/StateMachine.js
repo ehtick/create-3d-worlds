@@ -29,7 +29,7 @@ export default class StateMachine {
   constructor({ mesh, animations, dict }) {
     this.mesh = mesh
     this.mixer = new THREE.AnimationMixer(mesh.isGroup ? mesh.children[0] : mesh)
-    this.actions = mapAnims (animations, this.mixer, dict)
+    this.actions = mapAnims(animations, this.mixer, dict)
     if (this.actions?.walk) this.actions.walkBackward = this.actions.walk
     this.setState('idle')
   }

@@ -7,6 +7,8 @@ export default class IdleState extends State {
   enter(oldState) {
     super.enter(oldState)
     this.oldSpeed = oldState?.speed || 0
+
+    if (!this.actions) return
     if (oldState) {
       const oldAction = this.actions[oldState.name]
       syncAnimation(['walk', 'run', 'walkBackward'], oldState, oldAction, this.action)
@@ -21,19 +23,19 @@ export default class IdleState extends State {
     this.turn(delta)
     this.move(delta)
 
-    if (keyboard.up && this.actions.walk)
+    if (keyboard.up)
       this.fsm.setState('walk')
 
-    if (keyboard.down && this.actions.walkBackward)
+    if (keyboard.down)
       this.fsm.setState('walkBackward')
 
-    if (keyboard.pressed.Space && this.actions.jump)
+    if (keyboard.pressed.Space)
       this.fsm.setState('jump')
 
-    if (keyboard.pressed.Enter && this.actions.attack)
+    if (keyboard.pressed.Enter)
       this.fsm.setState('attack')
 
-    if (keyboard.pressed.ControlLeft && this.actions.special)
+    if (keyboard.pressed.ControlLeft)
       this.fsm.setState('special')
   }
 }

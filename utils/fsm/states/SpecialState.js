@@ -13,9 +13,9 @@ export default class SpecialState extends State {
 
   enter(oldState) {
     this.prevState = oldState.name
+
     const mixer = this.action.getMixer()
     mixer.addEventListener('finished', this._FinishedCallback)
-
     const oldAction = this.actions[oldState.name]
     this.action.reset()
     this.action.setLoop(THREE.LoopOnce, 1)
