@@ -9,10 +9,14 @@ npm i
 npx live-server
 ```
 
+- rotacija i orjentacija https://discourse.threejs.org/t/is-it-possible-to-reset-objects-rotation-but-to-preserve-orientation/42155/3
+- mojsije otvara more
+
 ### AI
 - odvojiti ai pomagala
 - postaviti ai scenu sa modelima
 - reuse fsm for ai
+- videti https://mugen87.github.io/yuka/examples/
 
 ### Physics
 - preraditi staru 2D fiziku u 3D

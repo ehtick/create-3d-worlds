@@ -1,4 +1,5 @@
-/* global THREE, SteeringEntity */
+import * as THREE from 'three'
+import { SteeringEntity } from '/libs/ThreeSteer.js'
 import { camera, scene, renderer, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { getMouseIntersects } from '/utils/helpers.js'

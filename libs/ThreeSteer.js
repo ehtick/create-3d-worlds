@@ -1,92 +1,61 @@
-/* global THREE */
-const Entity = function(mesh) {
+/* updated to module syntax by mudroljub */
+import * as THREE from 'three'
 
-  THREE.Group.apply(this)
+class Entity extends THREE.Group {
+  constructor(mesh) {
+    super()
+    this.mesh = mesh
+    this.mass = 1
+    this.maxSpeed = 10
 
-  this.mesh = mesh
-  this.mass = 1
-  this.maxSpeed = 10
+    this.position.set(0, 0, 0)
+    this.velocity = new THREE.Vector3(0, 0, 0)
 
-  this.position = new THREE.Vector3(0, 0, 0)
-  this.velocity = new THREE.Vector3(0, 0, 0)
+    this.box = new THREE.Box3().setFromObject(mesh)
+    this.raycaster = new THREE.Raycaster()
 
-  this.box = new THREE.Box3().setFromObject(mesh)
-  this.raycaster = new THREE.Raycaster()
+    this.velocitySamples = []
+    this.numSamplesForSmoothing = 20
 
-  this.velocitySamples = []
-  this.numSamplesForSmoothing = 20
+    this.add(this.mesh)
+    this.radius = 200 // temp
+  }
 
-  Object.defineProperty(Entity.prototype, 'width', {
-    enumerable: true,
-    configurable: true,
-    get() {
-      return (this.box.max.x - this.box.min.x)
-    }
-  })
+  get width() {
+    return (this.box.max.x - this.box.min.x)
+  }
 
-  Object.defineProperty(Entity.prototype, 'height', {
-    enumerable: true,
-    configurable: true,
-    get() {
-      return (this.box.max.y - this.box.min.y)
-    }
-  })
+  get height() {
+    return (this.box.max.y - this.box.min.y)
+  }
 
-  Object.defineProperty(Entity.prototype, 'depth', {
-    enumerable: true,
-    configurable: true,
-    get() {
-      return (this.box.max.z - this.box.min.z)
-    }
-  })
+  get depth() {
+    return (this.box.max.z - this.box.min.z)
+  }
 
-  Object.defineProperty(Entity.prototype, 'forward', {
-    enumerable: true,
-    configurable: true,
-    get() {
-      return new THREE.Vector3(0, 0, -1).applyQuaternion(this.quaternion).negate()
-    }
-  })
+  get forward() {
+    return new THREE.Vector3(0, 0, -1).applyQuaternion(this.quaternion).negate()
+  }
 
-  Object.defineProperty(Entity.prototype, 'backward', {
-    enumerable: true,
-    configurable: true,
-    get() {
-      return this.forward.clone().negate()
-    }
-  })
+  get backward() {
+    return this.forward.clone().negate()
+  }
 
-  Object.defineProperty(Entity.prototype, 'left', {
-    enumerable: true,
-    configurable: true,
-    get() {
-      return this.forward.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI * .5)
-    }
-  })
+  get left() {
+    return this.forward.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI * .5)
+  }
 
-  Object.defineProperty(Entity.prototype, 'right', {
-    enumerable: true,
-    configurable: true,
-    get() {
-      return this.left.clone().negate()
-    }
-  })
-
-  this.add(this.mesh)
-  this.radius = 200 // temp
-}
-
-Entity.prototype = Object.assign(Object.create(THREE.Group.prototype), {
-  constructor: Entity,
+  get right() {
+    return this.left.clone().negate()
+  }
 
   update() {
     this.velocity.clampLength(0, this.maxSpeed)
     this.velocity.setY(0)
     this.position.add(this.velocity)
-  },
+  }
 
   bounce(box) {
-
     if (this.position.x > box.max.x) {
       this.position.setX(box.max.x)
       this.velocity.angle = this.velocity.angle + .1
@@ -111,7 +80,7 @@ Entity.prototype = Object.assign(Object.create(THREE.Group.prototype), {
 
     if (this.position.y < box.min.y)
       this.position.setY(-box.min.y)
-  },
+  }
 
   wrap(box) {
     if (this.position.x > box.max.x)
@@ -131,7 +100,7 @@ Entity.prototype = Object.assign(Object.create(THREE.Group.prototype), {
 
     else if (this.position.y < box.min.y)
       this.position.setY(box.max.y + 1)
-  },
+  }
 
   lookWhereGoing(smoothing) {
     let direction = this.position.clone().add(this.velocity).setY(this.position.y)
@@ -149,46 +118,41 @@ Entity.prototype = Object.assign(Object.create(THREE.Group.prototype), {
     }
     this.lookAt(direction)
   }
-})
-
-const SteeringEntity = function(mesh) {
-
-  Entity.call(this, mesh)
-
-  this.maxForce = 5
-  this.arrivalThreshold = 400
-
-  this.wanderAngle = 0
-  this.wanderDistance = 10
-  this.wanderRadius = 5
-  this.wanderRange = 1
-
-  this.avoidDistance = 400
-  this.avoidBuffer = 20 // NOT USED
-
-  this.inSightDistance = 200
-  this.tooCloseDistance = 60
-
-  this.pathIndex = 0
-
-  this.steeringForce = new THREE.Vector3(0, 0, 0)
 }
 
-SteeringEntity.prototype = Object.assign(Object.create(Entity.prototype), {
+export class SteeringEntity extends Entity {
+  constructor(mesh) {
+    super(mesh)
+    this.maxForce = 5
+    this.arrivalThreshold = 400
 
-  constructor: SteeringEntity,
+    this.wanderAngle = 0
+    this.wanderDistance = 10
+    this.wanderRadius = 5
+    this.wanderRange = 1
+
+    this.avoidDistance = 400
+    this.avoidBuffer = 20 // NOT USED
+
+    this.inSightDistance = 200
+    this.tooCloseDistance = 60
+
+    this.pathIndex = 0
+
+    this.steeringForce = new THREE.Vector3(0, 0, 0)
+  }
 
   seek(position) {
     const desiredVelocity = position.clone().sub(this.position)
     desiredVelocity.normalize().setLength(this.maxSpeed).sub(this.velocity)
     this.steeringForce.add(desiredVelocity)
-  },
+  }
 
   flee(position) {
     const desiredVelocity = position.clone().sub(this.position)
     desiredVelocity.normalize().setLength(this.maxSpeed).sub(this.velocity)
     this.steeringForce.sub(desiredVelocity)
-  },
+  }
 
   arrive(position) {
     const desiredVelocity = position.clone().sub(this.position)
@@ -200,24 +164,24 @@ SteeringEntity.prototype = Object.assign(Object.create(Entity.prototype), {
       desiredVelocity.setLength(this.maxSpeed * distance / this.arrivalThreshold)
     desiredVelocity.sub(this.velocity)
     this.steeringForce.add(desiredVelocity)
-  },
+  }
 
   pursue(target) {
     const lookAheadTime = this.position.distanceTo(target.position) / this.maxSpeed
     const predictedTarget = target.position.clone().add(target.velocity.clone().setLength(lookAheadTime))
     this.seek(predictedTarget)
-  },
+  }
 
   evade(target) {
     const lookAheadTime = this.position.distanceTo(target.position) / this.maxSpeed
     const predictedTarget = target.position.clone().sub(target.velocity.clone().setLength(lookAheadTime))
     this.flee(predictedTarget)
-  },
+  }
 
   idle() {
     this.velocity.setLength(0)
     this.steeringForce.set(0, 0, 0)
-  },
+  }
 
   wander() {
     const center = this.velocity.clone().normalize().setLength(this.wanderDistance)
@@ -231,7 +195,7 @@ SteeringEntity.prototype = Object.assign(Object.create(Entity.prototype), {
     center.add(offset)
     center.setY(0)
     this.steeringForce.add(center)
-  },
+  }
 
   interpose(targetA, targetB) {
     let midPoint = targetA.position.clone().add(targetB.position.clone()).divideScalar(2)
@@ -240,7 +204,7 @@ SteeringEntity.prototype = Object.assign(Object.create(Entity.prototype), {
     const pointB = targetB.position.clone().add(targetB.velocity.clone().multiplyScalar(timeToMidPoint))
     midPoint = pointA.add(pointB).divideScalar(2)
     this.seek(midPoint)
-  },
+  }
 
   separation(entities, separationRadius = 300, maxSeparation = 100) {
     const force = new THREE.Vector3(0, 0, 0)
@@ -259,11 +223,11 @@ SteeringEntity.prototype = Object.assign(Object.create(Entity.prototype), {
     force.normalize()
     force.multiplyScalar(maxSeparation)
     this.steeringForce.add(force)
-  },
+  }
 
   isOnLeaderSight(leader, ahead, leaderSightRadius) {
     return (ahead.distanceTo(this.position) <= leaderSightRadius || leader.position.distanceTo(this.position) <= leaderSightRadius)
-  },
+  }
 
   followLeader(leader, entities, distance = 400, separationRadius = 300, maxSeparation = 100, leaderSightRadius = 1600, arrivalThreshold = 200) {
     const tv = leader.velocity.clone()
@@ -278,8 +242,7 @@ SteeringEntity.prototype = Object.assign(Object.create(Entity.prototype), {
     this.arrivalThreshold = arrivalThreshold
     this.arrive(behind)
     this.separation(entities, separationRadius, maxSeparation)
-
-  },
+  }
 
   getNeighborAhead(entities) {
     const maxQueueAhead = 500
@@ -296,7 +259,7 @@ SteeringEntity.prototype = Object.assign(Object.create(Entity.prototype), {
       }
     }
     return res
-  },
+  }
 
   queue(entities, maxQueueRadius = 500) {
 
@@ -311,7 +274,7 @@ SteeringEntity.prototype = Object.assign(Object.create(Entity.prototype), {
         this.velocity.multiplyScalar(0.3)
     }
     this.steeringForce.add(brake)
-  },
+  }
 
   inSight(entity) {
     if (this.position.distanceTo(entity.position) > this.inSightDistance)
@@ -322,7 +285,7 @@ SteeringEntity.prototype = Object.assign(Object.create(Entity.prototype), {
     if (dot < 0)
       return false
     return true
-  },
+  }
 
   flock(entities) {
     const averageVelocity = this.velocity.clone()
@@ -343,7 +306,7 @@ SteeringEntity.prototype = Object.assign(Object.create(Entity.prototype), {
       this.seek(averagePosition)
       this.steeringForce.add(averageVelocity.sub(this.velocity))
     }
-  },
+  }
 
   followPath(path, loop, thresholdRadius = 1) {
     const wayPoint = path[this.pathIndex]
@@ -361,7 +324,7 @@ SteeringEntity.prototype = Object.assign(Object.create(Entity.prototype), {
       this.arrive(wayPoint)
     else
       this.seek(wayPoint)
-  },
+  }
 
   avoid(obstacles) {
     const dynamic_length = this.velocity.length() / this.maxSpeed
@@ -382,7 +345,7 @@ SteeringEntity.prototype = Object.assign(Object.create(Entity.prototype), {
       avoidance = ahead.clone().sub(mostThreatening.position).normalize().multiplyScalar(100)
 
     this.steeringForce.add(avoidance)
-  },
+  }
 
   update() {
     this.steeringForce.clampLength(0, this.maxForce)
@@ -391,12 +354,12 @@ SteeringEntity.prototype = Object.assign(Object.create(Entity.prototype), {
     this.steeringForce.set(0, 0, 0)
     Entity.prototype.update.call(this)
   }
-})
+}
 
 /**
  * Returns a random number between min (inclusive) and max (exclusive)
  */
-Math.getRandomArbitrary = function(min, max) {
+Math.getRandomArbitrary = function (min, max) {
   return Math.random() * (max - min) + min
 }
 
@@ -404,15 +367,15 @@ Math.getRandomArbitrary = function(min, max) {
  * Returns a random integer between min (inclusive) and max (inclusive)
  * Using Math.round() will give you a non-uniform distribution!
  */
-Math.getRandomInt = function(min, max) {
+Math.getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-THREE.Vector3.prototype.perp = function() {
+THREE.Vector3.prototype.perp = function () {
   return new THREE.Vector3(-this.z, 0, this.x)
 }
 
-THREE.Vector3.prototype.sign = function(vector) {
+THREE.Vector3.prototype.sign = function (vector) {
   return this.perp().dot(vector) < 0 ? -1 : 1
 }
 
