@@ -162,3 +162,8 @@ export const loadModel = param => {
       throw new Error(`Unknown file extension: ${ext}`)
   }
 }
+
+/* ALIASES */
+
+export const loadRobotko = () =>
+  loadModel({ file: 'character/robot/robot.glb', size: 1.2, axis: [0, 1, 0], angle: Math.PI })

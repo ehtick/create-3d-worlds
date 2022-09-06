@@ -1,71 +1,52 @@
 import * as THREE from 'three'
 import { SteeringEntity } from '/libs/ThreeSteer.js'
-import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
-import { createFloor } from '/utils/ground.js'
-import { ambLight } from '/utils/light.js'
-import { getMouseIntersects } from '/utils/helpers.js'
-import { loadModel, getMixer } from '/utils/loaders.js'
 
-const { randInt } = THREE.MathUtils
+import StateMachine from '/utils/fsm/StateMachine.js'
+import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
+import { createGround } from '/utils/ground.js'
+import { ambLight } from '/utils/light.js'
+import { loadModel, loadRobotko } from '/utils/loaders.js'
+import { robotAnimations } from '/data/animations.js'
+
+const { randFloatSpread } = THREE.MathUtils
 
 ambLight()
 
 const controls = createOrbitControls()
-camera.position.set(0, 100, 100)
+camera.position.set(0, 10, 25)
 
-const floor = createFloor({ size: 1000 })
+const floor = createGround({ size: 100 })
 scene.add(floor)
 
-const { mesh, animations } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: .4 })
-const runnerMixer = getMixer(mesh, animations, animations.length - 1)
-const runner = new SteeringEntity(mesh)
-runner.maxSpeed = 1.5
-runner.position.set(randInt(-500, 500), 0, randInt(-500, 500))
-scene.add(runner)
+const { mesh, animations } = await loadRobotko()
+const player = new StateMachine({ mesh, animations, dict: robotAnimations })
+scene.add(mesh)
 
 const { mesh: ghostMesh, mixer: ghostMixer } = await loadModel({ file: 'character/ghost/scene.gltf' })
-const pursuer = new SteeringEntity(ghostMesh)
-pursuer.maxSpeed = 1
-pursuer.position.set(randInt(-500, 500), 0, randInt(-500, 500))
-scene.add(pursuer)
-
-const boundaries = new THREE.Box3(new THREE.Vector3(-500, 0, -500), new THREE.Vector3(500, 0, 500))
+const ghost = new SteeringEntity(ghostMesh)
+ghost.maxSpeed = .05
+ghost.position.set(randFloatSpread(50), 0, randFloatSpread(50))
+scene.add(ghost)
 
 /* LOOP */
 
 void function animate() {
   requestAnimationFrame(animate)
   const delta = clock.getDelta()
+
+  const distance = mesh.position.distanceTo(ghost.position)
+  if (distance > .5) {
+    ghost.seek(mesh.position)
+    ghost.lookWhereGoing(true)
+  } else {
+    ghost.idle()
+    ghost.lookAt(mesh.position)
+  }
+
+  ghost.update()
+  ghostMixer.update(delta)
+  player.update(delta)
   controls.update()
 
-  const distance = runner.position.distanceTo(pursuer.position)
-  if (distance > 5) {
-    runner.flee(pursuer.position)
-    runner.lookWhereGoing(true)
-    pursuer.seek(runner.position)
-    pursuer.lookWhereGoing(true)
-  } else {
-    runner.idle()
-    runner.lookAt(pursuer.position)
-    pursuer.idle()
-    pursuer.lookAt(runner.position)
-  }
-  runner.update()
-  pursuer.update()
-  runner.bounce(boundaries)
-  pursuer.bounce(boundaries)
-
-  ghostMixer.update(delta)
-  runnerMixer.update(delta)
   renderer.render(scene, camera)
 }()
-
-/* EVENT */
-
-document.addEventListener('mousedown', onClick, true)
-
-function onClick(e) {
-  const intersects = getMouseIntersects(e, camera, scene)
-  if (intersects.length > 0)
-    runner.position.set(intersects[0].point.x, intersects[0].point.y, intersects[0].point.z)
-}
