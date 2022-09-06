@@ -9,8 +9,6 @@ npm i
 npx live-server
 ```
 
-- 3rd person camera to fsm
-
 ### AI
 - odvojiti ai pomagala
 - postaviti ai scenu sa modelima

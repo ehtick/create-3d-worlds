@@ -1,4 +1,3 @@
-import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import StateMachine from '/utils/fsm/StateMachine.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
@@ -12,14 +11,12 @@ scene.add(createFloor({ size: 100 }))
 
 const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', angle: Math.PI, axis: [0, 1, 0] })
 const animations = await loadFbxAnimations(girlAnimations, 'character/kachujin/')
-const stateMachine = new StateMachine({ mesh, animations, dict: girlAnimations })
+const stateMachine = new StateMachine({ mesh, animations, dict: girlAnimations, camera })
 
 scene.add(mesh)
 
 const controls = createOrbitControls()
 controls.target = mesh.position
-
-const thirdPersonCamera = new ThirdPersonCamera({ camera, mesh })
 
 /* LOOP */
 
@@ -28,6 +25,5 @@ void function update() {
   const delta = clock.getDelta()
 
   stateMachine.update(delta)
-  thirdPersonCamera.update(delta)
   renderer.render(scene, camera)
 }()

@@ -217,7 +217,7 @@ export default class Player {
       if (keyboard.pressed.mouse)
         this.controls.target = this.mesh.position.clone().add(new THREE.Vector3(0, this.size, 0))
       else {
-        this.thirdPersonCamera.currentPosition = defaultCamera.position.clone()
+        this.thirdPersonCamera.updateCurrentPosition()
         this.thirdPersonCamera.update(delta)
       }
 
