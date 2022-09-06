@@ -19,7 +19,7 @@ scene.add(mesh)
 const controls = createOrbitControls()
 controls.target = mesh.position
 
-// const thirdPersonCamera = new ThirdPersonCamera({ camera, mesh })
+const thirdPersonCamera = new ThirdPersonCamera({ camera, mesh })
 
 /* LOOP */
 
@@ -28,6 +28,6 @@ void function update() {
   const delta = clock.getDelta()
 
   stateMachine.update(delta)
-  // thirdPersonCamera.update(delta)
+  thirdPersonCamera.update(delta)
   renderer.render(scene, camera)
 }()

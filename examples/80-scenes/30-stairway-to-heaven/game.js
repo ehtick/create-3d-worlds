@@ -18,10 +18,9 @@ stairsLeft.rotateY(Math.PI / 2)
 stairsRight.position.x = -50
 stairsRight.rotateY(-Math.PI / 4)
 
-const avatar = new Avatar()
+const avatar = new Avatar({ camera })
 avatar.addSolids(terrain, stairsRight, stairsLeft)
 avatar.mesh.rotateY(Math.PI)
-avatar.add(camera)
 scene.add(avatar.mesh)
 
 /* LOOP */
