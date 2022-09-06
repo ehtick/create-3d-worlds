@@ -11,23 +11,21 @@ const { randInt } = THREE.MathUtils
 ambLight()
 
 const controls = createOrbitControls()
-camera.position.set(0, 100, 100)
+camera.position.set(0, 10, 10)
 
-const floor = createFloor({ size: 1000 })
+const floor = createFloor({ size: 100 })
 scene.add(floor)
 
-const ball = createBall({ r: 5 })
+const ball = createBall({ r: 0.5 })
 scene.add(ball)
 
-const mesh = createCrate({ size: 10 })
-// Entity
-const entity = new SteeringEntity(mesh)
-entity.position.set(randInt(-500, 500), 0, randInt(-500, 500))
-entity.maxSpeed = 1
-scene.add(entity)
+const ai = new SteeringEntity(createCrate())
+ai.position.set(randInt(-50, 50), 0, randInt(-50, 50))
+ai.maxSpeed = .1
+scene.add(ai)
 
 // Plane boundaries (do not cross)
-const boundaries = new THREE.Box3(new THREE.Vector3(-500, 0, -500), new THREE.Vector3(500, 0, 500))
+const boundaries = new THREE.Box3(new THREE.Vector3(-50, 0, -50), new THREE.Vector3(50, 0, 50))
 
 /* LOOP */
 
@@ -35,25 +33,23 @@ void function update() {
   requestAnimationFrame(update)
   controls.update()
 
-  if (entity.position.distanceTo(ball.position) > 10) {
-    entity.seek(ball.position)
-    entity.lookWhereGoing(true)
+  if (ai.position.distanceTo(ball.position) > 1) {
+    ai.seek(ball.position)
+    ai.lookWhereGoing(true)
   } else {
-    entity.idle()
-    entity.lookAt(ball.position)
+    ai.idle()
+    ai.lookAt(ball.position)
   }
 
-  entity.bounce(boundaries)
-  entity.update()
+  ai.bounce(boundaries)
+  ai.update()
   renderer.render(scene, camera)
 }()
 
 /* EVENT */
 
-document.addEventListener('mousemove', onMouseMove, true)
-
-function onMouseMove(e) {
+document.addEventListener('mousemove', e => {
   const intersects = getMouseIntersects(e, camera, scene)
   if (intersects.length > 0)
-    ball.position.set(intersects[0].point.x, 5, intersects[0].point.z)
-}
+    ball.position.set(intersects[0].point.x, .5, intersects[0].point.z)
+})
