@@ -1,3 +1,4 @@
+import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import StateMachine from '/utils/fsm/StateMachine.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
@@ -18,11 +19,14 @@ scene.add(mesh)
 const controls = createOrbitControls()
 controls.target = mesh.position
 
+const thirdPersonCamera = new ThirdPersonCamera({ camera, mesh })
+
 /* LOOP */
 
 void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
+  thirdPersonCamera.update(delta)
 
   stateMachine.update(delta)
   renderer.render(scene, camera)

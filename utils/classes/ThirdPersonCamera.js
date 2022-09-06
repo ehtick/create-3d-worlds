@@ -6,7 +6,7 @@ const calc = (mesh, pos) => new THREE.Vector3(...pos)
   .add(mesh.position)
 
 export default class ThirdPersonCamera {
-  constructor({ camera, mesh, offset = [0, 2, 4], lookAt = [0, 1, 0], speed = 4 }) {
+  constructor({ camera, mesh, offset = [0, 1.5, 3], lookAt = [0, 1, 0], speed = 4 }) {
     this.mesh = mesh
     this.camera = camera
     this.offset = offset
@@ -17,16 +17,12 @@ export default class ThirdPersonCamera {
   }
 
   update(delta) {
-    const newPosition = calc(this.mesh, this.offset)
-    const newLookAt = calc(this.mesh, this.lookAt)
+    const idealPosition = calc(this.mesh, this.offset)
+    const idealLookAt = calc(this.mesh, this.lookAt)
 
-    const heightDiff = newPosition.y - this.currentPosition.y
-
-    const speed = this.speed * (1 + Math.abs(heightDiff) * 3)
-    const t = speed * delta
-
-    this.currentPosition.lerp(newPosition, t)
-    this.currentLookat.lerp(newLookAt, t)
+    const t = this.speed * delta
+    this.currentPosition.lerp(idealPosition, t)
+    this.currentLookat.lerp(idealLookAt, t)
 
     this.camera.position.copy(this.currentPosition)
     this.camera.lookAt(this.currentLookat)
