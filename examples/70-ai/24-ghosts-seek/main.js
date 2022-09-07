@@ -11,13 +11,16 @@ import { robotAnimations } from '/data/animations.js'
 
 const { randFloatSpread } = THREE.MathUtils
 
+const mixers = []
+const entities = []
+const GHOST_NUM = 4
+
 ambLight()
 
 const controls = createOrbitControls()
 camera.position.set(0, 10, 15)
 
-const floor = createFloor({ size: 100 })
-scene.add(floor)
+scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadRobotko()
 const player = new StateMachine({ mesh, animations, dict: robotAnimations })
@@ -25,13 +28,10 @@ scene.add(mesh)
 
 const { mesh: ghostMesh, animations: ghostAnims } = await loadModel({ file: 'character/ghost/scene.gltf' })
 
-const mixers = []
-const entities = []
-
-function createEntity() {
+for (let i = 0; i < GHOST_NUM; i++) {
   const clonedMesh = SkeletonUtils.clone(ghostMesh)
   const entity = new SteeringEntity(clonedMesh)
-  entity.position.set(randFloatSpread(50), 0, randFloatSpread(50))
+  entity.position.set(randFloatSpread(50), -.5, randFloatSpread(50))
   entity.maxSpeed = .05
   entities.push(entity)
   scene.add(entity)
@@ -43,12 +43,10 @@ function createEntity() {
   mixers.push(mixer)
 }
 
-for (let i = 0; i < 4; i++) createEntity()
-
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   const delta = clock.getDelta()
 
   entities.forEach(entity => {
@@ -64,6 +62,6 @@ void function animate() {
 
   controls.update()
   player.update(delta)
-  mixers.forEach(mixer => mixer.update(delta))
+  // mixers.forEach(mixer => mixer.update(delta))
   renderer.render(scene, camera)
 }()

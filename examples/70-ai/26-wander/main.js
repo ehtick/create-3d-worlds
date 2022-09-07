@@ -1,36 +1,49 @@
 import * as THREE from 'three'
+import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 import { SteeringEntity } from '/libs/ThreeSteer.js'
-import { camera, scene, renderer, createOrbitControls } from '/utils/scene.js'
+
+import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { createBox } from '/utils/geometry.js'
+import { loadModel } from '/utils/loaders.js'
 
 const { randInt } = THREE.MathUtils
+
+const mixers = []
+const entities = []
+const numEntities = 20
 
 ambLight()
 
 const controls = createOrbitControls()
-camera.position.set(0, 100, 100)
+camera.position.set(0, 10, 15)
 
-const floor = createFloor({ size: 1000 })
-scene.add(floor)
+scene.add(createFloor({ size: 100 }))
 
-const numEntities = 20
+const { mesh: ghostMesh, animations: ghostAnims } = await loadModel({ file: 'character/ghost/scene.gltf' })
 
-const entities = []
 for (let i = 0; i < numEntities; i++) {
-  const mesh = createBox({ size: 10, height: 20 })
+  const mesh = SkeletonUtils.clone(ghostMesh)
   const entity = new SteeringEntity(mesh)
-  entity.maxSpeed = 1
-  entity.position.set(randInt(-500, 500), 0, randInt(-500, 500))
+  entity.maxSpeed = .05
+  entity.position.set(randInt(-50, 50), -.5, randInt(-50, 50))
   entities.push(entity)
   scene.add(entity)
+
+  const mixer = new THREE.AnimationMixer(mesh)
+  mixers.push(mixer)
+  const action = mixer.clipAction(ghostAnims[0])
+  action.startAt(Math.random() * action._clip.duration)
+  action.play()
 }
 
-const boundaries = new THREE.Box3(new THREE.Vector3(-500, 0, -500), new THREE.Vector3(500, 0, 500))
+const boundaries = new THREE.Box3(new THREE.Vector3(-50, 0, -50), new THREE.Vector3(50, 0, 50))
 
-void function animate() {
-  requestAnimationFrame(animate)
+/* LOOP */
+
+void function loop() {
+  requestAnimationFrame(loop)
+  const delta = clock.getDelta()
 
   entities.forEach(entity => {
     entity.wander()
@@ -40,5 +53,6 @@ void function animate() {
   })
 
   controls.update()
+  mixers.forEach(mixer => mixer.update(delta))
   renderer.render(scene, camera)
 }()

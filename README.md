@@ -9,7 +9,10 @@ npm i
 npx live-server
 ```
 
+- okret u skoku
+
 ### AI
+http://www.uxvision.it/projects/ThreeSteer/examples/index.html
 - odvojiti ai pomagala
 - postaviti ai scenu sa modelima
 - reuse fsm for ai
