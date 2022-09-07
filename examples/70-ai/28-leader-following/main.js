@@ -6,11 +6,13 @@ import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonU
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { createBox } from '/utils/geometry.js'
 import { loadModel, loadRobotko } from '/utils/loaders.js'
 import { robotAnimations } from '/data/animations.js'
 
 const { randFloatSpread } = THREE.MathUtils
+
+const mixers = []
+const followers = []
 
 ambLight()
 
@@ -26,21 +28,28 @@ mesh.velocity = new THREE.Vector3()
 
 scene.add(mesh)
 
-const followers = []
-for (let i = 0; i < 20; i++) {
-  const mesh = createBox({ height: 2, color: 0x000000 })
+const { mesh: ghostMesh, animations: ghostAnims } = await loadModel({ file: 'character/ghost/scene.gltf' })
+
+for (let i = 0; i < 10; i++) {
+  const mesh = SkeletonUtils.clone(ghostMesh)
   const entity = new SteeringEntity(mesh)
   entity.position.set(randFloatSpread(50), 0, randFloatSpread(50))
   entity.maxSpeed = .05,
   followers.push(entity)
   scene.add(entity)
+
+  const mixer = new THREE.AnimationMixer(mesh)
+  const action = mixer.clipAction(ghostAnims[0])
+  action.startAt(Math.random() * action._clip.duration)
+  action.play()
+  mixers.push(mixer)
 }
 
 const boundaries = new THREE.Box3(new THREE.Vector3(-50, 0, -50), new THREE.Vector3(50, 0, 50))
 
 /* LOOP */
 
-const params = { distance: 4, separationRadius: 3, maxSeparation: 5, leaderSightRadius: 10, arrivalThreshold: 2 }
+const params = { distance: 2, separationRadius: 1.5, maxSeparation: 2.5, leaderSightRadius: 5, arrivalThreshold: 1 }
 
 void function animate() {
   requestAnimationFrame(animate)
@@ -55,5 +64,6 @@ void function animate() {
 
   controls.update()
   player.update(delta)
+  mixers.forEach(mixer => mixer.update(delta))
   renderer.render(scene, camera)
 }()
