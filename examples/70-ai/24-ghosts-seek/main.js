@@ -62,6 +62,6 @@ void function loop() {
 
   controls.update()
   player.update(delta)
-  // mixers.forEach(mixer => mixer.update(delta))
+  mixers.forEach(mixer => mixer.update(delta))
   renderer.render(scene, camera)
 }()
