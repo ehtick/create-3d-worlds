@@ -13,7 +13,7 @@ const { randFloatSpread } = THREE.MathUtils
 ambLight()
 
 const controls = createOrbitControls()
-camera.position.set(0, 10, 25)
+camera.position.set(0, 10, 15)
 
 const floor = createGround({ size: 100 })
 scene.add(floor)
