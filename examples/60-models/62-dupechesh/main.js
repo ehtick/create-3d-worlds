@@ -9,7 +9,7 @@ dirLight({ intensity: 1.5 })
 const controls = createOrbitControls()
 camera.position.set(0, 2, 3)
 
-const { mesh, animations } = await loadModel({ file: 'character/ogro/ogro.md2', texture: 'character/ogro/skins/arboshak.png', size: 2, axis: [0, 1, 0], angle: Math.PI * .5, shouldCenter: true, shouldAdjustHeight: true })
+const { mesh, animations } = await loadModel({ file: 'character/ogro/ogro.md2', texture: 'character/ogro/skins/arboshak.png', size: 2, angle: Math.PI * .5, shouldCenter: true, shouldAdjustHeight: true })
 
 const player = new StateMachine({ mesh, animations, dict: dupecheshAnimations })
 scene.add(mesh)

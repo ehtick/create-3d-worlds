@@ -28,7 +28,7 @@ const castle = new Entity(res.mesh)
 castle.name = 'vilage'
 game.randomPlaceEntity(castle)
 
-res = await loadModel({ file: 'character/ogro/ogro.md2', texture: 'character/ogro/skins/arboshak.png', size: 50, axis: [0, 1, 0], angle: -Math.PI * .5, shouldCenter: true, shouldAdjustHeight: true })
+res = await loadModel({ file: 'character/ogro/ogro.md2', texture: 'character/ogro/skins/arboshak.png', size: 50, angle: -Math.PI * .5, shouldCenter: true, shouldAdjustHeight: true })
 for (let i = 0; i < HUNTERS; i++)
   game.randomPlaceEntity(new Mob({ game, ...res }))
 

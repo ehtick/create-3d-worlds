@@ -21,7 +21,7 @@ scene.add(ground)
 const { mesh } = await loadModel({
   file: 'airship/zeppelin-lowpoly/scene.gltf',
   size: 10,
-  axis: [0, 1, 0], angle: Math.PI,
+  angle: Math.PI,
 })
 
 const zeppelin = new Zeppelin({ mesh })

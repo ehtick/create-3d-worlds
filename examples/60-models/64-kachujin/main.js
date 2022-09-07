@@ -9,7 +9,7 @@ initLights()
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', angle: Math.PI, axis: [0, 1, 0] })
+const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', angle: Math.PI })
 const animations = await loadFbxAnimations(girlAnimations, 'character/kachujin/')
 const stateMachine = new StateMachine({ mesh, animations, dict: girlAnimations, camera })
 

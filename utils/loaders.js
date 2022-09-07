@@ -8,6 +8,7 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
+import { mawLaygoAnimations } from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -33,7 +34,7 @@ const createGroup = model => {
   return group
 }
 
-const prepareMesh = ({ model, size = 2, angle, axis, animations, shouldCenter, shouldAdjustHeight }) => {
+const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, shouldCenter, shouldAdjustHeight }) => {
   const scale = size ? getScale(model, size) : 1
   model.scale.set(scale, scale, scale)
 
@@ -166,4 +167,10 @@ export const loadModel = param => {
 /* ALIASES */
 
 export const loadRobotko = () =>
-  loadModel({ file: 'character/robot/robot.glb', size: 1.2, axis: [0, 1, 0], angle: Math.PI })
+  loadModel({ file: 'character/robot/robot.glb', size: 1.2, angle: Math.PI })
+
+export const loadMawLaygo = async(params = {}) => {
+  const { mesh } = await loadModel({ file: 'character/maw_j_laygo/maw_j_laygo.fbx', angle: Math.PI, ...params })
+  const animations = await loadFbxAnimations(mawLaygoAnimations, 'character/maw_j_laygo/')
+  return { mesh, animations }
+}

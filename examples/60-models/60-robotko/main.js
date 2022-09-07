@@ -10,7 +10,7 @@ dirLight({ intensity: 1.5 })
 camera.position.set(0, 3, 5)
 createOrbitControls()
 
-const { mesh, animations } = await loadModel({ file: 'character/robot/robot.glb', size: 1.2, axis: [0, 1, 0], angle: Math.PI })
+const { mesh, animations } = await loadModel({ file: 'character/robot/robot.glb', size: 1.2, angle: Math.PI })
 const stateMachine = new StateMachine({ mesh, animations, dict: robotAnimations })
 
 scene.add(mesh)

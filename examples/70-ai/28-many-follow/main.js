@@ -6,7 +6,7 @@ import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonU
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { loadModel, loadRobotko, loadFbxAnimations } from '/utils/loaders.js'
+import { loadModel, loadRobotko, loadFbxAnimations, loadMawLaygo } from '/utils/loaders.js'
 import { robotAnimations } from '/data/animations.js'
 
 const { randFloatSpread } = THREE.MathUtils
@@ -28,8 +28,7 @@ mesh.velocity = new THREE.Vector3()
 
 scene.add(mesh)
 
-const { mesh: ghostMesh } = await loadModel({ file: 'character/maw_j_laygo/maw_j_laygo.fbx' })
-const ghostAnims = await loadFbxAnimations({ walk: 'Maw J Laygo Walking' }, 'character/maw_j_laygo/')
+const { mesh: ghostMesh, animations: ghostAnims } = await loadMawLaygo({ angle: 0 })
 
 for (let i = 0; i < 10; i++) {
   const mesh = SkeletonUtils.clone(ghostMesh)
@@ -40,7 +39,7 @@ for (let i = 0; i < 10; i++) {
   scene.add(entity)
 
   const mixer = new THREE.AnimationMixer(mesh)
-  const action = mixer.clipAction(ghostAnims[0])
+  const action = mixer.clipAction(ghostAnims[1])
   action.startAt(Math.random() * action.getClip().duration)
   action.play()
   mixers.push(mixer)

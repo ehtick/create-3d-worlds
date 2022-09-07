@@ -16,7 +16,7 @@ scene.add(createSkySphere(), createSun(), terrain, trees)
 const { mesh } = await loadModel({
   file: 'aircraft/ww1-biplane/scene.gltf',
   size: 2,
-  axis: [0, 1, 0], angle: Math.PI,
+  angle: Math.PI,
 })
 
 const avion = new Airplane({ mesh })
