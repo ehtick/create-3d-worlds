@@ -6,7 +6,7 @@ import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonU
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { loadModel, loadRobotko } from '/utils/loaders.js'
+import { loadModel, loadRobotko, loadFbxAnimations } from '/utils/loaders.js'
 import { robotAnimations } from '/data/animations.js'
 
 const { randFloatSpread } = THREE.MathUtils
@@ -17,7 +17,7 @@ const followers = []
 ambLight()
 
 const controls = createOrbitControls()
-camera.position.set(0, 10, 10)
+camera.position.set(0, 10, 15)
 
 const floor = createFloor({ size: 100 })
 scene.add(floor)
@@ -28,19 +28,20 @@ mesh.velocity = new THREE.Vector3()
 
 scene.add(mesh)
 
-const { mesh: ghostMesh, animations: ghostAnims } = await loadModel({ file: 'character/ghost/scene.gltf' })
+const { mesh: ghostMesh } = await loadModel({ file: 'character/maw_j_laygo/maw_j_laygo.fbx' })
+const ghostAnims = await loadFbxAnimations({ walk: 'Maw J Laygo Walking' }, 'character/maw_j_laygo/')
 
 for (let i = 0; i < 10; i++) {
   const mesh = SkeletonUtils.clone(ghostMesh)
   const entity = new SteeringEntity(mesh)
   entity.position.set(randFloatSpread(50), 0, randFloatSpread(50))
-  entity.maxSpeed = .05,
+  entity.maxSpeed = .025,
   followers.push(entity)
   scene.add(entity)
 
   const mixer = new THREE.AnimationMixer(mesh)
   const action = mixer.clipAction(ghostAnims[0])
-  action.startAt(Math.random() * action._clip.duration)
+  action.startAt(Math.random() * action.getClip().duration)
   action.play()
   mixers.push(mixer)
 }
