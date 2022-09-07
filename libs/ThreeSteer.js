@@ -1,4 +1,7 @@
-/* updated to module syntax by mudroljub */
+/*
+  https://github.com/erosmarcon/three-steer
+  updated to modern syntax by mudroljub
+*/
 import * as THREE from 'three'
 
 class Entity extends THREE.Group {
@@ -230,7 +233,7 @@ export class SteeringEntity extends Entity {
   }
 
   followLeader(leader, entities, distance = 400, separationRadius = 300, maxSeparation = 100, leaderSightRadius = 1600, arrivalThreshold = 200) {
-    const tv = leader.velocity.clone()
+    const tv = leader.velocity ? leader.velocity.clone() : new THREE.Vector3()
     tv.normalize().multiplyScalar(distance)
     const ahead = leader.position.clone().add(tv)
     tv.negate()
@@ -359,7 +362,7 @@ export class SteeringEntity extends Entity {
 /**
  * Returns a random number between min (inclusive) and max (exclusive)
  */
-Math.getRandomArbitrary = function (min, max) {
+Math.getRandomArbitrary = function(min, max) {
   return Math.random() * (max - min) + min
 }
 
@@ -367,15 +370,15 @@ Math.getRandomArbitrary = function (min, max) {
  * Returns a random integer between min (inclusive) and max (inclusive)
  * Using Math.round() will give you a non-uniform distribution!
  */
-Math.getRandomInt = function (min, max) {
+Math.getRandomInt = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-THREE.Vector3.prototype.perp = function () {
+THREE.Vector3.prototype.perp = function() {
   return new THREE.Vector3(-this.z, 0, this.x)
 }
 
-THREE.Vector3.prototype.sign = function (vector) {
+THREE.Vector3.prototype.sign = function(vector) {
   return this.perp().dot(vector) < 0 ? -1 : 1
 }
 

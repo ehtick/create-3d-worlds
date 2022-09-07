@@ -10,7 +10,7 @@ import { createBox } from '/utils/geometry.js'
 import { loadModel, loadRobotko } from '/utils/loaders.js'
 import { robotAnimations } from '/data/animations.js'
 
-const { randInt, randFloat } = THREE.MathUtils
+const { randFloatSpread } = THREE.MathUtils
 
 ambLight()
 
@@ -30,8 +30,8 @@ const followers = []
 for (let i = 0; i < 20; i++) {
   const mesh = createBox({ height: 2, color: 0x000000 })
   const entity = new SteeringEntity(mesh)
-  entity.position.set(randInt(-25, 25), 0, randInt(-25, 25))
-  entity.maxSpeed = .075,
+  entity.position.set(randFloatSpread(50), 0, randFloatSpread(50))
+  entity.maxSpeed = .05,
   followers.push(entity)
   scene.add(entity)
 }
