@@ -6,8 +6,8 @@ import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonU
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { loadModel, loadRobotko, loadFbxAnimations, loadMawLaygo } from '/utils/loaders.js'
-import { robotAnimations } from '/data/animations.js'
+import { loadKachujin, loadMawLaygo } from '/utils/loaders.js'
+import { girlAnimations } from '/data/animations.js'
 
 const { randFloatSpread } = THREE.MathUtils
 
@@ -19,12 +19,11 @@ ambLight()
 const controls = createOrbitControls()
 camera.position.set(0, 10, 15)
 
-const floor = createFloor({ size: 100 })
-scene.add(floor)
+scene.add(createFloor({ size: 100 }))
 
-const { mesh: playerMesh, animations } = await loadRobotko()
-const player = new StateMachine({ mesh: playerMesh, animations, dict: robotAnimations })
-playerMesh.velocity = new THREE.Vector3()
+const { mesh: playerMesh, animations } = await loadKachujin()
+const player = new StateMachine({ mesh: playerMesh, animations, dict: girlAnimations })
+playerMesh.velocity = new THREE.Vector3() // required for steer
 
 scene.add(playerMesh)
 

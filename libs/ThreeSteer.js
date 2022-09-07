@@ -233,7 +233,7 @@ export class SteeringEntity extends Entity {
   }
 
   followLeader(leader, entities, distance = 400, separationRadius = 300, maxSeparation = 100, leaderSightRadius = 1600, arrivalThreshold = 200) {
-    const tv = leader.velocity ? leader.velocity.clone() : new THREE.Vector3()
+    const tv = leader.velocity.clone()
     tv.normalize().multiplyScalar(distance)
     const ahead = leader.position.clone().add(tv)
     tv.negate()
