@@ -9,10 +9,10 @@ npm i
 npx live-server
 ```
 
-- ako nema animacija jump nastaviti walk
+- dodati smrt state
 
 ### AI
-- use fsm for ai
+- use fsm with ai
 
 ### Physics
 - preraditi staru 2D fiziku u 3D

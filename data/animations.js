@@ -42,7 +42,6 @@ export const mawLaygoAnimations = {
 export const forestMonsterAnimations = {
   idle: 'Idle',
   walk: 'Walk',
-  // run: 'Walk',
   jump: 'Melee_Hold',
   attack: 'Attack',
   special: 'Stand',
