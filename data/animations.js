@@ -38,3 +38,13 @@ export const mawLaygoAnimations = {
   attack: 'Maw J Laygo Mutant Swiping',
   special: 'Maw J Laygo Zombie Kicking',
 }
+
+export const forestMonsterAnimations = {
+  idle: 'Idle',
+  walk: 'Walk',
+  // run: 'Walk',
+  jump: 'Melee_Hold',
+  attack: 'Attack',
+  special: 'Stand',
+  death: 'Dying',
+}

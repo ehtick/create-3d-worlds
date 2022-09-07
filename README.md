@@ -9,9 +9,10 @@ npm i
 npx live-server
 ```
 
+- ako nema animacija jump nastaviti walk
+
 ### AI
-http://www.uxvision.it/projects/ThreeSteer/examples/index.html
-- reuse fsm for ai
+- use fsm for ai
 
 ### Physics
 - preraditi staru 2D fiziku u 3D

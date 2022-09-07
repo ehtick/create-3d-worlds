@@ -1,8 +1,8 @@
-/* @param names: string or array of strings */
-export const syncAnimation = (names, oldState, oldAction, curAction, duration = .75) => {
+/* @param syncFrom: string or array of strings */
+export const syncAnimation = (syncFrom, oldState, oldAction, curAction, duration = .75) => {
   curAction.enabled = true
   curAction.timeScale = 1
-  if (names.includes(oldState.name)) {
+  if (syncFrom.includes(oldState.name)) {
     const ratio = curAction.getClip().duration / oldAction.getClip().duration
     curAction.time = oldAction.time * ratio // sync legs
   } else {

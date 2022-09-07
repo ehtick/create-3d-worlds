@@ -8,12 +8,13 @@ export default class IdleState extends State {
     super.enter(oldState)
     this.oldSpeed = oldState?.speed || 0
 
-    if (!this.actions) return
-    if (oldState) {
-      const oldAction = this.actions[oldState.name]
+    let oldAction = this.actions[oldState?.name]
+    if (!oldAction && oldState?.name === 'run') oldAction = this.actions?.walk
+
+    if (this.actions && oldAction && this.action)
       syncAnimation(['walk', 'run', 'walkBackward'], oldState, oldAction, this.action)
-    }
-    if (this.action) this.action.play()
+
+    this.action?.play()
   }
 
   update(delta) {

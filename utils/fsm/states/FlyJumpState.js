@@ -16,13 +16,14 @@ export default class FlyJumpState extends State {
     this.prevState = oldState.name
     velocity = minVelocity
 
-    if (!this.actions) return
-    const oldAction = this.actions[oldState.name]
-    this.action.reset()
-    this.action.setLoop(THREE.LoopOnce, 1)
-    this.action.clampWhenFinished = true
-    this.action.crossFadeFrom(oldAction, .25, true)
-    this.action.play()
+    if (this.actions && this.action && this.actions[oldState.name]) {
+      const oldAction = this.actions[oldState.name]
+      this.action.reset()
+      this.action.setLoop(THREE.LoopOnce, 1)
+      this.action.clampWhenFinished = true
+      this.action.crossFadeFrom(oldAction, .25, true)
+      this.action.play()
+    }
   }
 
   onGround() {

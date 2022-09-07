@@ -9,9 +9,15 @@ export default class RunState extends State {
   enter(oldState) {
     this.oldSpeed = oldState.speed
 
-    if (!this.actions) return
-    const oldAction = this.actions[oldState.name]
-    syncAnimation('walk', oldState, oldAction, this.action)
+    if (this.actions && this.action && this.actions[oldState.name]) {
+      const oldAction = this.actions[oldState.name]
+      syncAnimation('walk', oldState, oldAction, this.action)
+    }
+
+    if (!this.action) {
+      this.action = this.actions.walk
+      this.action.setEffectiveTimeScale(2)
+    }
     this.action.play()
   }
 
@@ -27,5 +33,10 @@ export default class RunState extends State {
 
     if (!keyboard.capsLock) this.fsm.setState('walk')
     if (!keyboard.up) this.fsm.setState('idle')
+  }
+
+  exit() {
+    this.action.setEffectiveTimeScale(1)
+    this.action = null
   }
 }

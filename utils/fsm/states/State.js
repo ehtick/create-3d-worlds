@@ -11,7 +11,7 @@ export default class State {
     this.fsm = fsm
     this.name = name
     this.actions = fsm.actions
-    if (fsm.actions) this.action = fsm.actions[name]
+    this.action = fsm?.actions[name]
     this.prevState = ''
     this.t = 0
   }
