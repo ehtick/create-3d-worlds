@@ -22,16 +22,16 @@ camera.position.set(0, 10, 15)
 const floor = createFloor({ size: 100 })
 scene.add(floor)
 
-const { mesh, animations } = await loadRobotko()
-const player = new StateMachine({ mesh, animations, dict: robotAnimations })
-mesh.velocity = new THREE.Vector3()
+const { mesh: playerMesh, animations } = await loadRobotko()
+const player = new StateMachine({ mesh: playerMesh, animations, dict: robotAnimations })
+playerMesh.velocity = new THREE.Vector3()
 
-scene.add(mesh)
+scene.add(playerMesh)
 
-const { mesh: ghostMesh, animations: ghostAnims } = await loadMawLaygo({ angle: 0 })
+const { mesh: followerMesh, animations: followerAnims } = await loadMawLaygo({ angle: 0 })
 
 for (let i = 0; i < 10; i++) {
-  const mesh = SkeletonUtils.clone(ghostMesh)
+  const mesh = SkeletonUtils.clone(followerMesh)
   const entity = new SteeringEntity(mesh)
   entity.position.set(randFloatSpread(50), 0, randFloatSpread(50))
   entity.maxSpeed = .025,
@@ -39,7 +39,7 @@ for (let i = 0; i < 10; i++) {
   scene.add(entity)
 
   const mixer = new THREE.AnimationMixer(mesh)
-  const action = mixer.clipAction(ghostAnims[1])
+  const action = mixer.clipAction(followerAnims[1])
   action.startAt(Math.random() * action.getClip().duration)
   action.play()
   mixers.push(mixer)
@@ -56,7 +56,7 @@ void function animate() {
   const delta = clock.getDelta()
 
   followers.forEach(follower => {
-    follower.followLeader(mesh, followers, params.distance, params.separationRadius, params.maxSeparation, params.leaderSightRadius, params.arrivalThreshold)
+    follower.followLeader(playerMesh, followers, params.distance, params.separationRadius, params.maxSeparation, params.leaderSightRadius, params.arrivalThreshold)
     follower.lookWhereGoing(true)
     follower.update()
     follower.bounce(boundaries)

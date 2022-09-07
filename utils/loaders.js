@@ -8,7 +8,7 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
-import { mawLaygoAnimations } from '/data/animations.js'
+import { mawLaygoAnimations, girlAnimations } from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -172,5 +172,11 @@ export const loadRobotko = () =>
 export const loadMawLaygo = async(params = {}) => {
   const { mesh } = await loadModel({ file: 'character/maw_j_laygo/maw_j_laygo.fbx', angle: Math.PI, ...params })
   const animations = await loadFbxAnimations(mawLaygoAnimations, 'character/maw_j_laygo/')
+  return { mesh, animations }
+}
+
+export const loadKachujin = async() => {
+  const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', angle: Math.PI })
+  const animations = await loadFbxAnimations(girlAnimations, 'character/kachujin/')
   return { mesh, animations }
 }
