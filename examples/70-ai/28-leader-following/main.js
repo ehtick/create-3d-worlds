@@ -11,35 +11,35 @@ const { randInt, randFloat } = THREE.MathUtils
 ambLight()
 
 const controls = createOrbitControls()
-camera.position.set(0, 100, 100)
+camera.position.set(0, 10, 10)
 
-const floor = createFloor({ size: 1000 })
+const floor = createFloor({ size: 100 })
 scene.add(floor)
 
-const whiteBox = createBox({ size: 10, height: 20 })
+const whiteBox = createBox({ height: 2 })
 const leader = new SteeringEntity(whiteBox)
-leader.maxSpeed = 1.5
-leader.position.set(randInt(-250, 250), 0, randInt(-250, 250))
-leader.wanderDistance = 5
-leader.wanderRadius = 2.5
-leader.wanderRange = .5
+leader.maxSpeed = .1
+leader.position.set(randInt(-25, 25), 0, randInt(-25, 25))
+leader.wanderDistance = .5
+leader.wanderRadius = .25
+leader.wanderRange = .05
 scene.add(leader)
 
 const followers = []
 for (let i = 0; i < 20; i++) {
-  const mesh = createBox({ size: 10, height: 20, color: 0x000000 })
+  const mesh = createBox({ height: 2, color: 0x000000 })
   const entity = new SteeringEntity(mesh)
-  entity.position.set(randInt(-250, 250), 0, randInt(-250, 250))
-  entity.maxSpeed = 1.5,
+  entity.position.set(randInt(-25, 25), 0, randInt(-25, 25))
+  entity.maxSpeed = .075,
   followers.push(entity)
   scene.add(entity)
 }
 
-const boundaries = new THREE.Box3(new THREE.Vector3(-500, 0, -500), new THREE.Vector3(500, 0, 500))
+const boundaries = new THREE.Box3(new THREE.Vector3(-50, 0, -50), new THREE.Vector3(50, 0, 50))
 
 /* LOOP */
 
-const params = { distance: 40, separationRadius: 30, maxSeparation: 50, leaderSightRadius: 100, arrivalThreshold: 20 }
+const params = { distance: 4, separationRadius: 3, maxSeparation: 5, leaderSightRadius: 10, arrivalThreshold: 2 }
 
 void function animate() {
   requestAnimationFrame(animate)
