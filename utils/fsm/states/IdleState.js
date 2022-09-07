@@ -38,5 +38,8 @@ export default class IdleState extends State {
 
     if (keyboard.pressed.ControlLeft)
       this.fsm.setState('special')
+
+    if (keyboard.pressed.Delete)
+      this.fsm.setState('death')
   }
 }

@@ -9,8 +9,6 @@ npm i
 npx live-server
 ```
 
-- dodati smrt state
-
 ### AI
 - use fsm with ai
 
