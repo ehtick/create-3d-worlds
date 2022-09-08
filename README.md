@@ -9,6 +9,8 @@ npm i
 npx live-server
 ```
 
+ima BUG kad kachujin skače i pritiskam strelice
+
 ### AI
 - use fsm for ai (menjati walk i idle kod gonjenja)
 

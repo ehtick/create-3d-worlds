@@ -10,7 +10,7 @@ initLights()
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadKachujin()
-const stateMachine = new StateMachine({ mesh, animations, dict: girlAnimations, camera })
+const stateMachine = new StateMachine({ mesh, animations, dict: girlAnimations })
 
 scene.add(mesh)
 

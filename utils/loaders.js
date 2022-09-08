@@ -170,13 +170,13 @@ export const loadRobotko = () =>
   loadModel({ file: 'character/robot/robot.glb', size: 1.2, angle: Math.PI })
 
 export const loadMawLaygo = async(params = {}) => {
-  const { mesh } = await loadModel({ file: 'character/maw_j_laygo/maw_j_laygo.fbx', angle: Math.PI, ...params })
+  const { mesh } = await loadModel({ file: 'character/maw_j_laygo/maw_j_laygo.fbx', size: 2.25, angle: Math.PI, ...params })
   const animations = await loadFbxAnimations(mawLaygoAnimations, 'character/maw_j_laygo/')
   return { mesh, animations }
 }
 
 export const loadKachujin = async() => {
-  const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', angle: Math.PI })
+  const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 1.75, angle: Math.PI })
   const animations = await loadFbxAnimations(girlAnimations, 'character/kachujin/')
   return { mesh, animations }
 }

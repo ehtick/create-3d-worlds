@@ -8,12 +8,14 @@ const swipeThreshold = 5
 
 class Keyboard {
 
-  constructor() {
+  constructor(listen = true) {
     this.pressed = {}
     this.capsLock = false
 
     this.SwipeX = 0
     this.SwipeY = 0
+
+    if (!listen) return
 
     document.addEventListener('keydown', e => {
       this.preventSome(e)
@@ -139,7 +141,5 @@ class Keyboard {
 
 }
 
-const keyboard = new Keyboard
-
-export { keyboard }
-export default keyboard
+export { Keyboard }
+export default new Keyboard // export instance

@@ -22,15 +22,15 @@ export default class WalkState extends State {
     this.turn(delta)
     this.move(delta)
 
-    if (this.keyboard.pressed.Space)
+    if (this.fsm.keyboard.pressed.Space)
       this.fsm.setState('jump')
 
-    if (this.keyboard.pressed.Enter)
+    if (this.fsm.keyboard.pressed.Enter)
       this.fsm.setState('attack')
 
-    if (this.keyboard.capsLock)
+    if (this.fsm.keyboard.capsLock)
       this.fsm.setState('run')
 
-    if (!this.keyboard.up) this.fsm.setState('idle')
+    if (!this.fsm.keyboard.up) this.fsm.setState('idle')
   }
 }

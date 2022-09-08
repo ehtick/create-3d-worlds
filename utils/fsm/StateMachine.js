@@ -68,6 +68,13 @@ export default class StateMachine {
         this.thirdPersonCamera.updateCurrentPosition()
         this.thirdPersonCamera.update(delta)
       }
+  }
 
+  get action() {
+    return this.actions[this.currentState.name]
+  }
+
+  randomizeAction() {
+    this.action.time = Math.random() * this.action.getClip().duration
   }
 }

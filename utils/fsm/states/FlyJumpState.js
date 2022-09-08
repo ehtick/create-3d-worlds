@@ -34,7 +34,7 @@ export default class FlyJumpState extends State {
 
     this.move(delta)
 
-    if (this.keyboard.pressed.Space && this.onGround() && velocity <= maxVelocity) {
+    if (this.fsm.keyboard.pressed.Space && this.onGround() && velocity <= maxVelocity) {
       velocity += velocityStep
       jumpTime = velocity * GRAVITY * delta * 3
       return
