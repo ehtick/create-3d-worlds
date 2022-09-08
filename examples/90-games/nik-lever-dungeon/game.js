@@ -1,35 +1,27 @@
-import * as THREE from 'three'
+import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 import { Pathfinding } from './libs/three-pathfinding.module.js'
-import { scene, camera, renderer, clock } from '/utils/scene.js'
+import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { Fred, Ghoul } from './Player.js'
 import { createSun, ambLight } from '/utils/light.js'
 import { getMouseIntersects } from '/utils/helpers.js'
-import { cloneGLTF, randomWaypoint } from './utils.js'
+import { randomWaypoint } from './utils.js'
 import { loadModel } from '/utils/loaders.js'
+
+createOrbitControls()
 
 const pathfinder = new Pathfinding()
 const ghouls = []
 const scale = 0.015
 
-const wideCamera = new THREE.Object3D()
-wideCamera.target = new THREE.Vector3(0, 0, 0)
-const frontCamera = new THREE.Object3D()
-frontCamera.position.set(0, 500, 500)
-const rearCamera = new THREE.Object3D()
-rearCamera.position.set(0, 500, -500)
-const cameras = { wideCamera, rearCamera, frontCamera }
-
 /* INIT */
 
 let navmesh
-let activeCamera = wideCamera
 
 ambLight()
 scene.add(createSun({ x: -5, y: 10, z: 2 }))
 camera.position.set(0, 22, 18)
-wideCamera.position.copy(camera.position)
 
-const { mesh: dungeon } = await loadModel('world/dungeon.glb')
+const { mesh: dungeon } = await loadModel({ file: 'world/dungeon.glb', size: null })
 scene.add(dungeon)
 dungeon.traverse(child => {
   if (child.name == 'Navmesh') {
@@ -39,7 +31,7 @@ dungeon.traverse(child => {
 })
 pathfinder.setZoneData('dungeon', Pathfinding.createZone(navmesh.geometry))
 
-const { mesh, animations } = await loadModel({ file: 'character/fred.glb' })
+const { mesh, animations } = await loadModel({ file: 'character/fred.glb', size: null })
 const model = mesh.children[0].children[0]
 model.rotateX(-Math.PI * .5)
 const fred = new Fred({
@@ -49,13 +41,12 @@ const fred = new Fred({
 })
 model.scale.set(scale, scale, scale)
 model.position.set(-1, 0, 2)
-model.add(rearCamera, frontCamera)
-rearCamera.target = frontCamera.target = model.position
+camera.target = model.position
 
-const { mesh: ghoulScene, animations: ghoulAnimations } = await loadModel('character/ghoul.glb')
+const { mesh: ghoulScene, animations: ghoulAnimations } = await loadModel({ file: 'character/ghoul.glb', size: null })
 
 for (let i = 0; i < 4; i++) {
-  const model = cloneGLTF(ghoulScene.children[0].children[0])
+  const model = SkeletonUtils.clone(ghoulScene.children[0].children[0])
   const ghoul = new Ghoul({
     model,
     animations: ghoulAnimations,
@@ -74,23 +65,13 @@ const raycast = e => {
   if (intersects.length) fred.newPath(intersects[0].point, true)
 }
 
-const switchCamera = () => {
-  if (activeCamera == cameras.wideCamera)
-    activeCamera = cameras.rearCamera
-  else if (activeCamera == cameras.rearCamera)
-    activeCamera = cameras.frontCamera
-  else if (activeCamera == cameras.frontCamera)
-    activeCamera = cameras.wideCamera
-}
-
 /* LOOP */
 
 void function render() {
   const delta = clock.getDelta()
   requestAnimationFrame(render)
 
-  camera.position.lerp(activeCamera.getWorldPosition(new THREE.Vector3()), 0.1)
-  const pos = activeCamera.target.clone()
+  const pos = camera.target.clone()
   pos.y += 1.8
   camera.lookAt(pos)
 
@@ -101,6 +82,4 @@ void function render() {
 
 /* EVENTS */
 
-renderer.domElement.addEventListener('click', raycast, false)
-
-document.getElementById('camera').addEventListener('click', switchCamera)
+renderer.domElement.addEventListener('click', raycast)
