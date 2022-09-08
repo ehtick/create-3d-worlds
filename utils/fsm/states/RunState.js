@@ -1,5 +1,4 @@
 import State from './State.js'
-import keyboard from '/utils/classes/Keyboard.js'
 import { syncAnimation } from './utils.js'
 import { lerp } from '/utils/helpers.js'
 
@@ -28,11 +27,11 @@ export default class RunState extends State {
     this.turn(delta)
     this.move(delta)
 
-    if (keyboard.pressed.Space)
+    if (this.keyboard.pressed.Space)
       this.fsm.setState('jump')
 
-    if (!keyboard.capsLock) this.fsm.setState('walk')
-    if (!keyboard.up) this.fsm.setState('idle')
+    if (!this.keyboard.capsLock) this.fsm.setState('walk')
+    if (!this.keyboard.up) this.fsm.setState('idle')
   }
 
   exit() {

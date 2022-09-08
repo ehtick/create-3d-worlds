@@ -10,10 +10,10 @@ npx live-server
 ```
 
 ### AI
-- use fsm with ai
+- use fsm for ai (menjati walk i idle kod gonjenja)
 
 ### Physics
-- preraditi staru 2D fiziku u 3D
+- preraditi prostu 2D fiziku u 3D
 - ujednačiti createTerrain i druga fizička pomagala sa standardnim
 - spojiti physijs teren + kola
 - Razaranje zamka topom (možda može i model)

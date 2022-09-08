@@ -1,5 +1,4 @@
 import State from './State.js'
-import keyboard from '/utils/classes/Keyboard.js'
 import { syncAnimation } from './utils.js'
 import { lerp } from '/utils/helpers.js'
 
@@ -23,12 +22,12 @@ export default class WalkBackwardState extends State {
     this.turn(delta, 1)
     this.move(delta)
 
-    if (keyboard.pressed.Space)
+    if (this.keyboard.pressed.Space)
       this.fsm.setState('jump')
 
-    if (keyboard.pressed.Enter)
+    if (this.keyboard.pressed.Enter)
       this.fsm.setState('attack')
 
-    if (!keyboard.down) this.fsm.setState('idle')
+    if (!this.keyboard.down) this.fsm.setState('idle')
   }
 }

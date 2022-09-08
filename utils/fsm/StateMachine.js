@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
-import keyboard from '/utils/classes/Keyboard.js'
+import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { getHeight } from '/utils/helpers.js'
 
 import IdleState from './states/IdleState.js'
@@ -30,8 +30,9 @@ const mapAnims = (animations, mixer, dict) => {
 }
 
 export default class StateMachine {
-  constructor({ mesh, animations, dict, camera }) {
+  constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard }) {
     this.mesh = mesh
+    this.keyboard = keyboard
     this.mixer = new THREE.AnimationMixer(mesh.isGroup ? mesh.children[0] : mesh)
     this.actions = mapAnims(animations, this.mixer, dict)
     if (this.actions?.walk) this.actions.walkBackward = this.actions.walk
@@ -59,7 +60,7 @@ export default class StateMachine {
     this.mixer.update(delta)
 
     if (this.thirdPersonCamera)
-      if (keyboard.pressed.mouse) {
+      if (this.keyboard.pressed.mouse) {
         const height = getHeight(this.mesh)
         this.controls.target = this.mesh.position.clone().add(new THREE.Vector3(0, height, 0))
       } else {

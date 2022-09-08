@@ -1,5 +1,4 @@
 import State from './State.js'
-import keyboard from '/utils/classes/Keyboard.js'
 import { syncAnimation } from './utils.js'
 import { lerp } from '/utils/helpers.js'
 
@@ -24,22 +23,22 @@ export default class IdleState extends State {
     this.turn(delta)
     this.move(delta)
 
-    if (keyboard.up)
+    if (this.keyboard.up)
       this.fsm.setState('walk')
 
-    if (keyboard.down)
+    if (this.keyboard.down)
       this.fsm.setState('walkBackward')
 
-    if (keyboard.pressed.Space)
+    if (this.keyboard.pressed.Space)
       this.fsm.setState('jump')
 
-    if (keyboard.pressed.Enter)
+    if (this.keyboard.pressed.Enter)
       this.fsm.setState('attack')
 
-    if (keyboard.pressed.ControlLeft)
+    if (this.keyboard.pressed.ControlLeft)
       this.fsm.setState('special')
 
-    if (keyboard.pressed.Delete)
+    if (this.keyboard.pressed.Delete)
       this.fsm.setState('death')
   }
 }

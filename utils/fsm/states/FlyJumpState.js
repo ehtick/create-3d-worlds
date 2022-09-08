@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 import State from './State.js'
-import keyboard from '/utils/classes/Keyboard.js'
 
 const GRAVITY = 9
 const maxVelocity = 4.5
@@ -35,7 +34,7 @@ export default class FlyJumpState extends State {
 
     this.move(delta)
 
-    if (keyboard.pressed.Space && this.onGround() && velocity <= maxVelocity) {
+    if (this.keyboard.pressed.Space && this.onGround() && velocity <= maxVelocity) {
       velocity += velocityStep
       jumpTime = velocity * GRAVITY * delta * 3
       return

@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 import { RIGHT_ANGLE } from '/data/constants.js'
-import keyboard from '/utils/classes/Keyboard.js'
 
 const INERTIA = .5
 
@@ -11,6 +10,7 @@ export default class State {
     this.fsm = fsm
     this.name = name
     this.actions = fsm.actions
+    this.keyboard = fsm.keyboard
     this.action = fsm?.actions[name]
     this.prevState = ''
     this.t = 0
@@ -28,9 +28,9 @@ export default class State {
 
   turn(delta, sign = -1) {
     const angle = RIGHT_ANGLE * delta // 90 degrees per second
-    if (keyboard.left)
+    if (this.keyboard.left)
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -sign)
-    if (keyboard.right)
+    if (this.keyboard.right)
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * sign)
   }
 
