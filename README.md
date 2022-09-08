@@ -9,11 +9,10 @@ npm i
 npx live-server
 ```
 
+- nove modele primeri
+- saturn tekstura probati
 - BUG kad kachujin skače i pritiskam strelice
 - spojiti joystick i keyboard nekako da zajedno rade
-
-### AI
-- expolore yuka
 
 ### Physics
 - preraditi prostu 2D fiziku u 3D
