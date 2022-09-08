@@ -9,8 +9,7 @@ npm i
 npx live-server
 ```
 
-- smanjiti slike forest monster
-- ima BUG kad kachujin skače i pritiskam strelice
+- BUG kad kachujin skače i pritiskam strelice
 - spojiti joystick i keyboard nekako da zajedno rade
 
 ### AI
