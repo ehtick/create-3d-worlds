@@ -22,11 +22,12 @@ const states = {
 
 /* map animations with states */
 const mapAnims = (animations, mixer, dict) => {
+  const actions = {}
   for (const key in dict) {
     const clip = animations.find(anim => anim.name == dict[key])
-    dict[key] = mixer.clipAction(clip)
+    actions[key] = mixer.clipAction(clip)
   }
-  return dict
+  return actions
 }
 
 export default class StateMachine {
