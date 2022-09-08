@@ -1,5 +1,6 @@
-/* global THREE */
+/* global THREE, CANNON */
 import CannonHelper from './CannonHelper.js'
+import JoyStick from './JoyStick.js'
 
 const { randInt } = THREE.MathUtils
 
@@ -21,12 +22,9 @@ renderer.shadowMap.type = THREE.PCFShadowMap // Shadow
 document.body.appendChild(renderer.domElement)
 
 // ===================================================== cannon
-const debug = true
-const debugPhysics = true
 const fixedTimeStep = 1.0 / 60.0
 
 const helper = new CannonHelper(scene)
-const physics = {}
 
 const world = new CANNON.World()
 
@@ -46,7 +44,7 @@ const wheelGroundContactMaterial = new CANNON.ContactMaterial(wheelMaterial, gro
 world.addContactMaterial(wheelGroundContactMaterial)
 
 // ===================================================== add front & back lighting
-var light = new THREE.DirectionalLight(new THREE.Color('gray'), 1)
+let light = new THREE.DirectionalLight(new THREE.Color('gray'), 1)
 light.position.set(1, 1, 1).normalize()
 scene.add(light)
 
@@ -75,10 +73,10 @@ composer.addPass(renderPass)
 composer.addPass(hTilt)
 composer.addPass(effectCopy)
 
-var controls = new function() {
+let controls = new function () {
   this.hTilt = false
   this.hTiltR = 0.5
-  this.onChange = function() {
+  this.onChange = function () {
     hTilt.enabled = controls.hTilt
     hTilt.uniforms.r.value = controls.hTiltR
   }
@@ -146,14 +144,14 @@ Object.defineProperties(THREE.Object3D.prototype, {
 })
 
 // ===================================================== model
-var geometry = new THREE.BoxBufferGeometry(.5, 1, .5)
+let geometry = new THREE.BoxBufferGeometry(.5, 1, .5)
 /* We change the pivot point to be at the bottom of the cube, instead of its center. So we translate the whole geometry. */
 geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0.5, 0))
-var material = new THREE.MeshNormalMaterial({ transparent: true, opacity: 0 })
+let material = new THREE.MeshNormalMaterial({ transparent: true, opacity: 0 })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
-var light = new THREE.DirectionalLight(new THREE.Color('white'), .5)
+light = new THREE.DirectionalLight(new THREE.Color('white'), .5)
 light.position.set(0, 1, 0)
 light.castShadow = true
 light.target = mesh// shadow will follow mesh
@@ -179,7 +177,7 @@ loader.load('https://raw.githubusercontent.com/baronwatts/models/master/astronau
   player.scale.set(.25, .25, .25)
   mesh.add(player)
 
-  /*  var lightPlayer = new THREE.PointLight(new THREE.Color('wheat'), 10, .5);
+  /*  let lightPlayer = new THREE.PointLight(new THREE.Color('wheat'), 10, .5);
     mesh.add(lightPlayer);*/
 
   const mixer = new THREE.AnimationMixer(player)
@@ -192,7 +190,7 @@ loader.load('https://raw.githubusercontent.com/baronwatts/models/master/astronau
 // ===================================================== add Terrain
 const sizeX = 128, sizeY = 128, minHeight = 0, maxHeight = 60
 const startPosition = new CANNON.Vec3(0, maxHeight - 3, sizeY * 0.5 - 10)
-const img2matrix = function() {
+const img2matrix = function () {
 
   'use strict'
 
@@ -243,14 +241,14 @@ const img2matrix = function() {
 
   function fromUrl(url, width, depth, minHeight, maxHeight) {
 
-    return function() {
+    return function () {
 
       return new Promise((onFulfilled, onRejected) => {
 
         const image = new Image()
         image.crossOrigin = 'anonymous'
 
-        image.onload = function() {
+        image.onload = function () {
 
           const matrix = fromImage(image, width, depth, minHeight, maxHeight)
           onFulfilled(matrix)
@@ -294,10 +292,7 @@ Promise.all([
   const raycastHelperMesh = new THREE.Mesh(raycastHelperGeometry, new THREE.MeshNormalMaterial())
   scene.add(raycastHelperMesh)
 
-  // console.log( terrainBody.threemesh.children[0] );
-
-  check = function() {
-
+  check = function () {
     const raycaster = new THREE.Raycaster(mesh.position, new THREE.Vector3(0, -1, 0))
     const intersects = raycaster.intersectObject(terrainBody.threemesh.children[0])
     if (intersects.length > 0) {
@@ -323,10 +318,10 @@ Promise.all([
 })// end Promise
 
 // =========================================================================================== flag
-var geometry = new THREE.BoxBufferGeometry(0.15, 2, 0.15)
+geometry = new THREE.BoxBufferGeometry(0.15, 2, 0.15)
 /* We change the pivot point to be at the bottom of the cube, instead of its center. So we translate the whole geometry. */
 geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 1, 0))
-var material = new THREE.MeshNormalMaterial({ transparent: true, opacity: 0 })
+material = new THREE.MeshNormalMaterial({ transparent: true, opacity: 0 })
 const flagLocation = new THREE.Mesh(geometry, material)
 scene.add(flagLocation)
 flagLocation.position.x = 10
@@ -334,8 +329,8 @@ flagLocation.position.z = 50
 flagLocation.rotateY(Math.PI)
 
 // flag pole
-var geometry = new THREE.CylinderGeometry(.03, .03, 4, 32)
-var material = new THREE.MeshPhongMaterial({ color: new THREE.Color('gray') })
+geometry = new THREE.CylinderGeometry(.03, .03, 4, 32)
+material = new THREE.MeshPhongMaterial({ color: new THREE.Color('gray') })
 const cylinder = new THREE.Mesh(geometry, material)
 cylinder.geometry.center()
 cylinder.castShadow = true
@@ -346,7 +341,7 @@ const pointflagLight = new THREE.PointLight(new THREE.Color('red'), 1.5, 5)
 pointflagLight.position.set(0, 0, 0)
 flagLocation.add(pointflagLight)
 
-var flagLight = new THREE.DirectionalLight(new THREE.Color('white'), 0)
+let flagLight = new THREE.DirectionalLight(new THREE.Color('white'), 0)
 flagLight.position.set(0, 0, 0)
 flagLight.castShadow = true
 flagLight.target = flagLocation
@@ -370,30 +365,6 @@ function addModifier(mesh) {
 }
 modifier.addModifier(cloth)
 cloth.lockXMin(0)
-computeNormals: false
-
-// ===================================================== add tree
-// 3D Model from http://www.sweethome3d.com/searchModels.jsp?model=tree&x=0&y=0
-/* var loader = new THREE.LegacyJSONLoader();
-
-loader.load("https://raw.githubusercontent.com/baronwatts/models/master/moon-vehicle.js", function(geometry, materials) {
-
-     var mat = new THREE.MeshLambertMaterial({
-          side: THREE.BackSide,
-          vertexColors: THREE.FaceColors,
-          wireframe: false
-        });
-
-    var obj = new THREE.Mesh(geometry, mat);
-    obj.scale.set(.15, .15, .15);
-    obj.position.y = -.75;
-    obj.position.x = -3;
-    obj.position.z = 3;
-    obj.castShadow = true;
-    flagLocation.add(obj);
-
-});
-*/
 
 // ===================================================== add sky particles
 const textureLoader = new THREE.TextureLoader()
@@ -430,108 +401,6 @@ sparks.geometry.vertices.map((d, i) => {
   d.x = randInt(-500, 500)
   d.z = randInt(-500, 500)
 })
-
-// ===================================================== Joystick
-class JoyStick {
-  constructor(options) {
-    const circle = document.createElement('div')
-    circle.style.cssText = 'position:absolute; bottom:35px; width:80px; height:80px; background:rgba(126, 126, 126, 0.5); border:#444 solid medium; border-radius:50%; left:50%; transform:translateX(-50%);'
-    const thumb = document.createElement('div')
-    thumb.style.cssText = 'position: absolute; left: 20px; top: 20px; width: 40px; height: 40px; border-radius: 50%; background: #fff;'
-    circle.appendChild(thumb)
-    document.body.appendChild(circle)
-    this.domElement = thumb
-    this.maxRadius = options.maxRadius || 40
-    this.maxRadiusSquared = this.maxRadius * this.maxRadius
-    this.onMove = options.onMove
-    this.game = options.game
-    this.origin = { left: this.domElement.offsetLeft, top: this.domElement.offsetTop }
-    this.rotationDamping = options.rotationDamping || 0.06
-    this.moveDamping = options.moveDamping || 0.01
-    if (this.domElement != undefined) {
-      const joystick = this
-      if ('ontouchstart' in window)
-        this.domElement.addEventListener('touchstart', evt => {
-          joystick.tap(evt)
-        })
-      else
-        this.domElement.addEventListener('mousedown', evt => {
-          joystick.tap(evt)
-        })
-
-    }
-  }
-
-  getMousePosition(evt) {
-    const clientX = evt.targetTouches ? evt.targetTouches[0].pageX : evt.clientX
-    const clientY = evt.targetTouches ? evt.targetTouches[0].pageY : evt.clientY
-    return { x: clientX, y: clientY }
-  }
-
-  tap(evt) {
-    evt = evt || window.event
-    // get the mouse cursor position at startup:
-    this.offset = this.getMousePosition(evt)
-    const joystick = this
-    if ('ontouchstart' in window) {
-      document.ontouchmove = function(evt) {
-        joystick.move(evt)
-      }
-      document.ontouchend = function(evt) {
-        joystick.up(evt)
-      }
-    } else {
-      document.onmousemove = function(evt) {
-        joystick.move(evt)
-      }
-      document.onmouseup = function(evt) {
-        joystick.up(evt)
-      }
-    }
-  }
-
-  move(evt) {
-    evt = evt || window.event
-    const mouse = this.getMousePosition(evt)
-    // calculate the new cursor position:
-    let left = mouse.x - this.offset.x
-    let top = mouse.y - this.offset.y
-    // this.offset = mouse;
-
-    const sqMag = left * left + top * top
-    if (sqMag > this.maxRadiusSquared) {
-      // Only use sqrt if essential
-      const magnitude = Math.sqrt(sqMag)
-      left /= magnitude
-      top /= magnitude
-      left *= this.maxRadius
-      top *= this.maxRadius
-    }
-    // set the element's new position:
-    this.domElement.style.top = `${top + this.domElement.clientHeight / 2}px`
-    this.domElement.style.left = `${left + this.domElement.clientWidth / 2}px`
-
-    // @TODO use nipple,js
-    const forward = -(top - this.origin.top + this.domElement.clientHeight / 2) / this.maxRadius
-    const turn = (left - this.origin.left + this.domElement.clientWidth / 2) / this.maxRadius
-
-    if (this.onMove != undefined) this.onMove.call(this.game, forward, turn)
-  }
-
-  up(evt) {
-    if ('ontouchstart' in window) {
-      document.ontouchmove = null
-      document.touchend = null
-    } else {
-      document.onmousemove = null
-      document.onmouseup = null
-    }
-    this.domElement.style.top = `${this.origin.top}px`
-    this.domElement.style.left = `${this.origin.left}px`
-
-    this.onMove.call(this.game, 0, 0)
-  }
-}// end joystick class
 
 const js = { forward: 0, turn: 0 }
 
