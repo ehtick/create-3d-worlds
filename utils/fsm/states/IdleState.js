@@ -23,22 +23,22 @@ export default class IdleState extends State {
     this.turn(delta)
     this.move(delta)
 
-    if (this.fsm.keyboard.up)
+    if (this.keyboard.up)
       this.fsm.setState('walk')
 
-    if (this.fsm.keyboard.down)
+    if (this.keyboard.down)
       this.fsm.setState('walkBackward')
 
-    if (this.fsm.keyboard.pressed.Space)
+    if (this.keyboard.pressed.Space)
       this.fsm.setState('jump')
 
-    if (this.fsm.keyboard.pressed.Enter)
+    if (this.keyboard.pressed.Enter)
       this.fsm.setState('attack')
 
-    if (this.fsm.keyboard.pressed.ControlLeft)
+    if (this.keyboard.pressed.ControlLeft)
       this.fsm.setState('special')
 
-    if (this.fsm.keyboard.pressed.Delete)
+    if (this.keyboard.pressed.Delete)
       this.fsm.setState('death')
   }
 }

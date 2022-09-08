@@ -27,11 +27,11 @@ export default class RunState extends State {
     this.turn(delta)
     this.move(delta)
 
-    if (this.fsm.keyboard.pressed.Space)
+    if (this.keyboard.pressed.Space)
       this.fsm.setState('jump')
 
-    if (!this.fsm.keyboard.capsLock) this.fsm.setState('walk')
-    if (!this.fsm.keyboard.up) this.fsm.setState('idle')
+    if (!this.keyboard.capsLock) this.fsm.setState('walk')
+    if (!this.keyboard.up) this.fsm.setState('idle')
   }
 
   exit() {

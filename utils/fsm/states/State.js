@@ -9,11 +9,17 @@ export default class State {
   constructor(fsm, name) {
     this.fsm = fsm
     this.name = name
-    this.actions = fsm.actions // TODO: refactor to getters
-    this.fsm.keyboard = fsm.keyboard
     this.action = fsm?.actions[name]
     this.prevState = ''
     this.t = 0
+  }
+
+  get keyboard() {
+    return this.fsm.keyboard
+  }
+
+  get actions() {
+    return this.fsm.actions
   }
 
   enter(oldState) {
@@ -28,9 +34,9 @@ export default class State {
 
   turn(delta, sign = -1) {
     const angle = RIGHT_ANGLE * delta // 90 degrees per second
-    if (this.fsm.keyboard.left)
+    if (this.keyboard.left)
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -sign)
-    if (this.fsm.keyboard.right)
+    if (this.keyboard.right)
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * sign)
   }
 
