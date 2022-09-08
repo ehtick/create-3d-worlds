@@ -71,7 +71,7 @@ export default class StateMachine {
   }
 
   get action() {
-    return this.actions[this.currentState.name]
+    return this.currentState.action
   }
 
   randomizeAction() {
