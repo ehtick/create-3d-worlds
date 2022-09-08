@@ -88,51 +88,45 @@ loader.load('https://raw.githubusercontent.com/baronwatts/models/master/astronau
 // ===================================================== add Terrain
 const sizeX = 128, sizeY = 128, minHeight = 0, maxHeight = 60
 
-let check
-Promise.all([
-  fromUrl('/assets/heightmaps/wiki.png', sizeX, sizeY, minHeight, maxHeight)(),
-]).then(data => {
-  const matrix = data[0]
+const data = await fromUrl('/assets/heightmaps/wiki.png', sizeX, sizeY, minHeight, maxHeight)
+const matrix = data
 
-  const terrainShape = new CANNON.Heightfield(matrix, { elementSize: 10 })
-  const terrainBody = new CANNON.Body({ mass: 0 })
+const terrainShape = new CANNON.Heightfield(matrix, { elementSize: 10 })
+const terrainBody = new CANNON.Body({ mass: 0 })
 
-  terrainBody.addShape(terrainShape)
-  terrainBody.position.set(-sizeX * terrainShape.elementSize / 2, -10, sizeY * terrainShape.elementSize / 2)
-  terrainBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2)
-  world.add(terrainBody)
-  helper.addVisual(terrainBody, 'landscape')
+terrainBody.addShape(terrainShape)
+terrainBody.position.set(-sizeX * terrainShape.elementSize / 2, -10, sizeY * terrainShape.elementSize / 2)
+terrainBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2)
+world.add(terrainBody)
+helper.addVisual(terrainBody, 'landscape')
 
-  const raycastHelperGeometry = new THREE.CylinderGeometry(0, 1, 5, 1.5)
-  raycastHelperGeometry.translate(0, 0, 0)
-  raycastHelperGeometry.rotateX(Math.PI / 2)
-  const raycastHelperMesh = new THREE.Mesh(raycastHelperGeometry, new THREE.MeshNormalMaterial())
-  scene.add(raycastHelperMesh)
+const raycastHelperGeometry = new THREE.CylinderGeometry(0, 1, 5, 1.5)
+raycastHelperGeometry.translate(0, 0, 0)
+raycastHelperGeometry.rotateX(Math.PI / 2)
+const raycastHelperMesh = new THREE.Mesh(raycastHelperGeometry, new THREE.MeshNormalMaterial())
+scene.add(raycastHelperMesh)
 
-  check = function() {
-    const raycaster = new THREE.Raycaster(mesh.position, new THREE.Vector3(0, -1, 0))
-    const intersects = raycaster.intersectObject(terrainBody.threemesh.children[0])
-    if (intersects.length > 0) {
-      raycastHelperMesh.position.set(0, 0, 0)
-      raycastHelperMesh.lookAt(intersects[0].face.normal)
-      raycastHelperMesh.position.copy(intersects[0].point)
-    }
-    // position objects ontop of the terrain
-    mesh.position.y = intersects && intersects[0] ? intersects[0].point.y + 0.1 : 30
+const check = function() {
+  const raycaster = new THREE.Raycaster(mesh.position, new THREE.Vector3(0, -1, 0))
+  const intersects = raycaster.intersectObject(terrainBody.threemesh.children[0])
+  if (intersects.length > 0) {
+    raycastHelperMesh.position.set(0, 0, 0)
+    raycastHelperMesh.lookAt(intersects[0].face.normal)
+    raycastHelperMesh.position.copy(intersects[0].point)
+  }
+  // position objects ontop of the terrain
+  mesh.position.y = intersects && intersects[0] ? intersects[0].point.y + 0.1 : 30
 
-    // raycast flag
-    const raycaster2 = new THREE.Raycaster(flagLocation.position, new THREE.Vector3(0, -1, 0))
-    const intersects2 = raycaster2.intersectObject(terrainBody.threemesh.children[0])
+  // raycast flag
+  const raycaster2 = new THREE.Raycaster(flagLocation.position, new THREE.Vector3(0, -1, 0))
+  const intersects2 = raycaster2.intersectObject(terrainBody.threemesh.children[0])
 
-    // position objects ontop of the terrain
-    flagLocation.position.y = intersects2 && intersects2[0] ? intersects2[0].point.y + .5 : 30
-    flagLight.position.y = flagLocation.position.y + 50
-    flagLight.position.x = flagLocation.position.x + 5
-    flagLight.position.z = flagLocation.position.z
-
-  }// end check
-
-})// end Promise
+  // position objects ontop of the terrain
+  flagLocation.position.y = intersects2 && intersects2[0] ? intersects2[0].point.y + .5 : 30
+  flagLight.position.y = flagLocation.position.y + 50
+  flagLight.position.x = flagLocation.position.x + 5
+  flagLight.position.z = flagLocation.position.z
+}
 
 // =========================================================================================== flag
 geometry = new THREE.BoxBufferGeometry(0.15, 2, 0.15)

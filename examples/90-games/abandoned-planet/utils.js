@@ -29,15 +29,13 @@ function fromImage(image, width, depth, minHeight, maxHeight) {
 }
 
 export function fromUrl(url, width, depth, minHeight, maxHeight) {
-  return function() {
-    return new Promise((onFulfilled, onRejected) => {
-      const image = new Image()
-      image.crossOrigin = 'anonymous'
-      image.onload = function() {
-        const matrix = fromImage(image, width, depth, minHeight, maxHeight)
-        onFulfilled(matrix)
-      }
-      image.src = url
-    })
-  }
+  return new Promise((onFulfilled, onRejected) => {
+    const image = new Image()
+    image.crossOrigin = 'anonymous'
+    image.onload = function() {
+      const matrix = fromImage(image, width, depth, minHeight, maxHeight)
+      onFulfilled(matrix)
+    }
+    image.src = url
+  })
 }
