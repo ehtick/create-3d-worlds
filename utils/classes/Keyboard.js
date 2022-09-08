@@ -1,5 +1,5 @@
 /*
-* Singleton object for user input (including keyboard, touchscreen and mouse)
+* Handle user input (including keyboard, touchscreen and mouse)
 * see keycode.info
 */
 let startX = null

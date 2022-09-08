@@ -1,8 +1,8 @@
-/* global Sprite, Scene, keysDown */
-/* eslint-disable curly */
+/* global Sprite, Scene */
+import keyboard from '/utils/classes/Keyboard.js'
 
 let message = ''
-let fuel = 200
+let fuel = 2000
 
 const scene = new Scene()
 scene.setBG('black')
@@ -27,20 +27,20 @@ function Lander() {
 
   lander.proveriTipke = function() {
     this.setImage(this.imgDefault)
-    if (keysDown[K_S]) {
+    if (keyboard.down) {
       this.setImage(this.imgUp)
       this.addVector(0, .3)
       this.falling = true
       fuel--
     }
 
-    if (keysDown[K_A]) {
+    if (keyboard.left) {
       this.setImage(this.imgLeft)
       this.addVector(90, .1)
       fuel -= 0.5
     }
 
-    if (keysDown[K_D]) {
+    if (keyboard.right) {
       this.setImage(this.imgRight)
       this.addVector(270, .1)
       fuel -= 0.5
@@ -54,23 +54,12 @@ function Lander() {
   }
 
   lander.checkLanding = function() {
-    if (this.falling) {
-      if (this.y > 525) {
-        if (this.x < platform.x + 10) {
-          if (this.x > platform.x - 10) {
-            if (this.dx < .2) {
-              if (this.dx > -.2) {
-                if (this.dy < 2) {
-                  this.setSpeed(0)
-                  this.falling = false
-                  message = 'Nice Landing!'
-                }
-              }
-            }
-          } // end 'x too big' if
-        } // end 'x too small' if
-      } // end 'y not big enough' if
-    } // end 'are we falling?' if
+    if (this.falling && this.y > 525 && this.x < platform.x + 10 && this.x > platform.x - 10
+      && this.dx < .2 && this.dx > -.2 && this.dy < 2) {
+      this.setSpeed(0)
+      this.falling = false
+      message = 'Nice Landing!'
+    }
   }
   return lander
 }
@@ -83,8 +72,14 @@ function Platform() {
   return platform
 }
 
-// eslint-disable-next-line no-unused-vars
-function update() {
+/* LOOP */
+
+let i = 0
+
+void function loop() {
+  requestAnimationFrame(loop)
+  if (i++ % 2) return
+
   scene.clear()
   lander.checkGravity()
   if (fuel > 0)
@@ -98,4 +93,4 @@ function update() {
 
   lander.update()
   platform.update()
-}
+}()
