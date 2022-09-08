@@ -3,7 +3,7 @@
 const scene = new THREE.Scene()
 
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, .01, 100000)
-camera.position.set(0, 10, 100)
+camera.position.set(0, 5, 10)
 camera.lookAt(scene.position)
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
@@ -18,14 +18,12 @@ light.position.set(1, 1, 1)
 scene.add(light)
 
 // =========================================================================================== flag
-let geometry = new THREE.BoxBufferGeometry(0.15, 2, 0.15)
-/* We change the pivot point to be at the bottom of the cube, instead of its center. So we translate the whole geometry. */
+let geometry = new THREE.BoxGeometry(0.15, 2, 0.15)
+/* change the pivot point to be at the bottom of the cube instead of its center */
 geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 1, 0))
 let material = new THREE.MeshNormalMaterial({ transparent: true, opacity: 0 })
 const flagLocation = new THREE.Mesh(geometry, material)
 scene.add(flagLocation)
-flagLocation.position.x = 10
-flagLocation.position.z = 50
 flagLocation.rotateY(Math.PI)
 
 // flag pole
@@ -37,7 +35,7 @@ cylinder.castShadow = true
 flagLocation.add(cylinder)
 
 // flag
-const texture = new THREE.TextureLoader().load('flag.webp')
+const texture = new THREE.TextureLoader().load('zastava.jpg')
 const plane = new THREE.Mesh(new THREE.PlaneGeometry(600, 430, 20, 20, true), new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide }))
 plane.scale.set(.0025, .0025, .0025)
 plane.position.set(0, 1.5, 0)
@@ -58,6 +56,6 @@ cloth.lockXMin(0)
 
 void function loop() {
   requestAnimationFrame(loop)
-  modifier?.apply()
+  modifier.apply()
   renderer.render(scene, camera)
 }()
