@@ -157,7 +157,7 @@ flagLight.target = flagLocation
 scene.add(flagLight)
 
 // flag
-const texture = new THREE.TextureLoader().load('assets/flag.webp')
+const texture = new THREE.TextureLoader().load('/assets/images/sfrj.png')
 const plane = new THREE.Mesh(new THREE.PlaneGeometry(600, 430, 20, 20, true), new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide }))
 plane.scale.set(.0025, .0025, .0025)
 plane.position.set(0, 1.5, 0)
