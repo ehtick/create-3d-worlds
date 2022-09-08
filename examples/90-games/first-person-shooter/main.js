@@ -1,3 +1,5 @@
+import keyboard from '/utils/classes/Keyboard.js'
+
 /* global THREE */
 
 THREE.FirstPersonControls = function(camera, MouseMoveSensitivity = 0.002, speed = 800.0, jumpHeight = 350.0, height = 30.0) {
@@ -9,12 +11,7 @@ THREE.FirstPersonControls = function(camera, MouseMoveSensitivity = 0.002, speed
   self.jumpHeight = self.height + jumpHeight
   self.click = false
 
-  let moveForward = false
-  let moveBackward = false
-  let moveLeft = false
-  let moveRight = false
   let canJump = false
-  let run = false
 
   const velocity = new THREE.Vector3()
   const direction = new THREE.Vector3()
@@ -44,92 +41,35 @@ THREE.FirstPersonControls = function(camera, MouseMoveSensitivity = 0.002, speed
     pitchObject.rotation.x = Math.max(- PI_2, Math.min(PI_2, pitchObject.rotation.x))
   }
 
-  const onKeyDown = (function(event) {
+  const onKeyDown = event => {
     if (self.enabled === false) return
     switch (event.keyCode) {
-      case 38: // up
-      case 87: // w
-        moveForward = true
-        break
-
-      case 37: // left
-      case 65: // a
-        moveLeft = true
-        break
-
-      case 40: // down
-      case 83: // s
-        moveBackward = true
-        break
-
-      case 39: // right
-      case 68: // d
-        moveRight = true
-        break
-
       case 32: // space
-        if (canJump === true) velocity.y += run === false ? self.jumpHeight : self.jumpHeight + 50
+        if (canJump === true) velocity.y += (!keyboard.run) ? self.jumpHeight : self.jumpHeight + 50
         canJump = false
         break
-
-      case 16: // shift
-        run = true
-        break
     }
-  }).bind(this)
+  }
 
-  const onKeyUp = (function(event) {
-    if (self.enabled === false) return
-
-    switch (event.keyCode) {
-
-      case 38: // up
-      case 87: // w
-        moveForward = false
-        break
-
-      case 37: // left
-      case 65: // a
-        moveLeft = false
-        break
-
-      case 40: // down
-      case 83: // s
-        moveBackward = false
-        break
-
-      case 39: // right
-      case 68: // d
-        moveRight = false
-        break
-
-      case 16: // shift
-        run = false
-        break
-    }
-  }).bind(this)
-
-  const onMouseDownClick = (function(event) {
+  const onMouseDownClick = event => {
     if (self.enabled === false) return
     self.click = true
-  }).bind(this)
+  }
 
-  const onMouseUpClick = (function(event) {
+  const onMouseUpClick = event => {
     if (self.enabled === false) return
     self.click = false
-  }).bind(this)
+  }
 
   self.dispose = function() {
     document.removeEventListener('mousemove', onMouseMove, false)
     document.removeEventListener('keydown', onKeyDown, false)
-    document.removeEventListener('keyup', onKeyUp, false)
     document.removeEventListener('mousedown', onMouseDownClick, false)
     document.removeEventListener('mouseup', onMouseUpClick, false)
   }
 
   document.addEventListener('mousemove', onMouseMove, false)
   document.addEventListener('keydown', onKeyDown, false)
-  document.addEventListener('keyup', onKeyUp, false)
   document.addEventListener('mousedown', onMouseDownClick, false)
   document.addEventListener('mouseup', onMouseUpClick, false)
 
@@ -147,15 +87,15 @@ THREE.FirstPersonControls = function(camera, MouseMoveSensitivity = 0.002, speed
     velocity.x -= velocity.x * 10.0 * delta
     velocity.z -= velocity.z * 10.0 * delta
 
-    direction.z = Number(moveForward) - Number(moveBackward)
-    direction.x = Number(moveRight) - Number(moveLeft)
+    direction.z = (keyboard.up ? 1 : 0) - (keyboard.down ? 1 : 0)
+    direction.x = (keyboard.right ? 1 : 0) - (keyboard.left ? 1 : 0)
     direction.normalize()
 
     let currentSpeed = self.speed
-    if (run && (moveForward || moveBackward || moveLeft || moveRight)) currentSpeed += (currentSpeed * 1.1)
+    if (keyboard.run && (keyboard.up || keyboard.down || keyboard.left || keyboard.right)) currentSpeed += (currentSpeed * 1.1)
 
-    if (moveForward || moveBackward) velocity.z -= direction.z * currentSpeed * delta
-    if (moveLeft || moveRight) velocity.x -= direction.x * currentSpeed * delta
+    if (keyboard.up || keyboard.down) velocity.z -= direction.z * currentSpeed * delta
+    if (keyboard.left || keyboard.right) velocity.x -= direction.x * currentSpeed * delta
 
     self.getObject().translateX(-velocity.x * delta)
     self.getObject().translateZ(velocity.z * delta)
@@ -163,10 +103,8 @@ THREE.FirstPersonControls = function(camera, MouseMoveSensitivity = 0.002, speed
     self.getObject().position.y += (velocity.y * delta)
 
     if (self.getObject().position.y < self.height) {
-
       velocity.y = 0
       self.getObject().position.y = self.height
-
       canJump = true
     }
     prevTime = time
@@ -180,7 +118,6 @@ init()
 function init() {
 
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 3000)
-
   world = new THREE.Group()
 
   raycaster = new THREE.Raycaster(camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
@@ -249,7 +186,6 @@ function init() {
     mesh.matrixAutoUpdate = false
     world.add(mesh)
   }
-
   scene.add(world)
 }
 

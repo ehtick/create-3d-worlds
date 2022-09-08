@@ -93,6 +93,10 @@ class Keyboard {
     return this.pressed.ArrowRight || this.pressed.KeyD
   }
 
+  get run() {
+    return this.capsLock
+  }
+
   get space() {
     return this.pressed.Space
   }
