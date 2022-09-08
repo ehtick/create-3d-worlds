@@ -1,5 +1,6 @@
-import * as THREE from 'three'
+/* global ModifierStack, Cloth */
 import '/libs/modifiers.min.js'
+import * as THREE from 'three'
 import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 
@@ -17,7 +18,7 @@ const pole = new THREE.Mesh(geometry, material)
 pole.castShadow = true
 flagGroup.add(pole)
 
-const texture = new THREE.TextureLoader().load('zastava.jpg')
+const texture = new THREE.TextureLoader().load('proleterska-zastava.jpg')
 const flag = new THREE.Mesh(
   new THREE.PlaneGeometry(600, 430, 20, 20, true),
   new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide }))
