@@ -9,7 +9,9 @@ npm i
 npx live-server
 ```
 
-ima BUG kad kachujin skače i pritiskam strelice
+- smanjiti slike forest monster
+- ima BUG kad kachujin skače i pritiskam strelice
+- spojiti joystick i keyboard nekako da zajedno rade
 
 ### AI
 - expolore yuka
@@ -52,6 +54,7 @@ ima BUG kad kachujin skače i pritiskam strelice
   - sletanje na platformu (naći 2d primer)
     - sletanje na mesec (textured moon)
   - dodati proceduralnu planetu http://colordodge.com/ProceduralPlanet/?seed=Ridi%20Genow
+  - mozda iskoristiti astronauta da luta po planeti https://codepen.io/b29/pen/LoaRKx
 
 - Grad
   - dodati park ili trg u centru
