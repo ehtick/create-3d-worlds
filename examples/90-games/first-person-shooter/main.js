@@ -173,51 +173,6 @@ THREE.FirstPersonControls = function(camera, MouseMoveSensitivity = 0.002, speed
   }
 }
 
-const instructions = document.querySelector('#instructions')
-const havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document
-if (havePointerLock) {
-  const element = document.body
-  const pointerlockchange = function(event) {
-    if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
-      controls.enabled = true
-      instructions.style.display = 'none'
-    } else {
-      controls.enabled = false
-      instructions.style.display = '-webkit-box'
-    }
-  }
-  const pointerlockerror = function(event) {
-    instructions.style.display = 'none'
-  }
-
-  document.addEventListener('pointerlockchange', pointerlockchange, false)
-  document.addEventListener('mozpointerlockchange', pointerlockchange, false)
-  document.addEventListener('webkitpointerlockchange', pointerlockchange, false)
-  document.addEventListener('pointerlockerror', pointerlockerror, false)
-  document.addEventListener('mozpointerlockerror', pointerlockerror, false)
-  document.addEventListener('webkitpointerlockerror', pointerlockerror, false)
-
-  instructions.addEventListener('click', event => {
-    element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock
-    if (/Firefox/i.test(navigator.userAgent)) {
-      var fullscreenchange = function(event) {
-        if (document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element) {
-          document.removeEventListener('fullscreenchange', fullscreenchange)
-          document.removeEventListener('mozfullscreenchange', fullscreenchange)
-          element.requestPointerLock()
-        }
-      }
-      document.addEventListener('fullscreenchange', fullscreenchange, false)
-      document.addEventListener('mozfullscreenchange', fullscreenchange, false)
-      element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen
-      element.requestFullscreen()
-    } else
-      element.requestPointerLock()
-
-  }, false)
-} else
-  instructions.innerHTML = 'Your browser not suported PointerLock'
-
 let camera, scene, renderer, controls, raycaster, arrow, world
 
 init()
@@ -278,7 +233,7 @@ function init() {
   const boxGeometry = new THREE.BoxBufferGeometry(1, 1, 1)
   boxGeometry.translate(0, 0.5, 0)
 
-  for (let i = 0; i < 500; i ++) {
+  for (let i = 0; i < 500; i++) {
     const boxMaterial = new THREE.MeshStandardMaterial({ color: Math.random() * 0xffffff, flatShading: false, vertexColors: false })
 
     const mesh = new THREE.Mesh(boxGeometry, boxMaterial)
@@ -298,7 +253,7 @@ function init() {
   scene.add(world)
 }
 
-var particles = new Array()
+const particles = new Array()
 
 function makeParticles(intersectPosition) {
   const totalParticles = 80
@@ -337,7 +292,7 @@ function makeParticles(intersectPosition) {
   points.prototype.constructor = points
   points.prototype.update = function(index) {
     let pCount = this.constructor.geometry.vertices.length
-	  let positionYSum = 0
+    let positionYSum = 0
     while (pCount--) {
       const position = this.constructor.geometry.vertices[pCount]
       const oldPosition = this.constructor.geometry.oldvertices[pCount]
@@ -364,7 +319,7 @@ function makeParticles(intersectPosition) {
         // particle touched the ground
         oldPositionY = position.y
         position.y = oldPositionY - (velocity.y * .3)
-		    positionYSum += 1
+        positionYSum += 1
       }
       this.constructor.geometry.oldvertices[pCount] = [oldPositionX, oldPositionY, oldPositionZ]
     }
@@ -373,7 +328,7 @@ function makeParticles(intersectPosition) {
 
     if (positionYSum >= totalParticles) {
       particles.splice(index, 1)
-	    scene.remove(this.constructor)
+      scene.remove(this.constructor)
       console.log('particle removed')
     }
   }
@@ -406,7 +361,7 @@ void function loop() {
     controls.update()
 
     raycaster.set(camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
-    scene.remove (arrow)
+    scene.remove(arrow)
     arrow = new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 5, 0x000000)
     scene.add(arrow)
 
@@ -427,3 +382,19 @@ void function loop() {
   }
   renderer.render(scene, camera)
 }()
+
+/* EVENTS */
+
+const instructions = document.querySelector('#instructions')
+
+document.addEventListener('pointerlockchange', e => {
+  if (document.pointerLockElement === document.body) {
+    controls.enabled = true
+    instructions.style.display = 'none'
+  } else {
+    controls.enabled = false
+    instructions.style.display = '-webkit-box'
+  }
+})
+
+instructions.addEventListener('click', () => document.body.requestPointerLock())
