@@ -3,9 +3,7 @@ import CannonHelper from './CannonHelper.js'
 import JoyStick from './JoyStick.js'
 
 const { randInt } = THREE.MathUtils
-
-// flag wave animation
-let modifier, cloth
+const clock = new THREE.Clock()
 
 // ===================================================== scene
 const scene = new THREE.Scene()
@@ -40,7 +38,6 @@ const wheelGroundContactMaterial = new CANNON.ContactMaterial(wheelMaterial, gro
   contactEquationStiffness: 1000
 })
 
-// We must add the contact materials to the world
 world.addContactMaterial(wheelGroundContactMaterial)
 
 // ===================================================== add front & back lighting
@@ -48,104 +45,9 @@ let light = new THREE.DirectionalLight(new THREE.Color('gray'), 1)
 light.position.set(1, 1, 1).normalize()
 scene.add(light)
 
-// ===================================================== resize
-window.addEventListener('resize', () => {
-  const width = window.innerWidth
-  const height = window.innerHeight
-  renderer.setSize(width, height)
-  camera.aspect = width / height
-  camera.updateProjectionMatrix()
-})
-
-// ========================================================== effects
-const SCALE = 2
-
-const hTilt = new THREE.ShaderPass(THREE.HorizontalTiltShiftShader)
-hTilt.enabled = false
-hTilt.uniforms.h.value = 4 / (SCALE * window.innerHeight)
-
-const renderPass = new THREE.RenderPass(scene, camera)
-const effectCopy = new THREE.ShaderPass(THREE.CopyShader)
-effectCopy.renderToScreen = true
-
-const composer = new THREE.EffectComposer(renderer)
-composer.addPass(renderPass)
-composer.addPass(hTilt)
-composer.addPass(effectCopy)
-
-let controls = new function () {
-  this.hTilt = false
-  this.hTiltR = 0.5
-  this.onChange = function () {
-    hTilt.enabled = controls.hTilt
-    hTilt.uniforms.r.value = controls.hTiltR
-  }
-}
-
-const gui = new dat.GUI()
-gui.add(controls, 'hTilt').onChange(controls.onChange)
-gui.add(controls, 'hTiltR', 0, 1).onChange(controls.onChange)
-
-// activate tilt effect
-document.querySelector('.dg .c input[type="checkbox"]').click()
-dat.GUI.toggleHide()
-
-// =========================================================================================== add tweening
-// https://greensock.com/forums/topic/16993-threejs-properties/
-Object.defineProperties(THREE.Object3D.prototype, {
-  x: {
-    get() {
-      return this.position.x
-    },
-    set(v) {
-      this.position.x = v
-    }
-  },
-  y: {
-    get() {
-      return this.position.y
-    },
-    set(v) {
-      this.position.y = v
-    }
-  },
-  z: {
-    get() {
-      return this.position.z
-    },
-    set(v) {
-      this.position.z = v
-    }
-  },
-  rotationZ: {
-    get() {
-      return this.rotation.x
-    },
-    set(v) {
-      this.rotation.x = v
-    }
-  },
-  rotationY: {
-    get() {
-      return this.rotation.y
-    },
-    set(v) {
-      this.rotation.y = v
-    }
-  },
-  rotationX: {
-    get() {
-      return this.rotation.z
-    },
-    set(v) {
-      this.rotation.z = v
-    }
-  }
-})
-
 // ===================================================== model
 let geometry = new THREE.BoxBufferGeometry(.5, 1, .5)
-/* We change the pivot point to be at the bottom of the cube, instead of its center. So we translate the whole geometry. */
+/* change pivot point to be at the bottom of the cube, instead of center */
 geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0.5, 0))
 let material = new THREE.MeshNormalMaterial({ transparent: true, opacity: 0 })
 const mesh = new THREE.Mesh(geometry, material)
@@ -161,7 +63,6 @@ mesh.add(light)
 const mixers = []
 let clip1
 let clip2
-let clip3
 
 const loader = new THREE.GLTFLoader()
 loader.load('https://raw.githubusercontent.com/baronwatts/models/master/astronaut.glb', object => {
@@ -177,30 +78,21 @@ loader.load('https://raw.githubusercontent.com/baronwatts/models/master/astronau
   player.scale.set(.25, .25, .25)
   mesh.add(player)
 
-  /*  let lightPlayer = new THREE.PointLight(new THREE.Color('wheat'), 10, .5);
-    mesh.add(lightPlayer);*/
-
   const mixer = new THREE.AnimationMixer(player)
   clip1 = mixer.clipAction(object.animations[0])
   clip2 = mixer.clipAction(object.animations[1])
   mixers.push(mixer)
-
 })
 
 // ===================================================== add Terrain
 const sizeX = 128, sizeY = 128, minHeight = 0, maxHeight = 60
-const startPosition = new CANNON.Vec3(0, maxHeight - 3, sizeY * 0.5 - 10)
-const img2matrix = function () {
-
-  'use strict'
-
+const img2matrix = function() {
   return {
     fromImage,
     fromUrl
   }
 
   function fromImage(image, width, depth, minHeight, maxHeight) {
-
     width |= 0
     depth |= 0
 
@@ -215,54 +107,34 @@ const img2matrix = function () {
     canvas.width = width
     canvas.height = depth
 
-    // document.body.appendChild( canvas );
-
     ctx.drawImage(image, 0, 0, width, depth)
     imgData = ctx.getImageData(0, 0, width, depth).data
 
     for (i = 0 | 0; i < depth; i = (i + 1) | 0) { // row
-
       matrix.push([])
 
       for (j = 0 | 0; j < width; j = (j + 1) | 0) { // col
-
         pixel = i * depth + j
         heightData = imgData[pixel * channels] / 255 * heightRange + minHeight
-
         matrix[i].push(heightData)
-
       }
-
     }
-
     return matrix
-
   }
 
   function fromUrl(url, width, depth, minHeight, maxHeight) {
-
-    return function () {
-
+    return function() {
       return new Promise((onFulfilled, onRejected) => {
-
         const image = new Image()
         image.crossOrigin = 'anonymous'
-
-        image.onload = function () {
-
+        image.onload = function() {
           const matrix = fromImage(image, width, depth, minHeight, maxHeight)
           onFulfilled(matrix)
-
         }
-
         image.src = url
-
       })
-
     }
-
   }
-
 }()
 
 // can add an array if things
@@ -270,12 +142,7 @@ let check
 Promise.all([
   img2matrix.fromUrl('https://upload.wikimedia.org/wikipedia/commons/5/57/Heightmap.png', sizeX, sizeY, minHeight, maxHeight)(),
 ]).then(data => {
-
   const matrix = data[0]
-
-  // console.log(matrix);
-
-  // Array(128) [ (128) […], (128) […], (128) […], (128) […], (128) […], (128) […], (128) […], (128) […], (128) […], (128) […], … ]
 
   const terrainShape = new CANNON.Heightfield(matrix, { elementSize: 10 })
   const terrainBody = new CANNON.Body({ mass: 0 })
@@ -292,7 +159,7 @@ Promise.all([
   const raycastHelperMesh = new THREE.Mesh(raycastHelperGeometry, new THREE.MeshNormalMaterial())
   scene.add(raycastHelperMesh)
 
-  check = function () {
+  check = function() {
     const raycaster = new THREE.Raycaster(mesh.position, new THREE.Vector3(0, -1, 0))
     const intersects = raycaster.intersectObject(terrainBody.threemesh.children[0])
     if (intersects.length > 0) {
@@ -341,7 +208,7 @@ const pointflagLight = new THREE.PointLight(new THREE.Color('red'), 1.5, 5)
 pointflagLight.position.set(0, 0, 0)
 flagLocation.add(pointflagLight)
 
-let flagLight = new THREE.DirectionalLight(new THREE.Color('white'), 0)
+const flagLight = new THREE.DirectionalLight(new THREE.Color('white'), 0)
 flagLight.position.set(0, 0, 0)
 flagLight.castShadow = true
 flagLight.target = flagLocation
@@ -356,13 +223,12 @@ plane.position.x = .75
 plane.castShadow = true
 
 flagLocation.add(plane)
-addModifier(plane)
 
-function addModifier(mesh) {
-  modifier = new ModifierStack(mesh)
-  cloth = new Cloth(3, 0)
-  cloth.setForce(0.2, -0.2, -0.2)
-}
+// flag wave animation
+const modifier = new ModifierStack(plane)
+const cloth = new Cloth(3, 0)
+cloth.setForce(0.2, -0.2, -0.2)
+
 modifier.addModifier(cloth)
 cloth.lockXMin(0)
 
@@ -404,9 +270,7 @@ sparks.geometry.vertices.map((d, i) => {
 
 const js = { forward: 0, turn: 0 }
 
-const joystick = new JoyStick({
-  onMove: joystickCallback
-})
+new JoyStick({ onMove: joystickCallback })
 
 function joystickCallback(forward, turn) {
   js.forward = forward
@@ -416,7 +280,6 @@ function joystickCallback(forward, turn) {
 function updateDrive(forward = js.forward, turn = js.turn) {
   const maxSteerVal = 0.05
   const maxForce = .15
-  const brakeForce = 10
 
   const force = maxForce * forward
   const steer = maxSteerVal * turn
@@ -444,35 +307,22 @@ function updateCamera() {
   }
 }
 
-// ===================================================== animate
-const clock = new THREE.Clock()
-let lastTime;
-(function animate() {
-  requestAnimationFrame(animate)
+/* LOOP */
+
+void function loop() {
+  requestAnimationFrame(loop)
   updateCamera()
   updateDrive()
   renderer.render(scene, camera)
-  // composer.render();
 
   const delta = clock.getDelta()
   mixers.map(x => x.update(delta))
 
   /* cannon*/
-  const now = Date.now()
-  if (lastTime === undefined) lastTime = now
-  const dt = (Date.now() - lastTime) / 1000.0
-  const FPSFactor = dt
-  lastTime = now
-
-  world.step(fixedTimeStep, dt)
+  world.step(fixedTimeStep, delta)
   helper.updateBodies(world)
 
   if (check) check()
 
-  // display coordinates
-  info.innerHTML = `<span>X: </span>${mesh.position.x.toFixed(2)}, &nbsp;&nbsp;&nbsp; <span>Y: </span>${mesh.position.y.toFixed(2)}, &nbsp;&nbsp;&nbsp; <span>Z: </span>${mesh.position.z.toFixed(2)}`
-
-  // flag
-  modifier && modifier.apply()
-
-})()
+  modifier?.apply()
+}()
