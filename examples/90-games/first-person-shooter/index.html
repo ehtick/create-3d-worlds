@@ -20,7 +20,14 @@
     </div>
   </div>
 
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r118/three.js'></script>
+  <script type="importmap">
+    {
+        "imports": {
+            "three": "/node_modules/three/build/three.module.js",
+            "three-pathfinding": "/node_modules/three-pathfinding/dist/three-pathfinding.module.js"
+        }
+    }
+  </script>
   <script src="main.js" type="module"></script>
 
 </body>

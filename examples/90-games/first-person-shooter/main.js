@@ -1,115 +1,5 @@
-import keyboard from '/utils/classes/Keyboard.js'
-
-/* global THREE */
-
-THREE.FirstPersonControls = function(camera, MouseMoveSensitivity = 0.002, speed = 800.0, jumpHeight = 350.0, height = 30.0) {
-  const self = this
-
-  self.MouseMoveSensitivity = MouseMoveSensitivity
-  self.speed = speed
-  self.height = height
-  self.jumpHeight = self.height + jumpHeight
-  self.click = false
-
-  let canJump = false
-
-  const velocity = new THREE.Vector3()
-  const direction = new THREE.Vector3()
-
-  let prevTime = performance.now()
-
-  camera.rotation.set(0, 0, 0)
-
-  const pitchObject = new THREE.Object3D()
-  pitchObject.add(camera)
-
-  const yawObject = new THREE.Object3D()
-  yawObject.position.y = 10
-  yawObject.add(pitchObject)
-
-  const PI_2 = Math.PI / 2
-
-  const onMouseMove = function(event) {
-    if (self.enabled === false) return
-
-    const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0
-    const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0
-
-    yawObject.rotation.y -= movementX * self.MouseMoveSensitivity
-    pitchObject.rotation.x -= movementY * self.MouseMoveSensitivity
-
-    pitchObject.rotation.x = Math.max(- PI_2, Math.min(PI_2, pitchObject.rotation.x))
-  }
-
-  const onKeyDown = event => {
-    if (self.enabled === false) return
-    switch (event.keyCode) {
-      case 32: // space
-        if (canJump === true) velocity.y += (!keyboard.run) ? self.jumpHeight : self.jumpHeight + 50
-        canJump = false
-        break
-    }
-  }
-
-  const onMouseDownClick = event => {
-    if (self.enabled === false) return
-    self.click = true
-  }
-
-  const onMouseUpClick = event => {
-    if (self.enabled === false) return
-    self.click = false
-  }
-
-  self.dispose = function() {
-    document.removeEventListener('mousemove', onMouseMove, false)
-    document.removeEventListener('keydown', onKeyDown, false)
-    document.removeEventListener('mousedown', onMouseDownClick, false)
-    document.removeEventListener('mouseup', onMouseUpClick, false)
-  }
-
-  document.addEventListener('mousemove', onMouseMove, false)
-  document.addEventListener('keydown', onKeyDown, false)
-  document.addEventListener('mousedown', onMouseDownClick, false)
-  document.addEventListener('mouseup', onMouseUpClick, false)
-
-  self.enabled = false
-
-  self.getObject = function() {
-    return yawObject
-  }
-
-  self.update = function() {
-    const time = performance.now()
-    const delta = (time - prevTime) / 1000
-
-    velocity.y -= 9.8 * 100.0 * delta
-    velocity.x -= velocity.x * 10.0 * delta
-    velocity.z -= velocity.z * 10.0 * delta
-
-    direction.z = (keyboard.up ? 1 : 0) - (keyboard.down ? 1 : 0)
-    direction.x = (keyboard.right ? 1 : 0) - (keyboard.left ? 1 : 0)
-    direction.normalize()
-
-    let currentSpeed = self.speed
-    if (keyboard.run && (keyboard.up || keyboard.down || keyboard.left || keyboard.right)) currentSpeed += (currentSpeed * 1.1)
-
-    if (keyboard.up || keyboard.down) velocity.z -= direction.z * currentSpeed * delta
-    if (keyboard.left || keyboard.right) velocity.x -= direction.x * currentSpeed * delta
-
-    self.getObject().translateX(-velocity.x * delta)
-    self.getObject().translateZ(velocity.z * delta)
-
-    self.getObject().position.y += (velocity.y * delta)
-
-    if (self.getObject().position.y < self.height) {
-      velocity.y = 0
-      self.getObject().position.y = self.height
-      canJump = true
-    }
-    prevTime = time
-  }
-}
+import * as THREE from 'three'
+import FirstPersonControls from './FirstPersonControls.js'
 
 let camera, scene, renderer, controls, raycaster, arrow, world
 
@@ -151,12 +41,12 @@ function init() {
   dirLight.shadow.mapSize.height = 4096
   dirLight.shadow.camera.far = 3000
 
-  controls = new THREE.FirstPersonControls(camera)
+  controls = new FirstPersonControls(camera)
   scene.add(controls.getObject())
 
   // floor
 
-  const floorGeometry = new THREE.PlaneBufferGeometry(2000, 2000, 100, 100)
+  const floorGeometry = new THREE.PlaneGeometry(2000, 2000, 100, 100)
   const floorMaterial = new THREE.MeshLambertMaterial()
   floorMaterial.color.setHSL(0.095, 1, 0.75)
 
@@ -165,9 +55,9 @@ function init() {
   floor.receiveShadow = true
   world.add(floor)
 
-  // objects
+  // city
 
-  const boxGeometry = new THREE.BoxBufferGeometry(1, 1, 1)
+  const boxGeometry = new THREE.BoxGeometry(1, 1, 1)
   boxGeometry.translate(0, 0.5, 0)
 
   for (let i = 0; i < 500; i++) {
@@ -189,103 +79,9 @@ function init() {
   scene.add(world)
 }
 
-const particles = new Array()
-
-function makeParticles(intersectPosition) {
-  const totalParticles = 80
-
-  const pointsGeometry = new THREE.Geometry()
-  pointsGeometry.oldvertices = []
-  const colors = []
-  for (let i = 0; i < totalParticles; i++) {
-    const position = randomPosition(Math.random())
-    const vertex = new THREE.Vector3(position[0], position[1], position[2])
-    pointsGeometry.oldvertices.push([0, 0, 0])
-    pointsGeometry.vertices.push(vertex)
-    const color = new THREE.Color(Math.random() * 0xffffff)
-    colors.push(color)
-  }
-  pointsGeometry.colors = colors
-
-  const pointsMaterial = new THREE.PointsMaterial({
-    size: .8,
-    sizeAttenuation: true,
-    depthWrite: true,
-    blending: THREE.AdditiveBlending,
-    transparent: true,
-    vertexColors: THREE.VertexColors
-  })
-
-  const points = new THREE.Points(pointsGeometry, pointsMaterial)
-
-  points.prototype = Object.create(THREE.Points.prototype)
-  points.position.x = intersectPosition.x
-  points.position.y = intersectPosition.y
-  points.position.z = intersectPosition.z
-  points.updateMatrix()
-  points.matrixAutoUpdate = false
-
-  points.prototype.constructor = points
-  points.prototype.update = function(index) {
-    let pCount = this.constructor.geometry.vertices.length
-    let positionYSum = 0
-    while (pCount--) {
-      const position = this.constructor.geometry.vertices[pCount]
-      const oldPosition = this.constructor.geometry.oldvertices[pCount]
-
-      const velocity = {
-        x: (position.x - oldPosition[0]),
-        y: (position.y - oldPosition[1]),
-        z: (position.z - oldPosition[2])
-      }
-
-      const oldPositionX = position.x
-      let oldPositionY = position.y
-      const oldPositionZ = position.z
-
-      position.y -= .03 // gravity
-
-      position.x += velocity.x
-      position.y += velocity.y
-      position.z += velocity.z
-
-      const wordlPosition = this.constructor.position.y + position.y
-
-      if (wordlPosition <= 0) {
-        // particle touched the ground
-        oldPositionY = position.y
-        position.y = oldPositionY - (velocity.y * .3)
-        positionYSum += 1
-      }
-      this.constructor.geometry.oldvertices[pCount] = [oldPositionX, oldPositionY, oldPositionZ]
-    }
-
-    pointsGeometry.verticesNeedUpdate = true
-
-    if (positionYSum >= totalParticles) {
-      particles.splice(index, 1)
-      scene.remove(this.constructor)
-      console.log('particle removed')
-    }
-  }
-  particles.push(points)
-  scene.add(points)
-}
-
-function randomPosition(radius) {
-  radius *= Math.random()
-  const theta = Math.random() * 2.0 * Math.PI
-  const phi = Math.random() * Math.PI
-
-  const sinTheta = Math.sin(theta)
-  const cosTheta = Math.cos(theta)
-  const sinPhi = Math.sin(phi)
-  const cosPhi = Math.cos(phi)
-  const x = radius * sinPhi * cosTheta
-  const y = radius * sinPhi * sinTheta
-  const z = radius * cosPhi
-
-  return [x, y, z]
+function makeParticles(position) {
+  // TODO: add particles
+  console.log(position)
 }
 
 /* LOOP */
@@ -308,12 +104,6 @@ void function loop() {
         const intersect = intersects[0]
         makeParticles(intersect.point)
       }
-    }
-
-    if (particles.length > 0) {
-      let pLength = particles.length
-      while (pLength--)
-        particles[pLength].prototype.update(pLength)
     }
   }
   renderer.render(scene, camera)
