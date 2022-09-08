@@ -61,29 +61,27 @@ light.target = mesh// shadow will follow mesh
 mesh.add(light)
 
 // ===================================================== add Model
-const mixers = []
 let clip1
 let clip2
 
 const loader = new THREE.GLTFLoader()
-loader.load('https://raw.githubusercontent.com/baronwatts/models/master/astronaut.glb', object => {
-  object.scene.traverse(node => {
-    if (node instanceof THREE.Mesh) {
-      node.castShadow = true
-      node.material.side = THREE.DoubleSide
-    }
-  })
+const object = await loader.loadAsync('https://raw.githubusercontent.com/baronwatts/models/master/astronaut.glb')
 
-  const player = object.scene
-  player.position.set(0, -.1, 0)
-  player.scale.set(.25, .25, .25)
-  mesh.add(player)
-
-  const mixer = new THREE.AnimationMixer(player)
-  clip1 = mixer.clipAction(object.animations[0])
-  clip2 = mixer.clipAction(object.animations[1])
-  mixers.push(mixer)
+object.scene.traverse(node => {
+  if (node instanceof THREE.Mesh) {
+    node.castShadow = true
+    node.material.side = THREE.DoubleSide
+  }
 })
+
+const player = object.scene
+player.position.set(0, -.1, 0)
+player.scale.set(.25, .25, .25)
+mesh.add(player)
+
+const mixer = new THREE.AnimationMixer(player)
+clip1 = mixer.clipAction(object.animations[0])
+clip2 = mixer.clipAction(object.animations[1])
 
 // ===================================================== add Terrain
 const sizeX = 128, sizeY = 128, minHeight = 0, maxHeight = 60
@@ -260,7 +258,7 @@ void function loop() {
   renderer.render(scene, camera)
 
   const delta = clock.getDelta()
-  mixers.map(x => x.update(delta))
+  mixer.update(delta)
 
   /* cannon*/
   world.step(fixedTimeStep, delta)
