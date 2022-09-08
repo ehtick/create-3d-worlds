@@ -27,12 +27,14 @@ export default class State {
   }
 
   move(delta, sign = -1) {
+    if (!this.fsm.shouldMove) return
     velocity += this.speed * sign
     velocity *= INERTIA
     this.fsm.mesh.translateZ(velocity * delta)
   }
 
   turn(delta, sign = -1) {
+    if (!this.fsm.shouldMove) return
     const angle = RIGHT_ANGLE * delta // 90 degrees per second
     if (this.keyboard.left)
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -sign)

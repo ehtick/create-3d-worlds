@@ -43,6 +43,8 @@ export default class StateMachine {
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh })
       this.controls = createOrbitControls()
     }
+
+    this.shouldMove = true
   }
 
   setState(name) {

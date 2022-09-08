@@ -12,7 +12,7 @@ npx live-server
 ima BUG kad kachujin skače i pritiskam strelice
 
 ### AI
-- use fsm for ai (menjati walk i idle kod gonjenja)
+- expolore yuka
 
 ### Physics
 - preraditi prostu 2D fiziku u 3D
