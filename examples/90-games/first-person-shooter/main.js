@@ -2,25 +2,13 @@ import * as THREE from 'three'
 import FirstPersonControls from './FirstPersonControls.js'
 import { camera, scene, renderer } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
+import { createSun } from '/utils/light.js'
 
-// scene.fog = new THREE.FogExp2 (0x777788, 0.007);
+scene.fog = new THREE.FogExp2 (0x777788, 0.0055)
+scene.add(createSun())
 
-const raycaster = new THREE.Raycaster(camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
-
-const light = new THREE.HemisphereLight(0xeeeeff, 0x777788, 0.75)
-light.position.set(0, 100, 0.4)
-scene.add(light)
-
-const dirLight = new THREE.SpotLight(0xffffff, .5, 0.0, 180.0)
-dirLight.color.setHSL(0.1, 1, 0.95)
-dirLight.position.set(0, 300, 100)
-dirLight.castShadow = true
-dirLight.lookAt(new THREE.Vector3())
-scene.add(dirLight)
-
-dirLight.shadow.mapSize.width = 4096
-dirLight.shadow.mapSize.height = 4096
-dirLight.shadow.camera.far = 3000
+const raycaster = new THREE.Raycaster(
+  camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
 
 const controls = new FirstPersonControls(camera)
 scene.add(controls.getObject())
