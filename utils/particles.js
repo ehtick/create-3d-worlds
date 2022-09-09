@@ -7,6 +7,8 @@ const textureLoader = new THREE.TextureLoader()
 
 /* PARTICLES (BOX) */
 
+let t = 0
+
 export function createParticles({ num = 10000, file = 'ball.png', color, size = .5, opacity = 1, unitAngle = 1, minRange = 100, maxRange = 1000, blending = THREE.AdditiveBlending } = {}) {
 
   const geometry = new THREE.BufferGeometry()
@@ -47,12 +49,17 @@ export function createParticles({ num = 10000, file = 'ball.png', color, size = 
   return new THREE.Points(geometry, material)
 }
 
-export function expandParticles({ particles, scalar } = {}) {
+export function expandParticles({ particles, scalar, maxRounds = 50, gravity = 0 } = {}) {
+  if (t++ > maxRounds) {
+    particles.visible = false
+    return
+  }
   const { array } = particles.geometry.attributes.position
   for (let i = 0, l = array.length; i < l; i += 3) {
     const vertex = new THREE.Vector3(array[i], array[i + 1], array[i + 2])
     vertex.multiplyScalar(scalar)
     array[i] = vertex.x
+    vertex.y -= gravity
     array[i + 1] = vertex.y
     array[i + 2] = vertex.z
   }
@@ -60,7 +67,10 @@ export function expandParticles({ particles, scalar } = {}) {
 }
 
 export function resetParticles({ particles, pos = [0, 0, 0], unitAngle = 1 } = {}) {
-  particles.position.set(...pos)
+  t = 0
+  particles.visible = true
+  if (Array.isArray(pos)) particles.position.set(...pos)
+  else particles.position.copy(pos)
   const { array } = particles.geometry.attributes.position
   for (let i = 0, l = array.length; i < l; i++)
     array[i] = randFloat(-unitAngle, unitAngle)

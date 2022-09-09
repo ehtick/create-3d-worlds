@@ -3,6 +3,10 @@ import FirstPersonControls from './FirstPersonControls.js'
 import { camera, scene, renderer } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { createSun } from '/utils/light.js'
+import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
+
+const particles = createParticles({ num: 100, size: 0.25, unitAngle: 0.2 })
+scene.add(particles)
 
 scene.fog = new THREE.FogExp2 (0x777788, 0.0055)
 scene.add(createSun())
@@ -39,9 +43,8 @@ for (let i = 0; i < 500; i++) {
 }
 scene.add(city)
 
-// TODO: add particles
 function makeParticles(position) {
-  console.log(position)
+  resetParticles({ particles, pos: position, unitAngle: 0.2 })
 }
 
 /* LOOP */
@@ -50,8 +53,8 @@ void function loop() {
   requestAnimationFrame(loop)
 
   if (controls.enabled === true) {
-    controls.update()
     raycaster.set(camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
+    // TODO: implement better shoot (BUG when holding click)
     if (controls.click === true) {
       const intersects = raycaster.intersectObjects(city.children)
       if (intersects.length > 0) {
@@ -59,6 +62,8 @@ void function loop() {
         makeParticles(intersect.point)
       }
     }
+    controls.update()
+    expandParticles({ particles, scalar: 1.2, maxRounds: 30, gravity: .02 })
   }
 
   renderer.render(scene, camera)
