@@ -53,17 +53,8 @@ void function loop() {
   requestAnimationFrame(loop)
 
   if (controls.enabled === true) {
-    raycaster.set(camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
-    // TODO: implement better shoot (BUG when holding click)
-    if (controls.click === true) {
-      const intersects = raycaster.intersectObjects(city.children)
-      if (intersects.length > 0) {
-        const intersect = intersects[0]
-        makeParticles(intersect.point)
-      }
-    }
     controls.update()
-    expandParticles({ particles, scalar: 1.2, maxRounds: 30, gravity: .02 })
+    expandParticles({ particles, scalar: 1.2, maxRounds: 20, gravity: .02 })
   }
 
   renderer.render(scene, camera)
@@ -84,3 +75,12 @@ document.addEventListener('pointerlockchange', e => {
 })
 
 instructions.addEventListener('click', () => document.body.requestPointerLock())
+
+document.body.addEventListener('click', e => {
+  raycaster.set(camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
+  const intersects = raycaster.intersectObjects(city.children)
+  if (intersects.length > 0) {
+    const intersect = intersects[0]
+    makeParticles(intersect.point)
+  }
+})

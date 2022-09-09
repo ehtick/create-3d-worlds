@@ -8,7 +8,6 @@ const FirstPersonControls = function(camera, MouseMoveSensitivity = 0.002, speed
   self.speed = speed
   self.height = height
   self.jumpHeight = self.height + jumpHeight
-  self.click = false
 
   let canJump = false
 
@@ -50,27 +49,13 @@ const FirstPersonControls = function(camera, MouseMoveSensitivity = 0.002, speed
     }
   }
 
-  const onMouseDownClick = event => {
-    if (self.enabled === false) return
-    self.click = true
-  }
-
-  const onMouseUpClick = event => {
-    if (self.enabled === false) return
-    self.click = false
-  }
-
   self.dispose = function() {
     document.removeEventListener('mousemove', onMouseMove, false)
     document.removeEventListener('keydown', onKeyDown, false)
-    document.removeEventListener('mousedown', onMouseDownClick, false)
-    document.removeEventListener('mouseup', onMouseUpClick, false)
   }
 
   document.addEventListener('mousemove', onMouseMove, false)
   document.addEventListener('keydown', onKeyDown, false)
-  document.addEventListener('mousedown', onMouseDownClick, false)
-  document.addEventListener('mouseup', onMouseUpClick, false)
 
   self.enabled = false
 

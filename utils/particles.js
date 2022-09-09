@@ -50,16 +50,17 @@ export function createParticles({ num = 10000, file = 'ball.png', color, size = 
 }
 
 export function expandParticles({ particles, scalar, maxRounds = 50, gravity = 0 } = {}) {
-  if (t++ > maxRounds) {
+  if (++t > maxRounds) {
     particles.visible = false
     return
   }
+  particles.material.opacity = 1 - t / maxRounds
   const { array } = particles.geometry.attributes.position
   for (let i = 0, l = array.length; i < l; i += 3) {
     const vertex = new THREE.Vector3(array[i], array[i + 1], array[i + 2])
     vertex.multiplyScalar(scalar)
-    array[i] = vertex.x
     vertex.y -= gravity
+    array[i] = vertex.x
     array[i + 1] = vertex.y
     array[i + 2] = vertex.z
   }
