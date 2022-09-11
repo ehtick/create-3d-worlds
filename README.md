@@ -9,10 +9,15 @@ npm i
 npx live-server
 ```
 
-- nove modele primeri
+https://rigmodels.com/model.php?view=zombie_5-4-3d-model__1UTA2K010VGYY0BAJBA45AGWN&searchkeyword=zombie&manualsearch=1
+https://rigmodels.com/model.php?view=Zombie-3d-model__YX7E6SXK5QENDHI2C2SDRHFV9&searchkeyword=zombie&manualsearch=1
+
+- probati fire_elemental i sve ostale modele
 - saturn tekstura probati
 - BUG kad kachujin skače i pritiskam strelice
 - spojiti joystick i keyboard nekako da zajedno rade
+
+https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character
 
 ### Physics
 - preraditi prostu 2D fiziku u 3D
@@ -71,6 +76,11 @@ npx live-server
   - dodati izbor aviona
   - dodati drveće
   - dodati objekte
+
+Tenk (Vozilo)
+- tenk da se trese kada ide
+- vozilo da se okreću točkovi kada ide
+- ispitati modele, jel moguće upravljati točkovima, kupolom ili nečim
 
 - Endless runner
   - probati konja ili dabra
@@ -141,9 +151,10 @@ Examples are from theese great books and tutorials:
 Free 3D Models are from: 
 - 3dwarehouse.sketchup.com
 - sketchfab.com
+- turbosquid.com 
 - mixamo.com
 - archive3d.net
-- turbosquid.com 
+- rigmodels.com
 and other respected sites.
 
 Geodata:
