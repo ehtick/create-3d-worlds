@@ -18,6 +18,8 @@ npx live-server
 
 https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character
 
+- popraviti senku
+
 ### Physics
 - preraditi prostu 2D fiziku u 3D
 - ujednačiti createTerrain i druga fizička pomagala sa standardnim

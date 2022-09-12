@@ -34,7 +34,7 @@ const createGroup = model => {
   return group
 }
 
-const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, shouldCenter, shouldAdjustHeight }) => {
+const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, shouldCenter, shouldAdjustHeight, computeNormals, shadow = true }) => {
   const scale = size ? getScale(model, size) : 1
   model.scale.set(scale, scale, scale)
 
@@ -43,7 +43,10 @@ const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, sho
   if (shouldAdjustHeight) adjustHeight(model)
 
   model.traverse(child => {
-    if (child.isMesh) child.castShadow = child.receiveShadow = true
+    if (child.isMesh) {
+      child.castShadow = child.receiveShadow = shadow
+      if (computeNormals) child.geometry.computeVertexNormals()
+    }
   })
   if (angle) model.rotateOnWorldAxis(new THREE.Vector3(...axis), angle)
 

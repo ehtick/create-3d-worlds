@@ -62,3 +62,11 @@ export const blackKnightAnimations = {
   walk: 'Great Sword Walk',
   attack: 'Great Sword Slash',
 }
+
+export const elfSorceressAnimations = {
+  idle: 'Standing Idle',
+  walk: 'Crouched Walking',
+  run: 'Run',
+  attack: 'Standing 2H Magic Attack 01',
+  special: 'Spell Casting'
+}
