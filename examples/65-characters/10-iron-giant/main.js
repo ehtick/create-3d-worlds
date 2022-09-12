@@ -10,7 +10,7 @@ initLights()
 camera.position.set(0, 4, 8)
 scene.add(createFloor({ size: 100 }))
 
-const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, computeNormals: true, animNames: giantRobotAnimations, prefix: 'character/giant-robot/', size: 5 })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, computeNormals: true, animNames: giantRobotAnimations, prefix: 'character/iron-giant/', size: 5 })
 const stateMachine = new StateMachine({ mesh, animations, dict: giantRobotAnimations })
 
 scene.add(mesh)
