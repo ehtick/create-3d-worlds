@@ -9,7 +9,7 @@ initLights()
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh } = await loadModel({ file: 'character/black-knight/model.fbx', angle: Math.PI })
+const { mesh } = await loadModel({ file: 'character/black-knight/model.fbx', angle: Math.PI, computeNormals: true })
 const animations = await loadFbxAnimations(blackKnightAnimations, 'character/black-knight/')
 const stateMachine = new StateMachine({ mesh, animations, dict: blackKnightAnimations })
 
