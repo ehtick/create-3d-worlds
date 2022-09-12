@@ -106,3 +106,7 @@ export const goblinAnimations = {
   attack: 'Great Sword Slash',
   death: 'Two Handed Sword Death',
 }
+
+export const golemAnimation = {
+  
+}
