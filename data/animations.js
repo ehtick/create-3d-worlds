@@ -108,5 +108,11 @@ export const goblinAnimations = {
 }
 
 export const golemAnimation = {
-  
+  idle: 'Mutant Breathing Idle',
+  walk: 'Mutant Walking',
+  run: 'Mutant Run',
+  jump: 'Mutant Jumping',
+  attack: 'Mutant Swiping',
+  special: 'Mutant Roaring',
+  death: 'Standing Death Forward 01',
 }
