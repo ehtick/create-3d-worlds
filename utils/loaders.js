@@ -112,10 +112,13 @@ export async function loadFbx(params) {
       if (child.isMesh) child.material.map = map
     })
   }
-  if (model.animations.length)
+
+  if (!params.animations && model.animations.length)
     model.animations[0].name = params.name
 
-  return prepareMesh({ model, animations: model.animations, ...params })
+  const animations = params.animations ? params.animations : model.animations
+
+  return prepareMesh({ model, animations, ...params })
 }
 
 export async function loadFbxAnimations(names, prefix = '') {
@@ -144,7 +147,7 @@ export async function loadFbxAnimations(names, prefix = '') {
 *   object { file, size, texture, mtl, angle, axis, shouldCenter, shouldAdjustHeight }
 * returns a promise that resolves with the { mesh, animations, mixer }
 */
-export const loadModel = param => {
+export const loadModel = async param => {
   const params = typeof param === 'object' ? param : { file: param }
   const ext = params.file.split('.').pop()
   switch (ext) {
@@ -161,6 +164,10 @@ export const loadModel = param => {
       return loadMd2(params)
     case 'fbx':
       fixColors()
+      if (param.prefix) param.file = param.prefix + param.file
+      params.animations = param.animNames && param.prefix
+        ? await loadFbxAnimations(param.animNames, param.prefix)
+        : null
       return loadFbx(params)
     default:
       throw new Error(`Unknown file extension: ${ext}`)
