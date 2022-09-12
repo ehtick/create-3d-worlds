@@ -7,6 +7,7 @@ import { giantRobotAnimations } from '/data/animations.js'
 
 initLights()
 
+camera.position.set(0, 4, 8)
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, computeNormals: true, animNames: giantRobotAnimations, prefix: 'character/giant-robot/', size: 5 })

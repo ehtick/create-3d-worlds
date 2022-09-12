@@ -94,8 +94,8 @@ export const germanSoldierProneAnimations = {
 }
 
 export const giantRobotAnimations = {
-  // idle: 'Dwarf Idle',
-  walk: 'Dwarf Walk',
+  idle: 'Idle',
+  walk: 'Walking',
   jump: 'Mutant Jumping',
   attack: 'Zombie Attack',
 }

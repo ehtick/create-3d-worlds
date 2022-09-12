@@ -8,10 +8,14 @@ export default class WalkBackwardState extends State {
   enter(oldState) {
     this.oldSpeed = oldState.speed
 
-    if (!this.actions) return
     const oldAction = this.actions[oldState.name]
-    syncAnimation(['idle'], oldState, oldAction, this.action)
-    this.action.play()
+    if (this.actions && this.action && this.actions[oldState?.name])
+      syncAnimation(['idle'], oldState, oldAction, this.action)
+    else
+      oldAction?.fadeOut(.5)
+
+    this.action?.reset()
+    this.action?.play()
     this.action.timeScale = -1
   }
 
@@ -29,5 +33,9 @@ export default class WalkBackwardState extends State {
       this.fsm.setState('attack')
 
     if (!this.keyboard.down) this.fsm.setState('idle')
+  }
+
+  exit() {
+    this.action.timeScale = 1
   }
 }
