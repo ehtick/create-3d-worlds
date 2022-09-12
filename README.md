@@ -10,9 +10,10 @@ npx live-server
 ```
 
 - probati sve nove modele, napraviti primere, pobrisati viškove animacija
+- napraviti nekoliko varijanti nemaca (čuče, leže, stoje)
+- dodati čučanje na x
 - obrisati glomazne modele (maw_j_laygo i videti šta još)
 - saturn tekstura probati
-
 - BUG kad kachujin skače i pritiskam strelice
 - spojiti joystick i keyboard nekako da zajedno rade
 

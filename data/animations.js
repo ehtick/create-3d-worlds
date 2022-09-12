@@ -70,3 +70,11 @@ export const elfSorceressAnimations = {
   attack: 'Standing 2H Magic Attack 01',
   special: 'Spell Casting'
 }
+
+export const germanSoldierAnimations = {
+  idle: 'Rifle Aiming Idle',
+  walk: 'Rifle Walk',
+  run: 'Rifle Run',
+  attack: 'Firing Rifle',
+  death: 'Dying'
+}
