@@ -47,3 +47,12 @@ export const forestMonsterAnimations = {
   special: 'Stand',
   death: 'Dying',
 }
+
+export const demonAnimations = {
+  idle: 'Mutant Breathing Idle',
+  walk: 'Mutant Walking',
+  run: 'Flying',
+  jump: 'Mutant Jumping',
+  attack: 'Zombie Attack',
+  special: 'Zombie Scream',
+}

@@ -17,7 +17,7 @@ const states = {
   walk: WalkState,
   walkBackward: WalkBackwardState,
   run: RunState,
-  jump: FlyJumpState,
+  jump: JumpState,
 }
 
 /* map animations with states */

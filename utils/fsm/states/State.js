@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { RIGHT_ANGLE } from '/data/constants.js'
 
-const INERTIA = .5
+const INERTIA = .25
 
 let velocity = 0
 
