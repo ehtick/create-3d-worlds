@@ -78,3 +78,17 @@ export const germanSoldierAnimations = {
   attack: 'Firing Rifle',
   death: 'Dying'
 }
+
+export const germanSoldierCrouchAnimations = {
+  idle: 'Crouch Idle',
+  walk: 'Walk Crouching Forward',
+  attack: 'Fire Rifle Crouch',
+  death: 'Crouch Death'
+}
+
+export const germanSoldierProneAnimations = {
+  idle: 'Prone Idle',
+  walk: 'Prone Forward',
+  attack: 'Prone Firing Rifle',
+  death: 'Prone Death'
+}
