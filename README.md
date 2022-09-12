@@ -9,11 +9,11 @@ npm i
 npx live-server
 ```
 
-https://rigmodels.com/model.php?view=zombie_5-4-3d-model__1UTA2K010VGYY0BAJBA45AGWN&searchkeyword=zombie&manualsearch=1
-https://rigmodels.com/model.php?view=Zombie-3d-model__YX7E6SXK5QENDHI2C2SDRHFV9&searchkeyword=zombie&manualsearch=1
-
-- probati fire_elemental i sve ostale modele
+- proveriti animacije demona, napraviti opet iste ako je potrebno
+- probati sve nove modele, napraviti primere, pobrisati viškove animacija
+- obrisati glomazne modele (maw_j_laygo i videti šta još)
 - saturn tekstura probati
+
 - BUG kad kachujin skače i pritiskam strelice
 - spojiti joystick i keyboard nekako da zajedno rade
 

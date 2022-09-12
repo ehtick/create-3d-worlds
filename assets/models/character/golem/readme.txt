@@ -1,0 +1,1 @@
+https://rigmodels.com/model.php?view=model__X98DS4P1ZKMS2YKE1HKZ4JNTB&ykey=238bf7e03a352180dad02a0a22e60ec2&yformat=Obj&ysetting1=1&ysetting2=100

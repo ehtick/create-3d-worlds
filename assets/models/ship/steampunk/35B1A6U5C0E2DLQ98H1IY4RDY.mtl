@@ -1,0 +1,45 @@
+newmtl mat_0-t_PBoat_d.jpg
+Ka 0.000000 0.000000 0.000000
+Kd 0.698039 0.698039 0.698039
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 9.84916
+map_Kd t_PBoat_d.jpg
+
+newmtl mat_1-t_01_EscapePodGlass_da.jpg
+Ka 0.000000 0.000000 0.000000
+Kd 0.698039 0.698039 0.698039
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 9.84916
+map_Kd t_01_EscapePodGlass_da.jpg
+
+newmtl mat_2-t_PBoatEngine_d.jpg
+Ka 0.000000 0.000000 0.000000
+Kd 0.698039 0.698039 0.698039
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 9.84916
+map_Kd t_PBoatEngine_d.jpg
+
+newmtl mat_3-t_PBoatGun_d.jpg
+Ka 0.000000 0.000000 0.000000
+Kd 0.698039 0.698039 0.698039
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 9.84916
+map_Kd t_PBoatGun_d.jpg
+
+newmtl mat_4-default-grey.jpg
+Ka 0.000000 0.000000 0.000000
+Kd 0.698039 0.698039 0.698039
+Ks 0.000000 0.000000 0.000000
+d 1.000000
+illum 2
+Ns 9.84916
+map_Kd default-grey.jpg
+
