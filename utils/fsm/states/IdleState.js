@@ -12,6 +12,7 @@ export default class IdleState extends State {
 
     if (this.actions && oldAction && this.action)
       syncAnimation(['walk', 'run', 'walkBackward'], oldState, oldAction, this.action)
+    else oldAction?.fadeOut(.5)
 
     this.action?.play()
   }

@@ -8,10 +8,13 @@ export default class WalkState extends State {
   enter(oldState) {
     this.oldSpeed = oldState.speed
 
-    if (this.actions && this.action && this.actions[oldState?.name]) {
-      const oldAction = this.actions[oldState.name]
+    const oldAction = this.actions[oldState.name]
+    if (this.actions && this.action && this.actions[oldState?.name])
       syncAnimation(['idle', 'run'], oldState, oldAction, this.action)
-    }
+    else
+      oldAction?.fadeOut(.5)
+
+    this.action?.reset()
     this.action?.play()
   }
 
