@@ -163,11 +163,12 @@ export const loadModel = async param => {
     case 'md2':
       return loadMd2(params)
     case 'fbx':
+      const { prefix, file, animNames } = params
+      if (prefix) {
+        params.file = prefix + file
+        if (animNames) params.animations = await loadFbxAnimations(animNames, prefix)
+      }
       fixColors()
-      if (param.prefix) param.file = param.prefix + param.file
-      params.animations = param.animNames && param.prefix
-        ? await loadFbxAnimations(param.animNames, param.prefix)
-        : null
       return loadFbx(params)
     default:
       throw new Error(`Unknown file extension: ${ext}`)
