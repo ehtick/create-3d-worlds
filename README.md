@@ -9,12 +9,14 @@ npm i
 npx live-server
 ```
 
+- ispitati syncFrom funkciju
+- iz idle ne ulazi lepu u walk (iseče), ali lepo izlazi iz walka u idle (lagano)
+
 - probati sve nove modele, napraviti primere, pobrisati viškove animacija
 - napraviti nekoliko varijanti nemaca (čuče, leže, stoje)
 - obrisati glomazne modele (maw_j_laygo i videti šta još)
 - saturn tekstura probati
 - BUG kad kachujin skače i pritiskam strelice
-- ispitati syncFrom funkciju
 - spojiti joystick i keyboard nekako da zajedno rade
 
 https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character

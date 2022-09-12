@@ -99,3 +99,10 @@ export const ironGiantAnimations = {
   jump: 'Mutant Jumping',
   attack: 'Zombie Attack',
 }
+
+export const goblinAnimations = {
+  idle: 'Great Sword Idle',
+  walk: 'Great Sword Walk',
+  attack: 'Great Sword Slash',
+  death: 'Two Handed Sword Death',
+}
