@@ -9,7 +9,6 @@ npm i
 npx live-server
 ```
 
-- proveriti animacije demona, napraviti opet iste ako je potrebno
 - probati sve nove modele, napraviti primere, pobrisati viškove animacija
 - obrisati glomazne modele (maw_j_laygo i videti šta još)
 - saturn tekstura probati

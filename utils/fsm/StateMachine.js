@@ -53,7 +53,8 @@ export default class StateMachine {
       if (oldState.name == name) return
       oldState.exit()
     }
-    const State = states[name] || SpecialState
+    let State = states[name] || SpecialState
+    if (name === 'jump' && !this.actions?.jump) State = FlyJumpState
     this.currentState = new State(this, name)
     this.currentState.enter(oldState)
   }

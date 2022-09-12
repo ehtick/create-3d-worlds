@@ -56,3 +56,9 @@ export const demonAnimations = {
   attack: 'Zombie Attack',
   special: 'Zombie Scream',
 }
+
+export const blackKnightAnimations = {
+  idle: 'Great Sword Idle',
+  walk: 'Great Sword Walk',
+  attack: 'Great Sword Slash',
+}
