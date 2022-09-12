@@ -93,7 +93,7 @@ export const germanSoldierProneAnimations = {
   death: 'Prone Death'
 }
 
-export const giantRobotAnimations = {
+export const ironGiantAnimations = {
   idle: 'Idle',
   walk: 'Walking',
   jump: 'Mutant Jumping',
