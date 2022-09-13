@@ -13,9 +13,10 @@ npx live-server
 
 - srediti pod da se ne presijava
 - ispitati syncFrom funkciju
-- BUG: iz idle ne ulazi lepu u walk (iseče), ali lepo izlazi iz walka u idle (lagano), videti kostura
-- BUG: ne vraca se u idle iz walka ako nema walk anim (trebalo bi da može bez svake)
-- BUG: kad stavim istu animaciju za walk i run, secka prelaz
+  - napraviti animacije tečnijim (BUG: videti partizana)
+  - BUG: iz idle ne ulazi lepu u walk (iseče), ali lepo izlazi iz walka u idle (lagano), videti kostura
+  - BUG: ne vraca se u idle iz walka ako nema walk anim (trebalo bi da može bez svake)
+  - BUG: kad stavim istu animaciju za walk i run, secka prelaz
 
 - probati sve nove modele, napraviti primere, pobrisati viškove animacija
 - napraviti nekoliko varijanti nemaca (čuče, leže, stoje)

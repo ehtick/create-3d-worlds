@@ -109,6 +109,10 @@ class Keyboard {
     return this.pressed.ShiftLeft || this.pressed.ShiftRight
   }
 
+  get control() {
+    return this.pressed.ControlLeft || this.pressed.ControlRight
+  }
+
   get arrowPressed() {
     return this.pressed.ArrowRight || this.pressed.ArrowLeft || this.pressed.ArrowDown || this.pressed.ArrowUp
   }

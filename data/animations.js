@@ -219,3 +219,13 @@ export const orcOgreAnimations = {
   special: 'Zombie Scream',
   death: 'Zombie Dying',
 }
+
+export const partisanAnimations = {
+  idle: 'Rifle Idle',
+  walk: 'Walk With Rifle',
+  run: 'Rifle Run',
+  jump: 'Jump Forward',
+  attack: 'Firing Rifle',
+  special: 'Toss Grenade',
+  death: 'Dying',
+}
