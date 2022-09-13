@@ -239,8 +239,8 @@ export const robotSoldierAnimations = {
 
 export const sorceressAnimations = {
   idle: 'Standing Idle',
-  walk: 'Crouch Walk Forward',
-  run: 'Flying',
+  walk: 'Standing Walk Forward',
+  run: 'Standing Sprint Forward',
   attack: 'Standing 1H Magic Attack 01',
   special: 'Standing 2H Magic Attack 04',
 }
