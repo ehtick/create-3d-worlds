@@ -133,3 +133,11 @@ export const dwarfAnimation = {
   attack: 'Sword And Shield Slash',
   special: 'Standing Taunt Chest Thump',
 }
+
+export const rangerAnimation = {
+  idle: 'Crouch Idle 03 Looking Over',
+  walk: 'Crouch Walk Forward',
+  special: 'Standing Dive Forward',
+  death: 'Standing Death Forward 02',
+  attack: 'Standing Draw Arrow',
+}
