@@ -10,7 +10,7 @@ npx live-server
 ```
 
 - ispitati syncFrom funkciju
-- iz idle ne ulazi lepu u walk (iseče), ali lepo izlazi iz walka u idle (lagano)
+- iz idle ne ulazi lepu u walk (iseče), ali lepo izlazi iz walka u idle (lagano), videti kostura
 
 - probati sve nove modele, napraviti primere, pobrisati viškove animacija
 - napraviti nekoliko varijanti nemaca (čuče, leže, stoje)

@@ -3,14 +3,14 @@ import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scen
 import { initLights } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 import { loadLowPoly } from '/utils/loaders.js'
-import { skeletonAnimation } from '/data/animations.js'
+import { shieldmaidenAnimation } from '/data/animations.js'
 
 initLights()
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh, animations } = await loadLowPoly({ animNames: skeletonAnimation, prefix: 'character/lowpoly/skeleton/' })
-const stateMachine = new StateMachine({ mesh, animations, dict: skeletonAnimation })
+const { mesh, animations } = await loadLowPoly({ animNames: shieldmaidenAnimation, prefix: 'character/lowpoly/shieldmaiden/' })
+const stateMachine = new StateMachine({ mesh, animations, dict: shieldmaidenAnimation })
 
 scene.add(mesh)
 

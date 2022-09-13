@@ -151,3 +151,11 @@ export const shieldmaidenAnimation = {
   special: 'Sword And Shield Casting',
   block: 'Sword And Shield Block',
 }
+
+export const skeletonAnimation = {
+  special: 'Zombie Scream',
+  run: 'Flying',
+  walk: 'Walking',
+  idle: 'Zombie Idle',
+  attack: 'Zombie Neck Bite',
+}
