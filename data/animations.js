@@ -141,3 +141,13 @@ export const rangerAnimation = {
   death: 'Standing Death Forward 02',
   attack: 'Standing Draw Arrow',
 }
+
+export const shieldmaidenAnimation = {
+  idle: 'Sword And Shield Idle',
+  walk: 'Sword And Shield Walk',
+  run: 'Sword And Shield Run',
+  jump: 'Sword And Shield Jump',
+  attack: 'Sword And Shield Slash',
+  special: 'Sword And Shield Casting',
+  block: 'Sword And Shield Block',
+}
