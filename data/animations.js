@@ -186,3 +186,10 @@ export const naziProneAnimations = {
   special: 'Throw Grenade',
   death: 'Prone Death',
 }
+
+export const naziOfficerAnimations = {
+  idle: 'Pistol Idle',
+  walk: 'Pistol Walk',
+  attack: 'Shooting',
+  special: 'Yelling',
+}
