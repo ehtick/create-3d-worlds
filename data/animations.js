@@ -115,9 +115,9 @@ export const dwarfAnimation = {
 export const rangerAnimation = {
   idle: 'Crouch Idle 03 Looking Over',
   walk: 'Crouch Walk Forward',
-  special: 'Standing Dive Forward',
   death: 'Standing Death Forward 02',
   attack: 'Standing Draw Arrow',
+  special: 'Standing Dive Forward',
 }
 
 export const shieldmaidenAnimation = {
@@ -192,4 +192,13 @@ export const naziOfficerAnimations = {
   walk: 'Pistol Walk',
   attack: 'Shooting',
   special: 'Yelling',
+}
+
+export const ninjaTurtleAnimations = {
+  idle: 'Ninja Idle',
+  walk: 'Dwarf Walk',
+  run: 'Run',
+  jump: 'Jump',
+  attack: 'Flying Kick',
+  special: 'Butterfly Twirl',
 }
