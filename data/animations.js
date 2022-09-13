@@ -159,3 +159,8 @@ export const skeletonAnimation = {
   idle: 'Zombie Idle',
   attack: 'Zombie Neck Bite',
 }
+
+export const thiefAnimation = {
+  idle: 'Crouch Torch Idle 02',
+  walk: 'Crouch Torch Walk Forward'
+}

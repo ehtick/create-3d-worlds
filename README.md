@@ -9,6 +9,7 @@ npm i
 npx live-server
 ```
 
+- srediti pod da se ne presijava
 - ispitati syncFrom funkciju
 - iz idle ne ulazi lepu u walk (iseče), ali lepo izlazi iz walka u idle (lagano), videti kostura
 
