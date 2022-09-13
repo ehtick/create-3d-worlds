@@ -202,3 +202,11 @@ export const ninjaTurtleAnimations = {
   attack: 'Flying Kick',
   special: 'Butterfly Twirl',
 }
+
+export const orcAnimations = {
+  death: 'Mutant Dying',
+  idle: 'Orc Idle',
+  walk: 'Orc Walk',
+  attack: 'Zombie Attack',
+  special: 'Roar',
+}
