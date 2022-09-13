@@ -9,6 +9,8 @@ npm i
 npx live-server
 ```
 
+- add terrified anim to nude-victim
+
 - srediti pod da se ne presijava
 - ispitati syncFrom funkciju
 - BUG: iz idle ne ulazi lepu u walk (iseče), ali lepo izlazi iz walka u idle (lagano), videti kostura

@@ -204,9 +204,18 @@ export const ninjaTurtleAnimations = {
 }
 
 export const orcAnimations = {
-  death: 'Mutant Dying',
   idle: 'Orc Idle',
   walk: 'Orc Walk',
   attack: 'Zombie Attack',
   special: 'Roar',
+  death: 'Mutant Dying',
+}
+
+export const orcOgreAnimations = {
+  idle: 'Orc Idle',
+  walk: 'Mutant Walking',
+  run: 'Mutant Run',
+  attack: 'Mutant Swiping',
+  special: 'Zombie Scream',
+  death: 'Zombie Dying',
 }
