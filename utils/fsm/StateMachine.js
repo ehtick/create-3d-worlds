@@ -38,7 +38,7 @@ export default class StateMachine {
 
     if (animations?.length)
       this.setupMixer(animations, dict)
-    else
+    else if (dict && prefix)
       this.loadAnims(dict, prefix)
 
     if (camera) {
