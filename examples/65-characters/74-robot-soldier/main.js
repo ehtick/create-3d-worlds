@@ -3,15 +3,14 @@ import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scen
 import { initLights } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 import { loadModel } from '/utils/loaders.js'
-import { ironGiantAnimations } from '/data/animations.js'
+import { robotSoldierAnimations } from '/data/animations.js'
 
 initLights()
 
-camera.position.set(0, 4, 8)
 scene.add(createFloor({ size: 100 }))
 
-const { mesh } = await loadModel({ file: 'character/iron-giant/model.fbx', angle: Math.PI, size: 5 })
-const stateMachine = new StateMachine({ mesh, prefix: 'character/iron-giant/', dict: ironGiantAnimations })
+const { mesh } = await loadModel({ file: 'character/robot-soldier/model.fbx', angle: Math.PI, computeNormals: true })
+const stateMachine = new StateMachine({ mesh, prefix: 'character/robot-soldier/', dict: robotSoldierAnimations })
 
 scene.add(mesh)
 

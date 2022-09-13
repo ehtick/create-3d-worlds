@@ -229,3 +229,11 @@ export const partisanAnimations = {
   special: 'Toss Grenade',
   death: 'Dying',
 }
+
+export const robotSoldierAnimations = {
+  idle: 'Rifle Idle',
+  walk: 'Walk With Rifle',
+  run: 'Rifle Run',
+  attack: 'Rifle Punch',
+
+}
