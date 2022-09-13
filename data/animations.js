@@ -7,7 +7,7 @@ export const girlAnimations = {
   special: 'Queshada',
 }
 
-export const robotAnimations = {
+export const robotkoAnimations = {
   idle: 'Idle',
   walk: 'Walking',
   run: 'Running',

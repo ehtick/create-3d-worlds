@@ -7,7 +7,7 @@ import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scen
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
 import { loadModel, loadRobotko } from '/utils/loaders.js'
-import { robotAnimations } from '/data/animations.js'
+import { robotkoAnimations } from '/data/animations.js'
 
 const { randFloatSpread } = THREE.MathUtils
 
@@ -23,7 +23,7 @@ camera.position.set(0, 10, 15)
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadRobotko()
-const player = new StateMachine({ mesh, animations, dict: robotAnimations })
+const player = new StateMachine({ mesh, animations, dict: robotkoAnimations })
 scene.add(mesh)
 
 const { mesh: ghostMesh, animations: ghostAnims } = await loadModel({ file: 'character/ghost/scene.gltf' })
