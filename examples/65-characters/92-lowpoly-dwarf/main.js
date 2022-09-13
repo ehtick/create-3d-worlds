@@ -2,15 +2,15 @@ import StateMachine from '/utils/fsm/StateMachine.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { initLights } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
-import { loadModel } from '/utils/loaders.js'
-import { golemAnimation } from '/data/animations.js'
+import { loadLowPoly } from '/utils/loaders.js'
+import { dwarfAnimation } from '/data/animations.js'
 
 initLights()
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, computeNormals: true, animNames: golemAnimation, prefix: 'character/golem/', size: 2.5 })
-const stateMachine = new StateMachine({ mesh, animations, dict: golemAnimation })
+const { mesh, animations } = await loadLowPoly({ animNames: dwarfAnimation, prefix: 'character/lowpoly/dwarf/' })
+const stateMachine = new StateMachine({ mesh, animations, dict: dwarfAnimation })
 
 scene.add(mesh)
 

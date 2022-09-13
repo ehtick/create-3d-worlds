@@ -116,3 +116,20 @@ export const golemAnimation = {
   special: 'Mutant Roaring',
   death: 'Standing Death Forward 01',
 }
+
+export const druidAnimation = {
+  idle: 'Standing Idle',
+  walk: 'Standing Walk Forward',
+  run: 'Standing Run Forward',
+  jump: 'Standing Jump',
+  attack: 'Standing 2H Magic Attack 01',
+}
+
+export const dwarfAnimation = {
+  idle: 'Standing Idle',
+  walk: 'Standing Walk Forward',
+  run: 'Standing Run Forward',
+  jump: 'Standing Jump',
+  attack: 'Sword And Shield Slash',
+  special: 'Standing Taunt Chest Thump',
+}
