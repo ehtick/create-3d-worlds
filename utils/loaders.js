@@ -179,7 +179,7 @@ export const loadModel = async param => {
 /* ALIASES */
 
 export const loadLowPoly = ({ file = 'model.fbx', prefix, animNames }) =>
-  loadModel({ file, angle: Math.PI, computeNormals: true, animNames, prefix })
+  loadModel({ file, animNames, prefix, angle: Math.PI, computeNormals: true })
 
 export const loadRobotko = () =>
   loadModel({ file: 'character/robot/robot.glb', size: 1.2, angle: Math.PI })

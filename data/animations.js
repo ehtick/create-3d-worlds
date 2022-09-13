@@ -71,28 +71,6 @@ export const elfSorceressAnimations = {
   special: 'Spell Casting'
 }
 
-export const germanSoldierAnimations = {
-  idle: 'Rifle Aiming Idle',
-  walk: 'Rifle Walk',
-  run: 'Rifle Run',
-  attack: 'Firing Rifle',
-  death: 'Dying'
-}
-
-export const germanSoldierCrouchAnimations = {
-  idle: 'Crouch Idle',
-  walk: 'Walk Crouching Forward',
-  attack: 'Fire Rifle Crouch',
-  death: 'Crouch Death'
-}
-
-export const germanSoldierProneAnimations = {
-  idle: 'Prone Idle',
-  walk: 'Prone Forward',
-  attack: 'Prone Firing Rifle',
-  death: 'Prone Death'
-}
-
 export const ironGiantAnimations = {
   idle: 'Idle',
   walk: 'Walking',
@@ -163,4 +141,48 @@ export const skeletonAnimation = {
 export const thiefAnimation = {
   idle: 'Crouch Torch Idle 02',
   walk: 'Crouch Torch Walk Forward'
+}
+
+export const germanSoldierAnimations = {
+  idle: 'Rifle Aiming Idle',
+  walk: 'Rifle Walk',
+  run: 'Rifle Run',
+  attack: 'Firing Rifle',
+  death: 'Dying'
+}
+
+export const germanSoldierCrouchAnimations = {
+  idle: 'Crouch Idle',
+  walk: 'Walk Crouching Forward',
+  attack: 'Fire Rifle Crouch',
+  death: 'Crouch Death',
+}
+
+export const germanSoldierProneAnimations = {
+  idle: 'Prone Idle',
+  walk: 'Prone Forward',
+  attack: 'Prone Firing Rifle',
+  death: 'Prone Death',
+}
+
+export const naziAnimations = {
+  idle: 'Rifle Aiming Idle',
+  attack: 'Firing Rifle',
+  walk: 'Walk With Rifle',
+  death: 'Death Crouching Headshot Front',
+}
+
+export const naziCrouchAnimations = {
+  idle: 'Crouch Idle',
+  walk: 'Crouched Run',
+  attack: 'Fire Rifle Crouch',
+  death: 'Crouch Death',
+}
+
+export const naziProneAnimations = {
+  idle: 'Prone Idle',
+  walk: 'Prone Forward',
+  attack: 'Prone Firing Rifle',
+  special: 'Throw Grenade',
+  death: 'Prone Death',
 }

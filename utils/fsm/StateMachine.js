@@ -3,6 +3,7 @@ import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { getHeight } from '/utils/helpers.js'
+import { loadFbxAnimations } from '/utils/loaders.js'
 
 import IdleState from './states/IdleState.js'
 import RunState from './states/RunState.js'
@@ -31,13 +32,14 @@ const mapAnims = (animations, mixer, dict) => {
 }
 
 export default class StateMachine {
-  constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard }) {
+  constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, prefix }) {
     this.mesh = mesh
     this.keyboard = keyboard
-    this.mixer = new THREE.AnimationMixer(mesh.isGroup ? mesh.children[0] : mesh)
-    this.actions = mapAnims(animations, this.mixer, dict)
-    if (this.actions?.walk) this.actions.walkBackward = this.actions.walk
-    this.setState('idle')
+
+    if (animations?.length)
+      this.setupMixer(animations, dict)
+    else
+      this.loadAnims(dict, prefix)
 
     if (camera) {
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh })
@@ -45,6 +47,18 @@ export default class StateMachine {
     }
 
     this.shouldMove = true
+  }
+
+  setupMixer(animations, dict) {
+    this.mixer = new THREE.AnimationMixer(this.mesh.isGroup ? this.mesh.children[0] : this.mesh)
+    this.actions = mapAnims(animations, this.mixer, dict)
+    if (this.actions?.walk) this.actions.walkBackward = this.actions.walk
+    this.setState('idle')
+  }
+
+  async loadAnims(dict, prefix) {
+    const animations = await loadFbxAnimations(dict, prefix)
+    this.setupMixer(animations, dict)
   }
 
   setState(name) {
@@ -60,8 +74,8 @@ export default class StateMachine {
   }
 
   update(delta) {
-    this.currentState.update(delta)
-    this.mixer.update(delta)
+    this.currentState?.update(delta)
+    this.mixer?.update(delta)
 
     if (this.thirdPersonCamera)
       if (this.keyboard.pressed.mouse) {

@@ -12,6 +12,7 @@ npx live-server
 - srediti pod da se ne presijava
 - ispitati syncFrom funkciju
 - iz idle ne ulazi lepu u walk (iseče), ali lepo izlazi iz walka u idle (lagano), videti kostura
+- ne vraca se u idle iz walka ako nema walk anim (trebalo bi da može bez svake)
 
 - probati sve nove modele, napraviti primere, pobrisati viškove animacija
 - napraviti nekoliko varijanti nemaca (čuče, leže, stoje)
