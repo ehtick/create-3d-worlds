@@ -9,6 +9,10 @@ npm i
 npx live-server
 ```
 
+https://rigmodels.com/model.php?view=D0405021A7-3d-model__CQ97TTCEBRI7KUFCI34FTSRRL&searchkeyword=elf&manualsearch=1
+https://rigmodels.com/model.php?view=432-3d-model__B5EYWEX10BMXBH7SS4C5R3RNS&searchkeyword=elf&manualsearch=1
+https://rigmodels.com/model.php?view=Women_Elf-3d-model__6BJ93BJLX7GSZDUNPIG44EP3G&searchkeyword=elf&manualsearch=1
+
 - ispravno centrirani modeli:
   - treeman
 

@@ -63,11 +63,11 @@ export const blackKnightAnimations = {
 }
 
 export const elfSorceressAnimations = {
-  idle: 'Standing Idle',
+  idle: 'Crouch Idle',
   walk: 'Crouched Walking',
   run: 'Run',
   attack: 'Standing 2H Magic Attack 01',
-  special: 'Spell Casting'
+  special: 'Spell Casting',
 }
 
 export const ironGiantAnimations = {
