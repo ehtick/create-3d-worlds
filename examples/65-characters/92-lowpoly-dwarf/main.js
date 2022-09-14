@@ -9,7 +9,7 @@ initLights()
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh, animations } = await loadLowPoly({ animNames: dwarfAnimation, prefix: 'character/lowpoly/dwarf/' })
+const { mesh, animations } = await loadLowPoly({ animNames: dwarfAnimation, prefix: 'character/dwarf/' })
 const stateMachine = new StateMachine({ mesh, animations, dict: dwarfAnimation })
 
 scene.add(mesh)

@@ -9,7 +9,7 @@ initLights()
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh, animations } = await loadLowPoly({ animNames: thiefAnimation, prefix: 'character/lowpoly/thief/' })
+const { mesh, animations } = await loadLowPoly({ animNames: thiefAnimation, prefix: 'character/thief/' })
 const stateMachine = new StateMachine({ mesh, animations, dict: thiefAnimation })
 
 scene.add(mesh)
