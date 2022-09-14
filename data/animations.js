@@ -51,7 +51,6 @@ export const forestMonsterAnimations = {
 export const demonAnimations = {
   idle: 'Mutant Breathing Idle',
   walk: 'Mutant Walking',
-  run: 'Flying',
   jump: 'Mutant Jumping',
   attack: 'Zombie Attack',
   special: 'Zombie Scream',
@@ -294,9 +293,9 @@ export const zombieCopAnimations = {
 }
 
 export const zombieGirlAnimations = {
-  idle: 'Thriller Idle',
-  walk: 'Zombie Walk',
-  attack: 'Zombie Neck Bite',
+  idle: 'Zombie Idle',
+  walk: 'Walking',
+  attack: 'Zombie Neck Bite Mirror',
   special: 'Zombie Attack',
 }
 
