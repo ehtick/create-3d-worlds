@@ -269,10 +269,16 @@ export const treemanAnimations = {
   attack: 'Zombie Attack',
 }
 
-export const trollAnimations = {
+export const trollLowpolyAnimations = {
   idle: 'Mutant Breathing Idle',
   death: 'Mutant Dying',
   run: 'Mutant Run',
+  attack: 'Mutant Swiping',
+  walk: 'Mutant Walking',
+}
+
+export const trollAnimations = {
+  idle: 'Mutant Breathing Idle',
   attack: 'Mutant Swiping',
   walk: 'Mutant Walking',
 }
