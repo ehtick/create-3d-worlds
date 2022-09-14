@@ -18,7 +18,7 @@ const stairs = createSpiralStairs({ radius: 25, stairsInCirle: 50, floorHeight: 
 scene.add(stairs)
 
 const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 4, angle: Math.PI })
-const animations = await loadFbxAnimations(Object.values(girlAnimations), 'character/kachujin/')
+const animations = await loadFbxAnimations(girlAnimations, 'character/kachujin/')
 const player = new Player({ mesh, animations, animNames: girlAnimations })
 
 scene.add(mesh)

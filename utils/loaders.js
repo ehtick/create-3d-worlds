@@ -105,8 +105,14 @@ export async function loadMd2(params) {
 
 export async function loadFbx(params) {
   const loader = new FBXLoader()
-  const { file, texture } = params
+  const { file, texture, doubleSide } = params
   const model = await loader.loadAsync(`/assets/models/${file}`)
+
+  // fix holes in model
+  if (doubleSide) model.traverse(child => {
+    if (child.isMesh) child.material.side = THREE.DoubleSide
+  })
+
   if (texture) {
     const map = await textureLoader.loadAsync(`/assets/models/${texture}`)
     model.traverse(child => {
