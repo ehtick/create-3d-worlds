@@ -244,3 +244,9 @@ export const sorceressAnimations = {
   attack: 'Standing 1H Magic Attack 01',
   special: 'Standing 2H Magic Attack 04',
 }
+
+export const partisan2Animations = {
+  idle: 'Rifle Idle',
+  walk: 'Walk With Rifle',
+  attack: 'Gunplay',
+}

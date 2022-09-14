@@ -23,7 +23,7 @@ export default class WalkBackwardState extends State {
     super.update(delta)
     this.speed = lerp(this.oldSpeed, backwardSpeed, this.t)
 
-    this.turn(delta, 1)
+    this.turn(delta)
     this.move(delta)
 
     if (this.keyboard.pressed.Space)
