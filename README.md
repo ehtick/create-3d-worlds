@@ -9,6 +9,12 @@ npm i
 npx live-server
 ```
 
+- optimizovati modele
+  - downgrade prevelike modele (du -h --max-depth=1 | sort -h)
+  - export centered model from rigmodels
+  - obrisati glomazne modele (kachuin, maw_j_laygo, treeman)
+  - replace fred and ghoul
+
 - srediti pod da se ne presijava
 - ispitati syncFrom funkciju
   - napraviti animacije tečnijim (BUG: videti partizana)
@@ -16,8 +22,6 @@ npx live-server
   - BUG: ne vraca se u idle iz walka ako nema walk anim (trebalo bi da može bez svake)
   - BUG: kad stavim istu animaciju za walk i run, secka prelaz
 
-- probati sve nove modele, napraviti primere, pobrisati viškove animacija
-- obrisati glomazne modele (maw_j_laygo i videti šta još)
 - saturn tekstura probati
 - BUG kad kachujin skače i pritiskam strelice
 - spojiti joystick i keyboard nekako da zajedno rade
