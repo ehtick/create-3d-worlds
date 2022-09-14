@@ -9,8 +9,6 @@ npm i
 npx live-server
 ```
 
-- add terrified anim to nude-victim
-
 - srediti pod da se ne presijava
 - ispitati syncFrom funkciju
   - napraviti animacije tečnijim (BUG: videti partizana)
@@ -19,7 +17,6 @@ npx live-server
   - BUG: kad stavim istu animaciju za walk i run, secka prelaz
 
 - probati sve nove modele, napraviti primere, pobrisati viškove animacija
-- napraviti nekoliko varijanti nemaca (čuče, leže, stoje)
 - obrisati glomazne modele (maw_j_laygo i videti šta još)
 - saturn tekstura probati
 - BUG kad kachujin skače i pritiskam strelice
