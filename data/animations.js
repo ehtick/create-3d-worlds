@@ -250,3 +250,10 @@ export const partisan2Animations = {
   walk: 'Walk With Rifle',
   attack: 'Gunplay',
 }
+
+export const nudeVictimAnimations = {
+  idle: 'Injured Idle',
+  walk: 'Drunk Run Forward',
+  attack: 'Terrified',
+  special: 'Zombie Agonizing',
+}
