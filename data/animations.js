@@ -203,11 +203,11 @@ export const ninjaTurtleAnimations = {
 }
 
 export const orcAnimations = {
-  idle: 'Orc Idle',
+  idle: 'Unarmed Idle',
   walk: 'Orc Walk',
   attack: 'Zombie Attack',
-  special: 'Roar',
-  death: 'Mutant Dying',
+  special: 'Zombie Scream',
+  death: 'Death From The Back',
 }
 
 export const orcOgreAnimations = {
@@ -251,7 +251,7 @@ export const partisan2Animations = {
 }
 
 export const nudeVictimAnimations = {
-  idle: 'Injured Idle',
+  idle: 'Unarmed Idle',
   walk: 'Drunk Run Forward',
   attack: 'Terrified',
   special: 'Zombie Agonizing',

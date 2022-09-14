@@ -18,6 +18,8 @@ https://rigmodels.com/model.php?view=Cadnav.com-A1201051-3d-model__N2DVEL6QJ042R
 
 https://rigmodels.com/model.php?view=D0902B73-3d-model__P8SEKHMVJQMIYT3WC0EL98TU0&searchkeyword=elf&manualsearch=1
 
+- mozda dodati malo kapuere, da neko radi gingu
+
 - ispravno centrirani modeli:
   - treeman
 
