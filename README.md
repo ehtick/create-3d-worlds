@@ -9,6 +9,8 @@ npm i
 npx live-server
 ```
 
+- napraviti jedan ispravno centriran model, kao zamenu za kachujin
+
 - optimizovati modele
   - downgrade prevelike modele (du -h --max-depth=1 | sort -h)
   - export centered model from rigmodels
