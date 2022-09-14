@@ -257,3 +257,8 @@ export const nudeVictimAnimations = {
   attack: 'Terrified',
   special: 'Zombie Agonizing',
 }
+
+export const skaterAnimations = {
+  idle: 'Skateboarding',
+  jump: 'Jumping',
+}
