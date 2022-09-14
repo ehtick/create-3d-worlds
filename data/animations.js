@@ -292,3 +292,10 @@ export const zombieCopAnimations = {
   special: 'Zombie Punching',
   walk: 'Zombie Walk',
 }
+
+export const zombieGirlAnimations = {
+  idle: 'Thriller Idle',
+  walk: 'Zombie Walk',
+  attack: 'Zombie Neck Bite',
+  special: 'Zombie Attack',
+}
