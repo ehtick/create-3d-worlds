@@ -279,6 +279,8 @@ export const trollLowpolyAnimations = {
 
 export const trollAnimations = {
   idle: 'Mutant Breathing Idle',
+  death: 'Mutant Dying',
+  run: 'Mutant Run',
   attack: 'Mutant Swiping',
   walk: 'Mutant Walking',
 }
