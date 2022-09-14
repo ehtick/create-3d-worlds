@@ -262,3 +262,9 @@ export const skaterAnimations = {
   idle: 'Skateboarding',
   jump: 'Jumping',
 }
+
+export const treemanAnimations = {
+  idle: 'Idle',
+  walk: 'Mutant Walking',
+  attack: 'Zombie Attack',
+}
