@@ -36,10 +36,10 @@ export default class StateMachine {
     this.mesh = mesh
     this.keyboard = keyboard
 
-    if (animations?.length)
-      this.setupMixer(animations, dict)
-    else if (dict && prefix)
+    if (dict && prefix)
       this.loadAnims(dict, prefix)
+    else if (animations?.length)
+      this.setupMixer(animations, dict)
 
     if (camera) {
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh })

@@ -9,7 +9,8 @@ npm i
 npx live-server
 ```
 
-- napraviti jedan ispravno centriran model, kao zamenu za kachujin
+- ispravno centrirani modeli:
+  - treeman
 
 - optimizovati modele
   - downgrade prevelike modele (du -h --max-depth=1 | sort -h)
