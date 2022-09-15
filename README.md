@@ -9,20 +9,19 @@ npm i
 npx live-server
 ```
 
-- srediti pod da se ne presijava
+- srediti senku
+
 - ispitati syncFrom funkciju
   - napraviti animacije tečnijim (BUG: videti partizana)
   - BUG: iz idle ne ulazi lepu u walk (iseče), ali lepo izlazi iz walka u idle (lagano), videti kostura
   - BUG: ne vraca se u idle iz walka ako nema walk anim (trebalo bi da može bez svake)
   - BUG: kad stavim istu animaciju za walk i run, secka prelaz
+- BUG: kad karakter skače i pritiskam strelice
 
 - saturn tekstura probati
-- BUG kad kachujin skače i pritiskam strelice
 - spojiti joystick i keyboard nekako da zajedno rade
 
 https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character
-
-- popraviti senku
 
 ### Physics
 - preraditi prostu 2D fiziku u 3D

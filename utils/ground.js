@@ -31,7 +31,7 @@ export function createGroundMaterial({ color = 0x509f53, file, repeat } = {}) {
       ...params,
       map: getTexture({ file, repeat }),
     })
-    : new THREE.MeshPhongMaterial({ ...params, color }) // MeshLambertMaterial ne radi rasveta
+    : new THREE.MeshToonMaterial({ ...params, color }) // MeshLambertMaterial ne radi rasveta
   return material
 }
 
