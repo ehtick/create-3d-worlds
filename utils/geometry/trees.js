@@ -91,7 +91,8 @@ function createFirTop({ radius = .5, height = 1, radialSegments = 8, heightSegme
   })
 
   const mesh = new THREE.Mesh(geometry, material)
-  mesh.castShadow = mesh.receiveShadow = false
+  mesh.castShadow = true
+  mesh.receiveShadow = false
   mesh.position.y = 0.9
   mesh.rotation.y = (Math.random() * (Math.PI))
   return mesh

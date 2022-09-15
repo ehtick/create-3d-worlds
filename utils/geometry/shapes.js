@@ -116,7 +116,7 @@ export function createCloud() {
 
   group.traverse(part => {
     part.castShadow = true
-    part.receiveShadow = true
+    part.receiveShadow = false
   })
   group.scale.set(1.5, 1.5, 1.5)
   return group

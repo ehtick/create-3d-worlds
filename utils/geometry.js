@@ -55,7 +55,7 @@ export function createBuilding({ width = 2, height = 1, depth = 1, color = 0x999
 /* SPHERES */
 
 export function createSphere({
-  r = 1, segments = 32, color = null, castShadow = true, receiveShadow = true, file, bumpFile } = {}
+  r = 1, segments = 32, color = null, castShadow = true, receiveShadow = false, file, bumpFile } = {}
 ) {
   const geometry = new THREE.SphereGeometry(r, segments, segments)
   const material = new THREE.MeshStandardMaterial({ color })
@@ -75,12 +75,13 @@ export function createBall({ r = 1 } = {}) {
     flatShading: true
   })
   const mesh = new THREE.Mesh(geometry, material)
-  mesh.receiveShadow = mesh.castShadow = true
+  mesh.receiveShadow = false
+  mesh.castShadow = true
   return mesh
 }
 
 export const createBullet = ({ color = 0x333333, r = .1, widthSegments = 6 } = {}) =>
-  createSphere({ r, color, widthSegments, castShadow: true, receiveShadow: true })
+  createSphere({ r, color, widthSegments, castShadow: true, receiveShadow: false })
 
 /* WORLD SPHERE */
 
@@ -101,7 +102,8 @@ export function createWorldSphere({ r = 26, widthSegments = 40, heightSegments =
     flatShading: true
   })
   const mesh = new THREE.Mesh(geometry, material)
-  mesh.receiveShadow = mesh.castShadow = false
+  mesh.receiveShadow = true
+  mesh.castShadow = false
   mesh.rotation.z = -Math.PI / 2
   return mesh
 }

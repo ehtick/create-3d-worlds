@@ -194,7 +194,7 @@ function createLamppost({ x = 0, z = 0, height = 40 } = {}) {
   const cylinderMaterial = new THREE.MeshPhongMaterial({ color: 0x242731 })
   const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial)
   cylinder.position.set(x, height * .5, z)
-  cylinder.receiveShadow = true
+  // cylinder.receiveShadow = true
   group.add(cylinder)
 
   const lamppost = new THREE.SpotLight(color)
