@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { similarColor, randomNuance, randomInSquare, findGroundRecursive } from '../helpers.js'
+import { similarColor, findGroundRecursive } from '../helpers.js'
 
 const { randFloat } = THREE.MathUtils
 
@@ -8,6 +8,9 @@ const browns = [0x3d2817, 0x664422, 0xA0522D, 0x886633, 0x966F33]
 const greens = [0x2d4c1e, 0x228b22, 0x3EA055, 0x44aa44, 0x33ff33]
 
 const randomBrown = () => browns[Math.floor(Math.random() * browns.length)]
+
+const randomNuance = ({ h = .25, s = 0.5, l = 0.2 } = {}) =>
+  new THREE.Color().setHSL(Math.random() * 0.1 + h, s, Math.random() * 0.25 + l)
 
 /* SIMPLE TREE */
 

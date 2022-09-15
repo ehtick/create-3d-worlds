@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { randomNuance } from './helpers.js'
+import { randomGray } from './helpers.js'
 import { material as skyMaterial } from '/utils/shaders/gradient-sky.js'
 
 const { randFloat } = THREE.MathUtils
@@ -7,7 +7,7 @@ const textureLoader = new THREE.TextureLoader()
 
 /* BOXES */
 
-export function createBox({ size = 1, height = size, depth = size, file, bumpFile, color = randomNuance({ h: 0.1, s: 0.01, l: .75 }), castShadow = false } = {}) {
+export function createBox({ size = 1, height = size, depth = size, file, bumpFile, color = randomGray(), castShadow = false } = {}) {
   const geometry = new THREE.BoxGeometry(size, height, depth)
   const options = {
     map: file ? textureLoader.load(`/assets/textures/${file}`) : null,
@@ -179,7 +179,7 @@ export function createWoodBarrel({ r = .4, R = .5, h = 1 } = {}) {
 export function createRandomBoxes({ n = 100, size = 5, mapSize = 50 } = {}) {
   const group = new THREE.Group()
   for (let i = 0; i < n; i++) {
-    const color = randomNuance({ h: 0.1, s: 0.01, l: .75 })
+    const color = randomGray()
     const x = randFloat(-mapSize, mapSize), y = randFloat(-5, mapSize * .5), z = randFloat(-mapSize, mapSize)
     const box = createBox({ size, color })
     box.position.set(x, y, z)

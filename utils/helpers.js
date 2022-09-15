@@ -115,10 +115,7 @@ export const addTexture = ({ mesh, file = 'terrain/concrete.jpg', repeat = 1 } =
 
 export const randomColor = () => new THREE.Color(Math.random() * 0xffffff)
 
-export const randomNuance = ({ h = .25, s = 0.5, l = 0.2 } = {}) =>
-  new THREE.Color().setHSL(Math.random() * 0.1 + h, s, Math.random() * 0.25 + l)
-
-export function randomGrey(min = 75, max = 150) {
+export function randomGray(min = 75, max = 175) { // range 0-255
   const v = (randFloat(min, max) | 0).toString(16)
   return '#' + v + v + v
 }
