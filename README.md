@@ -11,6 +11,7 @@ npx live-server
 
 - srediti senku
 - createGround gradient green
+- dodati speed u StateMachine konstruktor
 
 - ispitati syncFrom funkciju
   - napraviti animacije tečnijim (BUG: videti partizana)

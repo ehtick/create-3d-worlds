@@ -73,7 +73,7 @@ export default class StateMachine {
     this.currentState.enter(oldState)
   }
 
-  update(delta) {
+  update(delta = 1 / 60) {
     this.currentState?.update(delta)
     this.mixer?.update(delta)
 
