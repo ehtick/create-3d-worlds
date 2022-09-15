@@ -209,7 +209,7 @@ export const orcAnimations = {
 }
 
 export const orcOgreAnimations = {
-  idle: 'Orc Idle',
+  idle: 'Unarmed Idle',
   walk: 'Mutant Walking',
   run: 'Mutant Run',
   attack: 'Mutant Swiping',

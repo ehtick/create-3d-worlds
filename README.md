@@ -9,17 +9,8 @@ npm i
 npx live-server
 ```
 
-https://rigmodels.com/model.php?view=D0902B73-3d-model__P8SEKHMVJQMIYT3WC0EL98TU0&searchkeyword=elf&manualsearch=1
-
-- mozda dodati malo kapuere, da neko radi gingu
-- srediti partizana ako može
-
-- ispravno centrirani modeli:
-  - treeman
-
 - optimizovati modele
   - downgrade prevelike modele (du -h --max-depth=1 | sort -h)
-  - export centered model from rigmodels
   - obrisati glomazne modele (kachuin, maw_j_laygo, treeman)
   - replace fred and ghoul
 
