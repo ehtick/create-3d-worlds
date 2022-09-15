@@ -10,6 +10,7 @@ npx live-server
 ```
 
 - srediti senku
+- createGround gradient green
 
 - ispitati syncFrom funkciju
   - napraviti animacije tečnijim (BUG: videti partizana)
