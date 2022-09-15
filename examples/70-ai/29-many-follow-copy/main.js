@@ -7,8 +7,8 @@ import { Keyboard } from '/utils/classes/Keyboard.js'
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { loadSorceress, loadMawLaygo } from '/utils/loaders.js'
-import { sorceressAnimations, mawLaygoAnimations } from '/data/animations.js'
+import { loadSorceress, loadGolem } from '/utils/loaders.js'
+import { sorceressAnimations, golemAnimation } from '/data/animations.js'
 
 /* this example uses StateMachine for AI */
 
@@ -30,11 +30,11 @@ playerMesh.velocity = new THREE.Vector3() // required by ThreeSteer
 
 scene.add(playerMesh)
 
-const { mesh: followerMesh, animations: followerAnims } = await loadMawLaygo({ angle: 0 })
+const { mesh: followerMesh, animations: followerAnims } = await loadGolem({ angle: 0 })
 
 for (let i = 0; i < 5; i++) {
   const mesh = SkeletonUtils.clone(followerMesh)
-  const ai = new StateMachine({ mesh, animations: followerAnims, dict: mawLaygoAnimations, keyboard: new Keyboard(false) })
+  const ai = new StateMachine({ mesh, animations: followerAnims, dict: golemAnimation, keyboard: new Keyboard(false) })
   ai.shouldMove = false
   const entity = new SteeringEntity(mesh)
   entity.position.set(randFloatSpread(25), 0, randFloatSpread(25))

@@ -6,8 +6,8 @@ import { Keyboard } from '/utils/classes/Keyboard.js'
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { loadSorceress, loadMawLaygo } from '/utils/loaders.js'
-import { sorceressAnimations, mawLaygoAnimations } from '/data/animations.js'
+import { loadSorceress, loadGolem } from '/utils/loaders.js'
+import { sorceressAnimations, golemAnimation } from '/data/animations.js'
 
 const { randFloatSpread } = THREE.MathUtils
 
@@ -24,12 +24,12 @@ const { mesh: playerMesh, animations } = await loadSorceress()
 const player = new StateMachine({ mesh: playerMesh, animations, dict: sorceressAnimations })
 scene.add(playerMesh)
 
-const { mesh: followerMesh, animations: followerAnims } = await loadMawLaygo()
+const { mesh: followerMesh, animations: followerAnims } = await loadGolem()
 
 for (let i = 0; i < 10; i++) {
   const mesh = SkeletonUtils.clone(followerMesh)
   mesh.position.set(randFloatSpread(50), 0, randFloatSpread(50))
-  const ai = new StateMachine({ mesh, animations: followerAnims, dict: mawLaygoAnimations, keyboard: new Keyboard(false) })
+  const ai = new StateMachine({ mesh, animations: followerAnims, dict: golemAnimation, keyboard: new Keyboard(false) })
   ai.randomizeAction()
   followers.push(ai)
   scene.add(mesh)

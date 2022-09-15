@@ -8,7 +8,7 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
-import { mawLaygoAnimations, sorceressAnimations } from '/data/animations.js'
+import { sorceressAnimations, golemAnimation } from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -190,13 +190,6 @@ export const loadLowPoly = ({ file = 'model.fbx', prefix, animNames }) =>
 export const loadRobotko = () =>
   loadModel({ file: 'character/robotko/robot.glb', size: 1.2, angle: Math.PI })
 
-export const loadMawLaygo = async(params = {}) => {
-  const { mesh } = await loadModel({ file: 'character/maw_j_laygo/maw_j_laygo.fbx', size: 2.25, angle: Math.PI, ...params })
-  const animations = await loadFbxAnimations(mawLaygoAnimations, 'character/maw_j_laygo/')
-  return { mesh, animations }
-}
+export const loadSorceress = () => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: sorceressAnimations, prefix: 'character/sorceress/' })
 
-export const loadSorceress = async() => {
-  const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, animNames: sorceressAnimations, prefix: 'character/sorceress/' })
-  return { mesh, animations }
-}
+export const loadGolem = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, computeNormals: true, animNames: golemAnimation, prefix: 'character/golem/', size: 2.5, ...params })

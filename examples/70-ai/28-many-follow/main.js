@@ -6,7 +6,7 @@ import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonU
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { loadSorceress, loadMawLaygo } from '/utils/loaders.js'
+import { loadSorceress, loadGolem } from '/utils/loaders.js'
 import { sorceressAnimations } from '/data/animations.js'
 
 const { randFloatSpread } = THREE.MathUtils
@@ -28,7 +28,7 @@ playerMesh.velocity = new THREE.Vector3() // required by ThreeSteer
 
 scene.add(playerMesh)
 
-const { mesh: followerMesh, animations: followerAnims } = await loadMawLaygo({ angle: 0 })
+const { mesh: followerMesh, animations: followerAnims } = await loadGolem({ angle: 0 })
 
 for (let i = 0; i < 10; i++) {
   const mesh = SkeletonUtils.clone(followerMesh)
