@@ -34,7 +34,7 @@ const createGroup = model => {
   return group
 }
 
-const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, shouldCenter, shouldAdjustHeight, computeNormals, castShadow = true, receiveShadow = false }) => {
+const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, shouldCenter, shouldAdjustHeight, castShadow = true, receiveShadow = false }) => {
   const scale = size ? getScale(model, size) : 1
   model.scale.set(scale, scale, scale)
 
@@ -46,7 +46,7 @@ const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, sho
     if (child.isMesh) {
       child.castShadow = castShadow
       child.receiveShadow = receiveShadow
-      if (computeNormals) child.geometry.computeVertexNormals()
+      if (!child.geometry.attributes.normal) child.geometry.computeVertexNormals()
     }
   })
   if (angle) model.rotateOnWorldAxis(new THREE.Vector3(...axis), angle)
@@ -175,7 +175,7 @@ export const loadModel = async param => {
         params.file = prefix + file
         if (animNames) params.animations = await loadFbxAnimations(animNames, prefix)
       }
-      // fixColors()
+      fixColors()
       return loadFbx(params)
     default:
       throw new Error(`Unknown file extension: ${ext}`)
@@ -185,13 +185,13 @@ export const loadModel = async param => {
 /* ALIASES */
 
 export const loadLowPoly = ({ file = 'model.fbx', prefix, animNames }) =>
-  loadModel({ file, animNames, prefix, angle: Math.PI, computeNormals: true })
+  loadModel({ file, animNames, prefix, angle: Math.PI })
 
 export const loadRobotko = () =>
   loadModel({ file: 'character/robotko/robot.glb', size: 1.2, angle: Math.PI })
 
 export const loadSorceress = () => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: sorceressAnimations, prefix: 'character/sorceress/', size: 1.75 })
 
-export const loadGolem = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, computeNormals: true, animNames: golemAnimation, prefix: 'character/golem/', size: 2.5, ...params })
+export const loadGolem = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: golemAnimation, prefix: 'character/golem/', size: 2.5, ...params })
 
-export const loadGoblin = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, computeNormals: true, animNames: goblinAnimations, prefix: 'character/goblin/', size: 1.5, ...params })
+export const loadGoblin = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: goblinAnimations, prefix: 'character/goblin/', size: 1.5, ...params })

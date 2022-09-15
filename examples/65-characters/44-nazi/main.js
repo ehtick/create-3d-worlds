@@ -9,7 +9,7 @@ scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh } = await loadModel({ file: 'character/nazi/model.fbx', angle: Math.PI, computeNormals: true })
+const { mesh } = await loadModel({ file: 'character/nazi/model.fbx', angle: Math.PI })
 const stateMachine = new StateMachine({ mesh, prefix: 'character/nazi/', dict: naziAnimations })
 
 scene.add(mesh)

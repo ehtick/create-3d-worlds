@@ -9,7 +9,7 @@ scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, computeNormals: true, animNames: witchAnimations, prefix: 'character/witch/' })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, animNames: witchAnimations, prefix: 'character/witch/' })
 
 const stateMachine = new StateMachine({ mesh, animations, dict: witchAnimations })
 

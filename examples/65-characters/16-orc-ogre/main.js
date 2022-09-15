@@ -9,7 +9,7 @@ scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh } = await loadModel({ file: 'character/orc-ogre/model.fbx', angle: Math.PI, computeNormals: true })
+const { mesh } = await loadModel({ file: 'character/orc-ogre/model.fbx', angle: Math.PI })
 const stateMachine = new StateMachine({ mesh, prefix: 'character/orc-ogre/', dict: orcOgreAnimations })
 
 scene.add(mesh)

@@ -9,7 +9,7 @@ scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh } = await loadModel({ file: 'character/zombie-doctor/model.fbx', angle: Math.PI, computeNormals: true })
+const { mesh } = await loadModel({ file: 'character/zombie-doctor/model.fbx', angle: Math.PI })
 const stateMachine = new StateMachine({ mesh, prefix: 'character/zombie-doctor/', dict: zombieDocAnimations })
 
 scene.add(mesh)

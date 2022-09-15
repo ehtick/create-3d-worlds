@@ -9,7 +9,7 @@ initLights()
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, computeNormals: true, animNames: goblinAnimations, prefix: 'character/goblin/', size: 1.5 })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, animNames: goblinAnimations, prefix: 'character/goblin/', size: 1.5 })
 const stateMachine = new StateMachine({ mesh, animations, dict: goblinAnimations })
 
 scene.add(mesh)

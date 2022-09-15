@@ -9,7 +9,7 @@ initLights()
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh } = await loadModel({ file: 'character/demon/demon.fbx', angle: Math.PI, computeNormals: true })
+const { mesh } = await loadModel({ file: 'character/demon/demon.fbx', angle: Math.PI })
 const animations = await loadFbxAnimations(demonAnimations, 'character/demon/')
 const stateMachine = new StateMachine({ mesh, animations, dict: demonAnimations })
 

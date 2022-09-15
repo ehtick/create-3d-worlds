@@ -9,7 +9,7 @@ initLights()
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh } = await loadModel({ file: 'character/robot-soldier/model.fbx', angle: Math.PI, computeNormals: true })
+const { mesh } = await loadModel({ file: 'character/robot-soldier/model.fbx', angle: Math.PI })
 const stateMachine = new StateMachine({ mesh, prefix: 'character/robot-soldier/', dict: robotSoldierAnimations })
 
 scene.add(mesh)
