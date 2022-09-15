@@ -1,13 +1,17 @@
 import * as THREE from 'three'
 import { scene as defaultScene } from '/utils/scene.js'
 
-export function dirLight({ scene = defaultScene, position = [20, 50, 20], color = 0xffffff, intensity = 1 } = {}) {
+export function dirLight({
+  scene = defaultScene, position = [20, 50, 20], color = 0xffffff, intensity = 1, target } = {}
+) {
   const light = new THREE.DirectionalLight(color, intensity)
   light.position.set(...position)
   light.castShadow = true
+  if (target) light.target = target
+  scene.add(light)
   // const helper = new THREE.CameraHelper(light.shadow.camera)
   // scene.add(helper)
-  scene.add(light)
+  return light
 }
 
 export function hemLight({ scene = defaultScene, skyColor = 0xfffff0, groundColor = 0x101020, intensity = 1 } = {}) {
