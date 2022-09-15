@@ -1,18 +1,5 @@
 import * as THREE from 'three'
-
-const renderer = new THREE.WebGLRenderer({
-  antialias: true
-})
-renderer.setSize(window.innerWidth, window.innerHeight)
-renderer.shadowMap.enabled = true
-renderer.shadowMap.type = THREE.PCFSoftShadowMap // default THREE.PCFShadowMap
-
-const scene = new THREE.Scene()
-
-const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 10000)
-camera.position.set(0, 0, 6)
-
-document.body.appendChild(renderer.domElement)
+import { scene, renderer, camera } from '/utils/scene.js'
 
 const geometry = new THREE.BoxGeometry(1, 1, 1)
 const material = new THREE.MeshPhongMaterial({ color: 0x00ff00 })
