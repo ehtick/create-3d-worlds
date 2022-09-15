@@ -9,16 +9,10 @@ npm i
 npx live-server
 ```
 
-- download witch in obj format i staviti umesto elf-sorceress
-https://rigmodels.com/model.php?view=Witch-3d-model__FH57AVDKXD8X6LEZQRD2XXWGI&searchkeyword=witch&manualsearch=1
-
-https://rigmodels.com/model.php?view=432-3d-model__B5EYWEX10BMXBH7SS4C5R3RNS&searchkeyword=elf&manualsearch=1
-https://rigmodels.com/model.php?view=Women_Elf-3d-model__6BJ93BJLX7GSZDUNPIG44EP3G&searchkeyword=elf&manualsearch=1
-https://rigmodels.com/model.php?view=Cadnav.com-A1201051-3d-model__N2DVEL6QJ042RRQNTYZ8K6RXB&searchkeyword=elf&manualsearch=1
-
 https://rigmodels.com/model.php?view=D0902B73-3d-model__P8SEKHMVJQMIYT3WC0EL98TU0&searchkeyword=elf&manualsearch=1
 
 - mozda dodati malo kapuere, da neko radi gingu
+- srediti partizana ako može
 
 - ispravno centrirani modeli:
   - treeman

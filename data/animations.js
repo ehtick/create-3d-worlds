@@ -67,7 +67,7 @@ export const witchAnimations = {
   walk: 'Crouched Walking',
   run: 'Run',
   attack: 'Standing 2H Magic Attack 01',
-  special: 'Spell Casting', // Zombie Scream
+  special: 'Zombie Scream', // Spell Casting
 }
 
 export const ironGiantAnimations = {
@@ -197,7 +197,7 @@ export const ninjaTurtleAnimations = {
   run: 'Run',
   jump: 'Jump',
   attack: 'Flying Kick',
-  special: 'Butterfly Twirl',
+  special: 'Cartwheel',
 }
 
 export const orcAnimations = {
