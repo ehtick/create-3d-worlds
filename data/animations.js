@@ -275,11 +275,11 @@ export const trollLowpolyAnimations = {
 }
 
 export const trollAnimations = {
-  idle: 'Mutant Breathing Idle',
-  death: 'Mutant Dying',
-  run: 'Mutant Run',
-  attack: 'Mutant Swiping',
+  idle: 'Unarmed Idle',
   walk: 'Mutant Walking',
+  attack: 'Zombie Attack',
+  pain: 'Shove Reaction',
+  death: 'Mutant Dying',
 }
 
 export const zombieCopAnimations = {

@@ -39,6 +39,9 @@ export default class IdleState extends State {
     if (this.keyboard.control)
       this.fsm.setState('special')
 
+    if (this.keyboard.backspace)
+      this.fsm.setState('pain')
+
     if (this.keyboard.pressed.Delete)
       this.fsm.setState('death')
   }
