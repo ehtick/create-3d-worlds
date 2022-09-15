@@ -175,7 +175,7 @@ export const loadModel = async param => {
         params.file = prefix + file
         if (animNames) params.animations = await loadFbxAnimations(animNames, prefix)
       }
-      fixColors()
+      // fixColors()
       return loadFbx(params)
     default:
       throw new Error(`Unknown file extension: ${ext}`)
