@@ -62,12 +62,12 @@ export const blackKnightAnimations = {
   attack: 'Great Sword Slash',
 }
 
-export const elfSorceressAnimations = {
+export const witchAnimations = {
   idle: 'Crouch Idle',
   walk: 'Crouched Walking',
   run: 'Run',
   attack: 'Standing 2H Magic Attack 01',
-  special: 'Spell Casting',
+  special: 'Spell Casting', // Zombie Scream
 }
 
 export const ironGiantAnimations = {

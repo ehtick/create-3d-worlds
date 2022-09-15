@@ -3,15 +3,15 @@ import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scen
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { loadModel } from '/utils/loaders.js'
-import { elfSorceressAnimations } from '/data/animations.js'
+import { witchAnimations } from '/data/animations.js'
 
 scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, computeNormals: true, animNames: elfSorceressAnimations, prefix: 'character/elf-sorceress/', doubleSide: true })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, computeNormals: true, animNames: witchAnimations, prefix: 'character/witch/' })
 
-const stateMachine = new StateMachine({ mesh, animations, dict: elfSorceressAnimations })
+const stateMachine = new StateMachine({ mesh, animations, dict: witchAnimations })
 
 scene.add(mesh)
 
