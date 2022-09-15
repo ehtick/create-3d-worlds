@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { scene, renderer, camera } from '/utils/scene.js'
-import { createBox } from '/utils/geometry.js'
 import { createFloor } from '/utils/ground.js'
+import { createBox } from '/utils/geometry.js'
 
 const cube = createBox({ castShadow: true })
 cube.position.y = 1

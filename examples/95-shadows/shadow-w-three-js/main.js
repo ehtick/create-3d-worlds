@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
+import { createBox } from '/utils/geometry.js'
 
 const { degToRad } = THREE.MathUtils
 
@@ -32,21 +33,18 @@ function createShadowLight() {
 
 const dirLight = createShadowLight()
 
-function createBlock(radius, degree) {
-  const cubeGeo = new THREE.BoxGeometry(1, 3, 1)
-  const cubeMat = new THREE.MeshLambertMaterial({ color: 'white' })
-  const cube = new THREE.Mesh(cubeGeo, cubeMat)
+function addBlock(radius, degree) {
+  const cube = createBox({ height: 3, color: 'white', castShadow: true, receiveShadow: true })
+
   cube.position.x = Math.cos(degToRad(degree)) * radius
   cube.position.z = Math.sin(degToRad(degree)) * radius
-  cube.position.y = 1.5
+  cube.position.y = 0
   cube.rotation.y = degToRad(-degree)
-  cube.castShadow = true
-  cube.receiveShadow = true
   scene.add(cube)
 }
 
 for (let degree = 0; degree <= 360; degree += 30)
-  createBlock(5, degree)
+  addBlock(5, degree)
 
 const planeSize = 20
 const planeGeo = new THREE.PlaneBufferGeometry(planeSize, planeSize)

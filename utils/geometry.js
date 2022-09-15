@@ -7,7 +7,7 @@ const textureLoader = new THREE.TextureLoader()
 
 /* BOXES */
 
-export function createBox({ size = 1, height = size, depth = size, file, bumpFile, color = randomGray(), castShadow = false } = {}) {
+export function createBox({ size = 1, height = size, depth = size, file, bumpFile, color = randomGray(), castShadow = true, receiveShadow = false } = {}) {
   const geometry = new THREE.BoxGeometry(size, height, depth)
   const options = {
     map: file ? textureLoader.load(`/assets/textures/${file}`) : null,
@@ -20,6 +20,7 @@ export function createBox({ size = 1, height = size, depth = size, file, bumpFil
   mesh.updateMatrix()
   mesh.geometry.applyMatrix4(mesh.matrix)
   mesh.castShadow = castShadow
+  mesh.receiveShadow = receiveShadow
   return mesh
 }
 
