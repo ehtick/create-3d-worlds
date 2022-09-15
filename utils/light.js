@@ -5,7 +5,6 @@ export function dirLight({ scene = defaultScene, position = [20, 50, 20], color 
   const light = new THREE.DirectionalLight(color, intensity)
   light.position.set(...position)
   light.castShadow = true
-  light.shadow.camera = new THREE.OrthographicCamera(-50, 50, 50, -50, 0.5, position[1] * 3)
   // const helper = new THREE.CameraHelper(light.shadow.camera)
   // scene.add(helper)
   scene.add(light)
