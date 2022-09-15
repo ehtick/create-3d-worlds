@@ -6,8 +6,8 @@ import { Keyboard } from '/utils/classes/Keyboard.js'
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { loadKachujin, loadMawLaygo } from '/utils/loaders.js'
-import { girlAnimations, mawLaygoAnimations } from '/data/animations.js'
+import { loadSorceress, loadMawLaygo } from '/utils/loaders.js'
+import { sorceressAnimations, mawLaygoAnimations } from '/data/animations.js'
 
 const { randFloatSpread } = THREE.MathUtils
 
@@ -20,8 +20,8 @@ camera.position.set(0, 10, 15)
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh: playerMesh, animations } = await loadKachujin()
-const player = new StateMachine({ mesh: playerMesh, animations, dict: girlAnimations })
+const { mesh: playerMesh, animations } = await loadSorceress()
+const player = new StateMachine({ mesh: playerMesh, animations, dict: sorceressAnimations })
 scene.add(playerMesh)
 
 const { mesh: followerMesh, animations: followerAnims } = await loadMawLaygo()

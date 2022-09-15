@@ -1,12 +1,3 @@
-export const girlAnimations = {
-  idle: 'Dwarf-Idle',
-  walk: 'Walking',
-  run: 'Running',
-  jump: 'Jumping',
-  attack: 'Bencao',
-  special: 'Queshada',
-}
-
 export const robotkoAnimations = {
   idle: 'Idle',
   walk: 'Walking',
