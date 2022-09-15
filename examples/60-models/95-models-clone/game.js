@@ -7,6 +7,7 @@ import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scen
 import { randomInCircle } from '/utils/helpers.js'
 import { createGround } from '/utils/ground.js'
 import { createSun } from '/utils/light.js'
+import { witchAnimations } from '/data/animations.js'
 
 const mixers = []
 const fbxLoader = new FBXLoader()
@@ -43,12 +44,10 @@ function createMixer(mesh, animation) {
 const { mesh: towerModel } = await loadModel({ file: 'castle/wizard-isle/scene.gltf', size: 15 })
 scene.add(randomPos(towerModel))
 
-const girlModel = await fbxLoader.loadAsync('/assets/models/character/kachujin/Kachujin.fbx')
-const girlAnimations = await loadFbxAnimations(['Dwarf-Idle', 'Bencao', 'Queshada', 'Walking'], 'character/kachujin/')
+const { mesh, animations } = await loadModel({ file: 'model.fbx', computeNormals: true, animNames: witchAnimations, prefix: 'character/witch/' })
 for (let i = 0; i < GIRLS; i++) {
-  const girl = SkeletonUtils.clone(girlModel)
-  girl.scale.set(.01, .01, .01)
-  createMixer(girl, girlAnimations[i])
+  const girl = SkeletonUtils.clone(mesh)
+  createMixer(girl, animations[i])
   scene.add(randomPos(girl))
 }
 

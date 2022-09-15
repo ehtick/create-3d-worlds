@@ -8,7 +8,7 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
-import { mawLaygoAnimations, girlAnimations } from '/data/animations.js'
+import { mawLaygoAnimations, girlAnimations, sorceressAnimations } from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -199,5 +199,10 @@ export const loadMawLaygo = async(params = {}) => {
 export const loadKachujin = async() => {
   const { mesh } = await loadModel({ file: 'character/kachujin/Kachujin.fbx', size: 1.75, angle: Math.PI })
   const animations = await loadFbxAnimations(girlAnimations, 'character/kachujin/')
+  return { mesh, animations }
+}
+
+export const loadSorceress = async() => {
+  const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, animNames: sorceressAnimations, prefix: 'character/sorceress/' })
   return { mesh, animations }
 }

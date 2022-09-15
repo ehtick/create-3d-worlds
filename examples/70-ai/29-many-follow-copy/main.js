@@ -7,8 +7,10 @@ import { Keyboard } from '/utils/classes/Keyboard.js'
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { loadKachujin, loadMawLaygo } from '/utils/loaders.js'
-import { girlAnimations, mawLaygoAnimations } from '/data/animations.js'
+import { loadSorceress, loadMawLaygo } from '/utils/loaders.js'
+import { sorceressAnimations, mawLaygoAnimations } from '/data/animations.js'
+
+/* this example uses StateMachine for AI */
 
 const { randFloatSpread } = THREE.MathUtils
 
@@ -22,9 +24,9 @@ camera.position.set(0, 10, 15)
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh: playerMesh, animations } = await loadKachujin()
-const player = new StateMachine({ mesh: playerMesh, animations, dict: girlAnimations })
-playerMesh.velocity = new THREE.Vector3() // required for steer
+const { mesh: playerMesh, animations } = await loadSorceress()
+const player = new StateMachine({ mesh: playerMesh, animations, dict: sorceressAnimations })
+playerMesh.velocity = new THREE.Vector3() // required by ThreeSteer
 
 scene.add(playerMesh)
 
