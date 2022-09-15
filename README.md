@@ -9,10 +9,6 @@ npm i
 npx live-server
 ```
 
-- optimizovati modele
-  - obrisati glomazne modele (maw_j_laygo)
-  - replace fred and ghoul
-
 - srediti pod da se ne presijava
 - ispitati syncFrom funkciju
   - napraviti animacije tečnijim (BUG: videti partizana)

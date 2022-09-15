@@ -8,7 +8,7 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
-import { sorceressAnimations, golemAnimation } from '/data/animations.js'
+import { sorceressAnimations, golemAnimation, goblinAnimations } from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -190,6 +190,8 @@ export const loadLowPoly = ({ file = 'model.fbx', prefix, animNames }) =>
 export const loadRobotko = () =>
   loadModel({ file: 'character/robotko/robot.glb', size: 1.2, angle: Math.PI })
 
-export const loadSorceress = () => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: sorceressAnimations, prefix: 'character/sorceress/' })
+export const loadSorceress = () => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: sorceressAnimations, prefix: 'character/sorceress/', size: 1.75 })
 
 export const loadGolem = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, computeNormals: true, animNames: golemAnimation, prefix: 'character/golem/', size: 2.5, ...params })
+
+export const loadGoblin = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, computeNormals: true, animNames: goblinAnimations, prefix: 'character/goblin/', size: 1.5, ...params })
