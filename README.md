@@ -10,8 +10,7 @@ npx live-server
 ```
 
 - optimizovati modele
-  - downgrade prevelike modele (du -h --max-depth=1 | sort -h)
-  - obrisati glomazne modele (kachuin, maw_j_laygo, treeman)
+  - obrisati glomazne modele (kachuin, maw_j_laygo)
   - replace fred and ghoul
 
 - srediti pod da se ne presijava
