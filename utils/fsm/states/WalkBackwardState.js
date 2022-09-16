@@ -1,15 +1,27 @@
+import * as THREE from 'three'
 import State from './State.js'
-import { syncAnimation } from './utils.js'
-import { lerp } from '/utils/helpers.js'
+
+const { lerp } = THREE.MathUtils
 
 export default class WalkBackwardState extends State {
   enter(oldState) {
     this.oldSpeed = oldState.speed
 
     const oldAction = this.actions[oldState.name]
-    if (this.actions && this.action && this.actions[oldState?.name])
-      syncAnimation(['idle'], oldState, oldAction, this.action)
-    else
+    if (this.actions && this.action && this.actions[oldState?.name]) {
+      this.actions.enabled = true
+      this.actions.timeScale = 1
+
+      if (['idle'].includes(oldState.name)) {
+        const ratio = this.actions.getClip().duration / oldAction.getClip().duration
+        this.actions.time = oldAction.time * ratio // sync legs
+      } else {
+        this.actions.time = 0.0
+        this.actions.setEffectiveTimeScale(1)
+        this.actions.setEffectiveWeight(1)
+      }
+      this.actions.crossFadeFrom(oldAction, .75, true)
+    } else
       oldAction?.fadeOut(.5)
 
     this.action?.reset()

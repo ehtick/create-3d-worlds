@@ -1,6 +1,7 @@
+import * as THREE from 'three'
 import State from './State.js'
-import { syncAnimation } from './utils.js'
-import { lerp } from '/utils/helpers.js'
+
+const { lerp } = THREE.MathUtils
 
 export default class IdleState extends State {
   enter(oldState) {
@@ -10,9 +11,21 @@ export default class IdleState extends State {
     let oldAction = this.actions[oldState?.name]
     if (!oldAction && oldState?.name === 'run') oldAction = this.actions?.walk
 
-    if (this.actions && oldAction && this.action)
-      syncAnimation(['walk', 'run', 'walkBackward'], oldState, oldAction, this.action)
-    else oldAction?.fadeOut(.5)
+    if (this.actions && oldAction && this.action) {
+      const syncFrom = ['walk', 'run', 'walkBackward']
+      this.action.enabled = true
+      this.action.timeScale = 1
+      if (syncFrom.includes(oldState.name)) {
+        const ratio = this.action.getClip().duration / oldAction.getClip().duration
+        this.action.time = oldAction.time * ratio // sync legs
+      } else {
+        this.action.time = 0.0
+        this.action.setEffectiveTimeScale(1)
+        this.action.setEffectiveWeight(1)
+      }
+      this.action.crossFadeFrom(oldAction, .75, true)
+    } else
+      oldAction?.fadeOut(.5)
 
     this.action?.play()
   }

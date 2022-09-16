@@ -219,5 +219,3 @@ export const getCursorPosition = e => {
 /* ARRAYS */
 
 export const sample = arr => arr[Math.floor(Math.random() * arr.length)]
-
-export { lerp }

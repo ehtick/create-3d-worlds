@@ -1,6 +1,8 @@
+import * as THREE from 'three'
 import State from './State.js'
 import { syncAnimation } from './utils.js'
-import { lerp } from '/utils/helpers.js'
+
+const { lerp } = THREE.MathUtils
 
 export default class WalkState extends State {
   enter(oldState) {
