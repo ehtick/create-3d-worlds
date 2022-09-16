@@ -8,7 +8,7 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
-import { sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations } from '/data/animations.js'
+import { sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations, witchAnimations } from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -196,4 +196,6 @@ export const loadGolem = (params = {}) => loadModel({ file: 'model.fbx', angle: 
 
 export const loadGoblin = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: goblinAnimations, prefix: 'character/goblin/', size: 1.5, ...params })
 
-export const loadPartisan = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: partisanAnimations, prefix: 'character/partisan/', fixColors: true, ...params })
+export const loadPartisan = () => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: partisanAnimations, prefix: 'character/partisan/', fixColors: true })
+
+export const loadWitch = () => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: witchAnimations, prefix: 'character/witch/', fixColors: true })
