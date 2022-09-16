@@ -21,10 +21,8 @@ const states = {
   jump: JumpState,
 }
 
-// TODO: this.fsm to this.parent?
-
 export default class StateMachine {
-  constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, prefix }) {
+  constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, prefix, speed = 2 }) {
     this.mesh = mesh
     this.keyboard = keyboard
 
@@ -38,8 +36,7 @@ export default class StateMachine {
       this.controls = createOrbitControls()
     }
 
-    this.shouldMove = true // TODO: remove
-    this.speed = 2
+    this.speed = speed // 0: not movable
   }
 
   setupMixer(animations, dict) {

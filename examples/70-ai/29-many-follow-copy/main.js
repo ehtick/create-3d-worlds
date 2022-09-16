@@ -35,7 +35,7 @@ const { mesh: followerMesh, animations: followerAnims } = await loadGolem({ angl
 for (let i = 0; i < 5; i++) {
   const mesh = SkeletonUtils.clone(followerMesh)
   const ai = new StateMachine({ mesh, animations: followerAnims, dict: golemAnimation, keyboard: new Keyboard(false) })
-  ai.shouldMove = false
+  ai.speed = 0
   const entity = new SteeringEntity(mesh)
   entity.position.set(randFloatSpread(25), 0, randFloatSpread(25))
   entity.maxSpeed = .02
