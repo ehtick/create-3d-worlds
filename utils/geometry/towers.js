@@ -132,3 +132,15 @@ export function buildCastle({ rows = 10, brickInWall = 30, rowSize = 10, towerRa
   adjustHeight(castle)
   return castle
 }
+
+export function createStoneCircles({ radius = 5, height = 3, total = 12 } = {}) {
+  const group = new THREE.Group()
+  const CIRCLE = 2 * Math.PI
+  for (let degree = 0; degree <= CIRCLE; degree += CIRCLE / total) {
+    const cube = createBox({ height, color: 0xffffff, castShadow: true, receiveShadow: true })
+    cube.position.set(Math.cos(degree) * radius, 0, Math.sin(degree) * radius)
+    cube.rotation.y = -degree
+    group.add(cube)
+  }
+  return group
+}
