@@ -8,7 +8,7 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
-import { sorceressAnimations, golemAnimation, goblinAnimations } from '/data/animations.js'
+import { sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations } from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -156,6 +156,7 @@ export async function loadFbxAnimations(names, prefix = '') {
 */
 export const loadModel = async param => {
   const params = typeof param === 'object' ? param : { file: param }
+  if (params.fixColors) fixColors()
   const ext = params.file.split('.').pop()
   switch (ext) {
     case 'obj':
@@ -175,7 +176,6 @@ export const loadModel = async param => {
         params.file = prefix + file
         if (animNames) params.animations = await loadFbxAnimations(animNames, prefix)
       }
-      // fixColors()
       return loadFbx(params)
     default:
       throw new Error(`Unknown file extension: ${ext}`)
@@ -195,3 +195,5 @@ export const loadSorceress = () => loadModel({ file: 'model.fbx', angle: Math.PI
 export const loadGolem = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: golemAnimation, prefix: 'character/golem/', size: 2.5, ...params })
 
 export const loadGoblin = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: goblinAnimations, prefix: 'character/goblin/', size: 1.5, ...params })
+
+export const loadPartisan = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: partisanAnimations, prefix: 'character/partisan/', fixColors: true, ...params })

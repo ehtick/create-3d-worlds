@@ -68,7 +68,7 @@ export function initLight({ scene = defaultScene, mapSize = 1024, position = [-1
   return container
 }
 
-export function createSun({ color = 0xffffff, intensity = 1, target, position = [150, 350, 350], mapSize = 1024, r = 1 } = {}) {
+export function createSun({ color = 0xffffff, intensity = 1, target, position = [5, 10, 5], mapSize = 1024, r = 1 } = {}) {
   const light = pointLight({ color, intensity, target, mapSize })
   const ambientLight = new THREE.AmbientLight(0xfffee1, .5)
 
