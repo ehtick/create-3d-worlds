@@ -6,8 +6,7 @@ import StateMachine from '/utils/fsm/StateMachine.js'
 import { loadSorceress } from '/utils/loaders.js'
 import { sorceressAnimations } from '/data/animations.js'
 import { createStoneCircles } from '/utils/geometry/towers.js'
-
-const lightRadius = 8
+import { pointLight } from '/utils/light.js'
 
 camera.position.y = 15
 createOrbitControls()
@@ -15,18 +14,7 @@ createOrbitControls()
 const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5)
 scene.add(ambientLight)
 
-function createShadowLight() {
-  const dirLight = new THREE.PointLight(0xFFFFFF, 1)
-  dirLight.castShadow = true
-
-  dirLight.shadow.mapSize.width = 1024
-  dirLight.shadow.mapSize.height = 1024
-
-  scene.add(dirLight)
-  return dirLight
-}
-
-const dirLight = createShadowLight()
+const light = pointLight({ mapSize: 1024 })
 
 const stones = createStoneCircles()
 scene.add(stones)
@@ -40,13 +28,14 @@ scene.add(mesh)
 
 /* LOOP */
 
+const lightRadius = 8
 let lightAngle = 0
 
 void function loop() {
   lightAngle += .003
   const x = Math.cos(lightAngle) * lightRadius
   const z = Math.sin(lightAngle) * lightRadius
-  dirLight.position.set(x, 3, z)
+  light.position.set(x, 3, z)
 
   const delta = clock.getDelta()
   player.update(delta)

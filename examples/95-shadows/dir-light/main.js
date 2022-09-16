@@ -8,8 +8,6 @@ import { sorceressAnimations } from '/data/animations.js'
 import { createStoneCircles } from '/utils/geometry/towers.js'
 import { dirLight } from '/utils/light.js'
 
-const lightRadius = 8
-
 camera.position.y = 15
 createOrbitControls()
 
@@ -30,6 +28,7 @@ scene.add(mesh)
 
 /* LOOP */
 
+const lightRadius = 8
 let lightAngle = 0
 
 void function loop() {

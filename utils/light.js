@@ -23,6 +23,17 @@ export function dirLight({
   return light
 }
 
+export function pointLight({ scene = defaultScene, color = 0xffffff, intensity = 1, mapSize = 512, } = {}) {
+  const dirLight = new THREE.PointLight(color, intensity)
+  dirLight.castShadow = true
+
+  dirLight.shadow.mapSize.width = mapSize
+  dirLight.shadow.mapSize.height = mapSize
+
+  scene.add(dirLight)
+  return dirLight
+}
+
 export function hemLight({ scene = defaultScene, skyColor = 0xfffff0, groundColor = 0x101020, intensity = 1 } = {}) {
   const hemisphereLight = new THREE.HemisphereLight(skyColor, groundColor, intensity)
   hemisphereLight.name = 'hemisphereLight' // needed for some cases
