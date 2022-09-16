@@ -226,11 +226,11 @@ export function createLampposts({ size = 200, numLampposts = 10, height = 40, ci
 export function createCityLights({ size, numLights = 10, height = 10, circle = true } = {}) {
   const group = new THREE.Group()
   for (let i = 0; i < numLights; i++) {
-    const spotLight = new THREE.SpotLight(0xF5F5DC)
+    const light = new THREE.SpotLight(0xF5F5DC)
     const { x, z } = circle ? randomInCircle(size) : randomInSquare(size)
-    spotLight.position.set(x, height, z)
-    spotLight.castShadow = true
-    group.add(spotLight)
+    light.position.set(x, height, z)
+    light.castShadow = true
+    group.add(light)
   }
   return group
 }

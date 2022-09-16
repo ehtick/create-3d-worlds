@@ -9,6 +9,8 @@ npm i
 npx live-server
 ```
 
+- replace initLight with scene.add(createSun())
+
 - ispitati syncAnimation funkciju
   - napraviti animacije tečnijim (BUG: videti partizana)
   - BUG: iz idle ne ulazi lepu u walk (iseče), ali lepo izlazi iz walka u idle (lagano), videti kostura

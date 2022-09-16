@@ -192,9 +192,9 @@ export const loadRobotko = () =>
 
 export const loadSorceress = () => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: sorceressAnimations, prefix: 'character/sorceress/', size: 1.75 })
 
-export const loadGolem = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: golemAnimation, prefix: 'character/golem/', size: 2.5, ...params })
+export const loadGolem = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: golemAnimation, prefix: 'character/golem/', size: 2.5, fixColors: true, ...params })
 
-export const loadGoblin = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: goblinAnimations, prefix: 'character/goblin/', size: 1.5, ...params })
+export const loadGoblin = () => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: goblinAnimations, prefix: 'character/goblin/', size: 1.5 })
 
 export const loadPartisan = () => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: partisanAnimations, prefix: 'character/partisan/', fixColors: true })
 

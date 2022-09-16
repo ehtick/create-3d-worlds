@@ -33,9 +33,8 @@ export function pointLight({ scene = defaultScene, color = 0xffffff, intensity =
   return light
 }
 
-export function spotLight({ scene = defaultScene, position = [75, 75, 75], color = 0xffffff, intensity = 1, mapSize = 512 } = {}) {
+export function spotLight({ scene = defaultScene, color = 0xffffff, intensity = 1, mapSize = 512 } = {}) {
   const light = new THREE.SpotLight(color, intensity)
-  light.position.set(...position)
   light.castShadow = true
   light.shadow.mapSize.width = light.shadow.mapSize.height = mapSize
   if (scene) scene.add(light)
@@ -55,7 +54,7 @@ export function ambLight({ scene = defaultScene, color = 0xffffff, intensity = 1
 /* MIXED LIGHTS */
 
 export function initLight({ scene = defaultScene, mapSize = 1024, position = [-10, 30, 40], r = 1 } = {}) {
-  const light = spotLight({ mapSize, position: [0, 0, 0] })
+  const light = spotLight({ mapSize })
   const ambientLight = new THREE.AmbientLight(0xFFFFFF, .5)
 
   const container = new THREE.Mesh(
