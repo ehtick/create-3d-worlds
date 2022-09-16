@@ -1,6 +1,8 @@
 import * as THREE from 'three'
 import { scene as defaultScene } from '/utils/scene.js'
 
+/* BASIC LIGHTS */
+
 export function dirLight({
   scene = defaultScene,
   position = [20, 50, 20],
@@ -24,33 +26,33 @@ export function dirLight({
 }
 
 export function pointLight({ scene = defaultScene, color = 0xffffff, intensity = 1, mapSize = 512, } = {}) {
-  const dirLight = new THREE.PointLight(color, intensity)
-  dirLight.castShadow = true
+  const light = new THREE.PointLight(color, intensity)
+  light.castShadow = true
+  light.shadow.mapSize.width = light.shadow.mapSize.height = mapSize
+  scene.add(light)
+  return light
+}
 
-  dirLight.shadow.mapSize.width = mapSize
-  dirLight.shadow.mapSize.height = mapSize
-
-  scene.add(dirLight)
-  return dirLight
+export function spotLight({ scene = defaultScene, position = [75, 75, 75], color = 0xffffff, intensity = 1, mapSize = 512 } = {}) {
+  const light = new THREE.SpotLight(color, intensity)
+  light.position.set(...position)
+  light.castShadow = true
+  light.shadow.mapSize.width = light.shadow.mapSize.height = mapSize
+  scene.add(light)
+  return light
 }
 
 export function hemLight({ scene = defaultScene, skyColor = 0xfffff0, groundColor = 0x101020, intensity = 1 } = {}) {
-  const hemisphereLight = new THREE.HemisphereLight(skyColor, groundColor, intensity)
-  hemisphereLight.name = 'hemisphereLight' // needed for some cases
-  scene.add(hemisphereLight)
-}
-
-export function spotLight({ scene = defaultScene, position = [75, 75, 75], color = 0xffffff, intensity = 1 } = {}) {
-  const spotLight = new THREE.SpotLight(color, intensity)
-  spotLight.position.set(...position)
-  spotLight.castShadow = true
-  scene.add(spotLight)
+  const light = new THREE.HemisphereLight(skyColor, groundColor, intensity)
+  scene.add(light)
 }
 
 export function ambLight({ scene = defaultScene, color = 0xffffff, intensity = 1 } = {}) { // 0x343434
-  const ambient = new THREE.AmbientLight(color, intensity)
-  scene.add(ambient)
+  const light = new THREE.AmbientLight(color, intensity)
+  scene.add(light)
 }
+
+/* MIXED LIGHTS */
 
 export function initLights({ scene = defaultScene, position = [-10, 30, 40], r = 1 } = {}) {
   const spotLight = new THREE.SpotLight(0xffffff)
@@ -88,6 +90,8 @@ export function createSun({ color = 0xffffff, intensity = 1.4, far = 3500, targe
   container.position.set(150, 350, 350)
   return container
 }
+
+/* UPDATES */
 
 export function sunFollow(sun, pos) {
   sun.position.copy(pos)
