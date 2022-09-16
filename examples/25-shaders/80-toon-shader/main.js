@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { TeapotGeometry } from '/node_modules/three/examples/jsm/geometries/TeapotGeometry.js'
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { material, uniforms } from '/utils/shaders/cartoon.js'
+import { material } from '/utils/shaders/cartoon.js'
 
 createOrbitControls()
 
@@ -18,16 +18,14 @@ lightContainer.add(light)
 const teapot = new THREE.Mesh(new TeapotGeometry(2), material)
 scene.add(teapot)
 
-uniforms.uLightColor.value = light.color
-uniforms.uLightPos.value = light.position
-uniforms.uMaterialColor.value = new THREE.Color('crimson') // 0xffffff
+teapot.material.uniforms.uMaterialColor.value = new THREE.Color('crimson')
 
 /* LOOP */
 
 void function animate() {
   requestAnimationFrame(animate)
   lightContainer.position.set(40 * Math.cos(time), 75, 40 * Math.sin(time))
-  uniforms.uLightPos.value = lightContainer.position
+  teapot.material.uniforms.uLightPos.value = lightContainer.position
   time += 0.01
 
   renderer.render(scene, camera)
