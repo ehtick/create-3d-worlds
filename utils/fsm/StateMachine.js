@@ -21,16 +21,6 @@ const states = {
   jump: JumpState,
 }
 
-/* map animations with states */
-const mapAnims = (animations, mixer, dict) => {
-  const actions = {}
-  for (const key in dict) {
-    const clip = animations.find(anim => anim.name == dict[key])
-    actions[key] = mixer.clipAction(clip)
-  }
-  return actions
-}
-
 export default class StateMachine {
   constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, prefix }) {
     this.mesh = mesh
@@ -51,7 +41,11 @@ export default class StateMachine {
 
   setupMixer(animations, dict) {
     this.mixer = new THREE.AnimationMixer(this.mesh.isGroup ? this.mesh.children[0] : this.mesh)
-    this.actions = mapAnims(animations, this.mixer, dict)
+    this.actions = {}
+    for (const key in dict) {
+      const clip = animations.find(anim => anim.name == dict[key])
+      this.actions[key] = this.mixer.clipAction(clip)
+    }
     if (this.actions?.walk) this.actions.walkBackward = this.actions.walk
     this.setState('idle')
   }

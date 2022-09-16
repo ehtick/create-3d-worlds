@@ -9,7 +9,6 @@ npm i
 npx live-server
 ```
 
-- createGround gradient green ili toon shader
 - dodati speed u StateMachine konstruktor
 
 - ispitati syncFrom funkciju
