@@ -2,8 +2,6 @@ import State from './State.js'
 import { syncAnimation } from './utils.js'
 import { lerp } from '/utils/helpers.js'
 
-const backwardSpeed = -2
-
 export default class WalkBackwardState extends State {
   enter(oldState) {
     this.oldSpeed = oldState.speed
@@ -21,7 +19,7 @@ export default class WalkBackwardState extends State {
 
   update(delta) {
     super.update(delta)
-    this.speed = lerp(this.oldSpeed, backwardSpeed, this.t)
+    this.speed = lerp(this.oldSpeed, -this.fsm.speed, this.t)
 
     this.turn(delta)
     this.move(delta)

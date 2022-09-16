@@ -9,8 +9,6 @@ npm i
 npx live-server
 ```
 
-- dodati speed u StateMachine konstruktor
-
 - ispitati syncFrom funkciju
   - napraviti animacije tečnijim (BUG: videti partizana)
   - BUG: iz idle ne ulazi lepu u walk (iseče), ali lepo izlazi iz walka u idle (lagano), videti kostura

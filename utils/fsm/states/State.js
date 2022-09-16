@@ -28,7 +28,7 @@ export default class State {
 
   move(delta, sign = -1) {
     if (!this.fsm.shouldMove) return
-    velocity += this.speed * sign
+    velocity += this.speed * this.fsm.speed * sign
     velocity *= INERTIA
     this.fsm.mesh.translateZ(velocity * delta)
   }
