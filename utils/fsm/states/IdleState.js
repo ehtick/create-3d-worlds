@@ -7,25 +7,23 @@ export default class IdleState extends State {
   enter(oldState) {
     super.enter(oldState)
     this.oldSpeed = oldState?.speed || 0
+    const oldAction = (oldState?.name === 'run' && !this.actions[oldState?.name])
+      ? this.actions?.walk
+      : this.actions[oldState?.name]
 
-    let oldAction = this.actions[oldState?.name]
-    if (!oldAction && oldState?.name === 'run') oldAction = this.actions?.walk
+    this.action.enabled = true
+    this.action.timeScale = 1
 
-    if (this.actions && oldAction && this.action) {
-      const syncFrom = ['walk', 'run', 'walkBackward']
-      this.action.enabled = true
-      this.action.timeScale = 1
-      if (syncFrom.includes(oldState.name)) {
-        const ratio = this.action.getClip().duration / oldAction.getClip().duration
-        this.action.time = oldAction.time * ratio // sync legs
-      } else {
-        this.action.time = 0.0
-        this.action.setEffectiveTimeScale(1)
-        this.action.setEffectiveWeight(1)
-      }
-      this.action.crossFadeFrom(oldAction, .75, true)
-    } else
-      oldAction?.fadeOut(.5)
+    if (['walk', 'run', 'walkBackward'].includes(oldState?.name)) {
+      const ratio = this.action.getClip().duration / oldAction.getClip().duration
+      this.action.time = oldAction.time * ratio // sync legs
+    } else {
+      this.action.time = 0.0
+      this.action.setEffectiveTimeScale(1)
+      this.action.setEffectiveWeight(1)
+    }
+
+    if (oldAction) this.action.crossFadeFrom(oldAction, .75, true)
 
     this.action?.play()
   }
