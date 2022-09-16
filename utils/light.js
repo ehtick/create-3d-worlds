@@ -38,7 +38,7 @@ export function spotLight({ scene = defaultScene, position = [75, 75, 75], color
   light.position.set(...position)
   light.castShadow = true
   light.shadow.mapSize.width = light.shadow.mapSize.height = mapSize
-  // if (scene) scene.add(light)
+  if (scene) scene.add(light)
   return light
 }
 
