@@ -1,13 +1,13 @@
 import * as THREE from 'three'
 import Physijs from '/libs/physi-ecma.js'
 import { renderer, camera } from '/utils/scene.js'
-import { initLights } from '/utils/light.js'
+import { initLight } from '/utils/light.js'
 import { scene } from '/utils/physics.js'
 
 camera.position.set(0, 30, 80)
 scene.setGravity(new THREE.Vector3(0, -100, 20))
 
-initLights({ scene })
+initLight({ scene })
 
 const flip_material = Physijs.createMaterial(new THREE.MeshStandardMaterial({ color: 0x44ff44 }), 0, 0)
 const slider_material = Physijs.createMaterial(new THREE.MeshStandardMaterial({ color: 0x4444ff }), 0, 0)

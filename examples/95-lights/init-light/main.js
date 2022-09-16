@@ -6,15 +6,15 @@ import StateMachine from '/utils/fsm/StateMachine.js'
 import { loadSorceress } from '/utils/loaders.js'
 import { sorceressAnimations } from '/data/animations.js'
 import { createStoneCircles } from '/utils/geometry/towers.js'
-import { spotLight } from '/utils/light.js'
+import { initLight } from '/utils/light.js'
 
 camera.position.y = 15
 createOrbitControls()
 
-const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5)
-scene.add(ambientLight)
+// const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5)
+// scene.add(ambientLight)
 
-const light = spotLight({ mapSize: 1024 })
+const light = initLight({ mapSize: 1024 })
 
 const stones = createStoneCircles()
 scene.add(stones)

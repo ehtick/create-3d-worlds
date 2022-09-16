@@ -1,8 +1,8 @@
 import { camera, scene, renderer, createSkyBox, createOrbitControls } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
-import { initLights } from '/utils/light.js'
+import { initLight } from '/utils/light.js'
 
-initLights()
+initLight()
 createOrbitControls()
 camera.position.set(0, 15, 30)
 

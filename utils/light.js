@@ -54,7 +54,7 @@ export function ambLight({ scene = defaultScene, color = 0xffffff, intensity = 1
 
 /* MIXED LIGHTS */
 
-export function initLights({ scene = defaultScene, position = [-10, 30, 40], r = 1 } = {}) {
+export function initLight({ scene = defaultScene, position = [-10, 30, 40], r = 1 } = {}) {
   const spotLight = new THREE.SpotLight(0xffffff)
   spotLight.shadow.mapSize.width = 2048
   spotLight.shadow.mapSize.height = 2048
@@ -63,7 +63,7 @@ export function initLights({ scene = defaultScene, position = [-10, 30, 40], r =
   spotLight.decay = 2
   spotLight.penumbra = 0.05
 
-  const ambientLight = new THREE.AmbientLight(0x343434)
+  const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5)
 
   const container = new THREE.Mesh(
     new THREE.SphereGeometry(r),

@@ -2,9 +2,9 @@ import { scene, camera, renderer, clock, addUIControls } from '/utils/scene.js'
 import { handleInput } from '/utils/player.js'
 import { createFloor } from '/utils/ground.js'
 import { createCrate } from '/utils/geometry.js'
-import { initLights } from '/utils/light.js'
+import { initLight } from '/utils/light.js'
 
-initLights()
+initLight()
 
 const floor = createFloor({ size: 25 })
 scene.add(floor)

@@ -35,7 +35,7 @@ void function loop() {
   lightAngle += .003
   const x = Math.cos(lightAngle) * lightRadius
   const z = Math.sin(lightAngle) * lightRadius
-  light.position.set(x, 3, z)
+  light.position.set(x, 5, z)
 
   const delta = clock.getDelta()
   player.update(delta)

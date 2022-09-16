@@ -1,8 +1,8 @@
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { initLights } from '/utils/light.js'
+import { initLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 
-initLights()
+initLight()
 
 const controls = createOrbitControls()
 camera.position.set(0, 2, 12)

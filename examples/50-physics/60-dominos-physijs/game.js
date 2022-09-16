@@ -1,10 +1,10 @@
 import { renderer, camera, createOrbitControls } from '/utils/scene.js'
-import { initLights } from '/utils/light.js'
+import { initLight } from '/utils/light.js'
 import { scene, createDominos, createGround } from '/utils/physics.js'
 
 createOrbitControls()
 camera.position.set(10, 10, 50)
-initLights({ scene })
+initLight({ scene })
 
 const ground = createGround({ size: 100, file: 'wood_1024.png' })
 scene.add(ground)

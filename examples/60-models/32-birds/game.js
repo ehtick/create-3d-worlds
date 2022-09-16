@@ -1,10 +1,10 @@
 import * as THREE from 'three'
 import { GLTFLoader } from '/node_modules/three/examples/jsm/loaders/GLTFLoader.js'
-import { scene, camera, renderer, clock, initLights, createOrbitControls } from '/utils/scene.js'
+import { scene, camera, renderer, clock, initLight, createOrbitControls } from '/utils/scene.js'
 
 const mixers = []
 
-initLights()
+initLight()
 createOrbitControls()
 camera.position.z = 50
 

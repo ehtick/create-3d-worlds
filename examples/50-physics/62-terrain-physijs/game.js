@@ -1,13 +1,13 @@
 import * as THREE from 'three'
 import { renderer, camera } from '/utils/scene.js'
-import { initLights } from '/utils/light.js'
+import { initLight } from '/utils/light.js'
 import { CIRCLE } from '/data/constants.js'
 import { scene, createTerrain, createBall, createCrate } from '/utils/physics.js'
 
 camera.position.set(80, 40, 80)
 camera.lookAt(new THREE.Vector3(0, 0, 0))
 
-initLights({ scene, position: [0, 50, 120] })
+initLight({ scene, position: [0, 50, 120] })
 
 function addSphere() {
   const sphere = createBall({ r: 3 })

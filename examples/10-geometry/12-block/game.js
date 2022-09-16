@@ -1,11 +1,11 @@
 import { camera, scene, renderer } from '/utils/scene.js'
-import { initLights } from '/utils/light.js'
+import { initLight } from '/utils/light.js'
 import { createBox, createBumpBox } from '/utils/geometry.js'
 
 const rotSpeed = 0.005
 
 camera.position.set(0, .3, 2)
-initLights()
+initLight()
 
 /* CUBE */
 

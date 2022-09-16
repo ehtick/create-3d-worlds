@@ -2,13 +2,13 @@ import * as THREE from 'three'
 import * as CANNON from '/libs/cannon-es.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { ambLight, initLights } from '/utils/light.js'
+import { ambLight, initLight } from '/utils/light.js'
 import { createGround } from '/utils/physics-cannon.js'
 import { loadModel } from '/utils/loaders.js'
 import { gameOver, victory } from './utils.js'
 
 ambLight({ intensity: 2 })
-initLights()
+initLight()
 scene.background = new THREE.Color(0x8FBCD4)
 
 const stones = []
