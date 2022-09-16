@@ -56,8 +56,7 @@ export function ambLight({ scene = defaultScene, color = 0xffffff, intensity = 1
 
 export function initLight({ scene = defaultScene, mapSize = 1024, position = [-10, 30, 40], r = 1 } = {}) {
   const light = spotLight({ mapSize, position: [0, 0, 0] })
-
-  const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5)
+  const ambientLight = new THREE.AmbientLight(0xFFFFFF, .5)
 
   const container = new THREE.Mesh(
     new THREE.SphereGeometry(r),
@@ -69,16 +68,16 @@ export function initLight({ scene = defaultScene, mapSize = 1024, position = [-1
   return container
 }
 
-export function createSun({ color = 0xffffff, intensity = 1.4, target, mapSize = 1024, r = 1 } = {}) {
+export function createSun({ color = 0xffffff, intensity = 1, target, position = [150, 350, 350], mapSize = 1024, r = 1 } = {}) {
   const light = pointLight({ color, intensity, target, mapSize })
+  const ambientLight = new THREE.AmbientLight(0xfffee1, .5)
 
   const container = new THREE.Mesh(
     new THREE.SphereGeometry(r),
     new THREE.MeshToonMaterial({ color: 0xFCE570 })
   )
-  const ambientLight = new THREE.AmbientLight(0xfffee1, .25)
   container.add(light, ambientLight)
-  container.position.set(150, 350, 350)
+  container.position.set(...position)
   return container
 }
 

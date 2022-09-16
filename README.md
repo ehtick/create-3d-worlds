@@ -9,10 +9,7 @@ npm i
 npx live-server
 ```
 
-- srediti senku
-  - probati razna svetla na sceni (sun i drugo)
-
-- createGround gradient green
+- createGround gradient green ili toon shader
 - dodati speed u StateMachine konstruktor
 
 - ispitati syncFrom funkciju
