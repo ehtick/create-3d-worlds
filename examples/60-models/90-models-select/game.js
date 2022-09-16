@@ -1,9 +1,10 @@
-import { scene, camera, renderer, createOrbitControls, initLight } from '/utils/scene.js'
+import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
+import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 
 let currentId
 
-initLight()
+scene.add(createSun())
 
 const controls = createOrbitControls()
 

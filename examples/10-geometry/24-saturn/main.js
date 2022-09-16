@@ -1,9 +1,9 @@
 import * as THREE from 'three'
 import { scene, camera, renderer } from '/utils/scene.js'
 import { createSaturn } from '/utils/geometry/planets.js'
-import { initLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 
-initLight()
+scene.add(createSun())
 scene.background = new THREE.Color(0x000000)
 camera.position.set(0, 0, 5)
 

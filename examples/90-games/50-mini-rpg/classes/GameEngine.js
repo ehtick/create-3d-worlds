@@ -48,7 +48,7 @@ class GameEngine {
     group.add(createWater({ size: 1200, segments: 20 }))
     group.receiveShadow = true
     this.scene.add(group)
-    this.initLight()
+    this.scene.add(createSun())
   }
 
   start() {
@@ -62,7 +62,7 @@ class GameEngine {
     }()
   }
 
-  initLight() {
+  scene.add(createSun()) {
     dirLight({ color: 0xffffcc })
     hemLight({ color: 0xffffcc, intensity: .6 })
   }

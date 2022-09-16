@@ -1,11 +1,11 @@
 import CannonDebugRenderer from '/libs/cannonDebugRenderer.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { initLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 import { world, createGround, createObstacles } from '/utils/physics-cannon.js'
 import { createChaseCamera } from '/utils/helpers.js'
 import Vehicle from '/utils/classes/Vehicle.js'
 
-initLight()
+scene.add(createSun())
 
 const cannonDebugRenderer = new CannonDebugRenderer(scene, world)
 

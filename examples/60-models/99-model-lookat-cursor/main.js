@@ -1,13 +1,13 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { initLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
 import { getCursorPosition } from '/utils/helpers.js'
 
 let neck, spine
 
-initLight()
+scene.add(createSun())
 camera.position.set(0, 1.5, 3)
 renderer.outputEncoding = THREE.GammaEncoding
 

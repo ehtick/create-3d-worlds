@@ -1,11 +1,11 @@
 import StateMachine from '/utils/fsm/StateMachine.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
-import { initLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 import { loadLowPoly } from '/utils/loaders.js'
 import { rangerAnimation } from '/data/animations.js'
 
-initLight()
+scene.add(createSun())
 
 scene.add(createFloor({ size: 100 }))
 

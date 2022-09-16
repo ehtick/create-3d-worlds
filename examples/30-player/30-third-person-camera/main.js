@@ -1,10 +1,10 @@
 import * as THREE from 'three'
 import Avatar from '/utils/classes/Avatar.js'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
-import { initLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 
-initLight()
+scene.add(createSun())
 
 scene.background = new THREE.Color(0x8FBCD4)
 scene.add(createGround({ size: 100 }))

@@ -51,21 +51,7 @@ export function ambLight({ scene = defaultScene, color = 0xffffff, intensity = 1
   if (scene) scene.add(light)
 }
 
-/* MIXED LIGHTS */
-
-export function initLight({ scene = defaultScene, mapSize = 1024, position = [-10, 30, 40], r = 1 } = {}) {
-  const light = spotLight({ mapSize })
-  const ambientLight = new THREE.AmbientLight(0xFFFFFF, .5)
-
-  const container = new THREE.Mesh(
-    new THREE.SphereGeometry(r),
-    new THREE.MeshToonMaterial({ color: 0xFCE570 })
-  )
-  container.add(light, ambientLight)
-  container.position.set(...position)
-  scene.add(container)
-  return container
-}
+/* SUN */
 
 export function createSun({ color = 0xffffff, intensity = 1, target, position = [5, 10, 5], mapSize = 1024, r = 1 } = {}) {
   const light = pointLight({ color, intensity, target, mapSize })

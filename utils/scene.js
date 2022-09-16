@@ -4,7 +4,7 @@ import { OrbitControls } from '/node_modules/three/examples/jsm/controls/OrbitCo
 
 import { createSkySphere } from './geometry.js'
 import { createGround } from './ground.js'
-import { initLight, hemLight, createSun } from './light.js'
+import { hemLight, createSun } from './light.js'
 import { baseCommands } from '/data/commands.js'
 
 export const clock = new THREE.Clock()
@@ -158,4 +158,4 @@ export function createSkyBox({ folder = 'skybox2' } = {}) {
 
 /* SHORTCUTS */
 
-export { createGround, initLight, hemLight }
+export { createGround, hemLight }
