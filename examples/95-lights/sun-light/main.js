@@ -5,12 +5,13 @@ import StateMachine from '/utils/fsm/StateMachine.js'
 import { loadSorceress } from '/utils/loaders.js'
 import { sorceressAnimations } from '/data/animations.js'
 import { createStoneCircles } from '/utils/geometry/towers.js'
-import { initLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 
 camera.position.y = 15
 createOrbitControls()
 
-const light = initLight({ mapSize: 2048 })
+const light = createSun()
+scene.add(light)
 
 const stones = createStoneCircles()
 scene.add(stones)
@@ -31,7 +32,7 @@ void function loop() {
   lightAngle += .003
   const x = Math.cos(lightAngle) * lightRadius
   const z = Math.sin(lightAngle) * lightRadius
-  light.position.set(x, 5, z)
+  light.position.set(x, 10, z)
 
   const delta = clock.getDelta()
   player.update(delta)
