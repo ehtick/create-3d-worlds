@@ -9,18 +9,19 @@ export default class WalkBackwardState extends State {
 
     const oldAction = this.actions[oldState.name]
     if (this.actions && this.action && this.actions[oldState?.name]) {
-      this.actions.enabled = true
-      this.actions.timeScale = 1
+      this.action.enabled = true
+      this.action.timeScale = 1
 
       if (['idle'].includes(oldState.name)) {
-        const ratio = this.actions.getClip().duration / oldAction.getClip().duration
-        this.actions.time = oldAction.time * ratio // sync legs
+        const ratio = this.action.getClip().duration / oldAction.getClip().duration
+        this.action.time = oldAction.time * ratio // sync legs
       } else {
-        this.actions.time = 0.0
-        this.actions.setEffectiveTimeScale(1)
-        this.actions.setEffectiveWeight(1)
+        this.action.time = 0.0
+        this.action.setEffectiveTimeScale(1)
+        this.action.setEffectiveWeight(1)
       }
-      this.actions.crossFadeFrom(oldAction, .75, true)
+
+      this.action.crossFadeFrom(oldAction, .75, true)
     } else
       oldAction?.fadeOut(.5)
 

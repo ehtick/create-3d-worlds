@@ -9,12 +9,14 @@ npm i
 npx live-server
 ```
 
-- ispitati syncAnimation funkciju
-  - napraviti animacije tečnijim (BUG: videti partizana)
+- srediti fsm
+  - BUG: trčanje-skok-trčanje previše uspori (secka)
+  - previše proklizava kad staje
+  - BUG: unazad ne radi
   - BUG: iz idle ne ulazi lepu u walk (iseče), ali lepo izlazi iz walka u idle (lagano), videti kostura
   - BUG: ne vraca se u idle iz walka ako nema walk anim (trebalo bi da može bez svake)
   - BUG: kad stavim istu animaciju za walk i run, secka prelaz
-- BUG: kad karakter skače i pritiskam strelice
+  - BUG: kad karakter skače i pritiskam strelice
 
 - saturn tekstura probati
 - spojiti joystick i keyboard nekako da zajedno rade
