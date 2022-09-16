@@ -2,13 +2,22 @@ import * as THREE from 'three'
 import { scene as defaultScene } from '/utils/scene.js'
 
 export function dirLight({
-  scene = defaultScene, position = [20, 50, 20], color = 0xffffff, intensity = 1, target } = {}
-) {
+  scene = defaultScene,
+  position = [20, 50, 20],
+  color = 0xffffff,
+  intensity = 1,
+  target,
+  mapSize = 512,
+  area = 5,
+} = {}) {
   const light = new THREE.DirectionalLight(color, intensity)
   light.position.set(...position)
   light.castShadow = true
+  light.shadow.mapSize.width = light.shadow.mapSize.height = mapSize
   if (target) light.target = target
   scene.add(light)
+  light.shadow.camera.left = light.shadow.camera.bottom = -area
+  light.shadow.camera.right = light.shadow.camera.top = area
   // const helper = new THREE.CameraHelper(light.shadow.camera)
   // scene.add(helper)
   return light

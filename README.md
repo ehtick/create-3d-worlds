@@ -10,6 +10,9 @@ npx live-server
 ```
 
 - srediti senku
+  - napraviti da sunce prati igrača (ili kameru)
+  - probati razna svetla na sceni
+
 - createGround gradient green
 - dodati speed u StateMachine konstruktor
 
