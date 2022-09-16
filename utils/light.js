@@ -17,7 +17,7 @@ export function dirLight({
   light.castShadow = true
   light.shadow.mapSize.width = light.shadow.mapSize.height = mapSize
   if (target) light.target = target
-  scene.add(light)
+  if (scene) scene.add(light)
   light.shadow.camera.left = light.shadow.camera.bottom = -area
   light.shadow.camera.right = light.shadow.camera.top = area
   // const helper = new THREE.CameraHelper(light.shadow.camera)
@@ -29,7 +29,7 @@ export function pointLight({ scene = defaultScene, color = 0xffffff, intensity =
   const light = new THREE.PointLight(color, intensity)
   light.castShadow = true
   light.shadow.mapSize.width = light.shadow.mapSize.height = mapSize
-  scene.add(light)
+  if (scene) scene.add(light)
   return light
 }
 
@@ -38,30 +38,24 @@ export function spotLight({ scene = defaultScene, position = [75, 75, 75], color
   light.position.set(...position)
   light.castShadow = true
   light.shadow.mapSize.width = light.shadow.mapSize.height = mapSize
-  scene.add(light)
+  // if (scene) scene.add(light)
   return light
 }
 
 export function hemLight({ scene = defaultScene, skyColor = 0xfffff0, groundColor = 0x101020, intensity = 1 } = {}) {
   const light = new THREE.HemisphereLight(skyColor, groundColor, intensity)
-  scene.add(light)
+  if (scene) scene.add(light)
 }
 
 export function ambLight({ scene = defaultScene, color = 0xffffff, intensity = 1 } = {}) { // 0x343434
   const light = new THREE.AmbientLight(color, intensity)
-  scene.add(light)
+  if (scene) scene.add(light)
 }
 
 /* MIXED LIGHTS */
 
 export function initLight({ scene = defaultScene, position = [-10, 30, 40], r = 1 } = {}) {
-  const spotLight = new THREE.SpotLight(0xffffff)
-  spotLight.shadow.mapSize.width = 2048
-  spotLight.shadow.mapSize.height = 2048
-  spotLight.shadow.camera.fov = 15
-  spotLight.castShadow = true
-  spotLight.decay = 2
-  spotLight.penumbra = 0.05
+  const light = spotLight({ mapSize: 2048, position: [0, 0, 0] })
 
   const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5)
 
@@ -69,7 +63,7 @@ export function initLight({ scene = defaultScene, position = [-10, 30, 40], r = 
     new THREE.SphereGeometry(r),
     new THREE.MeshToonMaterial({ color: 0xFCE570 })
   )
-  container.add(spotLight, ambientLight)
+  container.add(light, ambientLight)
   container.position.set(...position)
   scene.add(container)
   return container

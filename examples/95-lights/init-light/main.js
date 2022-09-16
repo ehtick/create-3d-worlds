@@ -1,4 +1,3 @@
-import * as THREE from 'three'
 import { scene, renderer, camera, clock, createOrbitControls } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 
@@ -10,9 +9,6 @@ import { initLight } from '/utils/light.js'
 
 camera.position.y = 15
 createOrbitControls()
-
-// const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5)
-// scene.add(ambientLight)
 
 const light = initLight({ mapSize: 1024 })
 
