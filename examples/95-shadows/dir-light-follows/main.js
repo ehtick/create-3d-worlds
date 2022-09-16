@@ -1,15 +1,9 @@
-import * as THREE from 'three'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
-import { dirLight } from '/utils/light.js'
+import { dirLight, lightFollow } from '/utils/light.js'
 import StateMachine from '/utils/fsm/StateMachine.js'
 import { loadSorceress } from '/utils/loaders.js'
 import { sorceressAnimations } from '/data/animations.js'
-
-function lightFollow(light, target, distance = [12, 8, 1]) {
-  const newPos = new THREE.Vector3(...distance).add(target.position)
-  light.position.copy(newPos)
-}
 
 const plane = createFloor()
 scene.add(plane)

@@ -76,3 +76,8 @@ export function sunFollow(sun, pos) {
   sun.updateMatrixWorld()
   sun.target.updateMatrixWorld()
 }
+
+export function lightFollow(light, target, distance = [12, 8, 1]) {
+  const newPos = new THREE.Vector3(...distance).add(target.position)
+  light.position.copy(newPos)
+}
