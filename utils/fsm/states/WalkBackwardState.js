@@ -5,14 +5,12 @@ const { lerp } = THREE.MathUtils
 
 export default class WalkBackwardState extends State {
   enter(oldState) {
+    super.enter(oldState)
     this.oldSpeed = oldState.speed
     const oldAction = this.actions[oldState.name]
 
-    this.action.enabled = true
     this.action.timeScale = 1
-
     this.action.crossFadeFrom(oldAction, .75, true)
-
     this.action?.play()
     this.action.timeScale = -1
   }

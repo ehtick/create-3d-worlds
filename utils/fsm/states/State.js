@@ -24,6 +24,7 @@ export default class State {
 
   enter(oldState) {
     this.prevState = oldState?.name
+    this.action.enabled = true
   }
 
   update(delta) {

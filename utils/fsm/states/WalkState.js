@@ -9,7 +9,6 @@ export default class WalkState extends State {
     this.oldSpeed = oldState.speed
     const oldAction = this.actions[oldState.name]
 
-    this.action.enabled = true
     this.action.timeScale = 1
 
     if (['run'].includes(oldState.name))
