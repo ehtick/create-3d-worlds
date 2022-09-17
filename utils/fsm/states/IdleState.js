@@ -26,8 +26,6 @@ export default class IdleState extends State {
 
   enter(oldState, oldAction) {
     super.enter(oldState)
-    if (oldState?.name === 'run' && !oldAction) oldAction = this.actions?.walk
-
     this.action.timeScale = 1
 
     this.prepareAction()

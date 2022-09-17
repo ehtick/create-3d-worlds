@@ -7,19 +7,14 @@ export default class RunState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
 
-    this.action.timeScale = 1
-
-    if (['walk'].includes(oldState.name))
+    if (!this.actions.run)
+      this.action.setEffectiveTimeScale(1.5)
+    else {
+      this.action.timeScale = 1
       this.syncLegs()
-    else
-      this.prepareAction()
-
-    this.action.crossFadeFrom(oldAction, .75, true)
-
-    if (!this.action) {
-      this.action = this.actions.walk
-      this.action.setEffectiveTimeScale(1.25)
+      this.action.crossFadeFrom(oldAction, .75, true)
     }
+
     this.action.play()
   }
 
