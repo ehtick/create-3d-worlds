@@ -10,7 +10,7 @@ export default class RunState extends State {
     if (!this.actions.run)
       this.action.setEffectiveTimeScale(1.5)
     else {
-      this.action.timeScale = 1
+      this.action.setEffectiveTimeScale(1)
       this.syncLegs()
       this.action.crossFadeFrom(oldAction, .75, true)
     }

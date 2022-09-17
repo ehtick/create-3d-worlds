@@ -7,10 +7,10 @@ export default class WalkBackwardState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
 
-    this.action.timeScale = 1
+    this.action.setEffectiveTimeScale(1)
     this.action.crossFadeFrom(oldAction, .75, true)
     this.action?.play()
-    this.action.timeScale = -1
+    this.action.setEffectiveTimeScale(-1)
   }
 
   update(delta) {

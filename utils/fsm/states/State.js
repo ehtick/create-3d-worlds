@@ -9,7 +9,8 @@ export default class State {
   constructor(fsm, name) {
     this.fsm = fsm
     this.name = name
-    this.action = (name === 'run' && !fsm?.actions?.run) ? fsm?.actions.walk : fsm?.actions[name]
+    this.action = fsm?.actions[name]
+    if (name === 'run' && !this.action) this.action = fsm?.actions.walk
     this.prevState = ''
     this.t = 0
   }

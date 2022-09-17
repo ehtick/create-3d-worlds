@@ -7,7 +7,7 @@ export default class WalkState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
 
-    this.action.timeScale = 1
+    this.action.setEffectiveTimeScale(1)
 
     if (!(this.prevState === 'run' && !this.actions.run)) {
 
@@ -16,8 +16,8 @@ export default class WalkState extends State {
       else
         this.prepareAction()
 
-      if (oldAction)
-        this.action.crossFadeFrom(oldAction, .75, true)
+      this.action.crossFadeFrom(oldAction, .75, true)
+
     }
 
     this.action?.play()

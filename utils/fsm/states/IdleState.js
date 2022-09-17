@@ -26,7 +26,7 @@ export default class IdleState extends State {
 
   enter(oldState, oldAction) {
     super.enter(oldState)
-    this.action.timeScale = 1
+    this.action.setEffectiveTimeScale(1)
 
     this.prepareAction()
 
