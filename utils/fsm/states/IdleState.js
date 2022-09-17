@@ -5,32 +5,14 @@ const { lerp } = THREE.MathUtils
 
 export default class IdleState extends State {
 
-  setWeight(action) {
-    action.enabled = true
-    action.setEffectiveWeight(1)
-    action.setEffectiveTimeScale(1)
-  }
-
-  executeCrossFade(startAction, endAction, duration) {
-    // Not only the start action, but also the end action must get a weight of 1 before fading
-    if (endAction) {
-      this.setWeight(endAction)
-      endAction.time = 0
-      if (startAction)
-        startAction.crossFadeTo(endAction, duration, true) // crossfade with warping
-      else
-        endAction.fadeIn(duration)
-    } else
-      startAction.fadeOut(duration)
-  }
-
   enter(oldState, oldAction) {
     super.enter(oldState)
     this.action.setEffectiveTimeScale(1)
 
     this.prepareAction()
 
-    if (oldAction) this.action.crossFadeFrom(oldAction, .75, true)
+    const duration = oldState?.name === 'jump' ? .25 : .75
+    if (oldAction) this.action.crossFadeFrom(oldAction, duration)
 
     this.action?.play()
   }
