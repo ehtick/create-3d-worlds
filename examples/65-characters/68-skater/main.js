@@ -9,7 +9,7 @@ scene.add(createSun())
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh } = await loadModel({ file: 'character/skater-girl/model.fbx', angle: Math.PI })
+const { mesh } = await loadModel({ file: 'character/skater-girl/model.fbx', angle: Math.PI, fixColors: true })
 const stateMachine = new StateMachine({ mesh, prefix: 'character/skater-girl/', dict: skaterAnimations })
 
 scene.add(mesh)

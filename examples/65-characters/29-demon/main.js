@@ -9,7 +9,7 @@ scene.add(createSun())
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh } = await loadModel({ file: 'character/demon/demon.fbx', angle: Math.PI })
+const { mesh } = await loadModel({ file: 'character/demon/demon.fbx', angle: Math.PI, fixColors: true })
 const animations = await loadFbxAnimations(demonAnimations, 'character/demon/')
 const stateMachine = new StateMachine({ mesh, animations, dict: demonAnimations })
 
