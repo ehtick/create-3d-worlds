@@ -109,14 +109,6 @@ export const shieldmaidenAnimation = {
   block: 'Sword And Shield Block',
 }
 
-export const skeletonAnimation = {
-  special: 'Zombie Scream',
-  run: 'Flying',
-  walk: 'Walking',
-  idle: 'Zombie Idle',
-  attack: 'Zombie Neck Bite',
-}
-
 export const thiefAnimation = {
   idle: 'Crouch Torch Idle 02',
   walk: 'Crouch Torch Walk Forward'
@@ -199,16 +191,6 @@ export const orcOgreAnimations = {
   death: 'Zombie Dying',
 }
 
-export const partisanAnimations = {
-  idle: 'Rifle Idle',
-  walk: 'Walk With Rifle',
-  run: 'Rifle Run',
-  jump: 'Jump Forward',
-  attack: 'Firing Rifle',
-  special: 'Toss Grenade',
-  death: 'Dying',
-}
-
 export const robotSoldierAnimations = {
   idle: 'Rifle Idle',
   walk: 'Walk With Rifle',
@@ -219,9 +201,26 @@ export const robotSoldierAnimations = {
 export const sorceressAnimations = {
   idle: 'Standing Idle',
   walk: 'Standing Walk Forward',
-  // run: 'Standing Sprint Forward',
+  run: 'Standing Sprint Forward',
   attack: 'Standing 1H Magic Attack 01',
   special: 'Standing 2H Magic Attack 04',
+}
+
+export const skeletonAnimation = {
+  special: 'Zombie Scream',
+  run: 'Flying',
+  walk: 'Walking',
+  idle: 'Zombie Idle',
+  attack: 'Zombie Neck Bite',
+}
+
+export const partisanAnimations = {
+  idle: 'Rifle Idle',
+  walk: 'Walk With Rifle',
+  jump: 'Jump Forward',
+  attack: 'Firing Rifle',
+  special: 'Toss Grenade',
+  death: 'Dying',
 }
 
 export const partisan2Animations = {
