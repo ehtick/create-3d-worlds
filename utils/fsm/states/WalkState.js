@@ -9,7 +9,7 @@ export default class WalkState extends State {
 
     this.action.setEffectiveTimeScale(1)
 
-    if (!(this.prevState === 'run' && !this.actions.run)) {
+    if (this.actions.run || this.prevState !== 'run') {
 
       if (this.prevState === 'run')
         this.syncLegs()
@@ -17,7 +17,6 @@ export default class WalkState extends State {
         this.prepareAction()
 
       this.action.crossFadeFrom(oldAction, .75, true)
-
     }
 
     this.action?.play()
