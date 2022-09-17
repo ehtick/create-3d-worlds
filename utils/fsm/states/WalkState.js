@@ -16,7 +16,7 @@ export default class WalkState extends State {
       else
         this.prepareAction()
 
-      this.action.crossFadeFrom(oldAction, .75, true)
+      if (oldAction) this.action.crossFadeFrom(oldAction, .75, true)
     }
 
     this.action?.play()

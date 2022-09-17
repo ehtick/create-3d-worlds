@@ -10,7 +10,6 @@ export default class State {
     this.fsm = fsm
     this.name = name
     this.action = fsm?.actions[name]
-    if (name === 'run' && !this.action) this.action = fsm?.actions.walk
     this.prevState = ''
     this.t = 0
   }
@@ -23,7 +22,9 @@ export default class State {
     return this.fsm.actions
   }
 
-  enter(oldState, oldAction) {
+  enter(oldState) {
+    if (this.name === 'run' && !this.action) this.action = this.fsm?.actions.walk
+
     this.prevState = oldState?.name
     this.oldSpeed = oldState?.speed || 0
     this.action.enabled = true

@@ -15,7 +15,7 @@ export default class FlyJumpState extends State {
     this.prevState = oldState.name
     velocity = minVelocity
 
-    if (this.actions && this.action && this.actions[oldState.name]) {
+    if (this.action && this.actions[oldState.name]) {
       const oldAction = this.actions[oldState.name]
       this.action.reset()
       this.action.setLoop(THREE.LoopOnce, 1)

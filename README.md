@@ -12,6 +12,7 @@ npx live-server
 - blender tutorijal par dana
 
 - srediti fsm
+  - walk iz skoka greška ako nema akcije
   - BUG: trčanje-skok-trčanje previše uspori (secka)
   - previše proklizava kad staje
   - BUG: unazad ne radi
