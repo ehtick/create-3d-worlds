@@ -26,15 +26,13 @@ export default class IdleState extends State {
 
   enter(oldState, oldAction) {
     super.enter(oldState)
-    this.oldSpeed = oldState?.speed || 0
     if (oldState?.name === 'run' && !oldAction) oldAction = this.actions?.walk
 
     this.action.timeScale = 1
 
     this.prepareAction()
 
-    if (oldAction)
-      this.action.crossFadeFrom(oldAction, .75, true)
+    if (oldAction) this.action.crossFadeFrom(oldAction, .75, true)
 
     this.action?.play()
   }

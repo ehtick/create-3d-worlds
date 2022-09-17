@@ -24,6 +24,7 @@ export default class State {
 
   enter(oldState) {
     this.prevState = oldState?.name
+    this.oldSpeed = oldState?.speed || 0
     this.action.enabled = true
   }
 

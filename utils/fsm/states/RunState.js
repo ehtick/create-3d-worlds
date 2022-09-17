@@ -6,7 +6,6 @@ const { lerp } = THREE.MathUtils
 export default class RunState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
-    this.oldSpeed = oldState.speed
 
     this.action.timeScale = 1
 
