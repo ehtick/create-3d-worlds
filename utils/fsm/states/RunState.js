@@ -4,21 +4,18 @@ import State from './State.js'
 const { lerp } = THREE.MathUtils
 
 export default class RunState extends State {
-  enter(oldState) {
+  enter(oldState, oldAction) {
     super.enter(oldState)
     this.oldSpeed = oldState.speed
 
-    if (this.actions && this.action && this.actions[oldState.name]) {
-      const oldAction = this.actions[oldState.name]
-      this.action.timeScale = 1
+    this.action.timeScale = 1
 
-      if (['walk'].includes(oldState.name))
-        this.syncLegs()
-      else
-        this.prepareAction()
+    if (['walk'].includes(oldState.name))
+      this.syncLegs()
+    else
+      this.prepareAction()
 
-      this.action.crossFadeFrom(oldAction, .75, true)
-    }
+    this.action.crossFadeFrom(oldAction, .75, true)
 
     if (!this.action) {
       this.action = this.actions.walk

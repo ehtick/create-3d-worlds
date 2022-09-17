@@ -24,25 +24,14 @@ export default class IdleState extends State {
       startAction.fadeOut(duration)
   }
 
-  enter(oldState) {
+  enter(oldState, oldAction) {
     super.enter(oldState)
-
     this.oldSpeed = oldState?.speed || 0
-    const oldAction = (oldState?.name === 'run' && !oldState?.action)
-      ? this.actions?.walk
-      : oldState?.action
+    if (oldState?.name === 'run' && !oldAction) oldAction = this.actions?.walk
 
-    this.action.enabled = true
     this.action.timeScale = 1
 
-    // if (['walk', 'run', 'walkBackward'].includes(oldState?.name)) {
-    //   const ratio = this.action.getClip().duration / oldAction.getClip().duration
-    //   this.action.time = oldAction.time * ratio // sync legs
-    // } else {
-    this.action.time = 0.0
-    this.action.setEffectiveTimeScale(1)
-    this.action.setEffectiveWeight(1)
-    // }
+    this.prepareAction()
 
     if (oldAction)
       this.action.crossFadeFrom(oldAction, .75, true)

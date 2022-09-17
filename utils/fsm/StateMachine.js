@@ -64,7 +64,7 @@ export default class StateMachine {
     let State = states[name] || SpecialState
     if (name === 'jump' && !this.actions?.jump) State = FlyJumpState
     this.currentState = new State(this, name)
-    this.currentState.enter(oldState)
+    this.currentState.enter(oldState, this.actions[oldState?.name])
   }
 
   update(delta = 1 / 60) {

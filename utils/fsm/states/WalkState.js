@@ -4,10 +4,9 @@ import State from './State.js'
 const { lerp } = THREE.MathUtils
 
 export default class WalkState extends State {
-  enter(oldState) {
+  enter(oldState, oldAction) {
     super.enter(oldState)
     this.oldSpeed = oldState.speed
-    const oldAction = this.actions[oldState.name]
 
     this.action.timeScale = 1
 
