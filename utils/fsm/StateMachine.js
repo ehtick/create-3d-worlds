@@ -11,7 +11,7 @@ import WalkState from './states/WalkState.js'
 import WalkBackwardState from './states/WalkBackwardState.js'
 import SpecialState from './states/SpecialState.js'
 import JumpState from './states/JumpState.js'
-import FlyJumpState from './states/FlyJumpState.js'
+import JumpFlyState from './states/JumpFlyState.js'
 
 const states = {
   idle: IdleState,
@@ -62,7 +62,7 @@ export default class StateMachine {
       oldState.exit()
     }
     let State = states[name] || SpecialState
-    if (name === 'jump' && !this.actions?.jump) State = FlyJumpState
+    if (name === 'jump' && !this.actions?.jump) State = JumpFlyState
     this.currentState = new State(this, name)
     this.currentState.enter(oldState, oldState?.action)
   }

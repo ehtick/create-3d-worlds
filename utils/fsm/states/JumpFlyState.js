@@ -9,7 +9,7 @@ const velocityStep = .5
 let velocity = 0
 let jumpTime = 0
 
-export default class FlyJumpState extends State {
+export default class JumpFlyState extends State {
   enter(oldState) {
     this.speed = oldState.speed
     this.prevState = oldState.name
