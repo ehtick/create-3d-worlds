@@ -26,6 +26,14 @@ export default class State {
     this.prevState = oldState?.name
   }
 
+  update(delta) {
+    this.t = Math.min(this.t + delta, 1) // t is for lerp, 1 is lerp limit
+  }
+
+  exit() { }
+
+  /* COMMON ACTIONS */
+
   move(delta, sign = -1) {
     if (!this.fsm.speed) return
     velocity += this.speed * this.fsm.speed * sign
@@ -42,9 +50,24 @@ export default class State {
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * sign)
   }
 
-  exit() { }
-
-  update(delta) {
-    this.t = Math.min(this.t + delta, 1) // t is for lerp, 1 is lerp limit
+  finishThenIdle() {
+    const onFinished = () => {
+      this.fsm.mixer.removeEventListener('loop', onFinished)
+      this.fsm.setState('idle')
+    }
+    this.fsm.mixer.addEventListener('loop', onFinished)
   }
+
+  syncLegs() {
+    const oldAction = this.actions[this.prevState]
+    const ratio = this.action.getClip().duration / oldAction.getClip().duration
+    this.action.time = oldAction.time * ratio
+  }
+
+  prepareAction() {
+    this.action.time = 0.0
+    this.action.setEffectiveWeight(1)
+    this.action.setEffectiveTimeScale(1)
+  }
+
 }

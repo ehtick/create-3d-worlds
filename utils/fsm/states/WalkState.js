@@ -5,27 +5,19 @@ const { lerp } = THREE.MathUtils
 
 export default class WalkState extends State {
   enter(oldState) {
+    super.enter(oldState)
     this.oldSpeed = oldState.speed
-
     const oldAction = this.actions[oldState.name]
-    if (this.actions && this.action && this.actions[oldState?.name]) {
-      this.action.enabled = true
-      this.action.timeScale = 1
 
-      if (['idle', 'run'].includes(oldState.name)) {
-        const ratio = this.action.getClip().duration / oldAction.getClip().duration
-        this.action.time = oldAction.time * ratio // sync legs
-      } else {
-        this.action.time = 0.0
-        this.action.setEffectiveTimeScale(1)
-        this.action.setEffectiveWeight(1)
-      }
+    this.action.enabled = true
+    this.action.timeScale = 1
 
-      this.action.crossFadeFrom(oldAction, .75, true)
-    } else
-      oldAction?.fadeOut(.5)
+    if (['run'].includes(oldState.name))
+      this.syncLegs()
+    else
+      this.prepareAction()
 
-    this.action?.reset()
+    if (oldAction) this.action.crossFadeFrom(oldAction, 1.75, true)
     this.action?.play()
   }
 
@@ -45,6 +37,7 @@ export default class WalkState extends State {
     if (this.keyboard.capsLock)
       this.fsm.setState('run')
 
-    if (!this.keyboard.up) this.fsm.setState('idle')
+    if (!this.keyboard.up)
+      this.finishThenIdle()
   }
 }

@@ -4,26 +4,48 @@ import State from './State.js'
 const { lerp } = THREE.MathUtils
 
 export default class IdleState extends State {
+
+  setWeight(action) {
+    action.enabled = true
+    action.setEffectiveWeight(1)
+    action.setEffectiveTimeScale(1)
+  }
+
+  executeCrossFade(startAction, endAction, duration) {
+    // Not only the start action, but also the end action must get a weight of 1 before fading
+    if (endAction) {
+      this.setWeight(endAction)
+      endAction.time = 0
+      if (startAction)
+        startAction.crossFadeTo(endAction, duration, true) // crossfade with warping
+      else
+        endAction.fadeIn(duration)
+    } else
+      startAction.fadeOut(duration)
+  }
+
   enter(oldState) {
     super.enter(oldState)
+
     this.oldSpeed = oldState?.speed || 0
-    const oldAction = (oldState?.name === 'run' && !this.actions[oldState?.name])
+    const oldAction = (oldState?.name === 'run' && !oldState?.action)
       ? this.actions?.walk
-      : this.actions[oldState?.name]
+      : oldState?.action
 
     this.action.enabled = true
     this.action.timeScale = 1
 
-    if (['walk', 'run', 'walkBackward'].includes(oldState?.name)) {
-      const ratio = this.action.getClip().duration / oldAction.getClip().duration
-      this.action.time = oldAction.time * ratio // sync legs
-    } else {
-      this.action.time = 0.0
-      this.action.setEffectiveTimeScale(1)
-      this.action.setEffectiveWeight(1)
-    }
+    // if (['walk', 'run', 'walkBackward'].includes(oldState?.name)) {
+    //   const ratio = this.action.getClip().duration / oldAction.getClip().duration
+    //   this.action.time = oldAction.time * ratio // sync legs
+    // } else {
+    this.action.time = 0.0
+    this.action.setEffectiveTimeScale(1)
+    this.action.setEffectiveWeight(1)
+    // }
 
-    if (oldAction) this.action.crossFadeFrom(oldAction, .75, true)
+    if (oldAction)
+      this.action.crossFadeFrom(oldAction, .75, true)
 
     this.action?.play()
   }
