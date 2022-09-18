@@ -34,7 +34,7 @@ export default class RunState extends State {
       this.fsm.setState('walk')
 
     if (!this.keyboard.up)
-      this.finishThenIdle()
+      this.fsm.setState('idle')
   }
 
   exit() {

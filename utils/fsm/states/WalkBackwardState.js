@@ -26,7 +26,7 @@ export default class WalkBackwardState extends State {
       this.fsm.setState('attack')
 
     if (!this.keyboard.down)
-      this.finishThenIdle()
+      this.fsm.setState('idle')
   }
 
   exit() {

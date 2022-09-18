@@ -52,14 +52,6 @@ export default class State {
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * sign)
   }
 
-  finishThenIdle() {
-    const onFinished = () => {
-      this.fsm.mixer.removeEventListener('loop', onFinished)
-      this.fsm.setState('idle')
-    }
-    this.fsm.mixer.addEventListener('loop', onFinished)
-  }
-
   syncLegs() {
     const oldAction = this.actions[this.prevState]
     const ratio = this.action.getClip().duration / oldAction.getClip().duration
