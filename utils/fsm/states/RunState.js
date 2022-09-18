@@ -9,8 +9,8 @@ export default class RunState extends State {
     const duration = oldState?.name === 'jump' ? .15 : .75
 
     if (this.actions.run) {
-      this.action.setEffectiveTimeScale(1)
       if (oldAction) this.action.crossFadeFrom(oldAction, duration)
+      this.action.setEffectiveTimeScale(1)
     } else {
       this.action = this.actions.walk
       if (oldState?.name !== 'walk') this.action.crossFadeFrom(oldAction, duration)
