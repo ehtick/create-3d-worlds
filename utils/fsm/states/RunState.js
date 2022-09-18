@@ -15,10 +15,10 @@ export default class RunState extends State {
     } else {
       this.action = this.fsm.actions.walk
       if (oldState?.name !== 'walk') this.action.crossFadeFrom(oldAction, duration)
-      this.actions.walk.play()
       this.action.setEffectiveTimeScale(1.5)
+      this.actions.walk.play()
     }
-    // this.action.enabled = true
+    this.action.enabled = true
   }
 
   update(delta) {

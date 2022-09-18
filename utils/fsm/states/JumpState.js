@@ -2,9 +2,8 @@ import SpecialState from './SpecialState.js'
 
 export default class JumpState extends SpecialState {
 
-  enter(oldState) {
-    if (oldState?.name === 'run') this.fsm.mixer.stopAllAction() // fix
-    super.enter(oldState)
+  enter(oldState, oldAction) {
+    super.enter(oldState, oldAction)
     this.speed = oldState.speed
   }
 
