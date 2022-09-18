@@ -9,8 +9,6 @@ export default class IdleState extends State {
     super.enter(oldState)
     this.action.setEffectiveTimeScale(1)
 
-    this.prepareAction()
-
     const duration = oldState?.name === 'jump' ? .25 : .75
     if (oldAction) this.action.crossFadeFrom(oldAction, duration)
 

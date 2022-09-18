@@ -3,6 +3,12 @@ import State from './State.js'
 
 const { lerp } = THREE.MathUtils
 
+const chooseDuration = prevState => {
+  if (prevState === 'jump') return .15
+  if (prevState === 'attack') return .15
+  return .75
+}
+
 export default class WalkState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
@@ -10,12 +16,9 @@ export default class WalkState extends State {
 
     if (this.prevState !== 'run' || this.actions.run) {
 
-      if (this.prevState === 'run')
-        this.syncLegs()
-      else
-        this.prepareAction()
+      if (this.prevState === 'run') this.syncLegs()
 
-      const duration = oldState?.name === 'jump' ? .15 : .75
+      const duration = chooseDuration(oldState.name)
       if (oldAction) this.action.crossFadeFrom(oldAction, duration, true)
     }
 

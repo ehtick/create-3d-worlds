@@ -57,10 +57,4 @@ export default class State {
     const ratio = this.action.getClip().duration / oldAction.getClip().duration
     this.action.time = oldAction.time * ratio
   }
-
-  prepareAction() {
-    this.action.time = 0.0
-    this.action.setEffectiveWeight(1)
-  }
-
 }
