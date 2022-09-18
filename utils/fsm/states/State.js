@@ -69,7 +69,6 @@ export default class State {
   prepareAction() {
     this.action.time = 0.0
     this.action.setEffectiveWeight(1)
-    this.action.setEffectiveTimeScale(1)
   }
 
 }

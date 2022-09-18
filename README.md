@@ -15,6 +15,7 @@ npx live-server
   - BUG: vojnik hoda-puca
   - kad skače unazad obrnuti animaciju
   - BUG: ne vraca se u idle iz walka ako nema walk anim (trebalo bi da može bez svake)
+  - srediti da radi bez svake animacije
 
 - saturn tekstura probati
 - isprobati simondev projekte iz download

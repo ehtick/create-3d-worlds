@@ -38,6 +38,6 @@ export default class RunState extends State {
   }
 
   exit() {
-    // this.action.setEffectiveTimeScale(1)
+    this.action.setEffectiveTimeScale(1)
   }
 }

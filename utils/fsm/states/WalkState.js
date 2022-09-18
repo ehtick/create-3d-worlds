@@ -6,7 +6,6 @@ const { lerp } = THREE.MathUtils
 export default class WalkState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
-
     this.action.setEffectiveTimeScale(1)
 
     if (this.prevState !== 'run' || this.actions.run) {
