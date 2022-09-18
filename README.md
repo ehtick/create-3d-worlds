@@ -12,14 +12,9 @@ npx live-server
 - blender tutorijal par dana
 
 - srediti fsm
-  - proveriti skok vojnika
-  - BUG: trčanje-skok-trčanje previše uspori (secka)
-  - previše proklizava kad staje
-  - BUG: unazad ne radi
+  - BUG: vojnik hoda-puca
+  - kad skače unazad obrnuti animaciju
   - BUG: ne vraca se u idle iz walka ako nema walk anim (trebalo bi da može bez svake)
-  - BUG: kad stavim istu animaciju za walk i run, secka prelaz
-  - BUG: kad karakter skače i pritiskam strelice
-  - BUG: prelaz iz walk u idle uvek počinje od kraja oldAction, čak iako oldAction nije išla do kraja
 
 - saturn tekstura probati
 - isprobati simondev projekte iz download
