@@ -23,11 +23,9 @@ export default class State {
   }
 
   enter(oldState) {
-    if (this.name === 'run' && !this.action) this.action = this.fsm?.actions.walk
-
     this.prevState = oldState?.name
     this.oldSpeed = oldState?.speed || 0
-    this.action.enabled = true
+    if (this.action) this.action.enabled = true
   }
 
   update(delta) {
@@ -39,7 +37,7 @@ export default class State {
   /* COMMON ACTIONS */
 
   move(delta, sign = -1) {
-    if (!this.fsm.speed) return
+    if (!this.fsm.speed || !this.speed) return
     velocity += this.speed * this.fsm.speed * sign
     velocity *= INERTIA
     this.fsm.mesh.translateZ(velocity * delta)

@@ -6,16 +6,22 @@ const { lerp } = THREE.MathUtils
 export default class RunState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
+    console.log(oldAction)
+    const duration = oldState?.name === 'jump' ? .15 : .75
 
-    if (!this.actions.run)
-      this.action.setEffectiveTimeScale(1.5)
-    else if (oldState.name === 'walk') {
+    if (this.actions.run) {
       this.action.setEffectiveTimeScale(1)
-      this.syncLegs()
-      this.action.crossFadeFrom(oldAction, .75, true)
+      this.action.crossFadeFrom(oldAction, duration)
+      this.action.play()
+    } else {
+      // TODO: kada očistim preklapanje onda crossFadeFrom umesto stopAllAction
+      this.fsm.mixer.stopAllAction()
+      this.action = this.fsm.actions.walk
+      // this.action.crossFadeFrom(oldAction, duration)
+      this.actions.walk.play()
+      this.action.setEffectiveTimeScale(1.5)
     }
-
-    this.action.play()
+    // this.action.enabled = true
   }
 
   update(delta) {
@@ -36,7 +42,6 @@ export default class RunState extends State {
   }
 
   exit() {
-    this.action.setEffectiveTimeScale(1)
-    // this.action = null
+    // this.action.setEffectiveTimeScale(1)
   }
 }

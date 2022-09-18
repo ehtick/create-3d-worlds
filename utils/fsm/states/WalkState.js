@@ -9,7 +9,7 @@ export default class WalkState extends State {
 
     this.action.setEffectiveTimeScale(1)
 
-    if (this.actions.run || this.prevState !== 'run') {
+    if (this.prevState !== 'run' || this.actions.run) {
 
       if (this.prevState === 'run')
         this.syncLegs()

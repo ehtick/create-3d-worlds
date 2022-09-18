@@ -168,7 +168,7 @@ export const naziOfficerAnimations = {
 export const ninjaTurtleAnimations = {
   idle: 'Ninja Idle',
   walk: 'Dwarf Walk',
-  run: 'Run',
+  // run: 'Run',
   jump: 'Jump',
   attack: 'Flying Kick',
   special: 'Cartwheel',
