@@ -10,7 +10,7 @@ export default class RunState extends State {
 
     if (this.actions.run) {
       this.action.setEffectiveTimeScale(1)
-      this.action.crossFadeFrom(oldAction, duration)
+      if (oldAction) this.action.crossFadeFrom(oldAction, duration)
       this.action.play()
     } else {
       this.action = this.fsm.actions.walk
