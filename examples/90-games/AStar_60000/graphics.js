@@ -1,6 +1,9 @@
 import * as THREE from 'three'
-import Stats from 'https://cdn.jsdelivr.net/npm/three@0.112.1/examples/jsm/libs/stats.module.js'
+import Stats from '/node_modules/three/examples/jsm/libs/stats.module.js'
 import { scene, camera, renderer } from '/utils/scene.js'
+import { ambLight, dirLight } from '/utils/light.js'
+
+ambLight({ color: 0x505050 })
 
 export class Graphics {
   Initialize() {
@@ -11,40 +14,17 @@ export class Graphics {
   }
 
   _CreateLights() {
-    let light = new THREE.DirectionalLight(0xFFFFFF, 1, 100)
-    light.position.set(10, 20, 10)
-    light.castShadow = true
-    light.shadow.bias = -0.005
-    light.shadow.mapSize.set(4096, 4096)
+    const light = dirLight({ position: [10, 20, 10], mapSize: 2048 })
     light.shadow.camera.near = 0.01
     light.shadow.camera.far = 50
     light.shadow.camera.left = 50
     light.shadow.camera.right = -50
     light.shadow.camera.top = 50
     light.shadow.camera.bottom = -50
-    light.shadow.radius = 1
-    scene.add(light)
-    // cleanup
-    this._shadowLight = light
-
-    light = new THREE.DirectionalLight(0x404040, 1, 100)
-    light.position.set(-100, 100, -100)
-    light.target.position.set(0, 0, 0)
-    light.castShadow = false
-    scene.add(light)
-
-    light = new THREE.DirectionalLight(0x404040, 1, 100)
-    light.position.set(100, 100, -100)
-    light.target.position.set(0, 0, 0)
-    light.castShadow = false
-    scene.add(light)
+    this.dirLight = light
   }
 
-  get Scene() {
-    return scene
-  }
-
-  Render(timeInSeconds) {
+  Render() {
     renderer.render(scene, camera)
     this._stats.update()
   }

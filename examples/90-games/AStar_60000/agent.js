@@ -1,4 +1,5 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.112.1/build/three.module.js'
+import * as THREE from 'three'
+import { scene, camera, renderer } from '/utils/scene.js'
 
 import { math } from './math.js'
 
@@ -30,7 +31,7 @@ class LineRenderer {
     this._materials = {}
     this._group = new THREE.Group()
 
-    this._game._graphics.Scene.add(this._group)
+    scene.add(this._group)
   }
 
   Reset() {
@@ -273,7 +274,7 @@ export class Agent extends _Agent_Base {
     this._group.add(this._mesh)
     this._group.position.copy(params.position)
 
-    game._graphics.Scene.add(this._group)
+    scene.add(this._group)
   }
 
   _OnStep(timeInSeconds) {

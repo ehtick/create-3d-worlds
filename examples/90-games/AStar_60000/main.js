@@ -327,9 +327,9 @@ class Demo extends Game {
           this._mazeGenerator.Randomize()
           this._mazeDone()
           NodesToMesh(scene, this._graph.Nodes)
-          this._graphics._shadowLight.position.set(_TILES_X * 0.5, 10, _TILES_Y * 0.5)
-          this._graphics._shadowLight.target.position.set(_TILES_X * 0.5 - 5, 0, _TILES_Y * 0.5 - 5)
-          this._graphics._shadowLight.target.updateWorldMatrix()
+          this._graphics.dirLight.position.set(_TILES_X * 0.5, 10, _TILES_Y * 0.5)
+          this._graphics.dirLight.target.position.set(_TILES_X * 0.5 - 5, 0, _TILES_Y * 0.5 - 5)
+          this._graphics.dirLight.target.updateWorldMatrix()
           this._mazeIterator = null
         }
       }
