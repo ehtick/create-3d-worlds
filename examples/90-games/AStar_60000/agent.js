@@ -39,20 +39,12 @@ class AgentBase {
     this._wanderAngle = 0
   }
 
-  get Position() {
+  get position() {
     return this.group.position
   }
 
-  get Velocity() {
-    return this._velocity
-  }
-
-  get Direction() {
+  get direction() {
     return this._direction
-  }
-
-  get Radius() {
-    return this._radius
   }
 
   Step(timeInSeconds) {
@@ -68,7 +60,7 @@ class AgentBase {
   }
 
   _UpdateSearchStartPosition() {
-    const p = this.Position
+    const p = this.position
     const a = _A.set(p.x, p.z)
     const k = _Key(Math.floor(a.x), Math.floor(a.y))
 
@@ -114,7 +106,7 @@ class AgentBase {
     const end = _A.copy(this._astar._nodes[this._astar._end].metadata.position)
     end.addScalar(0.5)
 
-    _PT3.set(end.x, this.Position.y, end.y)
+    _PT3.set(end.x, this.position.y, end.y)
 
     return this._ApplySeek(_PT3)
   }
@@ -136,7 +128,7 @@ class AgentBase {
       return _AB.add(a)
     }
 
-    const p = this.Position
+    const p = this.position
     _PT2.set(p.x, p.z)
 
     const a = _A.copy(this._pathNodes[0].metadata.position)
@@ -158,7 +150,7 @@ class AgentBase {
   }
 
   _ApplySeek(destination) {
-    const direction = destination.clone().sub(this.Position)
+    const direction = destination.clone().sub(this.position)
     direction.normalize()
 
     const forceVector = direction.multiplyScalar(_BOID_FORCE_ORIGIN)
@@ -188,7 +180,7 @@ export class Agent extends AgentBase {
     frameVelocity.multiplyScalar(timeInSeconds)
     this.group.position.add(frameVelocity)
 
-    const direction = this.Direction
+    const { direction } = this
     const m = new THREE.Matrix4()
     m.lookAt(
       new THREE.Vector3(0, 0, 0),
@@ -210,7 +202,7 @@ export class AgentInstanced extends AgentBase {
     this._index = params.index
   }
 
-  get Position() {
+  get position() {
     return this._position
   }
 

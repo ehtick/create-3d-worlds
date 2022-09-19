@@ -16,16 +16,14 @@ const _TILES_X = 100
 const _TILES_Y = 20
 const _TILES_S = 75
 
-function _Key(x, y) {
-  return x + '.' + y
-}
+const _Key = (x, y) => x + '.' + y
 
 class Graph {
   constructor() {
     this._nodes = {}
   }
 
-  get Nodes() {
+  get nodes() {
     return this._nodes
   }
 
@@ -167,8 +165,8 @@ class Demo extends Game {
 
             const ki = _Key(x + xi, y + yi)
 
-            if (ki in this._graph.Nodes)
-              this._graph.Nodes[k].potentialEdges.push(ki)
+            if (ki in this._graph.nodes)
+              this._graph.nodes[k].potentialEdges.push(ki)
 
           }
 
@@ -176,14 +174,14 @@ class Demo extends Game {
 
     const start = _Key(0, 0)
 
-    this._mazeGenerator = new MazeGenerator(this._graph.Nodes)
+    this._mazeGenerator = new MazeGenerator(this._graph.nodes)
     this._mazeIterator = this._mazeGenerator.GenerateIteratively(start)
     this._mazeDone = () => {
       const nodes = []
       for (let x = 0; x < _TILES_X; x++)
         for (let y = 0; y > -_TILES_S; y--) {
           const k = _Key(x, y)
-          if (k in this._graph.Nodes)
+          if (k in this._graph.nodes)
             continue
 
           this._graph.AddNode(
@@ -202,7 +200,7 @@ class Demo extends Game {
       for (let x = 0; x < _TILES_X; x++)
         for (let y = _TILES_Y - 1; y < _TILES_Y + _TILES_S; y++) {
           const k = _Key(x, y)
-          if (k in this._graph.Nodes)
+          if (k in this._graph.nodes)
             continue
 
           this._graph.AddNode(
@@ -219,7 +217,7 @@ class Demo extends Game {
         }
 
       for (const k of nodes) {
-        const n = this._graph.Nodes[k]
+        const n = this._graph.nodes[k]
         const { x } = n.metadata.position
         const { y } = n.metadata.position
 
@@ -230,12 +228,12 @@ class Demo extends Game {
 
             const ki = _Key(x + xi, y + yi)
 
-            if (ki in this._graph.Nodes)
-              this._graph.Nodes[k].potentialEdges.push(ki)
+            if (ki in this._graph.nodes)
+              this._graph.nodes[k].potentialEdges.push(ki)
 
-            for (const pk of this._graph.Nodes[k].potentialEdges) {
-              this._graph.Nodes[k].edges.push(pk)
-              this._graph.Nodes[pk].edges.push(k)
+            for (const pk of this._graph.nodes[k].potentialEdges) {
+              this._graph.nodes[k].edges.push(pk)
+              this._graph.nodes[pk].edges.push(k)
             }
           }
 
@@ -261,7 +259,7 @@ class Demo extends Game {
     mesh.frustumCulled = false
 
     let index = 0
-    const nodes = this._graph.Nodes
+    const nodes = this._graph.nodes
 
     function _ManhattanDistance(n1, n2) {
       const p1 = n1.metadata.position
@@ -276,7 +274,7 @@ class Demo extends Game {
     const weightFunction = (s, e) => _ManhattanDistance(nodes[s], nodes[e])
 
     const mgr = new AStarManager(
-      this._graph.Nodes,
+      this._graph.nodes,
       heuristicFunction,
       weightFunction)
 
@@ -326,7 +324,7 @@ class Demo extends Game {
         if (r.done) {
           this._mazeGenerator.Randomize()
           this._mazeDone()
-          NodesToMesh(scene, this._graph.Nodes)
+          NodesToMesh(scene, this._graph.nodes)
           this._graphics.dirLight.position.set(_TILES_X * 0.5, 10, _TILES_Y * 0.5)
           this._graphics.dirLight.target.position.set(_TILES_X * 0.5 - 5, 0, _TILES_Y * 0.5 - 5)
           this._graphics.dirLight.target.updateWorldMatrix()
