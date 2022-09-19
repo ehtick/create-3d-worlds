@@ -1,5 +1,5 @@
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.112.1/examples/jsm/controls/OrbitControls.js'
 import { Graphics } from './graphics.js'
+import { createOrbitControls } from '/utils/scene.js'
 
 export class Game {
   constructor() {
@@ -8,24 +8,12 @@ export class Game {
 
   _Initialize() {
     this._graphics = new Graphics(this)
-    if (!this._graphics.Initialize()) {
-      this._DisplayError('WebGL2 is not available.')
-      return
-    }
-
-    this._controls = this._CreateControls()
+    this._graphics.Initialize()
+    this.controls = createOrbitControls()
     this._previousRAF = null
 
     this._OnInitialize()
     this._RAF()
-  }
-
-  _CreateControls() {
-    const controls = new OrbitControls(
-      this._graphics.camera, this._graphics.renderer.domElement)
-    controls.target.set(0, 0, 0)
-    controls.update()
-    return controls
   }
 
   _DisplayError(errorText) {

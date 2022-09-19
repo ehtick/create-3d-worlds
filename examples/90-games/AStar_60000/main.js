@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
+import { scene, camera } from '/utils/scene.js'
 
 import { Agent_Instanced } from './agent.js'
 import { AStarManager } from './astar.js'
@@ -132,7 +133,7 @@ function NodesToMesh(scene, nodes) {
 class Demo extends Game {
   _OnInitialize() {
     this._entities = []
-    this._controls.panningMode = 1
+    this.controls.panningMode = 1
 
     this._CreateMaze()
   }
@@ -302,13 +303,13 @@ class Demo extends Game {
         this._entities.push(e)
       }
 
-    this._graphics.camera.position.set(_TILES_X / 2, 7, 12)
-    this._controls.target.set(_TILES_X / 2, 0, -5)
-    this._controls.update()
+    camera.position.set(_TILES_X / 2, 7, 12)
+    this.controls.target.set(_TILES_X / 2, 0, -5)
+    this.controls.update()
 
     console.log('AGENTS: ' + this._entities.length)
 
-    this._graphics.Scene.add(mesh)
+    scene.add(mesh)
   }
 
   _OnStep(timeInSeconds) {
@@ -325,7 +326,7 @@ class Demo extends Game {
         if (r.done) {
           this._mazeGenerator.Randomize()
           this._mazeDone()
-          NodesToMesh(this._graphics.Scene, this._graph.Nodes)
+          NodesToMesh(scene, this._graph.Nodes)
           this._graphics._shadowLight.position.set(_TILES_X * 0.5, 10, _TILES_Y * 0.5)
           this._graphics._shadowLight.target.position.set(_TILES_X * 0.5 - 5, 0, _TILES_Y * 0.5 - 5)
           this._graphics._shadowLight.target.updateWorldMatrix()
