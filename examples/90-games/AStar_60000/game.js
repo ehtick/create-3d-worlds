@@ -9,7 +9,6 @@ export class Game {
   _Initialize() {
     this._graphics = new Graphics(this)
     this._graphics.Initialize()
-    this.controls = createOrbitControls()
     this._previousRAF = null
 
     this._OnInitialize()

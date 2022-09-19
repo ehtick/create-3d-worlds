@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { scene, camera } from '/utils/scene.js'
+import { createFloor } from '/utils/ground.js'
 
 import { AgentInstanced } from './agent.js'
 import { AStarManager } from './astar.js'
@@ -44,8 +45,7 @@ function NodesToMesh(scene, nodes) {
 
   for (const k in nodes) {
     const curNode = nodes[k]
-    const { x } = curNode.metadata.position
-    const { y } = curNode.metadata.position
+    const { x, y } = curNode.metadata.position
     const w = 1
     const h = 1
     const wallWidth = 0.25
@@ -113,26 +113,19 @@ function NodesToMesh(scene, nodes) {
     curNode.edges = [...new Set(curNode.edges)]
   }
 
-  const mergedGeometry = BufferGeometryUtils.mergeBufferGeometries(
-    geometries, false)
+  const mergedGeometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
   const mesh = new THREE.Mesh(mergedGeometry, material2)
   mesh.castShadow = true
   mesh.receiveShadow = true
   scene.add(mesh)
 
-  const plane = new THREE.Mesh(new THREE.PlaneGeometry(5000, 5000, 1, 1), material)
-  plane.position.set(0, 0, 0)
-  plane.castShadow = false
-  plane.receiveShadow = true
-  plane.rotation.x = -Math.PI / 2
+  const plane = createFloor({ size: 500 })
   scene.add(plane)
 }
 
 class Demo extends Game {
   _OnInitialize() {
     this._entities = []
-    this.controls.panningMode = 1
-
     this._CreateMaze()
   }
 
@@ -251,15 +244,14 @@ class Demo extends Game {
     const material = new THREE.MeshStandardMaterial({ color: 0xFF0000 })
     const numInstances = _TILES_X * _TILES_S / 2
 
-    const mesh = new THREE.InstancedMesh(
-      geometries.cone, material, numInstances)
+    const mesh = new THREE.InstancedMesh(geometries.cone, material, numInstances)
     mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
     mesh.castShadow = true
     mesh.receiveShadow = true
     mesh.frustumCulled = false
 
     let index = 0
-    const nodes = this._graph.nodes
+    const { nodes } = this._graph
 
     function _ManhattanDistance(n1, n2) {
       const p1 = n1.metadata.position
@@ -301,12 +293,8 @@ class Demo extends Game {
         this._entities.push(e)
       }
 
-    camera.position.set(_TILES_X / 2, 7, 12)
-    this.controls.target.set(_TILES_X / 2, 0, -5)
-    this.controls.update()
-
+    camera.position.set(_TILES_X / 2, 7, 20)
     console.log('AGENTS: ' + this._entities.length)
-
     scene.add(mesh)
   }
 
@@ -331,13 +319,11 @@ class Demo extends Game {
           this._mazeIterator = null
         }
       }
-
   }
 
   _StepEntities(timeInSeconds) {
     for (const e of this._entities)
       e.Step(timeInSeconds)
-
   }
 }
 

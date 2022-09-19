@@ -1,4 +1,3 @@
-import * as THREE from 'three'
 import Stats from '/node_modules/three/examples/jsm/libs/stats.module.js'
 import { scene, camera, renderer } from '/utils/scene.js'
 import { ambLight, dirLight } from '/utils/light.js'
@@ -9,7 +8,6 @@ export class Graphics {
   Initialize() {
     this._stats = new Stats()
     document.body.appendChild(this._stats.dom)
-    camera.position.set(16, 2, 0)
     this._CreateLights()
   }
 
