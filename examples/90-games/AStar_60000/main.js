@@ -1,9 +1,9 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.112.1/build/three.module.js'
 import { BufferGeometryUtils } from 'https://cdn.jsdelivr.net/npm/three@0.112.1/examples/jsm/utils/BufferGeometryUtils.js'
 
-import { agent } from './agent.js'
-import { astar } from './astar.js'
-import { game } from './game.js'
+import { Agent_Instanced } from './agent.js'
+import { AStarManager } from './astar.js'
+import { Game } from './game.js'
 import { math } from './math.js'
 import { mazegen } from './mazegen.js'
 
@@ -129,7 +129,7 @@ function NodesToMesh(scene, nodes) {
   scene.add(plane)
 }
 
-class Demo extends game.Game {
+class Demo extends Game {
   _OnInitialize() {
     this._entities = []
     this._controls.panningMode = 1
@@ -274,7 +274,7 @@ class Demo extends game.Game {
 
     const weightFunction = (s, e) => _ManhattanDistance(nodes[s], nodes[e])
 
-    const mgr = new astar.AStarManager(
+    const mgr = new AStarManager(
       this._graph.Nodes,
       heuristicFunction,
       weightFunction)
@@ -298,7 +298,7 @@ class Demo extends game.Game {
           position: new THREE.Vector3(i, 0.25, -j - 1),
           astar: mgr.CreateClient(start, end),
         }
-        const e = new agent.Agent_Instanced(this, params)
+        const e = new Agent_Instanced(this, params)
         this._entities.push(e)
       }
 
