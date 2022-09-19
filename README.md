@@ -11,10 +11,6 @@ npx live-server
 
 - blender tutorijal par dana
 
-- srediti fsm
-  - BUG: ne vraca se u idle iz walka ako nema walk anim (trebalo bi da može bez svake)
-  - srediti da radi bez svake animacije
-
 - saturn tekstura probati
 - isprobati simondev projekte iz download
 - spojiti joystick i keyboard nekako da zajedno rade
