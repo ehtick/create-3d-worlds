@@ -25,9 +25,7 @@ function _Key(x, y) {
 }
 
 class LineRenderer {
-  constructor(game) {
-    this._game = game
-
+  constructor() {
     this._materials = {}
     this._group = new THREE.Group()
 
@@ -61,15 +59,13 @@ class LineRenderer {
 }
 
 class _Agent_Base {
-  constructor(game, params) {
+  constructor(params) {
     this._direction = new THREE.Vector3(1, 0, 0)
     this._velocity = new THREE.Vector3(0, 0, 0)
 
     this._maxSteeringForce = params.maxSteeringForce
     this._maxSpeed = params.speed
     this._acceleration = params.acceleration
-
-    this._game = game
 
     this._astar = params.astar
     this._pathNodes = []
@@ -99,7 +95,7 @@ class _Agent_Base {
     this._goalMesh.position.copy(endPosition)
 
     this._displayDebug = true
-    this._lineRenderer = new LineRenderer(this._game)
+    this._lineRenderer = new LineRenderer()
     this._lineRenderer.Reset()
   }
 
@@ -261,8 +257,8 @@ class _Agent_Base {
 }
 
 export class Agent extends _Agent_Base {
-  constructor(game, params) {
-    super(game, params)
+  constructor(params) {
+    super(params)
 
     this._mesh = new THREE.Mesh(params.geometry, params.material)
     this._mesh.castShadow = true
@@ -293,8 +289,8 @@ export class Agent extends _Agent_Base {
 }
 
 export class Agent_Instanced extends _Agent_Base {
-  constructor(game, params) {
-    super(game, params)
+  constructor(params) {
+    super(params)
 
     this._mesh = params.mesh
 

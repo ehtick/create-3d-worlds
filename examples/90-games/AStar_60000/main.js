@@ -299,7 +299,7 @@ class Demo extends Game {
           position: new THREE.Vector3(i, 0.25, -j - 1),
           astar: mgr.CreateClient(start, end),
         }
-        const e = new Agent_Instanced(this, params)
+        const e = new Agent_Instanced(params)
         this._entities.push(e)
       }
 
