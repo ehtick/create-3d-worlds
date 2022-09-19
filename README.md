@@ -9,13 +9,9 @@ npm i
 npx live-server
 ```
 
-- blender tutorijal par dana
-
-- saturn tekstura probati
 - isprobati simondev projekte iz download
 - spojiti joystick i keyboard nekako da zajedno rade
-
-https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character
+- https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character
 
 ### Physics
 - preraditi prostu 2D fiziku u 3D
