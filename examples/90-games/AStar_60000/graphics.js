@@ -19,10 +19,6 @@ export class Graphics {
     this._stats = new Stats()
     target.appendChild(this._stats.dom)
 
-    window.addEventListener('resize', () => {
-      this._OnWindowResize()
-    }, false)
-
     const fov = 60
     const aspect = 1920 / 1080
     const near = 1.0
@@ -79,13 +75,6 @@ export class Graphics {
 
     this._composer.addPass(pass)
     return pass
-  }
-
-  _OnWindowResize() {
-    this.camera.aspect = window.innerWidth / window.innerHeight
-    this.camera.updateProjectionMatrix()
-    this.renderer.setSize(window.innerWidth, window.innerHeight)
-    this._composer.setSize(window.innerWidth, window.innerHeight)
   }
 
   get Scene() {
