@@ -7,10 +7,11 @@ export default class IdleState extends State {
 
   enter(oldState, oldAction) {
     super.enter(oldState)
-    this.action.setEffectiveTimeScale(1)
+    this.action?.setEffectiveTimeScale(1)
 
     const duration = oldState?.name === 'jump' ? .25 : .75
-    if (oldAction) this.action.crossFadeFrom(oldAction, duration)
+    if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
+    else if (oldAction) oldAction.fadeOut(duration)
 
     this.action?.play()
   }

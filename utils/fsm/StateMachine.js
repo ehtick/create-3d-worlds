@@ -25,6 +25,7 @@ export default class StateMachine {
   constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, prefix, speed = 2 }) {
     this.mesh = mesh
     this.keyboard = keyboard
+    this.actions = {}
 
     if (dict && prefix)
       this.loadAnims(dict, prefix)
@@ -36,18 +37,17 @@ export default class StateMachine {
       this.controls = createOrbitControls()
     }
 
-    this.speed = speed // 0: not movable
+    this.speed = speed
+    this.setState('idle')
   }
 
   setupMixer(animations, dict) {
     this.mixer = new THREE.AnimationMixer(this.mesh.isGroup ? this.mesh.children[0] : this.mesh)
-    this.actions = {}
     for (const key in dict) {
       const clip = animations.find(anim => anim.name == dict[key])
       this.actions[key] = this.mixer.clipAction(clip)
     }
     if (this.actions?.walk) this.actions.walkBackward = this.actions.walk
-    this.setState('idle')
   }
 
   async loadAnims(dict, prefix) {

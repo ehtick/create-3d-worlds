@@ -12,7 +12,6 @@ npx live-server
 - blender tutorijal par dana
 
 - srediti fsm
-  - BUG: vojnik hoda-puca
   - BUG: ne vraca se u idle iz walka ako nema walk anim (trebalo bi da može bez svake)
   - srediti da radi bez svake animacije
 

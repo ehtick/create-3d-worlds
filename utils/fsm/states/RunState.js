@@ -14,10 +14,10 @@ export default class RunState extends State {
     } else {
       this.action = this.actions.walk
       if (oldState?.name !== 'walk') this.action.crossFadeFrom(oldAction, duration)
-      this.action.setEffectiveTimeScale(1.5)
+      this.action?.setEffectiveTimeScale(1.5)
     }
-    this.action.play()
-    this.action.enabled = true
+    this.action?.play()
+    if (this.action) this.action.enabled = true
   }
 
   update(delta) {
@@ -38,6 +38,6 @@ export default class RunState extends State {
   }
 
   exit() {
-    this.action.setEffectiveTimeScale(1)
+    this.action?.setEffectiveTimeScale(1)
   }
 }

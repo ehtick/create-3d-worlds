@@ -12,14 +12,15 @@ const chooseDuration = prevState => {
 export default class WalkState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
-    this.action.setEffectiveTimeScale(1)
+    this.action?.setEffectiveTimeScale(1)
 
     if (this.prevState !== 'run' || this.actions.run) {
 
       if (this.prevState === 'run') this.syncLegs()
 
       const duration = chooseDuration(oldState.name)
-      if (oldAction) this.action.crossFadeFrom(oldAction, duration, true)
+      if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
+      else if (oldAction) oldAction.fadeOut(duration)
     }
 
     this.action?.play()
