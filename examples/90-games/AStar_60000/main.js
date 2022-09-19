@@ -1,6 +1,5 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.112.1/build/three.module.js'
 import { BufferGeometryUtils } from 'https://cdn.jsdelivr.net/npm/three@0.112.1/examples/jsm/utils/BufferGeometryUtils.js'
-import { Sky } from 'https://cdn.jsdelivr.net/npm/three@0.112.1/examples/jsm/objects/Sky.js'
 
 import { agent } from './agent.js'
 import { astar } from './astar.js'
@@ -16,24 +15,8 @@ const _TILES_X = 500
 const _TILES_Y = 20
 const _TILES_S = 50
 
-let _APP = null
-
 function _Key(x, y) {
   return x + '.' + y
-}
-
-function _ManhattanDistance(n1, n2) {
-  const p1 = n1.metadata.position
-  const p2 = n2.metadata.position
-  const dx = Math.abs(p2.x - p1.x)
-  const dy = Math.abs(p2.y - p1.y)
-  return (dx + dy)
-}
-
-function _Distance(n1, n2) {
-  const p1 = n1.metadata.position
-  const p2 = n2.metadata.position
-  return p1.distanceTo(p2)
 }
 
 class Graph {
@@ -58,7 +41,6 @@ function NodesToMesh(scene, nodes) {
   const material = new THREE.MeshStandardMaterial({ color: 0x71b5ef })
   const material2 = new THREE.MeshStandardMaterial({ color: 0xFFFFFF })
 
-  const edges = {}
   const geometries = []
 
   for (const k in nodes) {
@@ -76,16 +58,11 @@ function NodesToMesh(scene, nodes) {
       continue
 
     for (let ni = 0; ni < neighbours.length; ni++) {
-      const n = neighbours[ni]
-      const ki = _Key(x + n[0], y + n[1])
 
       if (curNode.edges.indexOf(_Key(x, y + 1)) < 0) {
-        // this._gfx.moveTo(w * (x + 0.0), h * (y + 1.0));
-        // this._gfx.lineTo(w * (x + 1.0), h * (y + 1.0));
         const x1 = w * (x + 0.0)
         const y1 = h * (y + 1.0)
         const x2 = w * (x + 1.0)
-        const y2 = h * (y + 1.0)
 
         const sq = new THREE.BoxBufferGeometry(x2 - x1, wallHeight, wallWidth)
         const m = new THREE.Matrix4()
@@ -95,11 +72,8 @@ function NodesToMesh(scene, nodes) {
       }
 
       if (curNode.edges.indexOf(_Key(x + 1, y + 0)) < 0) {
-        // this._gfx.moveTo(w * (x + 1.0), h * (y + 0.0));
-        // this._gfx.lineTo(w * (x + 1.0), h * (y + 1.0));
         const x1 = w * (x + 1.0)
         const y1 = h * (y + 0.0)
-        const x2 = w * (x + 1.0)
         const y2 = h * (y + 1.0)
 
         const sq = new THREE.BoxBufferGeometry(wallWidth, wallHeight, y2 - y1)
@@ -110,12 +84,9 @@ function NodesToMesh(scene, nodes) {
       }
 
       if (curNode.edges.indexOf(_Key(x, y - 1)) < 0) {
-        // this._gfx.moveTo(w * (x + 0.0), h * (y + 0.0));
-        // this._gfx.lineTo(w * (x + 1.0), h * (y + 0.0));
         const x1 = w * (x + 0.0)
         const y1 = h * (y + 0.0)
         const x2 = w * (x + 1.0)
-        const y2 = h * (y + 0.0)
 
         const sq = new THREE.BoxBufferGeometry(x2 - x1, wallHeight, wallWidth)
         const m = new THREE.Matrix4()
@@ -125,11 +96,8 @@ function NodesToMesh(scene, nodes) {
       }
 
       if (curNode.edges.indexOf(_Key(x - 1, y)) < 0) {
-        // this._gfx.moveTo(w * (x + 0.0), h * (y + 0.0));
-        // this._gfx.lineTo(w * (x + 0.0), h * (y + 1.0));
         const x1 = w * (x + 0.0)
         const y1 = h * (y + 0.0)
-        const x2 = w * (x + 0.0)
         const y2 = h * (y + 1.0)
 
         const sq = new THREE.BoxBufferGeometry(wallWidth, wallHeight, y2 - y1)
@@ -162,48 +130,11 @@ function NodesToMesh(scene, nodes) {
 }
 
 class Demo extends game.Game {
-  constructor() {
-    super()
-  }
-
   _OnInitialize() {
     this._entities = []
     this._controls.panningMode = 1
 
     this._CreateMaze()
-    this._LoadBackground()
-  }
-
-  _LoadBackground() {
-    this._sky = new Sky()
-    this._sky.scale.setScalar(10000)
-    this._graphics.Scene.add(this._sky)
-
-    const sky = {
-      turbidity: 10.0,
-      rayleigh: 2,
-      mieCoefficient: 0.005,
-      mieDirectionalG: 0.8,
-      luminance: 1,
-    }
-
-    const sun = {
-      inclination: 0.31,
-      azimuth: 0.25,
-    }
-
-    for (const k in sky)
-      this._sky.material.uniforms[k].value = sky[k]
-
-    const theta = Math.PI * (sun.inclination - 0.5)
-    const phi = 2 * Math.PI * (sun.azimuth - 0.5)
-
-    const sunPosition = new THREE.Vector3()
-    sunPosition.x = Math.cos(phi)
-    sunPosition.y = Math.sin(phi) * Math.sin(theta)
-    sunPosition.z = Math.sin(phi) * Math.cos(theta)
-
-    this._sky.material.uniforms.sunPosition.value.copy(sunPosition)
   }
 
   _CreateMaze() {
@@ -243,7 +174,6 @@ class Demo extends game.Game {
       }
 
     const start = _Key(0, 0)
-    const end = _Key(4, 0)
 
     this._mazeGenerator = new mazegen.MazeGenerator(this._graph.Nodes)
     this._mazeIterator = this._mazeGenerator.GenerateIteratively(start)
@@ -340,12 +270,6 @@ class Demo extends game.Game {
       return (dx + dy)
     }
 
-    function _Distance(n1, n2) {
-      const p1 = n1.metadata.position
-      const p2 = n2.metadata.position
-      return p1.distanceTo(p2)
-    }
-
     const heuristicFunction = (s, e) => 2 * _ManhattanDistance(nodes[s], nodes[e])
 
     const weightFunction = (s, e) => _ManhattanDistance(nodes[s], nodes[e])
@@ -419,8 +343,4 @@ class Demo extends game.Game {
   }
 }
 
-function _Main() {
-  _APP = new Demo()
-}
-
-_Main()
+new Demo()
