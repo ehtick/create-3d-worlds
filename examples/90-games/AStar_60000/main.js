@@ -5,7 +5,7 @@ import { Agent_Instanced } from './agent.js'
 import { AStarManager } from './astar.js'
 import { Game } from './game.js'
 import { math } from './math.js'
-import { mazegen } from './mazegen.js'
+import { MazeGenerator } from './mazegen.js'
 
 const _BOID_SPEED = 0.25
 const _BOID_ACCELERATION = _BOID_SPEED / 2.5
@@ -175,7 +175,7 @@ class Demo extends Game {
 
     const start = _Key(0, 0)
 
-    this._mazeGenerator = new mazegen.MazeGenerator(this._graph.Nodes)
+    this._mazeGenerator = new MazeGenerator(this._graph.Nodes)
     this._mazeIterator = this._mazeGenerator.GenerateIteratively(start)
     this._mazeDone = () => {
       const nodes = []
@@ -323,7 +323,6 @@ class Demo extends Game {
       if (this._mazeIterator) {
         const r = this._mazeIterator.next()
         if (r.done) {
-          console.log('DONE')
           this._mazeGenerator.Randomize()
           this._mazeDone()
           NodesToMesh(this._graphics.Scene, this._graph.Nodes)
