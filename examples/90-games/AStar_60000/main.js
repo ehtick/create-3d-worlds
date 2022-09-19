@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { scene, camera } from '/utils/scene.js'
 
-import { Agent_Instanced } from './agent.js'
+import { AgentInstanced } from './agent.js'
 import { AStarManager } from './astar.js'
 import { Game } from './game.js'
 import { math } from './math.js'
@@ -299,7 +299,7 @@ class Demo extends Game {
           position: new THREE.Vector3(i, 0.25, -j - 1),
           astar: mgr.CreateClient(start, end),
         }
-        const e = new Agent_Instanced(params)
+        const e = new AgentInstanced(params)
         this._entities.push(e)
       }
 

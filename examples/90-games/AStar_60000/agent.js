@@ -40,7 +40,7 @@ class AgentBase {
   }
 
   get Position() {
-    return this._group.position
+    return this.group.position
   }
 
   get Velocity() {
@@ -170,23 +170,23 @@ export class Agent extends AgentBase {
   constructor(params) {
     super(params)
 
-    this._mesh = new THREE.Mesh(params.geometry, params.material)
-    this._mesh.castShadow = true
-    this._mesh.receiveShadow = true
-    this._mesh.scale.setScalar(0.1)
-    this._mesh.rotateX(-Math.PI / 2)
+    this.mesh = new THREE.Mesh(params.geometry, params.material)
+    this.mesh.castShadow = true
+    this.mesh.receiveShadow = true
+    this.mesh.scale.setScalar(0.1)
+    this.mesh.rotateX(-Math.PI / 2)
 
-    this._group = new THREE.Group()
-    this._group.add(this._mesh)
-    this._group.position.copy(params.position)
+    this.group = new THREE.Group()
+    this.group.add(this.mesh)
+    this.group.position.copy(params.position)
 
-    scene.add(this._group)
+    scene.add(this.group)
   }
 
   _OnStep(timeInSeconds) {
     const frameVelocity = this._velocity.clone()
     frameVelocity.multiplyScalar(timeInSeconds)
-    this._group.position.add(frameVelocity)
+    this.group.position.add(frameVelocity)
 
     const direction = this.Direction
     const m = new THREE.Matrix4()
@@ -194,15 +194,15 @@ export class Agent extends AgentBase {
       new THREE.Vector3(0, 0, 0),
       direction,
       new THREE.Vector3(0, 1, 0))
-    this._group.quaternion.setFromRotationMatrix(m)
+    this.group.quaternion.setFromRotationMatrix(m)
   }
 }
 
-export class Agent_Instanced extends AgentBase {
+export class AgentInstanced extends AgentBase {
   constructor(params) {
     super(params)
 
-    this._mesh = params.mesh
+    this.mesh = params.mesh
 
     this._position = new THREE.Vector3()
     this._position.copy(params.position)
@@ -223,7 +223,7 @@ export class Agent_Instanced extends AgentBase {
     _M.identity()
     _M.compose(this._position, _Q, _V_SC_0_1)
 
-    this._mesh.setMatrixAt(this._index, _M)
-    this._mesh.instanceMatrix.needsUpdate = true
+    this.mesh.setMatrixAt(this._index, _M)
+    this.mesh.instanceMatrix.needsUpdate = true
   }
 }
