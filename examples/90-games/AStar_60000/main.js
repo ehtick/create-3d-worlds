@@ -1,5 +1,5 @@
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.112.1/build/three.module.js'
-import { BufferGeometryUtils } from 'https://cdn.jsdelivr.net/npm/three@0.112.1/examples/jsm/utils/BufferGeometryUtils.js'
+import * as THREE from 'three'
+import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 
 import { Agent_Instanced } from './agent.js'
 import { AStarManager } from './astar.js'
@@ -64,10 +64,10 @@ function NodesToMesh(scene, nodes) {
         const y1 = h * (y + 1.0)
         const x2 = w * (x + 1.0)
 
-        const sq = new THREE.BoxBufferGeometry(x2 - x1, wallHeight, wallWidth)
+        const sq = new THREE.BoxGeometry(x2 - x1, wallHeight, wallWidth)
         const m = new THREE.Matrix4()
         m.makeTranslation(x1 + 0.5, wallHeight * 0.5, y1)
-        sq.applyMatrix(m)
+        sq.applyMatrix4(m)
         geometries.push(sq)
       }
 
@@ -76,10 +76,10 @@ function NodesToMesh(scene, nodes) {
         const y1 = h * (y + 0.0)
         const y2 = h * (y + 1.0)
 
-        const sq = new THREE.BoxBufferGeometry(wallWidth, wallHeight, y2 - y1)
+        const sq = new THREE.BoxGeometry(wallWidth, wallHeight, y2 - y1)
         const m = new THREE.Matrix4()
         m.makeTranslation(x1, wallHeight * 0.5, y1 + 0.5)
-        sq.applyMatrix(m)
+        sq.applyMatrix4(m)
         geometries.push(sq)
       }
 
@@ -88,10 +88,10 @@ function NodesToMesh(scene, nodes) {
         const y1 = h * (y + 0.0)
         const x2 = w * (x + 1.0)
 
-        const sq = new THREE.BoxBufferGeometry(x2 - x1, wallHeight, wallWidth)
+        const sq = new THREE.BoxGeometry(x2 - x1, wallHeight, wallWidth)
         const m = new THREE.Matrix4()
         m.makeTranslation(x1 + 0.5, wallHeight * 0.5, y1)
-        sq.applyMatrix(m)
+        sq.applyMatrix4(m)
         geometries.push(sq)
       }
 
@@ -100,10 +100,10 @@ function NodesToMesh(scene, nodes) {
         const y1 = h * (y + 0.0)
         const y2 = h * (y + 1.0)
 
-        const sq = new THREE.BoxBufferGeometry(wallWidth, wallHeight, y2 - y1)
+        const sq = new THREE.BoxGeometry(wallWidth, wallHeight, y2 - y1)
         const m = new THREE.Matrix4()
         m.makeTranslation(x1, wallHeight * 0.5, y1 + 0.5)
-        sq.applyMatrix(m)
+        sq.applyMatrix4(m)
         geometries.push(sq)
       }
     }
