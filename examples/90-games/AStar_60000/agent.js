@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { scene, camera, renderer } from '/utils/scene.js'
+import { scene } from '/utils/scene.js'
 
 import { math } from './math.js'
 
@@ -24,41 +24,7 @@ function _Key(x, y) {
   return x + '.' + y
 }
 
-class LineRenderer {
-  constructor() {
-    this._materials = {}
-    this._group = new THREE.Group()
-
-    scene.add(this._group)
-  }
-
-  Reset() {
-    this._lines = []
-    this._group.remove(...this._group.children)
-  }
-
-  Add(pt1, pt2, hexColour) {
-    const geometry = new THREE.Geometry()
-    geometry.vertices.push(pt1.clone())
-    geometry.vertices.push(pt2.clone())
-
-    let material = this._materials[hexColour]
-    if (!material) {
-      this._materials[hexColour] = new THREE.LineBasicMaterial(
-        {
-          color: hexColour,
-          linewidth: 3,
-        })
-      material = this._materials[hexColour]
-    }
-
-    const line = new THREE.Line(geometry, material)
-    this._lines.push(line)
-    this._group.add(line)
-  }
-}
-
-class _Agent_Base {
+class AgentBase {
   constructor(params) {
     this._direction = new THREE.Vector3(1, 0, 0)
     this._velocity = new THREE.Vector3(0, 0, 0)
@@ -71,59 +37,6 @@ class _Agent_Base {
     this._pathNodes = []
 
     this._wanderAngle = 0
-
-    this._displayDebug = false
-
-    this._InitDebug()
-  }
-
-  _InitDebug() {
-    if (!this._displayDebug)
-      return
-
-    const e = this._astar._nodes[this._astar._end].metadata.position
-    const endPosition = new THREE.Vector3(e.x, 1, e.y)
-
-    const geometry = new THREE.SphereGeometry(1, 16, 16)
-    const material = new THREE.MeshBasicMaterial({
-      color: 0x80FF80,
-      transparent: true,
-      opacity: 0.25,
-    })
-    const mesh = new THREE.Mesh(geometry, material)
-    this._goalMesh = mesh
-    this._goalMesh.position.copy(endPosition)
-
-    this._displayDebug = true
-    this._lineRenderer = new LineRenderer()
-    this._lineRenderer.Reset()
-  }
-
-  _UpdateDebug() {
-    if (!this._displayDebug)
-      return
-
-    this._lineRenderer.Reset()
-    this._UpdateDebugPath()
-  }
-
-  _UpdateDebugPath() {
-    if (!this._displayDebug)
-      return
-
-    const path = this._pathNodes
-    for (let i = 0; i < path.length - 1; i++) {
-
-      const _AsV3 = p => {
-        const pos = p.metadata.position
-        return new THREE.Vector3(pos.x + 0.5, 0.25, pos.y + 0.5)
-      }
-
-      const p1 = _AsV3(path[i])
-      const p2 = _AsV3(path[i + 1])
-
-      this._lineRenderer.Add(p1, p2, 0xFF0000)
-    }
   }
 
   get Position() {
@@ -238,9 +151,6 @@ class _Agent_Base {
 
     _PT3.set(pt.x, p.y, pt.y)
 
-    if (this._displayDebug)
-      this._lineRenderer.Add(p, _PT3, 0x00FF00)
-
     if (p.distanceTo(_PT3) < 0.25)
       this._pathNodes.shift()
 
@@ -256,7 +166,7 @@ class _Agent_Base {
   }
 }
 
-export class Agent extends _Agent_Base {
+export class Agent extends AgentBase {
   constructor(params) {
     super(params)
 
@@ -288,7 +198,7 @@ export class Agent extends _Agent_Base {
   }
 }
 
-export class Agent_Instanced extends _Agent_Base {
+export class Agent_Instanced extends AgentBase {
   constructor(params) {
     super(params)
 
