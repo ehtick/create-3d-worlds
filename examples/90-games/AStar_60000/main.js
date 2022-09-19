@@ -11,9 +11,9 @@ const _BOID_SPEED = 0.25
 const _BOID_ACCELERATION = _BOID_SPEED / 2.5
 const _BOID_FORCE_MAX = _BOID_ACCELERATION / 5.0
 
-const _TILES_X = 500
+const _TILES_X = 100
 const _TILES_Y = 20
-const _TILES_S = 50
+const _TILES_S = 75
 
 function _Key(x, y) {
   return x + '.' + y
@@ -302,7 +302,7 @@ class Demo extends Game {
         this._entities.push(e)
       }
 
-    this._graphics._camera.position.set(_TILES_X / 2, 7, 12)
+    this._graphics.camera.position.set(_TILES_X / 2, 7, 12)
     this._controls.target.set(_TILES_X / 2, 0, -5)
     this._controls.update()
 

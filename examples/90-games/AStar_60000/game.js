@@ -22,7 +22,7 @@ export class Game {
 
   _CreateControls() {
     const controls = new OrbitControls(
-      this._graphics._camera, this._graphics._threejs.domElement)
+      this._graphics.camera, this._graphics.renderer.domElement)
     controls.target.set(0, 0, 0)
     controls.update()
     return controls
