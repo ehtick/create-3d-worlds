@@ -33,7 +33,7 @@ export default class WalkState extends State {
     this.turn(delta)
     this.forward(delta)
 
-    if (this.keyboard.pressed.Space)
+    if (this.keyboard.jump)
       this.fsm.setState('jump')
 
     if (this.keyboard.pressed.Enter)
