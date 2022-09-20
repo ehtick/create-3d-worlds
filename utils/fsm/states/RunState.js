@@ -10,6 +10,7 @@ export default class RunState extends State {
     const duration = oldState?.name === 'jump' ? .15 : .75
 
     if (this.actions.run) {
+      if (this.prevState === 'walk') this.syncTime()
       if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
       const timeScale = this.joystick?.forward ? mapRange(-this.joystick.forward, .75, 1, .75, 1.25) : 1
       this.action.setEffectiveTimeScale(timeScale)

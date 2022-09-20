@@ -59,7 +59,7 @@ export default class State {
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * sign)
   }
 
-  syncLegs() {
+  syncTime() {
     const oldAction = this.actions[this.prevState]
     if (!this.action || !oldAction) return
     const ratio = this.action.getClip().duration / oldAction.getClip().duration

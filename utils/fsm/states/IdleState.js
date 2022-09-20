@@ -17,7 +17,7 @@ export default class IdleState extends State {
     const duration = chooseDuration(oldState?.name)
 
     if (this.action && oldAction) {
-      if (this.prevState === 'walk' || this.prevState === 'run') this.syncLegs()
+      if (this.prevState === 'walk' || this.prevState === 'run') this.syncTime()
       this.action.crossFadeFrom(oldAction, duration)
     } else if (oldAction)
       oldAction.fadeOut(duration)

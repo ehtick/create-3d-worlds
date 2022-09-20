@@ -20,7 +20,7 @@ export default class WalkState extends State {
 
     if (this.prevState !== 'run' || this.actions.run) {
 
-      if (this.prevState === 'run') this.syncLegs()
+      if (this.prevState === 'run') this.syncTime()
 
       const duration = chooseDuration(oldState.name)
       if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
