@@ -13,7 +13,8 @@ export default class SpecialState extends State {
 
   enter(oldState, oldAction) {
     this.prevState = oldState.name
-    if (!this.action) return this.fsm.setState(this.prevState || 'idle')
+    if (!this.action)
+      return this.fsm.setState(this.prevState || 'idle')
     const mixer = this.action?.getMixer()
     mixer.addEventListener('finished', this._FinishedCallback)
     this.action.reset()

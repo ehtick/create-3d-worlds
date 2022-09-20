@@ -18,7 +18,7 @@ const states = {
   walk: WalkState,
   walkBackward: WalkBackwardState,
   run: RunState,
-  jump: JumpState,
+  jump: JumpFlyState,
 }
 
 export default class StateMachine {

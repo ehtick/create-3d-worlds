@@ -64,4 +64,13 @@ export default class State {
     const ratio = this.action.getClip().duration / oldAction.getClip().duration
     this.action.time = oldAction.time * ratio
   }
+
+  // https://gist.github.com/rtpHarry/2d41811d04825935039dfc075116d0ad
+  reverseAction() {
+    if (!this.action) return
+    if (this.action.time === 0)
+      this.action.time = this.action.getClip().duration
+    this.action.paused = false
+    this.action.setEffectiveTimeScale(-1)
+  }
 }
