@@ -9,8 +9,6 @@ npm i
 npx live-server
 ```
 
-- probati animaciju unazad
-  https://gist.github.com/rtpHarry/2d41811d04825935039dfc075116d0ad
 - povezati joystick i keyboard da zajedno rade
 - https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character
 
