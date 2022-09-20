@@ -9,8 +9,7 @@ npm i
 npx live-server
 ```
 
-- isprobati simondev projekte iz download
-- spojiti joystick i keyboard nekako da zajedno rade
+- povezati joystick i keyboard da zajedno rade
 - https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character
 
 ### Physics

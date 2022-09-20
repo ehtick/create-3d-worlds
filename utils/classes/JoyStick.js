@@ -1,7 +1,7 @@
 import { getCursorPosition } from '/utils/helpers.js'
 
 export default class JoyStick {
-  constructor({ onMove, maxRadius = 40 } = {}) {
+  constructor(onMove, maxRadius = 40) {
     const circle = document.createElement('div')
     circle.style.cssText = 'position:absolute; bottom:35px; width:80px; height:80px; background:rgba(126, 126, 126, 0.5); border:#fff solid medium; border-radius:50%; left:50%; transform:translateX(-50%);'
     const thumb = document.createElement('div')
