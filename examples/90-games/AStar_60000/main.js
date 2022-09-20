@@ -5,9 +5,9 @@ import { createFloor } from '/utils/ground.js'
 
 import { AgentInstanced } from './agent.js'
 import { AStarManager } from './astar.js'
-import { Game } from './game.js'
 import { math } from './math.js'
 import { MazeGenerator } from './mazegen.js'
+import { Graphics } from './graphics.js'
 
 const _BOID_SPEED = 0.25
 const _BOID_ACCELERATION = _BOID_SPEED / 2.5
@@ -38,7 +38,6 @@ class Graph {
 }
 
 function NodesToMesh(scene, nodes) {
-  const material = new THREE.MeshStandardMaterial({ color: 0x71b5ef })
   const material2 = new THREE.MeshStandardMaterial({ color: 0xFFFFFF })
 
   const geometries = []
@@ -123,10 +122,43 @@ function NodesToMesh(scene, nodes) {
   scene.add(plane)
 }
 
-class Demo extends Game {
-  _OnInitialize() {
+/* INIT */
+
+class Demo {
+  constructor() {
+    this._Initialize()
+  }
+
+  _Initialize() {
+    this._graphics = new Graphics(this)
+    this._graphics.Initialize()
+    this._previousRAF = null
+
     this._entities = []
     this._CreateMaze()
+    this.loop()
+  }
+
+  _DisplayError(errorText) {
+    const error = document.getElementById('error')
+    error.innerText = errorText
+  }
+
+  loop() {
+    requestAnimationFrame(t => {
+      if (this._previousRAF === null)
+        this._previousRAF = t
+
+      this._Render(t - this._previousRAF)
+      this._previousRAF = t
+    })
+  }
+
+  _Render(timeInMS) {
+    const timeInSeconds = timeInMS * 0.001
+    this._OnStep(timeInSeconds)
+    this._graphics.Render(timeInSeconds)
+    this.loop()
   }
 
   _CreateMaze() {
