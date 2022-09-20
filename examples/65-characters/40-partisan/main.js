@@ -4,14 +4,13 @@ import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { loadPartisan } from '/utils/loaders.js'
 import { partisanAnimations } from '/data/animations.js'
-import JoyStick from '/utils/classes/JoyStick.js'
 
 scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadPartisan()
-const stateMachine = new StateMachine({ mesh, animations, dict: partisanAnimations, joystick: new JoyStick() })
+const stateMachine = new StateMachine({ mesh, animations, dict: partisanAnimations, useJoystick: true })
 
 scene.add(mesh)
 

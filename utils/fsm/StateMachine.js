@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
+import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { getHeight } from '/utils/helpers.js'
 import { loadFbxAnimations } from '/utils/loaders.js'
@@ -22,10 +23,10 @@ const states = {
 }
 
 export default class StateMachine {
-  constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, joystick, prefix, speed = 2 }) {
+  constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, useJoystick, prefix, speed = 2 }) {
     this.mesh = mesh
     this.keyboard = keyboard
-    this.joystick = joystick
+    if (useJoystick) this.joystick = new JoyStick()
     this.actions = {}
 
     if (dict && prefix)

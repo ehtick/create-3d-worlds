@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadSorceress()
-const stateMachine = new StateMachine({ mesh, animations, dict: sorceressAnimations })
+const stateMachine = new StateMachine({ mesh, animations, dict: sorceressAnimations, useJoystick: true })
 
 scene.add(mesh)
 

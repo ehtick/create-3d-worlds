@@ -10,6 +10,7 @@ npx live-server
 ```
 
 - povezati joystick i keyboard da zajedno rade
+- blender tutorijal
 - https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character
 
 ### Physics
