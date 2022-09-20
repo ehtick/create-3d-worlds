@@ -3,11 +3,18 @@ import State from './State.js'
 
 const { lerp } = THREE.MathUtils
 
+const chooseDuration = prevState => {
+  if (prevState === 'jump') return .15
+  if (prevState === 'attack') return .15
+  return .75
+}
+
 export default class WalkBackwardState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
 
-    if (oldAction) this.action.crossFadeFrom(oldAction, .75)
+    const duration = chooseDuration(oldState.name)
+    if (oldAction) this.action.crossFadeFrom(oldAction, duration)
     this.action?.play()
     this.action.setEffectiveTimeScale(-1)
   }
