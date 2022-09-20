@@ -42,7 +42,7 @@ export default class WalkState extends State {
     if (this.keyboard.capsLock)
       this.fsm.setState('run')
 
-    if (!this.keyboard.up)
+    if (!this.keyboard.up && !this.joystick?.forward)
       this.fsm.setState('idle')
   }
 }

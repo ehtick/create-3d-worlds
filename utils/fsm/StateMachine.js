@@ -22,9 +22,10 @@ const states = {
 }
 
 export default class StateMachine {
-  constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, prefix, speed = 2 }) {
+  constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, joystick, prefix, speed = 2 }) {
     this.mesh = mesh
     this.keyboard = keyboard
+    this.joystick = joystick
     this.actions = {}
 
     if (dict && prefix)

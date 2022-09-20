@@ -93,6 +93,8 @@ export default class JoyStick {
     this.domElement.style.top = `${this.origin.top}px`
     this.domElement.style.left = `${this.origin.left}px`
 
-    this.onMove(0, 0)
+    this.forward = 0
+    this.turn = 0
+    this.onMove(this.forward, this.turn)
   }
 }

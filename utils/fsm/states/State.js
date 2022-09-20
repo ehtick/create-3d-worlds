@@ -18,6 +18,10 @@ export default class State {
     return this.fsm.keyboard
   }
 
+  get joystick() {
+    return this.fsm.joystick
+  }
+
   get actions() {
     return this.fsm.actions
   }
@@ -38,7 +42,7 @@ export default class State {
 
   forward(delta, sign = -1) {
     if (!this.fsm.speed || !this.speed) return
-    velocity += this.speed * this.fsm.speed * sign
+    velocity += this.speed * this.fsm.speed * (this.joystick?.forward || sign)
     velocity *= INERTIA
     this.fsm.mesh.translateZ(velocity * delta)
   }
@@ -46,6 +50,9 @@ export default class State {
   turn(delta, sign = -1) {
     if (!this.fsm.speed) return
     const angle = RIGHT_ANGLE * delta // 90 degrees per second
+    if (this.joystick)
+      this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -this.joystick.turn)
+
     if (this.keyboard.left)
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -sign)
     if (this.keyboard.right)

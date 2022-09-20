@@ -23,7 +23,7 @@ export default class IdleState extends State {
     this.turn(delta)
     this.forward(delta)
 
-    if (this.keyboard.up)
+    if (this.keyboard.up || this.joystick?.forward)
       this.fsm.setState('walk')
 
     if (this.keyboard.down)
