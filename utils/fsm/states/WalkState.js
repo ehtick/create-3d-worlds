@@ -14,7 +14,7 @@ export default class WalkState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
 
-    const timeScale = this.joystick ? mapRange(-this.joystick.forward, 0, .75, .75, 1.25) : 1
+    const timeScale = this.joystick?.forward ? mapRange(-this.joystick.forward, 0, .75, .75, 1.25) : 1
 
     this.action?.setEffectiveTimeScale(timeScale)
 

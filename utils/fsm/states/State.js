@@ -61,6 +61,7 @@ export default class State {
 
   syncLegs() {
     const oldAction = this.actions[this.prevState]
+    if (!this.action || !oldAction) return
     const ratio = this.action.getClip().duration / oldAction.getClip().duration
     this.action.time = oldAction.time * ratio
   }

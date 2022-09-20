@@ -11,11 +11,12 @@ export default class RunState extends State {
 
     if (this.actions.run) {
       if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
-      this.action.setEffectiveTimeScale(1)
+      const timeScale = this.joystick?.forward ? mapRange(-this.joystick.forward, .75, 1, .75, 1.25) : 1
+      this.action.setEffectiveTimeScale(timeScale)
     } else {
       this.action = this.actions.walk
       if (this.action && oldAction && oldState?.name !== 'walk') this.action.crossFadeFrom(oldAction, duration)
-      const timeScale = this.joystick ? mapRange(-this.joystick.forward, .75, 1, 1.25, 1.75) : 1.5
+      const timeScale = this.joystick?.forward ? mapRange(-this.joystick.forward, .75, 1, 1.25, 1.75) : 1.5
       this.action?.setEffectiveTimeScale(timeScale)
     }
     this.action?.play()
