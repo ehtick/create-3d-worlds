@@ -124,239 +124,225 @@ function NodesToMesh(scene, nodes) {
 
 /* INIT */
 
-class Demo {
-  constructor() {
-    this._Initialize()
-  }
+const _graphics = new Graphics()
+const _entities = []
 
-  _Initialize() {
-    this._graphics = new Graphics(this)
-    this._graphics.Initialize()
-    this._previousRAF = null
+let _previousRAF = null
+let _graph, _mazeGenerator, _mazeIterator, mazeDone
 
-    this._entities = []
-    this._CreateMaze()
-    this.loop()
-  }
+_graphics.Initialize()
+createMaze()
+loop()
 
-  _DisplayError(errorText) {
-    const error = document.getElementById('error')
-    error.innerText = errorText
-  }
+function loop() {
+  requestAnimationFrame(t => {
+    if (_previousRAF === null)
+      _previousRAF = t
 
-  loop() {
-    requestAnimationFrame(t => {
-      if (this._previousRAF === null)
-        this._previousRAF = t
+    render(t - _previousRAF)
+    _previousRAF = t
+  })
+}
 
-      this._Render(t - this._previousRAF)
-      this._previousRAF = t
-    })
-  }
+function render(timeInMS) {
+  const timeInSeconds = timeInMS * 0.001
+  onStep(timeInSeconds)
+  _graphics.Render(timeInSeconds)
+  loop()
+}
 
-  _Render(timeInMS) {
-    const timeInSeconds = timeInMS * 0.001
-    this._OnStep(timeInSeconds)
-    this._graphics.Render(timeInSeconds)
-    this.loop()
-  }
+function createMaze() {
+  _graph = new Graph()
 
-  _CreateMaze() {
-    this._graph = new Graph()
+  for (let x = 0; x < _TILES_X; x++)
+    for (let y = 0; y < _TILES_Y; y++) {
+      const k = _Key(x, y)
+      _graph.AddNode(
+        k, [],
+        {
+          position: new THREE.Vector2(x, y),
+          weight: 0,
+          render: {
+            visited: false,
+            visible: true,
+          }
+        })
+    }
 
+  for (let x = 0; x < _TILES_X; x++)
+    for (let y = 0; y < _TILES_Y; y++) {
+      const k = _Key(x, y)
+
+      for (let xi = -1; xi <= 1; xi++)
+        for (let yi = -1; yi <= 1; yi++) {
+          if (xi == 0 && yi == 0 || (Math.abs(xi) + Math.abs(yi) != 1))
+            continue
+
+          const ki = _Key(x + xi, y + yi)
+
+          if (ki in _graph.nodes)
+            _graph.nodes[k].potentialEdges.push(ki)
+
+        }
+
+    }
+
+  const start = _Key(0, 0)
+
+  _mazeGenerator = new MazeGenerator(_graph.nodes)
+  _mazeIterator = _mazeGenerator.GenerateIteratively(start)
+
+  mazeDone = () => {
+    const nodes = []
     for (let x = 0; x < _TILES_X; x++)
-      for (let y = 0; y < _TILES_Y; y++) {
+      for (let y = 0; y > -_TILES_S; y--) {
         const k = _Key(x, y)
-        this._graph.AddNode(
+        if (k in _graph.nodes)
+          continue
+
+        _graph.AddNode(
           k, [],
           {
             position: new THREE.Vector2(x, y),
             weight: 0,
             render: {
               visited: false,
-              visible: true,
+              visible: false,
             }
           })
+        nodes.push(k)
       }
 
     for (let x = 0; x < _TILES_X; x++)
-      for (let y = 0; y < _TILES_Y; y++) {
+      for (let y = _TILES_Y - 1; y < _TILES_Y + _TILES_S; y++) {
         const k = _Key(x, y)
+        if (k in _graph.nodes)
+          continue
 
-        for (let xi = -1; xi <= 1; xi++)
-          for (let yi = -1; yi <= 1; yi++) {
-            if (xi == 0 && yi == 0 || (Math.abs(xi) + Math.abs(yi) != 1))
-              continue
-
-            const ki = _Key(x + xi, y + yi)
-
-            if (ki in this._graph.nodes)
-              this._graph.nodes[k].potentialEdges.push(ki)
-
-          }
-
-      }
-
-    const start = _Key(0, 0)
-
-    this._mazeGenerator = new MazeGenerator(this._graph.nodes)
-    this._mazeIterator = this._mazeGenerator.GenerateIteratively(start)
-    this._mazeDone = () => {
-      const nodes = []
-      for (let x = 0; x < _TILES_X; x++)
-        for (let y = 0; y > -_TILES_S; y--) {
-          const k = _Key(x, y)
-          if (k in this._graph.nodes)
-            continue
-
-          this._graph.AddNode(
-            k, [],
-            {
-              position: new THREE.Vector2(x, y),
-              weight: 0,
-              render: {
-                visited: false,
-                visible: false,
-              }
-            })
-          nodes.push(k)
-        }
-
-      for (let x = 0; x < _TILES_X; x++)
-        for (let y = _TILES_Y - 1; y < _TILES_Y + _TILES_S; y++) {
-          const k = _Key(x, y)
-          if (k in this._graph.nodes)
-            continue
-
-          this._graph.AddNode(
-            k, [],
-            {
-              position: new THREE.Vector2(x, y),
-              weight: 0,
-              render: {
-                visited: false,
-                visible: false,
-              }
-            })
-          nodes.push(k)
-        }
-
-      for (const k of nodes) {
-        const n = this._graph.nodes[k]
-        const { x } = n.metadata.position
-        const { y } = n.metadata.position
-
-        for (let xi = -1; xi <= 1; xi++)
-          for (let yi = -1; yi <= 1; yi++) {
-            if (xi == 0 && yi == 0 || (Math.abs(xi) + Math.abs(yi) != 1))
-              continue
-
-            const ki = _Key(x + xi, y + yi)
-
-            if (ki in this._graph.nodes)
-              this._graph.nodes[k].potentialEdges.push(ki)
-
-            for (const pk of this._graph.nodes[k].potentialEdges) {
-              this._graph.nodes[k].edges.push(pk)
-              this._graph.nodes[pk].edges.push(k)
+        _graph.AddNode(
+          k, [],
+          {
+            position: new THREE.Vector2(x, y),
+            weight: 0,
+            render: {
+              visited: false,
+              visible: false,
             }
+          })
+        nodes.push(k)
+      }
+
+    for (const k of nodes) {
+      const n = _graph.nodes[k]
+      const { x } = n.metadata.position
+      const { y } = n.metadata.position
+
+      for (let xi = -1; xi <= 1; xi++)
+        for (let yi = -1; yi <= 1; yi++) {
+          if (xi == 0 && yi == 0 || (Math.abs(xi) + Math.abs(yi) != 1))
+            continue
+
+          const ki = _Key(x + xi, y + yi)
+
+          if (ki in _graph.nodes)
+            _graph.nodes[k].potentialEdges.push(ki)
+
+          for (const pk of _graph.nodes[k].potentialEdges) {
+            _graph.nodes[k].edges.push(pk)
+            _graph.nodes[pk].edges.push(k)
           }
-
-      }
-
-      this._CreateEntities()
-    }
-  }
-
-  _CreateEntities() {
-    const geometries = {
-      cone: new THREE.ConeGeometry(1, 2, 32)
-    }
-
-    const material = new THREE.MeshStandardMaterial({ color: 0xFF0000 })
-    const numInstances = _TILES_X * _TILES_S / 2
-
-    const mesh = new THREE.InstancedMesh(geometries.cone, material, numInstances)
-    mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
-    mesh.castShadow = true
-    mesh.receiveShadow = true
-    mesh.frustumCulled = false
-
-    let index = 0
-    const { nodes } = this._graph
-
-    function _ManhattanDistance(n1, n2) {
-      const p1 = n1.metadata.position
-      const p2 = n2.metadata.position
-      const dx = Math.abs(p2.x - p1.x)
-      const dy = Math.abs(p2.y - p1.y)
-      return (dx + dy)
-    }
-
-    const heuristicFunction = (s, e) => 2 * _ManhattanDistance(nodes[s], nodes[e])
-
-    const weightFunction = (s, e) => _ManhattanDistance(nodes[s], nodes[e])
-
-    const mgr = new AStarManager(
-      this._graph.nodes,
-      heuristicFunction,
-      weightFunction)
-
-    this._entities.push(mgr)
-
-    for (let j = 0; j < _TILES_S / 2; j++)
-      for (let i = 0; i < _TILES_X; i++) {
-        const xe = math.clamp(math.rand_int(i - 20, i + 20), 0, _TILES_X - 1)
-        const start = _Key(i, -j - 1)
-        const end = _Key(xe, _TILES_Y + 5)
-
-        const params = {
-          geometry: geometries.cone,
-          material,
-          mesh,
-          index: index++,
-          speed: _BOID_SPEED,
-          maxSteeringForce: _BOID_FORCE_MAX,
-          acceleration: _BOID_ACCELERATION,
-          position: new THREE.Vector3(i, 0.25, -j - 1),
-          astar: mgr.CreateClient(start, end),
         }
-        const e = new AgentInstanced(params)
-        this._entities.push(e)
-      }
-
-    camera.position.set(_TILES_X / 2, 7, 20)
-    console.log('AGENTS: ' + this._entities.length)
-    scene.add(mesh)
-  }
-
-  _OnStep(timeInSeconds) {
-    timeInSeconds = Math.min(timeInSeconds, 1 / 10.0)
-
-    this._StepMazeGeneration()
-    this._StepEntities(timeInSeconds)
-  }
-
-  _StepMazeGeneration() {
-    for (let i = 0; i < 100; i++)
-      if (this._mazeIterator) {
-        const r = this._mazeIterator.next()
-        if (r.done) {
-          this._mazeGenerator.Randomize()
-          this._mazeDone()
-          NodesToMesh(scene, this._graph.nodes)
-          this._graphics.dirLight.position.set(_TILES_X * 0.5, 10, _TILES_Y * 0.5)
-          this._graphics.dirLight.target.position.set(_TILES_X * 0.5 - 5, 0, _TILES_Y * 0.5 - 5)
-          this._graphics.dirLight.target.updateWorldMatrix()
-          this._mazeIterator = null
-        }
-      }
-  }
-
-  _StepEntities(timeInSeconds) {
-    for (const e of this._entities)
-      e.Step(timeInSeconds)
+    }
+    createEntities()
   }
 }
 
-new Demo()
+function createEntities() {
+  const geometries = {
+    cone: new THREE.ConeGeometry(1, 2, 32)
+  }
+
+  const material = new THREE.MeshStandardMaterial({ color: 0xFF0000 })
+  const numInstances = _TILES_X * _TILES_S / 2
+
+  const mesh = new THREE.InstancedMesh(geometries.cone, material, numInstances)
+  mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
+  mesh.castShadow = true
+  mesh.receiveShadow = true
+  mesh.frustumCulled = false
+
+  let index = 0
+  const { nodes } = _graph
+
+  function manhattanDistance(n1, n2) {
+    const p1 = n1.metadata.position
+    const p2 = n2.metadata.position
+    const dx = Math.abs(p2.x - p1.x)
+    const dy = Math.abs(p2.y - p1.y)
+    return (dx + dy)
+  }
+
+  const heuristicFunction = (s, e) => 2 * manhattanDistance(nodes[s], nodes[e])
+
+  const weightFunction = (s, e) => manhattanDistance(nodes[s], nodes[e])
+
+  const mgr = new AStarManager(
+    _graph.nodes,
+    heuristicFunction,
+    weightFunction)
+
+  _entities.push(mgr)
+
+  for (let j = 0; j < _TILES_S / 2; j++)
+    for (let i = 0; i < _TILES_X; i++) {
+      const xe = math.clamp(math.rand_int(i - 20, i + 20), 0, _TILES_X - 1)
+      const start = _Key(i, -j - 1)
+      const end = _Key(xe, _TILES_Y + 5)
+
+      const params = {
+        geometry: geometries.cone,
+        material,
+        mesh,
+        index: index++,
+        speed: _BOID_SPEED,
+        maxSteeringForce: _BOID_FORCE_MAX,
+        acceleration: _BOID_ACCELERATION,
+        position: new THREE.Vector3(i, 0.25, -j - 1),
+        astar: mgr.CreateClient(start, end),
+      }
+      const e = new AgentInstanced(params)
+      _entities.push(e)
+    }
+
+  camera.position.set(_TILES_X / 2, 7, 20)
+  console.log('AGENTS: ' + _entities.length)
+  scene.add(mesh)
+}
+
+function onStep(timeInSeconds) {
+  timeInSeconds = Math.min(timeInSeconds, 1 / 10.0)
+
+  stepMazeGeneration()
+  stepEntities(timeInSeconds)
+}
+
+function stepMazeGeneration() {
+  for (let i = 0; i < 100; i++)
+    if (_mazeIterator) {
+      const r = _mazeIterator.next()
+      if (r.done) {
+        _mazeGenerator.Randomize()
+        mazeDone()
+        NodesToMesh(scene, _graph.nodes)
+        _graphics.dirLight.position.set(_TILES_X * 0.5, 10, _TILES_Y * 0.5)
+        _graphics.dirLight.target.position.set(_TILES_X * 0.5 - 5, 0, _TILES_Y * 0.5 - 5)
+        _graphics.dirLight.target.updateWorldMatrix()
+        _mazeIterator = null
+      }
+    }
+}
+
+function stepEntities(timeInSeconds) {
+  for (const e of _entities)
+    e.Step(timeInSeconds)
+}
