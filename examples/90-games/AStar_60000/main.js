@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
-import { scene, camera } from '/utils/scene.js'
+import { scene, camera, clock } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 
 import { AgentInstanced } from './agent.js'
@@ -124,32 +124,16 @@ function NodesToMesh(scene, nodes) {
 
 /* INIT */
 
-const _graphics = new Graphics()
+const graphics = new Graphics()
 const _entities = []
 
-let _previousRAF = null
+const _previousRAF = null
 let _graph, _mazeGenerator, _mazeIterator, mazeDone
 
-_graphics.Initialize()
+graphics.Initialize()
 createMaze()
-loop()
 
-function loop() {
-  requestAnimationFrame(t => {
-    if (_previousRAF === null)
-      _previousRAF = t
-
-    render(t - _previousRAF)
-    _previousRAF = t
-  })
-}
-
-function render(timeInMS) {
-  const timeInSeconds = timeInMS * 0.001
-  onStep(timeInSeconds)
-  _graphics.Render(timeInSeconds)
-  loop()
-}
+/* FUNCTION */
 
 function createMaze() {
   _graph = new Graph()
@@ -334,9 +318,9 @@ function stepMazeGeneration() {
         _mazeGenerator.Randomize()
         mazeDone()
         NodesToMesh(scene, _graph.nodes)
-        _graphics.dirLight.position.set(_TILES_X * 0.5, 10, _TILES_Y * 0.5)
-        _graphics.dirLight.target.position.set(_TILES_X * 0.5 - 5, 0, _TILES_Y * 0.5 - 5)
-        _graphics.dirLight.target.updateWorldMatrix()
+        graphics.dirLight.position.set(_TILES_X * 0.5, 10, _TILES_Y * 0.5)
+        graphics.dirLight.target.position.set(_TILES_X * 0.5 - 5, 0, _TILES_Y * 0.5 - 5)
+        graphics.dirLight.target.updateWorldMatrix()
         _mazeIterator = null
       }
     }
@@ -346,3 +330,12 @@ function stepEntities(timeInSeconds) {
   for (const e of _entities)
     e.Step(timeInSeconds)
 }
+
+/* LOOP */
+
+void function loop() {
+  requestAnimationFrame(loop)
+  const delta = clock.getDelta()
+  onStep(delta)
+  graphics.Render(delta)
+}()
