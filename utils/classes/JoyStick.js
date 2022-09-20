@@ -1,11 +1,35 @@
 import { getCursorPosition } from '/utils/helpers.js'
 
+const circleCss = `
+  position:absolute; 
+  bottom:35px; 
+  width:80px; 
+  height:80px; 
+  background:rgba(126, 126, 126, 0.5); 
+  border:#fff solid medium; 
+  border-radius:50%; 
+  left:50%; 
+  transform:translateX(-50%);
+`
+
+const thumbCss = `
+  position: absolute; 
+  left: 20px; 
+  top: 20px; 
+  width: 40px; 
+  height: 40px; 
+  border-radius: 50%; 
+  background: #fff;
+`
+
 export default class JoyStick {
-  constructor(onMove, maxRadius = 40) {
+  constructor(onMove = () => {}, maxRadius = 40) {
+    this.forward = 0
+    this.turn = 0
     const circle = document.createElement('div')
-    circle.style.cssText = 'position:absolute; bottom:35px; width:80px; height:80px; background:rgba(126, 126, 126, 0.5); border:#fff solid medium; border-radius:50%; left:50%; transform:translateX(-50%);'
+    circle.style.cssText = circleCss
     const thumb = document.createElement('div')
-    thumb.style.cssText = 'position: absolute; left: 20px; top: 20px; width: 40px; height: 40px; border-radius: 50%; background: #fff;'
+    thumb.style.cssText = thumbCss
     circle.appendChild(thumb)
     document.body.appendChild(circle)
     this.domElement = thumb
@@ -52,10 +76,10 @@ export default class JoyStick {
     this.domElement.style.top = `${top + this.domElement.clientHeight / 2}px`
     this.domElement.style.left = `${left + this.domElement.clientWidth / 2}px`
 
-    const forward = (top - this.origin.top + this.domElement.clientHeight / 2) / this.maxRadius
-    const turn = (left - this.origin.left + this.domElement.clientWidth / 2) / this.maxRadius
+    this.forward = (top - this.origin.top + this.domElement.clientHeight / 2) / this.maxRadius
+    this.turn = (left - this.origin.left + this.domElement.clientWidth / 2) / this.maxRadius
 
-    if (this.onMove) this.onMove(forward, turn)
+    if (this.onMove) this.onMove(this.forward, this.turn)
   }
 
   up() {
