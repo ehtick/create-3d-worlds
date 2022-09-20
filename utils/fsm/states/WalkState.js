@@ -39,7 +39,7 @@ export default class WalkState extends State {
     if (this.keyboard.pressed.Enter)
       this.fsm.setState('attack')
 
-    if (this.keyboard.capsLock)
+    if (this.keyboard.capsLock || this.joystick?.forward < -.75)
       this.fsm.setState('run')
 
     if (!this.keyboard.up && !this.joystick?.forward)
