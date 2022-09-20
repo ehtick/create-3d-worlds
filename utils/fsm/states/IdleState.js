@@ -21,7 +21,7 @@ export default class IdleState extends State {
     this.speed = lerp(this.oldSpeed, 0, this.t)
 
     this.turn(delta)
-    this.move(delta)
+    this.forward(delta)
 
     if (this.keyboard.up)
       this.fsm.setState('walk')

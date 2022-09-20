@@ -36,7 +36,7 @@ export default class State {
 
   /* COMMON ACTIONS */
 
-  move(delta, sign = -1) {
+  forward(delta, sign = -1) {
     if (!this.fsm.speed || !this.speed) return
     velocity += this.speed * this.fsm.speed * sign
     velocity *= INERTIA

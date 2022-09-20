@@ -16,8 +16,8 @@ const keyboard = {
 }
 
 const onMove = (forward, turn) => {
-  keyboard.up = forward > .25
-  keyboard.down = forward < -.25
+  keyboard.up = forward < -.25
+  keyboard.down = forward > .25
   keyboard.left = turn < -.25
   keyboard.right = turn > .25
   keyboard.run = forward > .5

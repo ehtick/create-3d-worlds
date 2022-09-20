@@ -52,7 +52,7 @@ export default class JoyStick {
     this.domElement.style.top = `${top + this.domElement.clientHeight / 2}px`
     this.domElement.style.left = `${left + this.domElement.clientWidth / 2}px`
 
-    const forward = -(top - this.origin.top + this.domElement.clientHeight / 2) / this.maxRadius
+    const forward = (top - this.origin.top + this.domElement.clientHeight / 2) / this.maxRadius
     const turn = (left - this.origin.left + this.domElement.clientWidth / 2) / this.maxRadius
 
     if (this.onMove) this.onMove(forward, turn)

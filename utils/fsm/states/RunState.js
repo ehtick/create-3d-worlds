@@ -25,7 +25,7 @@ export default class RunState extends State {
     this.speed = lerp(this.oldSpeed, this.fsm.speed * 2, this.t)
 
     this.turn(delta)
-    this.move(delta)
+    this.forward(delta)
 
     if (this.keyboard.pressed.Space)
       this.fsm.setState('jump')

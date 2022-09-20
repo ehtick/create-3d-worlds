@@ -31,7 +31,7 @@ export default class WalkState extends State {
     this.speed = lerp(this.oldSpeed, this.fsm.speed, this.t)
 
     this.turn(delta)
-    this.move(delta)
+    this.forward(delta)
 
     if (this.keyboard.pressed.Space)
       this.fsm.setState('jump')

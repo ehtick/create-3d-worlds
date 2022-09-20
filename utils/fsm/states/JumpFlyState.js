@@ -32,7 +32,7 @@ export default class JumpFlyState extends State {
   update(delta) {
     const { mesh } = this.fsm
 
-    this.move(delta)
+    this.forward(delta)
 
     if (this.keyboard.pressed.Space && this.onGround() && velocity <= maxVelocity) {
       velocity += velocityStep

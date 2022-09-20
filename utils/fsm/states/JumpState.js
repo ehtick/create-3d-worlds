@@ -9,7 +9,7 @@ export default class JumpState extends SpecialState {
   }
 
   update(delta) {
-    this.move(delta)
+    this.forward(delta)
   }
 
   exit() {
