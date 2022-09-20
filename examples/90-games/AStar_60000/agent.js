@@ -20,7 +20,7 @@ const _V_0 = new THREE.Vector3(0, 0, 0)
 const _V_Y = new THREE.Vector3(0, 1, 0)
 const _V_SC_0_1 = new THREE.Vector3(0.1, 0.1, 0.1)
 
-function _Key(x, y) {
+function createKey(x, y) {
   return x + '.' + y
 }
 
@@ -62,7 +62,7 @@ class AgentBase {
   _UpdateSearchStartPosition() {
     const p = this.position
     const a = _A.set(p.x, p.z)
-    const k = _Key(Math.floor(a.x), Math.floor(a.y))
+    const k = createKey(Math.floor(a.x), Math.floor(a.y))
 
     this._astar._start = k
   }

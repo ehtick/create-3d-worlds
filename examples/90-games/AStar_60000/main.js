@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { scene, camera, clock } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 
@@ -8,6 +7,7 @@ import { AStarManager } from './astar.js'
 import { math } from './math.js'
 import { MazeGenerator } from './mazegen.js'
 import { Graphics } from './graphics.js'
+import { createKey, NodesToMesh } from './utils.js'
 
 const _BOID_SPEED = 0.25
 const _BOID_ACCELERATION = _BOID_SPEED / 2.5
@@ -17,109 +17,18 @@ const _TILES_X = 100
 const _TILES_Y = 20
 const _TILES_S = 75
 
-const _Key = (x, y) => x + '.' + y
-
 class Graph {
   constructor() {
-    this._nodes = {}
-  }
-
-  get nodes() {
-    return this._nodes
+    this.nodes = {}
   }
 
   AddNode(k, e, m) {
-    this._nodes[k] = {
+    this.nodes[k] = {
       edges: [...e],
       potentialEdges: [...e],
       metadata: m
     }
   }
-}
-
-function NodesToMesh(scene, nodes) {
-  const material2 = new THREE.MeshStandardMaterial({ color: 0xFFFFFF })
-
-  const geometries = []
-
-  for (const k in nodes) {
-    const curNode = nodes[k]
-    const { x, y } = curNode.metadata.position
-    const w = 1
-    const h = 1
-    const wallWidth = 0.25
-    const wallHeight = 0.5
-
-    const neighbours = [[0, 1], [1, 0], [0, -1], [-1, 0]]
-
-    if (!curNode.metadata.render.visible)
-      continue
-
-    for (let ni = 0; ni < neighbours.length; ni++) {
-
-      if (curNode.edges.indexOf(_Key(x, y + 1)) < 0) {
-        const x1 = w * (x + 0.0)
-        const y1 = h * (y + 1.0)
-        const x2 = w * (x + 1.0)
-
-        const sq = new THREE.BoxGeometry(x2 - x1, wallHeight, wallWidth)
-        const m = new THREE.Matrix4()
-        m.makeTranslation(x1 + 0.5, wallHeight * 0.5, y1)
-        sq.applyMatrix4(m)
-        geometries.push(sq)
-      }
-
-      if (curNode.edges.indexOf(_Key(x + 1, y + 0)) < 0) {
-        const x1 = w * (x + 1.0)
-        const y1 = h * (y + 0.0)
-        const y2 = h * (y + 1.0)
-
-        const sq = new THREE.BoxGeometry(wallWidth, wallHeight, y2 - y1)
-        const m = new THREE.Matrix4()
-        m.makeTranslation(x1, wallHeight * 0.5, y1 + 0.5)
-        sq.applyMatrix4(m)
-        geometries.push(sq)
-      }
-
-      if (curNode.edges.indexOf(_Key(x, y - 1)) < 0) {
-        const x1 = w * (x + 0.0)
-        const y1 = h * (y + 0.0)
-        const x2 = w * (x + 1.0)
-
-        const sq = new THREE.BoxGeometry(x2 - x1, wallHeight, wallWidth)
-        const m = new THREE.Matrix4()
-        m.makeTranslation(x1 + 0.5, wallHeight * 0.5, y1)
-        sq.applyMatrix4(m)
-        geometries.push(sq)
-      }
-
-      if (curNode.edges.indexOf(_Key(x - 1, y)) < 0) {
-        const x1 = w * (x + 0.0)
-        const y1 = h * (y + 0.0)
-        const y2 = h * (y + 1.0)
-
-        const sq = new THREE.BoxGeometry(wallWidth, wallHeight, y2 - y1)
-        const m = new THREE.Matrix4()
-        m.makeTranslation(x1, wallHeight * 0.5, y1 + 0.5)
-        sq.applyMatrix4(m)
-        geometries.push(sq)
-      }
-    }
-  }
-
-  for (const k in nodes) {
-    const curNode = nodes[k]
-    curNode.edges = [...new Set(curNode.edges)]
-  }
-
-  const mergedGeometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
-  const mesh = new THREE.Mesh(mergedGeometry, material2)
-  mesh.castShadow = true
-  mesh.receiveShadow = true
-  scene.add(mesh)
-
-  const plane = createFloor({ size: 500 })
-  scene.add(plane)
 }
 
 /* INIT */
@@ -132,6 +41,9 @@ let graph, mazeGenerator, mazeIterator
 graphics.Initialize()
 createMaze()
 
+const plane = createFloor({ size: 500 })
+scene.add(plane)
+
 /* FUNCTION */
 
 function createMaze() {
@@ -139,7 +51,7 @@ function createMaze() {
 
   for (let x = 0; x < _TILES_X; x++)
     for (let y = 0; y < _TILES_Y; y++) {
-      const k = _Key(x, y)
+      const k = createKey(x, y)
       graph.AddNode(k, [], {
         position: new THREE.Vector2(x, y),
         weight: 0,
@@ -152,21 +64,21 @@ function createMaze() {
 
   for (let x = 0; x < _TILES_X; x++)
     for (let y = 0; y < _TILES_Y; y++) {
-      const k = _Key(x, y)
+      const k = createKey(x, y)
 
       for (let xi = -1; xi <= 1; xi++)
         for (let yi = -1; yi <= 1; yi++) {
           if (xi == 0 && yi == 0 || (Math.abs(xi) + Math.abs(yi) != 1))
             continue
 
-          const ki = _Key(x + xi, y + yi)
+          const ki = createKey(x + xi, y + yi)
 
           if (ki in graph.nodes)
             graph.nodes[k].potentialEdges.push(ki)
         }
     }
 
-  const start = _Key(0, 0)
+  const start = createKey(0, 0)
   mazeGenerator = new MazeGenerator(graph.nodes)
   mazeIterator = mazeGenerator.GenerateIteratively(start)
 }
@@ -175,7 +87,7 @@ const mazeDone = () => {
   const nodes = []
   for (let x = 0; x < _TILES_X; x++)
     for (let y = 0; y > -_TILES_S; y--) {
-      const k = _Key(x, y)
+      const k = createKey(x, y)
       if (k in graph.nodes)
         continue
 
@@ -194,7 +106,7 @@ const mazeDone = () => {
 
   for (let x = 0; x < _TILES_X; x++)
     for (let y = _TILES_Y - 1; y < _TILES_Y + _TILES_S; y++) {
-      const k = _Key(x, y)
+      const k = createKey(x, y)
       if (k in graph.nodes)
         continue
 
@@ -221,7 +133,7 @@ const mazeDone = () => {
         if (xi == 0 && yi == 0 || (Math.abs(xi) + Math.abs(yi) != 1))
           continue
 
-        const ki = _Key(x + xi, y + yi)
+        const ki = createKey(x + xi, y + yi)
 
         if (ki in graph.nodes)
           graph.nodes[k].potentialEdges.push(ki)
@@ -274,8 +186,8 @@ function createEntities() {
   for (let j = 0; j < _TILES_S / 2; j++)
     for (let i = 0; i < _TILES_X; i++) {
       const xe = math.clamp(math.rand_int(i - 20, i + 20), 0, _TILES_X - 1)
-      const start = _Key(i, -j - 1)
-      const end = _Key(xe, _TILES_Y + 5)
+      const start = createKey(i, -j - 1)
+      const end = createKey(xe, _TILES_Y + 5)
 
       const params = {
         geometry: geometries.cone,
