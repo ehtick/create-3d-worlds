@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { mapRange } from '/utils/helpers.js'
 import State from './State.js'
 
 const { lerp } = THREE.MathUtils
@@ -14,7 +15,8 @@ export default class RunState extends State {
     } else {
       this.action = this.actions.walk
       if (this.action && oldAction && oldState?.name !== 'walk') this.action.crossFadeFrom(oldAction, duration)
-      this.action?.setEffectiveTimeScale(1.5)
+      const timeScale = this.joystick ? mapRange(-this.joystick.forward, .75, 1, 1.25, 1.75) : 1.5
+      this.action?.setEffectiveTimeScale(timeScale)
     }
     this.action?.play()
     if (this.action) this.action.enabled = true

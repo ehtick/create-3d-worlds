@@ -2,11 +2,14 @@ import * as THREE from 'three'
 import { scene as defaultScene, camera as defaultCamera } from '/utils/scene.js'
 import { dir } from '/data/constants.js'
 
-const { randFloat, lerp } = THREE.MathUtils
+const { randFloat } = THREE.MathUtils
 
 export const isEmpty = obj => Object.keys(obj).length === 0
 
 /* MATH */
+
+export const mapRange = (number, inMin, inMax, outMin, outMax) =>
+  (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
 
 /* Get random int between two values, <= max (max inclusive) */
 export const roll = (max, min = 0) => Math.floor(Math.random() * (max - min + 1) + min)

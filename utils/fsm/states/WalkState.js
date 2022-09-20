@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import State from './State.js'
+import { mapRange } from '/utils/helpers.js'
 
 const { lerp } = THREE.MathUtils
 
@@ -12,7 +13,10 @@ const chooseDuration = prevState => {
 export default class WalkState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
-    this.action?.setEffectiveTimeScale(1)
+
+    const timeScale = this.joystick ? mapRange(-this.joystick.forward, 0, .75, .75, 1.25) : 1
+
+    this.action?.setEffectiveTimeScale(timeScale)
 
     if (this.prevState !== 'run' || this.actions.run) {
 
