@@ -19,7 +19,7 @@ export default class SpecialState extends State {
     this.action.reset()
     this.action.setLoop(THREE.LoopOnce, 1)
     this.action.clampWhenFinished = true
-    if (oldAction) this.action.crossFadeFrom(oldAction, duration, true)
+    if (oldAction) this.action.crossFadeFrom(oldAction, duration)
     this.action.play()
   }
 

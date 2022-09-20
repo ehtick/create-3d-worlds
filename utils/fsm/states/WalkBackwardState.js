@@ -7,17 +7,17 @@ export default class WalkBackwardState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
 
-    if (oldAction) this.action.crossFadeFrom(oldAction, .75, true)
+    if (oldAction) this.action.crossFadeFrom(oldAction, .75)
     this.action?.play()
     this.action.setEffectiveTimeScale(-1)
   }
 
   update(delta) {
     super.update(delta)
-    this.speed = lerp(this.oldSpeed, -this.fsm.speed, this.t)
+    this.speed = lerp(this.oldSpeed, this.fsm.speed, this.t)
 
     this.turn(delta)
-    this.forward(delta)
+    this.forward(delta, 1)
 
     if (this.keyboard.pressed.Space)
       this.fsm.setState('jump')
@@ -25,7 +25,7 @@ export default class WalkBackwardState extends State {
     if (this.keyboard.pressed.Enter)
       this.fsm.setState('attack')
 
-    if (!this.keyboard.down)
+    if (!this.keyboard.down && !this.joystick?.forward)
       this.fsm.setState('idle')
   }
 

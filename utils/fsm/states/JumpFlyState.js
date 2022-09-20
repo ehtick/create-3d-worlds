@@ -20,7 +20,7 @@ export default class JumpFlyState extends State {
       this.action.reset()
       this.action.setLoop(THREE.LoopOnce, 1)
       this.action.clampWhenFinished = true
-      this.action.crossFadeFrom(oldAction, .25, true)
+      this.action.crossFadeFrom(oldAction, .25)
       this.action.play()
     }
   }
@@ -32,7 +32,12 @@ export default class JumpFlyState extends State {
   update(delta) {
     const { mesh } = this.fsm
 
-    this.forward(delta)
+    this.forward(delta, this.prevState === 'walkBackward' ? 1 : -1)
+
+    if (!this.action)
+      this.actions[this.prevState]?.setEffectiveTimeScale(this.prevState === 'walkBackward' ? -1 : 1)
+
+    // TODO: handlovati kada ima akcija a ulazi iz walkBackward
 
     if (this.keyboard.pressed.Space && this.onGround() && velocity <= maxVelocity) {
       velocity += velocityStep

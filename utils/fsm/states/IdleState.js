@@ -18,15 +18,16 @@ export default class IdleState extends State {
 
   update(delta) {
     super.update(delta)
-    this.speed = lerp(this.oldSpeed, 0, this.t)
+    const oldSpeed = this.prevState === 'walkBackward' ? -this.oldSpeed : this.oldSpeed
+    this.speed = lerp(oldSpeed, 0, this.t)
 
     this.turn(delta)
     this.forward(delta)
 
-    if (this.keyboard.up || this.joystick?.forward)
+    if (this.keyboard.up || this.joystick?.forward < 0)
       this.fsm.setState('walk')
 
-    if (this.keyboard.down)
+    if (this.keyboard.down || this.joystick?.forward > 0)
       this.fsm.setState('walkBackward')
 
     if (this.keyboard.jump)
