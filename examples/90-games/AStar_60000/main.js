@@ -125,10 +125,9 @@ function NodesToMesh(scene, nodes) {
 /* INIT */
 
 const graphics = new Graphics()
-const _entities = []
+const entities = []
 
-const _previousRAF = null
-let _graph, _mazeGenerator, _mazeIterator, mazeDone
+let graph, mazeGenerator, mazeIterator
 
 graphics.Initialize()
 createMaze()
@@ -136,109 +135,104 @@ createMaze()
 /* FUNCTION */
 
 function createMaze() {
-  _graph = new Graph()
+  graph = new Graph()
 
   for (let x = 0; x < _TILES_X; x++)
     for (let y = 0; y < _TILES_Y; y++) {
       const k = _Key(x, y)
-      _graph.AddNode(
+      graph.AddNode(k, [], {
+        position: new THREE.Vector2(x, y),
+        weight: 0,
+        render: {
+          visited: false,
+          visible: true,
+        }
+      })
+    }
+
+  for (let x = 0; x < _TILES_X; x++)
+    for (let y = 0; y < _TILES_Y; y++) {
+      const k = _Key(x, y)
+
+      for (let xi = -1; xi <= 1; xi++)
+        for (let yi = -1; yi <= 1; yi++) {
+          if (xi == 0 && yi == 0 || (Math.abs(xi) + Math.abs(yi) != 1))
+            continue
+
+          const ki = _Key(x + xi, y + yi)
+
+          if (ki in graph.nodes)
+            graph.nodes[k].potentialEdges.push(ki)
+        }
+    }
+
+  const start = _Key(0, 0)
+  mazeGenerator = new MazeGenerator(graph.nodes)
+  mazeIterator = mazeGenerator.GenerateIteratively(start)
+}
+
+const mazeDone = () => {
+  const nodes = []
+  for (let x = 0; x < _TILES_X; x++)
+    for (let y = 0; y > -_TILES_S; y--) {
+      const k = _Key(x, y)
+      if (k in graph.nodes)
+        continue
+
+      graph.AddNode(
         k, [],
         {
           position: new THREE.Vector2(x, y),
           weight: 0,
           render: {
             visited: false,
-            visible: true,
+            visible: false,
           }
         })
+      nodes.push(k)
     }
 
   for (let x = 0; x < _TILES_X; x++)
-    for (let y = 0; y < _TILES_Y; y++) {
+    for (let y = _TILES_Y - 1; y < _TILES_Y + _TILES_S; y++) {
       const k = _Key(x, y)
+      if (k in graph.nodes)
+        continue
 
-      for (let xi = -1; xi <= 1; xi++)
-        for (let yi = -1; yi <= 1; yi++) {
-          if (xi == 0 && yi == 0 || (Math.abs(xi) + Math.abs(yi) != 1))
-            continue
-
-          const ki = _Key(x + xi, y + yi)
-
-          if (ki in _graph.nodes)
-            _graph.nodes[k].potentialEdges.push(ki)
-
-        }
-
-    }
-
-  const start = _Key(0, 0)
-
-  _mazeGenerator = new MazeGenerator(_graph.nodes)
-  _mazeIterator = _mazeGenerator.GenerateIteratively(start)
-
-  mazeDone = () => {
-    const nodes = []
-    for (let x = 0; x < _TILES_X; x++)
-      for (let y = 0; y > -_TILES_S; y--) {
-        const k = _Key(x, y)
-        if (k in _graph.nodes)
-          continue
-
-        _graph.AddNode(
-          k, [],
-          {
-            position: new THREE.Vector2(x, y),
-            weight: 0,
-            render: {
-              visited: false,
-              visible: false,
-            }
-          })
-        nodes.push(k)
-      }
-
-    for (let x = 0; x < _TILES_X; x++)
-      for (let y = _TILES_Y - 1; y < _TILES_Y + _TILES_S; y++) {
-        const k = _Key(x, y)
-        if (k in _graph.nodes)
-          continue
-
-        _graph.AddNode(
-          k, [],
-          {
-            position: new THREE.Vector2(x, y),
-            weight: 0,
-            render: {
-              visited: false,
-              visible: false,
-            }
-          })
-        nodes.push(k)
-      }
-
-    for (const k of nodes) {
-      const n = _graph.nodes[k]
-      const { x } = n.metadata.position
-      const { y } = n.metadata.position
-
-      for (let xi = -1; xi <= 1; xi++)
-        for (let yi = -1; yi <= 1; yi++) {
-          if (xi == 0 && yi == 0 || (Math.abs(xi) + Math.abs(yi) != 1))
-            continue
-
-          const ki = _Key(x + xi, y + yi)
-
-          if (ki in _graph.nodes)
-            _graph.nodes[k].potentialEdges.push(ki)
-
-          for (const pk of _graph.nodes[k].potentialEdges) {
-            _graph.nodes[k].edges.push(pk)
-            _graph.nodes[pk].edges.push(k)
+      graph.AddNode(
+        k, [],
+        {
+          position: new THREE.Vector2(x, y),
+          weight: 0,
+          render: {
+            visited: false,
+            visible: false,
           }
-        }
+        })
+      nodes.push(k)
     }
-    createEntities()
+
+  for (const k of nodes) {
+    const n = graph.nodes[k]
+    const { x } = n.metadata.position
+    const { y } = n.metadata.position
+
+    for (let xi = -1; xi <= 1; xi++)
+      for (let yi = -1; yi <= 1; yi++) {
+        if (xi == 0 && yi == 0 || (Math.abs(xi) + Math.abs(yi) != 1))
+          continue
+
+        const ki = _Key(x + xi, y + yi)
+
+        if (ki in graph.nodes)
+          graph.nodes[k].potentialEdges.push(ki)
+
+        for (const pk of graph.nodes[k].potentialEdges) {
+          graph.nodes[k].edges.push(pk)
+          graph.nodes[pk].edges.push(k)
+        }
+      }
   }
+  createEntities()
 }
 
 function createEntities() {
@@ -256,7 +250,7 @@ function createEntities() {
   mesh.frustumCulled = false
 
   let index = 0
-  const { nodes } = _graph
+  const { nodes } = graph
 
   function manhattanDistance(n1, n2) {
     const p1 = n1.metadata.position
@@ -271,11 +265,11 @@ function createEntities() {
   const weightFunction = (s, e) => manhattanDistance(nodes[s], nodes[e])
 
   const mgr = new AStarManager(
-    _graph.nodes,
+    graph.nodes,
     heuristicFunction,
     weightFunction)
 
-  _entities.push(mgr)
+  entities.push(mgr)
 
   for (let j = 0; j < _TILES_S / 2; j++)
     for (let i = 0; i < _TILES_X; i++) {
@@ -295,40 +289,28 @@ function createEntities() {
         astar: mgr.CreateClient(start, end),
       }
       const e = new AgentInstanced(params)
-      _entities.push(e)
+      entities.push(e)
     }
 
   camera.position.set(_TILES_X / 2, 7, 20)
-  console.log('AGENTS: ' + _entities.length)
+  console.log('AGENTS: ' + entities.length)
   scene.add(mesh)
-}
-
-function onStep(timeInSeconds) {
-  timeInSeconds = Math.min(timeInSeconds, 1 / 10.0)
-
-  stepMazeGeneration()
-  stepEntities(timeInSeconds)
 }
 
 function stepMazeGeneration() {
   for (let i = 0; i < 100; i++)
-    if (_mazeIterator) {
-      const r = _mazeIterator.next()
+    if (mazeIterator) {
+      const r = mazeIterator.next()
       if (r.done) {
-        _mazeGenerator.Randomize()
+        mazeGenerator.Randomize()
         mazeDone()
-        NodesToMesh(scene, _graph.nodes)
+        NodesToMesh(scene, graph.nodes)
         graphics.dirLight.position.set(_TILES_X * 0.5, 10, _TILES_Y * 0.5)
         graphics.dirLight.target.position.set(_TILES_X * 0.5 - 5, 0, _TILES_Y * 0.5 - 5)
         graphics.dirLight.target.updateWorldMatrix()
-        _mazeIterator = null
+        mazeIterator = null
       }
     }
-}
-
-function stepEntities(timeInSeconds) {
-  for (const e of _entities)
-    e.Step(timeInSeconds)
 }
 
 /* LOOP */
@@ -336,6 +318,7 @@ function stepEntities(timeInSeconds) {
 void function loop() {
   requestAnimationFrame(loop)
   const delta = clock.getDelta()
-  onStep(delta)
+  stepMazeGeneration()
+  for (const e of entities) e.Step(delta)
   graphics.Render(delta)
 }()
