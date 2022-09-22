@@ -9,10 +9,9 @@ npm i
 npx live-server
 ```
 
-- prebaciti format avatara u fbx
-  - pomoću blendera
-  - pomoću actor core
 - obojiti goluma
+- obojiti witchera
+
 - dodati oružje https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character
 - dodati raycast, addSolids, letenje i sve ostalo na novu klasu Player (StateMachine)
 
