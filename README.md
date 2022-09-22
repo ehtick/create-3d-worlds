@@ -9,9 +9,17 @@ npm i
 npx live-server
 ```
 
-- povezati joystick i keyboard da zajedno rade
 - blender tutorijal
 - https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character
+- dodati raycast, addSolids, letenje i sve ostalo na novu klasu Player (StateMachine)
+
+prevesti shadertoy:
+- https://www.shadertoy.com/view/XsVSDz
+- https://www.shadertoy.com/view/4dcyW7
+- https://www.shadertoy.com/view/lsf3RH
+
+- readyplayer.me (ima potencijala)
+  - https://youtu.be/elKAx8OQyrI
 
 ### Physics
 - preraditi prostu 2D fiziku u 3D

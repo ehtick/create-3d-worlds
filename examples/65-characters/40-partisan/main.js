@@ -1,3 +1,4 @@
+import * as THREE from 'three'
 import StateMachine from '/utils/fsm/StateMachine.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
@@ -10,6 +11,7 @@ scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadPartisan()
+
 const stateMachine = new StateMachine({ mesh, animations, dict: partisanAnimations, useJoystick: true })
 
 scene.add(mesh)
@@ -22,7 +24,6 @@ controls.target = mesh.position
 void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
-
   stateMachine.update(delta)
   renderer.render(scene, camera)
 }()
