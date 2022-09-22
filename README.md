@@ -9,9 +9,7 @@ npm i
 npx live-server
 ```
 
-- obojiti goluma
-- obojiti witchera
-
+- srediti obojenog partizana low poly
 - dodati oružje https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character
 - dodati raycast, addSolids, letenje i sve ostalo na novu klasu Player (StateMachine)
 

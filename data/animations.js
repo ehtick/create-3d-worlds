@@ -229,6 +229,16 @@ export const partisanAnimations = {
   death: 'Dying',
 }
 
+export const partisanLowpolyAnimations = {
+  idle: 'Rifle Idle',
+  walk: 'Walk With Rifle',
+  jump: 'Jump Forward',
+  attack: 'Firing Rifle',
+  special: 'Toss Grenade',
+  pain: 'Reaction',
+  death: 'Dying',
+}
+
 export const partisan2Animations = {
   idle: 'Rifle Idle',
   walk: 'Walk With Rifle',
