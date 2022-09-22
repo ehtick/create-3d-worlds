@@ -52,6 +52,11 @@ export const witchAnimations = {
   special: 'Zombie Scream', // Spell Casting
 }
 
+export const witcherAnimations = {
+  idle: 'Idle',
+  walk: 'Walking',
+}
+
 export const ironGiantAnimations = {
   idle: 'Idle',
   walk: 'Walking',
