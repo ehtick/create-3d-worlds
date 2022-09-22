@@ -220,6 +220,7 @@ export const partisanAnimations = {
   jump: 'Jump Forward',
   attack: 'Firing Rifle',
   special: 'Toss Grenade',
+  pain: 'Reaction',
   death: 'Dying',
 }
 
