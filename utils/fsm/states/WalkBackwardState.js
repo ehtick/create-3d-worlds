@@ -14,9 +14,9 @@ export default class WalkBackwardState extends State {
     super.enter(oldState)
 
     const duration = chooseDuration(oldState.name)
-    if (oldAction) this.action.crossFadeFrom(oldAction, duration)
+    if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
     this.action?.play()
-    this.action.setEffectiveTimeScale(-1)
+    this.action?.setEffectiveTimeScale(-1)
   }
 
   update(delta) {
@@ -37,6 +37,6 @@ export default class WalkBackwardState extends State {
   }
 
   exit() {
-    this.action.setEffectiveTimeScale(1)
+    this.action?.setEffectiveTimeScale(1)
   }
 }
