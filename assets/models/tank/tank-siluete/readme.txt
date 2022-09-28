@@ -1,0 +1,1 @@
+https://sketchfab.com/3d-models/xyz-homework-silhouettes-ecb9af5f2ff1410e9226f5f1ba679884
