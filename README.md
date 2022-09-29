@@ -12,7 +12,7 @@ npx live-server
 - optimizovati modele
 - prikazati model soldier
 
-- dodati oružje
+- dodati oružje modelu
   - dodati kroz three.js
   - dodati u blenderu https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character
 - dodati raycast, addSolids, letenje i sve ostalo na novu klasu Player (StateMachine)
