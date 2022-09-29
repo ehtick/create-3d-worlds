@@ -1,0 +1,1 @@
+https://sketchfab.com/3d-models/warrior-female-game-character-low-poly-404cb53601664f2d874cf83968abdbcc
