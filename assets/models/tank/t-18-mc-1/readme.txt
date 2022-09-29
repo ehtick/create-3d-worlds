@@ -1,1 +1,0 @@
-https://sketchfab.com/3d-models/tank-mc-1-5910547589c34072841433fe2a8d5a96
