@@ -1,0 +1,1 @@
+https://sketchfab.com/3d-models/old-military-truck-ef69e7b79ce74353be70191af1fa0ef8
