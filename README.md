@@ -9,9 +9,11 @@ npm i
 npx live-server
 ```
 
-- optimizovati modele
-- prikazati model soldier
+- optimizovati i obojiti modele (stigli smo do kamiona)
 
+modeli:
+- prikazati model soldier
+- probati dim čestice na lokomotivu, voz da prati putanju
 - dodati oružje modelu
   - dodati kroz three.js
   - dodati u blenderu https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character
