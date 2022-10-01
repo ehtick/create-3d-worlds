@@ -1,4 +1,4 @@
-import { camera, scene, renderer, addUIControls } from '/utils/scene.js'
+import { camera, scene, renderer, clock, addUIControls } from '/utils/scene.js'
 import { createHillyTerrain, createWater } from '/utils/ground.js'
 import { createSkySphere } from '/utils/geometry.js'
 import { createSun } from '/utils/light.js'
@@ -40,10 +40,9 @@ mesh.traverse(child => {
 
 void function animate() {
   requestAnimationFrame(animate)
+  const delta = clock.getDelta()
   zeppelin.update()
-
-  propeler?.rotateY(-.1)
-
+  propeler?.rotateY(delta * -1)
   renderer.render(scene, camera)
 }()
 
