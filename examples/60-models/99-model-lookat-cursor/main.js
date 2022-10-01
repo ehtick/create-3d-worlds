@@ -13,17 +13,17 @@ renderer.outputEncoding = THREE.GammaEncoding
 
 scene.add(createGround())
 
-const { mesh: model } = await loadModel({ file: 'character/partisan/model.fbx' })
+const { mesh } = await loadModel({ file: 'character/partisan/model.fbx', fixColors: true })
 const animations = await loadFbxAnimations({ idle: 'Rifle Idle' }, 'character/partisan/')
 
-model.traverse(child => {
+mesh.traverse(child => {
   if (child.name === 'mixamorigNeck') neck = child
   if (child.name === 'mixamorigSpine') spine = child
 })
 
-scene.add(model)
+scene.add(mesh)
 
-const mixer = new THREE.AnimationMixer(model)
+const mixer = new THREE.AnimationMixer(mesh)
 const clip = animations[0]
 // removes spine and neck from animation
 clip.tracks = clip.tracks.filter(t => !t.name.includes('Spine') && !t.name.includes('Neck'))
