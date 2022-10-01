@@ -5,7 +5,7 @@ import { createSun } from '/utils/light.js'
 import Zeppelin from '/utils/classes/aircrafts/Zeppelin.js'
 import { loadModel } from '/utils/loaders.js'
 
-camera.position.set(0, 10, 25)
+camera.position.set(0, 1, 3)
 
 scene.add(createSkySphere({ r: 5000 }))
 const light = createSun({ x: 500, y: 2000, z: 100, far: 5000 })
@@ -19,7 +19,7 @@ const ground = createHillyTerrain({ size: 10000, y: 100, factorX: 5, factorZ: 2.
 scene.add(ground)
 
 const { mesh } = await loadModel({
-  file: 'airship/zeppelin-lowpoly/scene.gltf',
+  file: 'airship/zeppelin-lowpoly/model.fbx',
   size: 10,
   angle: Math.PI,
 })

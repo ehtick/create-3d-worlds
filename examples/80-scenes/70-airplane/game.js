@@ -14,9 +14,10 @@ scene.fog = new THREE.Fog(0xE5C5AB, 1, 5000)
 scene.add(createSkySphere(), createSun(), terrain, trees)
 
 const { mesh } = await loadModel({
-  file: 'aircraft/ww1-biplane/scene.gltf',
+  file: 'aircraft/biplane-sopwith/model.fbx',
   size: 2,
-  angle: Math.PI,
+  angle: -Math.PI * .5,
+  // fixColors: true
 })
 
 const avion = new Airplane({ mesh })
