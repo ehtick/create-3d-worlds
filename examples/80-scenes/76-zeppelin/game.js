@@ -5,7 +5,7 @@ import { createSun } from '/utils/light.js'
 import Zeppelin from '/utils/classes/aircrafts/Zeppelin.js'
 import { loadModel } from '/utils/loaders.js'
 
-camera.position.set(0, 1, 3)
+camera.position.set(0, 12, 24)
 
 scene.add(createSkySphere({ r: 5000 }))
 const light = createSun({ x: 500, y: 2000, z: 100, far: 5000 })
@@ -19,9 +19,8 @@ const ground = createHillyTerrain({ size: 10000, y: 100, factorX: 5, factorZ: 2.
 scene.add(ground)
 
 const { mesh } = await loadModel({
-  file: 'airship/zeppelin-lowpoly/model.fbx',
+  file: 'airship/zeppelin.fbx',
   size: 10,
-  angle: Math.PI,
 })
 
 const zeppelin = new Zeppelin({ mesh })
@@ -33,9 +32,18 @@ zeppelin.addSolids(ground, water)
 
 /* LOOP */
 
+let propeler = null
+
+mesh.traverse(child => {
+  if (child.name === 'propeler') propeler = child
+})
+
 void function animate() {
   requestAnimationFrame(animate)
   zeppelin.update()
+
+  propeler?.rotateY(-.1)
+
   renderer.render(scene, camera)
 }()
 
