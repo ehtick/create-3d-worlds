@@ -41,7 +41,7 @@ function createMixer(mesh, animation) {
 
 /* LOAD */
 
-const { mesh: towerModel } = await loadModel({ file: 'castle/wizard-isle/scene.gltf', size: 15 })
+const { mesh: towerModel } = await loadModel({ file: 'building/castle/castel/scene.gltf', size: 15 })
 scene.add(randomPos(towerModel))
 
 const { mesh, animations } = await loadModel({ file: 'model.fbx', animNames: witchAnimations, prefix: 'character/witch/' })
@@ -51,7 +51,7 @@ for (let i = 0; i < GIRLS; i++) {
   scene.add(randomPos(girl))
 }
 
-const { mesh: houseModel } = await loadModel({ file: 'building/medieval-house/house1-01.obj', mtl: 'building/medieval-house/house1-01.mtl' })
+const { mesh: houseModel } = await loadModel({ file: 'building/house/medieval/house1-01.obj', mtl: 'building/house/medieval/house1-01.mtl' })
 for (let i = 0; i < HOUSES; i++) {
   const house = houseModel.clone()
   scene.add(randomPos(house))
