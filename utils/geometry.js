@@ -92,7 +92,7 @@ export function createWorldSphere({ r = 26, widthSegments = 40, heightSegments =
 
   const { position } = geometry.attributes
   const vertex = new THREE.Vector3()
-  for (let i = 0, l = position.count; i < l; i ++) {
+  for (let i = 0, l = position.count; i < l; i++) {
     vertex.fromBufferAttribute(position, i)
     vertex.x += randFloat(-distort, distort)
     vertex.z += randFloat(-distort, distort)
@@ -149,7 +149,7 @@ export function createWoodBarrel({ r = .4, R = .5, h = 1 } = {}) {
   const pos = geometry.attributes.position
   const rDiff = R - r
   for (let i = 0; i < pos.count; i++) {
-  	v3.fromBufferAttribute(pos, i)
+    v3.fromBufferAttribute(pos, i)
     const y = Math.abs(v3.y)
     const rShift = Math.pow(Math.sqrt(1 - (y * y)), 2) * rDiff + r
     v2.set(v3.x, v3.z).setLength(rShift)
