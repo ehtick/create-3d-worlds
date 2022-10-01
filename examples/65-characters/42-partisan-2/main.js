@@ -9,9 +9,9 @@ scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh } = await loadModel({ file: 'character/partisan2/model.fbx', angle: Math.PI, size: .5, fixColors: true })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/partisan2/', animNames: partisan2Animations, angle: Math.PI, size: .5, fixColors: true })
 // TODO: pucanje da se ponavlja animacija dok je pritisnuto
-const stateMachine = new StateMachine({ mesh, prefix: 'character/partisan2/', dict: partisan2Animations })
+const stateMachine = new StateMachine({ mesh, animations, dict: partisan2Animations })
 
 scene.add(mesh)
 
