@@ -1,5 +1,4 @@
 import { camera, scene, renderer, clock, addUIControls } from '/utils/scene.js'
-import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import { createChaseCamera } from '/utils/helpers.js'
 import { createHillyTerrain, createWater } from '/utils/ground.js'
 import { createSkySphere } from '/utils/geometry.js'
@@ -29,7 +28,6 @@ mesh.position.y = 256
 
 zeppelin.addSolids(ground, water)
 
-const thirdPersonCamera = new ThirdPersonCamera({ camera, mesh, offset: [0, 15, 20], lookAt: [0, 10, 0], speed: 4 })
 const chaseCam = createChaseCamera(mesh)
 
 /* LOOP */
@@ -38,7 +36,6 @@ void function animate() {
   requestAnimationFrame(animate)
   const delta = clock.getDelta()
   zeppelin.update(delta)
-  // thirdPersonCamera.update(delta)
   chaseCam()
   renderer.render(scene, camera)
 }()

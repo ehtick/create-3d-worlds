@@ -9,8 +9,6 @@ npm i
 npx live-server
 ```
 
-- kamera bolje prati zeppelin
-
 modeli:
 - prikazati model soldiera
 - dodati oružje modelu
