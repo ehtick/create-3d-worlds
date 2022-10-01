@@ -23,15 +23,13 @@ const states = {
 }
 
 export default class StateMachine {
-  constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, useJoystick, prefix, speed = 2 }) {
+  constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, useJoystick, speed = 2 }) {
     this.mesh = mesh
     this.keyboard = keyboard
     if (useJoystick) this.joystick = new JoyStick()
     this.actions = {}
 
-    if (dict && prefix)
-      this.loadAnims(dict, prefix)
-    else if (animations?.length)
+    if (animations?.length)
       this.setupMixer(animations, dict)
 
     if (camera) {
@@ -50,11 +48,6 @@ export default class StateMachine {
       this.actions[key] = this.mixer.clipAction(clip)
     }
     if (this.actions?.walk) this.actions.walkBackward = this.actions.walk
-  }
-
-  async loadAnims(dict, prefix) {
-    const animations = await loadFbxAnimations(dict, prefix)
-    this.setupMixer(animations, dict)
   }
 
   setState(name) {
