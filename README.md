@@ -1,6 +1,6 @@
-# Create a 3D game with Three.js
+# Create 3D worlds
 
-Create a 3D game with Three.js.
+Create 3D worlds with Three.js.
 
 ## Start
 
@@ -8,6 +8,8 @@ Create a 3D game with Three.js.
 npm i
 npx live-server
 ```
+
+- srediti putanje modela
 
 modeli:
 - prikazati model soldiera

@@ -9,7 +9,7 @@ createOrbitControls()
 camera.position.set(1, 1, 1)
 camera.lookAt(new THREE.Vector3(0, 0.4, 0))
 
-const barrel = await loadModel({ file: 'item/barrel/scene.gltf', size: 1 })
+const barrel = await loadModel({ file: 'item/barrel/model.fbx', size: 1, fixColors: true })
 
 scene.add(barrel.mesh)
 
