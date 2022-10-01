@@ -7,6 +7,10 @@ export default class Zeppelin extends Aircraft {
   constructor({ maxPitch = .1, speed = .75, minHeight = 30, ...params } = {}) {
     super({ maxPitch, speed, minHeight, ...params })
     this.mesh.rotation.order = 'YZX' // fix controls (default is 'ZYX')
+
+    this.mesh.traverse(child => {
+      if (child.name === 'propeler') this.propeler = child
+    })
   }
 
   up() {
@@ -40,5 +44,10 @@ export default class Zeppelin extends Aircraft {
     const pitchAngle = Math.abs(this.mesh.rotation.x)
     if (this.mesh.rotation.x > 0) this.pitch(-pitchAngle * unpitchFactor)
     if (this.mesh.rotation.x < 0) this.pitch(pitchAngle * unpitchFactor)
+  }
+
+  update(delta) {
+    super.update()
+    if (!this.isTouchingGround()) this.propeler?.rotateY(delta * -1)
   }
 }
