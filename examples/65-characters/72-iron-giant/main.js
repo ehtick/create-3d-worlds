@@ -10,8 +10,8 @@ scene.add(createSun())
 camera.position.set(0, 4, 8)
 scene.add(createFloor({ size: 100 }))
 
-const { mesh } = await loadModel({ file: 'character/iron-giant/model.fbx', angle: Math.PI, size: 5, fixColors: true })
-const stateMachine = new StateMachine({ mesh, prefix: 'character/iron-giant/', dict: ironGiantAnimations })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/iron-giant/', animNames: ironGiantAnimations, angle: Math.PI, size: 5, fixColors: true })
+const stateMachine = new StateMachine({ mesh, animations, dict: ironGiantAnimations })
 
 scene.add(mesh)
 
