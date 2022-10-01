@@ -9,11 +9,8 @@ npm i
 npx live-server
 ```
 
-- optimizovati i obojiti modele (stigli smo do kamiona)
-
 modeli:
-- prikazati model soldier
-- probati dim čestice na lokomotivu, voz da prati putanju
+- prikazati model soldiera
 - dodati oružje modelu
   - dodati kroz three.js
   - dodati u blenderu https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character
@@ -46,6 +43,8 @@ prevesti shadertoy:
 
 ### Scenes & examples
 - mojsije otvara more
+
+- probati dim čestice na lokomotivu, voz da prati putanju
 
 - [ ] Savo / Nemesis / FPS
   - srediti koliziju
