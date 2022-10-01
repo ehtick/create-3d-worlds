@@ -245,6 +245,14 @@ export const partisan2Animations = {
   attack: 'Gunplay',
 }
 
+export const soldierAnimations = {
+  idle: 'Rifle Idle',
+  walk: 'Walk Forward',
+  run: 'Rifle Run',
+  attack: 'Firing Rifle',
+  special: 'Fire Rifle',
+}
+
 export const nudeVictimAnimations = {
   idle: 'Unarmed Idle',
   walk: 'Drunk Run Forward',
