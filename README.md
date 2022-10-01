@@ -9,7 +9,7 @@ npm i
 npx live-server
 ```
 
-- srediti kameru da prati zeppelin
+- kamera bolje prati zeppelin
 
 modeli:
 - prikazati model soldiera

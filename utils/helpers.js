@@ -202,6 +202,8 @@ export function createChaseCamera(mesh, camera = defaultCamera) {
   chaseCam.add(pivot)
   mesh.add(chaseCam)
 
+  camera.position.copy(mesh.position)
+
   return function() {
     const v = new THREE.Vector3()
     camera.lookAt(mesh.position)
