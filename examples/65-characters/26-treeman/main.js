@@ -9,8 +9,8 @@ scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh } = await loadModel({ file: 'character/treeman/model.fbx', angle: Math.PI, fixColors: true })
-const stateMachine = new StateMachine({ mesh, dict: treemanAnimations, prefix: 'character/treeman/' })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/treeman/', animNames: treemanAnimations, angle: Math.PI, fixColors: true })
+const stateMachine = new StateMachine({ mesh, dict: treemanAnimations, animations })
 
 scene.add(mesh)
 
