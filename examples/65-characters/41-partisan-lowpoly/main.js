@@ -1,3 +1,4 @@
+import * as THREE from 'three'
 import StateMachine from '/utils/fsm/StateMachine.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
@@ -18,11 +19,28 @@ scene.add(mesh)
 const controls = createOrbitControls()
 controls.target = mesh.position
 
+const { mesh: weapon } = await loadModel({ file: 'weapon/rifle.fbx', size: .25 })
+scene.add(weapon)
+
+let rightHand
+
+mesh.traverse(child => {
+  if (child.name === 'mixamorigRightHand')
+    rightHand = child
+})
+
 /* LOOP */
+
+const pos = new THREE.Vector3()
 
 void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
   stateMachine.update(delta)
+
+  rightHand.getWorldPosition(pos)
+
+  weapon.position.copy(pos)
+
   renderer.render(scene, camera)
 }()

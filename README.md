@@ -10,12 +10,11 @@ npx live-server
 ```
 
 modeli:
-- prikazati model soldiera
-- dodati oružje modelu
-  - dodati kroz three.js
-  - dodati u blenderu https://blender.stackexchange.com/questions/94829/attaching-gun-to-animated-character
+- dodati partizanu pušku:
+  - postaviti puške između bilo koje tačke A i B
+  - pronaći poziciju šaka
+  - postaviti pušku između šaka
 - dodati raycast, addSolids, letenje i sve ostalo na novu klasu Player (StateMachine)
-
 
 prevesti shadertoy:
 - https://www.shadertoy.com/view/XsVSDz
