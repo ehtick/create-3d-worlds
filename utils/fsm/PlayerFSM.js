@@ -4,7 +4,6 @@ import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { getHeight } from '/utils/helpers.js'
-import { loadFbxAnimations } from '/utils/loaders.js'
 
 import IdleState from './states/IdleState.js'
 import RunState from './states/RunState.js'
@@ -22,7 +21,7 @@ const states = {
   jump: JumpState,
 }
 
-export default class StateMachine {
+export default class PlayerFSM {
   constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, useJoystick, speed = 2 }) {
     this.mesh = mesh
     this.keyboard = keyboard

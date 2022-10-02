@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import StateMachine from '/utils/fsm/StateMachine.js'
+import PlayerFSM from '/utils/fsm/PlayerFSM.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
@@ -12,7 +12,7 @@ scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'model-lowpoly.fbx', angle: Math.PI, animNames: partisanAnimations, prefix: 'character/partisan/', fixColors: true })
 
-const stateMachine = new StateMachine({ mesh, animations, dict: partisanAnimations, useJoystick: true })
+const stateMachine = new PlayerFSM({ mesh, animations, dict: partisanAnimations, useJoystick: true })
 
 scene.add(mesh)
 

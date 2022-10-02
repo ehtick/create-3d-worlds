@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { scene, renderer, camera, clock, createOrbitControls } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 
-import StateMachine from '/utils/fsm/StateMachine.js'
+import PlayerFSM from '/utils/fsm/PlayerFSM.js'
 import { loadSorceress } from '/utils/loaders.js'
 import { sorceressAnimations } from '/data/animations.js'
 import { dirLight, lightFollow } from '/utils/light.js'
@@ -21,7 +21,7 @@ const plane = createGround({ size: 20 })
 scene.add(plane)
 
 const { mesh, animations } = await loadSorceress()
-const player = new StateMachine({ mesh, animations, dict: sorceressAnimations })
+const player = new PlayerFSM({ mesh, animations, dict: sorceressAnimations })
 scene.add(mesh)
 
 const light = dirLight({ target: mesh, mapSize: 1024, area: 10 })

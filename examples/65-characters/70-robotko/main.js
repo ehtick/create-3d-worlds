@@ -1,7 +1,7 @@
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { dirLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
-import StateMachine from '/utils/fsm/StateMachine.js'
+import PlayerFSM from '/utils/fsm/PlayerFSM.js'
 import { createGround } from '/utils/ground.js'
 import { robotkoAnimations } from '/data/animations.js'
 
@@ -11,7 +11,7 @@ camera.position.set(0, 3, 5)
 createOrbitControls()
 
 const { mesh, animations } = await loadModel({ file: 'character/robotko/robot.glb', size: 1.2, angle: Math.PI })
-const stateMachine = new StateMachine({ mesh, animations, dict: robotkoAnimations })
+const stateMachine = new PlayerFSM({ mesh, animations, dict: robotkoAnimations })
 
 scene.add(mesh)
 

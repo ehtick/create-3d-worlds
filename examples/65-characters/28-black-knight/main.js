@@ -1,4 +1,4 @@
-import StateMachine from '/utils/fsm/StateMachine.js'
+import PlayerFSM from '/utils/fsm/PlayerFSM.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
@@ -11,7 +11,7 @@ scene.add(createFloor({ size: 100 }))
 
 const { mesh } = await loadModel({ file: 'character/black-knight/model.fbx', angle: Math.PI, fixColors: true })
 const animations = await loadFbxAnimations(blackKnightAnimations, 'character/black-knight/')
-const stateMachine = new StateMachine({ mesh, animations, dict: blackKnightAnimations })
+const stateMachine = new PlayerFSM({ mesh, animations, dict: blackKnightAnimations })
 
 scene.add(mesh)
 

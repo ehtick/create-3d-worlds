@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { SteeringEntity } from '/libs/ThreeSteer.js'
-import StateMachine from '/utils/fsm/StateMachine.js'
+import PlayerFSM from '/utils/fsm/PlayerFSM.js'
 import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
@@ -23,7 +23,7 @@ scene.add(createFloor({ size: 100 }))
 
 const { mesh: playerMesh, animations } = await loadSorceress()
 
-const player = new StateMachine({ mesh: playerMesh, animations, dict: sorceressAnimations })
+const player = new PlayerFSM({ mesh: playerMesh, animations, dict: sorceressAnimations })
 playerMesh.velocity = new THREE.Vector3() // required by ThreeSteer
 
 scene.add(playerMesh)

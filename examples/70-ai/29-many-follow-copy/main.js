@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { SteeringEntity } from '/libs/ThreeSteer.js'
-import StateMachine from '/utils/fsm/StateMachine.js'
+import PlayerFSM from '/utils/fsm/PlayerFSM.js'
 import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 import { Keyboard } from '/utils/classes/Keyboard.js'
 
@@ -10,7 +10,7 @@ import { ambLight } from '/utils/light.js'
 import { loadSorceress, loadGolem } from '/utils/loaders.js'
 import { sorceressAnimations, golemAnimation } from '/data/animations.js'
 
-/* this example uses StateMachine for AI */
+/* this example uses PlayerFSM for AI */
 
 const { randFloatSpread } = THREE.MathUtils
 
@@ -25,7 +25,7 @@ camera.position.set(0, 10, 15)
 scene.add(createFloor({ size: 100 }))
 
 const { mesh: playerMesh, animations } = await loadSorceress()
-const player = new StateMachine({ mesh: playerMesh, animations, dict: sorceressAnimations })
+const player = new PlayerFSM({ mesh: playerMesh, animations, dict: sorceressAnimations })
 playerMesh.velocity = new THREE.Vector3() // required by ThreeSteer
 
 scene.add(playerMesh)
@@ -34,7 +34,7 @@ const { mesh: followerMesh, animations: followerAnims } = await loadGolem({ angl
 
 for (let i = 0; i < 5; i++) {
   const mesh = SkeletonUtils.clone(followerMesh)
-  const ai = new StateMachine({ mesh, animations: followerAnims, dict: golemAnimation, keyboard: new Keyboard(false) })
+  const ai = new PlayerFSM({ mesh, animations: followerAnims, dict: golemAnimation, keyboard: new Keyboard(false) })
   ai.speed = 0
   const entity = new SteeringEntity(mesh)
   entity.position.set(randFloatSpread(25), 0, randFloatSpread(25))

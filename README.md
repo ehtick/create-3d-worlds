@@ -10,7 +10,7 @@ npx live-server
 ```
 
 modeli:
-- dodati raycast, addSolids, letenje i sve ostalo na novu klasu Player (StateMachine)
+- dodati raycast, addSolids, letenje i sve ostalo na PlayerFSM
 
 prevesti shadertoy:
 - https://www.shadertoy.com/view/XsVSDz

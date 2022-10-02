@@ -1,4 +1,4 @@
-import StateMachine from '/utils/fsm/StateMachine.js'
+import PlayerFSM from '/utils/fsm/PlayerFSM.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/orc/', animNames: orcAnimations, angle: Math.PI, fixColors: true })
-const stateMachine = new StateMachine({ mesh, animations, dict: orcAnimations })
+const stateMachine = new PlayerFSM({ mesh, animations, dict: orcAnimations })
 
 scene.add(mesh)
 

@@ -1,4 +1,4 @@
-import StateMachine from '/utils/fsm/StateMachine.js'
+import PlayerFSM from '/utils/fsm/PlayerFSM.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadLowPoly({ animNames: dwarfAnimation, prefix: 'character/dwarf/' })
-const stateMachine = new StateMachine({ mesh, animations, dict: dwarfAnimation })
+const stateMachine = new PlayerFSM({ mesh, animations, dict: dwarfAnimation })
 
 scene.add(mesh)
 

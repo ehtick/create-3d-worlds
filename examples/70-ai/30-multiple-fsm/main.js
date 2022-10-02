@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import StateMachine from '/utils/fsm/StateMachine.js'
+import PlayerFSM from '/utils/fsm/PlayerFSM.js'
 import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 import { Keyboard } from '/utils/classes/Keyboard.js'
 
@@ -21,7 +21,7 @@ camera.position.set(0, 10, 15)
 scene.add(createFloor({ size: 100 }))
 
 const { mesh: playerMesh, animations } = await loadSorceress()
-const player = new StateMachine({ mesh: playerMesh, animations, dict: sorceressAnimations })
+const player = new PlayerFSM({ mesh: playerMesh, animations, dict: sorceressAnimations })
 scene.add(playerMesh)
 
 const { mesh: followerMesh, animations: followerAnims } = await loadGolem()
@@ -29,7 +29,7 @@ const { mesh: followerMesh, animations: followerAnims } = await loadGolem()
 for (let i = 0; i < 10; i++) {
   const mesh = SkeletonUtils.clone(followerMesh)
   mesh.position.set(randFloatSpread(50), 0, randFloatSpread(50))
-  const ai = new StateMachine({ mesh, animations: followerAnims, dict: golemAnimation, keyboard: new Keyboard(false) })
+  const ai = new PlayerFSM({ mesh, animations: followerAnims, dict: golemAnimation, keyboard: new Keyboard(false) })
   ai.randomizeAction()
   followers.push(ai)
   scene.add(mesh)
