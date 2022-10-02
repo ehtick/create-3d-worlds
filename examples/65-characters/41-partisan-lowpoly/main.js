@@ -20,20 +20,20 @@ const controls = createOrbitControls()
 controls.target = mesh.position
 
 const { mesh: weapon } = await loadModel({ file: 'weapon/rifle.fbx', size: 25, angle: Math.PI })
-weapon.translateY(30)
 scene.add(weapon)
 
 let rightHand, leftHand
 
 mesh.traverse(child => {
-  console.log(child.name)
   if (child.name === 'mixamorigRightHand') rightHand = child
   if (child.name === 'mixamorigLeftHandMiddle1') leftHand = child
 })
 
+rightHand.add(weapon)
+weapon.translateY(34)
+weapon.translateZ(4)
 weapon.rotateX(Math.PI * .25)
 weapon.rotateZ(-Math.PI * .5)
-rightHand.add(weapon)
 
 /* LOOP */
 

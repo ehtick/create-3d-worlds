@@ -10,10 +10,6 @@ npx live-server
 ```
 
 modeli:
-- dodati partizanu pušku:
-  - postaviti puške između bilo koje tačke A i B
-  - pronaći poziciju šaka
-  - postaviti pušku između šaka
 - dodati raycast, addSolids, letenje i sve ostalo na novu klasu Player (StateMachine)
 
 prevesti shadertoy:
