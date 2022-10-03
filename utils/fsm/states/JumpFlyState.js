@@ -1,14 +1,14 @@
 import * as THREE from 'three'
 import State from './State.js'
 
-const maxVelocity = 1
-const jumpTime = 0
+const maxVelocity = .2
 
 export default class JumpFlyState extends State {
   enter(oldState, oldAction) {
     this.speed = oldState.speed
     this.prevState = oldState.name
-    // this.fsm.velocityY = .1
+    this.jumpTime = 0
+
     if (this.action) {
       this.action.setEffectiveTimeScale(1)
       this.action.reset()
@@ -24,23 +24,30 @@ export default class JumpFlyState extends State {
   }
 
   update(delta) {
-    this.forward(delta, this.prevState === 'walkBackward' ? 1 : -1)
+    const { gravity } = this.fsm
 
-    if (this.keyboard.jump && !this.fsm.inAir && this.fsm.velocityY <= maxVelocity) {
-      const velocityStep = this.fsm.gravity * delta * 20
-      this.fsm.velocityY += velocityStep
+    if (this.keyboard.up) this.speed = this.fsm.speed
+    if (this.keyboard.down) this.speed = -this.fsm.speed
+
+    this.forward(delta, this.prevState === 'walkBackward' ? 1 : -1)
+    this.turn(delta)
+
+    /* LOGIC */
+
+    const step = gravity * delta * 10
+
+    if (this.keyboard.jump && this.jumpTime < 10) {
+      this.fsm.velocityY += step
+      this.jumpTime++
 
       if (this.fsm.velocityY > maxVelocity)
         this.fsm.velocityY = maxVelocity
-
-      // jumpTime = velocityY * GRAVITY * delta * 3
-      return
     }
 
-    if (this.action && jumpTime) {
-      const scale = this.action._clip.duration / jumpTime
-      this.action.setEffectiveTimeScale(this.prevState === 'walkBackward' ? -scale : scale)
-    }
+    // if (this.action && this.jumpTime) {
+    //   const scale = this.action._clip.duration / this.jumpTime
+    //   this.action.setEffectiveTimeScale(this.prevState === 'walkBackward' ? -scale : scale)
+    // }
 
     if (!this.fsm.inAir)
       this.fsm.setState(this.prevState || 'idle')

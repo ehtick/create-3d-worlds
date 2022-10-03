@@ -12,12 +12,12 @@ export default class FlyState extends State {
     this.forward(delta)
     this.turn(delta)
 
-    /* FLY LOGIC */
+    /* LOGIC */
 
-    const flyStep = gravity * delta * 10
+    const step = gravity * delta * 10
 
     if (this.keyboard.jump) {
-      this.fsm.velocityY += flyStep
+      this.fsm.velocityY += step
 
       if (this.fsm.velocityY > maxVelocity)
         this.fsm.velocityY = maxVelocity
