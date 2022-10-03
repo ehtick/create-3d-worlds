@@ -30,7 +30,6 @@ export default class PlayerFSM {
     this.size = getHeight(mesh)
     this.solids = []
     this.groundY = 0
-    this.gravity = -speed * 1.5
 
     this.keyboard = keyboard
     if (useJoystick) this.joystick = new JoyStick()
@@ -70,9 +69,6 @@ export default class PlayerFSM {
 
   update(delta = 1 / 60) {
     this.updateGround()
-
-    if (this.mesh.position.y - (this.gravity * delta) >= this.groundY)
-      this.mesh.translateY(this.gravity * delta)
 
     if (this.mesh.position.y < this.groundY)
       this.mesh.position.y = this.groundY
