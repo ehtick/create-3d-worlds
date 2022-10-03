@@ -4,7 +4,7 @@ const maxVelocity = .1
 
 export default class FlyState extends State {
   update(delta) {
-    const { mesh, gravity } = this.fsm
+    const { gravity } = this.fsm
 
     if (this.keyboard.up) this.speed = this.fsm.speed
     if (this.keyboard.down) this.speed = -this.fsm.speed
@@ -16,13 +16,12 @@ export default class FlyState extends State {
 
     const flyStep = gravity * delta * 10
 
-    if (this.keyboard.jump)
+    if (this.keyboard.jump) {
       this.fsm.velocityY += flyStep
 
-    if (this.fsm.velocityY > maxVelocity)
-      this.fsm.velocityY = maxVelocity
-
-    /* END */
+      if (this.fsm.velocityY > maxVelocity)
+        this.fsm.velocityY = maxVelocity
+    }
 
     if (!this.fsm.inAir)
       this.fsm.setState(this.prevState || 'idle')
