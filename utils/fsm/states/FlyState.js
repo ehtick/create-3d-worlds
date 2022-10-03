@@ -1,4 +1,4 @@
-import State from './State.js'
+import State, { GRAVITY } from './State.js'
 import { dir } from '/data/constants.js'
 
 const maxVelocity = .1
@@ -17,7 +17,7 @@ export default class FlyState extends State {
 
     /* LOGIC */
 
-    const step = this.gravity * delta * 10
+    const step = GRAVITY * delta * 10
 
     if (this.keyboard.jump) {
       if (this.fsm.directionBlocked(dir.up))

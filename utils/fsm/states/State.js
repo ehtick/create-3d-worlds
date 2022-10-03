@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { dir, RIGHT_ANGLE } from '/data/constants.js'
 
 const INERTIA = .18
+export const GRAVITY = .9
 
 let velocity = 0
 const minVelocityY = -.1
@@ -13,7 +14,6 @@ export default class State {
     this.action = fsm?.actions[name]
     this.prevState = ''
     this.t = 0
-    this.gravity = .9
   }
 
   get keyboard() {
@@ -67,7 +67,7 @@ export default class State {
 
   updateGravity(delta) {
     const { mesh } = this.fsm // TODO: move velocityY to State
-    const gravityStep = this.gravity * delta
+    const gravityStep = GRAVITY * delta
 
     if (this.fsm.velocityY - gravityStep >= minVelocityY)
       this.fsm.velocityY -= gravityStep

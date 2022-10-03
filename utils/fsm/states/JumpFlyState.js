@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import State from './State.js'
+import State, { GRAVITY } from './State.js'
 
 const maxVelocity = .2
 const maxJumpTime = 10
@@ -32,7 +32,7 @@ export default class JumpFlyState extends State {
 
     /* LOGIC */
 
-    const step = this.gravity * delta * 10
+    const step = GRAVITY * delta * 10
 
     if (this.keyboard.jump && this.jumpTime < maxJumpTime) {
       this.fsm.velocityY += step
