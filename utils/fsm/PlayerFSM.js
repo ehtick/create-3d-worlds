@@ -23,7 +23,7 @@ const states = {
   jump: FlyState,
 }
 
-const minVelocity = -.1
+const minVelocityY = -.1
 
 export default class PlayerFSM {
   constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, useJoystick, speed = 2 }) {
@@ -75,16 +75,13 @@ export default class PlayerFSM {
     this.updateGround()
     const gravityStep = this.gravity * delta
 
-    if (this.velocityY - gravityStep >= minVelocity)
+    if (this.velocityY - gravityStep >= minVelocityY)
       this.velocityY -= gravityStep
 
     this.mesh.translateY(this.velocityY)
 
-    if (!this.inAir) {
+    if (!this.inAir)
       this.mesh.position.y = this.groundY
-      // this.velocityY = 0
-    }
-    console.log(this.velocityY)
   }
 
   update(delta = 1 / 60) {
