@@ -10,8 +10,7 @@ npx live-server
 ```
 
 PlayerFSM:
-- srediti hodanje napred u letu
-- dodati raycast za svako stanje
+- proveravati directionBlocked za svako stanje
 - levo/desno Q/E
 - sve ostalo
 - obrisati klasu Player, ažurirati Avatar

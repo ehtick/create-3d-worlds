@@ -26,10 +26,11 @@ const states = {
 export default class PlayerFSM {
   constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, useJoystick, speed = 2 }) {
     this.mesh = mesh
+    this.speed = speed
     this.size = getHeight(mesh)
-
     this.solids = []
     this.groundY = 0
+    this.flyStep = speed * 1.5
 
     this.keyboard = keyboard
     if (useJoystick) this.joystick = new JoyStick()
@@ -43,7 +44,6 @@ export default class PlayerFSM {
       this.controls = createOrbitControls()
     }
 
-    this.speed = speed
     this.setState('idle')
   }
 
@@ -71,10 +71,8 @@ export default class PlayerFSM {
   update(delta = 1 / 60) {
     this.updateGround()
 
-    if (this.mesh.position.y > this.groundY) {
-      const jumpStep = this.speed * delta * 1.5
-      this.mesh.translateY(-jumpStep)
-    }
+    if (this.mesh.position.y > this.groundY)
+      this.mesh.translateY(-this.flyStep * delta)
 
     this.currentState?.update(delta)
     this.mixer?.update(delta)
