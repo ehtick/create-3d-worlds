@@ -20,8 +20,14 @@ export default class FlyState extends State {
     const step = GRAVITY * delta * 10
 
     if (this.keyboard.space) {
-      if (this.fsm.directionBlocked(dir.up))
-        return this.fsm.setState('fall')
+      if (this.keyboard.up && this.directionBlocked(dir.upForward))
+        this.fsm.setState('fall')
+
+      if (this.keyboard.down && this.directionBlocked(dir.upBackward))
+        this.fsm.setState('fall')
+
+      if (this.directionBlocked(dir.up))
+        this.fsm.setState('fall')
 
       this.fsm.velocityY += step
 
@@ -31,7 +37,7 @@ export default class FlyState extends State {
 
     if (!this.fsm.inAir) {
       mesh.position.y = groundY
-      this.fsm.setState(this.prevState || 'idle')
+      this.fsm.setState('idle')
     }
   }
 }

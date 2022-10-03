@@ -9,7 +9,7 @@ export default class FallState extends State {
 
     if (!this.fsm.inAir) {
       mesh.position.y = groundY
-      this.fsm.setState(this.prevState || 'idle')
+      this.fsm.setState('idle')
     }
   }
 }

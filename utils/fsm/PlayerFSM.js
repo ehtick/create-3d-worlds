@@ -4,7 +4,7 @@ import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
-import { getHeight, directionBlocked } from '/utils/helpers.js'
+import { getHeight } from '/utils/helpers.js'
 
 import IdleState from './states/IdleState.js'
 import RunState from './states/RunState.js'
@@ -100,10 +100,6 @@ export default class PlayerFSM {
 
   addSolids(...newSolids) {
     addSolids(this.solids, ...newSolids)
-  }
-
-  directionBlocked(vector) {
-    return directionBlocked(this.mesh, this.solids, vector)
   }
 
   updateGround() {
