@@ -71,6 +71,11 @@ export default class PlayerFSM {
   update(delta = 1 / 60) {
     this.updateGround()
 
+    if (this.mesh.position.y > this.groundY) {
+      const jumpStep = this.speed * delta * 1.5
+      this.mesh.translateY(-jumpStep)
+    }
+
     this.currentState?.update(delta)
     this.mixer?.update(delta)
 
@@ -107,7 +112,7 @@ export default class PlayerFSM {
   }
 
   onGround() {
-    return this.fsm.mesh.position.y === 0
+    return this.mesh.position.y === 0
   }
 
 }
