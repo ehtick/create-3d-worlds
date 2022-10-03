@@ -15,6 +15,7 @@ camera.position.y = 15
 const floor = createGround({ file: 'terrain/ground.jpg' })
 scene.add(floor)
 const stairs = createSpiralStairs({ radius: 25, stairsInCirle: 50, floorHeight: 15, depth: 5, size: 4 })
+stairs.translateY(-2)
 scene.add(stairs)
 
 const { mesh, animations } = await loadSorceress()

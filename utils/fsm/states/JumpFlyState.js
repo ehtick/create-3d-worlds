@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import State from './State.js'
 
 const maxVelocity = .2
+const maxJumpTime = 10
 
 export default class JumpFlyState extends State {
   enter(oldState, oldAction) {
@@ -36,7 +37,7 @@ export default class JumpFlyState extends State {
 
     const step = gravity * delta * 10
 
-    if (this.keyboard.jump && this.jumpTime < 10) {
+    if (this.keyboard.jump && this.jumpTime < maxJumpTime) {
       this.fsm.velocityY += step
       this.jumpTime++
 
