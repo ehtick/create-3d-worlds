@@ -26,6 +26,9 @@ export default class WalkBackwardState extends State {
     this.turn(delta)
     this.forward(delta, 1)
 
+    if (this.fsm.inAir)
+      this.fsm.setState('fall')
+
     if (this.keyboard.jump)
       this.fsm.setState('jump')
 
