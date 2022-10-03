@@ -21,7 +21,7 @@ const states = {
   walk: WalkState,
   walkBackward: WalkBackwardState,
   run: RunState,
-  jump: JumpFlyState,
+  jump: FlyState,
   fall: FallState,
 }
 

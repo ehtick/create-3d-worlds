@@ -46,6 +46,11 @@ export default class FlyState extends State {
         this.fsm.velocityY = this.maxVelocity
     }
 
+    // if (this.action && this.jumpTime) {
+    //   const scale = this.action._clip.duration / this.jumpTime
+    //   this.action.setEffectiveTimeScale(this.prevState === 'walkBackward' ? -scale : scale)
+    // }
+
     if (this.fsm.inAir && !this.keyboard.space)
       this.fsm.setState('fall')
 
