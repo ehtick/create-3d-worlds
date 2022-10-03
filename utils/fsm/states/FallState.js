@@ -4,7 +4,7 @@ export default class FallState extends State {
   update(delta) {
     const { mesh, groundY } = this.fsm
 
-    this.freeFall(delta)
+    this.freeFly(delta)
     this.turn(delta)
 
     if (this.keyboard.space)

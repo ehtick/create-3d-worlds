@@ -70,7 +70,7 @@ export default class State {
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * sign)
   }
 
-  freeFall(delta) {
+  freeFly(delta) {
     const { mesh } = this.fsm
     const gravityStep = GRAVITY * delta
 

@@ -5,7 +5,7 @@ const maxVelocity = .1
 
 export default class FlyState extends State {
   update(delta) {
-    this.freeFall(delta)
+    this.freeFly(delta)
 
     if (this.keyboard.up) this.speed = this.fsm.speed
     if (this.keyboard.down) this.speed = -this.fsm.speed
