@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { RIGHT_ANGLE } from '/data/constants.js'
+import { dir, RIGHT_ANGLE } from '/data/constants.js'
 
 const INERTIA = .18
 
@@ -45,7 +45,10 @@ export default class State {
     if (!delta || !this.fsm.speed || !this.speed) return
     velocity += this.speed * this.fsm.speed * (this.joystick?.forward || sign)
     velocity *= INERTIA
-    this.fsm.mesh.translateZ(velocity * delta)
+
+    const direction = sign === -1 ? dir.forward : dir.backward
+    if (!this.fsm.directionBlocked(direction))
+      this.fsm.mesh.translateZ(velocity * delta)
   }
 
   turn(delta, sign = -1) {
