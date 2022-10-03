@@ -20,7 +20,7 @@ const states = {
   walk: WalkState,
   walkBackward: WalkBackwardState,
   run: RunState,
-  jump: FlyState,
+  jump: JumpFlyState,
 }
 
 const minVelocityY = -.1
@@ -66,7 +66,6 @@ export default class PlayerFSM {
       oldState.exit()
     }
     const State = states[name] || SpecialState
-    // if (name === 'jump' && !this.actions?.jump) State = JumpFlyState
     this.currentState = new State(this, name)
     this.currentState.enter(oldState, oldState?.action)
   }
@@ -105,10 +104,6 @@ export default class PlayerFSM {
 
   get inAir() {
     return this.mesh.position.y > this.groundY
-  }
-
-  onGround() {
-    return this.mesh.position.y === 0
   }
 
   randomizeAction() { // start at random time

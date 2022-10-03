@@ -1,19 +1,14 @@
 import * as THREE from 'three'
 import State from './State.js'
 
-const GRAVITY = 9
-const maxVelocity = 4.5
-const minVelocity = 1
-const velocityStep = .5
-
-let velocity = 0
-let jumpTime = 0
+const maxVelocity = 1
+const jumpTime = 0
 
 export default class JumpFlyState extends State {
   enter(oldState, oldAction) {
     this.speed = oldState.speed
     this.prevState = oldState.name
-    velocity = minVelocity
+    // this.fsm.velocityY = .1
     if (this.action) {
       this.action.setEffectiveTimeScale(1)
       this.action.reset()
@@ -29,13 +24,16 @@ export default class JumpFlyState extends State {
   }
 
   update(delta) {
-    const { mesh } = this.fsm
-
     this.forward(delta, this.prevState === 'walkBackward' ? 1 : -1)
 
-    if (this.keyboard.jump && this.fsm.onGround() && velocity <= maxVelocity) {
-      velocity += velocityStep
-      jumpTime = velocity * GRAVITY * delta * 3
+    if (this.keyboard.jump && !this.fsm.inAir && this.fsm.velocityY <= maxVelocity) {
+      const velocityStep = this.fsm.gravity * delta * 20
+      this.fsm.velocityY += velocityStep
+
+      if (this.fsm.velocityY > maxVelocity)
+        this.fsm.velocityY = maxVelocity
+
+      // jumpTime = velocityY * GRAVITY * delta * 3
       return
     }
 
@@ -44,13 +42,8 @@ export default class JumpFlyState extends State {
       this.action.setEffectiveTimeScale(this.prevState === 'walkBackward' ? -scale : scale)
     }
 
-    this.fsm.mesh.translateY(velocity * delta)
-    velocity -= GRAVITY * delta
-
-    if (mesh.position.y <= 0) {
-      mesh.position.y = 0
+    if (!this.fsm.inAir)
       this.fsm.setState(this.prevState || 'idle')
-    }
   }
 
   exit() {

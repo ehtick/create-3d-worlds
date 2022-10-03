@@ -10,6 +10,7 @@ npx live-server
 ```
 
 PlayerFSM:
+- fix JumpFlyState
 - proveravati directionBlocked za svako stanje
 - levo/desno Q/E
 - sve ostalo
