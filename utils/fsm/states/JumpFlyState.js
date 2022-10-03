@@ -1,10 +1,13 @@
 import * as THREE from 'three'
 import State, { GRAVITY } from './State.js'
 
-const maxVelocity = .2
-const maxJumpTime = 10
-
 export default class JumpFlyState extends State {
+  constructor(fsm, name) {
+    super(fsm, name)
+    this.maxVelocity = .15
+    this.maxJumpTime = 15
+  }
+
   enter(oldState, oldAction) {
     this.speed = oldState.speed
     this.prevState = oldState.name
@@ -25,21 +28,22 @@ export default class JumpFlyState extends State {
   }
 
   update(delta) {
+    this.freeFly(delta)
+
     if (this.keyboard.up) this.speed = this.fsm.speed
+    if (this.keyboard.down) this.speed = -this.fsm.speed
 
-    this.forward(delta, this.prevState === 'walkBackward' ? 1 : -1)
     this.turn(delta)
+    this.forward(delta)
 
-    /* LOGIC */
+    const flyStep = GRAVITY * delta * 10
 
-    const step = GRAVITY * delta * 10
-
-    if (this.keyboard.space && this.jumpTime < maxJumpTime) {
-      this.fsm.velocityY += step
+    if (this.keyboard.space && this.jumpTime < this.maxJumpTime) {
+      this.fsm.velocityY += flyStep
       this.jumpTime++
 
-      if (this.fsm.velocityY > maxVelocity)
-        this.fsm.velocityY = maxVelocity
+      if (this.fsm.velocityY > this.maxVelocity)
+        this.fsm.velocityY = this.maxVelocity
     }
 
     // if (this.action && this.jumpTime) {
@@ -47,8 +51,11 @@ export default class JumpFlyState extends State {
     //   this.action.setEffectiveTimeScale(this.prevState === 'walkBackward' ? -scale : scale)
     // }
 
+    if (this.fsm.inAir && !this.keyboard.space)
+      this.fsm.setState('fall')
+
     if (!this.fsm.inAir)
-      this.fsm.setState(this.prevState || 'idle')
+      this.fsm.setState('idle')
   }
 
   exit() {

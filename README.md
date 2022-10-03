@@ -10,12 +10,12 @@ npx live-server
 ```
 
 PlayerFSM:
-- dodati FallState
-- proveriti directionBlocked za svako stanje
-- kamera da ne zumira
+- proveriti granice karaktera i pravce zraka
+- BUG: posle letenja (padanja) u idle meša akcije, ne zaustavlja staru
 - proveriti JumpFlyState with animation
 - FlyState extends JumpFlyState
 - dodati levo/desno na Q/E
+- napraviti izbor između Fly, Jump i JumpFly
 - obrisati klasu Player, ažurirati Avatar
 - obrisati actions.js
 

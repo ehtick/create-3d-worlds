@@ -21,7 +21,7 @@ const states = {
   walk: WalkState,
   walkBackward: WalkBackwardState,
   run: RunState,
-  jump: FlyState,
+  jump: JumpFlyState,
   fall: FallState,
 }
 
@@ -33,6 +33,7 @@ export default class PlayerFSM {
     this.solids = []
     this.groundY = 0
     this.velocityY = 0
+    this.fly = false
 
     this.keyboard = keyboard
     if (useJoystick) this.joystick = new JoyStick()
