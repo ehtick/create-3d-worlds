@@ -14,13 +14,15 @@ import SpecialState from './states/SpecialState.js'
 import JumpState from './states/JumpState.js'
 import JumpFlyState from './states/JumpFlyState.js'
 import FlyState from './states/FlyState.js'
+import FallState from './states/FallState.js'
 
 const states = {
   idle: IdleState,
   walk: WalkState,
   walkBackward: WalkBackwardState,
   run: RunState,
-  jump: JumpFlyState,
+  jump: FlyState,
+  fall: FallState,
 }
 
 const minVelocityY = -.1

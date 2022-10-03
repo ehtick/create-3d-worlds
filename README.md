@@ -10,6 +10,7 @@ npx live-server
 ```
 
 PlayerFSM:
+- dodati FallState
 - proveriti directionBlocked za svako stanje
 - kamera da ne zumira
 - proveriti JumpFlyState with animation
