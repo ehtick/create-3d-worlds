@@ -30,7 +30,7 @@ export default class PlayerFSM {
     this.size = getHeight(mesh)
     this.solids = []
     this.groundY = 0
-    this.flyStep = speed * 1.5
+    this.gravity = -speed * 1.5
 
     this.keyboard = keyboard
     if (useJoystick) this.joystick = new JoyStick()
@@ -71,8 +71,11 @@ export default class PlayerFSM {
   update(delta = 1 / 60) {
     this.updateGround()
 
-    if (this.mesh.position.y > this.groundY)
-      this.mesh.translateY(-this.flyStep * delta)
+    if (this.mesh.position.y - (this.gravity * delta) >= this.groundY)
+      this.mesh.translateY(this.gravity * delta)
+
+    if (this.mesh.position.y < this.groundY)
+      this.mesh.position.y = this.groundY
 
     this.currentState?.update(delta)
     this.mixer?.update(delta)
@@ -88,6 +91,14 @@ export default class PlayerFSM {
 
   get action() {
     return this.currentState.action
+  }
+
+  get inAir() {
+    return this.mesh.position.y > this.groundY
+  }
+
+  onGround() {
+    return this.mesh.position.y === 0
   }
 
   randomizeAction() { // start at random time
@@ -108,9 +119,4 @@ export default class PlayerFSM {
     const { mesh, solids } = this
     this.groundY = raycastGround({ mesh, solids }, { y: this.size * 2 })
   }
-
-  onGround() {
-    return this.mesh.position.y === 0
-  }
-
 }
