@@ -4,7 +4,6 @@ export default class JumpState extends SpecialState {
 
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
-    this.speed = oldState.speed
     if (oldState.name === 'walkBackward') this.reverseAction()
   }
 

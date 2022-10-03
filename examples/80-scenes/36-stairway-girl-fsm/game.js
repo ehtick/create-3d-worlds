@@ -22,7 +22,7 @@ const player = new Player({ mesh, animations, dict: sorceressAnimations, camera,
 
 scene.add(mesh)
 
-// player.addSolids(floor, stairs)
+player.addSolids(floor, stairs)
 
 /* LOOP */
 

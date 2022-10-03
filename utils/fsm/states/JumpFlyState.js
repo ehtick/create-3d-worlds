@@ -33,7 +33,7 @@ export default class JumpFlyState extends State {
 
     this.forward(delta, this.prevState === 'walkBackward' ? 1 : -1)
 
-    if (this.keyboard.jump && this.onGround() && velocity <= maxVelocity) {
+    if (this.keyboard.jump && this.fsm.onGround() && velocity <= maxVelocity) {
       velocity += velocityStep
       jumpTime = velocity * GRAVITY * delta * 3
       return

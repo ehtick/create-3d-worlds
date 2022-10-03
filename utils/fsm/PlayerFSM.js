@@ -3,7 +3,8 @@ import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
-import { getHeight } from '/utils/helpers.js'
+import { addSolids, raycastGround } from '/utils/classes/actions.js'
+import { getHeight, directionBlocked } from '/utils/helpers.js'
 
 import IdleState from './states/IdleState.js'
 import RunState from './states/RunState.js'
@@ -25,6 +26,11 @@ const states = {
 export default class PlayerFSM {
   constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, useJoystick, speed = 2 }) {
     this.mesh = mesh
+    this.size = getHeight(mesh)
+
+    this.solids = []
+    this.groundY = 0
+
     this.keyboard = keyboard
     if (useJoystick) this.joystick = new JoyStick()
     this.actions = {}
@@ -56,21 +62,22 @@ export default class PlayerFSM {
       if (oldState.name == name) return
       oldState.exit()
     }
-    let State = states[name] || SpecialState
+    const State = states[name] || SpecialState
     // if (name === 'jump' && !this.actions?.jump) State = JumpFlyState
     this.currentState = new State(this, name)
     this.currentState.enter(oldState, oldState?.action)
   }
 
   update(delta = 1 / 60) {
+    this.updateGround()
+
     this.currentState?.update(delta)
     this.mixer?.update(delta)
 
     if (this.thirdPersonCamera)
-      if (this.keyboard.pressed.mouse) {
-        const height = getHeight(this.mesh)
-        this.controls.target = this.mesh.position.clone().add(new THREE.Vector3(0, height, 0))
-      } else {
+      if (this.keyboard.pressed.mouse)
+        this.controls.target = this.mesh.position.clone().add(new THREE.Vector3(0, this.size, 0))
+      else {
         this.thirdPersonCamera.updateCurrentPosition()
         this.thirdPersonCamera.update(delta)
       }
@@ -80,7 +87,27 @@ export default class PlayerFSM {
     return this.currentState.action
   }
 
-  randomizeAction() {
+  randomizeAction() { // start at random time
     this.action.time = Math.random() * this.action.getClip().duration
   }
+
+  /* RAYCAST */
+
+  addSolids(...newSolids) {
+    addSolids(this.solids, ...newSolids)
+  }
+
+  directionBlocked(vector) {
+    return directionBlocked(this.mesh, this.solids, vector)
+  }
+
+  updateGround() {
+    const { mesh, solids } = this
+    this.groundY = raycastGround({ mesh, solids }, { y: this.size * 2 })
+  }
+
+  onGround() {
+    return this.fsm.mesh.position.y === 0
+  }
+
 }

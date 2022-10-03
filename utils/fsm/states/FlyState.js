@@ -1,10 +1,6 @@
 import State from './State.js'
 
 export default class FlyState extends State {
-  onGround() {
-    return this.fsm.mesh.position.y === 0
-  }
-
   update(delta) {
     const { mesh } = this.fsm
 
@@ -14,8 +10,8 @@ export default class FlyState extends State {
     this.forward(delta)
     this.turn(delta)
 
-    if (mesh.position.y <= 0) {
-      mesh.position.y = 0
+    if (mesh.position.y <= this.fsm.groundY) {
+      mesh.position.y = this.fsm.groundY
       this.fsm.setState(this.prevState || 'idle')
     }
   }

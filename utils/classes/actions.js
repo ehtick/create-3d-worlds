@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { dir } from '/data/constants.js'
 
 /**
    * Add solid objects for player to collide
@@ -42,8 +43,8 @@ export const raycastGround = ({ mesh, solids }, { x = 0, y = 0, z = 0 } = {}) =>
   pos.x += x // adjustments
   pos.y += y
   pos.z += z
-  const rayDown = new THREE.Raycaster(pos, new THREE.Vector3(0, -1, 0))
-  const intersects = rayDown.intersectObjects(solids)
+  const raycaster = new THREE.Raycaster(pos, dir.down)
+  const intersects = raycaster.intersectObjects(solids)
 
   const groundY = intersects[0] ? intersects[0].point.y : 0
   return groundY

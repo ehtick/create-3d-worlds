@@ -26,13 +26,10 @@ export default class State {
     return this.fsm.actions
   }
 
-  onGround() {
-    return this.fsm.mesh.position.y === 0
-  }
-
   enter(oldState) {
     this.prevState = oldState?.name
     this.oldSpeed = oldState?.speed || 0
+    this.speed = oldState?.speed
     if (this.action) this.action.enabled = true
   }
 

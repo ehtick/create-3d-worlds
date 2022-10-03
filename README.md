@@ -10,11 +10,12 @@ npx live-server
 ```
 
 PlayerFSM:
-- dodati raycast (addSolids) 
-- letenje 
+- srediti hodanje napred u letu
+- dodati raycast za svako stanje
 - levo/desno Q/E
-- 3rd kameru
 - sve ostalo
+- obrisati klasu Player, ažurirati Avatar
+- obrisati actions.js
 
 prevesti shadertoy:
 - https://www.shadertoy.com/view/XsVSDz
