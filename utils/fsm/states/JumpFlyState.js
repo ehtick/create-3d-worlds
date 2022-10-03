@@ -28,7 +28,6 @@ export default class JumpFlyState extends State {
     const { gravity } = this.fsm
 
     if (this.keyboard.up) this.speed = this.fsm.speed
-    if (this.keyboard.down) this.speed = -this.fsm.speed
 
     this.forward(delta, this.prevState === 'walkBackward' ? 1 : -1)
     this.turn(delta)

@@ -11,6 +11,7 @@ npx live-server
 
 PlayerFSM:
 - proveriti directionBlocked za svako stanje
+- kamera da ne zumira
 - proveriti JumpFlyState with animation
 - FlyState extends JumpFlyState
 - dodati levo/desno na Q/E
