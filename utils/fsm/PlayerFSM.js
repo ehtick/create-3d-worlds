@@ -25,8 +25,6 @@ const states = {
   fall: FallState,
 }
 
-const minVelocityY = -.1
-
 export default class PlayerFSM {
   constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, useJoystick, speed = 2 }) {
     this.mesh = mesh
@@ -72,21 +70,8 @@ export default class PlayerFSM {
     this.currentState.enter(oldState, oldState?.action)
   }
 
-  updateGravity(delta) {
-    this.updateGround()
-    const gravityStep = this.gravity * delta
-
-    if (this.velocityY - gravityStep >= minVelocityY)
-      this.velocityY -= gravityStep
-
-    this.mesh.translateY(this.velocityY)
-
-    if (!this.inAir)
-      this.mesh.position.y = this.groundY
-  }
-
   update(delta = 1 / 60) {
-    this.updateGravity(delta)
+    this.updateGround()
 
     this.currentState?.update(delta)
     this.mixer?.update(delta)

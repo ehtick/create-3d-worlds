@@ -1,8 +1,14 @@
 import State from './State.js'
 
 export default class FallState extends State {
-  update() {
-    if (!this.fsm.inAir)
-      this.fsm.setState('idle')
+  update(delta) {
+    const { mesh, groundY } = this.fsm
+
+    this.updateGravity(delta)
+
+    if (!this.fsm.inAir) {
+      mesh.position.y = groundY
+      this.fsm.setState(this.prevState || 'idle')
+    }
   }
 }

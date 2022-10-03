@@ -4,6 +4,7 @@ import { dir, RIGHT_ANGLE } from '/data/constants.js'
 const INERTIA = .18
 
 let velocity = 0
+const minVelocityY = -.1
 
 export default class State {
   constructor(fsm, name) {
@@ -61,6 +62,16 @@ export default class State {
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -sign)
     if (this.keyboard.right)
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * sign)
+  }
+
+  updateGravity(delta) {
+    const { mesh, gravity } = this.fsm // TODO: move gravity, velocityY to State
+    const gravityStep = gravity * delta
+
+    if (this.fsm.velocityY - gravityStep >= minVelocityY)
+      this.fsm.velocityY -= gravityStep
+
+    mesh.translateY(this.fsm.velocityY)
   }
 
   syncTime() {
