@@ -29,7 +29,7 @@ export default class WalkBackwardState extends State {
     if (this.fsm.inAir)
       this.fsm.setState('fall')
 
-    if (this.keyboard.jump)
+    if (this.keyboard.space)
       this.fsm.setState('jump')
 
     if (this.keyboard.pressed.Enter)

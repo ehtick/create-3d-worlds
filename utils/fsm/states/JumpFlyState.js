@@ -34,7 +34,7 @@ export default class JumpFlyState extends State {
 
     const step = GRAVITY * delta * 10
 
-    if (this.keyboard.jump && this.jumpTime < maxJumpTime) {
+    if (this.keyboard.space && this.jumpTime < maxJumpTime) {
       this.fsm.velocityY += step
       this.jumpTime++
 

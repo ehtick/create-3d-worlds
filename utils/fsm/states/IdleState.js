@@ -42,7 +42,7 @@ export default class IdleState extends State {
     if (this.keyboard.down || this.joystick?.forward > 0)
       this.fsm.setState('walkBackward')
 
-    if (this.keyboard.jump)
+    if (this.keyboard.space)
       this.fsm.setState('jump')
 
     if (this.keyboard.pressed.Enter)

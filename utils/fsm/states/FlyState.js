@@ -19,7 +19,7 @@ export default class FlyState extends State {
 
     const step = GRAVITY * delta * 10
 
-    if (this.keyboard.jump) {
+    if (this.keyboard.space) {
       if (this.fsm.directionBlocked(dir.up))
         return this.fsm.setState('fall')
 

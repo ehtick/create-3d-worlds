@@ -97,7 +97,7 @@ class Keyboard {
     return this.capsLock
   }
 
-  get jump() {
+  get space() {
     return this.pressed.Space
   }
 
