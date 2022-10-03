@@ -14,6 +14,6 @@ export default class JumpState extends SpecialState {
 
   exit() {
     this.speed *= .75
-    this.action.setEffectiveTimeScale(1)
+    this.action?.setEffectiveTimeScale(1)
   }
 }

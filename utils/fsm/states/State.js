@@ -26,6 +26,10 @@ export default class State {
     return this.fsm.actions
   }
 
+  onGround() {
+    return this.fsm.mesh.position.y === 0
+  }
+
   enter(oldState) {
     this.prevState = oldState?.name
     this.oldSpeed = oldState?.speed || 0
@@ -41,14 +45,14 @@ export default class State {
   /* COMMON ACTIONS */
 
   forward(delta, sign = -1) {
-    if (!this.fsm.speed || !this.speed) return
+    if (!delta || !this.fsm.speed || !this.speed) return
     velocity += this.speed * this.fsm.speed * (this.joystick?.forward || sign)
     velocity *= INERTIA
     this.fsm.mesh.translateZ(velocity * delta)
   }
 
   turn(delta, sign = -1) {
-    if (!this.fsm.speed) return
+    if (!delta || !this.fsm.speed) return
     const angle = RIGHT_ANGLE * delta // 90 degrees per second
     if (this.joystick)
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -this.joystick.turn)

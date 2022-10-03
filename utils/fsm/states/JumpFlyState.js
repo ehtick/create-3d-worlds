@@ -28,10 +28,6 @@ export default class JumpFlyState extends State {
       this.actions[this.prevState]?.setEffectiveTimeScale(this.prevState === 'walkBackward' ? -1 : 1)
   }
 
-  onGround() {
-    return this.fsm.mesh.position.y === 0
-  }
-
   update(delta) {
     const { mesh } = this.fsm
 

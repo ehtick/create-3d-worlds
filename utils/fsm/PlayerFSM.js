@@ -12,13 +12,14 @@ import WalkBackwardState from './states/WalkBackwardState.js'
 import SpecialState from './states/SpecialState.js'
 import JumpState from './states/JumpState.js'
 import JumpFlyState from './states/JumpFlyState.js'
+import FlyState from './states/FlyState.js'
 
 const states = {
   idle: IdleState,
   walk: WalkState,
   walkBackward: WalkBackwardState,
   run: RunState,
-  jump: JumpState,
+  jump: FlyState,
 }
 
 export default class PlayerFSM {
@@ -56,7 +57,7 @@ export default class PlayerFSM {
       oldState.exit()
     }
     let State = states[name] || SpecialState
-    if (name === 'jump' && !this.actions?.jump) State = JumpFlyState
+    // if (name === 'jump' && !this.actions?.jump) State = JumpFlyState
     this.currentState = new State(this, name)
     this.currentState.enter(oldState, oldState?.action)
   }
