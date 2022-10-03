@@ -5,7 +5,7 @@ const maxVelocity = .1
 
 export default class FlyState extends State {
   update(delta) {
-    const { gravity, mesh, groundY } = this.fsm
+    const { mesh, groundY } = this.fsm
 
     this.updateGravity(delta)
 
@@ -17,7 +17,7 @@ export default class FlyState extends State {
 
     /* LOGIC */
 
-    const step = gravity * delta * 10
+    const step = this.gravity * delta * 10
 
     if (this.keyboard.jump) {
       if (this.fsm.directionBlocked(dir.up))

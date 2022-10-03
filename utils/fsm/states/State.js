@@ -13,6 +13,7 @@ export default class State {
     this.action = fsm?.actions[name]
     this.prevState = ''
     this.t = 0
+    this.gravity = .9
   }
 
   get keyboard() {
@@ -65,8 +66,8 @@ export default class State {
   }
 
   updateGravity(delta) {
-    const { mesh, gravity } = this.fsm // TODO: move gravity, velocityY to State
-    const gravityStep = gravity * delta
+    const { mesh } = this.fsm // TODO: move velocityY to State
+    const gravityStep = this.gravity * delta
 
     if (this.fsm.velocityY - gravityStep >= minVelocityY)
       this.fsm.velocityY -= gravityStep

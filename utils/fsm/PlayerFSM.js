@@ -32,7 +32,6 @@ export default class PlayerFSM {
     this.size = getHeight(mesh)
     this.solids = []
     this.groundY = 0
-    this.gravity = .9
     this.velocityY = 0
 
     this.keyboard = keyboard
