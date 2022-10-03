@@ -9,16 +9,16 @@ npm i
 npx live-server
 ```
 
-modeli:
-- dodati raycast, addSolids, letenje i sve ostalo na PlayerFSM
+PlayerFSM:
+- dodati raycast (addSolids) 
+- letenje 
+- levo/desno Q/E
+- 3rd kameru
+- sve ostalo
 
 prevesti shadertoy:
 - https://www.shadertoy.com/view/XsVSDz
-- https://www.shadertoy.com/view/4dcyW7
 - https://www.shadertoy.com/view/lsf3RH
-
-- readyplayer.me (ima potencijala)
-  - https://youtu.be/elKAx8OQyrI
 
 ### Physics
 - preraditi prostu 2D fiziku u 3D
