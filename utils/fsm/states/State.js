@@ -70,12 +70,15 @@ export default class State {
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * sign)
   }
 
-  updateGravity(delta) {
-    const { mesh } = this.fsm // TODO: move velocityY to State
+  freeFall(delta) {
+    const { mesh } = this.fsm
     const gravityStep = GRAVITY * delta
 
     if (this.fsm.velocityY - gravityStep >= minVelocityY)
       this.fsm.velocityY -= gravityStep
+
+    if (this.fsm.velocityY > 0 && this.directionBlocked(dir.up))
+      return
 
     mesh.translateY(this.fsm.velocityY)
   }
