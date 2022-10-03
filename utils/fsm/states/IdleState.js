@@ -28,7 +28,7 @@ export default class IdleState extends State {
   update(delta) {
     super.update(delta)
     const oldSpeed = this.prevState === 'walkBackward' ? -this.oldSpeed : this.oldSpeed
-    this.speed = lerp(oldSpeed, 0, this.t)
+    this.speed = lerp(oldSpeed * .5, 0, this.t)
 
     this.turn(delta)
     this.forward(delta)

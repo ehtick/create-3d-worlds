@@ -7,6 +7,8 @@ export default class FlyState extends State {
     const jumpStep = this.fsm.speed * delta * 1.5
     mesh.translateY(this.keyboard.jump ? jumpStep : -jumpStep)
 
+    if (this.keyboard.up) this.speed = this.fsm.speed
+
     this.forward(delta)
     this.turn(delta)
 
