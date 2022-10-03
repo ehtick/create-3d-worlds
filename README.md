@@ -10,10 +10,11 @@ npx live-server
 ```
 
 PlayerFSM:
-- proveriti granice karaktera i pravce zraka
+- ukloniti this.fly sa PlayerFSM?
+- BUG: srediti pravce zrakova, probija stepenice u skoku pod uglom
+  - proveriti granice karaktera i pravce zraka
 - BUG: posle letenja (padanja) u idle meša akcije, ne zaustavlja staru
 - proveriti JumpFlyState with animation
-- FlyState extends JumpFlyState
 - dodati levo/desno na Q/E
 - napraviti izbor između Fly, Jump i JumpFly
 - obrisati klasu Player, ažurirati Avatar

@@ -59,6 +59,8 @@ export default class PlayerFSM {
     if (this.actions?.walk) this.actions.walkBackward = this.actions.walk
   }
 
+  /* STATE MACHINE */
+
   setState(name) {
     const oldState = this.currentState
     if (oldState) {
@@ -72,18 +74,13 @@ export default class PlayerFSM {
 
   update(delta = 1 / 60) {
     this.updateGround()
+    this.updateCamera(delta)
 
-    this.currentState?.update(delta)
+    this.currentState.update(delta)
     this.mixer?.update(delta)
-
-    if (this.thirdPersonCamera)
-      if (this.keyboard.pressed.mouse)
-        this.controls.target = this.mesh.position.clone().add(new THREE.Vector3(0, this.size, 0))
-      else {
-        this.thirdPersonCamera.updateCurrentPosition()
-        this.thirdPersonCamera.update(delta)
-      }
   }
+
+  /* GETTERS */
 
   get action() {
     return this.currentState.action
@@ -93,11 +90,11 @@ export default class PlayerFSM {
     return this.mesh.position.y > this.groundY
   }
 
+  /* OTHER */
+
   randomizeAction() { // start at random time
     this.action.time = Math.random() * this.action.getClip().duration
   }
-
-  /* RAYCAST */
 
   addSolids(...newSolids) {
     addSolids(this.solids, ...newSolids)
@@ -106,5 +103,15 @@ export default class PlayerFSM {
   updateGround() {
     const { mesh, solids } = this
     this.groundY = raycastGround({ mesh, solids }, { y: this.size * 2 })
+  }
+
+  updateCamera(delta) {
+    if (this.thirdPersonCamera)
+      if (this.keyboard.pressed.mouse)
+        this.controls.target = this.mesh.position.clone().add(new THREE.Vector3(0, this.size, 0))
+      else {
+        this.thirdPersonCamera.updateCurrentPosition()
+        this.thirdPersonCamera.update(delta)
+      }
   }
 }

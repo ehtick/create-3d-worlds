@@ -7,6 +7,7 @@ export default class FallState extends State {
     this.freeFly(delta)
     this.turn(delta)
 
+    console.log(this.prevState)
     if (this.keyboard.space && this.fsm.fly)
       this.fsm.setState('jump')
 
