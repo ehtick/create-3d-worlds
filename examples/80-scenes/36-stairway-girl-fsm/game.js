@@ -1,3 +1,4 @@
+import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSpiralStairs } from '/utils/geometry/towers.js'
 import { createGround } from '/utils/ground.js'

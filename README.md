@@ -10,6 +10,7 @@ npx live-server
 ```
 
 PlayerFSM:
+- BUG: noge tonu u stepenice
 - BUG: srediti pravce zrakova, probija stepenice u skoku pod uglom
   - proveriti granice karaktera i pravce zraka
 - BUG: posle padanja (sa koračanjem) u walk kreće ispočetka korak (idle resetuje akciju?)
@@ -108,12 +109,19 @@ Tenk (Vozilo)
   - https://ski-mountain-vr.herokuapp.com/
 - dodati preloader (ima u 3D-RPG-Game-With-THREE.js)
 
-## Documentation
+## Helpers
 
-Raycaster arrow helper:
+Raycaster helper:
 
 ```
 scene.add(new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 300))
+```
+
+Box helper:
+
+```
+const box = new THREE.BoxHelper(mesh, 0xffff00)
+scene.add(box)
 ```
 
 Axes helper (X axis is red, Y is green, Z is blue):
@@ -121,6 +129,8 @@ Axes helper (X axis is red, Y is green, Z is blue):
 ```
 scene.add(new THREE.AxesHelper(50))
 ```
+
+## Documentation
 
 All libraries in `/libs` folder are updated manually to support ES6 export.
 

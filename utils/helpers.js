@@ -151,7 +151,7 @@ export const directionBlocked = (mesh, solids, vector) => {
   const direction = vec.applyQuaternion(mesh.quaternion)
   const bodyCenter = mesh.position.clone()
   const height = getHeight(mesh)
-  bodyCenter.y += height
+  bodyCenter.y += height * .5
   const raycaster = new THREE.Raycaster(bodyCenter, direction, 0, height)
   const intersections = raycaster.intersectObjects(solids, true)
   return intersections.length > 0
