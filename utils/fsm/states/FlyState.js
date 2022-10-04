@@ -23,12 +23,8 @@ export default class FlyState extends State {
       if (oldState.name === 'walkBackward') this.reverseAction()
     }
 
-    const prevAction = this.actions[this.prevState]
-
-    if (!this.action && prevAction) {
-      this.actions[this.name] = prevAction
-      prevAction?.setEffectiveTimeScale(this.prevState === 'walkBackward' ? -1 : 1)
-    }
+    if (!this.action)
+      this.actions[this.prevState]?.setEffectiveTimeScale(this.prevState === 'walkBackward' ? -1 : 1)
   }
 
   update(delta) {
@@ -55,6 +51,7 @@ export default class FlyState extends State {
     //   this.action.setEffectiveTimeScale(this.prevState === 'walkBackward' ? -scale : scale)
     // }
 
-    if (!this.fsm.inAir) this.fsm.setState('idle')
+    // ako ne vrati na prevState brlja aktivne animacije
+    if (!this.fsm.inAir) this.fsm.setState(this.prevState || 'idle')
   }
 }
