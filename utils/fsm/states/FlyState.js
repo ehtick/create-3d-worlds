@@ -46,12 +46,7 @@ export default class FlyState extends State {
         this.fsm.velocityY = this.maxVelocity
     }
 
-    // if (this.action && this.jumpTime) {
-    //   const scale = this.action._clip.duration / this.jumpTime
-    //   this.action.setEffectiveTimeScale(this.prevState === 'walkBackward' ? -scale : scale)
-    // }
-
-    // bez prevState brlja aktivne animacije
-    if (!this.fsm.inAir) this.fsm.setState(this.prevState || 'idle')
+    // bez prevState meša aktivne animacije
+    if (!this.fsm.inAir) this.fsm.setState(this.prevState)
   }
 }

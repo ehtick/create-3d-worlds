@@ -3,14 +3,14 @@ import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scen
 import { createSun } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 import { loadModel } from '/utils/loaders.js'
-import { forestMonsterAnimations } from '/data/animations.js'
+import { forestTrollAnimations } from '/data/animations.js'
 
 scene.add(createSun())
 
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'character/forest-monster/scene.gltf', angle: Math.PI })
-const stateMachine = new PlayerFSM({ mesh, animations, dict: forestMonsterAnimations, camera })
+const stateMachine = new PlayerFSM({ mesh, animations, dict: forestTrollAnimations, camera })
 
 scene.add(mesh)
 

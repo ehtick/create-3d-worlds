@@ -21,7 +21,7 @@ export const dupecheshAnimations = {
   // paina, painb, painc, crpain
 }
 
-export const forestMonsterAnimations = {
+export const forestTrollAnimations = {
   idle: 'Idle',
   walk: 'Walk',
   jump: 'Melee_Hold',
