@@ -102,7 +102,7 @@ export default class PlayerFSM {
 
   updateGround() {
     const { mesh, solids } = this
-    this.groundY = raycastGround({ mesh, solids }, { y: this.size * 2 })
+    this.groundY = raycastGround({ mesh, solids }, { y: this.size })
   }
 
   updateCamera(delta) {

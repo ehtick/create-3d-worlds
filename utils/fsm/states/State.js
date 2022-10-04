@@ -75,7 +75,7 @@ export default class State {
   }
 
   freeFly(delta) {
-    const { mesh, inAir, groundY } = this.fsm
+    const { mesh } = this.fsm
     const gravityStep = GRAVITY * delta
 
     if (this.fsm.velocityY - gravityStep >= minVelocityY)
@@ -85,7 +85,9 @@ export default class State {
       return
 
     mesh.translateY(this.fsm.velocityY)
-    if (!inAir && !this.keyboard.space) mesh.position.y = groundY
+
+    if (!this.fsm.inAir && !this.keyboard.space)
+      mesh.position.y = this.fsm.groundY
   }
 
   syncTime() {
