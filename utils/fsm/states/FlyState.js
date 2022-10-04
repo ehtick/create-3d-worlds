@@ -51,8 +51,8 @@ export default class FlyState extends State {
     //   this.action.setEffectiveTimeScale(this.prevState === 'walkBackward' ? -scale : scale)
     // }
 
-    if (this.fsm.inAir && !this.keyboard.space)
-      this.fsm.setState('fall')
+    // if (this.fsm.inAir && !this.keyboard.space)
+    //   this.fsm.setState('fall')
 
     if (!this.fsm.inAir)
       this.fsm.setState('idle')

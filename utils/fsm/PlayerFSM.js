@@ -33,7 +33,7 @@ export default class PlayerFSM {
     this.solids = []
     this.groundY = 0
     this.velocityY = 0
-    this.fly = false
+    this.canFly = false
 
     this.keyboard = keyboard
     if (useJoystick) this.joystick = new JoyStick()
