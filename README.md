@@ -12,7 +12,6 @@ npx live-server
 PlayerFSM:
 - ukloniti this.canFly sa PlayerFSM?
 - BUG: posle padanja (sa koračanjem) u walk kreće ispočetka korak (idle resetuje akciju?)
-- BUG: posle letenja (padanja) u idle meša akcije, ne zaustavlja staru
 - proveriti JumpFlyState with animation
 - dodati levo/desno na Q/E
 - napraviti izbor između Fly, Jump i JumpFly

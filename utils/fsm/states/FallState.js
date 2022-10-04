@@ -2,8 +2,6 @@ import State from './State.js'
 
 export default class FallState extends State {
   update(delta) {
-    const { mesh, groundY } = this.fsm
-
     this.freeFly(delta)
     this.turn(delta)
 
