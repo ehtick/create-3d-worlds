@@ -10,7 +10,6 @@ npx live-server
 ```
 
 PlayerFSM:
-- proveriti JumpFlyState with animation
 - dodati levo/desno na Q/E
 - obrisati klasu Player, ažurirati Avatar
 - obrisati actions.js

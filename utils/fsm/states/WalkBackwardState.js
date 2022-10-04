@@ -24,7 +24,7 @@ export default class WalkBackwardState extends State {
     this.speed = lerp(this.oldSpeed, this.fsm.speed, this.t)
 
     this.turn(delta)
-    this.forward(delta, 1)
+    this.backward(delta)
 
     if (this.fsm.inAir)
       this.fsm.setState('fall')

@@ -51,27 +51,31 @@ export default class State {
   forward(delta, sign = -1) {
     if (!delta || !this.fsm.speed || !this.speed) return
 
+    const direction = sign === -1 ? dir.forward : dir.backward
+    if (this.directionBlocked(direction)) return
     const jumpDir = sign === -1 ? dir.upForward : dir.upBackward
     if (this.keyboard.space && this.directionBlocked(jumpDir)) return
 
-    const direction = sign === -1 ? dir.forward : dir.backward
-    if (this.directionBlocked(direction)) return
-
     velocity += this.speed * this.fsm.speed * (this.joystick?.forward || sign)
     velocity *= INERTIA
+
     this.fsm.mesh.translateZ(velocity * delta)
   }
 
-  turn(delta, sign = -1) {
+  backward(delta) {
+    this.forward(delta, 1)
+  }
+
+  turn(delta) {
     if (!delta || !this.fsm.speed) return
     const angle = RIGHT_ANGLE * delta // 90 degrees per second
     if (this.joystick)
       this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -this.joystick.turn)
 
     if (this.keyboard.left)
-      this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -sign)
+      this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle)
     if (this.keyboard.right)
-      this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * sign)
+      this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -1)
   }
 
   freeFly(delta) {

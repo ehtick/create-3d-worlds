@@ -30,11 +30,8 @@ export default class FlyState extends State {
   update(delta) {
     this.freeFly(delta)
 
-    if (this.keyboard.up) this.speed = this.fsm.speed
-    if (this.keyboard.down) this.speed = -this.fsm.speed
-
     this.turn(delta)
-    this.forward(delta)
+    this.forward(delta, this.keyboard.down ? 1 : -1)
 
     const flyStep = GRAVITY * delta * 10
 
