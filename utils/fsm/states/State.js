@@ -50,12 +50,16 @@ export default class State {
 
   forward(delta, sign = -1) {
     if (!delta || !this.fsm.speed || !this.speed) return
-    velocity += this.speed * this.fsm.speed * (this.joystick?.forward || sign)
-    velocity *= INERTIA
+
+    const jumpDir = sign === -1 ? dir.upForward : dir.upBackward
+    if (this.keyboard.space && this.directionBlocked(jumpDir)) return
 
     const direction = sign === -1 ? dir.forward : dir.backward
-    if (!this.directionBlocked(direction))
-      this.fsm.mesh.translateZ(velocity * delta)
+    if (this.directionBlocked(direction)) return
+
+    velocity += this.speed * this.fsm.speed * (this.joystick?.forward || sign)
+    velocity *= INERTIA
+    this.fsm.mesh.translateZ(velocity * delta)
   }
 
   turn(delta, sign = -1) {
