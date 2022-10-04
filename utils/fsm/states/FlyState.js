@@ -51,7 +51,7 @@ export default class FlyState extends State {
     //   this.action.setEffectiveTimeScale(this.prevState === 'walkBackward' ? -scale : scale)
     // }
 
-    // ako ne vrati na prevState brlja aktivne animacije
+    // bez prevState brlja aktivne animacije
     if (!this.fsm.inAir) this.fsm.setState(this.prevState || 'idle')
   }
 }

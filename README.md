@@ -10,10 +10,8 @@ npx live-server
 ```
 
 PlayerFSM:
-- ukloniti this.canFly sa PlayerFSM?
 - proveriti JumpFlyState with animation
 - dodati levo/desno na Q/E
-- napraviti izbor između Fly, Jump i JumpFly
 - obrisati klasu Player, ažurirati Avatar
 - obrisati actions.js
 

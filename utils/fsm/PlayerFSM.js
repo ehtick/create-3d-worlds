@@ -25,20 +25,29 @@ const states = {
   fall: FallState,
 }
 
+const jumpStyles = {
+  FLY: 'FLY',
+  JUMP: 'JUMP',
+  FLY_JUMP: 'FLY_JUMP',
+}
+
 export default class PlayerFSM {
-  constructor({ mesh, animations, dict, camera, keyboard = defaultKeyboard, useJoystick, speed = 2 }) {
+  constructor({
+    mesh, animations, dict, camera, keyboard = defaultKeyboard, useJoystick,
+    speed = 2, jumpStyle = jumpStyles.FLY
+  }) {
     this.mesh = mesh
     this.speed = speed
     this.size = getHeight(mesh)
     this.solids = []
     this.groundY = 0
     this.velocityY = 0
-    this.canFly = false
-
+    this.jumpStyle = jumpStyle
     this.keyboard = keyboard
-    if (useJoystick) this.joystick = new JoyStick()
-    this.actions = {}
 
+    if (useJoystick) this.joystick = new JoyStick()
+
+    this.actions = {}
     if (animations?.length)
       this.setupMixer(animations, dict)
 
@@ -61,13 +70,23 @@ export default class PlayerFSM {
 
   /* STATE MACHINE */
 
+  mapState(name) {
+    if (name === 'jump')
+      switch (this.jumpStyle) {
+        case jumpStyles.FLY: return FlyState
+        case jumpStyles.JUMP: return JumpState
+        case jumpStyles.FLY_JUMP: return JumpFlyState
+      }
+    return states[name] || SpecialState
+  }
+
   setState(name) {
     const oldState = this.currentState
     if (oldState) {
       if (oldState.name == name) return
       oldState.exit()
     }
-    const State = states[name] || SpecialState
+    const State = this.mapState(name)
     this.currentState = new State(this, name)
     this.currentState.enter(oldState, oldState?.action)
   }
