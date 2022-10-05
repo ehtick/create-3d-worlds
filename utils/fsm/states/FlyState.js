@@ -34,9 +34,13 @@ export default class FlyState extends State {
     this.speed = lerp(this.oldSpeed, speed, this.t)
 
     this.freeFly(delta)
-
     this.turn(delta)
-    this.forward(delta, this.keyboard.down ? 1 : -1)
+
+    if (this.keyboard.up)
+      this.forward(delta)
+
+    if (this.keyboard.down)
+      this.backward(delta)
 
     const flyStep = GRAVITY * delta * 10
 
