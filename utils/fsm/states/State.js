@@ -12,6 +12,8 @@ export default class State {
   constructor(fsm, name) {
     this.fsm = fsm
     this.name = name
+    console.log(name)
+
     this.action = fsm?.actions[name]
     this.prevState = ''
     this.t = 0
@@ -97,7 +99,7 @@ export default class State {
 
     mesh.translateY(this.fsm.velocityY)
 
-    if (!this.fsm.inAir && !this.keyboard.space)
+    if (!this.fsm.inAir() && !this.keyboard.space)
       mesh.position.y = this.fsm.groundY
   }
 

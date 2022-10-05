@@ -52,7 +52,7 @@ export default class RunState extends State {
 
     /* TRANSIT */
 
-    if (this.fsm.inAir)
+    if (this.fsm.inAir())
       this.fsm.setState('fall')
 
     if (this.keyboard.space)

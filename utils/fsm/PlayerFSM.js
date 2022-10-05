@@ -102,8 +102,8 @@ export default class PlayerFSM {
     return this.currentState.action
   }
 
-  get inAir() {
-    return this.mesh.position.y > this.groundY
+  inAir(step = this.size * .2) {
+    return this.mesh.position.y - this.groundY > step
   }
 
   /* OTHER */

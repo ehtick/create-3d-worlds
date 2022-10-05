@@ -53,6 +53,6 @@ export default class FlyState extends State {
     }
 
     // bez prevState meša aktivne animacije
-    if (!this.fsm.inAir) this.fsm.setState(this.prevState)
+    if (!this.fsm.inAir()) this.fsm.setState(this.prevState)
   }
 }
