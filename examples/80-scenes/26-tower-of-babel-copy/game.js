@@ -14,7 +14,7 @@ baradDur.position.x = 200
 const spaceTower = createSpaceTower()
 spaceTower.position.z = -200
 
-const terrain = createTerrain({ size: 1000, factor: 1 })
+const terrain = createTerrain({ size: 1000, factor: 10 })
 
 const lava = createLava({ size: 50 })
 lava.translateY(1.5)

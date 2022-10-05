@@ -33,6 +33,9 @@ export default class WalkState extends State {
     super.update(delta)
     this.speed = lerp(this.oldSpeed, this.fsm.speed, this.t)
 
+    const jumpStep = this.speed * delta * 1.5
+    this.fsm.normalizeGround(jumpStep)
+
     this.turn(delta)
 
     if (this.keyboard.up)
@@ -48,9 +51,6 @@ export default class WalkState extends State {
       this.side(delta, 1)
 
     /* TRANSIT */
-
-    const jumpStep = this.speed * delta * 1.5
-    this.fsm.normalizeGround(jumpStep)
 
     if (this.keyboard.space)
       this.fsm.setState('jump')

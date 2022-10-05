@@ -36,6 +36,9 @@ export default class RunState extends State {
     super.update(delta)
     this.speed = lerp(this.oldSpeed, this.fsm.speed * 2, this.t)
 
+    const jumpStep = this.speed * delta * 1.5
+    this.fsm.normalizeGround(jumpStep)
+
     this.turn(delta)
 
     if (this.keyboard.up)
@@ -52,11 +55,11 @@ export default class RunState extends State {
 
     /* TRANSIT */
 
-    if (this.fsm.inAir())
-      this.fsm.setState('fall')
-
     if (this.keyboard.space)
       this.fsm.setState('jump')
+
+    if (this.fsm.inAir(jumpStep))
+      this.fsm.setState('fall')
 
     if (!this.keyboard.capsLock && !(this.joystick?.forward < -.75))
       this.fsm.setState('walk')
