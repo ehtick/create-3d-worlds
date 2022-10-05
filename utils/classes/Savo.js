@@ -1,4 +1,4 @@
-import Player from '/utils/classes/Player.js'
+import Player from '/utils/fsm/PlayerFSM.js'
 import { createBox } from '/utils/geometry.js'
 import { camera } from '/utils/scene.js'
 
@@ -7,8 +7,10 @@ export default class Savo extends Player {
     const mesh = createBox({ size })
     mesh.material.opacity = 0
     mesh.material.transparent = true
-    super({ mesh, autoCamera: false, ...params })
+    super({ mesh, jumpStyle: 'FLY', ...params })
     this.speed = speed || this.size * 3
+    this.maxVelocityY = .2
+    this.minVelocityY = -this.maxVelocityY
   }
 
   update(delta) {
