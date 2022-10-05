@@ -13,7 +13,7 @@ scene.add(boxes)
 
 camera.position.z = 10
 
-const player = new Avatar({ size: 2 })
+const player = new Avatar({ size: 1 })
 player.mesh.rotateY(Math.PI)
 player.add(camera)
 scene.add(player.mesh)
