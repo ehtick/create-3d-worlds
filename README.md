@@ -10,7 +10,6 @@ npx live-server
 ```
 
 PlayerFSM:
-- obrisati actions.js
 - srediti kameru kad Avatar pada (vavilonska kula)
 - BUG: zabrlja animacija posle skoka u idle 35-stairway-girl/
 
