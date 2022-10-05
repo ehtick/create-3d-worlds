@@ -29,14 +29,10 @@ export default class ThirdPersonCamera {
     const { y } = this.mesh.position
     const newLookAt = [...this.lookAt]
 
-    // if falling move camera down
-    const diff = y - oldY
-    if (diff < 0) {
+    // if long falling move camera down
+    if (y - oldY < 0) {
+      if (fallingTime > 25) newLookAt[1] = 0
       fallingTime++
-      if (fallingTime > 25) {
-        const lookAtY = mapRange(diff, -0.2, 0, 0, this.lookAt[1])
-        newLookAt[1] = lookAtY
-      }
     } else
       fallingTime = 0
 
