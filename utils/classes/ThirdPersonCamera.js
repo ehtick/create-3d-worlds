@@ -23,11 +23,15 @@ export default class ThirdPersonCamera {
   }
 
   update(delta) {
-    const newOffset = this.offset
-    console.log(this.mesh.position.y)
+    const { y } = this.mesh.position
+    const newLookAt = [...this.lookAt]
 
-    const idealPosition = calc(this.mesh, newOffset)
-    const idealLookAt = calc(this.mesh, this.lookAt)
+    // if falling move camera down
+    if (y - oldY < 0) newLookAt[1] = this.lookAt[1] * .5
+    if (y - oldY < -0.1) newLookAt[1] = 0
+
+    const idealPosition = calc(this.mesh, this.offset)
+    const idealLookAt = calc(this.mesh, newLookAt)
 
     const t = this.speed * delta
     this.currentPosition.lerp(idealPosition, t)
@@ -35,5 +39,7 @@ export default class ThirdPersonCamera {
 
     this.camera.position.copy(this.currentPosition)
     this.camera.lookAt(this.currentLookat)
+
+    oldY = y
   }
 }
