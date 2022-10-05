@@ -109,14 +109,14 @@ export default class PlayerFSM {
     return this.mesh.position
   }
 
+  get inAir() {
+    return this.mesh.position.y - this.groundY > this.size * .2
+  }
+
   /* OTHER */
 
   add(obj) {
     this.mesh.add(obj)
-  }
-
-  inAir(step = this.size * .2) {
-    return this.mesh.position.y - this.groundY > step
   }
 
   normalizeGround(jumpStep) {

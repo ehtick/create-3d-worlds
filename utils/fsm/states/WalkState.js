@@ -46,7 +46,7 @@ export default class WalkState extends State {
     if (this.keyboard.space)
       this.fsm.setState('jump')
 
-    if (this.fsm.inAir(jumpStep))
+    if (this.fsm.inAir)
       this.fsm.setState('fall')
 
     if (this.keyboard.pressed.Enter)

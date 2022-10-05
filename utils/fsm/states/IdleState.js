@@ -37,7 +37,7 @@ export default class IdleState extends State {
       || this.keyboard.sideLeft || this.keyboard.sideRight)
       this.fsm.setState('walk')
 
-    if (this.fsm.inAir())
+    if (this.fsm.inAir)
       this.fsm.setState('fall')
 
     if (this.keyboard.space)

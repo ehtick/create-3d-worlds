@@ -97,7 +97,7 @@ export default class State {
 
     mesh.translateY(this.fsm.velocityY)
 
-    if (!this.fsm.inAir() && !this.keyboard.space)
+    if (!this.fsm.inAir && !this.keyboard.space)
       mesh.position.y = this.fsm.groundY
   }
 

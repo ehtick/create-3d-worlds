@@ -54,7 +54,7 @@ export default class RunState extends State {
     if (this.keyboard.space)
       this.fsm.setState('jump')
 
-    if (this.fsm.inAir(jumpStep))
+    if (this.fsm.inAir)
       this.fsm.setState('fall')
 
     if (!this.keyboard.capsLock && !(this.joystick?.forward < -.75))

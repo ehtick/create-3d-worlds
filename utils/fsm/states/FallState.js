@@ -11,7 +11,7 @@ export default class FallState extends State {
     if (this.fsm.jumpStyle === 'FLY' && this.keyboard.space)
       this.fsm.setState('jump')
 
-    if (!this.fsm.inAir())
+    if (!this.fsm.inAir)
       this.fsm.setState('idle')
   }
 }
