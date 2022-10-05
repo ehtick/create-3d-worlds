@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/nude-victim/', animNames: nudeVictimAnimations, angle: Math.PI, fixColors: true })
-const stateMachine = new PlayerFSM({ mesh, animations, dict: nudeVictimAnimations })
+const player = new PlayerFSM({ mesh, animations, dict: nudeVictimAnimations })
 
 scene.add(mesh)
 
@@ -23,6 +23,6 @@ void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
 
-  stateMachine.update(delta)
+  player.update(delta)
   renderer.render(scene, camera)
 }()

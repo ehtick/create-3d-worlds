@@ -11,7 +11,7 @@ camera.position.set(0, 4, 8)
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/iron-giant/', animNames: ironGiantAnimations, angle: Math.PI, size: 5, fixColors: true })
-const stateMachine = new PlayerFSM({ mesh, animations, dict: ironGiantAnimations })
+const player = new PlayerFSM({ mesh, animations, dict: ironGiantAnimations })
 
 scene.add(mesh)
 
@@ -24,6 +24,6 @@ void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
 
-  stateMachine.update(delta)
+  player.update(delta)
   renderer.render(scene, camera)
 }()

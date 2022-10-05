@@ -12,7 +12,7 @@ scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'model-lowpoly.fbx', angle: Math.PI, animNames: partisanAnimations, prefix: 'character/partisan/', fixColors: true })
 
-const stateMachine = new PlayerFSM({ mesh, animations, dict: partisanAnimations, useJoystick: true })
+const player = new PlayerFSM({ mesh, animations, dict: partisanAnimations, useJoystick: true })
 
 scene.add(mesh)
 
@@ -42,7 +42,7 @@ const pos = new THREE.Vector3()
 void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
-  stateMachine.update(delta)
+  player.update(delta)
 
   leftHand.getWorldPosition(pos)
   weapon.lookAt(pos)

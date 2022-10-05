@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadLowPoly({ animNames: shieldmaidenAnimation, prefix: 'character/shieldmaiden/' })
-const stateMachine = new PlayerFSM({ mesh, animations, dict: shieldmaidenAnimation })
+const player = new PlayerFSM({ mesh, animations, dict: shieldmaidenAnimation })
 
 scene.add(mesh)
 
@@ -23,6 +23,6 @@ void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
 
-  stateMachine.update(delta)
+  player.update(delta)
   renderer.render(scene, camera)
 }()

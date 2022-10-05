@@ -11,7 +11,7 @@ scene.add(createFloor({ size: 100 }))
 
 const { mesh } = await loadModel({ file: 'character/demon/demon.fbx', angle: Math.PI, fixColors: true })
 const animations = await loadFbxAnimations(demonAnimations, 'character/demon/')
-const stateMachine = new PlayerFSM({ mesh, animations, dict: demonAnimations })
+const player = new PlayerFSM({ mesh, animations, dict: demonAnimations })
 
 scene.add(mesh)
 
@@ -24,6 +24,6 @@ void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
 
-  stateMachine.update(delta)
+  player.update(delta)
   renderer.render(scene, camera)
 }()

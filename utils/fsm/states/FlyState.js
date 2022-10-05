@@ -1,6 +1,8 @@
 import * as THREE from 'three'
 import State, { GRAVITY } from './State.js'
 
+const { lerp } = THREE.MathUtils
+
 export default class FlyState extends State {
   constructor(fsm, name) {
     super(fsm, name)
@@ -9,8 +11,7 @@ export default class FlyState extends State {
   }
 
   enter(oldState, oldAction) {
-    this.speed = oldState.speed
-    this.prevState = oldState.name
+    super.enter(oldState)
     this.jumpTime = 0
 
     if (this.action) {
@@ -28,6 +29,11 @@ export default class FlyState extends State {
   }
 
   update(delta) {
+    super.update(delta)
+    const speed = this.keyboard.capsLock ? this.fsm.speed * 2 : this.fsm.speed
+    this.speed = lerp(this.oldSpeed, speed, this.t)
+    console.log(this.oldSpeed)
+
     this.freeFly(delta)
 
     this.turn(delta)

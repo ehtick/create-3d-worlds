@@ -11,7 +11,7 @@ scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadPartisan()
 
-const stateMachine = new PlayerFSM({ mesh, animations, dict: partisanAnimations, useJoystick: true })
+const player = new PlayerFSM({ mesh, animations, dict: partisanAnimations, useJoystick: true })
 
 scene.add(mesh)
 
@@ -23,6 +23,6 @@ controls.target = mesh.position
 void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
-  stateMachine.update(delta)
+  player.update(delta)
   renderer.render(scene, camera)
 }()

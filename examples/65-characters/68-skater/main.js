@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/skater-girl/', animNames: skaterAnimations, angle: Math.PI, fixColors: true })
-const stateMachine = new PlayerFSM({ mesh, dict: skaterAnimations, animations })
+const player = new PlayerFSM({ mesh, dict: skaterAnimations, animations })
 
 scene.add(mesh)
 
@@ -23,6 +23,6 @@ void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
 
-  stateMachine.update(delta)
+  player.update(delta)
   renderer.render(scene, camera)
 }()

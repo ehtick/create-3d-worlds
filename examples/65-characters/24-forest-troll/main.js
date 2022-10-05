@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'character/forest-monster/scene.gltf', angle: Math.PI })
-const stateMachine = new PlayerFSM({ mesh, animations, dict: forestTrollAnimations, camera })
+const player = new PlayerFSM({ mesh, animations, dict: forestTrollAnimations, camera })
 
 scene.add(mesh)
 
@@ -22,6 +22,6 @@ controls.target = mesh.position
 void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
-  stateMachine.update(delta)
+  player.update(delta)
   renderer.render(scene, camera)
 }()

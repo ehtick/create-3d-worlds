@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadLowPoly({ animNames: thiefAnimation, prefix: 'character/thief/' })
-const stateMachine = new PlayerFSM({ mesh, animations, dict: thiefAnimation })
+const player = new PlayerFSM({ mesh, animations, dict: thiefAnimation })
 
 scene.add(mesh)
 
@@ -23,6 +23,6 @@ void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
 
-  stateMachine.update(delta)
+  player.update(delta)
   renderer.render(scene, camera)
 }()

@@ -11,7 +11,7 @@ camera.position.set(0, 3, 5)
 createOrbitControls()
 
 const { mesh, animations } = await loadModel({ file: 'character/robotko/robot.glb', size: 1.2, angle: Math.PI })
-const stateMachine = new PlayerFSM({ mesh, animations, dict: robotkoAnimations })
+const player = new PlayerFSM({ mesh, animations, dict: robotkoAnimations })
 
 scene.add(mesh)
 
@@ -22,6 +22,6 @@ scene.add(createGround({ size: 100 }))
 void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
-  stateMachine.update(delta)
+  player.update(delta)
   renderer.render(scene, camera)
 }()

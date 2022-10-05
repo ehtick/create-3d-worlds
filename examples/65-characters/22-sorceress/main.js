@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadSorceress()
-const stateMachine = new PlayerFSM({ mesh, animations, dict: sorceressAnimations, useJoystick: true })
+const player = new PlayerFSM({ mesh, animations, dict: sorceressAnimations, useJoystick: true })
 
 scene.add(mesh)
 
@@ -23,6 +23,6 @@ void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
 
-  stateMachine.update(delta)
+  player.update(delta)
   renderer.render(scene, camera)
 }()

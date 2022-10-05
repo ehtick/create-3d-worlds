@@ -10,7 +10,6 @@ npx live-server
 ```
 
 PlayerFSM:
-- dodati levo/desno na Q/E
 - obrisati klasu Player, ažurirati Avatar
 - obrisati actions.js
 

@@ -11,7 +11,7 @@ scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/partisan2/', animNames: partisan2Animations, angle: Math.PI, size: .5, fixColors: true })
 // TODO: pucanje da se ponavlja animacija dok je pritisnuto
-const stateMachine = new PlayerFSM({ mesh, animations, dict: partisan2Animations })
+const player = new PlayerFSM({ mesh, animations, dict: partisan2Animations })
 
 scene.add(mesh)
 
@@ -24,6 +24,6 @@ void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
 
-  stateMachine.update(delta)
+  player.update(delta)
   renderer.render(scene, camera)
 }()

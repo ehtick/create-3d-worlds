@@ -11,7 +11,7 @@ scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadWitch()
 
-const stateMachine = new PlayerFSM({ mesh, animations, dict: witchAnimations })
+const player = new PlayerFSM({ mesh, animations, dict: witchAnimations })
 
 scene.add(mesh)
 
@@ -24,6 +24,6 @@ void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
 
-  stateMachine.update(delta)
+  player.update(delta)
   renderer.render(scene, camera)
 }()

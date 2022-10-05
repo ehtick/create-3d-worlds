@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/zombie-girl/', angle: Math.PI, fixColors: true, animNames: zombieGirlAnimations })
-const stateMachine = new PlayerFSM({ mesh, animations, dict: zombieGirlAnimations })
+const player = new PlayerFSM({ mesh, animations, dict: zombieGirlAnimations })
 
 scene.add(mesh)
 
@@ -23,6 +23,6 @@ void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
 
-  stateMachine.update(delta)
+  player.update(delta)
   renderer.render(scene, camera)
 }()
