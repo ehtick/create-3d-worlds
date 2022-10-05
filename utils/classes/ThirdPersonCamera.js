@@ -1,6 +1,7 @@
 /* credit to simon dev */
 import * as THREE from 'three'
 import { mapRange } from '/utils/helpers.js'
+import keyboard from '/utils/classes/Keyboard.js'
 
 let oldY = 0
 
@@ -35,7 +36,7 @@ export default class ThirdPersonCamera {
     const idealPosition = calc(this.mesh, this.offset)
     const idealLookAt = calc(this.mesh, newLookAt)
 
-    const t = this.speed * delta
+    const t = this.speed * delta * (keyboard.run ? 2 : 1)
     this.currentPosition.lerp(idealPosition, t)
     this.currentLookat.lerp(idealLookAt, t)
 
