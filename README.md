@@ -10,7 +10,6 @@ npx live-server
 ```
 
 PlayerFSM:
-- isprobati AvatarFSM po neravnom terenu
 - obrisati klasu Player, ažurirati Avatar
 - obrisati actions.js
 

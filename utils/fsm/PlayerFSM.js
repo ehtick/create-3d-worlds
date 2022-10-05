@@ -101,11 +101,19 @@ export default class PlayerFSM {
     return this.currentState.action
   }
 
-  inAir(step = this.size * .2) {
-    return this.mesh.position.y - this.groundY > step
+  get position() {
+    return this.mesh.position
   }
 
   /* OTHER */
+
+  add(obj) {
+    this.mesh.add(obj)
+  }
+
+  inAir(step = this.size * .2) {
+    return this.mesh.position.y - this.groundY > step
+  }
 
   normalizeGround(jumpStep) {
     const difference = () => this.mesh.position.y - this.groundY // need current value, not cached

@@ -1,10 +1,10 @@
 import PlayerFSM from './PlayerFSM.js'
-import { camera, clock } from '/utils/scene.js'
+import { clock } from '/utils/scene.js'
 import { createAvatar, updateAvatar, uniforms, skins } from '/utils/geometry/avatar.js'
 
 export default class AvatarFSM extends PlayerFSM {
-  constructor() {
-    super({ mesh: createAvatar(), camera, jumpStyle: 'FLY', speed: 4 })
+  constructor(params) {
+    super({ mesh: createAvatar(), jumpStyle: 'FLY', speed: 4, ...params })
     this.limbs = [
       this.mesh.getObjectByName('leftHand'), this.mesh.getObjectByName('rightHand'),
       this.mesh.getObjectByName('leftLeg'), this.mesh.getObjectByName('rightLeg')
