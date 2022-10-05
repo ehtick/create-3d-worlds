@@ -22,7 +22,7 @@ lava.translateY(1.5)
 scene.add(terrain, lava, babelTower, baradDur, spaceTower)
 
 const player = new AvatarFSM()
-player.mesh.position.set(60, 2, 0)
+player.mesh.position.set(60, 4, 0)
 player.addSolids(terrain, babelTower, baradDur, spaceTower)
 scene.add(player.mesh)
 

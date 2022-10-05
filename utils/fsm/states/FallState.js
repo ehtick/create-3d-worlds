@@ -5,7 +5,10 @@ export default class FallState extends State {
     this.freeFly(delta)
     this.turn(delta)
 
-    if (this.keyboard.space && this.fsm.jumpStyle === 'FLY')
+    if (this.fsm.jumpStyle === 'FLY' && this.keyboard.up)
+      this.forward(delta)
+
+    if (this.fsm.jumpStyle === 'FLY' && this.keyboard.space)
       this.fsm.setState('jump')
 
     if (!this.fsm.inAir())
