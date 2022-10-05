@@ -65,11 +65,12 @@ export default class State {
     this.forward(delta, 1)
   }
 
-  side(delta, sign) {
-    const direction = sign === -1 ? dir.left : dir.right
-    if (this.directionBlocked(direction)) return
+  strafe(delta) {
+    if (this.keyboard.sideLeft && !this.directionBlocked(dir.left))
+      this.fsm.mesh.translateX(-this.fsm.speed * .5 * delta)
 
-    this.fsm.mesh.translateX(1 * delta * sign)
+    if (this.keyboard.sideRight && !this.directionBlocked(dir.right))
+      this.fsm.mesh.translateX(this.fsm.speed * .5 * delta)
   }
 
   turn(delta) {

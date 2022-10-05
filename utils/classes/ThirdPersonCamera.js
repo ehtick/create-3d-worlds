@@ -1,6 +1,8 @@
 /* credit to simon dev */
 import * as THREE from 'three'
 
+let oldY = 0
+
 const calc = (mesh, pos) => new THREE.Vector3(...pos)
   .applyQuaternion(mesh.quaternion)
   .add(mesh.position)
@@ -21,10 +23,13 @@ export default class ThirdPersonCamera {
   }
 
   update(delta) {
-    const idealPosition = calc(this.mesh, this.offset)
+    const newOffset = this.offset
+    console.log(this.mesh.position.y)
+
+    const idealPosition = calc(this.mesh, newOffset)
     const idealLookAt = calc(this.mesh, this.lookAt)
 
-    const t = this.speed * delta * 2
+    const t = this.speed * delta
     this.currentPosition.lerp(idealPosition, t)
     this.currentLookat.lerp(idealLookAt, t)
 

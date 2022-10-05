@@ -39,12 +39,7 @@ export default class WalkState extends State {
 
     this.turn(delta)
     this.forward(delta)
-
-    if (this.keyboard.sideLeft)
-      this.side(delta, -1)
-
-    if (this.keyboard.sideRight)
-      this.side(delta, 1)
+    this.strafe(delta)
 
     /* TRANSIT */
 
