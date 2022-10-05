@@ -40,6 +40,9 @@ export default class PlayerFSM {
     this.solids = []
     this.groundY = 0
     this.velocityY = 0
+    this.maxVelocityY = .1
+    this.minVelocityY = -this.maxVelocityY
+
     this.jumpStyle = jumpStyle
     this.keyboard = keyboard
 

@@ -6,7 +6,6 @@ const { lerp } = THREE.MathUtils
 export default class FlyState extends State {
   constructor(fsm, name) {
     super(fsm, name)
-    this.maxVelocity = .1
     this.maxJumpTime = Infinity
   }
 
@@ -48,8 +47,8 @@ export default class FlyState extends State {
       this.fsm.velocityY += flyStep
       this.jumpTime++
 
-      if (this.fsm.velocityY > this.maxVelocity)
-        this.fsm.velocityY = this.maxVelocity
+      if (this.fsm.velocityY > this.fsm.maxVelocityY)
+        this.fsm.velocityY = this.fsm.maxVelocityY
     }
 
     if (this.fsm.velocityY <= 0 && !this.fsm.inAir())

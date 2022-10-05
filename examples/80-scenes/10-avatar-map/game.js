@@ -1,13 +1,13 @@
 import { createGround } from '/utils/ground.js'
 import { meshFromMatrix } from '/utils/mazes.js'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
-import Avatar from '/utils/classes/Avatar.js'
+import Avatar from '/utils/fsm/AvatarFSM.js'
 import matrix from '/data/small-map.js'
 import { hemLight } from '/utils/light.js'
 
 hemLight()
 
-const avatar = new Avatar({ size: 1, skin: 'lava' })
+const avatar = new Avatar({ size: 1, skin: 'lava', camera })
 avatar.position.set(12, 0, 12)
 
 const floor = createGround({ file: 'terrain/ground.jpg' })

@@ -4,7 +4,7 @@ import { recursiveBacktracker } from '/utils/mazes/algorithms.js'
 import { scene, createToonRenderer, camera } from '/utils/scene.js'
 import { createSun, hemLight, ambLight } from '/utils/light.js'
 import { createHill } from '/utils/ground.js'
-import Avatar from '/utils/classes/Avatar.js'
+import Avatar from '/utils/fsm/AvatarFSM.js'
 
 const gridSize = 20
 const cellSize = 10
@@ -25,7 +25,8 @@ recursiveBacktracker(grid)
 const maze = polarMazeCity({ grid })
 scene.add(maze)
 
-const player = new Avatar({ size: .5, scene, camera, solids: [maze, hill] })
+const player = new Avatar({ size: .5, camera, solids: [maze, hill] })
+scene.add(player.mesh)
 const x = cellSize * .5
 const z = -groundSize - cellSize
 player.position.set(x, 0, z)

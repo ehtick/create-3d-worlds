@@ -6,7 +6,6 @@ const INERTIA = .18
 export const GRAVITY = .9
 
 let velocity = 0
-const minVelocityY = -.1
 
 export default class State {
   constructor(fsm, name) {
@@ -89,7 +88,7 @@ export default class State {
     const { mesh } = this.fsm
     const gravityStep = GRAVITY * delta
 
-    if (this.fsm.velocityY - gravityStep >= minVelocityY)
+    if (this.fsm.velocityY - gravityStep >= this.fsm.minVelocityY)
       this.fsm.velocityY -= gravityStep
 
     if (this.fsm.velocityY > 0 && this.directionBlocked(dir.up))
