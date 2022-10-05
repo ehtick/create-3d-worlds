@@ -4,7 +4,7 @@ import { recursiveBacktracker } from '/utils/mazes/algorithms.js'
 import { scene, renderer, camera } from '/utils/scene.js'
 import { createSun, hemLight } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import Avatar from '/utils/classes/Avatar.js'
+import Avatar from '/utils/fsm/AvatarFSM.js'
 
 hemLight({ intensity: .6 })
 const sun = createSun()
@@ -18,7 +18,8 @@ recursiveBacktracker(grid)
 const maze = polarMazePipes({ grid, cellSize: 5 })
 scene.add(maze)
 
-const player = new Avatar({ size: .5, scene, camera, solids: maze })
+const player = new Avatar({ size: .5, camera, solids: maze })
+scene.add(player.mesh)
 
 /* LOOP */
 

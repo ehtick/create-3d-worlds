@@ -32,7 +32,7 @@ const jumpStyles = {
 export default class PlayerFSM {
   constructor({
     mesh, animations, dict, camera, keyboard = defaultKeyboard, useJoystick,
-    speed = 2, jumpStyle = jumpStyles.FLY_JUMP
+    speed = 2, jumpStyle = jumpStyles.FLY_JUMP, solids
   }) {
     this.mesh = mesh
     this.speed = speed
@@ -54,6 +54,7 @@ export default class PlayerFSM {
       this.controls = createOrbitControls()
     }
 
+    if (solids) this.addSolids(solids)
     this.setState('idle')
   }
 
