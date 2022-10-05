@@ -4,7 +4,7 @@ import { createAvatar, updateAvatar, uniforms, skins } from '/utils/geometry/ava
 
 export default class AvatarFSM extends PlayerFSM {
   constructor(params) {
-    super({ mesh: createAvatar(), jumpStyle: 'FLY', speed: 4, ...params })
+    super({ mesh: createAvatar({ skin: skins.STONE }), jumpStyle: 'FLY', speed: 4, ...params })
     this.limbs = [
       this.mesh.getObjectByName('leftHand'), this.mesh.getObjectByName('rightHand'),
       this.mesh.getObjectByName('leftLeg'), this.mesh.getObjectByName('rightLeg')
