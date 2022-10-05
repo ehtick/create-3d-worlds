@@ -1,9 +1,8 @@
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createTerrain, createLava } from '/utils/ground.js'
-import PlayerFSM from '/utils/fsm/PlayerFSM.js'
+import AvatarFSM from '/utils/fsm/AvatarFSM.js'
 import { dirLight, hemLight } from '/utils/light.js'
 import { createBabelTower, createBaradDur, createSpaceTower } from '/utils/geometry/towers.js'
-import { createAvatar, updateAvatar, uniforms, skins } from '/utils/geometry/avatar.js'
 
 dirLight({ intensity: .1 })
 hemLight({ intensity: .75 })
@@ -22,7 +21,7 @@ lava.translateY(1.5)
 
 scene.add(terrain, lava, babelTower, baradDur, spaceTower)
 
-const player = new PlayerFSM({ mesh: createAvatar(), camera, jumpStyle: 'FLY', speed: 4 })
+const player = new AvatarFSM()
 player.mesh.position.set(60, 2, 0)
 player.addSolids(terrain, babelTower, baradDur, spaceTower)
 scene.add(player.mesh)

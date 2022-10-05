@@ -32,7 +32,6 @@ export default class FlyState extends State {
     super.update(delta)
     const speed = this.keyboard.capsLock ? this.fsm.speed * 2 : this.fsm.speed
     this.speed = lerp(this.oldSpeed, speed, this.t)
-    console.log(this.oldSpeed)
 
     this.freeFly(delta)
 
