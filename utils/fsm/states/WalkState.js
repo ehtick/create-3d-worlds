@@ -14,12 +14,11 @@ export default class WalkState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
 
-    const timeScale = this.joystick?.forward ? mapRange(-this.joystick.forward, 0, .75, .75, 1.25) : 1
-
+    const sign = this.keyboard.down ? -1 : 1
+    const timeScale = this.joystick?.forward ? mapRange(-this.joystick.forward, 0, .75, .75, 1.25) : sign
     this.action?.setEffectiveTimeScale(timeScale)
 
     if (this.prevState !== 'run' || this.actions.run) {
-
       if (this.prevState === 'run') this.syncTime()
 
       const duration = chooseDuration(oldState.name)
@@ -35,7 +34,14 @@ export default class WalkState extends State {
     this.speed = lerp(this.oldSpeed, this.fsm.speed, this.t)
 
     this.turn(delta)
-    this.forward(delta)
+
+    if (this.keyboard.up)
+      this.forward(delta)
+
+    if (this.keyboard.down)
+      this.backward(delta)
+
+    /* TRANSIT */
 
     if (this.fsm.inAir)
       this.fsm.setState('fall')
@@ -49,7 +55,7 @@ export default class WalkState extends State {
     if (this.keyboard.capsLock || this.joystick?.forward < -.75)
       this.fsm.setState('run')
 
-    if (!this.keyboard.up && !this.joystick?.forward)
+    if (!this.keyboard.up && !this.keyboard.down && !this.joystick?.forward)
       this.fsm.setState('idle')
   }
 }

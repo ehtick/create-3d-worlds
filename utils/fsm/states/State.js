@@ -66,6 +66,13 @@ export default class State {
     this.forward(delta, 1)
   }
 
+  side(delta, sign) {
+    const direction = sign === -1 ? dir.left : dir.right
+    if (this.directionBlocked(direction)) return
+
+    this.fsm.mesh.translateX(1 * delta * sign)
+  }
+
   turn(delta) {
     if (!delta || !this.fsm.speed) return
     const angle = RIGHT_ANGLE * delta // 90 degrees per second

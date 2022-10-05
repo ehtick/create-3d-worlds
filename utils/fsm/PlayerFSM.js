@@ -9,20 +9,20 @@ import { getHeight } from '/utils/helpers.js'
 import IdleState from './states/IdleState.js'
 import RunState from './states/RunState.js'
 import WalkState from './states/WalkState.js'
-import WalkBackwardState from './states/WalkBackwardState.js'
 import SpecialState from './states/SpecialState.js'
 import JumpState from './states/JumpState.js'
 import JumpFlyState from './states/JumpFlyState.js'
 import FlyState from './states/FlyState.js'
 import FallState from './states/FallState.js'
+import SideWalkState from './states/SideWalkState.js'
 
 const states = {
   idle: IdleState,
   walk: WalkState,
-  walkBackward: WalkBackwardState,
   run: RunState,
   jump: FlyState,
   fall: FallState,
+  sideWalk: SideWalkState,
 }
 
 const jumpStyles = {
@@ -65,7 +65,6 @@ export default class PlayerFSM {
       const clip = animations.find(anim => anim.name == dict[key])
       this.actions[key] = this.mixer.clipAction(clip)
     }
-    if (this.actions?.walk) this.actions.walkBackward = this.actions.walk
   }
 
   /* STATE MACHINE */

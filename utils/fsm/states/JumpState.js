@@ -4,11 +4,11 @@ export default class JumpState extends SpecialState {
 
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
-    if (oldState.name === 'walkBackward') this.reverseAction()
+    if (this.keyboard.down) this.reverseAction()
   }
 
   update(delta) {
-    this.forward(delta, this.prevState === 'walkBackward' ? 1 : -1)
+    this.forward(delta, this.keyboard.down ? 1 : -1)
   }
 
   exit() {

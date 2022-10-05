@@ -8,18 +8,26 @@ export default class RunState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
     const duration = oldState?.name === 'jump' ? .15 : .75
+    const sign = this.keyboard.down ? -1 : 1
 
     if (this.actions.run) {
       if (this.prevState === 'walk') this.syncTime()
       if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
-      const timeScale = this.joystick?.forward ? mapRange(-this.joystick.forward, .75, 1, .75, 1.25) : 1
+      const timeScale = this.joystick?.forward
+        ? mapRange(-this.joystick.forward, .75, 1, .75, 1.25)
+        : sign
       this.action.setEffectiveTimeScale(timeScale)
-    } else {
+    }
+
+    if (!this.actions.run) {
       this.action = this.actions.walk
       if (this.action && oldAction && oldState?.name !== 'walk') this.action.crossFadeFrom(oldAction, duration)
-      const timeScale = this.joystick?.forward ? mapRange(-this.joystick.forward, .75, 1, 1.25, 1.75) : 1.5
+      const timeScale = this.joystick?.forward
+        ? mapRange(-this.joystick.forward, .75, 1, 1.25, 1.75)
+        : 1.5 * sign
       this.action?.setEffectiveTimeScale(timeScale)
     }
+
     this.action?.play()
     if (this.action) this.action.enabled = true
   }
@@ -29,7 +37,14 @@ export default class RunState extends State {
     this.speed = lerp(this.oldSpeed, this.fsm.speed * 2, this.t)
 
     this.turn(delta)
-    this.forward(delta)
+
+    if (this.keyboard.up)
+      this.forward(delta)
+
+    if (this.keyboard.down)
+      this.backward(delta)
+
+    /* TRANSIT */
 
     if (this.fsm.inAir)
       this.fsm.setState('fall')
@@ -40,7 +55,7 @@ export default class RunState extends State {
     if (!this.keyboard.capsLock && !(this.joystick?.forward < -.75))
       this.fsm.setState('walk')
 
-    if (!this.keyboard.up && !this.joystick?.forward)
+    if (!this.keyboard.up && !this.keyboard.down && !this.joystick?.forward)
       this.fsm.setState('idle')
   }
 

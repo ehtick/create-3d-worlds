@@ -20,11 +20,11 @@ export default class FlyState extends State {
       this.action.clampWhenFinished = true
       if (oldAction) this.action.crossFadeFrom(oldAction, .05)
       this.action.play()
-      if (oldState.name === 'walkBackward') this.reverseAction()
+      if (this.keyboard.down) this.reverseAction()
     }
 
     if (!this.action)
-      this.actions[this.prevState]?.setEffectiveTimeScale(this.prevState === 'walkBackward' ? -1 : 1)
+      this.actions[this.prevState]?.setEffectiveTimeScale(this.keyboard.down ? -1 : 1)
   }
 
   update(delta) {
