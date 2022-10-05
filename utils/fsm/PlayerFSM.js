@@ -91,7 +91,6 @@ export default class PlayerFSM {
   update(delta = 1 / 60) {
     this.updateGround()
     this.updateCamera(delta)
-
     this.currentState.update(delta)
     this.mixer?.update(delta)
   }
@@ -107,6 +106,13 @@ export default class PlayerFSM {
   }
 
   /* OTHER */
+
+  normalizeGround(jumpStep) {
+    const difference = () => this.mesh.position.y - this.groundY // need current value, not cached
+    if (!difference()) return
+    if (difference() < 0) this.mesh.translateY(jumpStep)
+    if (difference() > 0 && difference() < jumpStep) this.mesh.position.y = this.groundY
+  }
 
   randomizeAction() { // start at random time
     this.action.time = Math.random() * this.action.getClip().duration

@@ -49,11 +49,14 @@ export default class WalkState extends State {
 
     /* TRANSIT */
 
-    if (this.fsm.inAir())
-      this.fsm.setState('fall')
+    const jumpStep = this.speed * delta * 1.5
+    this.fsm.normalizeGround(jumpStep)
 
     if (this.keyboard.space)
       this.fsm.setState('jump')
+
+    if (this.fsm.inAir(jumpStep))
+      this.fsm.setState('fall')
 
     if (this.keyboard.pressed.Enter)
       this.fsm.setState('attack')

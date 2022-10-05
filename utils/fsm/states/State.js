@@ -12,8 +12,6 @@ export default class State {
   constructor(fsm, name) {
     this.fsm = fsm
     this.name = name
-    console.log(name)
-
     this.action = fsm?.actions[name]
     this.prevState = ''
     this.t = 0
