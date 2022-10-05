@@ -28,7 +28,7 @@ export default class IdleState extends State {
 
   update(delta) {
     super.update(delta)
-    this.speed = lerp(this.oldSpeed * .5, 0, this.t)
+    this.speed = lerp(this.oldSpeed, 0, this.t)
 
     this.turn(delta)
     this.forward(delta)

@@ -3,8 +3,8 @@ import { clock } from '/utils/scene.js'
 import { createAvatar, updateAvatar, uniforms, skins } from '/utils/geometry/avatar.js'
 
 export default class AvatarFSM extends PlayerFSM {
-  constructor(params) {
-    super({ mesh: createAvatar({ skin: skins.STONE }), jumpStyle: 'FLY', speed: 4, ...params })
+  constructor({ skin = skins.STONE, size = 1, ...params } = {}) {
+    super({ mesh: createAvatar({ skin, r: size }), speed: size * 4, jumpStyle: 'FLY', ...params })
     this.limbs = [
       this.mesh.getObjectByName('leftHand'), this.mesh.getObjectByName('rightHand'),
       this.mesh.getObjectByName('leftLeg'), this.mesh.getObjectByName('rightLeg')

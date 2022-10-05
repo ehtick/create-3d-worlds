@@ -1,4 +1,4 @@
-import Avatar from '/utils/classes/Avatar.js'
+import Avatar from '/utils/fsm/AvatarFSM.js'
 import { createWorldScene, renderer, camera, clock } from '/utils/scene.js'
 import { createFirTrees } from '/utils/geometry/trees.js'
 
