@@ -14,7 +14,6 @@ import JumpState from './states/JumpState.js'
 import JumpFlyState from './states/JumpFlyState.js'
 import FlyState from './states/FlyState.js'
 import FallState from './states/FallState.js'
-import SideWalkState from './states/SideWalkState.js'
 
 const states = {
   idle: IdleState,
@@ -22,7 +21,6 @@ const states = {
   run: RunState,
   jump: FlyState,
   fall: FallState,
-  sideWalk: SideWalkState,
 }
 
 const jumpStyles = {

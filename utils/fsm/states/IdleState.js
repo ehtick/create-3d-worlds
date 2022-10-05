@@ -33,14 +33,12 @@ export default class IdleState extends State {
     this.turn(delta)
     this.forward(delta)
 
-    if (this.keyboard.pressed.KeyQ || this.keyboard.pressed.KeyE)
-      this.fsm.setState('sideWalk')
+    if (this.keyboard.up || this.keyboard.down || this.joystick?.forward < 0
+      || this.keyboard.pressed.KeyQ || this.keyboard.pressed.KeyE)
+      this.fsm.setState('walk')
 
     if (this.fsm.inAir)
       this.fsm.setState('fall')
-
-    if (this.keyboard.up || this.keyboard.down || this.joystick?.forward < 0)
-      this.fsm.setState('walk')
 
     if (this.keyboard.space)
       this.fsm.setState('jump')

@@ -44,6 +44,12 @@ export default class RunState extends State {
     if (this.keyboard.down)
       this.backward(delta)
 
+    if (this.keyboard.pressed.KeyQ)
+      this.side(delta, -1)
+
+    if (this.keyboard.pressed.KeyE)
+      this.side(delta, 1)
+
     /* TRANSIT */
 
     if (this.fsm.inAir)
@@ -55,7 +61,8 @@ export default class RunState extends State {
     if (!this.keyboard.capsLock && !(this.joystick?.forward < -.75))
       this.fsm.setState('walk')
 
-    if (!this.keyboard.up && !this.keyboard.down && !this.joystick?.forward)
+    if (!this.keyboard.up && !this.keyboard.down && !this.joystick?.forward
+      && !this.keyboard.pressed.KeyQ && !this.keyboard.pressed.KeyE)
       this.fsm.setState('idle')
   }
 
