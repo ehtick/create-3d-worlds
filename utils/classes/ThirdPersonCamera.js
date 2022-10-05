@@ -1,5 +1,6 @@
 /* credit to simon dev */
 import * as THREE from 'three'
+import { mapRange } from '/utils/helpers.js'
 
 let oldY = 0
 
@@ -27,9 +28,10 @@ export default class ThirdPersonCamera {
     const newLookAt = [...this.lookAt]
 
     // if falling move camera down
-    if (y - oldY < 0) newLookAt[1] = this.lookAt[1] * .5
-    if (y - oldY < -0.1) newLookAt[1] = 0
-
+    if (y - oldY < 0) {
+      const res = mapRange(y - oldY, -0.2, 0, 0, this.lookAt[1])
+      newLookAt[1] = res
+    }
     const idealPosition = calc(this.mesh, this.offset)
     const idealLookAt = calc(this.mesh, newLookAt)
 

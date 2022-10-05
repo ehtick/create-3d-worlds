@@ -40,7 +40,7 @@ export default class PlayerFSM {
     this.solids = []
     this.groundY = 0
     this.velocityY = 0
-    this.maxVelocityY = speed / 40
+    this.maxVelocityY = speed / 30
     this.minVelocityY = -this.maxVelocityY
 
     this.jumpStyle = jumpStyle
