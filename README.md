@@ -10,7 +10,9 @@ npx live-server
 ```
 
 PlayerFSM:
-- BUG: zabrlja animacija posle skoka u idle 35-stairway-girl/
+- BUG: 35-stairway-girl zabrlja animacija posle skoka u idle
+  - da ne prilagođava kameru ako nije velik pad
+- BUG: 35-stairway-girl kada samo trči, menja stanje, povremeno pada
 
 prevesti shadertoy:
 - https://www.shadertoy.com/view/XsVSDz

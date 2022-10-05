@@ -123,7 +123,7 @@ export default class PlayerFSM {
     const difference = () => this.mesh.position.y - this.groundY // need current value, not cached
     if (!difference()) return
     if (difference() < 0) this.mesh.translateY(jumpStep)
-    if (difference() > 0 && difference() < jumpStep) this.mesh.position.y = this.groundY
+    if (difference() > 0 && difference() <= jumpStep) this.mesh.position.y = this.groundY
   }
 
   randomizeAction() { // start at random time
