@@ -1,6 +1,6 @@
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createTerrain, createLava } from '/utils/ground.js'
-import Avatar from '/utils/classes/Avatar.js'
+import Avatar from '/utils/fsm/AvatarFSM.js'
 import { dirLight, hemLight } from '/utils/light.js'
 import { createBabelTower, createBaradDur, createSpaceTower } from '/utils/geometry/towers.js'
 
@@ -14,24 +14,23 @@ baradDur.position.x = 200
 const spaceTower = createSpaceTower()
 spaceTower.position.z = -200
 
-const terrain = createTerrain({ size: 1000, factor: 1 })
+const terrain = createTerrain({ size: 1000, factor: 10 })
 
 const lava = createLava({ size: 50 })
 lava.translateY(1.5)
 
 scene.add(terrain, lava, babelTower, baradDur, spaceTower)
 
-const avatar = new Avatar({ skin: 0 })
-avatar.position.set(60, 2, 0)
-avatar.addSolids(terrain, babelTower, baradDur, spaceTower)
-avatar.add(camera)
-scene.add(avatar.mesh)
+const player = new Avatar({ camera, skin: 'disco' })
+player.mesh.position.set(60, 4, 0)
+player.addSolids(terrain, babelTower, baradDur, spaceTower)
+scene.add(player.mesh)
 
 /* LOOP */
 
 void function animate() {
   requestAnimationFrame(animate)
   const delta = clock.getDelta()
-  avatar.update(delta)
+  player.update(delta)
   renderer.render(scene, camera)
 }()

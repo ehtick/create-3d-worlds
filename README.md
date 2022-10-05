@@ -10,8 +10,9 @@ npx live-server
 ```
 
 PlayerFSM:
-- obrisati klasu Player, ažurirati Avatar
+- obrisati klasu Player
 - obrisati actions.js
+- srediti kameru kad Avatar pada (vavilonska kula)
 
 prevesti shadertoy:
 - https://www.shadertoy.com/view/XsVSDz

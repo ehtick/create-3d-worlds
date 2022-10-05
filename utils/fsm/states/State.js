@@ -36,7 +36,7 @@ export default class State {
   }
 
   update(delta) {
-    this.t = Math.min(this.t + delta * 2, 1) // t is for lerp, 1 is limit
+    this.t = Math.min(this.t + delta * 3, 1) // t is for lerp, 1 is limit
   }
 
   exit() { }
