@@ -93,6 +93,14 @@ class Keyboard {
     return this.pressed.ArrowRight || this.pressed.KeyD
   }
 
+  get sideLeft() {
+    return this.pressed.PageUp || this.pressed.KeyQ
+  }
+
+  get sideRight() {
+    return this.pressed.PageDown || this.pressed.KeyE
+  }
+
   get run() {
     return this.capsLock
   }

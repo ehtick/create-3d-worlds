@@ -34,7 +34,7 @@ export default class IdleState extends State {
     this.forward(delta)
 
     if (this.keyboard.up || this.keyboard.down || this.joystick?.forward < 0
-      || this.keyboard.pressed.KeyQ || this.keyboard.pressed.KeyE)
+      || this.keyboard.sideLeft || this.keyboard.sideRight)
       this.fsm.setState('walk')
 
     if (this.fsm.inAir)
