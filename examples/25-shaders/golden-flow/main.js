@@ -1,4 +1,3 @@
-// https://r105.threejsfundamentals.org/threejs/lessons/threejs-shadertoy.html
 import * as THREE from 'three'
 import { material, uniforms } from './shader.js'
 import { scene, camera, renderer } from '/utils/scene.js'
