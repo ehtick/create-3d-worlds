@@ -111,6 +111,12 @@ Axes helper (X axis is red, Y is green, Z is blue):
 scene.add(new THREE.AxesHelper(50))
 ```
 
+Ako je teren jednobojan, bez svetla, uraditi:
+
+```
+geometry.computeVertexNormals()
+```
+
 ## Documentation
 
 All libraries in `/libs` folder are updated manually to support ES6 export.

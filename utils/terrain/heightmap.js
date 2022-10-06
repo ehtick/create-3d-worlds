@@ -6,13 +6,13 @@ const textureLoader = new THREE.TextureLoader()
 export async function terrainFromHeightmap({
   file = 'wiki.png', scale = 1, seaLevel = 0.001, snow = true } = {}
 ) {
-  const { data, width, height } = await getHeightData(`/assets/heightmaps/${file}`, scale)
+  const { data, width, depth } = await getHeightData(`/assets/heightmaps/${file}`, scale)
 
   material.uniforms.heightmap.value = await textureLoader.loadAsync(`/assets/heightmaps/${file}`)
   material.uniforms.seaLevel.value = seaLevel
   material.uniforms.snow.value = snow
 
-  const geometry = new THREE.PlaneGeometry(width, height, width - 1, height - 1)
+  const geometry = new THREE.PlaneGeometry(width, depth, width - 1, depth - 1)
   geometry.rotateX(- Math.PI / 2)
   const { position } = geometry.attributes
 
@@ -35,7 +35,7 @@ function loadImage(url) {
 }
 
 // http://danni-three.blogspot.com/2013/09/threejs-heightmaps.html
-async function getHeightData(url, scale = 1) {
+export async function getHeightData(url, scale = 1) {
   const img = await loadImage(url)
   const { width, height } = img
 
@@ -58,5 +58,5 @@ async function getHeightData(url, scale = 1) {
     data[j++] = all / (12 * scale)
   }
 
-  return { data, width, height }
+  return { data, width, depth: height }
 }
