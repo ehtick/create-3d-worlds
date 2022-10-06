@@ -11,16 +11,15 @@ npx live-server
 
 ### Physics
 - ujednačiti createTerrain i druga fizička pomagala sa standardnim
-- spojiti physijs teren + kola
 - Razaranje zamka topom (možda može i model)
-  - dodati proceduralni zamak (vidi zamak-fizika, gradjevina-physijs)
+  - dodati proceduralni zamak
   - dodati top (ima model)
   - top puca i rusi zidine (vidi ball-trowing)
     https://rawgit.com/mmmovania/Physijs_Tutorials/master/Shooting.html
 - Steampunk vozilo
   - dodati fiziku na steam tenk ili lokomotivu (vidi vozilo-physijs)
   - da gazi i gura prepreke
-- mozda korisno za ball-throwing-physijs https://codepen.io/tjoen/pen/BKxZMQ
+- cannon pucanje primer https://codepen.io/tjoen/pen/BKxZMQ
 - napraviti sletanje na mesec 3d
 - dodati fiziku u vučenje kocki
 
