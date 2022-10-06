@@ -1,30 +1,21 @@
 /* global Ammo */
 import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
-import { createSun } from '/utils/light.js'
 
 createOrbitControls()
 
 // Heightfield parameters
-const terrainWidthExtents = 100
-const terrainDepthExtents = 100
-const terrainWidth = 128
-const terrainDepth = 128
-const terrainHalfWidth = terrainWidth / 2
-const terrainHalfDepth = terrainDepth / 2
-const terrainMaxHeight = 8
-const terrainMinHeight = - 2
+const mapWidth = 100
+const mapDepth = 100
+const width = 128
+const depth = 128
+const maxHeight = 8
+const minHeight = - 2
 
 // Physics variables
-let collisionConfiguration
-let dispatcher
-let broadphase
-let solver
 let physicsWorld
 const dynamicObjects = []
 let transformAux1
-
-let ammoHeightData = null
 
 let time = 0
 const objectTimePeriod = 3
@@ -33,20 +24,21 @@ const maxNumObjects = 30
 
 const AMMO = await Ammo()
 
-const heightData = generateHeight(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight)
+const data = generateHeight(width, depth, minHeight, maxHeight)
 initGraphics()
 initPhysics()
 
 function initGraphics() {
-  camera.position.y = heightData[terrainHalfWidth + terrainHalfDepth * terrainWidth] * (terrainMaxHeight - terrainMinHeight) + 5
-  camera.position.z = terrainDepthExtents / 2
+  const index = width * .5 + depth * .5 * width
+  camera.position.y = data[index] * (maxHeight - minHeight) + 5
+  camera.position.z = mapDepth / 2
 
-  const geometry = new THREE.PlaneGeometry(terrainWidthExtents, terrainDepthExtents, terrainWidth - 1, terrainDepth - 1)
+  const geometry = new THREE.PlaneGeometry(mapWidth, mapDepth, width - 1, depth - 1)
   geometry.rotateX(- Math.PI / 2)
 
   const vertices = geometry.attributes.position.array
   for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3)
-    vertices[j + 1] = heightData[i] // j + 1 is y component
+    vertices[j + 1] = data[i] // j + 1 is y component
 
   geometry.computeVertexNormals()
 
@@ -66,10 +58,10 @@ function initGraphics() {
 
 function initPhysics() {
   // Physics configuration
-  collisionConfiguration = new AMMO.btDefaultCollisionConfiguration()
-  dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
-  broadphase = new AMMO.btDbvtBroadphase()
-  solver = new AMMO.btSequentialImpulseConstraintSolver()
+  const collisionConfiguration = new AMMO.btDefaultCollisionConfiguration()
+  const dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
+  const broadphase = new AMMO.btDbvtBroadphase()
+  const solver = new AMMO.btSequentialImpulseConstraintSolver()
   physicsWorld = new AMMO.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration)
   physicsWorld.setGravity(new AMMO.btVector3(0, - 6, 0))
 
@@ -78,7 +70,7 @@ function initPhysics() {
   const groundTransform = new AMMO.btTransform()
   groundTransform.setIdentity()
   // Shifts the terrain, since bullet re-centers it on its bounding box.
-  groundTransform.setOrigin(new AMMO.btVector3(0, (terrainMaxHeight + terrainMinHeight) / 2, 0))
+  groundTransform.setOrigin(new AMMO.btVector3(0, (maxHeight + minHeight) / 2, 0))
   const groundMass = 0
   const groundLocalInertia = new AMMO.btVector3(0, 0, 0)
   const groundMotionState = new AMMO.btDefaultMotionState(groundTransform)
@@ -123,15 +115,15 @@ function createTerrainShape() {
   // inverts the triangles
   const flipQuadEdges = false
   // Creates height data buffer in AMMO heap
-  ammoHeightData = AMMO._malloc(4 * terrainWidth * terrainDepth)
+  const ammoHeightData = AMMO._malloc(4 * width * depth)
   // Copy the javascript height data array to the AMMO one.
   let p = 0
   let p2 = 0
 
-  for (let j = 0; j < terrainDepth; j++)
-    for (let i = 0; i < terrainWidth; i++) {
+  for (let j = 0; j < depth; j++)
+    for (let i = 0; i < width; i++) {
       // write 32-bit float data to memory
-      AMMO.HEAPF32[ammoHeightData + p2 >> 2] = heightData[p]
+      AMMO.HEAPF32[ammoHeightData + p2 >> 2] = data[p]
       p++
       // 4 bytes/float
       p2 += 4
@@ -139,20 +131,20 @@ function createTerrainShape() {
 
   // Creates the heightfield physics shape
   const heightFieldShape = new AMMO.btHeightfieldTerrainShape(
-    terrainWidth,
-    terrainDepth,
+    width,
+    depth,
     ammoHeightData,
     heightScale,
-    terrainMinHeight,
-    terrainMaxHeight,
+    minHeight,
+    maxHeight,
     upAxis,
     hdt,
     flipQuadEdges
   )
 
   // Set horizontal scale
-  const scaleX = terrainWidthExtents / (terrainWidth - 1)
-  const scaleZ = terrainDepthExtents / (terrainDepth - 1)
+  const scaleX = mapWidth / (width - 1)
+  const scaleZ = mapDepth / (depth - 1)
   heightFieldShape.setLocalScaling(new AMMO.btVector3(scaleX, 1, scaleZ))
   heightFieldShape.setMargin(0.05)
 
@@ -199,7 +191,7 @@ function generateObject() {
       break
   }
 
-  mesh.position.set((Math.random() - 0.5) * terrainWidth * 0.6, terrainMaxHeight + objectSize + 2, (Math.random() - 0.5) * terrainDepth * 0.6)
+  mesh.position.set((Math.random() - 0.5) * width * 0.6, maxHeight + objectSize + 2, (Math.random() - 0.5) * depth * 0.6)
 
   const mass = objectSize * 5
   const localInertia = new AMMO.btVector3(0, 0, 0)
