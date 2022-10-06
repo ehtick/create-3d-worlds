@@ -4,26 +4,16 @@ import { material, uniforms } from './shader.js'
 import { scene, camera, renderer } from '/utils/scene.js'
 
 scene.background = new THREE.Color(0x000000)
+camera.position.y = 0
 
-function createCube() {
-  const geometry = new THREE.BoxGeometry(1, 1, 1)
-  const cube = new THREE.Mesh(geometry, material)
-  return cube
-}
-
-const cube = createCube()
-scene.add(cube)
+const geometry = new THREE.PlaneGeometry(5, 5)
+const mesh = new THREE.Mesh(geometry, material)
+scene.add(mesh)
 
 /* LOOP */
 
 void function loop(time) {
   requestAnimationFrame(loop)
-  time *= 0.001
-
-  const rot = time
-  cube.rotation.x = rot
-  cube.rotation.y = rot
-
-  uniforms.iTime.value = time
+  uniforms.iTime.value = time * 0.001
   renderer.render(scene, camera)
 }()
