@@ -2,8 +2,6 @@
 import * as THREE from 'three'
 
 const fragmentShader = /* glsl */`
-  #include <common>
-
   uniform vec3 iResolution;
   uniform float iTime;
 
