@@ -1,11 +1,6 @@
 // https://www.shadertoy.com/view/4ttGWM
 import * as THREE from 'three'
 
-const loader = new THREE.TextureLoader()
-const texture = loader.load('/assets/images/bayer.png')
-texture.minFilter = texture.magFilter = THREE.NearestFilter
-texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-
 const vertexShader = /* glsl */`
   varying vec2 vUv;
   void main() {
