@@ -9,9 +9,6 @@ npm i
 npx live-server
 ```
 
-PlayerFSM:
-- BUG: 35-stairway-girl zabrlja animacija posle skoka u idle
-
 prevesti shadertoy:
 - https://www.shadertoy.com/view/XsVSDz
 - https://www.shadertoy.com/view/lsf3RH

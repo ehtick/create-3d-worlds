@@ -15,6 +15,8 @@ export default class IdleState extends State {
     this.action?.setEffectiveTimeScale(1)
     const duration = chooseDuration(oldState?.name)
 
+    if (!oldAction) this.fsm.mixer.stopAllAction()
+
     if (this.action && oldAction) {
       if (this.prevState === 'walk' || this.prevState === 'run') this.syncTime()
       this.action.crossFadeFrom(oldAction, duration)
