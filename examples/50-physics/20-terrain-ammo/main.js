@@ -1,6 +1,9 @@
 /* global Ammo */
 import * as THREE from 'three'
-import { OrbitControls } from '/node_modules/three/examples/jsm/controls/OrbitControls.js'
+import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
+import { createSun } from '/utils/light.js'
+
+createOrbitControls()
 
 // Heightfield parameters
 const terrainWidthExtents = 100
@@ -12,12 +15,6 @@ const terrainHalfDepth = terrainDepth / 2
 const terrainMaxHeight = 8
 const terrainMinHeight = - 2
 
-// Graphics variables
-let container
-let camera, scene, renderer
-let terrainMesh
-const clock = new THREE.Clock()
-
 // Physics variables
 let collisionConfiguration
 let dispatcher
@@ -27,7 +24,6 @@ let physicsWorld
 const dynamicObjects = []
 let transformAux1
 
-let heightData = null
 let ammoHeightData = null
 
 let time = 0
@@ -37,89 +33,39 @@ const maxNumObjects = 30
 
 const AMMO = await Ammo()
 
-heightData = generateHeight(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight)
+const heightData = generateHeight(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight)
 initGraphics()
 initPhysics()
 
-animate()
-
 function initGraphics() {
-
-  container = document.getElementById('container')
-
-  renderer = new THREE.WebGLRenderer()
-  renderer.setPixelRatio(window.devicePixelRatio)
-  renderer.setSize(window.innerWidth, window.innerHeight)
-  renderer.shadowMap.enabled = true
-  container.appendChild(renderer.domElement)
-
-  camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.2, 2000)
-
-  scene = new THREE.Scene()
-  scene.background = new THREE.Color(0xbfd1e5)
-
   camera.position.y = heightData[terrainHalfWidth + terrainHalfDepth * terrainWidth] * (terrainMaxHeight - terrainMinHeight) + 5
-
   camera.position.z = terrainDepthExtents / 2
-  camera.lookAt(0, 0, 0)
-
-  const controls = new OrbitControls(camera, renderer.domElement)
-  controls.enableZoom = false
 
   const geometry = new THREE.PlaneGeometry(terrainWidthExtents, terrainDepthExtents, terrainWidth - 1, terrainDepth - 1)
   geometry.rotateX(- Math.PI / 2)
 
   const vertices = geometry.attributes.position.array
-
-  for (let i = 0, j = 0, l = vertices.length; i < l; i ++, j += 3)
-
-  // j + 1 because it is the y component that we modify
-    vertices[j + 1] = heightData[i]
+  for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3)
+    vertices[j + 1] = heightData[i] // j + 1 is y component
 
   geometry.computeVertexNormals()
 
   const groundMaterial = new THREE.MeshPhongMaterial({ color: 0xC7C7C7 })
-  terrainMesh = new THREE.Mesh(geometry, groundMaterial)
-  terrainMesh.receiveShadow = true
-  terrainMesh.castShadow = true
+  const terrain = new THREE.Mesh(geometry, groundMaterial)
+  terrain.receiveShadow = true
+  terrain.castShadow = true
 
-  scene.add(terrainMesh)
+  scene.add(terrain)
 
   const light = new THREE.DirectionalLight(0xffffff, 1)
   light.position.set(100, 100, 50)
   light.castShadow = true
-  const dLight = 200
-  const sLight = dLight * 0.25
-  light.shadow.camera.left = - sLight
-  light.shadow.camera.right = sLight
-  light.shadow.camera.top = sLight
-  light.shadow.camera.bottom = - sLight
-
-  light.shadow.camera.near = dLight / 30
-  light.shadow.camera.far = dLight
-
-  light.shadow.mapSize.x = 1024 * 2
-  light.shadow.mapSize.y = 1024 * 2
 
   scene.add(light)
-
-  window.addEventListener('resize', onWindowResize)
-
-}
-
-function onWindowResize() {
-
-  camera.aspect = window.innerWidth / window.innerHeight
-  camera.updateProjectionMatrix()
-
-  renderer.setSize(window.innerWidth, window.innerHeight)
-
 }
 
 function initPhysics() {
-
   // Physics configuration
-
   collisionConfiguration = new AMMO.btDefaultCollisionConfiguration()
   dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
   broadphase = new AMMO.btDbvtBroadphase()
@@ -128,7 +74,6 @@ function initPhysics() {
   physicsWorld.setGravity(new AMMO.btVector3(0, - 6, 0))
 
   // Create the terrain body
-
   const groundShape = createTerrainShape()
   const groundTransform = new AMMO.btTransform()
   groundTransform.setIdentity()
@@ -141,13 +86,10 @@ function initPhysics() {
   physicsWorld.addRigidBody(groundBody)
 
   transformAux1 = new AMMO.btTransform()
-
 }
 
 function generateHeight(width, depth, minHeight, maxHeight) {
-
   // Generates the height data (a sinus wave)
-
   const size = width * depth
   const data = new Float32Array(size)
 
@@ -158,59 +100,41 @@ function generateHeight(width, depth, minHeight, maxHeight) {
 
   let p = 0
 
-  for (let j = 0; j < depth; j ++)
-
-    for (let i = 0; i < width; i ++) {
-
+  for (let j = 0; j < depth; j++)
+    for (let i = 0; i < width; i++) {
       const radius = Math.sqrt(
         Math.pow((i - w2) / w2, 2.0) +
-								Math.pow((j - d2) / d2, 2.0))
+        Math.pow((j - d2) / d2, 2.0))
 
       const height = (Math.sin(radius * phaseMult) + 1) * 0.5 * hRange + minHeight
-
       data[p] = height
-
-      p ++
-
+      p++
     }
 
   return data
-
 }
 
 function createTerrainShape() {
-
-  // This parameter is not really used, since we are using PHY_FLOAT height data type and hence it is ignored
   const heightScale = 1
-
   // Up axis = 0 for X, 1 for Y, 2 for Z. Normally 1 = Y is used.
   const upAxis = 1
-
   // hdt, height data type. "PHY_FLOAT" is used. Possible values are "PHY_FLOAT", "PHY_UCHAR", "PHY_SHORT"
   const hdt = 'PHY_FLOAT'
-
-  // Set this to your needs (inverts the triangles)
+  // inverts the triangles
   const flipQuadEdges = false
-
   // Creates height data buffer in AMMO heap
   ammoHeightData = AMMO._malloc(4 * terrainWidth * terrainDepth)
-
   // Copy the javascript height data array to the AMMO one.
   let p = 0
   let p2 = 0
 
-  for (let j = 0; j < terrainDepth; j ++)
-
-    for (let i = 0; i < terrainWidth; i ++) {
-
+  for (let j = 0; j < terrainDepth; j++)
+    for (let i = 0; i < terrainWidth; i++) {
       // write 32-bit float data to memory
       AMMO.HEAPF32[ammoHeightData + p2 >> 2] = heightData[p]
-
-      p ++
-
+      p++
       // 4 bytes/float
       p2 += 4
-
     }
 
   // Creates the heightfield physics shape
@@ -230,122 +154,81 @@ function createTerrainShape() {
   const scaleX = terrainWidthExtents / (terrainWidth - 1)
   const scaleZ = terrainDepthExtents / (terrainDepth - 1)
   heightFieldShape.setLocalScaling(new AMMO.btVector3(scaleX, 1, scaleZ))
-
   heightFieldShape.setMargin(0.05)
 
   return heightFieldShape
-
 }
 
 function generateObject() {
-
   const numTypes = 4
   const objectType = Math.ceil(Math.random() * numTypes)
 
-  let threeObject = null
+  let mesh = null
   let shape = null
 
   const objectSize = 3
   const margin = 0.05
 
-  let radius, height
+  const rand1 = 1 + Math.random() * objectSize
+  const rand2 = 1 + Math.random() * objectSize
+  const rand3 = 1 + Math.random() * objectSize
 
   switch (objectType) {
-
     case 1:
       // Sphere
-      radius = 1 + Math.random() * objectSize
-      threeObject = new THREE.Mesh(new THREE.SphereGeometry(radius, 20, 20), createObjectMaterial())
-      shape = new AMMO.btSphereShape(radius)
+      mesh = new THREE.Mesh(new THREE.SphereGeometry(rand1, 20, 20), createObjectMaterial())
+      shape = new AMMO.btSphereShape(rand1)
       shape.setMargin(margin)
       break
     case 2:
       // Box
-      const sx = 1 + Math.random() * objectSize
-      const sy = 1 + Math.random() * objectSize
-      const sz = 1 + Math.random() * objectSize
-      threeObject = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), createObjectMaterial())
-      shape = new AMMO.btBoxShape(new AMMO.btVector3(sx * 0.5, sy * 0.5, sz * 0.5))
+      mesh = new THREE.Mesh(new THREE.BoxGeometry(rand1, rand2, rand3, 1, 1, 1), createObjectMaterial())
+      shape = new AMMO.btBoxShape(new AMMO.btVector3(rand1 * 0.5, rand2 * 0.5, rand3 * 0.5))
       shape.setMargin(margin)
       break
     case 3:
       // Cylinder
-      radius = 1 + Math.random() * objectSize
-      height = 1 + Math.random() * objectSize
-      threeObject = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, height, 20, 1), createObjectMaterial())
-      shape = new AMMO.btCylinderShape(new AMMO.btVector3(radius, height * 0.5, radius))
+      mesh = new THREE.Mesh(new THREE.CylinderGeometry(rand1, rand1, rand2, 20, 1), createObjectMaterial())
+      shape = new AMMO.btCylinderShape(new AMMO.btVector3(rand1, rand2 * 0.5, rand1))
       shape.setMargin(margin)
       break
     default:
       // Cone
-      radius = 1 + Math.random() * objectSize
-      height = 2 + Math.random() * objectSize
-      threeObject = new THREE.Mesh(new THREE.ConeGeometry(radius, height, 20, 2), createObjectMaterial())
-      shape = new AMMO.btConeShape(radius, height)
+      mesh = new THREE.Mesh(new THREE.ConeGeometry(rand1, rand2, 20, 2), createObjectMaterial())
+      shape = new AMMO.btConeShape(rand1, rand2)
       break
-
   }
 
-  threeObject.position.set((Math.random() - 0.5) * terrainWidth * 0.6, terrainMaxHeight + objectSize + 2, (Math.random() - 0.5) * terrainDepth * 0.6)
+  mesh.position.set((Math.random() - 0.5) * terrainWidth * 0.6, terrainMaxHeight + objectSize + 2, (Math.random() - 0.5) * terrainDepth * 0.6)
 
   const mass = objectSize * 5
   const localInertia = new AMMO.btVector3(0, 0, 0)
   shape.calculateLocalInertia(mass, localInertia)
   const transform = new AMMO.btTransform()
   transform.setIdentity()
-  const pos = threeObject.position
+  const pos = mesh.position
   transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
   const motionState = new AMMO.btDefaultMotionState(transform)
   const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia)
   const body = new AMMO.btRigidBody(rbInfo)
 
-  threeObject.userData.physicsBody = body
+  mesh.userData.physicsBody = body
+  mesh.receiveShadow = mesh.castShadow = true
 
-  threeObject.receiveShadow = true
-  threeObject.castShadow = true
-
-  scene.add(threeObject)
-  dynamicObjects.push(threeObject)
+  scene.add(mesh)
+  dynamicObjects.push(mesh)
 
   physicsWorld.addRigidBody(body)
-
 }
 
 function createObjectMaterial() {
-
   const c = Math.floor(Math.random() * (1 << 24))
   return new THREE.MeshPhongMaterial({ color: c })
-
-}
-
-function animate() {
-  requestAnimationFrame(animate)
-  render()
-}
-
-function render() {
-
-  const deltaTime = clock.getDelta()
-
-  if (dynamicObjects.length < maxNumObjects && time > timeNextSpawn) {
-
-    generateObject()
-    timeNextSpawn = time + objectTimePeriod
-
-  }
-
-  updatePhysics(deltaTime)
-
-  renderer.render(scene, camera)
-
-  time += deltaTime
-
 }
 
 function updatePhysics(deltaTime) {
   physicsWorld.stepSimulation(deltaTime, 10)
-  // Update objects
-  for (let i = 0, il = dynamicObjects.length; i < il; i ++) {
+  for (let i = 0, il = dynamicObjects.length; i < il; i++) {
     const objThree = dynamicObjects[i]
     const objPhys = objThree.userData.physicsBody
     const ms = objPhys.getMotionState()
@@ -358,3 +241,19 @@ function updatePhysics(deltaTime) {
     }
   }
 }
+
+/* LOOP */
+
+void function loop() {
+  requestAnimationFrame(loop)
+  const deltaTime = clock.getDelta()
+
+  if (dynamicObjects.length < maxNumObjects && time > timeNextSpawn) {
+    generateObject()
+    timeNextSpawn = time + objectTimePeriod
+  }
+
+  updatePhysics(deltaTime)
+  renderer.render(scene, camera)
+  time += deltaTime
+}()
