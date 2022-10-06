@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { material, uniforms } from './shader.js'
+import { material, uniforms } from '/utils/shaders/golden-flow.js'
 import { scene, camera, renderer } from '/utils/scene.js'
 
 scene.background = new THREE.Color(0x000000)

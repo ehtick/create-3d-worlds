@@ -9,10 +9,6 @@ npm i
 npx live-server
 ```
 
-prevesti shadertoy:
-- https://www.shadertoy.com/view/XsVSDz
-- https://www.shadertoy.com/view/lsf3RH
-
 ### Physics
 - preraditi prostu 2D fiziku u 3D
 - ujednačiti createTerrain i druga fizička pomagala sa standardnim
