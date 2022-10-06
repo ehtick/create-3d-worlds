@@ -10,7 +10,6 @@ npx live-server
 ```
 
 ### Physics
-- preraditi prostu 2D fiziku u 3D
 - ujednačiti createTerrain i druga fizička pomagala sa standardnim
 - spojiti physijs teren + kola
 - Razaranje zamka topom (možda može i model)
