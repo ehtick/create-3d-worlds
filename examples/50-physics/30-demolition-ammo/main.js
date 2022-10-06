@@ -1,72 +1,38 @@
 /* global Ammo */
 import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
+import { createSun } from '/utils/light.js'
+
+camera.position.set(-7, 5, 8)
+createOrbitControls()
 
 const gravityConstant = - 9.8
-let collisionConfiguration
-let dispatcher
-let broadphase
-let solver
-let softBodySolver
-let physicsWorld
 const rigidBodies = []
 const margin = 0.05
-let hinge
-let rope
-let transformAux1
-
+let physicsWorld, hinge, rope, transformAux1
 let armMovement = 0
 
 const AMMO = await Ammo()
 
-initGraphics()
+const sun = createSun({ position: [-5, 10, 5] })
+scene.add(sun)
+
 initPhysics()
 createObjects()
 initInput()
 
-function initGraphics() {
-  camera.position.set(- 7, 5, 8)
-
-  const controls = createOrbitControls()
-  controls.target.set(0, 2, 0)
-  controls.update()
-
-  const ambientLight = new THREE.AmbientLight(0x404040)
-  scene.add(ambientLight)
-
-  const light = new THREE.DirectionalLight(0xffffff, 1)
-  light.position.set(- 10, 10, 5)
-  light.castShadow = true
-  const d = 10
-  light.shadow.camera.left = - d
-  light.shadow.camera.right = d
-  light.shadow.camera.top = d
-  light.shadow.camera.bottom = - d
-
-  light.shadow.camera.near = 2
-  light.shadow.camera.far = 50
-
-  light.shadow.mapSize.x = 1024
-  light.shadow.mapSize.y = 1024
-
-  scene.add(light)
-}
-
 function initPhysics() {
-
   // Physics configuration
-
-  collisionConfiguration = new AMMO.btSoftBodyRigidBodyCollisionConfiguration()
-  dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
-  broadphase = new AMMO.btDbvtBroadphase()
-  solver = new AMMO.btSequentialImpulseConstraintSolver()
-  softBodySolver = new AMMO.btDefaultSoftBodySolver()
+  const collisionConfiguration = new AMMO.btSoftBodyRigidBodyCollisionConfiguration()
+  const dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
+  const broadphase = new AMMO.btDbvtBroadphase()
+  const solver = new AMMO.btSequentialImpulseConstraintSolver()
+  const softBodySolver = new AMMO.btDefaultSoftBodySolver()
   physicsWorld = new AMMO.btSoftRigidDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration, softBodySolver)
   physicsWorld.setGravity(new AMMO.btVector3(0, gravityConstant, 0))
   physicsWorld.getWorldInfo().set_m_gravity(new AMMO.btVector3(0, gravityConstant, 0))
 
   transformAux1 = new AMMO.btTransform()
-
 }
 
 function createObjects() {
@@ -206,7 +172,6 @@ function createObjects() {
   const axis = new AMMO.btVector3(0, 1, 0)
   hinge = new AMMO.btHingeConstraint(pylon.userData.physicsBody, arm.userData.physicsBody, pivotA, pivotB, axis, axis, true)
   physicsWorld.addConstraint(hinge, true)
-
 }
 
 function createParalellepiped(sx, sy, sz, mass, pos, quat, material) {
