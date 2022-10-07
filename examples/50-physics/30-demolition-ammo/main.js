@@ -2,7 +2,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
-import { createRigidBody } from '/utils/physics.js'
+import { createRigidBody, createBox } from '/utils/physics.js'
 
 const AMMO = await Ammo
 
@@ -44,15 +44,14 @@ function createObjects() {
   pos.set(0, - 0.5, 0)
   quat.set(0, 0, 0, 1)
   const ground = createBox(40, 1, 40, 0, pos, quat, new THREE.MeshPhongMaterial({ color: 0xFFFFFF }))
-  ground.castShadow = ground.receiveShadow = true
+  addRigidBody(ground)
 
   // Ball
   const ballMass = 1.2
   const ballRadius = 0.6
 
   const ball = new THREE.Mesh(new THREE.SphereGeometry(ballRadius, 20, 20), new THREE.MeshPhongMaterial({ color: 0x202020 }))
-  ball.castShadow = true
-  ball.receiveShadow = true
+  ball.castShadow = ball.receiveShadow = true
   const ballShape = new AMMO.btSphereShape(ballRadius)
   ballShape.setMargin(margin)
   pos.set(- 3, 2, 0)
@@ -89,7 +88,7 @@ function createObjects() {
       }
 
       const brick = createBox(brickDepth, brickHeight, brickLengthCurrent, brickMassCurrent, pos, quat, createMaterial())
-      brick.castShadow = brick.receiveShadow = true
+      addRigidBody(brick)
 
       if (oddRow && (i == 0 || i == nRow - 2))
         pos.z += 0.75 * brickLength
@@ -150,36 +149,25 @@ function createObjects() {
   pos.set(ropePos.x, 0.1, ropePos.z - armLength)
   quat.set(0, 0, 0, 1)
   const base = createBox(1, 0.2, 1, 0, pos, quat, baseMaterial)
-  base.castShadow = true
-  base.receiveShadow = true
+  addRigidBody(base)
   pos.set(ropePos.x, 0.5 * pylonHeight, ropePos.z - armLength)
   const pylon = createBox(0.4, pylonHeight, 0.4, 0, pos, quat, baseMaterial)
-  pylon.castShadow = true
-  pylon.receiveShadow = true
+  addRigidBody(pylon)
   pos.set(ropePos.x, pylonHeight + 0.2, ropePos.z - 0.5 * armLength)
   const arm = createBox(0.4, 0.4, armLength + 0.4, armMass, pos, quat, baseMaterial)
-  arm.castShadow = true
-  arm.receiveShadow = true
+  addRigidBody(arm)
 
   // Glue the rope extremes to the ball and the arm
   const influence = 1
   ropeSoftBody.appendAnchor(0, ball.userData.physicsBody, true, influence)
-  ropeSoftBody.appendAnchor(ropeNumSegments, arm.userData.physicsBody, true, influence)
+  ropeSoftBody.appendAnchor(ropeNumSegments, arm.body, true, influence)
 
   // Hinge constraint to move the arm
   const pivotA = new AMMO.btVector3(0, pylonHeight * 0.5, 0)
   const pivotB = new AMMO.btVector3(0, - 0.2, - armLength * 0.5)
   const axis = new AMMO.btVector3(0, 1, 0)
-  hinge = new AMMO.btHingeConstraint(pylon.userData.physicsBody, arm.userData.physicsBody, pivotA, pivotB, axis, axis, true)
+  hinge = new AMMO.btHingeConstraint(pylon.body, arm.body, pivotA, pivotB, axis, axis, true)
   physicsWorld.addConstraint(hinge, true)
-}
-
-function createBox(sx, sy, sz, mass, pos, quat, material) {
-  const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), material)
-  const shape = new AMMO.btBoxShape(new AMMO.btVector3(sx * 0.5, sy * 0.5, sz * 0.5))
-  shape.setMargin(margin)
-  addRigidBody(createRigidBody(mesh, shape, mass, pos, quat))
-  return mesh
 }
 
 function addRigidBody({ mesh, body, mass }) {

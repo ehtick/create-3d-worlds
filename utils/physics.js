@@ -1,6 +1,9 @@
 /* global Ammo */
+import * as THREE from 'three'
 
 const AMMO = await Ammo()
+
+const margin = 0.05
 
 export function createRigidBody(mesh, shape, mass, pos, quat) {
   mesh.position.copy(pos)
@@ -22,4 +25,12 @@ export function createRigidBody(mesh, shape, mass, pos, quat) {
   if (mass > 0) body.setActivationState(4) // Disable deactivation
 
   return { mesh, body, mass }
+}
+
+export function createBox(sx, sy, sz, mass, pos, quat, material) {
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), material)
+  mesh.castShadow = mesh.receiveShadow = true
+  const shape = new AMMO.btBoxShape(new AMMO.btVector3(sx * 0.5, sy * 0.5, sz * 0.5))
+  shape.setMargin(margin)
+  return createRigidBody(mesh, shape, mass, pos, quat)
 }
