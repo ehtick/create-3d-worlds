@@ -9,7 +9,7 @@ function randomColor() {
   return Math.floor(Math.random() * (1 << 24))
 }
 
-function createRigidBody(mesh, shape, mass, pos, quat) {
+function createRigidBody(mesh, shape, mass, pos, quat = { x: 0, y: 0, z: 0, w: 1 }) {
   mesh.position.copy(pos)
   mesh.quaternion.copy(quat)
 
@@ -31,13 +31,20 @@ function createRigidBody(mesh, shape, mass, pos, quat) {
   return { mesh, body, mass }
 }
 
-export function createBox(sx, sy, sz, mass, pos, quat, color) {
+export function createBox(width, height, depth, mass, pos, quat, color) {
   const mesh = new THREE.Mesh(
-    new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), new THREE.MeshPhongMaterial({ color: color || randomColor() }))
+    new THREE.BoxGeometry(width, height, depth, 1, 1, 1), new THREE.MeshPhongMaterial({ color: color || randomColor() }))
   mesh.castShadow = mesh.receiveShadow = true
-  const shape = new AMMO.btBoxShape(new AMMO.btVector3(sx * 0.5, sy * 0.5, sz * 0.5))
+  const shape = new AMMO.btBoxShape(new AMMO.btVector3(width * 0.5, height * 0.5, depth * 0.5))
   shape.setMargin(margin)
   return createRigidBody(mesh, shape, mass, pos, quat)
+}
+
+export function createBrick(length, height, depth, pos, halfBrick) {
+  const mass = 0.5
+  const lengthCurrent = halfBrick ? length * .5 : length
+  const massCurrent = halfBrick ? mass * .5 : mass
+  return createBox(depth, height, lengthCurrent, massCurrent, pos)
 }
 
 export function createBall(radius = 0.6, mass = 1.2, pos, quat) {

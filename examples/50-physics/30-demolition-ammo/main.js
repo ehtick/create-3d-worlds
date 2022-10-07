@@ -2,7 +2,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
-import { createBox, createBall } from '/utils/physics.js'
+import { createBox, createBall, createBrick } from '/utils/physics.js'
 
 const AMMO = await Ammo
 
@@ -40,29 +40,19 @@ function initPhysics() {
 }
 
 function createObjects() {
-  // Ground
-  pos.set(0, -0.5, 0)
-  quat.set(0, 0, 0, 1)
-  const ground = createBox(40, 1, 40, 0, pos, quat, 0xFFFFFF)
+  const ground = createBox(40, 1, 40, 0, { x: 0, y: -0.5, z: 0 }, { x: 0, y: 0, z: 0, w: 1 }, 0xFFFFFF)
   addRigidBody(ground)
 
-  // Ball
   const ballRadius = 0.6
-  pos.set(-3, 2, 0)
-  quat.set(0, 0, 0, 1)
-  const ballRes = createBall(ballRadius, 1.2, pos, quat)
-  addRigidBody(ballRes)
+  const ball = createBall(ballRadius, 1.2, { x: -3, y: 2, z: 0 })
+  addRigidBody(ball)
 
-  // Wall
-  const brickMass = 0.5
   const brickLength = 1.2
-  const brickDepth = 0.6
   const brickHeight = brickLength * 0.5
   const numBricksLength = 6
   const numBricksHeight = 8
-  const z0 = - numBricksLength * brickLength * 0.5
+  const z0 = -numBricksLength * brickLength * 0.5
   pos.set(0, brickHeight * 0.5, z0)
-  quat.set(0, 0, 0, 1)
 
   for (let j = 0; j < numBricksHeight; j ++) {
     const oddRow = (j % 2) == 1
@@ -74,14 +64,8 @@ function createObjects() {
     const nRow = oddRow ? numBricksLength + 1 : numBricksLength
 
     for (let i = 0; i < nRow; i ++) {
-      let brickLengthCurrent = brickLength
-      let brickMassCurrent = brickMass
-      if (oddRow && (i == 0 || i == nRow - 1)) {
-        brickLengthCurrent *= 0.5
-        brickMassCurrent *= 0.5
-      }
-
-      const brick = createBox(brickDepth, brickHeight, brickLengthCurrent, brickMassCurrent, pos, quat)
+      const halfBrick = oddRow && (i == 0 || i == nRow - 1)
+      const brick = createBrick(brickLength, brickHeight, 0.6, pos, halfBrick)
       addRigidBody(brick)
 
       if (oddRow && (i == 0 || i == nRow - 2))
@@ -97,7 +81,7 @@ function createObjects() {
   const ropeNumSegments = 10
   const ropeLength = 4
   const ropeMass = 3
-  const ropePos = ballRes.mesh.position.clone()
+  const ropePos = ball.mesh.position.clone()
   ropePos.y += ballRadius
 
   const segmentLength = ropeLength / ropeNumSegments
@@ -152,7 +136,7 @@ function createObjects() {
 
   // Glue the rope extremes to the ball and the arm
   const influence = 1
-  ropeSoftBody.appendAnchor(0, ballRes.body, true, influence)
+  ropeSoftBody.appendAnchor(0, ball.body, true, influence)
   ropeSoftBody.appendAnchor(ropeNumSegments, arm.body, true, influence)
 
   // Hinge constraint to move the arm
