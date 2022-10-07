@@ -2,6 +2,9 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
+import { createRigidBody } from '/utils/physics.js'
+
+const AMMO = await Ammo
 
 camera.position.set(-7, 5, 8)
 createOrbitControls()
@@ -11,8 +14,6 @@ const rigidBodies = []
 const margin = 0.05
 let physicsWorld, hinge, rope, transformAux1
 let armMovement = 0
-
-const AMMO = await Ammo()
 
 const sun = createSun({ position: [-5, 10, 5] })
 scene.add(sun)
@@ -56,7 +57,7 @@ function createObjects() {
   ballShape.setMargin(margin)
   pos.set(- 3, 2, 0)
   quat.set(0, 0, 0, 1)
-  createRigidBody(ball, ballShape, ballMass, pos, quat)
+  addRigidBody(createRigidBody(ball, ballShape, ballMass, pos, quat))
   ball.userData.physicsBody.setFriction(0.5)
 
   // Wall
@@ -177,36 +178,13 @@ function createBox(sx, sy, sz, mass, pos, quat, material) {
   const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), material)
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(sx * 0.5, sy * 0.5, sz * 0.5))
   shape.setMargin(margin)
-  createRigidBody(mesh, shape, mass, pos, quat)
+  addRigidBody(createRigidBody(mesh, shape, mass, pos, quat))
   return mesh
 }
 
-function createRigidBody(mesh, shape, mass, pos, quat) {
-  mesh.position.copy(pos)
-  mesh.quaternion.copy(quat)
-
-  const transform = new AMMO.btTransform()
-  transform.setIdentity()
-  transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
-  transform.setRotation(new AMMO.btQuaternion(quat.x, quat.y, quat.z, quat.w))
-  const motionState = new AMMO.btDefaultMotionState(transform)
-
-  const localInertia = new AMMO.btVector3(0, 0, 0)
-  shape.calculateLocalInertia(mass, localInertia)
-
-  const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia)
-  const body = new AMMO.btRigidBody(rbInfo)
-
-  mesh.userData.physicsBody = body
-
+function addRigidBody({ mesh, body, mass }) {
   scene.add(mesh)
-
-  if (mass > 0) {
-    rigidBodies.push(mesh)
-    // Disable deactivation
-    body.setActivationState(4)
-  }
-
+  if (mass > 0) rigidBodies.push(mesh)
   physicsWorld.addRigidBody(body)
 }
 
