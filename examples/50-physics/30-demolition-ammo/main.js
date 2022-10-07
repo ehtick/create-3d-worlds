@@ -42,7 +42,7 @@ function createObjects() {
   // Ground
   pos.set(0, - 0.5, 0)
   quat.set(0, 0, 0, 1)
-  const ground = createParalellepiped(40, 1, 40, 0, pos, quat, new THREE.MeshPhongMaterial({ color: 0xFFFFFF }))
+  const ground = createBox(40, 1, 40, 0, pos, quat, new THREE.MeshPhongMaterial({ color: 0xFFFFFF }))
   ground.castShadow = ground.receiveShadow = true
 
   // Ball
@@ -87,7 +87,7 @@ function createObjects() {
         brickMassCurrent *= 0.5
       }
 
-      const brick = createParalellepiped(brickDepth, brickHeight, brickLengthCurrent, brickMassCurrent, pos, quat, createMaterial())
+      const brick = createBox(brickDepth, brickHeight, brickLengthCurrent, brickMassCurrent, pos, quat, createMaterial())
       brick.castShadow = brick.receiveShadow = true
 
       if (oddRow && (i == 0 || i == nRow - 2))
@@ -99,7 +99,6 @@ function createObjects() {
     pos.y += brickHeight
   }
 
-  // The rope
   // Rope graphic object
   const ropeNumSegments = 10
   const ropeLength = 4
@@ -149,15 +148,15 @@ function createObjects() {
   const baseMaterial = new THREE.MeshPhongMaterial({ color: 0x606060 })
   pos.set(ropePos.x, 0.1, ropePos.z - armLength)
   quat.set(0, 0, 0, 1)
-  const base = createParalellepiped(1, 0.2, 1, 0, pos, quat, baseMaterial)
+  const base = createBox(1, 0.2, 1, 0, pos, quat, baseMaterial)
   base.castShadow = true
   base.receiveShadow = true
   pos.set(ropePos.x, 0.5 * pylonHeight, ropePos.z - armLength)
-  const pylon = createParalellepiped(0.4, pylonHeight, 0.4, 0, pos, quat, baseMaterial)
+  const pylon = createBox(0.4, pylonHeight, 0.4, 0, pos, quat, baseMaterial)
   pylon.castShadow = true
   pylon.receiveShadow = true
   pos.set(ropePos.x, pylonHeight + 0.2, ropePos.z - 0.5 * armLength)
-  const arm = createParalellepiped(0.4, 0.4, armLength + 0.4, armMass, pos, quat, baseMaterial)
+  const arm = createBox(0.4, 0.4, armLength + 0.4, armMass, pos, quat, baseMaterial)
   arm.castShadow = true
   arm.receiveShadow = true
 
@@ -174,19 +173,17 @@ function createObjects() {
   physicsWorld.addConstraint(hinge, true)
 }
 
-function createParalellepiped(sx, sy, sz, mass, pos, quat, material) {
-  const threeObject = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), material)
+function createBox(sx, sy, sz, mass, pos, quat, material) {
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), material)
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(sx * 0.5, sy * 0.5, sz * 0.5))
   shape.setMargin(margin)
-
-  createRigidBody(threeObject, shape, mass, pos, quat)
-
-  return threeObject
+  createRigidBody(mesh, shape, mass, pos, quat)
+  return mesh
 }
 
-function createRigidBody(threeObject, physicsShape, mass, pos, quat) {
-  threeObject.position.copy(pos)
-  threeObject.quaternion.copy(quat)
+function createRigidBody(mesh, shape, mass, pos, quat) {
+  mesh.position.copy(pos)
+  mesh.quaternion.copy(quat)
 
   const transform = new AMMO.btTransform()
   transform.setIdentity()
@@ -195,17 +192,17 @@ function createRigidBody(threeObject, physicsShape, mass, pos, quat) {
   const motionState = new AMMO.btDefaultMotionState(transform)
 
   const localInertia = new AMMO.btVector3(0, 0, 0)
-  physicsShape.calculateLocalInertia(mass, localInertia)
+  shape.calculateLocalInertia(mass, localInertia)
 
-  const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, physicsShape, localInertia)
+  const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia)
   const body = new AMMO.btRigidBody(rbInfo)
 
-  threeObject.userData.physicsBody = body
+  mesh.userData.physicsBody = body
 
-  scene.add(threeObject)
+  scene.add(mesh)
 
   if (mass > 0) {
-    rigidBodies.push(threeObject)
+    rigidBodies.push(mesh)
     // Disable deactivation
     body.setActivationState(4)
   }
@@ -228,7 +225,6 @@ function initInput() {
       case 81:
         armMovement = 1
         break
-
         // A
       case 65:
         armMovement = - 1
@@ -280,8 +276,10 @@ function updatePhysics(deltaTime) {
   }
 }
 
-void function animate() {
-  requestAnimationFrame(animate)
+/* LOOP */
+
+void function loop() {
+  requestAnimationFrame(loop)
   const deltaTime = clock.getDelta()
   updatePhysics(deltaTime)
   renderer.render(scene, camera)
