@@ -2,7 +2,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
-import { createRigidBody, createBox } from '/utils/physics.js'
+import { createBox, createBall } from '/utils/physics.js'
 
 const AMMO = await Ammo
 
@@ -43,21 +43,15 @@ function createObjects() {
   // Ground
   pos.set(0, - 0.5, 0)
   quat.set(0, 0, 0, 1)
-  const ground = createBox(40, 1, 40, 0, pos, quat, new THREE.MeshPhongMaterial({ color: 0xFFFFFF }))
+  const ground = createBox(40, 1, 40, 0, pos, quat, 0xFFFFFF)
   addRigidBody(ground)
 
   // Ball
-  const ballMass = 1.2
   const ballRadius = 0.6
-
-  const ball = new THREE.Mesh(new THREE.SphereGeometry(ballRadius, 20, 20), new THREE.MeshPhongMaterial({ color: 0x202020 }))
-  ball.castShadow = ball.receiveShadow = true
-  const ballShape = new AMMO.btSphereShape(ballRadius)
-  ballShape.setMargin(margin)
   pos.set(- 3, 2, 0)
   quat.set(0, 0, 0, 1)
-  addRigidBody(createRigidBody(ball, ballShape, ballMass, pos, quat))
-  ball.userData.physicsBody.setFriction(0.5)
+  const ballRes = createBall(ballRadius, 1.2, pos, quat)
+  addRigidBody(ballRes)
 
   // Wall
   const brickMass = 0.5
@@ -87,7 +81,7 @@ function createObjects() {
         brickMassCurrent *= 0.5
       }
 
-      const brick = createBox(brickDepth, brickHeight, brickLengthCurrent, brickMassCurrent, pos, quat, createMaterial())
+      const brick = createBox(brickDepth, brickHeight, brickLengthCurrent, brickMassCurrent, pos, quat)
       addRigidBody(brick)
 
       if (oddRow && (i == 0 || i == nRow - 2))
@@ -103,7 +97,7 @@ function createObjects() {
   const ropeNumSegments = 10
   const ropeLength = 4
   const ropeMass = 3
-  const ropePos = ball.position.clone()
+  const ropePos = ballRes.mesh.position.clone()
   ropePos.y += ballRadius
 
   const segmentLength = ropeLength / ropeNumSegments
@@ -145,21 +139,20 @@ function createObjects() {
   const armMass = 2
   const armLength = 3
   const pylonHeight = ropePos.y + ropeLength
-  const baseMaterial = new THREE.MeshPhongMaterial({ color: 0x606060 })
   pos.set(ropePos.x, 0.1, ropePos.z - armLength)
   quat.set(0, 0, 0, 1)
-  const base = createBox(1, 0.2, 1, 0, pos, quat, baseMaterial)
+  const base = createBox(1, 0.2, 1, 0, pos, quat, 0x606060)
   addRigidBody(base)
   pos.set(ropePos.x, 0.5 * pylonHeight, ropePos.z - armLength)
-  const pylon = createBox(0.4, pylonHeight, 0.4, 0, pos, quat, baseMaterial)
+  const pylon = createBox(0.4, pylonHeight, 0.4, 0, pos, quat, 0x606060)
   addRigidBody(pylon)
   pos.set(ropePos.x, pylonHeight + 0.2, ropePos.z - 0.5 * armLength)
-  const arm = createBox(0.4, 0.4, armLength + 0.4, armMass, pos, quat, baseMaterial)
+  const arm = createBox(0.4, 0.4, armLength + 0.4, armMass, pos, quat, 0x606060)
   addRigidBody(arm)
 
   // Glue the rope extremes to the ball and the arm
   const influence = 1
-  ropeSoftBody.appendAnchor(0, ball.userData.physicsBody, true, influence)
+  ropeSoftBody.appendAnchor(0, ballRes.body, true, influence)
   ropeSoftBody.appendAnchor(ropeNumSegments, arm.body, true, influence)
 
   // Hinge constraint to move the arm

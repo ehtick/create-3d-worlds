@@ -5,7 +5,11 @@ const AMMO = await Ammo()
 
 const margin = 0.05
 
-export function createRigidBody(mesh, shape, mass, pos, quat) {
+function randomColor() {
+  return Math.floor(Math.random() * (1 << 24))
+}
+
+function createRigidBody(mesh, shape, mass, pos, quat) {
   mesh.position.copy(pos)
   mesh.quaternion.copy(quat)
 
@@ -27,10 +31,22 @@ export function createRigidBody(mesh, shape, mass, pos, quat) {
   return { mesh, body, mass }
 }
 
-export function createBox(sx, sy, sz, mass, pos, quat, material) {
-  const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), material)
+export function createBox(sx, sy, sz, mass, pos, quat, color) {
+  const mesh = new THREE.Mesh(
+    new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), new THREE.MeshPhongMaterial({ color: color || randomColor() }))
   mesh.castShadow = mesh.receiveShadow = true
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(sx * 0.5, sy * 0.5, sz * 0.5))
   shape.setMargin(margin)
   return createRigidBody(mesh, shape, mass, pos, quat)
+}
+
+export function createBall(radius = 0.6, mass = 1.2, pos, quat) {
+  const mesh = new THREE.Mesh(
+    new THREE.SphereGeometry(radius, 20, 20), new THREE.MeshPhongMaterial({ color: 0x202020 }))
+  mesh.castShadow = mesh.receiveShadow = true
+  const shape = new AMMO.btSphereShape(radius)
+  shape.setMargin(margin)
+  const res = createRigidBody(mesh, shape, mass, pos, quat)
+  res.body.setFriction(0.5)
+  return res
 }
