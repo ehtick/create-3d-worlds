@@ -6,6 +6,9 @@ import { createBox, createBall } from '/utils/physics.js'
 
 const AMMO = await Ammo
 
+const pos = new THREE.Vector3()
+const quat = new THREE.Quaternion()
+
 camera.position.set(-7, 5, 8)
 createOrbitControls()
 
@@ -37,18 +40,15 @@ function initPhysics() {
 }
 
 function createObjects() {
-  const pos = new THREE.Vector3()
-  const quat = new THREE.Quaternion()
-
   // Ground
-  pos.set(0, - 0.5, 0)
+  pos.set(0, -0.5, 0)
   quat.set(0, 0, 0, 1)
   const ground = createBox(40, 1, 40, 0, pos, quat, 0xFFFFFF)
   addRigidBody(ground)
 
   // Ball
   const ballRadius = 0.6
-  pos.set(- 3, 2, 0)
+  pos.set(-3, 2, 0)
   quat.set(0, 0, 0, 1)
   const ballRes = createBall(ballRadius, 1.2, pos, quat)
   addRigidBody(ballRes)
@@ -169,14 +169,6 @@ function addRigidBody({ mesh, body, mass }) {
   physicsWorld.addRigidBody(body)
 }
 
-function createRandomColor() {
-  return Math.floor(Math.random() * (1 << 24))
-}
-
-function createMaterial() {
-  return new THREE.MeshPhongMaterial({ color: createRandomColor() })
-}
-
 function initInput() {
   window.addEventListener('keydown', event => {
     switch (event.keyCode) {
@@ -199,10 +191,8 @@ function initInput() {
 function updatePhysics(deltaTime) {
   // Hinge control
   hinge.enableAngularMotor(true, 1.5 * armMovement, 50)
-
   // Step world
   physicsWorld.stepSimulation(deltaTime, 10)
-
   // Update rope
   const softBody = rope.userData.physicsBody
   const ropePositions = rope.geometry.attributes.position.array
@@ -220,19 +210,17 @@ function updatePhysics(deltaTime) {
 
   rope.geometry.attributes.position.needsUpdate = true
 
-  // Update rigid bodies
-  for (let i = 0, il = rigidBodies.length; i < il; i ++) {
-    const objThree = rigidBodies[i]
-    const objPhys = objThree.userData.physicsBody
-    const ms = objPhys.getMotionState()
+  rigidBodies.forEach(mesh => {
+    const { physicsBody } = mesh.userData
+    const ms = physicsBody.getMotionState()
     if (ms) {
       ms.getWorldTransform(transformAux1)
       const p = transformAux1.getOrigin()
       const q = transformAux1.getRotation()
-      objThree.position.set(p.x(), p.y(), p.z())
-      objThree.quaternion.set(q.x(), q.y(), q.z(), q.w())
+      mesh.position.set(p.x(), p.y(), p.z())
+      mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
     }
-  }
+  })
 }
 
 /* LOOP */
