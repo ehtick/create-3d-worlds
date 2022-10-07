@@ -51,27 +51,23 @@ function createObjects() {
   const brickHeight = brickLength * 0.5
   const numBricksLength = 6
   const numBricksHeight = 8
-  const z0 = -numBricksLength * brickLength * 0.5
-  pos.set(0, brickHeight * 0.5, z0)
+  const z = -numBricksLength * brickLength * 0.5
+  pos.set(0, brickHeight * 0.5, z)
 
   for (let j = 0; j < numBricksHeight; j ++) {
     const oddRow = (j % 2) == 1
-    pos.z = z0
-
-    if (oddRow)
-      pos.z -= 0.25 * brickLength
-
     const nRow = oddRow ? numBricksLength + 1 : numBricksLength
 
+    pos.z = oddRow ? z - brickLength * .25 : z
+
     for (let i = 0; i < nRow; i ++) {
-      const halfBrick = oddRow && (i == 0 || i == nRow - 1)
-      const brick = createBrick(brickLength, brickHeight, 0.6, pos, halfBrick)
+      const firstOrLast = oddRow && (i == 0 || i == nRow - 1)
+      const brick = createBrick(brickLength, brickHeight, 0.6, pos, firstOrLast)
       addRigidBody(brick)
 
-      if (oddRow && (i == 0 || i == nRow - 2))
-        pos.z += 0.75 * brickLength
-      else
-        pos.z += brickLength
+      pos.z = oddRow && (i == 0 || i == nRow - 2)
+        ? pos.z + brickLength * .75
+        : pos.z + brickLength
     }
 
     pos.y += brickHeight
