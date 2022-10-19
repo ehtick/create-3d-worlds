@@ -1,12 +1,10 @@
 /* global Ammo */
-/* eslint-disable new-cap */
 import * as THREE from 'three'
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 
 const AMMO = await Ammo()
 
 const DISABLE_DEACTIVATION = 4
-const TRANSFORM_AUX = new AMMO.btTransform()
 const ZERO_QUATERNION = new THREE.Quaternion(0, 0, 0, 1)
 
 const clock = new THREE.Clock()
@@ -58,13 +56,10 @@ function keydown(e) {
     actions[keysActions[e.code]] = true
 }
 
-function createBox(pos, quat, w, l, h, mass, friction) {
+function createBox(pos, quat, w, l, h, mass = 0, friction = 1) {
   const material = mass > 0 ? materialDynamic : materialStatic
   const shape = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
   const geometry = new AMMO.btBoxShape(new AMMO.btVector3(w * 0.5, l * 0.5, h * 0.5))
-
-  if (!mass) mass = 0
-  if (!friction) friction = 1
 
   const mesh = new THREE.Mesh(shape, material)
   mesh.position.copy(pos)
@@ -89,15 +84,14 @@ function createBox(pos, quat, w, l, h, mass, friction) {
   if (mass > 0) {
     body.setActivationState(DISABLE_DEACTIVATION)
     // Sync physics and graphics
-    function sync(dt) {
+    function sync() {
       const ms = body.getMotionState()
-      if (ms) {
-        ms.getWorldTransform(TRANSFORM_AUX)
-        const p = TRANSFORM_AUX.getOrigin()
-        const q = TRANSFORM_AUX.getRotation()
-        mesh.position.set(p.x(), p.y(), p.z())
-        mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
-      }
+      if (!ms) return
+      ms.getWorldTransform(transform)
+      const p = transform.getOrigin()
+      const q = transform.getRotation()
+      mesh.position.set(p.x(), p.y(), p.z())
+      mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
     }
     syncList.push(sync)
   }
@@ -292,8 +286,7 @@ createObjects()
 void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
-  for (let i = 0; i < syncList.length; i++)
-    syncList[i](dt)
+  syncList.forEach(x => x())
   physicsWorld.stepSimulation(dt, 10)
   controls.update(dt)
   renderer.render(scene, camera)
