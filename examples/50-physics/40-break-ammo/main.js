@@ -17,12 +17,7 @@ scene.add(sun)
 const raycaster = new THREE.Raycaster()
 const ballMaterial = new THREE.MeshPhongMaterial({ color: 0x202020 })
 
-// Physics variables
-const gravityConstant = 7.8
-let collisionConfiguration
-let dispatcher
-let broadphase
-let solver
+const GRAVITY = 7.8
 const margin = 0.05
 
 const convexBreaker = new ConvexObjectBreaker()
@@ -46,23 +41,45 @@ const tempBtVec3_1 = new AMMO.btVector3(0, 0, 0)
 
 const physicsWorld = createPhysicsWorld()
 
-createObjects()
+pos.set(0, -0.5, 0)
+const ground = createGround(40, 1, 40, 0, pos, undefined, 0xFFFFFF)
+ground.receiveShadow = true
+
+// Tower 1
+pos.set(-8, 5, 0)
+createBox(1000, new THREE.Vector3(2, 5, 2), pos, 0xB03014)
+// Tower 2
+pos.set(8, 5, 0)
+createBox(1000, new THREE.Vector3(2, 5, 2), pos, 0xB03014)
+
+// Bridge
+pos.set(0, 10.2, 0)
+createBox(100, new THREE.Vector3(7, 0.2, 1.5), pos, 0xB3B865)
+
+// Stones
+const numStones = 8
+for (let i = 0; i < numStones; i++) {
+  pos.set(0, 2, 15 * (0.5 - i / (numStones + 1)))
+  createBox(120, new THREE.Vector3(1, 2, 0.15), pos, 0xB0B0B0)
+}
+
+createPyramid()
 
 /* FUNCTION */
 
 function createPhysicsWorld() {
-  collisionConfiguration = new AMMO.btDefaultCollisionConfiguration()
-  dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
-  broadphase = new AMMO.btDbvtBroadphase()
-  solver = new AMMO.btSequentialImpulseConstraintSolver()
+  const collisionConfiguration = new AMMO.btDefaultCollisionConfiguration()
+  const dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
+  const broadphase = new AMMO.btDbvtBroadphase()
+  const solver = new AMMO.btSequentialImpulseConstraintSolver()
   const physicsWorld = new AMMO.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration)
-  physicsWorld.setGravity(new AMMO.btVector3(0, - gravityConstant, 0))
+  physicsWorld.setGravity(new AMMO.btVector3(0, - GRAVITY, 0))
   return physicsWorld
 }
 
-function createObject(mass, halfExtents, pos, quat = { x: 0, y: 0, z: 0, w: 1 }, color = createRandomColor()) {
+function createBox(mass, halfSize, pos, color = createRandomColor(), quat = { x: 0, y: 0, z: 0, w: 1 }) {
   const mesh = new THREE.Mesh(
-    new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2),
+    new THREE.BoxGeometry(halfSize.x * 2, halfSize.y * 2, halfSize.z * 2),
     new THREE.MeshPhongMaterial({ color }))
   mesh.position.copy(pos)
   mesh.quaternion.copy(quat)
@@ -70,48 +87,22 @@ function createObject(mass, halfExtents, pos, quat = { x: 0, y: 0, z: 0, w: 1 },
   createDebrisFromBreakableObject(mesh)
 }
 
-function createObjects() {
-  // Ground
-  pos.set(0, - 0.5, 0)
-  const ground = createGround(40, 1, 40, 0, pos, undefined, 0xFFFFFF)
-  ground.receiveShadow = true
-  // Tower 1
-  const towerMass = 1000
-  const towerHalfExtents = new THREE.Vector3(2, 5, 2)
-  pos.set(- 8, 5, 0)
-  createObject(towerMass, towerHalfExtents, pos, undefined, 0xB03014)
-  // Tower 2
-  pos.set(8, 5, 0)
-  createObject(towerMass, towerHalfExtents, pos, undefined, 0xB03014)
-  // Bridge
-  const bridgeMass = 100
-  const bridgeHalfExtents = new THREE.Vector3(7, 0.2, 1.5)
-  pos.set(0, 10.2, 0)
-  createObject(bridgeMass, bridgeHalfExtents, pos, undefined, 0xB3B865)
-  // Stones
-  const stoneMass = 120
-  const stoneHalfExtents = new THREE.Vector3(1, 2, 0.15)
-  const numStones = 8
-  for (let i = 0; i < numStones; i++) {
-    pos.set(0, 2, 15 * (0.5 - i / (numStones + 1)))
-    createObject(stoneMass, stoneHalfExtents, pos, undefined, 0xB0B0B0)
-  }
-  // Mountain
-  const mountainMass = 860
-  const mountainHalfExtents = new THREE.Vector3(4, 5, 4)
-  pos.set(5, mountainHalfExtents.y * 0.5, - 7)
+function createPyramid() {
+  const pyramidMass = 860
+  const pyramidHalfExtents = new THREE.Vector3(4, 5, 4)
+  pos.set(5, pyramidHalfExtents.y * 0.5, - 7)
   quat.set(0, 0, 0, 1)
-  const mountainPoints = []
-  mountainPoints.push(new THREE.Vector3(mountainHalfExtents.x, - mountainHalfExtents.y, mountainHalfExtents.z))
-  mountainPoints.push(new THREE.Vector3(- mountainHalfExtents.x, - mountainHalfExtents.y, mountainHalfExtents.z))
-  mountainPoints.push(new THREE.Vector3(mountainHalfExtents.x, - mountainHalfExtents.y, - mountainHalfExtents.z))
-  mountainPoints.push(new THREE.Vector3(- mountainHalfExtents.x, - mountainHalfExtents.y, - mountainHalfExtents.z))
-  mountainPoints.push(new THREE.Vector3(0, mountainHalfExtents.y, 0))
-  const mountain = new THREE.Mesh(new ConvexGeometry(mountainPoints), new THREE.MeshPhongMaterial({ color: 0xB03814 }))
-  mountain.position.copy(pos)
-  mountain.quaternion.copy(quat)
-  convexBreaker.prepareBreakableObject(mountain, mountainMass, new THREE.Vector3(), new THREE.Vector3(), true)
-  createDebrisFromBreakableObject(mountain)
+  const pyramidPoints = []
+  pyramidPoints.push(new THREE.Vector3(pyramidHalfExtents.x, - pyramidHalfExtents.y, pyramidHalfExtents.z))
+  pyramidPoints.push(new THREE.Vector3(- pyramidHalfExtents.x, - pyramidHalfExtents.y, pyramidHalfExtents.z))
+  pyramidPoints.push(new THREE.Vector3(pyramidHalfExtents.x, - pyramidHalfExtents.y, - pyramidHalfExtents.z))
+  pyramidPoints.push(new THREE.Vector3(- pyramidHalfExtents.x, - pyramidHalfExtents.y, - pyramidHalfExtents.z))
+  pyramidPoints.push(new THREE.Vector3(0, pyramidHalfExtents.y, 0))
+  const pyramid = new THREE.Mesh(new ConvexGeometry(pyramidPoints), new THREE.MeshPhongMaterial({ color: 0xB03814 }))
+  pyramid.position.copy(pos)
+  pyramid.quaternion.copy(quat)
+  convexBreaker.prepareBreakableObject(pyramid, pyramidMass, new THREE.Vector3(), new THREE.Vector3(), true)
+  createDebrisFromBreakableObject(pyramid)
 }
 
 function createGround(sx, sy, sz, mass, pos, quat, color) {
@@ -126,10 +117,10 @@ function createDebrisFromBreakableObject(mesh) {
   mesh.castShadow = mesh.receiveShadow = true
   const shape = createConvexHullPhysicsShape(mesh.geometry.attributes.position.array)
   shape.setMargin(margin)
-  const { body } = createRigidBody(mesh, shape, mesh.userData.mass, mesh.position, undefined, mesh.userData.velocity, mesh.userData.angularVelocity)
-  // Set pointer back to the three mesh only in the debris objects
+  // set pointer back to the three mesh
   const btVecUserData = new AMMO.btVector3(0, 0, 0)
   btVecUserData.threeObject = mesh
+  const { body } = createRigidBody(mesh, shape, mesh.userData.mass, mesh.position, undefined, mesh.userData.velocity, mesh.userData.angularVelocity)
   body.setUserPointer(btVecUserData)
 }
 
@@ -202,6 +193,7 @@ function updatePhysics(deltaTime) {
       objThree.userData.collided = false
     }
   }
+  const dispatcher = physicsWorld.getDispatcher()
   for (let i = 0, il = dispatcher.getNumManifolds(); i < il; i++) {
     const contactManifold = dispatcher.getManifoldByIndexInternal(i)
     const rb0 = AMMO.castObject(contactManifold.getBody0(), AMMO.btRigidBody)
