@@ -120,7 +120,8 @@ function createGround(sx, sy, sz, mass, pos, quat, material) {
   const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), material)
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(sx * 0.5, sy * 0.5, sz * 0.5))
   shape.setMargin(margin)
-  createRigidBody(mesh, shape, mass, pos, quat)
+  const obj = createRigidBody(mesh, shape, mass, pos, quat)
+  addRigidBody(obj)
   return mesh
 }
 
@@ -129,11 +130,12 @@ function createDebrisFromBreakableObject(mesh) {
   mesh.receiveShadow = true
   const shape = createConvexHullPhysicsShape(mesh.geometry.attributes.position.array)
   shape.setMargin(margin)
-  const { body } = createRigidBody(mesh, shape, mesh.userData.mass, null, null, mesh.userData.velocity, mesh.userData.angularVelocity)
+  const obj = createRigidBody(mesh, shape, mesh.userData.mass, null, null, mesh.userData.velocity, mesh.userData.angularVelocity)
+  addRigidBody(obj)
   // Set pointer back to the three mesh only in the debris objects
   const btVecUserData = new AMMO.btVector3(0, 0, 0)
   btVecUserData.threeObject = mesh
-  body.setUserPointer(btVecUserData)
+  obj.body.setUserPointer(btVecUserData)
 }
 
 function removeDebris(mesh) {
@@ -178,10 +180,6 @@ function createRigidBody(mesh, physicsShape, mass, pos, quat, vel, angVel) {
   mesh.userData.collided = false
 
   if (mass > 0) body.setActivationState(4) // Disable deactivation
-
-  scene.add(mesh)
-  if (mass > 0) rigidBodies.push(mesh)
-  physicsWorld.addRigidBody(body)
 
   return { mesh, body, mass }
 }
@@ -314,8 +312,9 @@ window.addEventListener('pointerdown', event => {
   pos.copy(raycaster.ray.direction)
   pos.add(raycaster.ray.origin)
   quat.set(0, 0, 0, 1)
-  const { body } = createRigidBody(ball, ballShape, ballMass, pos, quat)
+  const ballObj = createRigidBody(ball, ballShape, ballMass, pos, quat)
+  addRigidBody(ballObj)
   pos.copy(raycaster.ray.direction)
   pos.multiplyScalar(24)
-  body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
+  ballObj.body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
 })
