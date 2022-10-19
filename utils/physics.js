@@ -31,6 +31,17 @@ function createRigidBody(mesh, shape, mass, pos, quat = { x: 0, y: 0, z: 0, w: 1
   return { mesh, body, mass }
 }
 
+export function createBall(radius = 0.6, mass = 1.2, pos, quat) {
+  const mesh = new THREE.Mesh(
+    new THREE.SphereGeometry(radius, 20, 20), new THREE.MeshPhongMaterial({ color: 0x202020 }))
+  mesh.castShadow = mesh.receiveShadow = true
+  const shape = new AMMO.btSphereShape(radius)
+  shape.setMargin(margin)
+  const res = createRigidBody(mesh, shape, mass, pos, quat)
+  res.body.setFriction(0.5)
+  return res
+}
+
 export function createBox(width, height, depth, mass, pos, quat, color) {
   const mesh = new THREE.Mesh(
     new THREE.BoxGeometry(width, height, depth, 1, 1, 1), new THREE.MeshPhongMaterial({ color: color || randomColor() }))
@@ -47,13 +58,34 @@ export function createBrick(length, height, depth, pos, halfBrick) {
   return createBox(depth, height, lengthCurrent, massCurrent, pos)
 }
 
-export function createBall(radius = 0.6, mass = 1.2, pos, quat) {
-  const mesh = new THREE.Mesh(
-    new THREE.SphereGeometry(radius, 20, 20), new THREE.MeshPhongMaterial({ color: 0x202020 }))
-  mesh.castShadow = mesh.receiveShadow = true
-  const shape = new AMMO.btSphereShape(radius)
-  shape.setMargin(margin)
-  const res = createRigidBody(mesh, shape, mass, pos, quat)
-  res.body.setFriction(0.5)
-  return res
+export function createWall() {
+  const pos = new THREE.Vector3()
+  const rigidBodies = []
+
+  const brickLength = 1.2
+  const brickHeight = brickLength * 0.5
+  const numBricksLength = 6
+  const numBricksHeight = 8
+  const z = -numBricksLength * brickLength * 0.5
+  pos.set(0, brickHeight * 0.5, z)
+
+  for (let j = 0; j < numBricksHeight; j ++) {
+    const oddRow = (j % 2) == 1
+    const nRow = oddRow ? numBricksLength + 1 : numBricksLength
+
+    pos.z = oddRow ? z - brickLength * .25 : z
+
+    for (let i = 0; i < nRow; i ++) {
+      const firstOrLast = oddRow && (i == 0 || i == nRow - 1)
+      const brick = createBrick(brickLength, brickHeight, 0.6, pos, firstOrLast)
+      rigidBodies.push(brick)
+
+      pos.z = oddRow && (i == 0 || i == nRow - 2)
+        ? pos.z + brickLength * .75
+        : pos.z + brickLength
+    }
+
+    pos.y += brickHeight
+  }
+  return rigidBodies
 }

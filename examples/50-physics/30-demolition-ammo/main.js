@@ -2,7 +2,8 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
-import { createBox, createBall, createBrick } from '/utils/physics.js'
+import { createBox, createBall, createWall } from '/utils/physics.js'
+import keyboard from '/utils/classes/Keyboard.js'
 
 const AMMO = await Ammo
 
@@ -23,7 +24,6 @@ scene.add(sun)
 
 initPhysics()
 createObjects()
-initInput()
 
 function initPhysics() {
   // Physics configuration
@@ -47,31 +47,8 @@ function createObjects() {
   const ball = createBall(ballRadius, 1.2, { x: -3, y: 2, z: 0 })
   addRigidBody(ball)
 
-  const brickLength = 1.2
-  const brickHeight = brickLength * 0.5
-  const numBricksLength = 6
-  const numBricksHeight = 8
-  const z = -numBricksLength * brickLength * 0.5
-  pos.set(0, brickHeight * 0.5, z)
-
-  for (let j = 0; j < numBricksHeight; j ++) {
-    const oddRow = (j % 2) == 1
-    const nRow = oddRow ? numBricksLength + 1 : numBricksLength
-
-    pos.z = oddRow ? z - brickLength * .25 : z
-
-    for (let i = 0; i < nRow; i ++) {
-      const firstOrLast = oddRow && (i == 0 || i == nRow - 1)
-      const brick = createBrick(brickLength, brickHeight, 0.6, pos, firstOrLast)
-      addRigidBody(brick)
-
-      pos.z = oddRow && (i == 0 || i == nRow - 2)
-        ? pos.z + brickLength * .75
-        : pos.z + brickLength
-    }
-
-    pos.y += brickHeight
-  }
+  const bricks = createWall()
+  bricks.forEach(addRigidBody)
 
   // Rope graphic object
   const ropeNumSegments = 10
@@ -96,8 +73,7 @@ function createObjects() {
   ropeGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(ropePositions), 3))
   ropeGeometry.computeBoundingSphere()
   rope = new THREE.LineSegments(ropeGeometry, ropeMaterial)
-  rope.castShadow = true
-  rope.receiveShadow = true
+  rope.castShadow = rope.receiveShadow = true
   scene.add(rope)
 
   // Rope physic object
@@ -149,25 +125,6 @@ function addRigidBody({ mesh, body, mass }) {
   physicsWorld.addRigidBody(body)
 }
 
-function initInput() {
-  window.addEventListener('keydown', event => {
-    switch (event.keyCode) {
-      // Q
-      case 81:
-        armMovement = 1
-        break
-        // A
-      case 65:
-        armMovement = - 1
-        break
-    }
-  })
-
-  window.addEventListener('keyup', () => {
-    armMovement = 0
-  })
-}
-
 function updatePhysics(deltaTime) {
   // Hinge control
   hinge.enableAngularMotor(true, 1.5 * armMovement, 50)
@@ -203,10 +160,17 @@ function updatePhysics(deltaTime) {
   })
 }
 
+function handleInput() {
+  if (keyboard.left) armMovement = -1
+  else if (keyboard.right) armMovement = 1
+  else armMovement = 0
+}
+
 /* LOOP */
 
 void function loop() {
   requestAnimationFrame(loop)
+  handleInput()
   const deltaTime = clock.getDelta()
   updatePhysics(deltaTime)
   renderer.render(scene, camera)
