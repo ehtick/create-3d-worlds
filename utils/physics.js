@@ -9,7 +9,7 @@ function randomColor() {
   return Math.floor(Math.random() * (1 << 24))
 }
 
-function createRigidBody(mesh, shape, mass, pos, quat = { x: 0, y: 0, z: 0, w: 1 }) {
+export function createRigidBody(mesh, shape, mass, pos, quat = { x: 0, y: 0, z: 0, w: 1 }) {
   mesh.position.copy(pos)
   mesh.quaternion.copy(quat)
 

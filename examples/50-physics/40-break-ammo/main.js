@@ -6,6 +6,8 @@ import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scen
 import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
 
+const AMMO = await Ammo()
+
 camera.position.set(-14, 8, 16)
 createOrbitControls()
 
@@ -42,15 +44,8 @@ let numObjectsToRemove = 0
 const impactPoint = new THREE.Vector3()
 const impactNormal = new THREE.Vector3()
 
-const AMMO = await Ammo()
-
-init()
-
-function init() {
-  initPhysics()
-  createObjects()
-  // initInput()
-}
+initPhysics()
+createObjects()
 
 function initPhysics() {
   // Physics configuration
@@ -65,18 +60,18 @@ function initPhysics() {
 }
 
 function createObject(mass, halfExtents, pos, quat, material) {
-  const object = new THREE.Mesh(new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2), material)
-  object.position.copy(pos)
-  object.quaternion.copy(quat)
-  convexBreaker.prepareBreakableObject(object, mass, new THREE.Vector3(), new THREE.Vector3(), true)
-  createDebrisFromBreakableObject(object)
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2), material)
+  mesh.position.copy(pos)
+  mesh.quaternion.copy(quat)
+  convexBreaker.prepareBreakableObject(mesh, mass, new THREE.Vector3(), new THREE.Vector3(), true)
+  createDebrisFromBreakableObject(mesh)
 }
 
 function createObjects() {
   // Ground
   pos.set(0, - 0.5, 0)
   quat.set(0, 0, 0, 1)
-  const ground = createParalellepipedWithPhysics(40, 1, 40, 0, pos, quat, new THREE.MeshPhongMaterial({ color: 0xFFFFFF }))
+  const ground = createGround(40, 1, 40, 0, pos, quat, new THREE.MeshPhongMaterial({ color: 0xFFFFFF }))
   ground.receiveShadow = true
   // Tower 1
   const towerMass = 1000
@@ -121,29 +116,29 @@ function createObjects() {
   createDebrisFromBreakableObject(mountain)
 }
 
-function createParalellepipedWithPhysics(sx, sy, sz, mass, pos, quat, material) {
-  const object = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), material)
+function createGround(sx, sy, sz, mass, pos, quat, material) {
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), material)
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(sx * 0.5, sy * 0.5, sz * 0.5))
   shape.setMargin(margin)
-  createRigidBody(object, shape, mass, pos, quat)
-  return object
+  createRigidBody(mesh, shape, mass, pos, quat)
+  return mesh
 }
 
-function createDebrisFromBreakableObject(object) {
-  object.castShadow = true
-  object.receiveShadow = true
-  const shape = createConvexHullPhysicsShape(object.geometry.attributes.position.array)
+function createDebrisFromBreakableObject(mesh) {
+  mesh.castShadow = true
+  mesh.receiveShadow = true
+  const shape = createConvexHullPhysicsShape(mesh.geometry.attributes.position.array)
   shape.setMargin(margin)
-  const body = createRigidBody(object, shape, object.userData.mass, null, null, object.userData.velocity, object.userData.angularVelocity)
-  // Set pointer back to the three object only in the debris objects
+  const { body } = createRigidBody(mesh, shape, mesh.userData.mass, null, null, mesh.userData.velocity, mesh.userData.angularVelocity)
+  // Set pointer back to the three mesh only in the debris objects
   const btVecUserData = new AMMO.btVector3(0, 0, 0)
-  btVecUserData.threeObject = object
+  btVecUserData.threeObject = mesh
   body.setUserPointer(btVecUserData)
 }
 
-function removeDebris(object) {
-  scene.remove(object)
-  physicsWorld.removeRigidBody(object.userData.physicsBody)
+function removeDebris(mesh) {
+  scene.remove(mesh)
+  physicsWorld.removeRigidBody(mesh.userData.physicsBody)
 }
 
 function createConvexHullPhysicsShape(coords) {
@@ -156,15 +151,15 @@ function createConvexHullPhysicsShape(coords) {
   return shape
 }
 
-function createRigidBody(object, physicsShape, mass, pos, quat, vel, angVel) {
+function createRigidBody(mesh, physicsShape, mass, pos, quat, vel, angVel) {
   if (pos)
-    object.position.copy(pos)
+    mesh.position.copy(pos)
   else
-    pos = object.position
+    pos = mesh.position
   if (quat)
-    object.quaternion.copy(quat)
+    mesh.quaternion.copy(quat)
   else
-    quat = object.quaternion
+    quat = mesh.quaternion
   const transform = new AMMO.btTransform()
   transform.setIdentity()
   transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
@@ -179,16 +174,22 @@ function createRigidBody(object, physicsShape, mass, pos, quat, vel, angVel) {
     body.setLinearVelocity(new AMMO.btVector3(vel.x, vel.y, vel.z))
   if (angVel)
     body.setAngularVelocity(new AMMO.btVector3(angVel.x, angVel.y, angVel.z))
-  object.userData.physicsBody = body
-  object.userData.collided = false
-  scene.add(object)
-  if (mass > 0) {
-    rigidBodies.push(object)
-    // Disable deactivation
-    body.setActivationState(4)
-  }
+  mesh.userData.physicsBody = body
+  mesh.userData.collided = false
+
+  if (mass > 0) body.setActivationState(4) // Disable deactivation
+
+  scene.add(mesh)
+  if (mass > 0) rigidBodies.push(mesh)
   physicsWorld.addRigidBody(body)
-  return body
+
+  return { mesh, body, mass }
+}
+
+function addRigidBody({ mesh, body, mass }) {
+  scene.add(mesh)
+  if (mass > 0) rigidBodies.push(mesh)
+  physicsWorld.addRigidBody(body)
 }
 
 function createRandomColor() {
@@ -313,8 +314,8 @@ window.addEventListener('pointerdown', event => {
   pos.copy(raycaster.ray.direction)
   pos.add(raycaster.ray.origin)
   quat.set(0, 0, 0, 1)
-  const ballBody = createRigidBody(ball, ballShape, ballMass, pos, quat)
+  const { body } = createRigidBody(ball, ballShape, ballMass, pos, quat)
   pos.copy(raycaster.ray.direction)
   pos.multiplyScalar(24)
-  ballBody.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
+  body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
 })
