@@ -16,23 +16,20 @@ scene.add(sun)
 
 const raycaster = new THREE.Raycaster()
 const ballMaterial = new THREE.MeshPhongMaterial({ color: 0x202020 })
+
 // Physics variables
 const gravityConstant = 7.8
 let collisionConfiguration
 let dispatcher
 let broadphase
 let solver
-let physicsWorld
 const margin = 0.05
 
 const convexBreaker = new ConvexObjectBreaker()
-// Rigid bodies include all movable objects
 const rigidBodies = []
 
 const pos = new THREE.Vector3()
 const quat = new THREE.Quaternion()
-let transformAux1
-let tempBtVec3_1
 
 const objectsToRemove = []
 
@@ -44,19 +41,23 @@ let numObjectsToRemove = 0
 const impactPoint = new THREE.Vector3()
 const impactNormal = new THREE.Vector3()
 
-initPhysics()
+const transformAux1 = new AMMO.btTransform()
+const tempBtVec3_1 = new AMMO.btVector3(0, 0, 0)
+
+const physicsWorld = createPhysicsWorld()
+
 createObjects()
 
-function initPhysics() {
-  // Physics configuration
+/* FUNCTION */
+
+function createPhysicsWorld() {
   collisionConfiguration = new AMMO.btDefaultCollisionConfiguration()
   dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
   broadphase = new AMMO.btDbvtBroadphase()
   solver = new AMMO.btSequentialImpulseConstraintSolver()
-  physicsWorld = new AMMO.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration)
+  const physicsWorld = new AMMO.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration)
   physicsWorld.setGravity(new AMMO.btVector3(0, - gravityConstant, 0))
-  transformAux1 = new AMMO.btTransform()
-  tempBtVec3_1 = new AMMO.btVector3(0, 0, 0)
+  return physicsWorld
 }
 
 function createObject(mass, halfExtents, pos, quat, material) {
@@ -71,7 +72,7 @@ function createObjects() {
   // Ground
   pos.set(0, - 0.5, 0)
   quat.set(0, 0, 0, 1)
-  const ground = createGround(40, 1, 40, 0, pos, quat, new THREE.MeshPhongMaterial({ color: 0xFFFFFF }))
+  const ground = createParalellepipedWithPhysics(40, 1, 40, 0, pos, quat, new THREE.MeshPhongMaterial({ color: 0xFFFFFF }))
   ground.receiveShadow = true
   // Tower 1
   const towerMass = 1000
@@ -116,26 +117,23 @@ function createObjects() {
   createDebrisFromBreakableObject(mountain)
 }
 
-function createGround(sx, sy, sz, mass, pos, quat, material) {
+function createParalellepipedWithPhysics(sx, sy, sz, mass, pos, quat, material) {
   const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), material)
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(sx * 0.5, sy * 0.5, sz * 0.5))
   shape.setMargin(margin)
-  const obj = createRigidBody(mesh, shape, mass, pos, quat)
-  addRigidBody(obj)
+  createRigidBody(mesh, shape, mass, pos, quat)
   return mesh
 }
 
 function createDebrisFromBreakableObject(mesh) {
-  mesh.castShadow = true
-  mesh.receiveShadow = true
+  mesh.castShadow = mesh.receiveShadow = true
   const shape = createConvexHullPhysicsShape(mesh.geometry.attributes.position.array)
   shape.setMargin(margin)
-  const obj = createRigidBody(mesh, shape, mesh.userData.mass, null, null, mesh.userData.velocity, mesh.userData.angularVelocity)
-  addRigidBody(obj)
+  const body = createRigidBody(mesh, shape, mesh.userData.mass, null, null, mesh.userData.velocity, mesh.userData.angularVelocity)
   // Set pointer back to the three mesh only in the debris objects
   const btVecUserData = new AMMO.btVector3(0, 0, 0)
   btVecUserData.threeObject = mesh
-  obj.body.setUserPointer(btVecUserData)
+  body.setUserPointer(btVecUserData)
 }
 
 function removeDebris(mesh) {
@@ -178,16 +176,14 @@ function createRigidBody(mesh, physicsShape, mass, pos, quat, vel, angVel) {
     body.setAngularVelocity(new AMMO.btVector3(angVel.x, angVel.y, angVel.z))
   mesh.userData.physicsBody = body
   mesh.userData.collided = false
-
-  if (mass > 0) body.setActivationState(4) // Disable deactivation
-
-  return { mesh, body, mass }
-}
-
-function addRigidBody({ mesh, body, mass }) {
   scene.add(mesh)
-  if (mass > 0) rigidBodies.push(mesh)
+  if (mass > 0) {
+    rigidBodies.push(mesh)
+    // Disable deactivation
+    body.setActivationState(4)
+  }
   physicsWorld.addRigidBody(body)
+  return body
 }
 
 function createRandomColor() {
@@ -312,9 +308,8 @@ window.addEventListener('pointerdown', event => {
   pos.copy(raycaster.ray.direction)
   pos.add(raycaster.ray.origin)
   quat.set(0, 0, 0, 1)
-  const ballObj = createRigidBody(ball, ballShape, ballMass, pos, quat)
-  addRigidBody(ballObj)
+  const ballBody = createRigidBody(ball, ballShape, ballMass, pos, quat)
   pos.copy(raycaster.ray.direction)
   pos.multiplyScalar(24)
-  ballObj.body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
+  ballBody.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
 })
