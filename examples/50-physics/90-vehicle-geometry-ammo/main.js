@@ -1,6 +1,7 @@
 /* global Ammo */
 import * as THREE from 'three'
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
+import keyboard from '/utils/classes/Keyboard.js'
 
 const AMMO = await Ammo()
 
@@ -10,15 +11,6 @@ const ZERO_QUATERNION = new THREE.Quaternion(0, 0, 0, 1)
 const clock = new THREE.Clock()
 
 const syncList = []
-
-// Keybord actions
-const actions = {}
-const keysActions = {
-  'KeyW': 'acceleration',
-  'KeyS': 'braking',
-  'KeyA': 'left',
-  'KeyD': 'right'
-}
 
 camera.position.x = -4.84
 camera.position.z = -35.11
@@ -35,9 +27,6 @@ const materialDynamic = new THREE.MeshPhongMaterial({ color: 0xfca400 })
 const materialStatic = new THREE.MeshPhongMaterial({ color: 0x999999 })
 const materialInteractive = new THREE.MeshPhongMaterial({ color: 0x990000 })
 
-window.addEventListener('keydown', keydown)
-window.addEventListener('keyup', keyup)
-
 // initPhysics
 const collisionConfiguration = new AMMO.btDefaultCollisionConfiguration()
 const dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
@@ -46,17 +35,17 @@ const solver = new AMMO.btSequentialImpulseConstraintSolver()
 const physicsWorld = new AMMO.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration)
 physicsWorld.setGravity(new AMMO.btVector3(0, -9.82, 0))
 
-function keyup(e) {
-  if (keysActions[e.code])
-    actions[keysActions[e.code]] = false
-}
+createBox({ pos: [0, -0.5, 0], w: 75, l: 1, h: 75, friction: 2 })
 
-function keydown(e) {
-  if (keysActions[e.code])
-    actions[keysActions[e.code]] = true
-}
+const quat = new THREE.Quaternion(0, 0, 0, 1)
+quat.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 18)
+createBox({ pos: [0, -1.5, 0], quat, w: 8, l: 4, h: 10, mass: 0 })
 
-function createBox(pos, quat, w, l, h, mass = 0, friction = 1) {
+createWall()
+createVehicle(new THREE.Vector3(0, 4, -20), ZERO_QUATERNION)
+
+function createBox({ pos, quat = ZERO_QUATERNION, w, l, h, mass = 0, friction = 1 }) {
+  pos = new THREE.Vector3(...pos)
   const material = mass > 0 ? materialDynamic : materialStatic
   const shape = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
   const geometry = new AMMO.btBoxShape(new AMMO.btVector3(w * 0.5, l * 0.5, h * 0.5))
@@ -113,7 +102,7 @@ function createChassisMesh(w, l, h) {
   return mesh
 }
 
-function createVehicle(pos, quat) {
+function createVehicle(pos) {
   // Vehicle contants
   const chassisWidth = 1.8
   const chassisHeight = .6
@@ -149,7 +138,6 @@ function createVehicle(pos, quat) {
   const transform = new AMMO.btTransform()
   transform.setIdentity()
   transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
-  transform.setRotation(new AMMO.btQuaternion(quat.x, quat.y, quat.z, quat.w))
   const motionState = new AMMO.btDefaultMotionState(transform)
   const localInertia = new AMMO.btVector3(0, 0, 0)
   geometry.calculateLocalInertia(massVehicle, localInertia)
@@ -201,26 +189,26 @@ function createVehicle(pos, quat) {
   addWheel(false, new AMMO.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_RIGHT)
 
   // Sync keybord actions and physics and graphics
-  function sync(dt) {
+  function sync() {
     const speed = vehicle.getCurrentSpeedKmHour()
     breakingForce = 0
     engineForce = 0
 
-    if (actions.acceleration)
+    if (keyboard.up)
       if (speed < -1)
         breakingForce = maxBreakingForce
       else engineForce = maxEngineForce
 
-    if (actions.braking)
+    if (keyboard.down)
       if (speed > 1)
         breakingForce = maxBreakingForce
       else engineForce = -maxEngineForce / 2
 
-    if (actions.left) {
+    if (keyboard.left) {
       if (vehicleSteering < steeringClamp)
         vehicleSteering += steeringIncrement
     } else
-    if (actions.right) {
+    if (keyboard.right) {
       if (vehicleSteering > -steeringClamp)
         vehicleSteering -= steeringIncrement
     } else
@@ -262,24 +250,13 @@ function createVehicle(pos, quat) {
   syncList.push(sync)
 }
 
-function createObjects() {
-  createBox(new THREE.Vector3(0, -0.5, 0), ZERO_QUATERNION, 75, 1, 75, 0, 2)
-
-  const quaternion = new THREE.Quaternion(0, 0, 0, 1)
-  quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 18)
-  createBox(new THREE.Vector3(0, -1.5, 0), quaternion, 8, 4, 10, 0)
-
-  const size = .75
-  const nw = 8
-  const nh = 6
+function createWall(size = .75, nw = 8, nh = 6) {
   for (let j = 0; j < nw; j++)
-    for (let i = 0; i < nh; i++)
-      createBox(new THREE.Vector3(size * j - (size * (nw - 1)) / 2, size * i, 10), ZERO_QUATERNION, size, size, size, 10)
-
-  createVehicle(new THREE.Vector3(0, 4, -20), ZERO_QUATERNION)
+    for (let i = 0; i < nh; i++) createBox({
+      pos: [size * j - (size * (nw - 1)) / 2, size * i, 10],
+      w: size, l: size, h: size, mass: 10
+    })
 }
-
-createObjects()
 
 /* LOOP */
 
