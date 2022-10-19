@@ -1,15 +1,17 @@
 /* global Ammo */
 import * as THREE from 'three'
-import { OrbitControls } from '/node_modules/three/examples/jsm/controls/OrbitControls.js'
-
 import { ConvexObjectBreaker } from '/node_modules/three/examples/jsm/misc/ConvexObjectBreaker.js'
 import { ConvexGeometry } from '/node_modules/three/examples/jsm/geometries/ConvexGeometry.js'
+import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
+import { createSun } from '/utils/light.js'
+import { normalizeMouse } from '/utils/helpers.js'
 
-let container
-let camera, controls, scene, renderer
-const clock = new THREE.Clock()
+camera.position.set(-14, 8, 16)
+createOrbitControls()
 
-const mouseCoords = new THREE.Vector2()
+const sun = createSun({ position: [5, 15, 15] })
+scene.add(sun)
+
 const raycaster = new THREE.Raycaster()
 const ballMaterial = new THREE.MeshPhongMaterial({ color: 0x202020 })
 // Physics variables
@@ -45,41 +47,9 @@ const AMMO = await Ammo()
 init()
 
 function init() {
-  initGraphics()
   initPhysics()
   createObjects()
-  initInput()
-}
-
-function initGraphics() {
-  container = document.getElementById('container')
-  camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.2, 2000)
-  scene = new THREE.Scene()
-  scene.background = new THREE.Color(0xbfd1e5)
-  camera.position.set(- 14, 8, 16)
-  renderer = new THREE.WebGLRenderer()
-  renderer.setPixelRatio(window.devicePixelRatio)
-  renderer.setSize(window.innerWidth, window.innerHeight)
-  renderer.shadowMap.enabled = true
-  container.appendChild(renderer.domElement)
-  controls = new OrbitControls(camera, renderer.domElement)
-  controls.target.set(0, 2, 0)
-  controls.update()
-  const ambientLight = new THREE.AmbientLight(0x707070)
-  scene.add(ambientLight)
-  const light = new THREE.DirectionalLight(0xffffff, 1)
-  light.position.set(- 10, 18, 5)
-  light.castShadow = true
-  const d = 14
-  light.shadow.camera.left = - d
-  light.shadow.camera.right = d
-  light.shadow.camera.top = d
-  light.shadow.camera.bottom = - d
-  light.shadow.camera.near = 2
-  light.shadow.camera.far = 50
-  light.shadow.mapSize.x = 1024
-  light.shadow.mapSize.y = 1024
-  scene.add(light)
+  // initInput()
 }
 
 function initPhysics() {
@@ -230,31 +200,6 @@ function createMaterial(color) {
   return new THREE.MeshPhongMaterial({ color })
 }
 
-function initInput() {
-  window.addEventListener('pointerdown', event => {
-    mouseCoords.set(
-      (event.clientX / window.innerWidth) * 2 - 1,
-      - (event.clientY / window.innerHeight) * 2 + 1
-    )
-    raycaster.setFromCamera(mouseCoords, camera)
-    // Creates a ball and throws it
-    const ballMass = 35
-    const ballRadius = 0.4
-    const ball = new THREE.Mesh(new THREE.SphereGeometry(ballRadius, 14, 10), ballMaterial)
-    ball.castShadow = true
-    ball.receiveShadow = true
-    const ballShape = new AMMO.btSphereShape(ballRadius)
-    ballShape.setMargin(margin)
-    pos.copy(raycaster.ray.direction)
-    pos.add(raycaster.ray.origin)
-    quat.set(0, 0, 0, 1)
-    const ballBody = createRigidBody(ball, ballShape, ballMass, pos, quat)
-    pos.copy(raycaster.ray.direction)
-    pos.multiplyScalar(24)
-    ballBody.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
-  })
-}
-
 function updatePhysics(deltaTime) {
   // Step world
   physicsWorld.stepSimulation(deltaTime, 10)
@@ -343,9 +288,33 @@ function updatePhysics(deltaTime) {
   numObjectsToRemove = 0
 }
 
+/* LOOP */
+
 void function animate() {
   requestAnimationFrame(animate)
   const deltaTime = clock.getDelta()
   updatePhysics(deltaTime)
   renderer.render(scene, camera)
 }()
+
+/* EVENTS */
+
+window.addEventListener('pointerdown', event => {
+  const mouse = normalizeMouse(event)
+  raycaster.setFromCamera(mouse, camera)
+  // Creates a ball and throws it
+  const ballMass = 35
+  const ballRadius = 0.4
+  const ball = new THREE.Mesh(new THREE.SphereGeometry(ballRadius, 14, 10), ballMaterial)
+  ball.castShadow = true
+  ball.receiveShadow = true
+  const ballShape = new AMMO.btSphereShape(ballRadius)
+  ballShape.setMargin(margin)
+  pos.copy(raycaster.ray.direction)
+  pos.add(raycaster.ray.origin)
+  quat.set(0, 0, 0, 1)
+  const ballBody = createRigidBody(ball, ballShape, ballMass, pos, quat)
+  pos.copy(raycaster.ray.direction)
+  pos.multiplyScalar(24)
+  ballBody.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
+})
