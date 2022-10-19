@@ -129,7 +129,7 @@ function createDebrisFromBreakableObject(mesh) {
   mesh.castShadow = mesh.receiveShadow = true
   const shape = createConvexHullPhysicsShape(mesh.geometry.attributes.position.array)
   shape.setMargin(margin)
-  const body = createRigidBody(mesh, shape, mesh.userData.mass, null, null, mesh.userData.velocity, mesh.userData.angularVelocity)
+  const { body } = createRigidBody(mesh, shape, mesh.userData.mass, null, null, mesh.userData.velocity, mesh.userData.angularVelocity)
   // Set pointer back to the three mesh only in the debris objects
   const btVecUserData = new AMMO.btVector3(0, 0, 0)
   btVecUserData.threeObject = mesh
@@ -176,14 +176,14 @@ function createRigidBody(mesh, physicsShape, mass, pos, quat, vel, angVel) {
     body.setAngularVelocity(new AMMO.btVector3(angVel.x, angVel.y, angVel.z))
   mesh.userData.physicsBody = body
   mesh.userData.collided = false
+
+  if (mass > 0) body.setActivationState(4) // Disable deactivation
+
   scene.add(mesh)
-  if (mass > 0) {
-    rigidBodies.push(mesh)
-    // Disable deactivation
-    body.setActivationState(4)
-  }
+  if (mass > 0) rigidBodies.push(mesh)
   physicsWorld.addRigidBody(body)
-  return body
+
+  return { mesh, body, mass }
 }
 
 function createRandomColor() {
@@ -308,8 +308,8 @@ window.addEventListener('pointerdown', event => {
   pos.copy(raycaster.ray.direction)
   pos.add(raycaster.ray.origin)
   quat.set(0, 0, 0, 1)
-  const ballBody = createRigidBody(ball, ballShape, ballMass, pos, quat)
+  const { body } = createRigidBody(ball, ballShape, ballMass, pos, quat)
   pos.copy(raycaster.ray.direction)
   pos.multiplyScalar(24)
-  ballBody.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
+  body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
 })
