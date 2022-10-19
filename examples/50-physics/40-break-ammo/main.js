@@ -16,9 +16,6 @@ createOrbitControls()
 const sun = createSun({ position: [5, 15, 15] })
 scene.add(sun)
 
-const raycaster = new THREE.Raycaster()
-const ballMaterial = new THREE.MeshPhongMaterial({ color: 0x202020 })
-
 const GRAVITY = 7.8
 const margin = 0.05
 
@@ -28,17 +25,13 @@ const rigidBodies = []
 const pos = new Vector3()
 
 const objectsToRemove = []
-
-for (let i = 0; i < 500; i++)
-  objectsToRemove[i] = null
-
 let numObjectsToRemove = 0
 
 const impactPoint = new Vector3()
 const impactNormal = new Vector3()
 
-const transformAux1 = new AMMO.btTransform()
-const tempBtVec3_1 = new AMMO.btVector3(0, 0, 0)
+const transform = new AMMO.btTransform()
+const tempBtVec3 = new AMMO.btVector3(0, 0, 0)
 
 const physicsWorld = createPhysicsWorld()
 
@@ -125,9 +118,9 @@ function removeDebris(mesh) {
 function createConvexHullPhysicsShape(coords) {
   const shape = new AMMO.btConvexHullShape()
   for (let i = 0, il = coords.length; i < il; i += 3) {
-    tempBtVec3_1.setValue(coords[i], coords[i + 1], coords[i + 2])
+    tempBtVec3.setValue(coords[i], coords[i + 1], coords[i + 2])
     const lastOne = (i >= (il - 3))
-    shape.addPoint(tempBtVec3_1, lastOne)
+    shape.addPoint(tempBtVec3, lastOne)
   }
   return shape
 }
@@ -168,33 +161,29 @@ function createRandomColor() {
 }
 
 function updatePhysics(deltaTime) {
-  // Step world
   physicsWorld.stepSimulation(deltaTime, 10)
-  // Update rigid bodies
-  for (let i = 0, il = rigidBodies.length; i < il; i++) {
-    const objThree = rigidBodies[i]
-    const objPhys = objThree.userData.physicsBody
-    const ms = objPhys.getMotionState()
-    if (ms) {
-      ms.getWorldTransform(transformAux1)
-      const p = transformAux1.getOrigin()
-      const q = transformAux1.getRotation()
-      objThree.position.set(p.x(), p.y(), p.z())
-      objThree.quaternion.set(q.x(), q.y(), q.z(), q.w())
-      objThree.userData.collided = false
-    }
-  }
+  rigidBodies.forEach(mesh => {
+    const ms = mesh.userData.physicsBody.getMotionState()
+    if (!ms) return
+    ms.getWorldTransform(transform)
+    const p = transform.getOrigin()
+    const q = transform.getRotation()
+    mesh.position.set(p.x(), p.y(), p.z())
+    mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
+    mesh.userData.collided = false
+  })
+
   const dispatcher = physicsWorld.getDispatcher()
   for (let i = 0, il = dispatcher.getNumManifolds(); i < il; i++) {
     const contactManifold = dispatcher.getManifoldByIndexInternal(i)
     const rb0 = AMMO.castObject(contactManifold.getBody0(), AMMO.btRigidBody)
     const rb1 = AMMO.castObject(contactManifold.getBody1(), AMMO.btRigidBody)
-    const threeObject0 = AMMO.castObject(rb0.getUserPointer(), AMMO.btVector3).threeObject
-    const threeObject1 = AMMO.castObject(rb1.getUserPointer(), AMMO.btVector3).threeObject
-    if (!threeObject0 && !threeObject1)
+    const mesh0 = AMMO.castObject(rb0.getUserPointer(), AMMO.btVector3).threeObject
+    const mesh1 = AMMO.castObject(rb1.getUserPointer(), AMMO.btVector3).threeObject
+    if (!mesh0 && !mesh1)
       continue
-    const userData0 = threeObject0 ? threeObject0.userData : null
-    const userData1 = threeObject1 ? threeObject1.userData : null
+    const userData0 = mesh0 ? mesh0.userData : null
+    const userData1 = mesh1 ? mesh1.userData : null
     const breakable0 = userData0 ? userData0.breakable : false
     const breakable1 = userData1 ? userData1.breakable : false
     const collided0 = userData0 ? userData0.collided : false
@@ -223,7 +212,7 @@ function updatePhysics(deltaTime) {
     // Subdivision
     const fractureImpulse = 250
     if (breakable0 && !collided0 && maxImpulse > fractureImpulse) {
-      const debris = convexBreaker.subdivideByImpact(threeObject0, impactPoint, impactNormal, 1, 2, 1.5)
+      const debris = convexBreaker.subdivideByImpact(mesh0, impactPoint, impactNormal, 1, 2, 1.5)
       const numObjects = debris.length
       for (let j = 0; j < numObjects; j++) {
         const vel = rb0.getLinearVelocity()
@@ -233,11 +222,11 @@ function updatePhysics(deltaTime) {
         fragment.userData.angularVelocity.set(angVel.x(), angVel.y(), angVel.z())
         createDebrisFromBreakableObject(fragment)
       }
-      objectsToRemove[numObjectsToRemove++] = threeObject0
+      objectsToRemove[numObjectsToRemove++] = mesh0
       userData0.collided = true
     }
     if (breakable1 && !collided1 && maxImpulse > fractureImpulse) {
-      const debris = convexBreaker.subdivideByImpact(threeObject1, impactPoint, impactNormal, 1, 2, 1.5)
+      const debris = convexBreaker.subdivideByImpact(mesh1, impactPoint, impactNormal, 1, 2, 1.5)
       const numObjects = debris.length
       for (let j = 0; j < numObjects; j++) {
         const vel = rb1.getLinearVelocity()
@@ -247,12 +236,11 @@ function updatePhysics(deltaTime) {
         fragment.userData.angularVelocity.set(angVel.x(), angVel.y(), angVel.z())
         createDebrisFromBreakableObject(fragment)
       }
-      objectsToRemove[numObjectsToRemove++] = threeObject1
+      objectsToRemove[numObjectsToRemove++] = mesh1
       userData1.collided = true
     }
   }
-  for (let i = 0; i < numObjectsToRemove; i++)
-    removeDebris(objectsToRemove[i])
+  for (let i = 0; i < numObjectsToRemove; i++) removeDebris(objectsToRemove[i])
   numObjectsToRemove = 0
 }
 
@@ -266,6 +254,9 @@ void function animate() {
 }()
 
 /* EVENTS */
+
+const raycaster = new THREE.Raycaster()
+const ballMaterial = new THREE.MeshPhongMaterial({ color: 0x202020 })
 
 window.addEventListener('pointerdown', event => {
   const mouse = normalizeMouse(event)
