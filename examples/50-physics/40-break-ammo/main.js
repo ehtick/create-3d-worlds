@@ -73,33 +73,28 @@ function createObject(mass, halfExtents, pos, quat = { x: 0, y: 0, z: 0, w: 1 },
 function createObjects() {
   // Ground
   pos.set(0, - 0.5, 0)
-  quat.set(0, 0, 0, 1)
-  const ground = createParalellepipedWithPhysics(40, 1, 40, 0, pos, quat, new THREE.MeshPhongMaterial({ color: 0xFFFFFF }))
+  const ground = createGround(40, 1, 40, 0, pos, undefined, 0xFFFFFF)
   ground.receiveShadow = true
   // Tower 1
   const towerMass = 1000
   const towerHalfExtents = new THREE.Vector3(2, 5, 2)
   pos.set(- 8, 5, 0)
-  quat.set(0, 0, 0, 1)
-  createObject(towerMass, towerHalfExtents, pos, quat, 0xB03014)
+  createObject(towerMass, towerHalfExtents, pos, undefined, 0xB03014)
   // Tower 2
   pos.set(8, 5, 0)
-  quat.set(0, 0, 0, 1)
-  createObject(towerMass, towerHalfExtents, pos, quat, 0xB03014)
+  createObject(towerMass, towerHalfExtents, pos, undefined, 0xB03014)
   // Bridge
   const bridgeMass = 100
   const bridgeHalfExtents = new THREE.Vector3(7, 0.2, 1.5)
   pos.set(0, 10.2, 0)
-  quat.set(0, 0, 0, 1)
-  createObject(bridgeMass, bridgeHalfExtents, pos, quat, 0xB3B865)
+  createObject(bridgeMass, bridgeHalfExtents, pos, undefined, 0xB3B865)
   // Stones
   const stoneMass = 120
   const stoneHalfExtents = new THREE.Vector3(1, 2, 0.15)
   const numStones = 8
-  quat.set(0, 0, 0, 1)
   for (let i = 0; i < numStones; i++) {
     pos.set(0, 2, 15 * (0.5 - i / (numStones + 1)))
-    createObject(stoneMass, stoneHalfExtents, pos, quat, 0xB0B0B0)
+    createObject(stoneMass, stoneHalfExtents, pos, undefined, 0xB0B0B0)
   }
   // Mountain
   const mountainMass = 860
@@ -119,8 +114,8 @@ function createObjects() {
   createDebrisFromBreakableObject(mountain)
 }
 
-function createParalellepipedWithPhysics(sx, sy, sz, mass, pos, quat, material) {
-  const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), material)
+function createGround(sx, sy, sz, mass, pos, quat, color) {
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), new THREE.MeshPhongMaterial({ color }))
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(sx * 0.5, sy * 0.5, sz * 0.5))
   shape.setMargin(margin)
   createRigidBody(mesh, shape, mass, pos, quat)
