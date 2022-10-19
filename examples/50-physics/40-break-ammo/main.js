@@ -47,20 +47,20 @@ ground.receiveShadow = true
 
 // Tower 1
 pos.set(-8, 5, 0)
-createBox(1000, new THREE.Vector3(2, 5, 2), pos, 0xB03014)
+createBox(1000, new THREE.Vector3(4, 10, 4), pos, 0xB03014)
 // Tower 2
 pos.set(8, 5, 0)
-createBox(1000, new THREE.Vector3(2, 5, 2), pos, 0xB03014)
+createBox(1000, new THREE.Vector3(4, 10, 4), pos, 0xB03014)
 
 // Bridge
 pos.set(0, 10.2, 0)
-createBox(100, new THREE.Vector3(7, 0.2, 1.5), pos, 0xB3B865)
+createBox(100, new THREE.Vector3(14, 0.4, 3), pos, 0xB3B865)
 
 // Stones
 const numStones = 8
 for (let i = 0; i < numStones; i++) {
   pos.set(0, 2, 15 * (0.5 - i / (numStones + 1)))
-  createBox(120, new THREE.Vector3(1, 2, 0.15), pos, 0xB0B0B0)
+  createBox(120, new THREE.Vector3(2, 4, 0.3), pos, 0xB0B0B0)
 }
 
 createPyramid()
@@ -77,9 +77,9 @@ function createPhysicsWorld() {
   return physicsWorld
 }
 
-function createBox(mass, halfSize, pos, color = createRandomColor(), quat = { x: 0, y: 0, z: 0, w: 1 }) {
+function createBox(mass, size, pos, color = createRandomColor(), quat = { x: 0, y: 0, z: 0, w: 1 }) {
   const mesh = new THREE.Mesh(
-    new THREE.BoxGeometry(halfSize.x * 2, halfSize.y * 2, halfSize.z * 2),
+    new THREE.BoxGeometry(size.x, size.y, size.z),
     new THREE.MeshPhongMaterial({ color }))
   mesh.position.copy(pos)
   mesh.quaternion.copy(quat)
