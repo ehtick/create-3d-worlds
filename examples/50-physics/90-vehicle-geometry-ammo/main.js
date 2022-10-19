@@ -23,8 +23,6 @@ const dirLight = new THREE.DirectionalLight(0xffffff, 1)
 dirLight.position.set(10, 10, 5)
 scene.add(dirLight)
 
-const materialDynamic = new THREE.MeshPhongMaterial({ color: 0xfca400 })
-const materialStatic = new THREE.MeshPhongMaterial({ color: 0x999999 })
 const materialInteractive = new THREE.MeshPhongMaterial({ color: 0x990000 })
 
 // initPhysics
@@ -45,26 +43,23 @@ createWall()
 createVehicle(new THREE.Vector3(0, 4, -20), ZERO_QUATERNION)
 
 function createBox({ pos, quat = ZERO_QUATERNION, w, l, h, mass = 0, friction = 1 }) {
-  pos = new THREE.Vector3(...pos)
-  const material = mass > 0 ? materialDynamic : materialStatic
-  const shape = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
-  const geometry = new AMMO.btBoxShape(new AMMO.btVector3(w * 0.5, l * 0.5, h * 0.5))
-
-  const mesh = new THREE.Mesh(shape, material)
-  mesh.position.copy(pos)
+  const position = new THREE.Vector3(...pos)
+  const color = mass > 0 ? 0xfca400 : 0x999999
+  const geometry = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
+  const shape = new AMMO.btBoxShape(new AMMO.btVector3(w * 0.5, l * 0.5, h * 0.5))
+  const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
+  mesh.position.copy(position)
   mesh.quaternion.copy(quat)
   scene.add(mesh)
 
   const transform = new AMMO.btTransform()
-  transform.setIdentity()
-  transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
+  transform.setOrigin(new AMMO.btVector3(position.x, position.y, position.z))
   transform.setRotation(new AMMO.btQuaternion(quat.x, quat.y, quat.z, quat.w))
   const motionState = new AMMO.btDefaultMotionState(transform)
 
   const localInertia = new AMMO.btVector3(0, 0, 0)
-  geometry.calculateLocalInertia(mass, localInertia)
-
-  const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, geometry, localInertia)
+  shape.calculateLocalInertia(mass, localInertia)
+  const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia)
   const body = new AMMO.btRigidBody(rbInfo)
 
   body.setFriction(friction)
@@ -96,8 +91,8 @@ function createWheelMesh(radius, width) {
 }
 
 function createChassisMesh(w, l, h) {
-  const shape = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
-  const mesh = new THREE.Mesh(shape, materialInteractive)
+  const geometry = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
+  const mesh = new THREE.Mesh(geometry, materialInteractive)
   scene.add(mesh)
   return mesh
 }
@@ -134,14 +129,14 @@ function createVehicle(pos) {
   const maxBreakingForce = 100
 
   // Chassis
-  const geometry = new AMMO.btBoxShape(new AMMO.btVector3(chassisWidth * .5, chassisHeight * .5, chassisLength * .5))
+  const shape = new AMMO.btBoxShape(new AMMO.btVector3(chassisWidth * .5, chassisHeight * .5, chassisLength * .5))
   const transform = new AMMO.btTransform()
   transform.setIdentity()
   transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
   const motionState = new AMMO.btDefaultMotionState(transform)
   const localInertia = new AMMO.btVector3(0, 0, 0)
-  geometry.calculateLocalInertia(massVehicle, localInertia)
-  const body = new AMMO.btRigidBody(new AMMO.btRigidBodyConstructionInfo(massVehicle, motionState, geometry, localInertia))
+  shape.calculateLocalInertia(massVehicle, localInertia)
+  const body = new AMMO.btRigidBody(new AMMO.btRigidBodyConstructionInfo(massVehicle, motionState, shape, localInertia))
   body.setActivationState(DISABLE_DEACTIVATION)
   physicsWorld.addRigidBody(body)
   const chassisMesh = createChassisMesh(chassisWidth, chassisHeight, chassisLength)
@@ -207,15 +202,12 @@ function createVehicle(pos) {
     if (keyboard.left) {
       if (vehicleSteering < steeringClamp)
         vehicleSteering += steeringIncrement
-    } else
-    if (keyboard.right) {
+    } else if (keyboard.right) {
       if (vehicleSteering > -steeringClamp)
         vehicleSteering -= steeringIncrement
-    } else
-    if (vehicleSteering < -steeringIncrement)
+    } else if (vehicleSteering < -steeringIncrement)
       vehicleSteering += steeringIncrement
-    else
-    if (vehicleSteering > steeringIncrement)
+    else if (vehicleSteering > steeringIncrement)
       vehicleSteering -= steeringIncrement
     else
       vehicleSteering = 0
