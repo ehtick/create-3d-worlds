@@ -6,6 +6,8 @@ import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scen
 import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
 
+const { Vector3 } = THREE
+
 const AMMO = await Ammo()
 
 camera.position.set(-14, 8, 16)
@@ -23,8 +25,7 @@ const margin = 0.05
 const convexBreaker = new ConvexObjectBreaker()
 const rigidBodies = []
 
-const pos = new THREE.Vector3()
-const quat = new THREE.Quaternion()
+const pos = new Vector3()
 
 const objectsToRemove = []
 
@@ -33,34 +34,28 @@ for (let i = 0; i < 500; i++)
 
 let numObjectsToRemove = 0
 
-const impactPoint = new THREE.Vector3()
-const impactNormal = new THREE.Vector3()
+const impactPoint = new Vector3()
+const impactNormal = new Vector3()
 
 const transformAux1 = new AMMO.btTransform()
 const tempBtVec3_1 = new AMMO.btVector3(0, 0, 0)
 
 const physicsWorld = createPhysicsWorld()
 
-pos.set(0, -0.5, 0)
-const ground = createGround(40, 1, 40, 0, pos, undefined, 0xFFFFFF)
-ground.receiveShadow = true
+createGround(40, 1, 40, 0, new Vector3(0, -0.5, 0), 0xFFFFFF)
 
-// Tower 1
-pos.set(-8, 5, 0)
-createBox(1000, new THREE.Vector3(4, 10, 4), pos, 0xB03014)
-// Tower 2
-pos.set(8, 5, 0)
-createBox(1000, new THREE.Vector3(4, 10, 4), pos, 0xB03014)
+// towers
+createBox(1000, new Vector3(4, 10, 4), new Vector3(-8, 5, 0), 0xB03014)
+createBox(1000, new Vector3(4, 10, 4), new Vector3(8, 5, 0), 0xB03014)
 
-// Bridge
-pos.set(0, 10.2, 0)
-createBox(100, new THREE.Vector3(14, 0.4, 3), pos, 0xB3B865)
+// bridge
+createBox(100, new Vector3(14, 0.4, 3), new Vector3(0, 10.2, 0), 0xB3B865)
 
-// Stones
+// stones
 const numStones = 8
 for (let i = 0; i < numStones; i++) {
   pos.set(0, 2, 15 * (0.5 - i / (numStones + 1)))
-  createBox(120, new THREE.Vector3(2, 4, 0.3), pos, 0xB0B0B0)
+  createBox(120, new Vector3(2, 4, 0.3), pos, 0xB0B0B0)
 }
 
 createPyramid()
@@ -77,39 +72,37 @@ function createPhysicsWorld() {
   return physicsWorld
 }
 
-function createBox(mass, size, pos, color = createRandomColor(), quat = { x: 0, y: 0, z: 0, w: 1 }) {
+function createBox(mass, size, pos, color = createRandomColor()) {
   const mesh = new THREE.Mesh(
     new THREE.BoxGeometry(size.x, size.y, size.z),
     new THREE.MeshPhongMaterial({ color }))
   mesh.position.copy(pos)
-  mesh.quaternion.copy(quat)
-  convexBreaker.prepareBreakableObject(mesh, mass, new THREE.Vector3(), new THREE.Vector3(), true)
+  convexBreaker.prepareBreakableObject(mesh, mass, new Vector3(), new Vector3(), true)
   createDebrisFromBreakableObject(mesh)
 }
 
 function createPyramid() {
   const pyramidMass = 860
-  const pyramidHalfExtents = new THREE.Vector3(4, 5, 4)
+  const pyramidHalfExtents = new Vector3(4, 5, 4)
   pos.set(5, pyramidHalfExtents.y * 0.5, - 7)
-  quat.set(0, 0, 0, 1)
   const pyramidPoints = []
-  pyramidPoints.push(new THREE.Vector3(pyramidHalfExtents.x, - pyramidHalfExtents.y, pyramidHalfExtents.z))
-  pyramidPoints.push(new THREE.Vector3(- pyramidHalfExtents.x, - pyramidHalfExtents.y, pyramidHalfExtents.z))
-  pyramidPoints.push(new THREE.Vector3(pyramidHalfExtents.x, - pyramidHalfExtents.y, - pyramidHalfExtents.z))
-  pyramidPoints.push(new THREE.Vector3(- pyramidHalfExtents.x, - pyramidHalfExtents.y, - pyramidHalfExtents.z))
-  pyramidPoints.push(new THREE.Vector3(0, pyramidHalfExtents.y, 0))
+  pyramidPoints.push(new Vector3(pyramidHalfExtents.x, - pyramidHalfExtents.y, pyramidHalfExtents.z))
+  pyramidPoints.push(new Vector3(- pyramidHalfExtents.x, - pyramidHalfExtents.y, pyramidHalfExtents.z))
+  pyramidPoints.push(new Vector3(pyramidHalfExtents.x, - pyramidHalfExtents.y, - pyramidHalfExtents.z))
+  pyramidPoints.push(new Vector3(- pyramidHalfExtents.x, - pyramidHalfExtents.y, - pyramidHalfExtents.z))
+  pyramidPoints.push(new Vector3(0, pyramidHalfExtents.y, 0))
   const pyramid = new THREE.Mesh(new ConvexGeometry(pyramidPoints), new THREE.MeshPhongMaterial({ color: 0xB03814 }))
   pyramid.position.copy(pos)
-  pyramid.quaternion.copy(quat)
-  convexBreaker.prepareBreakableObject(pyramid, pyramidMass, new THREE.Vector3(), new THREE.Vector3(), true)
+  convexBreaker.prepareBreakableObject(pyramid, pyramidMass, new Vector3(), new Vector3(), true)
   createDebrisFromBreakableObject(pyramid)
 }
 
-function createGround(sx, sy, sz, mass, pos, quat, color) {
+function createGround(sx, sy, sz, mass, pos, color) {
   const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), new THREE.MeshPhongMaterial({ color }))
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(sx * 0.5, sy * 0.5, sz * 0.5))
   shape.setMargin(margin)
-  createRigidBody(mesh, shape, mass, pos, quat)
+  createRigidBody(mesh, shape, mass, pos)
+  mesh.receiveShadow = true
   return mesh
 }
 
@@ -120,7 +113,7 @@ function createDebrisFromBreakableObject(mesh) {
   // set pointer back to the three mesh
   const btVecUserData = new AMMO.btVector3(0, 0, 0)
   btVecUserData.threeObject = mesh
-  const { body } = createRigidBody(mesh, shape, mesh.userData.mass, mesh.position, undefined, mesh.userData.velocity, mesh.userData.angularVelocity)
+  const { body } = createRigidBody(mesh, shape, mesh.userData.mass, mesh.position, mesh.userData.velocity, mesh.userData.angularVelocity)
   body.setUserPointer(btVecUserData)
 }
 
@@ -139,13 +132,11 @@ function createConvexHullPhysicsShape(coords) {
   return shape
 }
 
-function createRigidBody(mesh, physicsShape, mass, pos, quat = { x: 0, y: 0, z: 0, w: 1 }, vel, angVel) {
+function createRigidBody(mesh, physicsShape, mass, pos, vel, angVel) {
   mesh.position.copy(pos)
-  mesh.quaternion.copy(quat)
   const transform = new AMMO.btTransform()
   transform.setIdentity()
   transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
-  transform.setRotation(new AMMO.btQuaternion(quat.x, quat.y, quat.z, quat.w))
   const motionState = new AMMO.btDefaultMotionState(transform)
   const localInertia = new AMMO.btVector3(0, 0, 0)
   physicsShape.calculateLocalInertia(mass, localInertia)
