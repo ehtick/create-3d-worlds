@@ -60,8 +60,10 @@ function createPhysicsWorld() {
   return physicsWorld
 }
 
-function createObject(mass, halfExtents, pos, quat, material) {
-  const mesh = new THREE.Mesh(new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2), material)
+function createObject(mass, halfExtents, pos, quat = { x: 0, y: 0, z: 0, w: 1 }, color = createRandomColor()) {
+  const mesh = new THREE.Mesh(
+    new THREE.BoxGeometry(halfExtents.x * 2, halfExtents.y * 2, halfExtents.z * 2),
+    new THREE.MeshPhongMaterial({ color }))
   mesh.position.copy(pos)
   mesh.quaternion.copy(quat)
   convexBreaker.prepareBreakableObject(mesh, mass, new THREE.Vector3(), new THREE.Vector3(), true)
@@ -79,17 +81,17 @@ function createObjects() {
   const towerHalfExtents = new THREE.Vector3(2, 5, 2)
   pos.set(- 8, 5, 0)
   quat.set(0, 0, 0, 1)
-  createObject(towerMass, towerHalfExtents, pos, quat, createMaterial(0xB03014))
+  createObject(towerMass, towerHalfExtents, pos, quat, 0xB03014)
   // Tower 2
   pos.set(8, 5, 0)
   quat.set(0, 0, 0, 1)
-  createObject(towerMass, towerHalfExtents, pos, quat, createMaterial(0xB03214))
+  createObject(towerMass, towerHalfExtents, pos, quat, 0xB03014)
   // Bridge
   const bridgeMass = 100
   const bridgeHalfExtents = new THREE.Vector3(7, 0.2, 1.5)
   pos.set(0, 10.2, 0)
   quat.set(0, 0, 0, 1)
-  createObject(bridgeMass, bridgeHalfExtents, pos, quat, createMaterial(0xB3B865))
+  createObject(bridgeMass, bridgeHalfExtents, pos, quat, 0xB3B865)
   // Stones
   const stoneMass = 120
   const stoneHalfExtents = new THREE.Vector3(1, 2, 0.15)
@@ -97,7 +99,7 @@ function createObjects() {
   quat.set(0, 0, 0, 1)
   for (let i = 0; i < numStones; i++) {
     pos.set(0, 2, 15 * (0.5 - i / (numStones + 1)))
-    createObject(stoneMass, stoneHalfExtents, pos, quat, createMaterial(0xB0B0B0))
+    createObject(stoneMass, stoneHalfExtents, pos, quat, 0xB0B0B0)
   }
   // Mountain
   const mountainMass = 860
@@ -110,7 +112,7 @@ function createObjects() {
   mountainPoints.push(new THREE.Vector3(mountainHalfExtents.x, - mountainHalfExtents.y, - mountainHalfExtents.z))
   mountainPoints.push(new THREE.Vector3(- mountainHalfExtents.x, - mountainHalfExtents.y, - mountainHalfExtents.z))
   mountainPoints.push(new THREE.Vector3(0, mountainHalfExtents.y, 0))
-  const mountain = new THREE.Mesh(new ConvexGeometry(mountainPoints), createMaterial(0xB03814))
+  const mountain = new THREE.Mesh(new ConvexGeometry(mountainPoints), new THREE.MeshPhongMaterial({ color: 0xB03814 }))
   mountain.position.copy(pos)
   mountain.quaternion.copy(quat)
   convexBreaker.prepareBreakableObject(mountain, mountainMass, new THREE.Vector3(), new THREE.Vector3(), true)
@@ -129,7 +131,7 @@ function createDebrisFromBreakableObject(mesh) {
   mesh.castShadow = mesh.receiveShadow = true
   const shape = createConvexHullPhysicsShape(mesh.geometry.attributes.position.array)
   shape.setMargin(margin)
-  const { body } = createRigidBody(mesh, shape, mesh.userData.mass, null, null, mesh.userData.velocity, mesh.userData.angularVelocity)
+  const { body } = createRigidBody(mesh, shape, mesh.userData.mass, mesh.position, undefined, mesh.userData.velocity, mesh.userData.angularVelocity)
   // Set pointer back to the three mesh only in the debris objects
   const btVecUserData = new AMMO.btVector3(0, 0, 0)
   btVecUserData.threeObject = mesh
@@ -151,15 +153,9 @@ function createConvexHullPhysicsShape(coords) {
   return shape
 }
 
-function createRigidBody(mesh, physicsShape, mass, pos, quat, vel, angVel) {
-  if (pos)
-    mesh.position.copy(pos)
-  else
-    pos = mesh.position
-  if (quat)
-    mesh.quaternion.copy(quat)
-  else
-    quat = mesh.quaternion
+function createRigidBody(mesh, physicsShape, mass, pos, quat = { x: 0, y: 0, z: 0, w: 1 }, vel, angVel) {
+  mesh.position.copy(pos)
+  mesh.quaternion.copy(quat)
   const transform = new AMMO.btTransform()
   transform.setIdentity()
   transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
@@ -179,20 +175,19 @@ function createRigidBody(mesh, physicsShape, mass, pos, quat, vel, angVel) {
 
   if (mass > 0) body.setActivationState(4) // Disable deactivation
 
-  scene.add(mesh)
-  if (mass > 0) rigidBodies.push(mesh)
-  physicsWorld.addRigidBody(body)
+  addRigidBody({ mesh, body, mass })
 
   return { mesh, body, mass }
 }
 
-function createRandomColor() {
-  return Math.floor(Math.random() * (1 << 24))
+function addRigidBody({ mesh, body, mass }) {
+  scene.add(mesh)
+  if (mass > 0) rigidBodies.push(mesh)
+  physicsWorld.addRigidBody(body)
 }
 
-function createMaterial(color) {
-  color = color || createRandomColor()
-  return new THREE.MeshPhongMaterial({ color })
+function createRandomColor() {
+  return Math.floor(Math.random() * (1 << 24))
 }
 
 function updatePhysics(deltaTime) {
@@ -307,8 +302,7 @@ window.addEventListener('pointerdown', event => {
   ballShape.setMargin(margin)
   pos.copy(raycaster.ray.direction)
   pos.add(raycaster.ray.origin)
-  quat.set(0, 0, 0, 1)
-  const { body } = createRigidBody(ball, ballShape, ballMass, pos, quat)
+  const { body } = createRigidBody(ball, ballShape, ballMass, pos)
   pos.copy(raycaster.ray.direction)
   pos.multiplyScalar(24)
   body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
