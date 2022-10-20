@@ -5,11 +5,22 @@ import keyboard from '/utils/classes/Keyboard.js'
 
 const AMMO = await Ammo()
 
-const maxSpeed = 30
+const FRONT_LEFT = 0
+const FRONT_RIGHT = 1
+const BACK_LEFT = 2
+const BACK_RIGHT = 3
+const maxSpeed = 40
+const steeringIncrement = .04
+const steeringClamp = .5
+const maxEngineForce = 2000
+const maxBreakingForce = 100
+let engineForce = 0
+let vehicleSteering = 0
+let breakingForce = 0
+
 const DISABLE_DEACTIVATION = 4
 const transform = new AMMO.btTransform()
 
-const updates = []
 const boxes = []
 
 camera.position.x = -4.84
@@ -34,7 +45,7 @@ quat.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 18)
 createBox({ pos: [0, -1.5, 0], quat, w: 8, l: 4, h: 10, mass: 0 })
 
 createWall()
-createVehicle(new THREE.Vector3(0, 4, -20))
+const {vehicle, wheels, chassis} = createVehicle(new THREE.Vector3(0, 4, -20))
 
 /* FUNCTIONS */
 
@@ -128,11 +139,6 @@ function createVehicle(pos) {
   const suspensionRestLength = 0.6
   const rollInfluence = 0.2
 
-  const steeringIncrement = .04
-  const steeringClamp = .5
-  const maxEngineForce = 2000
-  const maxBreakingForce = 100
-
   // Chassis
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(chassisWidth * .5, chassisHeight * .5, chassisLength * .5))
   const transform = new AMMO.btTransform()
@@ -147,9 +153,6 @@ function createVehicle(pos) {
   const chassis = createChassis(chassisWidth, chassisHeight, chassisLength)
 
   // Raycast Vehicle
-  let engineForce = 0
-  let vehicleSteering = 0
-  let breakingForce = 0
   const tuning = new AMMO.btVehicleTuning()
   const rayCaster = new AMMO.btDefaultVehicleRaycaster(physicsWorld)
   const vehicle = new AMMO.btRaycastVehicle(tuning, body, rayCaster)
@@ -157,10 +160,6 @@ function createVehicle(pos) {
   physicsWorld.addAction(vehicle)
 
   // Wheels
-  const FRONT_LEFT = 0
-  const FRONT_RIGHT = 1
-  const BACK_LEFT = 2
-  const BACK_RIGHT = 3
   const wheels = []
   const wheelDirectionCS0 = new AMMO.btVector3(0, -1, 0)
   const wheelAxleCS = new AMMO.btVector3(-1, 0, 0)
@@ -188,54 +187,55 @@ function createVehicle(pos) {
   addWheel(false, new AMMO.btVector3(-wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_LEFT)
   addWheel(false, new AMMO.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_RIGHT)
 
-  function update() {
-    const speed = vehicle.getCurrentSpeedKmHour()
-    breakingForce = 0
-    engineForce = 0
+  return { vehicle, wheels, chassis }
+}
 
-    if (keyboard.up && speed < maxSpeed)
-      engineForce = maxEngineForce
+function updateVehicle({ vehicle, wheels, chassis }) {
+  const speed = vehicle.getCurrentSpeedKmHour()
+  breakingForce = 0
+  engineForce = 0
 
-    if (keyboard.down && speed > -maxSpeed * .5)
-      engineForce = -maxEngineForce / 2
+  if (keyboard.up && speed < maxSpeed)
+    engineForce = maxEngineForce
 
-    if (keyboard.space)
-      breakingForce = maxBreakingForce
+  if (keyboard.down && speed > -maxSpeed * .5)
+    engineForce = -maxEngineForce / 2
 
-    if (keyboard.left && vehicleSteering < steeringClamp)
-      vehicleSteering += steeringIncrement
+  if (keyboard.space)
+    breakingForce = maxBreakingForce
 
-    if (keyboard.right && vehicleSteering > -steeringClamp)
-      vehicleSteering -= steeringIncrement
+  if (keyboard.left && vehicleSteering < steeringClamp)
+    vehicleSteering += steeringIncrement
 
-    vehicle.applyEngineForce(engineForce, BACK_LEFT)
-    vehicle.applyEngineForce(engineForce, BACK_RIGHT)
+  if (keyboard.right && vehicleSteering > -steeringClamp)
+    vehicleSteering -= steeringIncrement
 
-    vehicle.setBrake(breakingForce / 2, FRONT_LEFT)
-    vehicle.setBrake(breakingForce / 2, FRONT_RIGHT)
-    vehicle.setBrake(breakingForce, BACK_LEFT)
-    vehicle.setBrake(breakingForce, BACK_RIGHT)
+  vehicle.applyEngineForce(engineForce, BACK_LEFT)
+  vehicle.applyEngineForce(engineForce, BACK_RIGHT)
 
-    vehicle.setSteeringValue(vehicleSteering, FRONT_LEFT)
-    vehicle.setSteeringValue(vehicleSteering, FRONT_RIGHT)
+  vehicle.setBrake(breakingForce / 2, FRONT_LEFT)
+  vehicle.setBrake(breakingForce / 2, FRONT_RIGHT)
+  vehicle.setBrake(breakingForce, BACK_LEFT)
+  vehicle.setBrake(breakingForce, BACK_RIGHT)
 
-    let tm, p, q, i
-    const n = vehicle.getNumWheels()
-    for (i = 0; i < n; i++) {
-      vehicle.updateWheelTransform(i, true)
-      tm = vehicle.getWheelTransformWS(i)
-      p = tm.getOrigin()
-      q = tm.getRotation()
-      wheels[i].position.set(p.x(), p.y(), p.z())
-      wheels[i].quaternion.set(q.x(), q.y(), q.z(), q.w())
-    }
-    tm = vehicle.getChassisWorldTransform()
+  vehicle.setSteeringValue(vehicleSteering, FRONT_LEFT)
+  vehicle.setSteeringValue(vehicleSteering, FRONT_RIGHT)
+
+  let tm, p, q, i
+  const n = vehicle.getNumWheels()
+  for (i = 0; i < n; i++) {
+    vehicle.updateWheelTransform(i, true)
+    tm = vehicle.getWheelTransformWS(i)
     p = tm.getOrigin()
     q = tm.getRotation()
-    chassis.position.set(p.x(), p.y(), p.z())
-    chassis.quaternion.set(q.x(), q.y(), q.z(), q.w())
+    wheels[i].position.set(p.x(), p.y(), p.z())
+    wheels[i].quaternion.set(q.x(), q.y(), q.z(), q.w())
   }
-  updates.push(update)
+  tm = vehicle.getChassisWorldTransform()
+  p = tm.getOrigin()
+  q = tm.getRotation()
+  chassis.position.set(p.x(), p.y(), p.z())
+  chassis.quaternion.set(q.x(), q.y(), q.z(), q.w())
 }
 
 function createWall(size = .75, nw = 8, nh = 6) {
@@ -251,7 +251,7 @@ function createWall(size = .75, nw = 8, nh = 6) {
 void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
-  updates.forEach(x => x())
+  updateVehicle({ vehicle, wheels, chassis })
   boxes.forEach(updateBox)
   physicsWorld.stepSimulation(dt, 10)
   controls.update(dt)
