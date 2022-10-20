@@ -47,9 +47,10 @@ function addRigidBody({ mesh, body, mass }) {
 function createBox({ pos, quat = new THREE.Quaternion(0, 0, 0, 1), width, height, depth, mass = 0, color = 0x999999, friction = 1 }) {
   const geometry = new THREE.BoxGeometry(width, height, depth, 1, 1, 1)
   const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
+  mesh.castShadow = mesh.receiveShadow = true
 
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(width * 0.5, height * 0.5, depth * 0.5))
-
+  // shape.setMargin(margin)
   return createRigidBody({ mesh, shape, mass, pos, quat, friction })
 }
 

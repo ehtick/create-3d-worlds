@@ -55,14 +55,14 @@ export function createBall(radius = 0.6, mass = 1.2, pos, quat) {
   return res
 }
 
-export function createBox({ width, height, depth, mass, pos, quat, color }) {
-  const mesh = new THREE.Mesh(
-    new THREE.BoxGeometry(width, height, depth, 1, 1, 1), new THREE.MeshPhongMaterial({ color: color || randomColor() }))
+export function createBox({ width, height, depth, mass, pos, quat, color = randomColor(), friction }) {
+  const geometry = new THREE.BoxGeometry(width, height, depth, 1, 1, 1)
+  const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
   mesh.castShadow = mesh.receiveShadow = true
 
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(width * 0.5, height * 0.5, depth * 0.5))
   shape.setMargin(margin)
-  return createRigidBody({ mesh, shape, mass, pos, quat })
+  return createRigidBody({ mesh, shape, mass, pos, quat, friction })
 }
 
 export function createBrick(length, height, width, pos, halfBrick) {
