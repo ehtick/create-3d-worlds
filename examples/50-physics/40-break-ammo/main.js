@@ -36,24 +36,24 @@ const physicsWorld = createPhysicsWorld({ gravity: 7.8 })
 createGround(40, 1, 40, 0, new Vector3(0, -0.5, 0), 0xFFFFFF)
 
 // towers
-createBox(1000, new Vector3(4, 10, 4), new Vector3(-8, 5, 0), 0xB03014)
-createBox(1000, new Vector3(4, 10, 4), new Vector3(8, 5, 0), 0xB03014)
+createBox({ mass: 1000, size: new Vector3(4, 10, 4), pos: new Vector3(-8, 5, 0), color: 0xB03014 })
+createBox({ mass: 1000, size: new Vector3(4, 10, 4), pos: new Vector3(8, 5, 0), color: 0xB03014 })
 
 // bridge
-createBox(100, new Vector3(14, 0.4, 3), new Vector3(0, 10.2, 0), 0xB3B865)
+createBox({ mass: 100, size: new Vector3(14, 0.4, 3), pos: new Vector3(0, 10.2, 0), color: 0xB3B865 })
 
 // stones
 const numStones = 8
 for (let i = 0; i < numStones; i++) {
   pos.set(0, 2, 15 * (0.5 - i / (numStones + 1)))
-  createBox(120, new Vector3(2, 4, 0.3), pos, 0xB0B0B0)
+  createBox({ mass: 120, size: new Vector3(2, 4, .3), pos, color: 0xB0B0B0 })
 }
 
 createPyramid()
 
 /* FUNCTION */
 
-function createBox(mass, size, pos, color = createRandomColor()) {
+function createBox({ mass, size, pos, color = createRandomColor() }) {
   const mesh = new THREE.Mesh(
     new THREE.BoxGeometry(size.x, size.y, size.z),
     new THREE.MeshPhongMaterial({ color }))
