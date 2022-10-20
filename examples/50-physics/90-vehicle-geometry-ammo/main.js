@@ -6,7 +6,7 @@ import { createVehicle, updateVehicle } from './vehicle.js'
 const DISABLE_DEACTIVATION = 4
 const transform = new AMMO.btTransform()
 
-const boxes = []
+const rigidBodies = []
 
 const ambientLight = new THREE.AmbientLight(0x404040)
 scene.add(ambientLight)
@@ -42,9 +42,9 @@ function createBox({ pos, quat = new THREE.Quaternion(0, 0, 0, 1), w, l, h, mass
   const geometry = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(w * 0.5, l * 0.5, h * 0.5))
   const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
+
   mesh.position.copy(position)
   mesh.quaternion.copy(quat)
-  scene.add(mesh)
 
   transform.setOrigin(new AMMO.btVector3(position.x, position.y, position.z))
   transform.setRotation(new AMMO.btQuaternion(quat.x, quat.y, quat.z, quat.w))
@@ -56,12 +56,16 @@ function createBox({ pos, quat = new THREE.Quaternion(0, 0, 0, 1), w, l, h, mass
   const body = new AMMO.btRigidBody(rbInfo)
   body.setFriction(friction)
   mesh.body = body
-  physicsWorld.addRigidBody(body)
 
-  if (mass > 0) {
-    body.setActivationState(DISABLE_DEACTIVATION)
-    boxes.push(mesh)
-  }
+  if (mass > 0) body.setActivationState(4) // Disable deactivation
+
+  addRigidBody({ mesh, body, mass })
+}
+
+function addRigidBody({ mesh, body, mass }) {
+  scene.add(mesh)
+  if (mass > 0) rigidBodies.push(mesh)
+  physicsWorld.addRigidBody(body)
 }
 
 function updateBox(mesh) {
@@ -88,7 +92,7 @@ void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
   updateVehicle({ vehicle, wheels, chassis })
-  boxes.forEach(updateBox)
+  rigidBodies.forEach(updateBox)
   physicsWorld.stepSimulation(dt, 10)
   renderer.render(scene, camera)
 }()
