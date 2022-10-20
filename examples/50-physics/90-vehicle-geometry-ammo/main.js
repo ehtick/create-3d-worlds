@@ -1,16 +1,15 @@
 /* global Ammo */
 import * as THREE from 'three'
-import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
+import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import keyboard from '/utils/classes/Keyboard.js'
 
 const AMMO = await Ammo()
 
 const DISABLE_DEACTIVATION = 4
-const ZERO_QUATERNION = new THREE.Quaternion(0, 0, 0, 1)
+const transform = new AMMO.btTransform()
 
-const clock = new THREE.Clock()
-
-const syncList = []
+const updates = []
+const boxes = []
 
 camera.position.x = -4.84
 camera.position.z = -35.11
@@ -23,15 +22,9 @@ const dirLight = new THREE.DirectionalLight(0xffffff, 1)
 dirLight.position.set(10, 10, 5)
 scene.add(dirLight)
 
-const materialInteractive = new THREE.MeshPhongMaterial({ color: 0x990000 })
+const carMaterial = new THREE.MeshPhongMaterial({ color: 0x990000 })
 
-// initPhysics
-const collisionConfiguration = new AMMO.btDefaultCollisionConfiguration()
-const dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
-const broadphase = new AMMO.btDbvtBroadphase()
-const solver = new AMMO.btSequentialImpulseConstraintSolver()
-const physicsWorld = new AMMO.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration)
-physicsWorld.setGravity(new AMMO.btVector3(0, -9.82, 0))
+const physicsWorld = createPhysicsWorld()
 
 createBox({ pos: [0, -0.5, 0], w: 75, l: 1, h: 75, friction: 2 })
 
@@ -40,9 +33,21 @@ quat.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 18)
 createBox({ pos: [0, -1.5, 0], quat, w: 8, l: 4, h: 10, mass: 0 })
 
 createWall()
-createVehicle(new THREE.Vector3(0, 4, -20), ZERO_QUATERNION)
+createVehicle(new THREE.Vector3(0, 4, -20))
 
-function createBox({ pos, quat = ZERO_QUATERNION, w, l, h, mass = 0, friction = 1 }) {
+/* FUNCTIONS */
+
+function createPhysicsWorld() {
+  const collisionConfiguration = new AMMO.btDefaultCollisionConfiguration()
+  const dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
+  const broadphase = new AMMO.btDbvtBroadphase()
+  const solver = new AMMO.btSequentialImpulseConstraintSolver()
+  const physicsWorld = new AMMO.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration)
+  physicsWorld.setGravity(new AMMO.btVector3(0, -9.82, 0))
+  return physicsWorld
+}
+
+function createBox({ pos, quat = new THREE.Quaternion(0, 0, 0, 1), w, l, h, mass = 0, friction = 1 }) {
   const position = new THREE.Vector3(...pos)
   const color = mass > 0 ? 0xfca400 : 0x999999
   const geometry = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
@@ -52,7 +57,6 @@ function createBox({ pos, quat = ZERO_QUATERNION, w, l, h, mass = 0, friction = 
   mesh.quaternion.copy(quat)
   scene.add(mesh)
 
-  const transform = new AMMO.btTransform()
   transform.setOrigin(new AMMO.btVector3(position.x, position.y, position.z))
   transform.setRotation(new AMMO.btQuaternion(quat.x, quat.y, quat.z, quat.w))
   const motionState = new AMMO.btDefaultMotionState(transform)
@@ -64,35 +68,36 @@ function createBox({ pos, quat = ZERO_QUATERNION, w, l, h, mass = 0, friction = 
 
   body.setFriction(friction)
   physicsWorld.addRigidBody(body)
+  mesh.body = body
 
   if (mass > 0) {
     body.setActivationState(DISABLE_DEACTIVATION)
-    // Sync physics and graphics
-    function sync() {
-      const ms = body.getMotionState()
-      if (!ms) return
-      ms.getWorldTransform(transform)
-      const p = transform.getOrigin()
-      const q = transform.getRotation()
-      mesh.position.set(p.x(), p.y(), p.z())
-      mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
-    }
-    syncList.push(sync)
+    boxes.push(mesh)
   }
+}
+
+function updateBox(mesh) {
+  const ms = mesh.body.getMotionState()
+  if (!ms) return
+  ms.getWorldTransform(transform)
+  const p = transform.getOrigin()
+  const q = transform.getRotation()
+  mesh.position.set(p.x(), p.y(), p.z())
+  mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
 }
 
 function createWheelMesh(radius, width) {
   const t = new THREE.CylinderGeometry(radius, radius, width, 24, 1)
   t.rotateZ(Math.PI / 2)
-  const mesh = new THREE.Mesh(t, materialInteractive)
-  mesh.add(new THREE.Mesh(new THREE.BoxGeometry(width * 1.5, radius * 1.75, radius * .25, 1, 1, 1), materialInteractive))
+  const mesh = new THREE.Mesh(t, carMaterial)
+  mesh.add(new THREE.Mesh(new THREE.BoxGeometry(width * 1.5, radius * 1.75, radius * .25, 1, 1, 1), carMaterial))
   scene.add(mesh)
   return mesh
 }
 
 function createChassisMesh(w, l, h) {
   const geometry = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
-  const mesh = new THREE.Mesh(geometry, materialInteractive)
+  const mesh = new THREE.Mesh(geometry, carMaterial)
   scene.add(mesh)
   return mesh
 }
@@ -183,8 +188,7 @@ function createVehicle(pos) {
   addWheel(false, new AMMO.btVector3(-wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_LEFT)
   addWheel(false, new AMMO.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_RIGHT)
 
-  // Sync keybord actions and physics and graphics
-  function sync() {
+  function update() {
     const speed = vehicle.getCurrentSpeedKmHour()
     breakingForce = 0
     engineForce = 0
@@ -239,7 +243,7 @@ function createVehicle(pos) {
     chassisMesh.position.set(p.x(), p.y(), p.z())
     chassisMesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
   }
-  syncList.push(sync)
+  updates.push(update)
 }
 
 function createWall(size = .75, nw = 8, nh = 6) {
@@ -255,7 +259,8 @@ function createWall(size = .75, nw = 8, nh = 6) {
 void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
-  syncList.forEach(x => x())
+  updates.forEach(x => x())
+  boxes.forEach(updateBox)
   physicsWorld.stepSimulation(dt, 10)
   controls.update(dt)
   renderer.render(scene, camera)
