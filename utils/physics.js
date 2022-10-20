@@ -20,12 +20,13 @@ export function createPhysicsWorld({ gravity = 9.82 } = {}) {
   return physicsWorld
 }
 
-export function createRigidBody(mesh, shape, mass, pos, quat = { x: 0, y: 0, z: 0, w: 1 }, vel, angVel) {
+export function createRigidBody({
+  mesh, shape, mass, pos, quat = { x: 0, y: 0, z: 0, w: 1 }, friction, vel, angVel
+}) {
   mesh.position.copy(pos)
   mesh.quaternion.copy(quat)
 
   const transform = new AMMO.btTransform()
-  transform.setIdentity()
   transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
   transform.setRotation(new AMMO.btQuaternion(quat.x, quat.y, quat.z, quat.w))
   const motionState = new AMMO.btDefaultMotionState(transform)
@@ -35,8 +36,9 @@ export function createRigidBody(mesh, shape, mass, pos, quat = { x: 0, y: 0, z: 
 
   const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, shape, inertia)
   const body = new AMMO.btRigidBody(rbInfo)
-
+  if (friction) body.setFriction(friction)
   mesh.userData.body = body
+
   if (mass > 0) body.setActivationState(4) // Disable deactivation
 
   return { mesh, body, mass }
@@ -48,7 +50,7 @@ export function createBall(radius = 0.6, mass = 1.2, pos, quat) {
   mesh.castShadow = mesh.receiveShadow = true
   const shape = new AMMO.btSphereShape(radius)
   shape.setMargin(margin)
-  const res = createRigidBody(mesh, shape, mass, pos, quat)
+  const res = createRigidBody({ mesh, shape, mass, pos, quat })
   res.body.setFriction(0.5)
   return res
 }
@@ -59,7 +61,7 @@ export function createBox(width, height, depth, mass, pos, quat, color) {
   mesh.castShadow = mesh.receiveShadow = true
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(width * 0.5, height * 0.5, depth * 0.5))
   shape.setMargin(margin)
-  return createRigidBody(mesh, shape, mass, pos, quat)
+  return createRigidBody({ mesh, shape, mass, pos, quat })
 }
 
 export function createBrick(length, height, depth, pos, halfBrick) {

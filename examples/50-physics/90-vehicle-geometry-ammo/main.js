@@ -1,9 +1,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { AMMO, createPhysicsWorld } from '/utils/physics.js'
+import { AMMO, createPhysicsWorld, createRigidBody } from '/utils/physics.js'
 import { createVehicle, updateVehicle } from './vehicle.js'
-
-const DISABLE_DEACTIVATION = 4
 
 const rigidBodies = []
 
@@ -42,29 +40,6 @@ function addRigidBody({ mesh, body, mass }) {
   scene.add(mesh)
   if (mass > 0) rigidBodies.push(mesh)
   physicsWorld.addRigidBody(body)
-}
-
-function createRigidBody({ mesh, shape, mass, pos, quat = { x: 0, y: 0, z: 0, w: 1 }, friction } = {}) {
-  mesh.position.copy(pos)
-  mesh.quaternion.copy(quat)
-
-  const transform = new AMMO.btTransform()
-  transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
-  transform.setRotation(new AMMO.btQuaternion(quat.x, quat.y, quat.z, quat.w))
-  const motionState = new AMMO.btDefaultMotionState(transform)
-
-  const inertia = new AMMO.btVector3(0, 0, 0)
-  shape.calculateLocalInertia(mass, inertia)
-
-  const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, shape, inertia)
-  const body = new AMMO.btRigidBody(rbInfo)
-  body.setFriction(friction)
-  mesh.userData.body = body
-
-  if (mass > 0) body.setActivationState(4) // Disable deactivation
-
-  // addRigidBody({ mesh, body, mass })
-  return { mesh, body, mass }
 }
 
 function createBox({ pos, quat = new THREE.Quaternion(0, 0, 0, 1), w, l, h, mass = 0, friction = 1 }) {
