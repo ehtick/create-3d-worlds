@@ -45,7 +45,9 @@ quat.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 18)
 createBox({ pos: [0, -1.5, 0], quat, w: 8, l: 4, h: 10, mass: 0 })
 
 createWall()
-const {vehicle, wheels, chassis} = createVehicle(new THREE.Vector3(0, 4, -20))
+
+const { vehicle, wheels, chassis } = createVehicle(new THREE.Vector3(0, 4, -20))
+scene.add(...wheels, chassis) // bez točkova može tenk
 
 /* FUNCTIONS */
 
@@ -102,14 +104,12 @@ function createWheel(radius, width) {
   t.rotateZ(Math.PI / 2)
   const mesh = new THREE.Mesh(t, carMaterial)
   mesh.add(new THREE.Mesh(new THREE.BoxGeometry(width * 1.5, radius * 1.75, radius * .25, 1, 1, 1), carMaterial))
-  scene.add(mesh)
   return mesh
 }
 
 function createChassis(w, l, h) {
   const geometry = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
   const mesh = new THREE.Mesh(geometry, carMaterial)
-  scene.add(mesh)
   return mesh
 }
 
