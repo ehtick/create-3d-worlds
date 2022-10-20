@@ -16,11 +16,14 @@ scene.add(dirLight)
 
 const physicsWorld = createPhysicsWorld()
 
-createBox({ pos: [0, -0.5, 0], w: 75, l: 1, h: 75, friction: 2 })
+const ground = createBox({ pos: [0, -0.5, 0], w: 100, l: 1, h: 100, friction: 2 })
+addRigidBody(ground)
 
 const quat = new THREE.Quaternion(0, 0, 0, 1)
 quat.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 18)
-createBox({ pos: [0, -1.5, 0], quat, w: 8, l: 4, h: 10, mass: 0 })
+
+const jumpBoard = createBox({ pos: [0, -1.5, 0], quat, w: 8, l: 4, h: 10, mass: 0 })
+addRigidBody(jumpBoard)
 
 createWall()
 
@@ -60,7 +63,8 @@ function createRigidBody({ mesh, shape, mass, pos, quat = { x: 0, y: 0, z: 0, w:
 
   if (mass > 0) body.setActivationState(4) // Disable deactivation
 
-  addRigidBody({ mesh, body, mass })
+  // addRigidBody({ mesh, body, mass })
+  return { mesh, body, mass }
 }
 
 function createBox({ pos, quat = new THREE.Quaternion(0, 0, 0, 1), w, l, h, mass = 0, friction = 1 }) {
@@ -70,7 +74,7 @@ function createBox({ pos, quat = new THREE.Quaternion(0, 0, 0, 1), w, l, h, mass
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(w * 0.5, l * 0.5, h * 0.5))
   const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
 
-  createRigidBody({ mesh, shape, mass, pos, quat, friction })
+  return createRigidBody({ mesh, shape, mass, pos, quat, friction })
 }
 
 function updateBox(mesh) {
@@ -86,10 +90,13 @@ function updateBox(mesh) {
 
 function createWall(size = .75, nw = 8, nh = 6) {
   for (let j = 0; j < nw; j++)
-    for (let i = 0; i < nh; i++) createBox({
-      pos: [size * j - (size * (nw - 1)) / 2, size * i, 10],
-      w: size, l: size, h: size, mass: 10
-    })
+    for (let i = 0; i < nh; i++) {
+      const brick = createBox({
+        pos: [size * j - (size * (nw - 1)) / 2, size * i, 10],
+        w: size, l: size, h: size, mass: 10
+      })
+      addRigidBody(brick)
+    }
 }
 
 /* LOOP */
