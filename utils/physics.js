@@ -55,20 +55,21 @@ export function createBall(radius = 0.6, mass = 1.2, pos, quat) {
   return res
 }
 
-export function createBox(width, height, depth, mass, pos, quat, color) {
+export function createBox({ width, height, depth, mass, pos, quat, color }) {
   const mesh = new THREE.Mesh(
     new THREE.BoxGeometry(width, height, depth, 1, 1, 1), new THREE.MeshPhongMaterial({ color: color || randomColor() }))
   mesh.castShadow = mesh.receiveShadow = true
+
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(width * 0.5, height * 0.5, depth * 0.5))
   shape.setMargin(margin)
   return createRigidBody({ mesh, shape, mass, pos, quat })
 }
 
-export function createBrick(length, height, depth, pos, halfBrick) {
-  const mass = 0.5
-  const lengthCurrent = halfBrick ? length * .5 : length
-  const massCurrent = halfBrick ? mass * .5 : mass
-  return createBox(depth, height, lengthCurrent, massCurrent, pos)
+export function createBrick(length, height, width, pos, halfBrick) {
+  const defaultMass = 0.5
+  const depth = halfBrick ? length * .5 : length
+  const mass = halfBrick ? defaultMass * .5 : defaultMass
+  return createBox({ width, height, depth, mass, pos })
 }
 
 export function createWall() {

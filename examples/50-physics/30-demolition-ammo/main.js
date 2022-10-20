@@ -14,7 +14,8 @@ scene.add(sun)
 const transform = new AMMO.btTransform()
 const physicsWorld = createPhysicsWorld()
 
-const ground = createBox(40, 1, 40, 0, { x: 0, y: -0.5, z: 0 }, { x: 0, y: 0, z: 0, w: 1 }, 0xFFFFFF)
+const ground = createBox({ width: 40, height: 1, depth: 40, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
+
 addRigidBody(ground)
 
 const ballRadius = 0.6
