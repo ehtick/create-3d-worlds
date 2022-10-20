@@ -1,7 +1,7 @@
 /* global Ammo */
 import * as THREE from 'three'
 
-const AMMO = await Ammo()
+export const AMMO = await Ammo()
 
 const margin = 0.05
 

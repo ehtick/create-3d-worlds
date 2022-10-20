@@ -2,7 +2,7 @@
 import * as THREE from 'three'
 import keyboard from '/utils/classes/Keyboard.js'
 
-const AMMO = await Ammo()
+export const AMMO = await Ammo()
 
 const FRONT_LEFT = 0
 const FRONT_RIGHT = 1

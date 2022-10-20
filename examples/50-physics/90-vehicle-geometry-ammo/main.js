@@ -1,9 +1,6 @@
-/* global Ammo */
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { createVehicle, updateVehicle } from './vehicle.js'
-
-const AMMO = await Ammo
+import { AMMO, createVehicle, updateVehicle } from './vehicle.js'
 
 const DISABLE_DEACTIVATION = 4
 const transform = new AMMO.btTransform()

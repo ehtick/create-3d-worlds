@@ -1,9 +1,7 @@
 /* global Ammo */
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
-import { createBox, createBall, createWall } from '/utils/physics.js'
-
-const AMMO = await Ammo
+import { AMMO, createBox, createBall, createWall } from '/utils/physics.js'
 
 camera.position.set(-7, 5, 8)
 createOrbitControls()
