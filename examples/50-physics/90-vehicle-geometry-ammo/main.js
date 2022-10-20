@@ -4,7 +4,6 @@ import { AMMO, createPhysicsWorld } from '/utils/physics.js'
 import { createVehicle, updateVehicle } from './vehicle.js'
 
 const DISABLE_DEACTIVATION = 4
-const transform = new AMMO.btTransform()
 
 const rigidBodies = []
 
@@ -46,16 +45,18 @@ function createRigidBody({ mesh, shape, mass, pos, quat = { x: 0, y: 0, z: 0, w:
   mesh.position.copy(pos)
   mesh.quaternion.copy(quat)
 
+  const transform = new AMMO.btTransform()
   transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
   transform.setRotation(new AMMO.btQuaternion(quat.x, quat.y, quat.z, quat.w))
   const motionState = new AMMO.btDefaultMotionState(transform)
 
   const inertia = new AMMO.btVector3(0, 0, 0)
   shape.calculateLocalInertia(mass, inertia)
+
   const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, shape, inertia)
   const body = new AMMO.btRigidBody(rbInfo)
   body.setFriction(friction)
-  mesh.body = body
+  mesh.userData.body = body
 
   if (mass > 0) body.setActivationState(4) // Disable deactivation
 
@@ -73,8 +74,9 @@ function createBox({ pos, quat = new THREE.Quaternion(0, 0, 0, 1), w, l, h, mass
 }
 
 function updateBox(mesh) {
-  const ms = mesh.body.getMotionState()
+  const ms = mesh.userData.body.getMotionState()
   if (!ms) return
+  const transform = new AMMO.btTransform()
   ms.getWorldTransform(transform)
   const p = transform.getOrigin()
   const q = transform.getRotation()

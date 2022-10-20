@@ -30,13 +30,13 @@ export function createRigidBody(mesh, shape, mass, pos, quat = { x: 0, y: 0, z: 
   transform.setRotation(new AMMO.btQuaternion(quat.x, quat.y, quat.z, quat.w))
   const motionState = new AMMO.btDefaultMotionState(transform)
 
-  const localInertia = new AMMO.btVector3(0, 0, 0)
-  shape.calculateLocalInertia(mass, localInertia)
+  const inertia = new AMMO.btVector3(0, 0, 0)
+  shape.calculateLocalInertia(mass, inertia)
 
-  const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia)
+  const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, shape, inertia)
   const body = new AMMO.btRigidBody(rbInfo)
 
-  mesh.userData.physicsBody = body
+  mesh.userData.body = body
   if (mass > 0) body.setActivationState(4) // Disable deactivation
 
   return { mesh, body, mass }

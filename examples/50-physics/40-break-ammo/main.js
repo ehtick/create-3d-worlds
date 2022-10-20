@@ -100,7 +100,7 @@ function createDebrisFromBreakableObject(mesh) {
 
 function removeDebris(mesh) {
   scene.remove(mesh)
-  physicsWorld.removeRigidBody(mesh.userData.physicsBody)
+  physicsWorld.removeRigidBody(mesh.userData.body)
 }
 
 function createConvexHullPhysicsShape(coords) {
@@ -128,7 +128,7 @@ function createRigidBody(mesh, physicsShape, mass, pos, vel, angVel) {
     body.setLinearVelocity(new AMMO.btVector3(vel.x, vel.y, vel.z))
   if (angVel)
     body.setAngularVelocity(new AMMO.btVector3(angVel.x, angVel.y, angVel.z))
-  mesh.userData.physicsBody = body
+  mesh.userData.body = body
   mesh.userData.collided = false
 
   if (mass > 0) body.setActivationState(4) // Disable deactivation
@@ -151,7 +151,7 @@ function createRandomColor() {
 function updatePhysics(deltaTime) {
   physicsWorld.stepSimulation(deltaTime, 10)
   rigidBodies.forEach(mesh => {
-    const ms = mesh.userData.physicsBody.getMotionState()
+    const ms = mesh.userData.body.getMotionState()
     if (!ms) return
     ms.getWorldTransform(transform)
     const p = transform.getOrigin()

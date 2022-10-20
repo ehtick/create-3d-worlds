@@ -36,7 +36,7 @@ function updatePhysics(deltaTime) {
   physicsWorld.stepSimulation(deltaTime, 10)
 
   rigidBodies.forEach(mesh => {
-    const ms = mesh.userData.physicsBody.getMotionState()
+    const ms = mesh.userData.body.getMotionState()
     if (!ms) return
     ms.getWorldTransform(transform)
     const p = transform.getOrigin()

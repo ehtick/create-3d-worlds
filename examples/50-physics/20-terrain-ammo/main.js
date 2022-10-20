@@ -204,7 +204,7 @@ function generateObject() {
   const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia)
   const body = new AMMO.btRigidBody(rbInfo)
 
-  mesh.userData.physicsBody = body
+  mesh.userData.body = body
   mesh.receiveShadow = mesh.castShadow = true
 
   scene.add(mesh)
@@ -222,7 +222,7 @@ function updatePhysics(deltaTime) {
   physicsWorld.stepSimulation(deltaTime, 10)
   for (let i = 0, il = dynamicObjects.length; i < il; i++) {
     const objThree = dynamicObjects[i]
-    const objPhys = objThree.userData.physicsBody
+    const objPhys = objThree.userData.body
     const ms = objPhys.getMotionState()
     if (ms) {
       ms.getWorldTransform(transformAux1)
