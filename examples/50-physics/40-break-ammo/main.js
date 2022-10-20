@@ -1,4 +1,3 @@
-/* global Ammo */
 import * as THREE from 'three'
 import { ConvexObjectBreaker } from '/node_modules/three/examples/jsm/misc/ConvexObjectBreaker.js'
 import { ConvexGeometry } from '/node_modules/three/examples/jsm/geometries/ConvexGeometry.js'
@@ -6,10 +5,9 @@ import { ConvexGeometry } from '/node_modules/three/examples/jsm/geometries/Conv
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
+import { AMMO, createPhysicsWorld } from '/utils/physics.js'
 
 const { Vector3 } = THREE
-
-const AMMO = await Ammo()
 
 camera.position.set(-14, 8, 16)
 createOrbitControls()
@@ -17,7 +15,6 @@ createOrbitControls()
 const sun = createSun({ position: [5, 15, 15] })
 scene.add(sun)
 
-const GRAVITY = 7.8
 const margin = 0.05
 
 const convexBreaker = new ConvexObjectBreaker()
@@ -34,7 +31,7 @@ const impactNormal = new Vector3()
 const transform = new AMMO.btTransform()
 const tempBtVec3 = new AMMO.btVector3(0, 0, 0)
 
-const physicsWorld = createPhysicsWorld()
+const physicsWorld = createPhysicsWorld({ gravity: 7.8 })
 
 createGround(40, 1, 40, 0, new Vector3(0, -0.5, 0), 0xFFFFFF)
 
@@ -55,16 +52,6 @@ for (let i = 0; i < numStones; i++) {
 createPyramid()
 
 /* FUNCTION */
-
-function createPhysicsWorld() {
-  const collisionConfiguration = new AMMO.btDefaultCollisionConfiguration()
-  const dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
-  const broadphase = new AMMO.btDbvtBroadphase()
-  const solver = new AMMO.btSequentialImpulseConstraintSolver()
-  const physicsWorld = new AMMO.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration)
-  physicsWorld.setGravity(new AMMO.btVector3(0, - GRAVITY, 0))
-  return physicsWorld
-}
 
 function createBox(mass, size, pos, color = createRandomColor()) {
   const mesh = new THREE.Mesh(

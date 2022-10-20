@@ -1,8 +1,7 @@
-/* global Ammo */
 import * as THREE from 'three'
-import keyboard from '/utils/classes/Keyboard.js'
+import { AMMO } from '/utils/physics.js'
 
-export const AMMO = await Ammo()
+import keyboard from '/utils/classes/Keyboard.js'
 
 const FRONT_LEFT = 0
 const FRONT_RIGHT = 1

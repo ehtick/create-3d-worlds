@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { AMMO, createVehicle, updateVehicle } from './vehicle.js'
+import { AMMO, createPhysicsWorld } from '/utils/physics.js'
+import { createVehicle, updateVehicle } from './vehicle.js'
 
 const DISABLE_DEACTIVATION = 4
 const transform = new AMMO.btTransform()
@@ -34,16 +35,6 @@ const lookAt = new THREE.Vector3(chassis.position.x, chassis.position.y, chassis
 camera.lookAt(lookAt)
 
 /* FUNCTIONS */
-
-function createPhysicsWorld({ gravity = 9.82 } = {}) {
-  const collisionConfiguration = new AMMO.btDefaultCollisionConfiguration()
-  const dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
-  const broadphase = new AMMO.btDbvtBroadphase()
-  const solver = new AMMO.btSequentialImpulseConstraintSolver()
-  const physicsWorld = new AMMO.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration)
-  physicsWorld.setGravity(new AMMO.btVector3(0, -gravity, 0))
-  return physicsWorld
-}
 
 function createBox({ pos, quat = new THREE.Quaternion(0, 0, 0, 1), w, l, h, mass = 0, friction = 1 }) {
   const position = new THREE.Vector3(...pos)

@@ -1,7 +1,7 @@
 /* global Ammo */
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
-import { AMMO, createBox, createBall, createWall } from '/utils/physics.js'
+import { AMMO, createBox, createBall, createWall, createPhysicsWorld } from '/utils/physics.js'
 
 camera.position.set(-7, 5, 8)
 createOrbitControls()
@@ -26,17 +26,6 @@ bricks.forEach(addRigidBody)
 
 /* FUNCTIONS */
 
-function createPhysicsWorld({ gravity = 9.82 } = {}) {
-  const collisionConfiguration = new AMMO.btSoftBodyRigidBodyCollisionConfiguration()
-  const dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
-  const broadphase = new AMMO.btDbvtBroadphase()
-  const solver = new AMMO.btSequentialImpulseConstraintSolver()
-  const softBodySolver = new AMMO.btDefaultSoftBodySolver()
-  const physicsWorld = new AMMO.btSoftRigidDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration, softBodySolver)
-  physicsWorld.setGravity(new AMMO.btVector3(0, -gravity, 0))
-  return physicsWorld
-}
-
 function addRigidBody({ mesh, body, mass }) {
   scene.add(mesh)
   if (mass > 0) rigidBodies.push(mesh)
@@ -58,7 +47,7 @@ function updatePhysics(deltaTime) {
 }
 
 function shoot() {
-  ball.body.setLinearVelocity(new Ammo.btVector3(20, 0, 0))
+  ball.body.setLinearVelocity(new AMMO.btVector3(20, 0, 0))
 }
 
 /* LOOP */
