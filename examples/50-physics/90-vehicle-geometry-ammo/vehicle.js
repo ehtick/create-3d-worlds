@@ -8,11 +8,12 @@ const FRONT_LEFT = 0
 const FRONT_RIGHT = 1
 const BACK_LEFT = 2
 const BACK_RIGHT = 3
-const maxSpeed = 40
+
 const steeringIncrement = .04
 const steeringClamp = .5
 const maxEngineForce = 2000
 const maxBreakingForce = 100
+
 let engineForce = 0
 let vehicleSteering = 0
 let breakingForce = 0
@@ -34,7 +35,6 @@ function createChassis(w, l, h) {
 }
 
 export function createVehicle(pos, physicsWorld) {
-  // Vehicle contants
   const chassisWidth = 1.8
   const chassisHeight = .6
   const chassisLength = 4
@@ -81,14 +81,14 @@ export function createVehicle(pos, physicsWorld) {
 
   // Wheels
   const wheels = []
-  const wheelDirectionCS0 = new AMMO.btVector3(0, -1, 0)
-  const wheelAxleCS = new AMMO.btVector3(-1, 0, 0)
+  const wheelDirection = new AMMO.btVector3(0, -1, 0)
+  const wheelAxle = new AMMO.btVector3(-1, 0, 0)
 
   function addWheel(isFront, pos, radius, width, index) {
     const wheelInfo = vehicle.addWheel(
       pos,
-      wheelDirectionCS0,
-      wheelAxleCS,
+      wheelDirection,
+      wheelAxle,
       suspensionRestLength,
       radius,
       tuning,
@@ -115,43 +115,29 @@ export function updateVehicle({ vehicle, wheels, chassis }) {
   breakingForce = 0
   engineForce = 0
 
-  // if (keyboard.up && speed < maxSpeed)
-  //   engineForce = maxEngineForce
-
-  // if (keyboard.down && speed > -maxSpeed * .5)
-  //   engineForce = -maxEngineForce / 2
-
-  // if (keyboard.space)
-  //   breakingForce = maxBreakingForce
-
-  // if (keyboard.left && vehicleSteering < steeringClamp)
-  //   vehicleSteering += steeringIncrement
-
-  // if (keyboard.right && vehicleSteering > -steeringClamp)
-  //   vehicleSteering -= steeringIncrement
-
   if (keyboard.up)
-    if (speed < -1)
-      breakingForce = maxBreakingForce
+    if (speed < 0) breakingForce = maxBreakingForce
     else engineForce = maxEngineForce
 
   if (keyboard.down)
-    if (speed > 1)
-      breakingForce = maxBreakingForce
+    if (speed > 0) breakingForce = maxBreakingForce
     else engineForce = -maxEngineForce / 2
 
-  if (keyboard.left) {
+  if (keyboard.left)
     if (vehicleSteering < steeringClamp)
       vehicleSteering += steeringIncrement
-  } else if (keyboard.right) {
+
+  if (keyboard.right)
     if (vehicleSteering > -steeringClamp)
       vehicleSteering -= steeringIncrement
-  } else if (vehicleSteering < -steeringIncrement)
-    vehicleSteering += steeringIncrement
-  else if (vehicleSteering > steeringIncrement)
-    vehicleSteering -= steeringIncrement
-  else
-    vehicleSteering = 0
+
+  if (!keyboard.left && !keyboard.right)
+    if (vehicleSteering < -steeringIncrement)
+      vehicleSteering += steeringIncrement
+    else if (vehicleSteering > steeringIncrement)
+      vehicleSteering -= steeringIncrement
+    else
+      vehicleSteering = 0
 
   vehicle.applyEngineForce(engineForce, BACK_LEFT)
   vehicle.applyEngineForce(engineForce, BACK_RIGHT)
