@@ -55,7 +55,7 @@ export function createBall(radius = 0.6, mass = 1.2, pos, quat) {
   return res
 }
 
-export function createBox({ width, height, depth, mass, pos, quat, color = randomColor(), friction }) {
+export function createBox({ width, height, depth, mass = 0, pos, quat, color = randomColor(), friction }) {
   const geometry = new THREE.BoxGeometry(width, height, depth, 1, 1, 1)
   const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
   mesh.castShadow = mesh.receiveShadow = true

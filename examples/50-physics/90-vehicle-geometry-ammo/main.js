@@ -5,6 +5,8 @@ import { createVehicle, updateVehicle } from './vehicle.js'
 
 const { Vector3 } = THREE
 
+const margin = 0.05
+
 const rigidBodies = []
 
 const ambientLight = new THREE.AmbientLight(0x404040)
@@ -22,7 +24,7 @@ addRigidBody(ground)
 const quat = new THREE.Quaternion(0, 0, 0, 1)
 quat.setFromAxisAngle(new Vector3(1, 0, 0), -Math.PI / 18)
 
-const jumpBoard = createBox({ pos: new Vector3(0, -1.5, 0), quat, width: 8, height: 4, depth: 10, color: 0x999999 })
+const jumpBoard = createBox({ pos: new Vector3(0, -1.5, 0), quat, width: 8, height: 4, depth: 10, friction: 1, color: 0x999999 })
 addRigidBody(jumpBoard)
 
 createWall()
@@ -44,13 +46,13 @@ function addRigidBody({ mesh, body, mass }) {
   physicsWorld.addRigidBody(body)
 }
 
-function createBox({ pos, quat = new THREE.Quaternion(0, 0, 0, 1), width, height, depth, mass = 0, color = 0x999999, friction = 1 }) {
+function createBox({ pos, quat, width, height, depth, mass = 0, color = 0x999999, friction = 1 }) {
   const geometry = new THREE.BoxGeometry(width, height, depth, 1, 1, 1)
   const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
   mesh.castShadow = mesh.receiveShadow = true
 
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(width * 0.5, height * 0.5, depth * 0.5))
-  // shape.setMargin(margin)
+  shape.setMargin(margin)
   return createRigidBody({ mesh, shape, mass, pos, quat, friction })
 }
 
@@ -70,7 +72,7 @@ function createWall(size = .75, nw = 8, nh = 6) {
     for (let i = 0; i < nh; i++) {
       const brick = createBox({
         pos: new Vector3(size * j - (size * (nw - 1)) / 2, size * i, 10),
-        width: size, height: size, depth: size, mass: 10, color: 0xfca400
+        width: size, height: size, depth: size, mass: 10, color: 0xfca400, friction: 1
       })
       addRigidBody(brick)
     }
