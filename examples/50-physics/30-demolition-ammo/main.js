@@ -8,7 +8,6 @@ const AMMO = await Ammo
 camera.position.set(-7, 5, 8)
 createOrbitControls()
 
-const GRAVITY = -9.8
 const rigidBodies = []
 
 const sun = createSun({ position: [-5, 10, 5] })
@@ -29,14 +28,14 @@ bricks.forEach(addRigidBody)
 
 /* FUNCTIONS */
 
-function createPhysicsWorld() {
+function createPhysicsWorld({ gravity = 9.82 } = {}) {
   const collisionConfiguration = new AMMO.btSoftBodyRigidBodyCollisionConfiguration()
   const dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
   const broadphase = new AMMO.btDbvtBroadphase()
   const solver = new AMMO.btSequentialImpulseConstraintSolver()
   const softBodySolver = new AMMO.btDefaultSoftBodySolver()
   const physicsWorld = new AMMO.btSoftRigidDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration, softBodySolver)
-  physicsWorld.setGravity(new AMMO.btVector3(0, GRAVITY, 0))
+  physicsWorld.setGravity(new AMMO.btVector3(0, -gravity, 0))
   return physicsWorld
 }
 

@@ -38,13 +38,13 @@ camera.lookAt(lookAt)
 
 /* FUNCTIONS */
 
-function createPhysicsWorld() {
+function createPhysicsWorld({ gravity = 9.82 } = {}) {
   const collisionConfiguration = new AMMO.btDefaultCollisionConfiguration()
   const dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
   const broadphase = new AMMO.btDbvtBroadphase()
   const solver = new AMMO.btSequentialImpulseConstraintSolver()
   const physicsWorld = new AMMO.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration)
-  physicsWorld.setGravity(new AMMO.btVector3(0, -9.82, 0))
+  physicsWorld.setGravity(new AMMO.btVector3(0, -gravity, 0))
   return physicsWorld
 }
 
