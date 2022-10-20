@@ -115,20 +115,43 @@ export function updateVehicle({ vehicle, wheels, chassis }) {
   breakingForce = 0
   engineForce = 0
 
-  if (keyboard.up && speed < maxSpeed)
-    engineForce = maxEngineForce
+  // if (keyboard.up && speed < maxSpeed)
+  //   engineForce = maxEngineForce
 
-  if (keyboard.down && speed > -maxSpeed * .5)
-    engineForce = -maxEngineForce / 2
+  // if (keyboard.down && speed > -maxSpeed * .5)
+  //   engineForce = -maxEngineForce / 2
 
-  if (keyboard.space)
-    breakingForce = maxBreakingForce
+  // if (keyboard.space)
+  //   breakingForce = maxBreakingForce
 
-  if (keyboard.left && vehicleSteering < steeringClamp)
+  // if (keyboard.left && vehicleSteering < steeringClamp)
+  //   vehicleSteering += steeringIncrement
+
+  // if (keyboard.right && vehicleSteering > -steeringClamp)
+  //   vehicleSteering -= steeringIncrement
+
+  if (keyboard.up)
+    if (speed < -1)
+      breakingForce = maxBreakingForce
+    else engineForce = maxEngineForce
+
+  if (keyboard.down)
+    if (speed > 1)
+      breakingForce = maxBreakingForce
+    else engineForce = -maxEngineForce / 2
+
+  if (keyboard.left) {
+    if (vehicleSteering < steeringClamp)
+      vehicleSteering += steeringIncrement
+  } else if (keyboard.right) {
+    if (vehicleSteering > -steeringClamp)
+      vehicleSteering -= steeringIncrement
+  } else if (vehicleSteering < -steeringIncrement)
     vehicleSteering += steeringIncrement
-
-  if (keyboard.right && vehicleSteering > -steeringClamp)
+  else if (vehicleSteering > steeringIncrement)
     vehicleSteering -= steeringIncrement
+  else
+    vehicleSteering = 0
 
   vehicle.applyEngineForce(engineForce, BACK_LEFT)
   vehicle.applyEngineForce(engineForce, BACK_RIGHT)

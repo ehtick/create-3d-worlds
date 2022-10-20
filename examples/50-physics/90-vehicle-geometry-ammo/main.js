@@ -1,6 +1,6 @@
 /* global Ammo */
 import * as THREE from 'three'
-import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
+import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createVehicle, updateVehicle } from './vehicle.js'
 
 const AMMO = await Ammo
@@ -9,10 +9,6 @@ const DISABLE_DEACTIVATION = 4
 const transform = new AMMO.btTransform()
 
 const boxes = []
-
-camera.position.x = -4.84
-camera.position.z = -35.11
-// const controls = createOrbitControls()
 
 const ambientLight = new THREE.AmbientLight(0x404040)
 scene.add(ambientLight)
@@ -32,7 +28,7 @@ createBox({ pos: [0, -1.5, 0], quat, w: 8, l: 4, h: 10, mass: 0 })
 createWall()
 
 const { vehicle, wheels, chassis } = createVehicle(new THREE.Vector3(0, 4, -20), physicsWorld)
-scene.add(...wheels, chassis) // bez točkova može tenk
+scene.add(...wheels, chassis) // bez točkova kao tenk
 
 camera.position.set(0, 1.5, -1)
 chassis.add(camera)
