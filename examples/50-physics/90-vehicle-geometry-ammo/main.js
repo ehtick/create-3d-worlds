@@ -36,17 +36,17 @@ camera.lookAt(lookAt)
 
 /* FUNCTIONS */
 
-function createBox({ pos, quat = new THREE.Quaternion(0, 0, 0, 1), w, l, h, mass = 0, friction = 1 }) {
-  const position = new THREE.Vector3(...pos)
-  const color = mass > 0 ? 0xfca400 : 0x999999
-  const geometry = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
-  const shape = new AMMO.btBoxShape(new AMMO.btVector3(w * 0.5, l * 0.5, h * 0.5))
-  const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
+function addRigidBody({ mesh, body, mass }) {
+  scene.add(mesh)
+  if (mass > 0) rigidBodies.push(mesh)
+  physicsWorld.addRigidBody(body)
+}
 
-  mesh.position.copy(position)
+function createRigidBody({ mesh, shape, mass, pos, quat = { x: 0, y: 0, z: 0, w: 1 }, friction } = {}) {
+  mesh.position.copy(pos)
   mesh.quaternion.copy(quat)
 
-  transform.setOrigin(new AMMO.btVector3(position.x, position.y, position.z))
+  transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
   transform.setRotation(new AMMO.btQuaternion(quat.x, quat.y, quat.z, quat.w))
   const motionState = new AMMO.btDefaultMotionState(transform)
 
@@ -62,10 +62,14 @@ function createBox({ pos, quat = new THREE.Quaternion(0, 0, 0, 1), w, l, h, mass
   addRigidBody({ mesh, body, mass })
 }
 
-function addRigidBody({ mesh, body, mass }) {
-  scene.add(mesh)
-  if (mass > 0) rigidBodies.push(mesh)
-  physicsWorld.addRigidBody(body)
+function createBox({ pos, quat = new THREE.Quaternion(0, 0, 0, 1), w, l, h, mass = 0, friction = 1 }) {
+  pos = new THREE.Vector3(...pos)
+  const color = mass > 0 ? 0xfca400 : 0x999999
+  const geometry = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
+  const shape = new AMMO.btBoxShape(new AMMO.btVector3(w * 0.5, l * 0.5, h * 0.5))
+  const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
+
+  createRigidBody({ mesh, shape, mass, pos, quat, friction })
 }
 
 function updateBox(mesh) {
