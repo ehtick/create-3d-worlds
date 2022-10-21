@@ -2320,7 +2320,6 @@ function init() {
   // dirLight=new THREE.DirectionalLight( 0xD6D6D6, 1 );
   dirLight = new THREE.DirectionalLight(0xffffff, 2.6)
   dirLight.castShadow = true
-  dirLight.shadowCameraVisible = true
   dirLight.shadow.mapSize.width = 2500
   dirLight.shadow.mapSize.height = 2500
   const d = 120
@@ -2353,7 +2352,7 @@ function init() {
   renderer.toneMapping = THREE.Uncharted2ToneMapping
   renderer.toneMappingExposure = 1.0
   renderer.shadowMap.enabled = true
-  renderer.shadowMap.renderReverseSided = true
+  // renderer.shadowMap.renderReverseSided = true
   renderer.shadowMap.type = THREE.PCFSoftShadowMap
   container.appendChild(renderer.domElement)
 
