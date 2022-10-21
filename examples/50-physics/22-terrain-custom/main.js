@@ -2,7 +2,8 @@ import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { dirLight } from '/utils/light.js'
 import { getHeightData } from '/utils/terrain/heightmap.js'
-import { AMMO, updateMesh, createPhysicsWorld } from '/utils/physics.js'
+import { createTerrainFromData } from '/utils/ground.js'
+import { AMMO, createPhysicsWorld, createTerrainBodyFromData, updateMesh } from '/utils/physics.js'
 
 createOrbitControls()
 camera.position.set(0, 150, 150)
@@ -19,79 +20,11 @@ const minHeight = -2
 const rigidBodies = []
 const physicsWorld = createPhysicsWorld({ gravity: 6 })
 
-const geometry = new THREE.PlaneGeometry(mapWidth, mapDepth, width - 1, depth - 1)
-geometry.rotateX(- Math.PI * .5)
-
-const vertices = geometry.attributes.position.array
-for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3)
-  vertices[j + 1] = data[i]
-
-geometry.computeVertexNormals()
-
-const groundMaterial = new THREE.MeshPhongMaterial({ color: 0xC7C7C7 })
-const terrain = new THREE.Mesh(geometry, groundMaterial)
-terrain.receiveShadow = terrain.castShadow = true
-
+const terrain = createTerrainFromData({ data, width: mapWidth, height: mapDepth, widthSegments: width - 1, heightSegments: depth - 1 })
 scene.add(terrain)
 
-initPhysics()
-
-function initPhysics() {
-  // Create the terrain body
-  const groundShape = createTerrainShape()
-  const groundTransform = new AMMO.btTransform()
-  groundTransform.setIdentity()
-  // Shifts the terrain, since bullet re-centers it on its bounding box.
-  groundTransform.setOrigin(new AMMO.btVector3(0, (maxHeight + minHeight) * .5, 0))
-  const groundMass = 0
-  const groundLocalInertia = new AMMO.btVector3(0, 0, 0)
-  const groundMotionState = new AMMO.btDefaultMotionState(groundTransform)
-  const groundBody = new AMMO.btRigidBody(new AMMO.btRigidBodyConstructionInfo(groundMass, groundMotionState, groundShape, groundLocalInertia))
-  physicsWorld.addRigidBody(groundBody)
-}
-
-function createTerrainShape() {
-  const heightScale = 1
-  const upAxis = 1 // 0 for X, 1 for Y, 2 for Z
-  // hdt, height data type. "PHY_FLOAT" is used. Possible values are "PHY_FLOAT", "PHY_UCHAR", "PHY_SHORT"
-  const hdt = 'PHY_FLOAT'
-  const flipQuadEdges = false // inverts the triangles
-  // Creates height data buffer in AMMO heap
-  const ammoHeightData = AMMO._malloc(4 * width * depth)
-  // Copy the javascript height data array to the AMMO one.
-  let p = 0
-  let p2 = 0
-
-  for (let j = 0; j < depth; j++)
-    for (let i = 0; i < width; i++) {
-      // write 32-bit float data to memory
-      AMMO.HEAPF32[ammoHeightData + p2 >> 2] = data[p]
-      p++
-      // 4 bytes/float
-      p2 += 4
-    }
-
-  // Creates the heightfield physics shape
-  const heightFieldShape = new AMMO.btHeightfieldTerrainShape(
-    width,
-    depth,
-    ammoHeightData,
-    heightScale,
-    minHeight,
-    maxHeight,
-    upAxis,
-    hdt,
-    flipQuadEdges
-  )
-
-  // Set horizontal scale
-  const scaleX = mapWidth / (width - 1)
-  const scaleZ = mapDepth / (depth - 1)
-  heightFieldShape.setLocalScaling(new AMMO.btVector3(scaleX, 1, scaleZ))
-  heightFieldShape.setMargin(0.05)
-
-  return heightFieldShape
-}
+const groundBody = createTerrainBodyFromData({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight })
+physicsWorld.addRigidBody(groundBody)
 
 function generateObject() {
   const numTypes = 4
