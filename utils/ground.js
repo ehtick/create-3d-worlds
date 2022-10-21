@@ -303,8 +303,8 @@ export function generateSineWaveData(width, depth, minHeight, maxHeight) {
   return data
 }
 
-export function createTerrainFromData({ data, mapWidth, mapDepth, width, depth }) {
-  const geometry = new THREE.PlaneGeometry(mapWidth, mapDepth, width - 1, depth - 1)
+export function createTerrainFromData({ data, width, height, widthSegments, heightSegments }) {
+  const geometry = new THREE.PlaneGeometry(width, height, widthSegments, heightSegments)
   geometry.rotateX(- Math.PI / 2)
 
   const vertices = geometry.attributes.position.array
