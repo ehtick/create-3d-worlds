@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
-import { AMMO, createPhysicsWorld } from '/utils/physics.js'
 import { dirLight } from '/utils/light.js'
 import { generateSineWaveData, createTerrainFromData } from '/utils/ground.js'
+import { AMMO, createPhysicsWorld, createTerrainShape } from '/utils/physics.js'
 
 createOrbitControls()
 camera.position.set(0, 50, 50)
@@ -30,8 +30,7 @@ initPhysics()
 /* FUNCTIONS */
 
 function initPhysics() {
-  // Create the terrain body
-  const groundShape = createTerrainShape(data)
+  const groundShape = createTerrainShape({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight })
 
   // Shifts the terrain, since bullet re-centers it on its bounding box.
   const transform = new AMMO.btTransform()
@@ -44,37 +43,6 @@ function initPhysics() {
   physicsWorld.addRigidBody(groundBody)
 }
 
-function createTerrainShape(data) {
-  const heightScale = 1
-  const upAxis = 1 // 0: X, 1: Y, 2: Z. normally Y is used.
-  const hdt = 'PHY_FLOAT' // height data type
-  const flipQuadEdges = false // inverts the triangles
-  const ammoHeightData = AMMO._malloc(4 * width * depth) // Creates height data buffer in AMMO heap
-  // Copy the javascript height data array to the AMMO one
-  let p = 0
-  let p2 = 0
-  for (let j = 0; j < depth; j++)
-    for (let i = 0; i < width; i++) {
-      // write 32-bit float data to memory
-      AMMO.HEAPF32[ammoHeightData + p2 >> 2] = data[p]
-      p++
-      // 4 bytes/float
-      p2 += 4
-    }
-
-  // Creates the heightfield physics shape
-  const heightFieldShape = new AMMO.btHeightfieldTerrainShape(
-    width, depth, ammoHeightData, heightScale, minHeight, maxHeight, upAxis, hdt, flipQuadEdges
-  )
-
-  // Set horizontal scale
-  const scaleX = mapWidth / (width - 1)
-  const scaleZ = mapDepth / (depth - 1)
-  heightFieldShape.setLocalScaling(new AMMO.btVector3(scaleX, 1, scaleZ))
-  heightFieldShape.setMargin(0.05)
-
-  return heightFieldShape
-}
 
 function generateObject() {
   const numTypes = 4

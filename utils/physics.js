@@ -1,6 +1,5 @@
 /* global Ammo */
 import * as THREE from 'three'
-
 export const AMMO = await Ammo()
 
 const margin = 0.05
@@ -8,6 +7,8 @@ const margin = 0.05
 function randomColor() {
   return Math.floor(Math.random() * (1 << 24))
 }
+
+/* WORLD */
 
 export function createPhysicsWorld({ gravity = 9.82, softBody = false } = {}) {
   const collisionConfiguration = new AMMO.btSoftBodyRigidBodyCollisionConfiguration()
@@ -19,6 +20,8 @@ export function createPhysicsWorld({ gravity = 9.82, softBody = false } = {}) {
   physicsWorld.setGravity(new AMMO.btVector3(0, -gravity, 0))
   return physicsWorld
 }
+
+/* BODIES */
 
 export function createRigidBody({
   mesh, shape, mass, pos, quat = { x: 0, y: 0, z: 0, w: 1 }, friction, vel, angVel
@@ -102,4 +105,36 @@ export function createWall() {
     pos.y += brickHeight
   }
   return bricks
+}
+
+/* TERRAIN */
+
+export function createTerrainShape({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight }) {
+  const heightScale = 1
+  const upAxis = 1 // 0: X, 1: Y, 2: Z. normally Y is used.
+  const hdt = 'PHY_FLOAT' // height data type
+  const flipQuadEdges = false // inverts the triangles
+  const ammoHeightData = AMMO._malloc(4 * width * depth) // Creates height data buffer in AMMO heap
+  // Copy the javascript height data array to the AMMO one
+  let p = 0
+  let p2 = 0
+  for (let j = 0; j < depth; j++)
+    for (let i = 0; i < width; i++) {
+      // write 32-bit float data to memory
+      AMMO.HEAPF32[ammoHeightData + p2 >> 2] = data[p]
+      p++
+      // 4 bytes/float
+      p2 += 4
+    }
+
+  const terrainShape = new AMMO.btHeightfieldTerrainShape(
+    width, depth, ammoHeightData, heightScale, minHeight, maxHeight, upAxis, hdt, flipQuadEdges
+  )
+
+  const scaleX = mapWidth / (width - 1)
+  const scaleZ = mapDepth / (depth - 1)
+  terrainShape.setLocalScaling(new AMMO.btVector3(scaleX, 1, scaleZ))
+  terrainShape.setMargin(0.05)
+
+  return terrainShape
 }
