@@ -12,45 +12,6 @@ const camAndKeyFunction = function() {
   camera.eulerOrder = 'ZYX'
   container.setAttribute('tabindex', -1)
 
-  this.onMouseWheel = function(event) {
-    event.preventDefault()
-    event.stopPropagation()
-
-    let delta = 0
-
-    if (event.wheelDelta !== undefined)
-
-      // WebKit / Opera / Explorer 9
-      delta = event.wheelDelta
-    else if (event.detail !== undefined)
-      // Firefox
-      delta = - event.detail
-
-    if (delta > 0)
-
-      if (rightButtonDown || altKey) {
-        if (camHeight < maxCamHeight) {
-          camHeightUp = true; camHeightOld = camHeight
-        }
-      } else {
-        if (camDist > minCamDist) {
-          camDistDown = true; camDistOld = camDist
-        }
-      }
-
-    else if (delta < 0)
-
-      if (rightButtonDown || altKey) {
-        if (camHeight > minCamHeight) {
-          camHeightDown = true; camHeightOld = camHeight
-        }
-      } else
-      if (camDist < maxCamDist) {
-        camDistUp = true; camDistOld = camDist
-      }
-
-  }// end on mouse wheel
-
   this.onMouseDown = function(event) {
     pauser = false
     container.focus()
