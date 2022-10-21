@@ -1,6 +1,4 @@
 // use ctrl+shft+r to force a reload without cache
-if (!Detector.webgl) Detector.addGetWebGLMessage()
-
 let mouseX = 0
 let mouseY = 0
 let mouseDragOn = false
@@ -2360,8 +2358,6 @@ function init() {
   container.style.paddingTop = '10px'
   renderer.setSize(SCREEN_WIDTH * .1, SCREEN_HEIGHT * .1)
 
-  window.addEventListener('resize', onWindowResize, false)
-
   let s_geometry = new THREE.BufferGeometry()
   let numFrames = 6
   for (var si = 0; si < numFrames; si++)
@@ -2797,20 +2793,6 @@ function switchCars() {
   if (chaseCammer) chaseStarter = true
   mandalaSet = false; decalRayCast()
 }// end switch cars
-
-function onWindowResize(event) {
-  SCREEN_HEIGHT = window.innerHeight * heightLimit
-  SCREEN_WIDTH = window.innerWidth * widthLimit
-  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
-  camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT
-  camera.updateProjectionMatrix()
-  if (showMui) {
-    muiSwitch(); muiSwitch() // twice for vertical scroll bar
-  }
-  if (showShortcuts) {
-    shortcutSwitch(); shortcutSwitch()
-  }
-}// end on window resize
 
 function animate() {
   setTimeout(() => {
