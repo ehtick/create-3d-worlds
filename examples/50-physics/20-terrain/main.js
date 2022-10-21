@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { AMMO, createPhysicsWorld } from '/utils/physics.js'
 import { dirLight } from '/utils/light.js'
+import { generateSineWaveData, createTerrainFromData } from '/utils/ground.js'
 
 createOrbitControls()
 camera.position.set(0, 50, 50)
@@ -18,7 +19,7 @@ const rigidBodies = []
 let transform
 
 const data = generateSineWaveData(width, depth, minHeight, maxHeight)
-const terrain = createTerrain(data)
+const terrain = createTerrainFromData({ data, mapWidth, mapDepth, width, depth })
 scene.add(terrain)
 
 scene.add(dirLight({ position: [100, 100, 50] }))
@@ -28,22 +29,6 @@ const physicsWorld = createPhysicsWorld({ gravity: 6 })
 initPhysics()
 
 /* FUNCTIONS */
-
-function createTerrain(data) {
-  const geometry = new THREE.PlaneGeometry(mapWidth, mapDepth, width - 1, depth - 1)
-  geometry.rotateX(- Math.PI / 2)
-
-  const vertices = geometry.attributes.position.array
-  for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3)
-    vertices[j + 1] = data[i] // j + 1: y component
-
-  geometry.computeVertexNormals()
-
-  const groundMaterial = new THREE.MeshPhongMaterial({ color: 0xC7C7C7 })
-  const terrain = new THREE.Mesh(geometry, groundMaterial)
-  terrain.receiveShadow = terrain.castShadow = true
-  return terrain
-}
 
 function initPhysics() {
   // Create the terrain body
@@ -59,30 +44,6 @@ function initPhysics() {
   physicsWorld.addRigidBody(groundBody)
 
   transform = new AMMO.btTransform()
-}
-
-function generateSineWaveData(width, depth, minHeight, maxHeight) {
-  const size = width * depth
-  const data = new Float32Array(size)
-
-  const hRange = maxHeight - minHeight
-  const w2 = width / 2
-  const d2 = depth / 2
-  const phaseMult = 12
-
-  let p = 0
-
-  for (let j = 0; j < depth; j++)
-    for (let i = 0; i < width; i++) {
-      const radius = Math.sqrt(
-        Math.pow((i - w2) / w2, 2.0) + Math.pow((j - d2) / d2, 2.0)
-      )
-      const height = (Math.sin(radius * phaseMult) + 1) * 0.5 * hRange + minHeight
-      data[p] = height
-      p++
-    }
-
-  return data
 }
 
 function createTerrainShape(data) {
