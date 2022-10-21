@@ -87,7 +87,6 @@ function generateObject() {
 
   scene.add(mesh)
   rigidBodies.push(mesh)
-
   physicsWorld.addRigidBody(body)
 }
 

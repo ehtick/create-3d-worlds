@@ -1,7 +1,7 @@
-/* global Ammo */
 import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { getHeightData } from '/utils/terrain/heightmap.js'
+import { AMMO, updateMesh } from '/utils/physics.js'
 
 createOrbitControls()
 
@@ -15,44 +15,33 @@ const minHeight = -2
 
 const rigidBodies = []
 let physicsWorld
-let transformAux1
 
-let time = 0
-const objectTimePeriod = 3
-let timeNextSpawn = time + objectTimePeriod
-const maxNumObjects = 30
+const index = width * .5 + depth * .5 * width
+camera.position.y = data[index] * (maxHeight - minHeight) + 5
+camera.position.z = mapDepth * .5
 
-const AMMO = await Ammo()
+const geometry = new THREE.PlaneGeometry(mapWidth, mapDepth, width - 1, depth - 1)
+geometry.rotateX(- Math.PI * .5)
 
-initGraphics()
+const vertices = geometry.attributes.position.array
+for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3)
+  vertices[j + 1] = data[i] // j + 1 is y component
+
+geometry.computeVertexNormals()
+
+const groundMaterial = new THREE.MeshPhongMaterial({ color: 0xC7C7C7 })
+const terrain = new THREE.Mesh(geometry, groundMaterial)
+terrain.receiveShadow = terrain.castShadow = true
+
+scene.add(terrain)
+
+const light = new THREE.DirectionalLight(0xffffff, 1)
+light.position.set(100, 100, 50)
+light.castShadow = true
+
+scene.add(light)
+
 initPhysics()
-
-function initGraphics() {
-  const index = width * .5 + depth * .5 * width
-  camera.position.y = data[index] * (maxHeight - minHeight) + 5
-  camera.position.z = mapDepth * .5
-
-  const geometry = new THREE.PlaneGeometry(mapWidth, mapDepth, width - 1, depth - 1)
-  geometry.rotateX(- Math.PI * .5)
-
-  const vertices = geometry.attributes.position.array
-  for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3)
-    vertices[j + 1] = data[i] // j + 1 is y component
-
-  geometry.computeVertexNormals()
-
-  const groundMaterial = new THREE.MeshPhongMaterial({ color: 0xC7C7C7 })
-  const terrain = new THREE.Mesh(geometry, groundMaterial)
-  terrain.receiveShadow = terrain.castShadow = true
-
-  scene.add(terrain)
-
-  const light = new THREE.DirectionalLight(0xffffff, 1)
-  light.position.set(100, 100, 50)
-  light.castShadow = true
-
-  scene.add(light)
-}
 
 function initPhysics() {
   // Physics configuration
@@ -74,8 +63,6 @@ function initPhysics() {
   const groundMotionState = new AMMO.btDefaultMotionState(groundTransform)
   const groundBody = new AMMO.btRigidBody(new AMMO.btRigidBodyConstructionInfo(groundMass, groundMotionState, groundShape, groundLocalInertia))
   physicsWorld.addRigidBody(groundBody)
-
-  transformAux1 = new AMMO.btTransform()
 }
 
 function createTerrainShape() {
@@ -192,33 +179,16 @@ function createObjectMaterial() {
   return new THREE.MeshPhongMaterial({ color: c })
 }
 
-function updatePhysics(deltaTime) {
-  physicsWorld.stepSimulation(deltaTime, 10)
-  for (let i = 0, il = rigidBodies.length; i < il; i++) {
-    const mesh = rigidBodies[i]
-    const ms = mesh.userData.body.getMotionState()
-    if (ms) {
-      ms.getWorldTransform(transformAux1)
-      const p = transformAux1.getOrigin()
-      const q = transformAux1.getRotation()
-      mesh.position.set(p.x(), p.y(), p.z())
-      mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
-    }
-  }
-}
-
 /* LOOP */
 
 void function loop() {
   requestAnimationFrame(loop)
-  const deltaTime = clock.getDelta()
-
-  if (rigidBodies.length < maxNumObjects && time > timeNextSpawn) {
-    generateObject()
-    timeNextSpawn = time + objectTimePeriod
-  }
-
-  updatePhysics(deltaTime)
+  const dt = clock.getDelta()
+  physicsWorld.stepSimulation(dt, 10)
+  rigidBodies.forEach(updateMesh)
   renderer.render(scene, camera)
-  time += deltaTime
 }()
+
+/* EVENTS */
+
+document.addEventListener('click', generateObject)
