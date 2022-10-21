@@ -2,12 +2,13 @@ import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { dirLight } from '/utils/light.js'
 import { generateSineWaveData, createTerrainFromData } from '/utils/ground.js'
-import { AMMO, createPhysicsWorld, createTerrainShape } from '/utils/physics.js'
+import { AMMO, createPhysicsWorld, createTerrainBodyFromData } from '/utils/physics.js'
 
 createOrbitControls()
 camera.position.set(0, 50, 50)
+scene.add(dirLight({ position: [100, 100, 50] }))
 
-// Heightfield parameters
+// heightfield parameters
 const mapWidth = 100
 const mapDepth = 100
 const width = 128
@@ -16,33 +17,17 @@ const maxHeight = 8
 const minHeight = - 2
 
 const rigidBodies = []
+const physicsWorld = createPhysicsWorld({ gravity: 6 })
 
 const data = generateSineWaveData(width, depth, minHeight, maxHeight)
+
 const terrain = createTerrainFromData({ data, width: mapWidth, height: mapDepth, widthSegments: width - 1, heightSegments: depth - 1 })
 scene.add(terrain)
 
-scene.add(dirLight({ position: [100, 100, 50] }))
-
-const physicsWorld = createPhysicsWorld({ gravity: 6 })
-
-initPhysics()
+const groundBody = createTerrainBodyFromData({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight })
+physicsWorld.addRigidBody(groundBody)
 
 /* FUNCTIONS */
-
-function initPhysics() {
-  const groundShape = createTerrainShape({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight })
-
-  // Shifts the terrain, since bullet re-centers it on its bounding box.
-  const transform = new AMMO.btTransform()
-  transform.setIdentity()
-  transform.setOrigin(new AMMO.btVector3(0, (maxHeight + minHeight) / 2, 0))
-  const groundMass = 0
-  const inertia = new AMMO.btVector3(0, 0, 0)
-  const motionState = new AMMO.btDefaultMotionState(transform)
-  const groundBody = new AMMO.btRigidBody(new AMMO.btRigidBodyConstructionInfo(groundMass, motionState, groundShape, inertia))
-  physicsWorld.addRigidBody(groundBody)
-}
-
 
 function generateObject() {
   const numTypes = 4

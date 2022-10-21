@@ -138,3 +138,21 @@ export function createTerrainShape({ data, width, depth, mapWidth, mapDepth, min
 
   return terrainShape
 }
+
+export function createTerrainBody(shape, minHeight, maxHeight) {
+  const transform = new AMMO.btTransform()
+  transform.setIdentity()
+  // Shifts the terrain, since bullet re-centers it on its bounding box.
+  transform.setOrigin(new AMMO.btVector3(0, (maxHeight + minHeight) / 2, 0))
+  const groundMass = 0
+  const inertia = new AMMO.btVector3(0, 0, 0)
+  const motionState = new AMMO.btDefaultMotionState(transform)
+  const body = new AMMO.btRigidBody(new AMMO.btRigidBodyConstructionInfo(groundMass, motionState, shape, inertia))
+  return body
+}
+
+export function createTerrainBodyFromData({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight }) {
+  const shape = createTerrainShape({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight })
+  const body = createTerrainBody(shape, minHeight, maxHeight)
+  return body
+}
