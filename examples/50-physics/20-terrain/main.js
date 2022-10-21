@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { dirLight } from '/utils/light.js'
 import { generateSineWaveData, createTerrainFromData } from '/utils/ground.js'
-import { AMMO, createPhysicsWorld, createTerrainBodyFromData } from '/utils/physics.js'
+import { AMMO, createPhysicsWorld, createTerrainBodyFromData, updateMesh } from '/utils/physics.js'
 
 createOrbitControls()
 camera.position.set(0, 50, 50)
@@ -96,28 +96,13 @@ function createObjectMaterial() {
   return new THREE.MeshPhongMaterial({ color: c })
 }
 
-function updatePhysics(dt) {
-  physicsWorld.stepSimulation(dt, 10)
-  for (let i = 0, il = rigidBodies.length; i < il; i++) {
-    const mesh = rigidBodies[i]
-    const ms = mesh.userData.body.getMotionState()
-    if (ms) {
-      const transform = new AMMO.btTransform()
-      ms.getWorldTransform(transform)
-      const p = transform.getOrigin()
-      const q = transform.getRotation()
-      mesh.position.set(p.x(), p.y(), p.z())
-      mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
-    }
-  }
-}
-
 /* LOOP */
 
 void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
-  updatePhysics(dt)
+  physicsWorld.stepSimulation(dt, 10)
+  rigidBodies.forEach(updateMesh)
   renderer.render(scene, camera)
 }()
 

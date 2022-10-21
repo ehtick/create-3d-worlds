@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { AMMO, createPhysicsWorld, createBox } from '/utils/physics.js'
+import { createPhysicsWorld, createBox, updateMesh } from '/utils/physics.js'
 import { createVehicle, updateVehicle } from './vehicle.js'
 
 const { Vector3 } = THREE
@@ -57,22 +57,11 @@ function createCrates(size = .75, nw = 8, nh = 6) {
 
 /* LOOP */
 
-function updateBody(mesh) {
-  const ms = mesh.userData.body.getMotionState()
-  if (!ms) return
-  const transform = new AMMO.btTransform()
-  ms.getWorldTransform(transform)
-  const p = transform.getOrigin()
-  const q = transform.getRotation()
-  mesh.position.set(p.x(), p.y(), p.z())
-  mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
-}
-
 void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
   updateVehicle({ vehicle, wheels, chassis })
-  rigidBodies.forEach(updateBody)
+  rigidBodies.forEach(updateMesh)
   physicsWorld.stepSimulation(dt, 10)
   renderer.render(scene, camera)
 }()

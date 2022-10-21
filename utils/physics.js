@@ -156,3 +156,16 @@ export function createTerrainBodyFromData({ data, width, depth, mapWidth, mapDep
   const body = createTerrainBody(shape, minHeight, maxHeight)
   return body
 }
+
+/* UPDATE */
+
+export function updateMesh(mesh) {
+  const ms = mesh.userData.body.getMotionState()
+  if (!ms) return
+  const transform = new AMMO.btTransform()
+  ms.getWorldTransform(transform)
+  const p = transform.getOrigin()
+  const q = transform.getRotation()
+  mesh.position.set(p.x(), p.y(), p.z())
+  mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
+}
