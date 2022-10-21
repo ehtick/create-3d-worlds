@@ -5,7 +5,7 @@ import { ConvexGeometry } from '/node_modules/three/examples/jsm/geometries/Conv
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
-import { AMMO, createPhysicsWorld } from '/utils/physics.js'
+import { AMMO, createPhysicsWorld, updateMesh } from '/utils/physics.js'
 
 const { Vector3 } = THREE
 
@@ -148,18 +148,9 @@ function createRandomColor() {
   return Math.floor(Math.random() * (1 << 24))
 }
 
-function updatePhysics(deltaTime) {
-  physicsWorld.stepSimulation(deltaTime, 10)
-  rigidBodies.forEach(mesh => {
-    const ms = mesh.userData.body.getMotionState()
-    if (!ms) return
-    ms.getWorldTransform(transform)
-    const p = transform.getOrigin()
-    const q = transform.getRotation()
-    mesh.position.set(p.x(), p.y(), p.z())
-    mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
-    mesh.userData.collided = false
-  })
+function updatePhysics(dt) {
+  physicsWorld.stepSimulation(dt, 10)
+  rigidBodies.forEach(updateMesh)
 
   const dispatcher = physicsWorld.getDispatcher()
   for (let i = 0, il = dispatcher.getNumManifolds(); i < il; i++) {
@@ -236,8 +227,8 @@ function updatePhysics(deltaTime) {
 
 void function animate() {
   requestAnimationFrame(animate)
-  const deltaTime = clock.getDelta()
-  updatePhysics(deltaTime)
+  const dt = clock.getDelta()
+  updatePhysics(dt)
   renderer.render(scene, camera)
 }()
 

@@ -1,7 +1,7 @@
 /* global Ammo */
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
-import { AMMO, createBox, createBall, createWall, createPhysicsWorld } from '/utils/physics.js'
+import { AMMO, createBox, createBall, createWall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
 
 camera.position.set(-7, 5, 8)
 createOrbitControls()
@@ -33,20 +33,6 @@ function addRigidBody({ mesh, body, mass }) {
   physicsWorld.addRigidBody(body)
 }
 
-function updatePhysics(deltaTime) {
-  physicsWorld.stepSimulation(deltaTime, 10)
-
-  rigidBodies.forEach(mesh => {
-    const ms = mesh.userData.body.getMotionState()
-    if (!ms) return
-    ms.getWorldTransform(transform)
-    const p = transform.getOrigin()
-    const q = transform.getRotation()
-    mesh.position.set(p.x(), p.y(), p.z())
-    mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
-  })
-}
-
 function shoot() {
   ball.body.setLinearVelocity(new AMMO.btVector3(20, 0, 0))
 }
@@ -55,8 +41,9 @@ function shoot() {
 
 void function loop() {
   requestAnimationFrame(loop)
-  const deltaTime = clock.getDelta()
-  updatePhysics(deltaTime)
+  const dt = clock.getDelta()
+  physicsWorld.stepSimulation(dt, 10)
+  rigidBodies.forEach(updateMesh)
   renderer.render(scene, camera)
 }()
 
