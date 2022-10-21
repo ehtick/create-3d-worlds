@@ -9,12 +9,12 @@ function randomColor() {
   return Math.floor(Math.random() * (1 << 24))
 }
 
-export function createPhysicsWorld({ gravity = 9.82 } = {}) {
+export function createPhysicsWorld({ gravity = 9.82, softBody = false } = {}) {
   const collisionConfiguration = new AMMO.btSoftBodyRigidBodyCollisionConfiguration()
   const dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
   const broadphase = new AMMO.btDbvtBroadphase()
   const solver = new AMMO.btSequentialImpulseConstraintSolver()
-  const softBodySolver = new AMMO.btDefaultSoftBodySolver()
+  const softBodySolver = softBody && new AMMO.btDefaultSoftBodySolver()
   const physicsWorld = new AMMO.btSoftRigidDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration, softBodySolver)
   physicsWorld.setGravity(new AMMO.btVector3(0, -gravity, 0))
   return physicsWorld
