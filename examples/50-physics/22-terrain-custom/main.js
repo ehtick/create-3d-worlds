@@ -13,7 +13,7 @@ const mapDepth = depth * scale
 const maxHeight = 8
 const minHeight = -2
 
-const dynamicObjects = []
+const rigidBodies = []
 let physicsWorld
 let transformAux1
 
@@ -182,7 +182,7 @@ function generateObject() {
   mesh.receiveShadow = mesh.castShadow = true
 
   scene.add(mesh)
-  dynamicObjects.push(mesh)
+  rigidBodies.push(mesh)
 
   physicsWorld.addRigidBody(body)
 }
@@ -194,16 +194,15 @@ function createObjectMaterial() {
 
 function updatePhysics(deltaTime) {
   physicsWorld.stepSimulation(deltaTime, 10)
-  for (let i = 0, il = dynamicObjects.length; i < il; i++) {
-    const objThree = dynamicObjects[i]
-    const objPhys = objThree.userData.body
-    const ms = objPhys.getMotionState()
+  for (let i = 0, il = rigidBodies.length; i < il; i++) {
+    const mesh = rigidBodies[i]
+    const ms = mesh.userData.body.getMotionState()
     if (ms) {
       ms.getWorldTransform(transformAux1)
       const p = transformAux1.getOrigin()
       const q = transformAux1.getRotation()
-      objThree.position.set(p.x(), p.y(), p.z())
-      objThree.quaternion.set(q.x(), q.y(), q.z(), q.w())
+      mesh.position.set(p.x(), p.y(), p.z())
+      mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
     }
   }
 }
@@ -214,7 +213,7 @@ void function loop() {
   requestAnimationFrame(loop)
   const deltaTime = clock.getDelta()
 
-  if (dynamicObjects.length < maxNumObjects && time > timeNextSpawn) {
+  if (rigidBodies.length < maxNumObjects && time > timeNextSpawn) {
     generateObject()
     timeNextSpawn = time + objectTimePeriod
   }

@@ -99,16 +99,15 @@ function createObjectMaterial() {
 function updatePhysics(dt) {
   physicsWorld.stepSimulation(dt, 10)
   for (let i = 0, il = rigidBodies.length; i < il; i++) {
-    const objThree = rigidBodies[i]
-    const objPhys = objThree.userData.body
-    const ms = objPhys.getMotionState()
+    const mesh = rigidBodies[i]
+    const ms = mesh.userData.body.getMotionState()
     if (ms) {
       const transform = new AMMO.btTransform()
       ms.getWorldTransform(transform)
       const p = transform.getOrigin()
       const q = transform.getRotation()
-      objThree.position.set(p.x(), p.y(), p.z())
-      objThree.quaternion.set(q.x(), q.y(), q.z(), q.w())
+      mesh.position.set(p.x(), p.y(), p.z())
+      mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
     }
   }
 }
