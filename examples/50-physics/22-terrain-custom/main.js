@@ -1,9 +1,12 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
+import { dirLight } from '/utils/light.js'
 import { getHeightData } from '/utils/terrain/heightmap.js'
-import { AMMO, updateMesh } from '/utils/physics.js'
+import { AMMO, updateMesh, createPhysicsWorld } from '/utils/physics.js'
 
 createOrbitControls()
+camera.position.set(0, 150, 150)
+scene.add(dirLight({ position: [100, 100, 50] }))
 
 const { data, width, depth } = await getHeightData('/assets/heightmaps/wiki.png')
 
@@ -14,18 +17,14 @@ const maxHeight = 8
 const minHeight = -2
 
 const rigidBodies = []
-let physicsWorld
-
-const index = width * .5 + depth * .5 * width
-camera.position.y = data[index] * (maxHeight - minHeight) + 5
-camera.position.z = mapDepth * .5
+const physicsWorld = createPhysicsWorld({ gravity: 6 })
 
 const geometry = new THREE.PlaneGeometry(mapWidth, mapDepth, width - 1, depth - 1)
 geometry.rotateX(- Math.PI * .5)
 
 const vertices = geometry.attributes.position.array
 for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3)
-  vertices[j + 1] = data[i] // j + 1 is y component
+  vertices[j + 1] = data[i]
 
 geometry.computeVertexNormals()
 
@@ -35,23 +34,9 @@ terrain.receiveShadow = terrain.castShadow = true
 
 scene.add(terrain)
 
-const light = new THREE.DirectionalLight(0xffffff, 1)
-light.position.set(100, 100, 50)
-light.castShadow = true
-
-scene.add(light)
-
 initPhysics()
 
 function initPhysics() {
-  // Physics configuration
-  const collisionConfiguration = new AMMO.btDefaultCollisionConfiguration()
-  const dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
-  const broadphase = new AMMO.btDbvtBroadphase()
-  const solver = new AMMO.btSequentialImpulseConstraintSolver()
-  physicsWorld = new AMMO.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration)
-  physicsWorld.setGravity(new AMMO.btVector3(0, - 6, 0))
-
   // Create the terrain body
   const groundShape = createTerrainShape()
   const groundTransform = new AMMO.btTransform()
