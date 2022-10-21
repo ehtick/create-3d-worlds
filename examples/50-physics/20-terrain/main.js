@@ -1,8 +1,10 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { AMMO, createPhysicsWorld } from '/utils/physics.js'
+import { dirLight } from '/utils/light.js'
 
 createOrbitControls()
+camera.position.set(0, 50, 50)
 
 // Heightfield parameters
 const mapWidth = 100
@@ -15,33 +17,11 @@ const minHeight = - 2
 const rigidBodies = []
 let transform
 
-const data = generateHeight(width, depth, minHeight, maxHeight)
-
-const index = width * .5 + depth * .5 * width
-camera.position.y = data[index] * (maxHeight - minHeight) + 5
-camera.position.z = mapDepth / 2
-
-const geometry = new THREE.PlaneGeometry(mapWidth, mapDepth, width - 1, depth - 1)
-geometry.rotateX(- Math.PI / 2)
-
-const vertices = geometry.attributes.position.array
-for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3)
-  vertices[j + 1] = data[i] // j + 1: y component
-
-geometry.computeVertexNormals()
-
-const groundMaterial = new THREE.MeshPhongMaterial({ color: 0xC7C7C7 })
-const terrain = new THREE.Mesh(geometry, groundMaterial)
-terrain.receiveShadow = true
-terrain.castShadow = true
-
+const data = generateSineWaveData(width, depth, minHeight, maxHeight)
+const terrain = createTerrain(data)
 scene.add(terrain)
 
-const light = new THREE.DirectionalLight(0xffffff, 1)
-light.position.set(100, 100, 50)
-light.castShadow = true
-
-scene.add(light)
+scene.add(dirLight({ position: [100, 100, 50] }))
 
 const physicsWorld = createPhysicsWorld({ gravity: 6 })
 
@@ -49,9 +29,25 @@ initPhysics()
 
 /* FUNCTIONS */
 
+function createTerrain(data) {
+  const geometry = new THREE.PlaneGeometry(mapWidth, mapDepth, width - 1, depth - 1)
+  geometry.rotateX(- Math.PI / 2)
+
+  const vertices = geometry.attributes.position.array
+  for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3)
+    vertices[j + 1] = data[i] // j + 1: y component
+
+  geometry.computeVertexNormals()
+
+  const groundMaterial = new THREE.MeshPhongMaterial({ color: 0xC7C7C7 })
+  const terrain = new THREE.Mesh(geometry, groundMaterial)
+  terrain.receiveShadow = terrain.castShadow = true
+  return terrain
+}
+
 function initPhysics() {
   // Create the terrain body
-  const groundShape = createTerrainShape()
+  const groundShape = createTerrainShape(data)
   const groundTransform = new AMMO.btTransform()
   groundTransform.setIdentity()
   // Shifts the terrain, since bullet re-centers it on its bounding box.
@@ -65,8 +61,7 @@ function initPhysics() {
   transform = new AMMO.btTransform()
 }
 
-function generateHeight(width, depth, minHeight, maxHeight) {
-  // Generates the height data (a sinus wave)
+function generateSineWaveData(width, depth, minHeight, maxHeight) {
   const size = width * depth
   const data = new Float32Array(size)
 
@@ -90,7 +85,7 @@ function generateHeight(width, depth, minHeight, maxHeight) {
   return data
 }
 
-function createTerrainShape() {
+function createTerrainShape(data) {
   const heightScale = 1
   // Up axis = 0 for X, 1 for Y, 2 for Z. Normally 1 = Y is used.
   const upAxis = 1
