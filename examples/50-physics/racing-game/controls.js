@@ -14,19 +14,6 @@ function camSwitcher(i) {
         dirLight.target = carModel[cci][0]
       }
       break
-    case 2: // stopped camera, still looks at controlled car
-      if (camFollowCar || chaseCammer) {
-        camFollowCar = false
-        chaseCammer = false
-        dirLight.target = camera
-      } else {
-        camid = 1
-        chaseCammer = true
-        chaseStarter = true
-        camFollowCar = false
-        dirLight.target = carModel[cci][0]
-      }
-      break
   }
 
 }// end cam switcher

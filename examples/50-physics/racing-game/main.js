@@ -355,27 +355,6 @@ let resettingCars = false
 
 var camZoomer = 1
 
-const decalSizer = new THREE.Vector3(20, 20, 20)
-const decalOrientation = new THREE.Euler(-Math.PI / 2, 0, 0)
-const mandalaLoader = new THREE.TextureLoader()
-const decalTextureMandala = mandalaLoader.load('mandala.png')
-
-const decalMaterialMandala = new THREE.MeshPhongMaterial({
-  color: 0x555555,
-  specular: 0x111111,
-  map: decalTextureMandala,
-  bumpMap: decalTextureMandala,
-  bumpScale: .3,
-  opacity: 1,
-  shininess: 200,
-  transparent: true,
-  depthTest: true,
-  depthWrite: false,
-  polygonOffset: true,
-  polygonOffsetFactor: -4,
-  wireframe: false
-})
-
 const textureLoader_d = new THREE.TextureLoader()
 const decalDiffuse = textureLoader_d.load('track5.png')
 const decalNormal = textureLoader_d.load('track5.png')
@@ -1996,7 +1975,7 @@ function switchCars() {
 
 function animate() {
   requestAnimationFrame(animate)
-  // fade and delete decals after some ticks
+  // fade and delete decals after some time
   for (i = 0; i < decals.length; i++)
     if (decals[i] != null) {
       decals[i].material.opacity -= .001
@@ -2008,7 +1987,7 @@ function animate() {
 
   bulletStep()
 
-  if (typeof carModel[numCars - 1][0] !== 'undefined') {
+  if (typeof carModel[0][0] !== 'undefined') {
     if (!loadingDone) {
       soundListener.setMasterVolume(1);
       container.style.paddingLeft = '0px';
