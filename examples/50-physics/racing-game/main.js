@@ -159,7 +159,7 @@ const camAndKeyFunction = function () {
 
         bodies[1].setWorldTransform(tranCam)
       }// end if chase cammer
-    } 
+    }
 
     if (pageUpper)
       if (camHeight < maxCamHeight)
@@ -1065,7 +1065,8 @@ function bulletStep() {
   for (var c = 0; c < numCars; c++) {
     if (c == cci)
       if (m_vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveCarForward[c] || moveCarBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4)) {
-        shoot(c); decalMaintenance()
+        shoot(c);
+        decalMaintenance()
         tireSmoker(0, smoker3, .9)
         tireSmoker(1, smoker4, -1.1)
       } else {
@@ -1450,7 +1451,6 @@ function init() {
   smoker.scale.set(.4, .4, .4)
   smoker2 = new THREE.Mesh(s_geometry, s_material2)
   smoker2.scale.set(.6, .6, .6)
-
   smoker3 = new THREE.Mesh(s_geometry, s_material3)
   smoker4 = new THREE.Mesh(s_geometry, s_material3)
 
@@ -1462,11 +1462,9 @@ function init() {
   scene.add(smoker3)
   scene.add(smoker4)
   scene.add(sparksMesh)
-
 }// end init
 
 function shoot(c) {
-
   if (typeof carModel[c][0] !== 'undefined' && typeof carModel[c][1] !== 'undefined' && typeof worldModel.children[0] !== 'undefined') {
 
     const wheelRot = m_carChassis[c].getWorldTransform().getBasis()
@@ -1570,11 +1568,9 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale) {
           tireClones[c][j] = carModel[c][i].clone()
           scene.add(tireClones[c][j])
         }
-
     }) // end obj load call
   }) // end mtl load call
-
-}// end obj car model loader
+}
 
 function objWorldModelLoader(i, objFile, mtlFile, scale) {
   mtlLoader = new THREE.MTLLoader()
@@ -1598,59 +1594,7 @@ function objWorldModelLoader(i, objFile, mtlFile, scale) {
       scene.add(worldModel)
     })
   })
-}// end obj world model loader
-
-function modifyCarMaterials(c) {
-  for (i = 0; i < carMat[c].length; i++)
-    if (typeof carMat[c][i] !== 'undefined') {
-      const m = carMat[c][i].materials
-      for (n in m) {
-        // tires and undercarriage do not reflect
-        if (n != 'Material_#8t' && n != 'mat_3-van1t.jpg' && n != 'mat_1-moskvitch.jpgt' && n != 'Material_#33t' && n != 'mat_2-humvee_desert_tire_diffuse.jpgt' && n !== 'mat_0-taxi_cab.jpgt') {
-          m[n].shininess = 900
-        } else m[n].shininess = 0
-
-        if (n == 'Material_#294' || n == 'Material_#56' || n == 'mat_0-taxi_cab.jpg') {
-          m[n].bumpMap = m[n].map
-          m[n].bumpScale = .005
-        }
-
-        if (n == 'Material_#8') {
-          m[n].bumpMap = m[n].map
-          m[n].bumpScale = .003
-          m[n].side = THREE.DoubleSide
-        }
-
-        if (n == 'mat_3-van1.jpg.001' || n == 'mat_0-humvee_desert_body_diffuse.jpg') {
-          m[n].bumpMap = m[n].map
-          m[n].bumpScale = .005
-          m[n].side = THREE.DoubleSide
-        }
-
-        if (n == 'mat_0-moskvitch.jpg' || n == 'mat_1-moskvitch.jpg' || n == 'mat_0-taxi_cab.jpg')
-          m[n].side = THREE.DoubleSide
-
-        m[n].specular.setHex(0x131313)
-        m[n].needsUpdate = true
-
-      }
-    }
-}// end modify car materials
-
-function modifyWorldMaterials() {
-  for (i = 0; i < worldMat.length; i++)
-    if (typeof worldMat !== 'undefined') {
-      const m = worldMat.materials
-      for (n in m) {
-        m[n].bumpMap = m[n].map
-        m[n].bumpScale = .6
-        m[n].shininess = 200
-        m[n].specular.setHex(0x020202)
-        // m[n].side=THREE.DoubleSide; //for seeing size of shadowmap on world
-        m[n].needsUpdate = true
-      }
-    }
-}// end modify world materials
+}
 
 function switchCars() {
   cci++; if (cci >= numCars) cci = 0
@@ -1683,11 +1627,8 @@ function animate() {
 
   if (typeof carModel[0][0] !== 'undefined') {
     if (!loadingDone) {
-      container.style.paddingLeft = '0px';
-      container.style.paddingTop = '0px';
       renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
       container.focus();
-      document.body.style.backgroundImage = 'none';
       loadingDone = true
     }
 
