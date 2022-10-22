@@ -1,9 +1,5 @@
 /* global THREE, Ammo */
 
-function fixAngleRad(a) {
-  if (a > Math.PI) a -= Math.PI * 2; else if (a < -Math.PI) a += Math.PI * 2; return a
-}
-
 const heightLimit = 1
 const widthLimit = 1
 const SCREEN_HEIGHT = window.innerHeight * heightLimit
@@ -12,210 +8,12 @@ const SCREEN_WIDTH = window.innerWidth * widthLimit
 const worldFiles = ['courser14a']
 let worldModel
 
-const camAndKeyFunction = function() {
-  // camera.eulerOrder = 'ZYX'
-  container.setAttribute('tabindex', -1)
-
-  onKeyDowner = function(event) {
-    if (event.key == 'z') altKey = true
-    switch (event.key) {
-      case 'ArrowUp':
-      case 'w':
-        moveCarForward[cci] = true
-        break
-      case 'ArrowLeft':
-      case 'a':
-        steerCarLeft[cci] = true
-        break
-      case 'ArrowDown':
-      case 's':
-        moveCarBackward[cci] = true
-        break
-      case 'ArrowRight':
-      case 'd':
-        steerCarRight[cci] = true
-        break
-      case ' ': // spacebar
-        gBreakingForce[cci] = maxBreakingForce[cci] * 2
-        gEngineForce[cci] = 0.0
-        break
-      case '4':
-        switchCars()
-        break
-      case '8':
-        moveCarForward[cci] = false
-        steerCarLeft[cci] = false
-        steerCarRight[cci] = false
-        gVehicleSteering[cci] = 0
-        break
-      case 't':
-        break
-      case 'PageUp':
-        pageUpper = true
-        break
-      case 'PageDown':
-        pageDowner = true
-        break
-    }
-
-    event.repeat = false
-  }// end on key down
-
-  onKeyUpper = function(event) {
-    if (event.key = 'z') altKey = false
-    switch (event.key) {
-      case 'ArrowUp':
-      case 'w':
-        moveCarForward[cci] = false
-        break
-
-      case 'ArrowLeft':
-      case 'a':
-        steerCarLeft[cci] = false
-        break
-
-      case 'ArrowDown':
-      case 's':
-        moveCarBackward[cci] = false
-        break
-
-      case 'ArrowRight':
-      case 'd':
-        steerCarRight[cci] = false
-        break
-
-      case 'PageUp':
-        pageUpper = false
-        break
-      case 'PageDown':
-        pageDowner = false
-        break
-    }
-  }// end on key up
-
-  container.addEventListener('keydown', onKeyDowner, false)
-  container.addEventListener('keyup', onKeyUpper, false)
-
-  this.update = function(delta) {
-    tv.setValue(0.0, -1.0, 0.0)
-    bodRot = m_carChassis[cci].getWorldTransform().getBasis().getColumn(1).dot(tv)
-    // if car rolls past threshold increase camLag
-    if (bodRot > -.4) camLags = .001; else camLags = camLag
-
-    if (chaseCammer) {
-      bodies[1].getMotionState().getWorldTransform(tranCam)
-
-      chaseCamO = tranCam.getOrigin()
-      m_carChassis[cci].getMotionState().getWorldTransform(tranChass)
-      carO = tranChass.getOrigin()
-
-      // camera should never go underground
-      let toPointer = new Ammo.btVector3(chaseCamO.getX(), chaseCamO.getY() - 200, chaseCamO.getZ())
-      let rayer = new Ammo.ClosestRayResultCallback(chaseCamO, toPointer)
-      dynamicsWorld.rayTest(chaseCamO, toPointer, rayer)
-      if (rayer.hasHit())
-        groundY = rayer.get_m_hitPointWorld().getY() + 3
-
-      Ammo.destroy(toPointer); toPointer = null
-      Ammo.destroy(rayer); rayer = null
-
-      setChaseCam()
-
-      xvelc = tCamPoint.x() - chaseCamO.x()
-      yvelc = tCamPoint.y() - chaseCamO.y()
-      zvelc = tCamPoint.z() - chaseCamO.z()
-
-      // if(tCamPoint.distance(chaseCamO)>camDist){
-      ctFac = 1
-      tv.setValue(xvelc * ctFac, yvelc * ctFac, zvelc * ctFac)
-      bodies[1].setLinearVelocity(tv)
-      bodies[1].getMotionState().getWorldTransform(tranCam)
-      // }
-      chaseCamO = tranCam.getOrigin()
-
-      camera.position.x = chaseCamO.x()
-      camera.position.y = chaseCamO.y()
-      camera.position.z = chaseCamO.z()
-
-      if (camera.position.y < groundY) {
-        chaseCamO.setY(groundY)
-        tranCam.setOrigin(chaseCamO)
-      }
-
-      bodies[1].setWorldTransform(tranCam)
-
-      camera.lookAt(new THREE.Vector3(carPos[cci].x(), carPos[cci].y(), carPos[cci].z()))
-
-      if (chaseStarter) {
-        setChaseCam()
-        tranCam.setIdentity()
-        tranCam.setOrigin(tCamPoint)
-        if (!worldSwitching[cci]) chaseStarter = false
-      }// end if chaseStarter
-
-      bodies[1].setWorldTransform(tranCam)
-    }// end if chase cammer
-
-    if (pageUpper)
-      if (camHeight < maxCamHeight)
-        camHeight *= 1.05
-      else camHeight = maxCamHeight
-
-    else if (pageDowner)
-      if (camHeight > minCamHeight)
-        camHeight *= .95
-      else camHeight = minCamHeight
-
-  }// end update
-} // end camera controls contstructor function
-
-function setChaseCam() {
-  camDist = camDistS; camHeight = camHeightS; camTilt = camTiltS; camRotateCar = 0
-
-  carRot = m_carChassis[cci].getWorldTransform().getBasis()
-  c2 = new Ammo.btVector3(0, camHeightS, -camDistS)
-  const camPointer = new Ammo.btVector3(
-    carRot.getRow(0).x() * c2.x() + carRot.getRow(0).y() * c2.y() + carRot.getRow(0).z() * c2.z(),
-    carRot.getRow(1).x() * c2.x() + carRot.getRow(1).y() * c2.y() + carRot.getRow(1).z() * c2.z(),
-    carRot.getRow(2).x() * c2.x() + carRot.getRow(2).y() * c2.y() + carRot.getRow(2).z() * c2.z()
-  )
-
-  const carOrigin = m_carChassis[cci].getWorldTransform().getOrigin()
-  tCamPoint.setValue(
-    camPointer.x() + carOrigin.x(),
-    camPointer.y() + carOrigin.y(),
-    camPointer.z() + carOrigin.z()
-  )
-
-  tv.setValue(0, 0, 0)
-  bodies[1].setLinearVelocity(tv)
-  bodies[1].setAngularVelocity(tv)
-
-  camera.position.x = tCamPoint.x()
-  camera.position.y = tCamPoint.y()
-  camera.position.z = tCamPoint.z()
-  camera.lookAt(new THREE.Vector3(carOrigin.x(), carOrigin.y(), carOrigin.z()))
-}
-
 let container
 const textureLoader_d = new THREE.TextureLoader()
 const decalDiffuse = textureLoader_d.load('track5.png')
 
-const decalMaterial = new THREE.MeshPhongMaterial({
-  specular: 0x444444,
-  map: decalDiffuse,
-  shininess: 900,
-  transparent: true,
-  depthTest: true,
-  depthWrite: false,
-  polygonOffset: true,
-  polygonOffsetFactor: - 4,
-  wireframe: false,
-  opacity: .4
-})
-
 let loadingDone = false
-var tv = new Ammo.btVector3(0, 0, 0)
+const tv = new Ammo.btVector3(0, 0, 0)
 var tCamPoint = new Ammo.btVector3(0, 0, 0)
 let carHit = false
 let dp
@@ -243,7 +41,7 @@ const positioner = [
 const positionerSave = []
 positionerSave[0] = new Ammo.btVector3(positioner[0].x(), positioner[0].y(), positioner[0].z())
 
-var cci = 3
+let cci = 3
 const dec = new Ammo.btVector3(0, 0, 0)
 const dec2 = new Ammo.btVector3(0, 0, 0)
 const dec3 = new Ammo.btVector3(0, 0, 0)
@@ -270,30 +68,30 @@ const s_d = new THREE.Vector3(90, 90, 90)
 var objLoader, mtlLoader
 const worldScale = 22
 const fogColor = new THREE.Color(0xae9a7b)// ae9a7b
-var groundY = 0
-var xvelc = 0, yvelc = 0, zvelc = 0, ctFac = 1.35
-var tranCam = new Ammo.btTransform()
-var tranChass = new Ammo.btTransform()
-var chaseCamO = new Ammo.btVector3()
-var carRot = new Ammo.btMatrix3x3()
+let groundY = 0
+let xvelc = 0, yvelc = 0, zvelc = 0, ctFac = 1.35
+const tranCam = new Ammo.btTransform()
+const tranChass = new Ammo.btTransform()
+let chaseCamO = new Ammo.btVector3()
+let carRot = new Ammo.btMatrix3x3()
 var tCamPoint = new Ammo.btVector3()
-var bodRot = -1
+let bodRot = -1
 const camStop = false
 const fogFar = 500
 let camera, scene, renderer, hemiLight, dirLight, pointLight
 var matBlank
 const clock = new THREE.Clock()
-var pageUpper = false, pageDowner = false
-var camHeight = 4.0
-var camDist = 8.0
-var minCamHeight = .1, maxCamHeight = 20
-var camHeightS = camHeight, camDistS = camDist
-var camTilt = -23 * Math.PI / 180; camTiltS = camTilt
+let pageUpper = false, pageDowner = false
+let camHeight = 4.0
+let camDist = 8.0
+const minCamHeight = .1, maxCamHeight = 20
+const camHeightS = camHeight, camDistS = camDist
+let camTilt = -23 * Math.PI / 180; camTiltS = camTilt
 let dt = 0.0
-var chaseCammer = true, chaseStarter = chaseCammer
+let chaseCammer = true, chaseStarter = chaseCammer
 var objLoader
 var mtlLoader
-var camLag = .035
+const camLag = .035
 let md
 
 const carNames = ['lada', 'hummer']
@@ -306,7 +104,7 @@ const hubClones = []
 const objFile = []
 const mtlFile = []
 const objScales = []
-var worldSwitching = []
+const worldSwitching = []
 const carHeightAboveGround = []
 
 for (let c = 0; c < numCars; c++) {
@@ -333,51 +131,12 @@ const worldMax = new Ammo.btVector3(1000, 1000, 1000)
 const overlappingPairCache = new Ammo.btAxisSweep3(worldMin, worldMax)
 const solver = new Ammo.btSequentialImpulseConstraintSolver()
 
-var dynamicsWorld = new Ammo.btDiscreteDynamicsWorld(
+const dynamicsWorld = new Ammo.btDiscreteDynamicsWorld(
   dispatcher,
   overlappingPairCache,
   solver,
   collisionConfiguration
 )
-
-// real simple
-function triMeshBuilder(model, scale, positioner) {
-  const trimesh = new Ammo.btTriangleMesh()
-  const v = model.children[0].geometry.attributes.position.array
-  const vcount = v.length
-  for (c = 0; c < vcount; c += 9) {
-    const v0 = v[c] * scale
-    const v1 = v[c + 1] * scale
-    const v2 = v[c + 2] * scale
-    const v3 = v[c + 3] * scale
-    const v4 = v[c + 4] * scale
-    const v5 = v[c + 5] * scale
-    const v6 = v[c + 6] * scale
-    const v7 = v[c + 7] * scale
-    const v8 = v[c + 8] * scale
-
-    // need 9 numbers per triangle
-    trimesh.addTriangle(
-      new Ammo.btVector3(v0, v1, v2),
-      new Ammo.btVector3(v3, v4, v5),
-      new Ammo.btVector3(v6, v7, v8)
-    )
-
-  }// end all vertex coordinates loop
-
-  useQuantization = true
-  const concaveShape = new Ammo.btBvhTriangleMeshShape(trimesh, useQuantization)
-  triMeshBodyTrans.setIdentity()
-  triMeshBodyTrans.setOrigin(positioner)
-  motionStated = new Ammo.btDefaultMotionState(triMeshBodyTrans)
-  tv.setValue(0, 0, 0)
-  tbody = new Ammo.btRigidBody(0, motionStated, concaveShape, tv)
-  tbody.setCollisionFlags(tbody.getCollisionFlags() | 1)
-  tbody.setActivationState(DISABLE_DEACTIVATION)
-  tbody.setFriction(.1)
-  dynamicsWorld.addRigidBody(tbody)
-  triMeshBody.push(tbody)
-}// end tri mesh builder
 
 /* for reference
   CF_STATIC_OBJECT= 1,
@@ -395,12 +154,12 @@ const forwardIndex = 2
 const wheelDirectionCS0 = new Ammo.btVector3(0, -1, 0)
 let wheelTrans = new Ammo.btTransform()
 const wheelAxleCS = new Ammo.btVector3(-1, 0, 0)
-var gEngineForce = []
-var gBreakingForce = []
+const gEngineForce = []
+const gBreakingForce = []
 const turboForce = 1.7
 const maxEngineForce = []
-var maxBreakingForce = []
-var gVehicleSteering = []
+const maxBreakingForce = []
+const gVehicleSteering = []
 
 const steeringIncrement = []
 const steeringClamp = []
@@ -424,10 +183,10 @@ const kmh = []
 const lastKmh = []
 const steering = []
 const accelerating = []
-var moveCarForward = []
-var moveCarBackward = []
-var steerCarLeft = []
-var steerCarRight = []
+const moveCarForward = []
+const moveCarBackward = []
+const steerCarLeft = []
+const steerCarRight = []
 let m_tuning
 
 const coordi = []
@@ -437,9 +196,9 @@ const coordx = []
 const coordz = []
 const bodRotTick = []
 
-var m_carChassis = []
+const m_carChassis = []
 const m_vehicle = []
-var carPos = []
+const carPos = []
 const carMat = []
 const carColor = []
 const rimColor = []
@@ -510,6 +269,187 @@ for (var c = 0; c < numCars; c++) {
   chassisWorldTrans[c] = new Ammo.btTransform()
   tuneup[c] = false
 }// num cars loop
+
+tv.setValue(0, -40, 0)
+dynamicsWorld.setGravity(tv)
+
+const triMeshBody = []
+let tbody
+
+const worldID = 0
+const bodies = []
+
+const threeObject = [] // index 0 is for the ground, 1 for the camera
+
+var matBlank = new THREE.MeshBasicMaterial()
+matBlank.visible = false
+matBlank.side = THREE.FrontSide
+
+const obTrans = new Ammo.btTransform()
+const triMeshBodyTrans = new Ammo.btTransform()
+
+init()
+
+const decalMaterial = new THREE.MeshPhongMaterial({
+  specular: 0x444444,
+  map: decalDiffuse,
+  shininess: 900,
+  transparent: true,
+  depthTest: true,
+  depthWrite: false,
+  polygonOffset: true,
+  polygonOffsetFactor: - 4,
+  wireframe: false,
+  opacity: .4
+})
+
+/* FUNCTION */
+
+function fixAngleRad(a) {
+  if (a > Math.PI) a -= Math.PI * 2; else if (a < -Math.PI) a += Math.PI * 2; return a
+}
+
+function camAndKeyFunction() {
+  // camera.eulerOrder = 'ZYX'
+  container.setAttribute('tabindex', -1)
+
+  this.update = function(delta) {
+    tv.setValue(0.0, -1.0, 0.0)
+    bodRot = m_carChassis[cci].getWorldTransform().getBasis().getColumn(1).dot(tv)
+    // if car rolls past threshold increase camLag
+    if (bodRot > -.4) camLags = .001; else camLags = camLag
+
+    if (chaseCammer) {
+      bodies[1].getMotionState().getWorldTransform(tranCam)
+
+      chaseCamO = tranCam.getOrigin()
+      m_carChassis[cci].getMotionState().getWorldTransform(tranChass)
+      carO = tranChass.getOrigin()
+
+      // camera should never go underground
+      let toPointer = new Ammo.btVector3(chaseCamO.getX(), chaseCamO.getY() - 200, chaseCamO.getZ())
+      let rayer = new Ammo.ClosestRayResultCallback(chaseCamO, toPointer)
+      dynamicsWorld.rayTest(chaseCamO, toPointer, rayer)
+      if (rayer.hasHit())
+        groundY = rayer.get_m_hitPointWorld().getY() + 3
+
+      Ammo.destroy(toPointer); toPointer = null
+      Ammo.destroy(rayer); rayer = null
+
+      setChaseCam()
+
+      xvelc = tCamPoint.x() - chaseCamO.x()
+      yvelc = tCamPoint.y() - chaseCamO.y()
+      zvelc = tCamPoint.z() - chaseCamO.z()
+
+      // if(tCamPoint.distance(chaseCamO)>camDist){
+      ctFac = 1
+      tv.setValue(xvelc * ctFac, yvelc * ctFac, zvelc * ctFac)
+      bodies[1].setLinearVelocity(tv)
+      bodies[1].getMotionState().getWorldTransform(tranCam)
+      // }
+      chaseCamO = tranCam.getOrigin()
+
+      camera.position.x = chaseCamO.x()
+      camera.position.y = chaseCamO.y()
+      camera.position.z = chaseCamO.z()
+
+      if (camera.position.y < groundY) {
+        chaseCamO.setY(groundY)
+        tranCam.setOrigin(chaseCamO)
+      }
+
+      bodies[1].setWorldTransform(tranCam)
+
+      camera.lookAt(new THREE.Vector3(carPos[cci].x(), carPos[cci].y(), carPos[cci].z()))
+
+      if (chaseStarter) {
+        setChaseCam()
+        tranCam.setIdentity()
+        tranCam.setOrigin(tCamPoint)
+        if (!worldSwitching[cci]) chaseStarter = false
+      }// end if chaseStarter
+
+      bodies[1].setWorldTransform(tranCam)
+    }// end if chase cammer
+
+    if (pageUpper)
+      if (camHeight < maxCamHeight)
+        camHeight *= 1.05
+      else camHeight = maxCamHeight
+
+    else if (pageDowner)
+      if (camHeight > minCamHeight)
+        camHeight *= .95
+      else camHeight = minCamHeight
+  }
+}
+
+function setChaseCam() {
+  camDist = camDistS; camHeight = camHeightS; camTilt = camTiltS; camRotateCar = 0
+
+  carRot = m_carChassis[cci].getWorldTransform().getBasis()
+  c2 = new Ammo.btVector3(0, camHeightS, -camDistS)
+  const camPointer = new Ammo.btVector3(
+    carRot.getRow(0).x() * c2.x() + carRot.getRow(0).y() * c2.y() + carRot.getRow(0).z() * c2.z(),
+    carRot.getRow(1).x() * c2.x() + carRot.getRow(1).y() * c2.y() + carRot.getRow(1).z() * c2.z(),
+    carRot.getRow(2).x() * c2.x() + carRot.getRow(2).y() * c2.y() + carRot.getRow(2).z() * c2.z()
+  )
+
+  const carOrigin = m_carChassis[cci].getWorldTransform().getOrigin()
+  tCamPoint.setValue(
+    camPointer.x() + carOrigin.x(),
+    camPointer.y() + carOrigin.y(),
+    camPointer.z() + carOrigin.z()
+  )
+
+  tv.setValue(0, 0, 0)
+  bodies[1].setLinearVelocity(tv)
+  bodies[1].setAngularVelocity(tv)
+
+  camera.position.x = tCamPoint.x()
+  camera.position.y = tCamPoint.y()
+  camera.position.z = tCamPoint.z()
+  camera.lookAt(new THREE.Vector3(carOrigin.x(), carOrigin.y(), carOrigin.z()))
+}
+
+function triMeshBuilder(model, scale, positioner) {
+  const trimesh = new Ammo.btTriangleMesh()
+  const v = model.children[0].geometry.attributes.position.array
+  const vcount = v.length
+  for (c = 0; c < vcount; c += 9) {
+    const v0 = v[c] * scale
+    const v1 = v[c + 1] * scale
+    const v2 = v[c + 2] * scale
+    const v3 = v[c + 3] * scale
+    const v4 = v[c + 4] * scale
+    const v5 = v[c + 5] * scale
+    const v6 = v[c + 6] * scale
+    const v7 = v[c + 7] * scale
+    const v8 = v[c + 8] * scale
+
+    // need 9 numbers per triangle
+    trimesh.addTriangle(
+      new Ammo.btVector3(v0, v1, v2),
+      new Ammo.btVector3(v3, v4, v5),
+      new Ammo.btVector3(v6, v7, v8)
+    )
+
+  }// end all vertex coordinates loop
+
+  useQuantization = true
+  const concaveShape = new Ammo.btBvhTriangleMeshShape(trimesh, useQuantization)
+  triMeshBodyTrans.setIdentity()
+  triMeshBodyTrans.setOrigin(positioner)
+  motionStated = new Ammo.btDefaultMotionState(triMeshBodyTrans)
+  tv.setValue(0, 0, 0)
+  tbody = new Ammo.btRigidBody(0, motionStated, concaveShape, tv)
+  tbody.setCollisionFlags(tbody.getCollisionFlags() | 1)
+  tbody.setActivationState(DISABLE_DEACTIVATION)
+  tbody.setFriction(.1)
+  dynamicsWorld.addRigidBody(tbody)
+  triMeshBody.push(tbody)
+}
 
 function initVehicle(c) {
   const startTransform = new Ammo.btTransform()
@@ -641,21 +581,6 @@ function tuneVehicle(c) {
   m_vehicle[c].updateSuspension()
 }
 
-tv.setValue(0, -40, 0)
-dynamicsWorld.setGravity(tv)
-
-var triMeshBody = []
-let tbody
-
-const worldID = 0
-var bodies = []
-
-const threeObject = [] // index 0 is for the ground, 1 for the camera
-
-var matBlank = new THREE.MeshBasicMaterial()
-matBlank.visible = false
-matBlank.side = THREE.FrontSide
-
 function initObjects(numObjects) {
   for (let i = 1; i < numObjects; i++) {// 0 is ground, 1 is camera
     var colShape
@@ -691,9 +616,6 @@ function initObjects(numObjects) {
   }
 }
 
-const obTrans = new Ammo.btTransform()
-var triMeshBodyTrans = new Ammo.btTransform()
-
 function randRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
@@ -713,7 +635,7 @@ function resetBulletObjects() {
     bodies[i].activate()
   }
   Ammo.destroy(clearTrans); clearTrans = null
-}// end reset bullet objects
+}
 
 function decalMaintenance() {
   decalCounter += 2
@@ -1143,9 +1065,7 @@ function bulletStep() {
     threeObject[i].position.set(p.x(), p.y(), p.z())
     threeObject[i].quaternion.set(q.x(), q.y(), q.z(), q.w())
   }
-}// end bulletStep
-
-init()
+}
 
 function skyInit() {
   scene.background = fogColor
@@ -1276,7 +1196,7 @@ function init() {
   scene.add(smoker3)
   scene.add(smoker4)
   scene.add(sparksMesh)
-}// end init
+}
 
 function shoot(c) {
   if (typeof carModel[c][0] !== 'undefined' && typeof carModel[c][1] !== 'undefined' && typeof worldModel.children[0] !== 'undefined') {
@@ -1353,7 +1273,7 @@ function shoot(c) {
     scene.add(decals[i + 1])
 
   }
-}// end shoot
+}
 
 function objCarModelLoader(c, i, objFile, mtlFile, scale) {
   mtlLoader = new THREE.MTLLoader()
@@ -1451,3 +1371,83 @@ void function animate() {
     renderer.render(scene, camera)
   }
 }()
+
+/* EVENTS */
+
+const onKeyDowner = function(event) {
+  switch (event.key) {
+    case 'ArrowUp':
+    case 'w':
+      moveCarForward[cci] = true
+      break
+    case 'ArrowLeft':
+    case 'a':
+      steerCarLeft[cci] = true
+      break
+    case 'ArrowDown':
+    case 's':
+      moveCarBackward[cci] = true
+      break
+    case 'ArrowRight':
+    case 'd':
+      steerCarRight[cci] = true
+      break
+    case ' ': // spacebar
+      gBreakingForce[cci] = maxBreakingForce[cci] * 2
+      gEngineForce[cci] = 0.0
+      break
+    case '4':
+      switchCars()
+      break
+    case '8':
+      moveCarForward[cci] = false
+      steerCarLeft[cci] = false
+      steerCarRight[cci] = false
+      gVehicleSteering[cci] = 0
+      break
+    case 't':
+      break
+    case 'PageUp':
+      pageUpper = true
+      break
+    case 'PageDown':
+      pageDowner = true
+      break
+  }
+
+  event.repeat = false
+}
+
+const onKeyUpper = function(event) {
+  switch (event.key) {
+    case 'ArrowUp':
+    case 'w':
+      moveCarForward[cci] = false
+      break
+
+    case 'ArrowLeft':
+    case 'a':
+      steerCarLeft[cci] = false
+      break
+
+    case 'ArrowDown':
+    case 's':
+      moveCarBackward[cci] = false
+      break
+
+    case 'ArrowRight':
+    case 'd':
+      steerCarRight[cci] = false
+      break
+
+    case 'PageUp':
+      pageUpper = false
+      break
+    case 'PageDown':
+      pageDowner = false
+      break
+  }
+}
+
+container.addEventListener('keydown', onKeyDowner, false)
+container.addEventListener('keyup', onKeyUpper, false)
