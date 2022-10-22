@@ -120,10 +120,6 @@ const camAndKeyFunction = function () {
         case '4':
           switchCars()
           break
-        case '7':
-          roboCars = !roboCars
-          if (!roboCars) moveCarForward[cci] = false
-          break
         case '8':
           moveCarForward[cci] = false;
           steerCarLeft[cci] = false;
@@ -756,7 +752,6 @@ const connectionHeight = []
 
 const kmh = []
 const lastKmh = []
-var roboCars = true
 const steering = []
 const accelerating = []
 var moveCarForward = []
@@ -1458,14 +1453,7 @@ function bulletStep() {
       }
     }// end !undefined
 
-    if (roboCars && (c != cci) && typeof carModel[c][0] !== 'undefined') {
-      if (kmh[c] < maxSpeed[c]) moveCarForward[c] = true; else moveCarForward[c] = false
-      const bearing = Math.atan2(curz, curx)
-      const bearDif = fixAngleRad((-Math.PI / 2 - bearing) - carHeading2)
-      if (Math.abs(bearDif) > .035)
-        gVehicleSteering[c] += bearDif / 10
-    }
-    else if (!roboCars && c != cci) moveCarForward[c] = false
+    if (c != cci) moveCarForward[c] = false
 
     accelerating[c] = (moveCarForward[c] || moveCarBackward[c])
 
