@@ -1,5 +1,4 @@
 /* global THREE, Ammo */
-
 const heightLimit = 1
 const widthLimit = 1
 const SCREEN_HEIGHT = window.innerHeight * heightLimit
@@ -12,9 +11,9 @@ let container
 const textureLoader_d = new THREE.TextureLoader()
 const decalDiffuse = textureLoader_d.load('track5.png')
 
-let loadingDone = false
+const loadingDone = false
 const tv = new Ammo.btVector3(0, 0, 0)
-var tCamPoint = new Ammo.btVector3(0, 0, 0)
+const tCamPoint = new Ammo.btVector3(0, 0, 0)
 let carHit = false
 let dp
 let numMan
@@ -50,22 +49,28 @@ const smo2 = new Ammo.btVector3(0, 0, 0)
 const smo3 = new Ammo.btVector3(0, 0, 0)
 const smo4 = new THREE.Vector3(0, 0, 0)
 let s_material, s_material2, s_material3, smoker, smoker2, smoker3, smoker4, sparksMesh
-let smokerCount = 0, smokerCount2 = 6, frame = [], explo = [], opacDown = false, opac = .1, startSmoker = false
-let sparks = [], sparkler = false, hitPoint = new Ammo.btVector3(0, 0, 0)
+let smokerCount = 0, smokerCount2 = 6
+const frame = []
+let opacDown = false, opac = .1
+const sparks = []
+let sparkler = false
+const hitPoint = new Ammo.btVector3(0, 0, 0)
 let sparksCount = 0
 const smokerCount3 = [0, 5]
 const smoUp = [true, true]
 let smoker2Scale = .1
-let carVel = new THREE.Vector3(0, 0, 0), oldCarPos = new THREE.Vector3(0, 0, 0), oldCarPos2 = new THREE.Vector3(0, 0, 0), decRot = 0
+const carVel = new THREE.Vector3(0, 0, 0)
+const oldCarPos = new THREE.Vector3(0, 0, 0)
+const oldCarPos2 = new THREE.Vector3(0, 0, 0)
+let decRot = 0
 let decalCounter = 0
 let decals = []
 let material_d
 const p_d = new THREE.Vector3(0, 0, 0)
-var r_d = new THREE.Vector3(0, 0, 0)
-var r_d = new THREE.Euler(0, 0, 0, 'XYZ')
+const r_d = new THREE.Euler(0, 0, 0, 'XYZ')
 const s_d = new THREE.Vector3(90, 90, 90)
 
-var objLoader, mtlLoader
+let objLoader, mtlLoader
 const worldScale = 22
 const fogColor = new THREE.Color(0xae9a7b)// ae9a7b
 let groundY = 0
@@ -74,24 +79,18 @@ const tranCam = new Ammo.btTransform()
 const tranChass = new Ammo.btTransform()
 let chaseCamO = new Ammo.btVector3()
 let carRot = new Ammo.btMatrix3x3()
-var tCamPoint = new Ammo.btVector3()
 let bodRot = -1
-const camStop = false
 const fogFar = 500
 let camera, scene, renderer, hemiLight, dirLight, pointLight
-var matBlank
 const clock = new THREE.Clock()
 let pageUpper = false, pageDowner = false
 let camHeight = 4.0
 let camDist = 8.0
 const minCamHeight = .1, maxCamHeight = 20
 const camHeightS = camHeight, camDistS = camDist
-let camTilt = -23 * Math.PI / 180; camTiltS = camTilt
 let dt = 0.0
-let chaseCammer = true, chaseStarter = chaseCammer
-var objLoader
-var mtlLoader
-const camLag = .035
+const chaseCammer = true
+let chaseStarter = chaseCammer
 let md
 
 const carNames = ['lada', 'hummer']
@@ -207,13 +206,13 @@ const tuneup = []
 const carObjects = []
 const allCoordSame = true
 
-for (var c = 0; c < numCars; c++) {
+for (let c = 0; c < numCars; c++) {
   bodRotTick[c] = 0
   coordi[c] = 0
   coordx[c] = []
   coordz[c] = []
 
-  for (var i = 0; i < numCoords; i++)
+  for (let i = 0; i < numCoords; i++)
     if (c > 0 && allCoordSame) {
       coordx[c][i] = coordx[0][i]
       coordz[c][i] = coordz[0][i]
@@ -268,7 +267,7 @@ for (var c = 0; c < numCars; c++) {
   }
   chassisWorldTrans[c] = new Ammo.btTransform()
   tuneup[c] = false
-}// num cars loop
+}
 
 tv.setValue(0, -40, 0)
 dynamicsWorld.setGravity(tv)
@@ -281,14 +280,12 @@ const bodies = []
 
 const threeObject = [] // index 0 is for the ground, 1 for the camera
 
-var matBlank = new THREE.MeshBasicMaterial()
+const matBlank = new THREE.MeshBasicMaterial()
 matBlank.visible = false
 matBlank.side = THREE.FrontSide
 
 const obTrans = new Ammo.btTransform()
 const triMeshBodyTrans = new Ammo.btTransform()
-
-init()
 
 const decalMaterial = new THREE.MeshPhongMaterial({
   specular: 0x444444,
@@ -303,93 +300,86 @@ const decalMaterial = new THREE.MeshPhongMaterial({
   opacity: .4
 })
 
+init()
+
 /* FUNCTION */
 
 function fixAngleRad(a) {
   if (a > Math.PI) a -= Math.PI * 2; else if (a < -Math.PI) a += Math.PI * 2; return a
 }
 
-function camAndKeyFunction() {
-  // camera.eulerOrder = 'ZYX'
-  container.setAttribute('tabindex', -1)
+function updateCamera() {
+  tv.setValue(0.0, -1.0, 0.0)
+  bodRot = m_carChassis[cci].getWorldTransform().getBasis().getColumn(1).dot(tv)
+  if (chaseCammer) {
+    bodies[1].getMotionState().getWorldTransform(tranCam)
 
-  this.update = function(delta) {
-    tv.setValue(0.0, -1.0, 0.0)
-    bodRot = m_carChassis[cci].getWorldTransform().getBasis().getColumn(1).dot(tv)
-    // if car rolls past threshold increase camLag
-    if (bodRot > -.4) camLags = .001; else camLags = camLag
+    chaseCamO = tranCam.getOrigin()
+    m_carChassis[cci].getMotionState().getWorldTransform(tranChass)
 
-    if (chaseCammer) {
-      bodies[1].getMotionState().getWorldTransform(tranCam)
+    // camera should never go underground
+    let toPointer = new Ammo.btVector3(chaseCamO.getX(), chaseCamO.getY() - 200, chaseCamO.getZ())
+    let rayer = new Ammo.ClosestRayResultCallback(chaseCamO, toPointer)
+    dynamicsWorld.rayTest(chaseCamO, toPointer, rayer)
+    if (rayer.hasHit())
+      groundY = rayer.get_m_hitPointWorld().getY() + 3
 
-      chaseCamO = tranCam.getOrigin()
-      m_carChassis[cci].getMotionState().getWorldTransform(tranChass)
-      carO = tranChass.getOrigin()
+    Ammo.destroy(toPointer); toPointer = null
+    Ammo.destroy(rayer); rayer = null
 
-      // camera should never go underground
-      let toPointer = new Ammo.btVector3(chaseCamO.getX(), chaseCamO.getY() - 200, chaseCamO.getZ())
-      let rayer = new Ammo.ClosestRayResultCallback(chaseCamO, toPointer)
-      dynamicsWorld.rayTest(chaseCamO, toPointer, rayer)
-      if (rayer.hasHit())
-        groundY = rayer.get_m_hitPointWorld().getY() + 3
+    setChaseCam()
 
-      Ammo.destroy(toPointer); toPointer = null
-      Ammo.destroy(rayer); rayer = null
+    xvelc = tCamPoint.x() - chaseCamO.x()
+    yvelc = tCamPoint.y() - chaseCamO.y()
+    zvelc = tCamPoint.z() - chaseCamO.z()
 
+    // if(tCamPoint.distance(chaseCamO)>camDist){
+    ctFac = 1
+    tv.setValue(xvelc * ctFac, yvelc * ctFac, zvelc * ctFac)
+    bodies[1].setLinearVelocity(tv)
+    bodies[1].getMotionState().getWorldTransform(tranCam)
+    // }
+    chaseCamO = tranCam.getOrigin()
+
+    camera.position.x = chaseCamO.x()
+    camera.position.y = chaseCamO.y()
+    camera.position.z = chaseCamO.z()
+
+    if (camera.position.y < groundY) {
+      chaseCamO.setY(groundY)
+      tranCam.setOrigin(chaseCamO)
+    }
+
+    bodies[1].setWorldTransform(tranCam)
+
+    camera.lookAt(new THREE.Vector3(carPos[cci].x(), carPos[cci].y(), carPos[cci].z()))
+
+    if (chaseStarter) {
       setChaseCam()
+      tranCam.setIdentity()
+      tranCam.setOrigin(tCamPoint)
+      if (!worldSwitching[cci]) chaseStarter = false
+    }// end if chaseStarter
 
-      xvelc = tCamPoint.x() - chaseCamO.x()
-      yvelc = tCamPoint.y() - chaseCamO.y()
-      zvelc = tCamPoint.z() - chaseCamO.z()
+    bodies[1].setWorldTransform(tranCam)
+  }// end if chase cammer
 
-      // if(tCamPoint.distance(chaseCamO)>camDist){
-      ctFac = 1
-      tv.setValue(xvelc * ctFac, yvelc * ctFac, zvelc * ctFac)
-      bodies[1].setLinearVelocity(tv)
-      bodies[1].getMotionState().getWorldTransform(tranCam)
-      // }
-      chaseCamO = tranCam.getOrigin()
+  if (pageUpper)
+    if (camHeight < maxCamHeight)
+      camHeight *= 1.05
+    else camHeight = maxCamHeight
 
-      camera.position.x = chaseCamO.x()
-      camera.position.y = chaseCamO.y()
-      camera.position.z = chaseCamO.z()
-
-      if (camera.position.y < groundY) {
-        chaseCamO.setY(groundY)
-        tranCam.setOrigin(chaseCamO)
-      }
-
-      bodies[1].setWorldTransform(tranCam)
-
-      camera.lookAt(new THREE.Vector3(carPos[cci].x(), carPos[cci].y(), carPos[cci].z()))
-
-      if (chaseStarter) {
-        setChaseCam()
-        tranCam.setIdentity()
-        tranCam.setOrigin(tCamPoint)
-        if (!worldSwitching[cci]) chaseStarter = false
-      }// end if chaseStarter
-
-      bodies[1].setWorldTransform(tranCam)
-    }// end if chase cammer
-
-    if (pageUpper)
-      if (camHeight < maxCamHeight)
-        camHeight *= 1.05
-      else camHeight = maxCamHeight
-
-    else if (pageDowner)
-      if (camHeight > minCamHeight)
-        camHeight *= .95
-      else camHeight = minCamHeight
-  }
+  else if (pageDowner)
+    if (camHeight > minCamHeight)
+      camHeight *= .95
+    else camHeight = minCamHeight
 }
 
 function setChaseCam() {
-  camDist = camDistS; camHeight = camHeightS; camTilt = camTiltS; camRotateCar = 0
+  camDist = camDistS; camHeight = camHeightS
 
   carRot = m_carChassis[cci].getWorldTransform().getBasis()
-  c2 = new Ammo.btVector3(0, camHeightS, -camDistS)
+  const c2 = new Ammo.btVector3(0, camHeightS, -camDistS)
   const camPointer = new Ammo.btVector3(
     carRot.getRow(0).x() * c2.x() + carRot.getRow(0).y() * c2.y() + carRot.getRow(0).z() * c2.z(),
     carRot.getRow(1).x() * c2.x() + carRot.getRow(1).y() * c2.y() + carRot.getRow(1).z() * c2.z(),
@@ -417,7 +407,7 @@ function triMeshBuilder(model, scale, positioner) {
   const trimesh = new Ammo.btTriangleMesh()
   const v = model.children[0].geometry.attributes.position.array
   const vcount = v.length
-  for (c = 0; c < vcount; c += 9) {
+  for (let c = 0; c < vcount; c += 9) {
     const v0 = v[c] * scale
     const v1 = v[c + 1] * scale
     const v2 = v[c + 2] * scale
@@ -437,11 +427,10 @@ function triMeshBuilder(model, scale, positioner) {
 
   }// end all vertex coordinates loop
 
-  useQuantization = true
-  const concaveShape = new Ammo.btBvhTriangleMeshShape(trimesh, useQuantization)
+  const concaveShape = new Ammo.btBvhTriangleMeshShape(trimesh, true)
   triMeshBodyTrans.setIdentity()
   triMeshBodyTrans.setOrigin(positioner)
-  motionStated = new Ammo.btDefaultMotionState(triMeshBodyTrans)
+  const motionStated = new Ammo.btDefaultMotionState(triMeshBodyTrans)
   tv.setValue(0, 0, 0)
   tbody = new Ammo.btRigidBody(0, motionStated, concaveShape, tv)
   tbody.setCollisionFlags(tbody.getCollisionFlags() | 1)
@@ -462,7 +451,7 @@ function initVehicle(c) {
   tv.setValue(0, 1, 0)
   localTrans.setOrigin(tv)
   compound.addChildShape(localTrans, chassisShape)
-  mass = 680
+  const mass = 680
 
   let localInertia = new Ammo.btVector3(1, 1, 1)
   compound.calculateLocalInertia(mass, localInertia)
@@ -486,7 +475,7 @@ function makeVehicle(c) {
   m_tuning.set_m_frictionSlip(frictionSlip[c])
   m_tuning.set_m_maxSuspensionForce(maxSuspensionForce[c])
 
-  m_vehicleRayCaster = new Ammo.btDefaultVehicleRaycaster(dynamicsWorld)
+  const m_vehicleRayCaster = new Ammo.btDefaultVehicleRaycaster(dynamicsWorld)
   m_vehicle[c] = new Ammo.btRaycastVehicle(m_tuning, m_carChassis[c], m_vehicleRayCaster)
   m_carChassis[c].setActivationState(DISABLE_DEACTIVATION)
   dynamicsWorld.addVehicle(m_vehicle[c])
@@ -583,8 +572,8 @@ function tuneVehicle(c) {
 
 function initObjects(numObjects) {
   for (let i = 1; i < numObjects; i++) {// 0 is ground, 1 is camera
-    var colShape
-    var mass
+    let colShape
+    let mass
     if (i == 1) {// camera object with index 1 gets built here
       threeObject[i] = new THREE.Mesh(new THREE.SphereGeometry(.1, 20, 20), matBlank)
       colShape = new Ammo.btSphereShape(1)
@@ -677,9 +666,7 @@ function tireSmoker(i, smokerModel, xval) {
       smokerModel.material.opacity = 1
       smokerModel.scale.set(.9, .9, .9)
       smoUp[i] = !smoUp[i]
-      if (smoUp[i]) {
-        smokerCount3[i]++
-      };
+      if (smoUp[i]) smokerCount3[i]++
       if (smokerCount3[i] >= frame.length) smokerCount3[i] = 0
     }
   }
@@ -709,9 +696,6 @@ function findGround(c) {
         Ammo.destroy(pointBelow); pointBelow = null
       }
       worldSwitching[c] = false
-
-      if (c == cci)
-        decalWorldID = downRay.get_m_collisionObject().getUserPointer()
     } else {
       let cp = new Ammo.btVector3(carPos[c].x(), carPos[c].y() + 1, carPos[c].z())
       downRayDir.setY(carPos[c].y() + 400)
@@ -725,7 +709,7 @@ function findGround(c) {
         carHit = false
 
         for (let i = 0; i < numMan; i++) {
-          manifold = dp.getManifoldByIndexInternal(i)
+          const manifold = dp.getManifoldByIndexInternal(i)
           num_contacts = manifold.getNumContacts()
           if (!(num_contacts === 0)) {
             bodyA = carObjects[c][manifold.getBody0()]
@@ -733,7 +717,7 @@ function findGround(c) {
             if (bodyA != bodies[1] && bodyB != bodies[1])
               carHit = true// so do not move car a above car b when b is above a
           }
-        }// end num man loop
+        }
 
         if (!carHit) {
           worldSwitching[c] = false
@@ -744,19 +728,289 @@ function findGround(c) {
           chassisWorldTrans[c].setOrigin(pointAbove)
           m_carChassis[c].setWorldTransform(chassisWorldTrans[c])
           Ammo.destroy(pointAbove); pointAbove = null
-        }// end if !carHit
-
-      }// end hit above
-    }// end no hit below
-
+        }
+      }
+    }
     Ammo.destroy(downRay); downRay = null
-  }// if !== undefined
+  }
 }
 
-function bulletStep() {
+function skyInit() {
+  scene.background = fogColor
+  scene.fog = new THREE.Fog(fogColor, 0, fogFar)
+}
+
+function init() {
+  container = document.createElement('div')
+  container.style.height = window.innerHeight + 'px'
+  container.style.width = window.innerWidth + 'px'
+  container.focus()
+  document.body.appendChild(container)
+
+  camera = new THREE.PerspectiveCamera(70, SCREEN_WIDTH / SCREEN_HEIGHT, .01, 9000)
+  scene = new THREE.Scene()
+
+  skyInit()
+
+  bodies.push({})
+
+  initObjects(numObjects)
+  for (let i = 1; i < bodies.length; i++)
+    scene.add(threeObject[i])
+
+  for (let c = 0; c < numCars; c++)
+    initVehicle(c)
+
+  hemiLight = new THREE.HemisphereLight(
+    new THREE.Color(0xd7bb60),
+    new THREE.Color(0xf0d7bb),
+    1.0)
+  hemiLight.position.set(0, 1, 0)
+  scene.add(hemiLight)
+
+  dirLight = new THREE.DirectionalLight(0xffffff, 2.6)
+  dirLight.castShadow = true
+  scene.add(dirLight)
+
+  pointLight = new THREE.PointLight(0x0011ff, 5, 200)
+  scene.add(pointLight)
+
+  objWorldModelLoader(0, worldFiles[worldID] + '.obj', worldFiles[worldID] + '.mtl', worldScale)
+
+  for (let c = 0; c < numCars; c++)
+    for (let i = 0; i < numCars; i++)
+      objCarModelLoader(c, i, objFile[c][i], mtlFile[c][i], objScales[c][i])
+
+  // camera.eulerOrder = 'ZYX'
+  container.setAttribute('tabindex', -1)
+
+  renderer = new THREE.WebGLRenderer({ antialias: true })
+  renderer.setPixelRatio(window.devicePixelRatio)
+  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
+  renderer.toneMapping = THREE.Uncharted2ToneMapping
+  renderer.toneMappingExposure = 1.0
+  renderer.shadowMap.enabled = true
+  renderer.shadowMap.renderReverseSided = true
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap
+  container.appendChild(renderer.domElement)
+
+  container.style.paddingLeft = '30px'
+  container.style.paddingTop = '10px'
+  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
+
+  let s_geometry = new THREE.BufferGeometry()
+  let numFrames = 6
+  for (let si = 0; si < numFrames; si++)
+    sparks[si] = new THREE.TextureLoader().load('animations/sparks_' + si + '.gif')
+
+  numFrames = 14
+  for (let si = 0; si < numFrames; si++)
+    frame[si] = new THREE.TextureLoader().load('animations/dirty2_' + si + '.gif')
+
+  s_geometry = new THREE.PlaneGeometry(2, 2, 1, 1)
+
+  s_material = new THREE.MeshPhongMaterial({
+    map: frame[0],
+    transparent: true,
+    color: 0xffffff,
+    shininess: 0,
+    depthTest: true,
+    depthWrite: false,
+    opacity: opac
+    // side:THREE.DoubleSide
+  })
+
+  s_material2 = new THREE.MeshPhongMaterial({
+    map: frame[0],
+    transparent: true,
+    color: 0xffffff,
+    shininess: 0,
+    depthTest: true,
+    depthWrite: false,
+    opacity: .3,
+    side: THREE.DoubleSide
+  })
+
+  s_material3 = new THREE.MeshPhongMaterial({
+    map: frame[0],
+    transparent: true,
+    color: 0xffffff,
+    shininess: 0,
+    depthTest: true,
+    depthWrite: false,
+    opacity: .3,
+    side: THREE.DoubleSide
+  })
+
+  const s_material4 = new THREE.MeshBasicMaterial({
+    map: sparks[0],
+    transparent: true,
+    visible: false,
+    color: 0xffffff,
+    opacity: .7,
+    side: THREE.DoubleSide
+  })
+
+  smoker = new THREE.Mesh(s_geometry, s_material)
+  smoker.scale.set(.4, .4, .4)
+  smoker2 = new THREE.Mesh(s_geometry, s_material2)
+  smoker2.scale.set(.6, .6, .6)
+  smoker3 = new THREE.Mesh(s_geometry, s_material3)
+  smoker4 = new THREE.Mesh(s_geometry, s_material3)
+
+  sparksMesh = new THREE.Mesh(s_geometry, s_material4)
+  sparksMesh.receiveShadow = false
+
+  scene.add(smoker)
+  scene.add(smoker2)
+  scene.add(smoker3)
+  scene.add(smoker4)
+  scene.add(sparksMesh)
+}
+
+function shoot(c) {
+  if (carModel[c][0] && carModel[c][1] && worldModel.children[0]) {
+    const wheelRot = m_carChassis[c].getWorldTransform().getBasis()
+    dec.setValue(-.2, 0, .2)
+    dec2.setValue(
+      wheelRot.getRow(0).x() * dec.x() + wheelRot.getRow(0).y() * dec.y() + wheelRot.getRow(0).z() * dec.z(),
+      wheelRot.getRow(1).x() * dec.x() + wheelRot.getRow(1).y() * dec.y() + wheelRot.getRow(1).z() * dec.z(),
+      wheelRot.getRow(2).x() * dec.x() + wheelRot.getRow(2).y() * dec.y() + wheelRot.getRow(2).z() * dec.z()
+    )
+    dec3.setValue(
+      dec2.x() + carModel[c][1].position.x,
+      dec2.y() + carModel[c][1].position.y,
+      dec2.z() + carModel[c][1].position.z
+    )
+
+    p_d.set(dec3.x(), dec3.y(), dec3.z())
+
+    carVel.x = p_d.x - oldCarPos.x
+    carVel.y = p_d.y - oldCarPos.y
+    carVel.z = p_d.z - oldCarPos.z
+
+    oldCarPos.x = p_d.x
+    oldCarPos.y = p_d.y
+    oldCarPos.z = p_d.z
+    // angle from velocity
+    decRot = -fixAngleRad(Math.atan2(carVel.z, carVel.x) + Math.PI / 2)
+
+    r_d.set(0, decRot, 0)
+    if (carVel.length() > 2) {
+      carVel.x = 0
+      carVel.y = 0
+      carVel.z = 0
+    }
+    s_d.set(1, 1, carVel.length())
+    material_d = decalMaterial.clone()
+    md = new THREE.Mesh(new THREE.DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
+    decals.push(md)
+    scene.add(md)
+
+    dec.setValue(.2, 0, .2)
+    dec2.setValue(
+      wheelRot.getRow(0).x() * dec.x() + wheelRot.getRow(0).y() * dec.y() + wheelRot.getRow(0).z() * dec.z(),
+      wheelRot.getRow(1).x() * dec.x() + wheelRot.getRow(1).y() * dec.y() + wheelRot.getRow(1).z() * dec.z(),
+      wheelRot.getRow(2).x() * dec.x() + wheelRot.getRow(2).y() * dec.y() + wheelRot.getRow(2).z() * dec.z()
+    )
+    dec3.setValue(
+      dec2.x() + tireClones[c][2].position.x,
+      dec2.y() + tireClones[c][2].position.y,
+      dec2.z() + tireClones[c][2].position.z
+    )
+    p_d.set(dec3.x(), dec3.y(), dec3.z())
+
+    carVel.x = p_d.x - oldCarPos2.x
+    carVel.y = p_d.y - oldCarPos2.y
+    carVel.z = p_d.z - oldCarPos2.z
+
+    oldCarPos2.x = p_d.x
+    oldCarPos2.y = p_d.y
+    oldCarPos2.z = p_d.z
+
+    decRot = -fixAngleRad(Math.atan2(carVel.z, carVel.x) + Math.PI / 2)
+    r_d.set(0, decRot, 0)
+
+    if (carVel.length() > 2) {
+      carVel.x = 0; carVel.y = 0; carVel.z = 0
+    }
+    s_d.set(1, 1, carVel.length())
+
+    md = new THREE.Mesh(new THREE.DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
+    decals.push(md)
+    scene.add(md)
+  }
+}
+
+function objCarModelLoader(c, i, objFile, mtlFile, scale) {
+  mtlLoader = new THREE.MTLLoader()
+  mtlLoader.load(mtlFile, materials => {
+    carMat[c][i] = materials
+    materials.preload()
+    objLoader = new THREE.OBJLoader()
+    objLoader.setMaterials(materials)
+    objLoader.load(objFile, object => {
+      object.position.set(0, 0, 0)
+      carModel[c][i] = object
+      carModel[c][i].scale.set(scale, scale, scale)
+      carModel[c][i].traverse(
+        child => {
+          if (child instanceof THREE.Mesh) {
+            child.castShadow = true
+            child.receiveShadow = false
+          }
+        })
+      scene.add(carModel[c][i])
+      if (c == cci && i == 0) dirLight.target = carModel[cci][0]
+
+      // make three copies each of tire
+      if (i == 1)
+        for (let j = 0; j < 3; j++) {
+          tireClones[c][j] = carModel[c][i].clone()
+          scene.add(tireClones[c][j])
+        }
+    })
+  })
+}
+
+function objWorldModelLoader(i, objFile, mtlFile, scale) {
+  mtlLoader = new THREE.MTLLoader()
+  mtlLoader.load(mtlFile, materials => {
+    materials.preload()
+    objLoader = new THREE.OBJLoader()
+    objLoader.setMaterials(materials)
+    objLoader.load(objFile, object => {
+      object.position.set(positioner[i].x(), positioner[i].y(), positioner[i].z())
+      worldModel = object
+      worldModel.scale.set(scale, scale, scale)
+      worldModel.traverse(child => {
+        child.castShadow = child.receiveShadow = child.isMesh
+      })
+      triMeshBuilder(worldModel, worldScale, positioner[i])
+      scene.add(worldModel)
+    })
+  })
+}
+
+function switchCars() {
+  cci++; if (cci >= numCars) cci = 0
+  dirLight.target = carModel[cci][0]
+
+  moveCarForward[cci] = false
+  moveCarBackward[cci] = false
+  gVehicleSteering[cci] = 0
+  steerCarLeft[cci] = false
+  steerCarRight[cci] = false
+
+  if (chaseCammer) chaseStarter = true
+}
+
+/* LOOP */
+
+function updatePhysics() {
   dynamicsWorld.stepSimulation(1 / 60)
 
-  for (var c = 0; c < numCars; c++)
+  for (let c = 0; c < numCars; c++)
     findGround(c)
 
   carHitForce = []
@@ -766,26 +1020,23 @@ function bulletStep() {
   dp = dynamicsWorld.getDispatcher()
   numMan = dp.getNumManifolds()
 
-  for (var i = 0; i < numMan; i++) {
-    manifold = dp.getManifoldByIndexInternal(i)
-
+  for (let i = 0; i < numMan; i++) {
+    const manifold = dp.getManifoldByIndexInternal(i)
     num_contacts = manifold.getNumContacts()
     if (!(num_contacts === 0)) {
-
       bodyA = carObjects[cci][manifold.getBody0()]
       bodyB = carObjects[cci][manifold.getBody1()]
-
       if ((bodyA == m_carChassis[cci] || bodyB == m_carChassis[cci]) && !(bodyA == bodies[1] || bodyB == bodies[1])) {
         carHit = true
         carHitForce.push(manifold.getContactPoint().get_m_appliedImpulse())
         manifolder.push(manifold)
       }
     }
-  }// end num man loop
+  }
 
   if (carHitForce.length > 0) {
     highestHitForce = Math.max(...carHitForce)
-    for (var i = 0; i < carHitForce.length; i++)
+    for (let i = 0; i < carHitForce.length; i++)
       if (highestHitForce == carHitForce[i]) {
         manifolder[i].getContactPoint().set_m_appliedImpulse(0)
         hitPoint.setX(manifolder[i].getContactPoint().getPositionWorldOnA().x())
@@ -814,15 +1065,14 @@ function bulletStep() {
       sparkler = false
       sparksMesh.material.visible = false
     }
-
-  }// end if sparkler
+  }
 
   if (resetBulletObjectsBool) {
     resetBulletObjectsBool = false
     resetBulletObjects()
   }
 
-  for (var c = 0; c < numCars; c++) {
+  for (let c = 0; c < numCars; c++) {
     if (c == cci)
       if (m_vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveCarForward[c] || moveCarBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4)) {
         shoot(c)
@@ -876,15 +1126,7 @@ function bulletStep() {
           Ammo.destroy(bodyRot2); bodyRot2 = null
           bodRotTick[c] = 0
         }
-
       } else bodRotTick[c] = 0
-    }// end car height above ground < 3
-
-    if (typeof carModel[c][0] !== 'undefined') {
-      let qc = new THREE.Quaternion(0, 0, 0, 1)
-      qc = carModel[c][0].quaternion
-      // radians
-      carHeading2 = fixAngleRad((Math.PI + (Math.atan2(2 * qc.y * qc.w - 2 * qc.x * qc.z, 1 - 2 * (qc.y * qc.y) - 2 * (qc.z * qc.z)))))
     }
 
     if (c != cci) moveCarForward[c] = false
@@ -894,21 +1136,13 @@ function bulletStep() {
     if (!accelerating[c]) {
       gEngineForce[c] = 0
       if (Math.abs(kmh[c]) > 20) gBreakingForce[c] += 5
-
-      if (c == cci)
-        engPitch = Math.abs(kmh[c]) / (maxSpeed[c] * .5)
-
-    } else if (accelerating[c]) {
-      if (c == cci)
-        engPitch = Math.abs(kmh[c]) / (maxSpeed[c] * .5)
-
+    } else if (accelerating[c])
       if (moveCarForward[c] && kmh[c] < maxSpeed[c]) {
         if (kmh[c] < maxSpeed[c] / 5) gEngineForce[c] = maxEngineForce[c] * turboForce; else gEngineForce[c] = maxEngineForce[c]
         gBreakingForce[c] = 0.0
       } else if (moveCarForward[c] && kmh[c] >= maxSpeed[c]) {
         gEngineForce[c] = 0.0
         gBreakingForce[c] = 0.0
-
       } else if (moveCarBackward[c] && kmh[c] > -maxSpeed[c]) {
         gEngineForce[c] = -maxEngineForce[c]
         gBreakingForce[c] = 0.0
@@ -917,8 +1151,6 @@ function bulletStep() {
         gBreakingForce[c] = 0.0
       }
 
-    }// end if accelerating
-
     // 0,1 front; 2,3 back
     m_vehicle[c].applyEngineForce(gEngineForce[c], 0)
     m_vehicle[c].setBrake(gBreakingForce[c], 0)
@@ -926,21 +1158,17 @@ function bulletStep() {
     m_vehicle[c].setSteeringValue(-gVehicleSteering[c] * 1.2, 4)// for drifting, 5th wheel (rear)
 
     m_vehicle[c].applyEngineForce(gEngineForce[c], 4)
-    // m_vehicle[c].setBrake(gBreakingForce[c],4);
-
     m_vehicle[c].applyEngineForce(gEngineForce[c], 1)
     m_vehicle[c].setBrake(gBreakingForce[c], 1)
     m_vehicle[c].setSteeringValue(gVehicleSteering[c], 1)
     m_vehicle[c].setSteeringValue(-gVehicleSteering[c] * 1.2, 5) // for drifting, 6th wheel (rear)
-
     m_vehicle[c].applyEngineForce(gEngineForce[c], 5)
-    // m_vehicle[c].setBrake(gBreakingForce[c],5);
 
     // chassis
     m_carChassis[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
     carPos[c] = chassisWorldTrans[c].getOrigin()
 
-    for (i = 0; i < numCars; i++)
+    for (let i = 0; i < numCars; i++)
       if (typeof carModel[c][i] !== 'undefined') {
         carModel[c][i].position.set(carPos[c].x(), carPos[c].y(), carPos[c].z())
         carModel[c][i].quaternion.set(
@@ -966,7 +1194,6 @@ function bulletStep() {
             camera.quaternion.z,
             camera.quaternion.w
           )
-
           smoker2.quaternion.set(
             camera.quaternion.x,
             camera.quaternion.y,
@@ -1011,365 +1238,68 @@ function bulletStep() {
           )
           smo4.set(smo3.x(), smo3.y(), smo3.z())
           smoker2.position.set(smo4.x, smo4.y, smo4.z)
-
           smoker2.material.map = frame[smokerCount2]
           smoker2.material.opacity = .5
           smoker2Scale = .5
           smoker2.scale.set(smoker2Scale, smoker2Scale, smoker2Scale)
           smokerCount2++; if (smokerCount2 > frame.length - 1) smokerCount2 = 0
-
-        }// c==cci&&i==0
+        }
       }
 
-    // wheels, index 0 is the chassis shape
-    for (i = 0; i < 4; i++) {
+    // wheels, index 0 is chassis shape
+    for (let i = 0; i < 4; i++) {
       // synchronize the wheels with the (interpolated) chassis worldtransform
       m_vehicle[c].updateWheelTransform(i, true)
       wheelTrans = m_vehicle[c].getWheelInfo(i).get_m_worldTransform()
-      var p = wheelTrans.getOrigin()
-      var q = wheelTrans.getRotation()
-
+      const p = wheelTrans.getOrigin()
+      const q = wheelTrans.getRotation()
       // clones of tire and hub
       if (i < 3) {
-
         if (typeof tireClones[c][i] !== 'undefined') {
           tireClones[c][i].position.set(p.x(), p.y(), p.z())
           tireClones[c][i].quaternion.set(q.x(), q.y(), q.z(), q.w())
           if (i == 0) tireClones[c][i].rotateY(- Math.PI)
         }
-
         if (typeof hubClones[c][i] !== 'undefined') {
           hubClones[c][i].position.set(p.x(), p.y(), p.z())
           hubClones[c][i].quaternion.set(q.x(), q.y(), q.z(), q.w())
           if (i == 0) hubClones[c][i].rotateY(- Math.PI)
         }
-
       } else if (i == 3)
-
         // original copy of tire and hub for wheels
         if (typeof carModel[c][1] !== 'undefined') {
           carModel[c][1].position.set(p.x(), p.y(), p.z())
           carModel[c][1].quaternion.set(q.x(), q.y(), q.z(), q.w())
           carModel[c][1].rotateY(- Math.PI)
         }
-
-    }// end wheels
-
-  }// end num cars
+    }
+  }
 
   // index 0 is ground, index 1 is camera
-  for (i = 2; i < bodies.length; i++) {
+  for (let i = 2; i < bodies.length; i++) {
     bodies[i].getMotionState().getWorldTransform(obTrans)
-    var p = obTrans.getOrigin()
-    var q = obTrans.getRotation()
+    const p = obTrans.getOrigin()
+    const q = obTrans.getRotation()
     threeObject[i].position.set(p.x(), p.y(), p.z())
     threeObject[i].quaternion.set(q.x(), q.y(), q.z(), q.w())
   }
 }
 
-function skyInit() {
-  scene.background = fogColor
-  scene.fog = new THREE.Fog(fogColor, 0, fogFar)
-}
-
-function init() {
-  container = document.createElement('div')
-  container.style.height = window.innerHeight + 'px'
-  container.style.width = window.innerWidth + 'px'
-  document.body.appendChild(container)
-
-  camera = new THREE.PerspectiveCamera(70, SCREEN_WIDTH / SCREEN_HEIGHT, .01, 9000)
-  scene = new THREE.Scene()
-
-  skyInit()
-
-  bodies.push({})
-
-  initObjects(numObjects)
-  for (i = 1; i < bodies.length; i++)
-    scene.add(threeObject[i])
-
-  for (var c = 0; c < numCars; c++)
-    initVehicle(c)
-
-  hemiLight = new THREE.HemisphereLight(
-    new THREE.Color(0xd7bb60),
-    new THREE.Color(0xf0d7bb),
-    1.0)
-  hemiLight.position.set(0, 1, 0)
-  scene.add(hemiLight)
-
-  dirLight = new THREE.DirectionalLight(0xffffff, 2.6)
-  dirLight.castShadow = true
-  scene.add(dirLight)
-
-  pointLight = new THREE.PointLight(0x0011ff, 5, 200)
-  scene.add(pointLight)
-
-  objWorldModelLoader(0, worldFiles[worldID] + '.obj', worldFiles[worldID] + '.mtl', worldScale)
-
-  for (var c = 0; c < numCars; c++)
-    for (i = 0; i < numCars; i++)
-      objCarModelLoader(c, i, objFile[c][i], mtlFile[c][i], objScales[c][i])
-
-  camAndKeys = new camAndKeyFunction()
-
-  renderer = new THREE.WebGLRenderer({ antialias: true })
-  renderer.setPixelRatio(window.devicePixelRatio)
-  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
-  renderer.toneMapping = THREE.Uncharted2ToneMapping
-  renderer.toneMappingExposure = 1.0
-  renderer.shadowMap.enabled = true
-  renderer.shadowMap.renderReverseSided = true
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap
-  container.appendChild(renderer.domElement)
-
-  container.style.paddingLeft = '30px'
-  container.style.paddingTop = '10px'
-  renderer.setSize(SCREEN_WIDTH * .1, SCREEN_HEIGHT * .1)
-
-  let s_geometry = new THREE.BufferGeometry()
-  let numFrames = 6
-  for (var si = 0; si < numFrames; si++)
-    sparks[si] = new THREE.TextureLoader().load('animations/sparks_' + si + '.gif')
-
-  numFrames = 14
-  for (var si = 0; si < numFrames; si++)
-    frame[si] = new THREE.TextureLoader().load('animations/dirty2_' + si + '.gif')
-
-  s_geometry = new THREE.PlaneGeometry(2, 2, 1, 1)
-
-  s_material = new THREE.MeshPhongMaterial({
-    map: frame[0],
-    transparent: true,
-    color: 0xffffff,
-    shininess: 0,
-    depthTest: true,
-    depthWrite: false,
-    opacity: opac
-    // side:THREE.DoubleSide
+function updateDecals() {
+  decals.forEach(decal => {
+    decal.material.opacity -= .001
+    if (decal.material.opacity <= 0) scene.remove(decal)
   })
-
-  s_material2 = new THREE.MeshPhongMaterial({
-    map: frame[0],
-    transparent: true,
-    color: 0xffffff,
-    shininess: 0,
-    depthTest: true,
-    depthWrite: false,
-    opacity: .3,
-    side: THREE.DoubleSide
-  })
-
-  s_material3 = new THREE.MeshPhongMaterial({
-    map: frame[0],
-    transparent: true,
-    color: 0xffffff,
-    shininess: 0,
-    depthTest: true,
-    depthWrite: false,
-    opacity: .3,
-    side: THREE.DoubleSide
-  })
-
-  s_material4 = new THREE.MeshBasicMaterial({
-    map: sparks[0],
-    transparent: true,
-    visible: false,
-    color: 0xffffff,
-    opacity: .7,
-    side: THREE.DoubleSide
-  })
-
-  smoker = new THREE.Mesh(s_geometry, s_material)
-  smoker.scale.set(.4, .4, .4)
-  smoker2 = new THREE.Mesh(s_geometry, s_material2)
-  smoker2.scale.set(.6, .6, .6)
-  smoker3 = new THREE.Mesh(s_geometry, s_material3)
-  smoker4 = new THREE.Mesh(s_geometry, s_material3)
-
-  sparksMesh = new THREE.Mesh(s_geometry, s_material4)
-  sparksMesh.receiveShadow = false
-
-  scene.add(smoker)
-  scene.add(smoker2)
-  scene.add(smoker3)
-  scene.add(smoker4)
-  scene.add(sparksMesh)
+  decals = decals.filter(decal => decal.material.opacity <= 0)
 }
-
-function shoot(c) {
-  if (typeof carModel[c][0] !== 'undefined' && typeof carModel[c][1] !== 'undefined' && typeof worldModel.children[0] !== 'undefined') {
-
-    const wheelRot = m_carChassis[c].getWorldTransform().getBasis()
-    dec.setValue(-.2, 0, .2)
-    dec2.setValue(
-      wheelRot.getRow(0).x() * dec.x() + wheelRot.getRow(0).y() * dec.y() + wheelRot.getRow(0).z() * dec.z(),
-      wheelRot.getRow(1).x() * dec.x() + wheelRot.getRow(1).y() * dec.y() + wheelRot.getRow(1).z() * dec.z(),
-      wheelRot.getRow(2).x() * dec.x() + wheelRot.getRow(2).y() * dec.y() + wheelRot.getRow(2).z() * dec.z()
-    )
-    dec3.setValue(
-      dec2.x() + carModel[c][1].position.x,
-      dec2.y() + carModel[c][1].position.y,
-      dec2.z() + carModel[c][1].position.z
-    )
-
-    p_d.set(dec3.x(), dec3.y(), dec3.z())
-
-    carVel.x = p_d.x - oldCarPos.x
-    carVel.y = p_d.y - oldCarPos.y
-    carVel.z = p_d.z - oldCarPos.z
-
-    oldCarPos.x = p_d.x
-    oldCarPos.y = p_d.y
-    oldCarPos.z = p_d.z
-    // angle from velocity
-    decRot = -fixAngleRad(Math.atan2(carVel.z, carVel.x) + Math.PI / 2)
-
-    r_d.set(0, decRot, 0)
-
-    if (carVel.length() > 2) {
-      carVel.x = 0; carVel.y = 0; carVel.z = 0
-    }
-    s_d.set(1, 1, carVel.length())
-    material_d = decalMaterial.clone()
-    // THREE.DecalGeometry=function( mesh, position, rotation, dimensions){
-    md = new THREE.Mesh(new THREE.DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
-    decals[i] = md
-    scene.add(decals[i])
-
-    dec.setValue(.2, 0, .2)
-    dec2.setValue(
-      wheelRot.getRow(0).x() * dec.x() + wheelRot.getRow(0).y() * dec.y() + wheelRot.getRow(0).z() * dec.z(),
-      wheelRot.getRow(1).x() * dec.x() + wheelRot.getRow(1).y() * dec.y() + wheelRot.getRow(1).z() * dec.z(),
-      wheelRot.getRow(2).x() * dec.x() + wheelRot.getRow(2).y() * dec.y() + wheelRot.getRow(2).z() * dec.z()
-    )
-    dec3.setValue(
-      dec2.x() + tireClones[c][2].position.x,
-      dec2.y() + tireClones[c][2].position.y,
-      dec2.z() + tireClones[c][2].position.z
-    )
-    p_d.set(dec3.x(), dec3.y(), dec3.z())
-
-    carVel.x = p_d.x - oldCarPos2.x
-    carVel.y = p_d.y - oldCarPos2.y
-    carVel.z = p_d.z - oldCarPos2.z
-
-    oldCarPos2.x = p_d.x
-    oldCarPos2.y = p_d.y
-    oldCarPos2.z = p_d.z
-
-    decRot = -fixAngleRad(Math.atan2(carVel.z, carVel.x) + Math.PI / 2)
-    r_d.set(0, decRot, 0)
-
-    if (carVel.length() > 2) {
-      carVel.x = 0; carVel.y = 0; carVel.z = 0
-    }
-    s_d.set(1, 1, carVel.length())
-
-    // THREE.DecalGeometry=function( mesh, position, rotation, dimensions, check ) {
-    md = new THREE.Mesh(new THREE.DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
-    decals[i + 1] = md
-    scene.add(decals[i + 1])
-
-  }
-}
-
-function objCarModelLoader(c, i, objFile, mtlFile, scale) {
-  mtlLoader = new THREE.MTLLoader()
-  mtlLoader.load(mtlFile, materials => {
-    carMat[c][i] = materials
-    materials.preload()
-    objLoader = new THREE.OBJLoader()
-    objLoader.setMaterials(materials)
-    objLoader.load(objFile, object => {
-      object.position.set(0, 0, 0)
-      carModel[c][i] = object
-      carModel[c][i].scale.set(scale, scale, scale)
-      carModel[c][i].traverse(
-        child => {
-          if (child instanceof THREE.Mesh) {
-            child.castShadow = true
-            child.receiveShadow = false
-          }
-        })
-      scene.add(carModel[c][i])
-      if (c == cci && i == 0) dirLight.target = carModel[cci][0]
-
-      // make three copies each of tire
-      if (i == 1)
-        for (j = 0; j < 3; j++) {
-          tireClones[c][j] = carModel[c][i].clone()
-          scene.add(tireClones[c][j])
-        }
-    }) // end obj load call
-  }) // end mtl load call
-}
-
-function objWorldModelLoader(i, objFile, mtlFile, scale) {
-  mtlLoader = new THREE.MTLLoader()
-  mtlLoader.load(mtlFile, materials => {
-    materials.preload()
-    objLoader = new THREE.OBJLoader()
-    objLoader.setMaterials(materials)
-    worldMat = materials// for setting values dynamically
-    objLoader.load(objFile, object => {
-      object.position.set(positioner[i].x(), positioner[i].y(), positioner[i].z())
-      worldModel = object
-      worldModel.scale.set(scale, scale, scale)
-      worldModel.traverse(
-        child => {
-          if (child instanceof THREE.Mesh) {
-            child.castShadow = true
-            child.receiveShadow = true
-          }
-        })
-      triMeshBuilder(worldModel, worldScale, positioner[i])
-      scene.add(worldModel)
-    })
-  })
-}
-
-function switchCars() {
-  cci++; if (cci >= numCars) cci = 0
-  dirLight.target = carModel[cci][0]
-
-  moveCarForward[cci] = false
-  moveCarBackward[cci] = false
-  gVehicleSteering[cci] = 0
-  steerCarLeft[cci] = false
-  steerCarRight[cci] = false
-
-  if (chaseCammer) chaseStarter = true
-}
-
-/* LOOP */
 
 void function animate() {
   requestAnimationFrame(animate)
-  // fade and delete decals after some time
-  for (i = 0; i < decals.length; i++)
-    if (decals[i] != null) {
-      decals[i].material.opacity -= .001
-      if (decals[i].material.opacity < 0) {
-        scene.remove(decals[i])
-        decals[i] = null
-      }
-    }
-
-  bulletStep()
-
-  if (typeof carModel[0][0] !== 'undefined') {
-    if (!loadingDone) {
-      renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
-      container.focus()
-      loadingDone = true
-    }
-
-    dt = clock.getDelta()
-    if (!camStop) camAndKeys.update(dt)
-    renderer.render(scene, camera)
-  }
+  dt = clock.getDelta()
+  updatePhysics()
+  updateDecals()
+  updateCamera(dt)
+  renderer.render(scene, camera)
 }()
 
 /* EVENTS */
