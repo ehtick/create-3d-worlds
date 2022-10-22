@@ -1,44 +1,16 @@
 /* global THREE, Ammo */
-const heightLimit = 1
-const widthLimit = 1
-const SCREEN_HEIGHT = window.innerHeight * heightLimit
-const SCREEN_WIDTH = window.innerWidth * widthLimit
+const SCREEN_HEIGHT = window.innerHeight
+const SCREEN_WIDTH = window.innerWidth
 
-const worldFiles = ['courser14a']
 let worldModel
-
-let container
-const textureLoader_d = new THREE.TextureLoader()
-const decalDiffuse = textureLoader_d.load('track5.png')
-
-const loadingDone = false
+const worldFiles = ['courser14a']
+const textureLoader = new THREE.TextureLoader()
+const decalDiffuse = textureLoader.load('track5.png')
 const tv = new Ammo.btVector3(0, 0, 0)
 const tCamPoint = new Ammo.btVector3(0, 0, 0)
 let carHit = false
-let dp
-let numMan
-let num_contacts = 0
-let bodyA
-let bodyB
-let carHitForce = []
-let manifolder = []
-let highestHitForce = 0
-
 const downRayDir = new Ammo.btVector3(0, 0, 0)
-
-const positioner = [
-  new Ammo.btVector3(0, -38, 0), // center
-  new Ammo.btVector3(-880, -38, 0), // forward
-  new Ammo.btVector3(880, -38, 0), // back
-  new Ammo.btVector3(0, -38, 880), // left
-  new Ammo.btVector3(0, -38, -880), // right
-  new Ammo.btVector3(-880, -38, 880), // forward-left
-  new Ammo.btVector3(-880, -38, -880), // forward-right
-  new Ammo.btVector3(880, -38, 880), // back-right
-  new Ammo.btVector3(880, -38, -880) // back-left
-]
-const positionerSave = []
-positionerSave[0] = new Ammo.btVector3(positioner[0].x(), positioner[0].y(), positioner[0].z())
+const center = new Ammo.btVector3(0, -38, 0)
 
 let cci = 3
 const dec = new Ammo.btVector3(0, 0, 0)
@@ -91,7 +63,6 @@ const camHeightS = camHeight, camDistS = camDist
 let dt = 0.0
 const chaseCammer = true
 let chaseStarter = chaseCammer
-let md
 
 const carNames = ['lada', 'hummer']
 const numCars = carNames.length
@@ -333,12 +304,10 @@ function updateCamera() {
     yvelc = tCamPoint.y() - chaseCamO.y()
     zvelc = tCamPoint.z() - chaseCamO.z()
 
-    // if(tCamPoint.distance(chaseCamO)>camDist){
     ctFac = 1
     tv.setValue(xvelc * ctFac, yvelc * ctFac, zvelc * ctFac)
     bodies[1].setLinearVelocity(tv)
     bodies[1].getMotionState().getWorldTransform(tranCam)
-    // }
     chaseCamO = tranCam.getOrigin()
 
     camera.position.x = chaseCamO.x()
@@ -351,7 +320,6 @@ function updateCamera() {
     }
 
     bodies[1].setWorldTransform(tranCam)
-
     camera.lookAt(new THREE.Vector3(carPos[cci].x(), carPos[cci].y(), carPos[cci].z()))
 
     if (chaseStarter) {
@@ -359,10 +327,9 @@ function updateCamera() {
       tranCam.setIdentity()
       tranCam.setOrigin(tCamPoint)
       if (!worldSwitching[cci]) chaseStarter = false
-    }// end if chaseStarter
-
+    }
     bodies[1].setWorldTransform(tranCam)
-  }// end if chase cammer
+  }
 
   if (pageUpper)
     if (camHeight < maxCamHeight)
@@ -403,7 +370,7 @@ function setChaseCam() {
   camera.lookAt(new THREE.Vector3(carOrigin.x(), carOrigin.y(), carOrigin.z()))
 }
 
-function triMeshBuilder(model, scale, positioner) {
+function triMeshBuilder(model, scale) {
   const trimesh = new Ammo.btTriangleMesh()
   const v = model.children[0].geometry.attributes.position.array
   const vcount = v.length
@@ -424,12 +391,11 @@ function triMeshBuilder(model, scale, positioner) {
       new Ammo.btVector3(v3, v4, v5),
       new Ammo.btVector3(v6, v7, v8)
     )
-
-  }// end all vertex coordinates loop
+  }
 
   const concaveShape = new Ammo.btBvhTriangleMeshShape(trimesh, true)
   triMeshBodyTrans.setIdentity()
-  triMeshBodyTrans.setOrigin(positioner)
+  triMeshBodyTrans.setOrigin(center)
   const motionStated = new Ammo.btDefaultMotionState(triMeshBodyTrans)
   tv.setValue(0, 0, 0)
   tbody = new Ammo.btRigidBody(0, motionStated, concaveShape, tv)
@@ -612,7 +578,7 @@ function randRange(min, max) {
 function resetBulletObjects() {
   let clearTrans = new Ammo.btTransform()
   let rx = 0, ry = 0, rz = 0
-  for (i = 2; i < bodies.length; i++) {
+  for (let i = 2; i < bodies.length; i++) {
     clearTrans.setIdentity()
     rx = randRange(-5, 5) * i
     rz = randRange(-5, 5) * i
@@ -704,16 +670,16 @@ function findGround(c) {
       Ammo.destroy(cp); cp = null
       if (downRay.hasHit()) {
         // do not want ray from car a hitting car b above it, and getting moved above b, so set boolean for car to car hits when raycasting upward
-        dp = dynamicsWorld.getDispatcher()
-        numMan = dp.getNumManifolds()
+        const dp = dynamicsWorld.getDispatcher()
+        const numMan = dp.getNumManifolds()
         carHit = false
 
         for (let i = 0; i < numMan; i++) {
           const manifold = dp.getManifoldByIndexInternal(i)
-          num_contacts = manifold.getNumContacts()
-          if (!(num_contacts === 0)) {
-            bodyA = carObjects[c][manifold.getBody0()]
-            bodyB = carObjects[c][manifold.getBody1()]
+          const num_contacts = manifold.getNumContacts()
+          if (num_contacts !== 0) {
+            const bodyA = carObjects[c][manifold.getBody0()]
+            const bodyB = carObjects[c][manifold.getBody1()]
             if (bodyA != bodies[1] && bodyB != bodies[1])
               carHit = true// so do not move car a above car b when b is above a
           }
@@ -741,7 +707,7 @@ function skyInit() {
 }
 
 function init() {
-  container = document.createElement('div')
+  const container = document.createElement('div')
   container.style.height = window.innerHeight + 'px'
   container.style.width = window.innerWidth + 'px'
   container.focus()
@@ -775,13 +741,12 @@ function init() {
   pointLight = new THREE.PointLight(0x0011ff, 5, 200)
   scene.add(pointLight)
 
-  objWorldModelLoader(0, worldFiles[worldID] + '.obj', worldFiles[worldID] + '.mtl', worldScale)
+  objWorldModelLoader(worldFiles[worldID] + '.obj', worldFiles[worldID] + '.mtl', worldScale)
 
   for (let c = 0; c < numCars; c++)
     for (let i = 0; i < numCars; i++)
       objCarModelLoader(c, i, objFile[c][i], mtlFile[c][i], objScales[c][i])
 
-  // camera.eulerOrder = 'ZYX'
   container.setAttribute('tabindex', -1)
 
   renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -903,7 +868,7 @@ function shoot(c) {
     }
     s_d.set(1, 1, carVel.length())
     material_d = decalMaterial.clone()
-    md = new THREE.Mesh(new THREE.DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
+    let md = new THREE.Mesh(new THREE.DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
     decals.push(md)
     scene.add(md)
 
@@ -973,20 +938,20 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale) {
   })
 }
 
-function objWorldModelLoader(i, objFile, mtlFile, scale) {
+function objWorldModelLoader(objFile, mtlFile, scale) {
   mtlLoader = new THREE.MTLLoader()
   mtlLoader.load(mtlFile, materials => {
     materials.preload()
     objLoader = new THREE.OBJLoader()
     objLoader.setMaterials(materials)
     objLoader.load(objFile, object => {
-      object.position.set(positioner[i].x(), positioner[i].y(), positioner[i].z())
+      object.position.set(0, -38, 0)
       worldModel = object
       worldModel.scale.set(scale, scale, scale)
       worldModel.traverse(child => {
         child.castShadow = child.receiveShadow = child.isMesh
       })
-      triMeshBuilder(worldModel, worldScale, positioner[i])
+      triMeshBuilder(worldModel, worldScale)
       scene.add(worldModel)
     })
   })
@@ -1013,19 +978,19 @@ function updatePhysics() {
   for (let c = 0; c < numCars; c++)
     findGround(c)
 
-  carHitForce = []
-  manifolder = []
-  highestHitForce = 0
+  const carHitForce = []
+  const manifolder = []
+  let highestHitForce = 0
   carHit = false
-  dp = dynamicsWorld.getDispatcher()
-  numMan = dp.getNumManifolds()
+  const dp = dynamicsWorld.getDispatcher()
+  const numMan = dp.getNumManifolds()
 
   for (let i = 0; i < numMan; i++) {
     const manifold = dp.getManifoldByIndexInternal(i)
-    num_contacts = manifold.getNumContacts()
-    if (!(num_contacts === 0)) {
-      bodyA = carObjects[cci][manifold.getBody0()]
-      bodyB = carObjects[cci][manifold.getBody1()]
+    const num_contacts = manifold.getNumContacts()
+    if (num_contacts !== 0) {
+      const bodyA = carObjects[cci][manifold.getBody0()]
+      const bodyB = carObjects[cci][manifold.getBody1()]
       if ((bodyA == m_carChassis[cci] || bodyB == m_carChassis[cci]) && !(bodyA == bodies[1] || bodyB == bodies[1])) {
         carHit = true
         carHitForce.push(manifold.getContactPoint().get_m_appliedImpulse())
@@ -1379,5 +1344,5 @@ const onKeyUpper = function(event) {
   }
 }
 
-container.addEventListener('keydown', onKeyDowner, false)
-container.addEventListener('keyup', onKeyUpper, false)
+document.addEventListener('keydown', onKeyDowner, false)
+document.addEventListener('keyup', onKeyUpper, false)
