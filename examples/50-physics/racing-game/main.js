@@ -1,19 +1,21 @@
-function fixAngleRad(a) { if (a > Math.PI) { a -= Math.PI * 2; } else if (a < -Math.PI) { a += Math.PI * 2; } return a; }
+function fixAngleRad(a) {
+  if (a > Math.PI) a -= Math.PI * 2; else if (a < -Math.PI) a += Math.PI * 2; return a
+}
 
-var heightLimit = 1;
-var widthLimit = 1;
-var SCREEN_HEIGHT = window.innerHeight * heightLimit;
-var SCREEN_WIDTH = window.innerWidth * widthLimit;
+const heightLimit = 1
+const widthLimit = 1
+const SCREEN_HEIGHT = window.innerHeight * heightLimit
+const SCREEN_WIDTH = window.innerWidth * widthLimit
 
 const worldFiles = ['courser14a']
 let worldModel
 let worldMat
 
-const camAndKeyFunction = function () {
+const camAndKeyFunction = function() {
   // camera.eulerOrder = 'ZYX'
   container.setAttribute('tabindex', -1)
 
-  onKeyDowner = function (event) {
+  onKeyDowner = function(event) {
     if (event.key == 'z') altKey = true
     switch (event.key) {
       case 'ArrowUp':
@@ -46,9 +48,9 @@ const camAndKeyFunction = function () {
         switchCars()
         break
       case '8':
-        moveCarForward[cci] = false;
-        steerCarLeft[cci] = false;
-        steerCarRight[cci] = false;
+        moveCarForward[cci] = false
+        steerCarLeft[cci] = false
+        steerCarRight[cci] = false
         gVehicleSteering[cci] = 0
         break
       case 't':
@@ -64,7 +66,7 @@ const camAndKeyFunction = function () {
     event.repeat = false
   }// end on key down
 
-  onKeyUpper = function (event) {
+  onKeyUpper = function(event) {
     if (event.key = 'z') altKey = false
     switch (event.key) {
       case 'ArrowUp':
@@ -105,13 +107,13 @@ const camAndKeyFunction = function () {
   container.addEventListener('keydown', onKeyDowner, false)
   container.addEventListener('keyup', onKeyUpper, false)
 
-  this.update = function (delta) {
+  this.update = function(delta) {
     tv.setValue(0.0, -1.0, 0.0)
     bodRot = m_carChassis[cci].getWorldTransform().getBasis().getColumn(1).dot(tv)
     // if car rolls past threshold increase camLag
     if (bodRot > -.4) camLags = .001; else camLags = camLag
 
-    if (chaseCammer) {
+    if (chaseCammer)
       if (chaseCammer) {
 
         bodies[1].getMotionState().getWorldTransform(tranCam)
@@ -166,7 +168,6 @@ const camAndKeyFunction = function () {
 
         bodies[1].setWorldTransform(tranCam)
       }// end if chase cammer
-    }
 
     if (pageUpper)
       if (camHeight < maxCamHeight)
@@ -239,7 +240,7 @@ function setChaseCam() {
 let container
 let timely2
 
-var camZoomer = 1
+const camZoomer = 1
 
 const textureLoader_d = new THREE.TextureLoader()
 const decalDiffuse = textureLoader_d.load('track5.png')
@@ -259,9 +260,9 @@ const decalMaterial = new THREE.MeshPhongMaterial({
 })
 
 let loadingDone = false
-var muted = false
-var camid = 0
-let showMui = true
+const muted = false
+const camid = 0
+const showMui = true
 var tv = new Ammo.btVector3(0, 0, 0)
 var tCamPoint = new Ammo.btVector3(0, 0, 0)
 let carHit = false
@@ -279,7 +280,7 @@ const downRayDir = new Ammo.btVector3(0, 0, 0)
 let frontRay
 const frontRayDir = new Ammo.btVector3(0, 0, 0)
 
-let hitSwitch = true
+const hitSwitch = true
 const minPitch = .4
 let engPitch = minPitch
 
@@ -328,7 +329,7 @@ const check_d = new THREE.Vector3(1, 1, 1)
 
 const framesPerSecond = 100
 var objLoader, mtlLoader
-var worldScale = 22
+const worldScale = 22
 const worldWidth = 500
 const fogColor = new THREE.Color(0xae9a7b)// ae9a7b
 var ray, groundY = 0
@@ -350,13 +351,13 @@ let camera, scene, renderer, hemiLight, dirLight, lightSet = 0, pointLight
 var geometry, mat2, mat3, mat4, mat5, mesh, matBlank
 const clock = new THREE.Clock()
 var altKey = false
-var followCamPos = new Ammo.btVector3(0, 0, 0)
+const followCamPos = new Ammo.btVector3(0, 0, 0)
 const carModRot = new Ammo.btQuaternion(0, 0, 0, 1)
-var carHeading = 0.0
-var camHeading = 0.0
+const carHeading = 0.0
+const camHeading = 0.0
 var pageUpper = false, pageDowner = false
 var camHeight = 4.0, camHeightUp = false, camHeightDown = false, camHeightOld = camHeight, camHeightAccel = 1.0
-var camPresets = 0
+const camPresets = 0
 var camDist = 8.0, camDistUp = false, camDistDown = false, camDistOld = camDist, camDistAccel = 1.0
 var maxCamDist = 25, minCamDist = 4, minCamHeight = .1, maxCamHeight = 20
 var camHeightS = camHeight, camDistS = camDist
@@ -365,8 +366,8 @@ let dt = 0.0
 var chaseCammer = true, chaseStarter = chaseCammer
 const chaseTick = 0
 var camRotateCar = 0.0
-var oldMouseX = 0.0
-var oldMouseY = 0.0
+const oldMouseX = 0.0
+const oldMouseY = 0.0
 const camInd = 0
 var objLoader
 var mtlLoader
@@ -380,10 +381,10 @@ const triMeshModel = []
 const triMeshModelMat = []
 
 const carNames = ['lada', 'hummer']
-const numCars = carNames.length;
+const numCars = carNames.length
 if (cci >= numCars) cci = numCars - 1
 
-var carPlaces = [
+const carPlaces = [
   { name: 'lada', place: 0 },
   { name: 'hummer', place: 0 },
 ]
@@ -394,7 +395,7 @@ function sortPlaces(a, b) {
   return 0
 }
 
-var carModel = []
+const carModel = []
 const tireClones = []
 const hubClones = []
 const objFile = []
@@ -425,7 +426,7 @@ const DISABLE_DEACTIVATION = 4
 const DISABLE_SIMULATION = 5
 
 const numObjects = 2// ground is 0, camera is 1
-var resetBulletObjectsBool = true
+let resetBulletObjectsBool = true
 
 const collisionConfiguration = new Ammo.btDefaultCollisionConfiguration()
 const dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration)
@@ -535,11 +536,11 @@ var steerCarRight = []
 let m_tuning
 
 let carHeading2 = 0.0
-var coordi = []
-var coordRange = 300
-var numCoords = 100
-var coordx = []
-var coordz = []
+const coordi = []
+const coordRange = 300
+const numCoords = 100
+const coordx = []
+const coordz = []
 const tv3 = new THREE.Vector3(0, 0, 0)
 const bodRotTick = []
 
@@ -552,7 +553,7 @@ const rimColor = []
 const chassisWorldTrans = []
 const tuneup = []
 const carObjects = []
-var allCoordSame = true
+const allCoordSame = true
 
 for (var c = 0; c < numCars; c++) {
   bodRotTick[c] = 0
@@ -754,7 +755,7 @@ dynamicsWorld.setGravity(tv)
 var triMeshBody = []
 let tbody
 
-var worldID = 0
+const worldID = 0
 var bodies = []
 
 const threeObject = [] // index 0 is for the ground, 1 for the camera
@@ -1021,7 +1022,7 @@ function bulletStep() {
   for (var c = 0; c < numCars; c++) {
     if (c == cci)
       if (m_vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveCarForward[c] || moveCarBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4)) {
-        shoot(c);
+        shoot(c)
         decalMaintenance()
         tireSmoker(0, smoker3, .9)
         tireSmoker(1, smoker4, -1.1)
@@ -1044,12 +1045,12 @@ function bulletStep() {
 
         if (gVehicleSteering[c] > steeringClamp[c]) gVehicleSteering[c] = steeringClamp[c]
       } else
-        if (steerCarRight[c]) {
-          if (gVehicleSteering[c] > -.05) gVehicleSteering[c] -= .01; else
-            gVehicleSteering[c] *= 1 + steeringIncrement[c]
+      if (steerCarRight[c]) {
+        if (gVehicleSteering[c] > -.05) gVehicleSteering[c] -= .01; else
+          gVehicleSteering[c] *= 1 + steeringIncrement[c]
 
-          if (gVehicleSteering[c] < -steeringClamp[c]) gVehicleSteering[c] = -steeringClamp[c]
-        }
+        if (gVehicleSteering[c] < -steeringClamp[c]) gVehicleSteering[c] = -steeringClamp[c]
+      }
     // end if steering
 
     // if cars go upside down, flip them
@@ -1092,14 +1093,12 @@ function bulletStep() {
       gEngineForce[c] = 0
       if (Math.abs(kmh[c]) > 20) gBreakingForce[c] += 5
 
-      if (c == cci) {
+      if (c == cci)
         engPitch = Math.abs(kmh[c]) / (maxSpeed[c] * .5)
-      }
 
     } else if (accelerating[c]) {
-      if (c == cci) {
+      if (c == cci)
         engPitch = Math.abs(kmh[c]) / (maxSpeed[c] * .5)
-      }
 
       if (moveCarForward[c] && kmh[c] < maxSpeed[c]) {
         if (kmh[c] < maxSpeed[c] / 5) gEngineForce[c] = maxEngineForce[c] * turboForce; else gEngineForce[c] = maxEngineForce[c]
@@ -1564,8 +1563,8 @@ void function animate() {
 
   if (typeof carModel[0][0] !== 'undefined') {
     if (!loadingDone) {
-      renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-      container.focus();
+      renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
+      container.focus()
       loadingDone = true
     }
 
