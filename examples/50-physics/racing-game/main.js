@@ -1,3 +1,7 @@
+const worldFiles = ['courser14a']
+console.log(worldFiles.length)
+const numWorldModels = 1
+
 let mouseX = 0
 let mouseY = 0
 let mouseDragOn = false
@@ -579,7 +583,6 @@ let highestHitForce = 0
 let decalWorldID = 0
 const downRayDir = new Ammo.btVector3(0, 0, 0)
 const worldHidden = []
-var numWorldModels = 9
 let frontRay
 const frontRayDir = new Ammo.btVector3(0, 0, 0)
 
@@ -775,8 +778,9 @@ var worldModel = []
 const triMeshModel = []
 const triMeshModelMat = []
 
-var numCars = 5; if (cci >= numCars) cci = numCars - 1
 const carNames = ['yellow', 'van', 'pickup', 'hummer', 'lada']
+var numCars = carNames.length; 
+if (cci >= numCars) cci = numCars - 1
 
 var carPlaces = [
   { name: 'yellow', place: 0 },
@@ -802,7 +806,7 @@ const objScales = []
 var worldSwitching = []
 const carHeightAboveGround = []
 
-for (var c = 0; c < numCars; c++) {
+for (let c = 0; c < numCars; c++) {
   carHeightAboveGround[c] = 0
   worldSwitching[c] = true
   scoreUpdated[c] = false
@@ -1174,7 +1178,6 @@ function applyTuneUp() {
     tuneup[c] = true
     makeVehicle(c)
   }
-
 }// end tweak
 
 // init vehicle
@@ -1202,7 +1205,6 @@ function initVehicle(c) {
   carObjects[c][ptr] = m_carChassis[c]
   makeVehicle(c)
   Ammo.destroy(localInertia); localInertia = null
-  // Ammo.destroy(startTransform); startTransform=null;
 }// end init vehicle
 
 // create vehicle
@@ -1330,9 +1332,7 @@ dynamicsWorld.setGravity(tv)
 var triMeshBody = []
 let tbody
 
-var worldFiles = ['courser2a', 'courser3a', 'courser14a', 'courser5a', 'courser6a', 'courser7a', 'courser8a', 'courser9a', 'courser10a', 'courser11a', 'courser12a', 'courser13a']
-var worldID = 2
-// var worldID=worldFiles.length-1;
+var worldID = 0
 var bodies = []
 
 const threeObject = [] // index 0 is for the ground, 1 for the camera
@@ -1343,7 +1343,6 @@ matBlank.side = THREE.FrontSide
 
 function initObjects(numObjects) {
   for (i = 1; i < numObjects; i++) {// 0 is ground, 1 is camera
-
     var colShape
     var mass
     if (i == 1) {// camera object with index 1 gets built here
@@ -1397,19 +1396,15 @@ function worldMoveOpacity(i) {
         m[n].needsUpdate = true
       }
     }
-
 }// end world move opacity
 
 function resetBulletObjects() {
-  // dynamicsWorld.clearForces();
   let clearTrans = new Ammo.btTransform()
   let rx = 0, ry = 0, rz = 0
   for (i = 2; i < bodies.length; i++) {
     clearTrans.setIdentity()
     rx = randRange(-5, 5) * i
-    // ry=randRange(0,2)*i;
     rz = randRange(-5, 5) * i
-    // rx+=6; rz+=6;
     ry = -35
     tv.setValue(rx, ry, rz)
     clearTrans.setOrigin(tv)
@@ -1551,18 +1546,10 @@ function findGround(c) {
 function bulletStep() {
   if (!bullStop) dynamicsWorld.stepSimulation(1 / 60)
 
-  // da('tester', Math.abs(kmh[cci]).toFixed(0));
-  // da('tester', carHeightAboveGround[cci].toFixed(0));
-  // da('tester', camPresets+':<BR>'+camDist.toFixed(2)+' -- '+camHeight.toFixed(2)+' --- '+camTilt.toFixed(2)+' --- '+camRotateCar.toFixed(4));
-  // da('tester', camZoomer);
-
   for (var c = 0; c < numCars; c++)
     findGround(c)
-  // end num cars loop
 
   const cardir = -fixAngleRad(Math.atan2(m_carChassis[cci].getLinearVelocity().getZ(), m_carChassis[cci].getLinearVelocity().getX()) + Math.PI / 2)
-
-  // var posser=cardir.toFixed(2)+'<BR>';
 
   for (var i = 0; i < numWorldModels; i++)
     if (!resettingCars) {
@@ -1575,8 +1562,6 @@ function bulletStep() {
 
         distX = carPos[cci].x() - worldModel[i].position.x
         distZ = carPos[cci].z() - worldModel[i].position.z
-
-        // posser+=i+') '+positioner[i].x()+' ---- '+positioner[i].z()+'<BR>';
 
         if (worldHidden[i]) worldMoveOpacity(i)
 
@@ -1694,9 +1679,6 @@ function bulletStep() {
           hitSound5.play() // carHit
         }
       }// end ! undefined and ! playing
-
-    // end highest hit force > 5
-
   }// end car hit force length>0
 
   if (sparkler) {
@@ -1728,9 +1710,7 @@ function bulletStep() {
   }
 
   for (var c = 0; c < numCars; c++) {
-
     if (c == cci)
-
       if (m_vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveCarForward[c] || moveCarBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4)) {
 
         shoot(c); decalMaintenance()
@@ -1756,39 +1736,8 @@ function bulletStep() {
         }
       }
 
-    // end if c==cci
-
     lastKmh[c] = kmh[c]
     kmh[c] = m_vehicle[c].getCurrentSpeedKmHour()
-
-    /*
-    //too reduce occurrences of cars going through the ground
-    if(Math.abs(kmh[c])>maxSpeed[c]*1.7){
-    goingTooFast[c]=true;
-    m_carChassis[c].setFriction(5);
-    m_carChassis[c].setDamping(.95,0);
-    }
-
-    if(goingTooFast[c]&&Math.abs(kmh[c])<=maxSpeed[c]*1.7){
-    m_carChassis[c].setFriction(1);
-    m_carChassis[c].setDamping(0,0);
-    goingTooFast[c]=false;
-    }
-
-    //to prevent cars from spinning like tops
-    if(m_carChassis[c].getAngularVelocity().length()>15){
-    spinningTooFast[c]=true;
-    m_carChassis[c].setDamping(.95,.95);
-    m_carChassis[c].setFriction(5);
-    }
-
-    if(m_carChassis[c].getAngularVelocity().length()<=15&&spinningTooFast[c]){
-    m_carChassis[c].setFriction(1);
-    m_carChassis[c].setDamping(0,0);
-    spinningTooFast[c]=false;
-    }
-    */
-
     steering[c] = (steerCarLeft[c] || steerCarRight[c])
 
     if (!steering[c])
