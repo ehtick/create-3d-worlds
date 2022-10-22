@@ -143,9 +143,6 @@ const camAndKeyFunction = function () {
             moveCarForward[cci] = false; steerCarLeft[cci] = false; steerCarRight[cci] = false; gVehicleSteering[cci] = 0
           }
           break
-        case '9':
-          resetAllCars()
-          break
         case 't':
           break
         case 'Alt':
@@ -2201,49 +2198,6 @@ function modifyWorldMaterials() {
     }
 }// end modify world materials
 
-function resetAllCars() {
-  resettingCars = true
-  for (var i = 0; i < numWorldModels; i++) {
-
-    positioner[i].setX(positionerSave[i].x())
-    positioner[i].setY(positionerSave[i].y())
-    positioner[i].setZ(positionerSave[i].z())
-    worldModel.position.set(positionerSave[i].x(), -38, positionerSave[i].z())
-
-    worldHidden[i] = false
-    worldMat.materials.w3.opacity = 1
-    worldMat.materials.w3.needsUpdate = true
-
-    triMeshBodyTrans.setIdentity()
-    triMeshBodyTrans.setOrigin(positioner[i])
-    triMeshBody[i].setWorldTransform(triMeshBodyTrans)
-  }
-
-  m_carChassis[cci].getMotionState().getWorldTransform(chassisWorldTrans[cci])
-  carPos[cci] = chassisWorldTrans[cci].getOrigin()
-
-  for (let c = 0; c < numCars; c++) {
-    resetVehicle(c)
-    coordi[c] = 0
-    carPlaces[c].place = 0
-
-    for (var i = 0; i < numCoords; i++)
-      if (c > 0 && allCoordSame) {
-        coordx[c][i] = coordx[0][i]
-        coordz[c][i] = coordz[0][i]
-      } else {
-        coordx[c][i] = randRange(-coordRange, coordRange)
-        coordz[c][i] = randRange(-coordRange, coordRange)
-      }
-
-  }// end num cars loop
-
-  if (chaseCammer) chaseStarter = true
-
-  mandalaSet = false
-  decalRayCast()
-}// end reset all cars
-
 function switchCars() {
   carModel[cci][0].children[0].remove(engineSound)
   carModel[cci][0].children[0].remove(skidSound)
@@ -2272,9 +2226,6 @@ function switchCars() {
   steerCarLeft[cci] = false
   steerCarRight[cci] = false
 
-  if (positioner[decalWorldID].x() != positionerSave[decalWorldID].x() || positioner[decalWorldID].y() != positionerSave[decalWorldID].y()) {
-    resetAllCars(); resetAllCars()
-  }
   if (camid == 2) camSwitcher(1)
   if (chaseCammer) chaseStarter = true
   mandalaSet = false; decalRayCast()
@@ -2300,7 +2251,6 @@ function animate() {
 
     if (typeof carModel[numCars - 1][0] !== 'undefined') {
       if (!loadingDone) {
-        resetAllCars();
         soundListener.setMasterVolume(1);
         container.style.paddingLeft = '0px';
         container.style.paddingTop = '0px';
