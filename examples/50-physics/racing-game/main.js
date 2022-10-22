@@ -2,132 +2,122 @@ const worldFiles = ['courser14a']
 let worldModel
 let worldMat
 
-let mouseX = 0
-let mouseY = 0
-let mouseDragOn = false
-let rightButtonDown = false
-const viewHalfX = 0
-const viewHalfY = 0
-
 const camAndKeyFunction = function () {
-  camera.eulerOrder = 'ZYX'
+  // camera.eulerOrder = 'ZYX'
   container.setAttribute('tabindex', -1)
 
   onKeyDowner = function (event) {
-    if (!typing) {
-      // event.preventDefault();
-      if (event.key == 'z') altKey = true
-      switch (event.key) {
+    if (event.key == 'z') altKey = true
+    switch (event.key) {
 
-        case 'v':
-          if (camPresets < 6) camPresets++; else camPresets = 0
-          if (camPresets != 6) camSwitcher(0)
-          switch (camPresets) {
-            case 0:
-              camDist = camDistS; camHeight = camHeightS; camTilt = camTiltS; camRotateCar = 0
-              break
-            case 1:
-              camDist = 5.65; camHeight = 2.45; camTilt = -.54; camRotateCar = 0
-              break
-            case 2:
-              camDist = 3.94; camHeight = 2.45; camTilt = -.54; camRotateCar = Math.PI
-              break
-            case 3:
-              camDist = 3.94; camHeight = 2.45; camTilt = -.49; camRotateCar = Math.PI / 2
-              break
-            case 4:
-              camDist = 17.03; camHeight = 12.52; camTilt = -.67; camRotateCar = 0
-              break
-            case 5:
-              camDist = 31.45; camHeight = 21.49; camTilt = -.58; camRotateCar = -Math.PI
-              break
-            case 6:
-              camDist = camDistS; camHeight = camHeightS; camTilt = camTiltS; camRotateCar = 0
-              camSwitcher(1)
-              chaseStarter = true
-              break
-          }
+      case 'v':
+        if (camPresets < 6) camPresets++; else camPresets = 0
+        if (camPresets != 6) camSwitcher(0)
+        switch (camPresets) {
+          case 0:
+            camDist = camDistS; camHeight = camHeightS; camTilt = camTiltS; camRotateCar = 0
+            break
+          case 1:
+            camDist = 5.65; camHeight = 2.45; camTilt = -.54; camRotateCar = 0
+            break
+          case 2:
+            camDist = 3.94; camHeight = 2.45; camTilt = -.54; camRotateCar = Math.PI
+            break
+          case 3:
+            camDist = 3.94; camHeight = 2.45; camTilt = -.49; camRotateCar = Math.PI / 2
+            break
+          case 4:
+            camDist = 17.03; camHeight = 12.52; camTilt = -.67; camRotateCar = 0
+            break
+          case 5:
+            camDist = 31.45; camHeight = 21.49; camTilt = -.58; camRotateCar = -Math.PI
+            break
+          case 6:
+            camDist = camDistS; camHeight = camHeightS; camTilt = camTiltS; camRotateCar = 0
+            camSwitcher(1)
+            chaseStarter = true
+            break
+        }
 
-          break
-        case 'b':
-          if (chaseCammer) {
-            if (camZoomer > .3) camZoomer -= .1; else camZoomer = .3
-            camera.zoom = camZoomer
-            camera.updateProjectionMatrix()
-          }
-          break
-        case 'n':
-          if (chaseCammer) {
-            if (camZoomer < 7) camZoomer += .1; else camZoomer = 7
-            camera.zoom = camZoomer
-            camera.updateProjectionMatrix()
-          }
-          break
-        case 'y':
-          break
-        case 'ArrowUp':
-        case 'w':
-          moveCarForward[cci] = true
-          break
-        case 'ArrowLeft':
-        case 'a':
-          steerCarLeft[cci] = true
-          break
-        case 'ArrowDown':
-        case 's':
-          moveCarBackward[cci] = true
-          break
-        case 'ArrowRight':
-        case 'd':
-          steerCarRight[cci] = true
-          break
-        case ' ': // spacebar
-          gBreakingForce[cci] = maxBreakingForce[cci] * 2
-          gEngineForce[cci] = 0.0
-          break
-        case 'Escape': // esc
-          break
-        case 'i':
-          if (el('opener').style.visibility == 'visible')
-            el('opener').style.visibility = 'hidden'
-          else
-            el('opener').style.visibility = 'visible'
-          break
-        case 'o':
-          menuSwitch()
-          break
-        case 'p':
-          menuSwitch()
-          break
-        case '1':
-          camSwitcher(0)
-          break
-        case '2':
-          camSwitcher(1)
-          break
-        case '3':
-          if (camid !== 2) camSwitcher(2); else camSwitcher(1)
-          break
-        case '4':
-          switchCars()
-          break
-        case '8':
-          moveCarForward[cci] = false;
-          steerCarLeft[cci] = false;
-          steerCarRight[cci] = false;
-          gVehicleSteering[cci] = 0
-          break
-        case 't':
-          break
-        case 'PageUp':
-          pageUpper = true
-          break
-        case 'PageDown':
-          pageDowner = true
-          break
-      }
-
+        break
+      case 'b':
+        if (chaseCammer) {
+          if (camZoomer > .3) camZoomer -= .1; else camZoomer = .3
+          camera.zoom = camZoomer
+          camera.updateProjectionMatrix()
+        }
+        break
+      case 'n':
+        if (chaseCammer) {
+          if (camZoomer < 7) camZoomer += .1; else camZoomer = 7
+          camera.zoom = camZoomer
+          camera.updateProjectionMatrix()
+        }
+        break
+      case 'y':
+        break
+      case 'ArrowUp':
+      case 'w':
+        moveCarForward[cci] = true
+        break
+      case 'ArrowLeft':
+      case 'a':
+        steerCarLeft[cci] = true
+        break
+      case 'ArrowDown':
+      case 's':
+        moveCarBackward[cci] = true
+        break
+      case 'ArrowRight':
+      case 'd':
+        steerCarRight[cci] = true
+        break
+      case ' ': // spacebar
+        gBreakingForce[cci] = maxBreakingForce[cci] * 2
+        gEngineForce[cci] = 0.0
+        break
+      case 'Escape': // esc
+        break
+      case 'i':
+        if (el('opener').style.visibility == 'visible')
+          el('opener').style.visibility = 'hidden'
+        else
+          el('opener').style.visibility = 'visible'
+        break
+      case 'o':
+        menuSwitch()
+        break
+      case 'p':
+        menuSwitch()
+        break
+      case '1':
+        camSwitcher(0)
+        break
+      case '2':
+        camSwitcher(1)
+        break
+      case '3':
+        if (camid !== 2) camSwitcher(2); else camSwitcher(1)
+        break
+      case '4':
+        switchCars()
+        break
+      case '8':
+        moveCarForward[cci] = false;
+        steerCarLeft[cci] = false;
+        steerCarRight[cci] = false;
+        gVehicleSteering[cci] = 0
+        break
+      case 't':
+        break
+      case 'PageUp':
+        pageUpper = true
+        break
+      case 'PageDown':
+        pageDowner = true
+        break
     }
+
     event.repeat = false
   }// end on key down
 
@@ -387,13 +377,9 @@ const downRayDir = new Ammo.btVector3(0, 0, 0)
 let frontRay
 const frontRayDir = new Ammo.btVector3(0, 0, 0)
 
-let firstSkid = true
 let hitSwitch = true
 const minPitch = .4
 let engPitch = minPitch
-let skidVol = 0
-const accelVol = .8
-let hitVol = 1
 
 const positioner = [
   new Ammo.btVector3(0, -38, 0), // center
@@ -458,7 +444,6 @@ const camStop = false
 const carColorSetter = false
 const rimColorSetter = false
 const fogFar = 500
-var typing = false
 let camera, scene, renderer, hemiLight, dirLight, lightSet = 0, pointLight
 var geometry, mat2, mat3, mat4, mat5, mesh, matBlank
 const clock = new THREE.Clock()
