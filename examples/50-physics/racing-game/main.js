@@ -125,9 +125,9 @@ const camAndKeyFunction = function () {
           if (!roboCars) moveCarForward[cci] = false
           break
         case '8':
-          moveCarForward[cci] = false; 
-          steerCarLeft[cci] = false; 
-          steerCarRight[cci] = false; 
+          moveCarForward[cci] = false;
+          steerCarLeft[cci] = false;
+          steerCarRight[cci] = false;
           gVehicleSteering[cci] = 0
           break
         case 't':
@@ -608,12 +608,11 @@ let md
 const triMeshModel = []
 const triMeshModelMat = []
 
-const carNames = ['yellow', 'lada', 'hummer']
+const carNames = ['lada', 'hummer']
 const numCars = carNames.length;
 if (cci >= numCars) cci = numCars - 1
 
 var carPlaces = [
-  { name: 'yellow', place: 0 },
   { name: 'lada', place: 0 },
   { name: 'hummer', place: 0 },
 ]
@@ -624,7 +623,6 @@ function sortPlaces(a, b) {
   return 0
 }
 
-const numCarModels = 2
 var carModel = []
 const tireClones = []
 const hubClones = []
@@ -639,12 +637,9 @@ for (let c = 0; c < numCars; c++) {
   worldSwitching[c] = true
   objScales[c] = [.57, .57]
   if (c == 0) {
-    objFile[c] = ['russian.obj', 'russianTire.obj']
-    mtlFile[c] = ['russian.mtl', 'russianTire.mtl']
-  } else if (c == 1) {
     objFile[c] = ['ladavaz.obj', 'ladavazTire.obj']
     mtlFile[c] = ['ladavaz.mtl', 'ladavazTire.mtl']
-  } else if (c == 2) {
+  } else if (c == 1) {
     objFile[c] = ['hummer.obj', 'hummerTire.obj']
     mtlFile[c] = ['hummer.mtl', 'hummerTire.mtl']
   }
@@ -1152,7 +1147,6 @@ function tireSmoker(i, smokerModel, xval) {
       )
       smo4.set(smo3.x(), smo3.y(), smo3.z())
       smokerModel.position.set(smo4.x, smo4.y, smo4.z)
-
       smokerModel.material.map = frame[smokerCount3[i]]
       smokerModel.material.visible = true
       smokerModel.material.opacity = 1
@@ -1424,10 +1418,8 @@ function bulletStep() {
     }// end car height above ground < 3
 
     if (typeof carModel[c][0] !== 'undefined') {
-
       let qc = new THREE.Quaternion(0, 0, 0, 1)
       qc = carModel[c][0].quaternion
-
       // radians
       carHeading2 = fixAngleRad((Math.PI + (Math.atan2(2 * qc.y * qc.w - 2 * qc.x * qc.z, 1 - 2 * (qc.y * qc.y) - 2 * (qc.z * qc.z)))))
 
@@ -1466,18 +1458,13 @@ function bulletStep() {
       }
     }// end !undefined
 
-    // robo cars
     if (roboCars && (c != cci) && typeof carModel[c][0] !== 'undefined') {
-
       if (kmh[c] < maxSpeed[c]) moveCarForward[c] = true; else moveCarForward[c] = false
-
       const bearing = Math.atan2(curz, curx)
-
       const bearDif = fixAngleRad((-Math.PI / 2 - bearing) - carHeading2)
       if (Math.abs(bearDif) > .035)
         gVehicleSteering[c] += bearDif / 10
-
-    }// end if robo cars && c != cci
+    }
     else if (!roboCars && c != cci) moveCarForward[c] = false
 
     accelerating[c] = (moveCarForward[c] || moveCarBackward[c])
@@ -1494,14 +1481,12 @@ function bulletStep() {
       }
 
     } else if (accelerating[c]) {
-
       if (c == cci) {
-
         engPitch = Math.abs(kmh[c]) / (maxSpeed[c] * .5)
         if (engPitch < minPitch) engPitch = minPitch
         engineSound.setPlaybackRate(engPitch)
         engineSound.setVolume(engPitch)
-      }// end if c==cci
+      }
 
       if (moveCarForward[c] && kmh[c] < maxSpeed[c]) {
         if (kmh[c] < maxSpeed[c] / 5) gEngineForce[c] = maxEngineForce[c] * turboForce; else gEngineForce[c] = maxEngineForce[c]
@@ -1541,7 +1526,7 @@ function bulletStep() {
     m_carChassis[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
     carPos[c] = chassisWorldTrans[c].getOrigin()
 
-    for (i = 0; i < numCarModels; i++)
+    for (i = 0; i < numCars; i++)
       if (typeof carModel[c][i] !== 'undefined') {
 
         if (c == cci && i == 0 && !engineSoundAdded) {
@@ -1763,7 +1748,7 @@ function init() {
   objWorldModelLoader(0, worldFiles[worldID] + '.obj', worldFiles[worldID] + '.mtl', worldScale)
 
   for (var c = 0; c < numCars; c++)
-    for (i = 0; i < numCarModels; i++)
+    for (i = 0; i < numCars; i++)
       objCarModelLoader(c, i, objFile[c][i], mtlFile[c][i], objScales[c][i])
 
   // end num cars loop
@@ -2073,7 +2058,7 @@ function switchCars() {
 
   if (camid == 2) camSwitcher(1)
   if (chaseCammer) chaseStarter = true
-  mandalaSet = false; 
+  mandalaSet = false;
   decalRayCast()
 }// end switch cars
 
