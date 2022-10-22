@@ -627,16 +627,15 @@ let md
 const triMeshModel = []
 const triMeshModelMat = []
 
-const carNames = ['yellow', 'van', 'pickup', 'hummer', 'lada']
+const carNames = ['yellow', 'lada', 'pickup', 'hummer']
 const numCars = carNames.length;
 if (cci >= numCars) cci = numCars - 1
 
 var carPlaces = [
   { name: 'yellow', place: 0 },
-  { name: 'van', place: 0 },
+  { name: 'lada', place: 0 },
   { name: 'pickup', place: 0 },
   { name: 'hummer', place: 0 },
-  { name: 'lada', place: 0 },
 ]
 
 function sortPlaces(a, b) {
@@ -659,22 +658,18 @@ for (let c = 0; c < numCars; c++) {
   carHeightAboveGround[c] = 0
   worldSwitching[c] = true
   objScales[c] = [.57, .57]
-
   if (c == 0) {
     objFile[c] = ['russian.obj', 'russianTire.obj']
     mtlFile[c] = ['russian.mtl', 'russianTire.mtl']
   } else if (c == 1) {
-    objFile[c] = ['van.obj', 'vanTire.obj']
-    mtlFile[c] = ['van.mtl', 'vanTire.mtl']
+    objFile[c] = ['ladavaz.obj', 'ladavazTire.obj']
+    mtlFile[c] = ['ladavaz.mtl', 'ladavazTire.mtl']
   } else if (c == 2) {
     objFile[c] = ['pickup2.obj', 'pickup2Tire.obj']
     mtlFile[c] = ['pickup2.mtl', 'pickup2Tire.mtl']
   } else if (c == 3) {
     objFile[c] = ['hummer.obj', 'hummerTire.obj']
     mtlFile[c] = ['hummer.mtl', 'hummerTire.mtl']
-  } else if (c == 4) {
-    objFile[c] = ['ladavaz.obj', 'ladavazTire.obj']
-    mtlFile[c] = ['ladavaz.mtl', 'ladavazTire.mtl']
   }
 }// end num cars
 
