@@ -68,29 +68,24 @@ const camAndKeyFunction = function () {
         case 'ArrowUp':
         case 'w':
           moveCarForward[cci] = true
-          iamaRobot = false
           if (!engineSound.isPlaying) engineSound.play()
           break
         case 'ArrowLeft':
         case 'a':
-          iamaRobot = false
           steerCarLeft[cci] = true
           break
         case 'ArrowDown':
         case 's':
-          iamaRobot = false
           moveCarBackward[cci] = true
           if (!engineSound.isPlaying) engineSound.play()
           break
         case 'ArrowRight':
         case 'd':
-          iamaRobot = false
           steerCarRight[cci] = true
           break
         case ' ': // spacebar
           gBreakingForce[cci] = maxBreakingForce[cci] * 2
           gEngineForce[cci] = 0.0
-          iamaRobot = false
           break
         case 'Escape': // esc
           break
@@ -130,10 +125,10 @@ const camAndKeyFunction = function () {
           if (!roboCars) moveCarForward[cci] = false
           break
         case '8':
-          iamaRobot = !iamaRobot
-          if (iamaRobot) roboCars = true; else {
-            moveCarForward[cci] = false; steerCarLeft[cci] = false; steerCarRight[cci] = false; gVehicleSteering[cci] = 0
-          }
+          moveCarForward[cci] = false; 
+          steerCarLeft[cci] = false; 
+          steerCarRight[cci] = false; 
+          gVehicleSteering[cci] = 0
           break
         case 't':
           break
@@ -164,13 +159,11 @@ const camAndKeyFunction = function () {
 
       case 'ArrowDown':
       case 's':
-        iamaRobot = false
         moveCarBackward[cci] = false
         break
 
       case 'ArrowRight':
       case 'd':
-        iamaRobot = false
         steerCarRight[cci] = false
         break
 
@@ -768,7 +761,7 @@ const connectionHeight = []
 
 const kmh = []
 const lastKmh = []
-var roboCars = true, iamaRobot = true
+var roboCars = true
 const steering = []
 const accelerating = []
 var moveCarForward = []
@@ -1474,7 +1467,7 @@ function bulletStep() {
     }// end !undefined
 
     // robo cars
-    if (roboCars && (c != cci || iamaRobot) && typeof carModel[c][0] !== 'undefined') {
+    if (roboCars && (c != cci) && typeof carModel[c][0] !== 'undefined') {
 
       if (kmh[c] < maxSpeed[c]) moveCarForward[c] = true; else moveCarForward[c] = false
 
