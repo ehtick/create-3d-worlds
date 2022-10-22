@@ -14,59 +14,6 @@ const camAndKeyFunction = function () {
   camera.eulerOrder = 'ZYX'
   container.setAttribute('tabindex', -1)
 
-  this.onMouseDown = function (event) {
-    pauser = false
-    container.focus()
-
-    event.preventDefault()
-    event.stopPropagation()
-
-    switch (event.button) {
-      case 0:
-        break
-      case 2:
-        rightButtonDown = true
-        break
-      case 1: resetBulletObjectsBool = true; break
-    }
-
-    mouseDragOn = true
-  }// end on mouse down
-
-  this.onMouseUp = function (event) {
-    event.preventDefault()
-    event.stopPropagation()
-
-    switch (event.button) {
-      case 0:
-        break
-      case 2:
-        rightButtonDown = false
-        break
-    }
-
-    mouseDragOn = false
-  }// end on mouse up
-
-  this.onMouseMove = function (event) {
-    container.focus()
-    mouseX = event.pageX - container.offsetLeft - viewHalfX
-    mouseY = event.pageY - container.offsetTop - viewHalfY
-
-    if (camFollowCar || chaseCammer)
-      if (mouseDragOn)
-        if (!rightButtonDown) {
-          camRotateCar -= (mouseX - oldMouseX) * Math.PI / 900
-          camRotateCar = fixAngleRad(camRotateCar)
-        } else {
-          camTilt -= (mouseY - oldMouseY) * Math.PI / 900
-          camTilt = fixAngleRad(camTilt)
-        }
-
-    oldMouseX = mouseX
-    oldMouseY = mouseY
-  }// end on mouse move
-
   onKeyDowner = function (event) {
     if (!typing) {
       // event.preventDefault();
@@ -279,23 +226,9 @@ const camAndKeyFunction = function () {
     event.preventDefault()
   }
 
-  const _onMouseMove = bind(this, this.onMouseMove)
-  const _onMouseDown = bind(this, this.onMouseDown)
-  const _onMouseUp = bind(this, this.onMouseUp)
-
-  container.addEventListener('mousemove', _onMouseMove, false)
-  container.addEventListener('mousedown', _onMouseDown, false)
-  container.addEventListener('mouseup', _onMouseUp, false)
-
   container.addEventListener('contextmenu', contextmenu, false)
   container.addEventListener('keydown', onKeyDowner, false)
   container.addEventListener('keyup', onKeyUpper, false)
-
-  function bind(scope, fn) {
-    return function () {
-      fn.apply(scope, arguments)
-    }
-  }
 
   this.update = function (delta) {
     tv.setValue(0.0, -1.0, 0.0)
