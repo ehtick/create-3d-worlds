@@ -29,14 +29,6 @@ const camAndKeyFunction = function () {
         gBreakingForce[cci] = maxBreakingForce[cci] * 2
         gEngineForce[cci] = 0.0
         break
-      case 'Escape': // esc
-        break
-      case 'i':
-        if (el('opener').style.visibility == 'visible')
-          el('opener').style.visibility = 'hidden'
-        else
-          el('opener').style.visibility = 'visible'
-        break
       case 'o':
         menuSwitch()
         break
@@ -1694,7 +1686,6 @@ function animate() {
       container.style.paddingLeft = '0px';
       container.style.paddingTop = '0px';
       renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-      el('opener').style.visibility = 'visible';
       container.focus();
       document.body.style.backgroundImage = 'none';
       loadingDone = true
