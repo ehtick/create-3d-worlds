@@ -89,9 +89,6 @@ const camAndKeyFunction = function () {
           break
         case 'Escape': // esc
           break
-        case 'g':
-          decalRayCast()
-          break
         case 'i':
           if (el('opener').style.visibility == 'visible')
             el('opener').style.visibility = 'hidden'
@@ -356,11 +353,8 @@ let container
 let timely2
 let resettingCars = false
 
-var mandalaSet = false
 var camZoomer = 1
 
-let decalsMandala = []
-const decalPosition = new THREE.Vector3()
 const decalSizer = new THREE.Vector3(20, 20, 20)
 const decalOrientation = new THREE.Euler(-Math.PI / 2, 0, 0)
 const mandalaLoader = new THREE.TextureLoader()
@@ -1417,41 +1411,7 @@ function bulletStep() {
       qc = carModel[c][0].quaternion
       // radians
       carHeading2 = fixAngleRad((Math.PI + (Math.atan2(2 * qc.y * qc.w - 2 * qc.x * qc.z, 1 - 2 * (qc.y * qc.y) - 2 * (qc.z * qc.z)))))
-
-      var curx = parseFloat(coordx[c][coordi[c]] - carPos[c].x())
-      var curz = parseFloat(coordz[c][coordi[c]] - carPos[c].z())
-      tv3.set(coordx[c][coordi[c]], carModel[c][0].position.y, coordz[c][coordi[c]])
-      const dister = carModel[c][0].position.distanceTo(tv3)
-
-      if (typeof markerSphere !== 'undefined' && typeof decalsMandala[0] !== 'undefined')
-        markerSphere.rotateY(.005)
-
-      if (c == cci && !mandalaSet) decalRayCast()
-
-      if (dister < 10) {
-        coordi[c]++
-        if (c == cci) {
-          mandalaSet = false; decalRayCast(); if (!popSound.isPlaying) popSound.play()
-        }
-        const ai = carPlaces.map(e => e.name).indexOf(carNames[c])
-        carPlaces[ai].place++
-
-        if (coordi[c] >= coordx[c].length) {
-
-          for (var i = 0; i < numCoords; i++)
-            if (i > 0 && allCoordSame) {
-              coordx[c][i] = coordx[0][i]
-              coordz[c][i] = coordz[0][i]
-            } else {
-              coordx[c][i] = randRange(-coordRange, coordRange)
-              coordz[c][i] = randRange(-coordRange, coordRange)
-            }
-
-          coordi[c] = 0
-          carPlaces[c].place = 0
-        }
-      }
-    }// end !undefined
+    }
 
     if (c != cci) moveCarForward[c] = false
 
@@ -1678,22 +1638,6 @@ function init() {
   camera = new THREE.PerspectiveCamera(70, SCREEN_WIDTH / SCREEN_HEIGHT, .01, 9000)
   camera.add(soundListener)
   scene = new THREE.Scene()
-
-  const sphereTextureMandala = new THREE.TextureLoader().load('mandala.png')
-  const sphereMaterialMandala = new THREE.MeshPhongMaterial({
-    color: 0x666666,
-    specular: 0x111111,
-    map: sphereTextureMandala,
-    bumpMap: sphereTextureMandala,
-    bumpScale: .1,
-    opacity: 1,
-    shininess: 900,
-  })
-  const sphering = new THREE.SphereBufferGeometry(10, 32, 32)
-  markerSphere = new THREE.Mesh(sphering, sphereMaterialMandala)
-  markerSphere.castShadow = true
-  // markerSphere.receiveShadow=false;
-  scene.add(markerSphere)
 
   skyInit()
 
@@ -2046,8 +1990,6 @@ function switchCars() {
 
   if (camid == 2) camSwitcher(1)
   if (chaseCammer) chaseStarter = true
-  mandalaSet = false;
-  decalRayCast()
 }// end switch cars
 
 /* LOOP */
@@ -2075,7 +2017,6 @@ function animate() {
       el('opener').style.visibility = 'visible';
       container.focus();
       document.body.style.backgroundImage = 'none';
-      decalRayCast();
       loadingDone = true
     }
 
