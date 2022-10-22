@@ -595,7 +595,6 @@ const carColorSetter = false
 const rimColorSetter = false
 const fogFar = 500
 var lifter = false
-let stats
 var typing = false
 let camera, scene, renderer, hemiLight, dirLight, lightSet = 0, pointLight
 var geometry, mat2, mat3, mat4, mat5, mesh, matBlank
@@ -1797,9 +1796,6 @@ function init() {
   container.style.height = window.innerHeight + 'px'
   container.style.width = window.innerWidth + 'px'
   document.body.appendChild(container)
-
-  stats = new Stats()
-  container.appendChild(stats.dom)
 
   camera = new THREE.PerspectiveCamera(70, SCREEN_WIDTH / SCREEN_HEIGHT, .01, 9000)
   camera.add(soundListener)
