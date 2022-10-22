@@ -1,18 +1,3 @@
-function score(c) {
-  if (showScore && !scoreUpdated[c]) {
-    scoreUpdated[c] = true
-    let scoreList = ''
-    carPlaces.sort(sortPlaces)
-    for (let k = 0; k < numCars; k++)
-      if (carPlaces[k].name == carNames[cci])
-        scoreList += '<span style="color:yellow;">' + carPlaces[k].name + ': ' + carPlaces[k].place + '</span><BR>'
-      else
-        scoreList += carPlaces[k].name + ': ' + carPlaces[k].place + '<BR>'
-
-    da('score', scoreList)
-  }// end if show score
-}// end score
-
 function camSwitcher(i) {
   camid = i
   switch (camid) {
@@ -99,11 +84,5 @@ function decalRayCast() {
 
   }// ! undefined
 }// end decal ray cast
-
-function toggleScore() {
-  showScore = !showScore
-  for (let c = 0; c < numCars; c++) score(c)
-  if (showScore) el('score').style.visibility = 'visible'; else el('score').style.visibility = 'hidden'
-}// end toggle score
 
 menuSwitch()

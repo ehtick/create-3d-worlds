@@ -103,10 +103,6 @@ const camAndKeyFunction = function () {
             el('opener').style.visibility = 'hidden'
           else
             el('opener').style.visibility = 'visible'
-
-          break
-        case 'l':
-          toggleScore()
           break
         case 'm':
           muted = !muted
@@ -443,8 +439,6 @@ const decalMaterial = new THREE.MeshPhongMaterial({
 })
 
 let loadingDone = false
-const showScore = false
-var scoreUpdated = []
 var muted = false
 var camid = 0
 let showMui = true
@@ -687,8 +681,6 @@ const carHeightAboveGround = []
 for (let c = 0; c < numCars; c++) {
   carHeightAboveGround[c] = 0
   worldSwitching[c] = true
-  scoreUpdated[c] = false
-
   objScales[c] = [.57, .57]
 
   if (c == 0) {
@@ -1585,11 +1577,7 @@ function bulletStep() {
           coordi[c] = 0
           carPlaces[c].place = 0
         }
-
-        score(c)
-      } else
-        scoreUpdated[c] = false
-
+      }
     }// end !undefined
 
     // robo cars
@@ -2230,9 +2218,6 @@ function resetAllCars() {
     triMeshBodyTrans.setOrigin(positioner[i])
     triMeshBody[i].setWorldTransform(triMeshBodyTrans)
   }
-
-  scoreUpdated[0] = false
-  score(0)
 
   m_carChassis[cci].getMotionState().getWorldTransform(chassisWorldTrans[cci])
   carPos[cci] = chassisWorldTrans[cci].getOrigin()
