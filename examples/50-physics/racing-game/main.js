@@ -775,8 +775,8 @@ var worldModel = []
 const triMeshModel = []
 const triMeshModelMat = []
 
-var numCars = 6; if (cci >= numCars) cci = numCars - 1
-const carNames = ['yellow', 'van', 'pickup', 'hummer', 'lada', 'taxi']
+var numCars = 5; if (cci >= numCars) cci = numCars - 1
+const carNames = ['yellow', 'van', 'pickup', 'hummer', 'lada']
 
 var carPlaces = [
   { name: 'yellow', place: 0 },
@@ -784,7 +784,6 @@ var carPlaces = [
   { name: 'pickup', place: 0 },
   { name: 'hummer', place: 0 },
   { name: 'lada', place: 0 },
-  { name: 'taxi', place: 0 }
 ]
 
 function sortPlaces(a, b) {
@@ -825,12 +824,7 @@ for (var c = 0; c < numCars; c++) {
   } else if (c == 4) {
     objFile[c] = ['ladavaz.obj', 'ladavazTire.obj']
     mtlFile[c] = ['ladavaz.mtl', 'ladavazTire.mtl']
-  } else {
-    objFile[c] = ['taxi2.obj', 'taxi2Tire.obj']
-    mtlFile[c] = ['taxi2.mtl', 'taxi2Tire.mtl']
   }
-  // rusty
-
 }// end num cars
 
 // bullet init
