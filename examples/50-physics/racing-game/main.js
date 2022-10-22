@@ -1,6 +1,3 @@
-// use ctrl+shft+r to force a reload without cache
-if (!Detector.webgl) Detector.addGetWebGLMessage()
-
 let mouseX = 0
 let mouseY = 0
 let mouseDragOn = false
@@ -8,50 +5,9 @@ let rightButtonDown = false
 const viewHalfX = 0
 const viewHalfY = 0
 
-// the camera object, and key press events
 const camAndKeyFunction = function() {
-
   camera.eulerOrder = 'ZYX'
   container.setAttribute('tabindex', -1)
-
-  this.onMouseWheel = function(event) {
-    event.preventDefault()
-    event.stopPropagation()
-
-    let delta = 0
-
-    if (event.wheelDelta !== undefined)
-
-      // WebKit / Opera / Explorer 9
-      delta = event.wheelDelta
-    else if (event.detail !== undefined)
-      // Firefox
-      delta = - event.detail
-
-    if (delta > 0)
-
-      if (rightButtonDown || altKey) {
-        if (camHeight < maxCamHeight) {
-          camHeightUp = true; camHeightOld = camHeight
-        }
-      } else {
-        if (camDist > minCamDist) {
-          camDistDown = true; camDistOld = camDist
-        }
-      }
-
-    else if (delta < 0)
-
-      if (rightButtonDown || altKey) {
-        if (camHeight > minCamHeight) {
-          camHeightDown = true; camHeightOld = camHeight
-        }
-      } else
-      if (camDist < maxCamDist) {
-        camDistUp = true; camDistOld = camDist
-      }
-
-  }// end on mouse wheel
 
   this.onMouseDown = function(event) {
     pauser = false
@@ -236,9 +192,6 @@ const camAndKeyFunction = function() {
         case '4':
           switchCars()
           break
-        case '5':
-          skySwitcher()
-          break
         case '6':
           showFPS = !showFPS
           statsSwitcher()
@@ -321,12 +274,10 @@ const camAndKeyFunction = function() {
     event.preventDefault()
   }
 
-  const _onMouseWheel = bind(this, this.onMouseWheel)
   const _onMouseMove = bind(this, this.onMouseMove)
   const _onMouseDown = bind(this, this.onMouseDown)
   const _onMouseUp = bind(this, this.onMouseUp)
 
-  container.addEventListener('mousewheel', _onMouseWheel, false)
   container.addEventListener('mousemove', _onMouseMove, false)
   container.addEventListener('mousedown', _onMouseDown, false)
   container.addEventListener('mouseup', _onMouseUp, false)
@@ -815,7 +766,7 @@ var mtlLoader
 const worldMat = []
 const carColorInd = 0
 const numCarColors = 12
-let showSky = true
+let showSky = false
 const worldMatModified = false
 var pauser = false
 var camLag = .035, camLags = camLag
@@ -1401,45 +1352,6 @@ cubeUrls = [
 cubeReflect = new THREE.CubeTextureLoader().load(cubeUrls)
 cubeReflect.format = THREE.RGBFormat
 
-/*
-texture=THREE.ImageUtils.loadTexture('lament2.jpg');
-texture.repeat.set( 1.0, 1.0 );
-texture.wrapS= texture.wrapT=THREE.RepeatWrapping;
-
-mat2= new THREE.MeshPhongMaterial({
-color: 0xaaaaaa,
-shininess: 200,
-specular: 0x171717,
-map : texture,
-bumpMap: texture,
-bumpScale: 0.05
-});
-
-texture=THREE.ImageUtils.loadTexture('lament3.jpg');
-texture.repeat.set( 1.0, 1.0 );
-texture.wrapS= texture.wrapT=THREE.RepeatWrapping;
-mat4= new THREE.MeshPhongMaterial({
-color: 0xaaaaaa,
-shininess: 200,
-visible:false, //not visible
-specular: 0x171717,
-map : texture,
-bumpMap: texture,
-bumpScale: 0.05
-});
-
-texture=THREE.ImageUtils.loadTexture('lament1.jpg');
-texture.repeat.set( 1.0, 1.0 );
-texture.wrapS= texture.wrapT=THREE.RepeatWrapping;
-mat3= new THREE.MeshPhongMaterial({
-color: 0xaaaaaa,
-shininess: 200,
-specular: 0x171717,
-map : texture,
-bumpMap: texture,
-bumpScale: 0.05
-});
-*/
 var matBlank = new THREE.MeshBasicMaterial()
 matBlank.visible = false
 matBlank.side = THREE.FrontSide
@@ -1453,30 +1365,7 @@ function initObjects(numObjects) {
       threeObject[i] = new THREE.Mesh(new THREE.SphereGeometry(.1, 20, 20), matBlank)
       colShape = new Ammo.btSphereShape(1)
       mass = 1
-      /*
-      }else if(i<numObjects*.33){
-      threeObject[i]=new THREE.Mesh( new THREE.BoxGeometry( 6, 6, 6 ), mat3 );
-      colShape= new Ammo.btBoxShape(new Ammo.btVector3(3,3,3));
-      mass=10;
-
-      }else if(i<numObjects*.66){
-      */
-    } else {
-      // threeObject[i]=new THREE.Mesh( new THREE.SphereGeometry( 2, 20, 20 ), mat4 );
-      // colShape= new Ammo.btSphereShape(2);
-      // threeObject[i]=new THREE.Mesh( new THREE.CylinderGeometry( 3, 3, 6, 20 ),mat4);
-      // tv.setValue(3,3,3);
-      // colShape= new Ammo.btCylinderShape(tv);
-      // mass=320;
-    }
-
-    /*
-    }else{
-    threeObject[i]=new THREE.Mesh( new THREE.SphereGeometry( 2, 20, 20 ), mat2 );
-    colShape= new Ammo.btSphereShape(2);
-    mass=50;
-    }
-    */
+    } 
 
     const startTransform = new Ammo.btTransform()
     startTransform.setIdentity()
@@ -2232,27 +2121,9 @@ init()
 animate()
 
 function skyInit() {
-  if (showSky) {
-    scene.fog = new THREE.Fog(fogColor, 10000, 10000)
-    scene.background = cubeReflect
-  } else if (!showSky) {
-    scene.background = fogColor
-    scene.fog = new THREE.Fog(fogColor, 0, fogFar)
-  }
-}// end sky init
-
-function skySwitcher() {
-  showSky = !showSky
-  if (showSky) {
-    scene.fog.near = 10000
-    scene.fog.far = 10000
-    scene.background = cubeReflect
-  } else if (!showSky) {
-    scene.fog.near = 0
-    scene.fog.far = fogFar
-    scene.background = fogColor
-  }
-}// end sky switcher
+  scene.background = fogColor
+  scene.fog = new THREE.Fog(fogColor, 0, fogFar)
+}
 
 function statsSwitcher() {
   if (showFPS) {
