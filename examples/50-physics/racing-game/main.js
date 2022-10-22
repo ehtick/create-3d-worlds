@@ -68,7 +68,6 @@ const camAndKeyFunction = function () {
         case 'ArrowUp':
         case 'w':
           moveCarForward[cci] = true
-          if (!engineSound.isPlaying) engineSound.play()
           break
         case 'ArrowLeft':
         case 'a':
@@ -77,7 +76,6 @@ const camAndKeyFunction = function () {
         case 'ArrowDown':
         case 's':
           moveCarBackward[cci] = true
-          if (!engineSound.isPlaying) engineSound.play()
           break
         case 'ArrowRight':
         case 'd':
@@ -94,10 +92,6 @@ const camAndKeyFunction = function () {
             el('opener').style.visibility = 'hidden'
           else
             el('opener').style.visibility = 'visible'
-          break
-        case 'm':
-          muted = !muted
-          if (muted) soundListener.setMasterVolume(0); else soundListener.setMasterVolume(1)
           break
         case 'o':
           menuSwitch()
@@ -393,90 +387,13 @@ const downRayDir = new Ammo.btVector3(0, 0, 0)
 let frontRay
 const frontRayDir = new Ammo.btVector3(0, 0, 0)
 
-var soundListener = new THREE.AudioListener()
-soundListener.setMasterVolume(0)
-var engineSound = new THREE.PositionalAudio(soundListener)
-const skidSound = new THREE.PositionalAudio(soundListener)
-const hitSound = new THREE.PositionalAudio(soundListener)
-const hitSound2 = new THREE.PositionalAudio(soundListener)
-const hitSound3 = new THREE.PositionalAudio(soundListener)
-const hitSound4 = new THREE.PositionalAudio(soundListener)
-const hitSound5 = new THREE.PositionalAudio(soundListener)
-const popSound = new THREE.PositionalAudio(soundListener)
-
 let firstSkid = true
-let engineSoundAdded = false
-const audioLoader = new THREE.AudioLoader()
-
 let hitSwitch = true
 const minPitch = .4
 let engPitch = minPitch
 let skidVol = 0
 const accelVol = .8
 let hitVol = 1
-
-audioLoader.load('sounds/139770_Car_Toyota_Starlet_Driving_Loop_01.ogg', buffer => {
-  engineSound.setBuffer(buffer)
-  engineSound.setRefDistance(3)
-  engineSound.setLoop(true)
-  engineSound.setVolume(engPitch)
-  engineSound.setPlaybackRate(engPitch)
-})
-
-audioLoader.load('sounds/104916_Wheel_Skids_2.ogg', buffer => {
-  skidSound.setBuffer(buffer)
-  skidSound.setRefDistance(3)
-  skidSound.setLoop(false)
-  skidSound.setVolume(skidVol)
-  skidSound.setPlaybackRate(.5)
-})
-
-audioLoader.load('sounds/151696_Wreck_Metal_Alternator_Crash_34.ogg', buffer => {
-  hitSound.setBuffer(buffer)
-  hitSound.setRefDistance(3)
-  hitSound.setLoop(false)
-  hitSound.setVolume(hitVol)
-})
-// boing
-audioLoader.load('sounds/boing.ogg', buffer => {
-  hitSound2.setBuffer(buffer)
-  hitSound2.setRefDistance(3)
-  hitSound2.setLoop(false)
-  hitSound2.setVolume(hitVol)
-  hitSound2.setPlaybackRate(.7)
-})
-
-audioLoader.load('sounds/thump.ogg', buffer => {
-  hitSound5.setBuffer(buffer)
-  hitSound5.setRefDistance(3)
-  hitSound5.setLoop(false)
-  hitSound5.setVolume(hitVol)
-  hitSound5.setPlaybackRate(.7)
-})
-
-audioLoader.load('sounds/pop.ogg', buffer => {
-  popSound.setBuffer(buffer)
-  popSound.setRefDistance(3)
-  popSound.setLoop(false)
-  popSound.setVolume(hitVol)
-  popSound.setPlaybackRate(.7)
-})
-
-audioLoader.load('sounds/rattle.ogg', buffer => {
-  hitSound3.setBuffer(buffer)
-  hitSound3.setRefDistance(3)
-  hitSound3.setLoop(false)
-  hitSound3.setVolume(hitVol)
-  hitSound3.setPlaybackRate(1)
-})
-
-audioLoader.load('sounds/151756_Wreck_Metal_Part_Impact_Metal_06.ogg', buffer => {
-  hitSound4.setBuffer(buffer)
-  hitSound4.setRefDistance(3)
-  hitSound4.setLoop(false)
-  hitSound4.setVolume(hitVol)
-  hitSound4.setPlaybackRate(.7)
-})
 
 const positioner = [
   new Ammo.btVector3(0, -38, 0), // center
@@ -1235,53 +1152,7 @@ function bulletStep() {
         hitPoint.setY(manifolder[i].getContactPoint().getPositionWorldOnA().y())
         hitPoint.setZ(manifolder[i].getContactPoint().getPositionWorldOnA().z())
       }
-    // end car hit force loop
-
-    if (highestHitForce > 16000) {
-      if (typeof hitSound !== 'undefined' && !hitSound.isPlaying) {
-        hitVol = highestHitForce * .0001
-        if (hitVol > 1) hitVol = 1
-        if (hitVol < .05) hitVol = .05
-        hitSound.setVolume(hitVol * 1)
-        hitSound.play() // alternator
-      }
-
-      if (typeof hitSound3 !== 'undefined' && !hitSound3.isPlaying) {
-        hitSound3.setVolume(hitVol * 3)
-        hitSound3.play() // glass
-        sparkler = true
-      }
-
-      if (typeof hitSound4 !== 'undefined' && !hitSound4.isPlaying) {
-        hitSound4.setVolume(hitVol * .2)
-        hitSound4.play() // metal
-      }
-
-    } else if (highestHitForce > 6000) {
-      if (typeof hitSound !== 'undefined' && !hitSound.isPlaying) {
-        hitVol = highestHitForce * .0001
-        if (hitVol > 1) hitVol = 1
-        if (hitVol < .05) hitVol = .05
-        hitSound.setVolume(hitVol * 1)
-        hitSound.play() // alternator
-      }
-
-    } else if (highestHitForce > 2)
-      if (typeof hitSound2 !== 'undefined' && !hitSound2.isPlaying && typeof hitSound5 !== 'undefined' && !hitSound5.isPlaying) {
-        // &&typeof hitSound5!=="undefined"&&!hitSound5.isPlaying
-        hitVol = highestHitForce * .005
-        if (hitVol > .6) hitVol = .6
-        if (hitVol < .05) hitVol = .05
-        hitSwitch = !hitSwitch
-        if (hitSwitch) {
-          hitSound2.setVolume(hitVol * 2)
-          hitSound2.play() // boing
-        } else {
-          hitSound5.setVolume(hitVol * 1)
-          hitSound5.play() // carHit
-        }
-      }// end ! undefined and ! playing
-  }// end car hit force length>0
+  }
 
   if (sparkler) {
     sparksMesh.quaternion.set(
@@ -1314,28 +1185,12 @@ function bulletStep() {
   for (var c = 0; c < numCars; c++) {
     if (c == cci)
       if (m_vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveCarForward[c] || moveCarBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4)) {
-
         shoot(c); decalMaintenance()
         tireSmoker(0, smoker3, .9)
         tireSmoker(1, smoker4, -1.1)
-
-        if (typeof skidSound !== 'undefined' && engineSoundAdded) {
-          if (skidVol < Math.abs(kmh[c] + .0001) / (maxSpeed[c]))
-            skidVol += .01
-
-          if (firstSkid) {
-            skidVol = 0; firstSkid = false
-          }
-          skidSound.setVolume(skidVol)
-          if (!skidSound.isPlaying) skidSound.play()
-        }
-
       } else {
         smoker3.material.visible = false
         smoker4.material.visible = false
-        if (skidSound.isPlaying) {
-          skidSound.stop(); skidVol = 0
-        }
       }
 
     lastKmh[c] = kmh[c]
@@ -1402,17 +1257,11 @@ function bulletStep() {
 
       if (c == cci) {
         engPitch = Math.abs(kmh[c]) / (maxSpeed[c] * .5)
-        if (engPitch < minPitch) engPitch = minPitch
-        engineSound.setPlaybackRate(engPitch)
-        engineSound.setVolume(engPitch)
       }
 
     } else if (accelerating[c]) {
       if (c == cci) {
         engPitch = Math.abs(kmh[c]) / (maxSpeed[c] * .5)
-        if (engPitch < minPitch) engPitch = minPitch
-        engineSound.setPlaybackRate(engPitch)
-        engineSound.setVolume(engPitch)
       }
 
       if (moveCarForward[c] && kmh[c] < maxSpeed[c]) {
@@ -1455,21 +1304,6 @@ function bulletStep() {
 
     for (i = 0; i < numCars; i++)
       if (typeof carModel[c][i] !== 'undefined') {
-
-        if (c == cci && i == 0 && !engineSoundAdded) {
-          carModel[cci][0].children[i].add(engineSound)
-          carModel[cci][0].children[i].add(skidSound)
-          carModel[cci][0].children[i].add(hitSound)
-          carModel[cci][0].children[i].add(hitSound2)
-          carModel[cci][0].children[i].add(hitSound3)
-          carModel[cci][0].children[i].add(hitSound4)
-          carModel[cci][0].children[i].add(hitSound5)
-          carModel[cci][0].children[i].add(popSound)
-          engineSoundAdded = true
-        }
-
-        if (!engineSound.isPlaying && typeof engineSound !== 'undefined') engineSound.play()
-
         carModel[c][i].position.set(carPos[c].x(), carPos[c].y(), carPos[c].z())
         carModel[c][i].quaternion.set(
           chassisWorldTrans[c].getRotation().x(),
@@ -1615,7 +1449,6 @@ function init() {
   document.body.appendChild(container)
 
   camera = new THREE.PerspectiveCamera(70, SCREEN_WIDTH / SCREEN_HEIGHT, .01, 9000)
-  camera.add(soundListener)
   scene = new THREE.Scene()
 
   skyInit()
@@ -1940,26 +1773,8 @@ function modifyWorldMaterials() {
 }// end modify world materials
 
 function switchCars() {
-  carModel[cci][0].children[0].remove(engineSound)
-  carModel[cci][0].children[0].remove(skidSound)
-  carModel[cci][0].children[0].remove(hitSound)
-  carModel[cci][0].children[0].remove(hitSound2)
-  carModel[cci][0].children[0].remove(hitSound3)
-  carModel[cci][0].children[0].remove(hitSound4)
-  carModel[cci][0].children[0].remove(hitSound5)
-  carModel[cci][0].children[0].remove(popSound)
-
   cci++; if (cci >= numCars) cci = 0
   dirLight.target = carModel[cci][0]
-
-  carModel[cci][0].children[0].add(engineSound)
-  carModel[cci][0].children[0].add(skidSound)
-  carModel[cci][0].children[0].add(hitSound)
-  carModel[cci][0].children[0].add(hitSound2)
-  carModel[cci][0].children[0].add(hitSound3)
-  carModel[cci][0].children[0].add(hitSound4)
-  carModel[cci][0].children[0].add(hitSound5)
-  carModel[cci][0].children[0].add(popSound)
 
   moveCarForward[cci] = false
   moveCarBackward[cci] = false
@@ -1969,7 +1784,7 @@ function switchCars() {
 
   if (camid == 2) camSwitcher(1)
   if (chaseCammer) chaseStarter = true
-}// end switch cars
+}
 
 /* LOOP */
 
@@ -1989,7 +1804,6 @@ function animate() {
 
   if (typeof carModel[0][0] !== 'undefined') {
     if (!loadingDone) {
-      soundListener.setMasterVolume(1);
       container.style.paddingLeft = '0px';
       container.style.paddingTop = '0px';
       renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
