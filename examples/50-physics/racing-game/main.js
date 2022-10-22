@@ -66,11 +66,6 @@ const camAndKeyFunction = function () {
           break
         case 'y':
           break
-        case 'u':
-
-          switchWorlds()
-
-          break
         case 'ArrowUp':
         case 'w':
           moveCarForward[cci] = true
