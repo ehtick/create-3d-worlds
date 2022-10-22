@@ -627,14 +627,13 @@ let md
 const triMeshModel = []
 const triMeshModelMat = []
 
-const carNames = ['yellow', 'lada', 'pickup', 'hummer']
+const carNames = ['yellow', 'lada', 'hummer']
 const numCars = carNames.length;
 if (cci >= numCars) cci = numCars - 1
 
 var carPlaces = [
   { name: 'yellow', place: 0 },
   { name: 'lada', place: 0 },
-  { name: 'pickup', place: 0 },
   { name: 'hummer', place: 0 },
 ]
 
@@ -665,13 +664,10 @@ for (let c = 0; c < numCars; c++) {
     objFile[c] = ['ladavaz.obj', 'ladavazTire.obj']
     mtlFile[c] = ['ladavaz.mtl', 'ladavazTire.mtl']
   } else if (c == 2) {
-    objFile[c] = ['pickup2.obj', 'pickup2Tire.obj']
-    mtlFile[c] = ['pickup2.mtl', 'pickup2Tire.mtl']
-  } else if (c == 3) {
     objFile[c] = ['hummer.obj', 'hummerTire.obj']
     mtlFile[c] = ['hummer.mtl', 'hummerTire.mtl']
   }
-}// end num cars
+}
 
 // bullet init
 const camPos = new Ammo.btVector3(0, 0, 0)
