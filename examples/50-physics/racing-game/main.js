@@ -1,6 +1,6 @@
 const worldFiles = ['courser14a']
-console.log(worldFiles.length)
 const numWorldModels = 1
+let worldModel
 
 let mouseX = 0
 let mouseY = 0
@@ -440,48 +440,6 @@ function camDistAccelCalc() {
   camDist *= camDistAccel
 }// end camDistAccelCalc()
 
-function switchWorlds() {
-  // for testing switching world models
-  for (var i = 0; i < numWorldModels; i++) {
-    scene.remove(worldModel[i])
-    dynamicsWorld.removeRigidBody(triMeshBody[i])
-  }
-  triMeshBody = []
-  if (altKey) {
-    worldID--; if (worldID < 0) worldID = worldFiles.length - 1
-  } else {
-    worldID++; if (worldID >= worldFiles.length) worldID = 0
-  }
-
-  for (var i = 0; i < numWorldModels; i++)
-    objWorldModelLoader(i, worldFiles[worldID] + '.obj', worldFiles[worldID] + '.mtl', worldScale, true)
-
-  // da('tester', worldID);
-  for (let c = 0; c < numCars; c++) {
-
-    worldSwitching[c] = true
-
-    resetVehicle(c)
-
-    coordi[c] = 0
-    carPlaces[c].place = 0
-    for (var i = 0; i < numCoords; i++)
-      if (c > 0 && allCoordSame) {
-        coordx[c][i] = coordx[0][i]
-        coordz[c][i] = coordz[0][i]
-      } else {
-        coordx[c][i] = randRange(-coordRange, coordRange)
-        coordz[c][i] = randRange(-coordRange, coordRange)
-      }
-
-  }// end num cars loop
-  scoreUpdated[0] = false; score(0)
-
-  if (chaseCammer) chaseStarter = true
-  mandalaSet = false
-  decalRayCast()
-}// end switch worlds
-
 // for setting initial position of chase cam behind followed vehicle
 function setChaseCam() {
   camDist = camDistS; camHeight = camHeightS; camTilt = camTiltS; camRotateCar = 0
@@ -774,7 +732,6 @@ var camLag = .035, camLags = camLag
 var showFPS = false
 let md
 
-var worldModel = []
 const triMeshModel = []
 const triMeshModelMat = []
 
@@ -1466,7 +1423,7 @@ function tireSmoker(i, smokerModel, xval) {
 }// end tire smoker
 
 function findGround(c) {
-  if (typeof worldModel[0] !== 'undefined' && typeof carModel[c] !== 'undefined') {
+  if (typeof worldModel !== 'undefined' && typeof carModel[c] !== 'undefined') {
     m_carChassis[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
     carPos[c] = chassisWorldTrans[c].getOrigin()
     downRayDir.setX(carPos[c].x())
@@ -1558,10 +1515,10 @@ function bulletStep() {
       if (cardir > 0) nx = -1
       if (cardir < Math.PI / 2 && cardir > -Math.PI / 2) nz = -1
 
-      if (typeof worldModel[i] !== 'undefined') {
+      if (typeof worldModel !== 'undefined') {
 
-        distX = carPos[cci].x() - worldModel[i].position.x
-        distZ = carPos[cci].z() - worldModel[i].position.z
+        distX = carPos[cci].x() - worldModel.position.x
+        distZ = carPos[cci].z() - worldModel.position.z
 
         if (worldHidden[i]) worldMoveOpacity(i)
 
@@ -1581,7 +1538,7 @@ function bulletStep() {
           worldMat[i].materials.w3.needsUpdate = true
         }
 
-        worldModel[i].position.set(positioner[i].x(), -38, positioner[i].z())
+        worldModel.position.set(positioner[i].x(), -38, positioner[i].z())
 
       }// world model ! undefined
 
@@ -2236,7 +2193,7 @@ function init() {
 
 function shoot(c) {
 
-  if (typeof carModel[c][0] !== 'undefined' && typeof carModel[c][1] !== 'undefined' && typeof worldModel[decalWorldID].children[0] !== 'undefined') {
+  if (typeof carModel[c][0] !== 'undefined' && typeof carModel[c][1] !== 'undefined' && typeof worldModel.children[0] !== 'undefined') {
 
     const wheelRot = m_carChassis[c].getWorldTransform().getBasis()
     dec.setValue(-.2, 0, .2)
@@ -2271,7 +2228,7 @@ function shoot(c) {
     s_d.set(1, 1, carVel.length())
     material_d = decalMaterial.clone()
     // THREE.DecalGeometry=function( mesh, position, rotation, dimensions){
-    md = new THREE.Mesh(new THREE.DecalGeometry(worldModel[decalWorldID].children[0], p_d, r_d, s_d), material_d)
+    md = new THREE.Mesh(new THREE.DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
     decals[i] = md
     scene.add(decals[i])
 
@@ -2305,26 +2262,20 @@ function shoot(c) {
     s_d.set(1, 1, carVel.length())
 
     // THREE.DecalGeometry=function( mesh, position, rotation, dimensions, check ) {
-    md = new THREE.Mesh(new THREE.DecalGeometry(worldModel[decalWorldID].children[0], p_d, r_d, s_d), material_d)
+    md = new THREE.Mesh(new THREE.DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
     decals[i + 1] = md
     scene.add(decals[i + 1])
 
   }
 }// end shoot
 
-// obj model loader from OBJLoader.js and MTLLoader.js
 function objCarModelLoader(c, i, objFile, mtlFile, scale) {
   const onProgress = function (xhr) {
-
     if (xhr.lengthComputable) {
       const percentComplete = xhr.loaded / xhr.total * 100
       if (xhr.total - xhr.loaded < 1) modifyCarMaterials(c)
-
-      // console.log( Math.round(percentComplete, 2) + '% downloaded' );
     }
   }
-
-  const onError = function (xhr) { }
 
   mtlLoader = new THREE.MTLLoader()
   mtlLoader.setPath('')
@@ -2363,41 +2314,31 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale) {
           scene.add(tireClones[c][j])
         }
 
-    }, onProgress, onError) // end obj load call
+    }, onProgress) // end obj load call
   }) // end mtl load call
 
 }// end obj car model loader
 
 // world model loader
 function objWorldModelLoader(i, objFile, mtlFile, scale, isPhysical) {
-
   const onProgress = function (xhr) {
     if (xhr.lengthComputable) {
       const percentComplete = xhr.loaded / xhr.total * 100
-      // console.log(xhr.loaded+' '+ Math.round(percentComplete, 2) + '% downloaded' );
-
       if (xhr.total - xhr.loaded < 1) modifyWorldMaterials()
-
     }
   }
-  const onError = function (xhr) { }
 
   mtlLoader = new THREE.MTLLoader()
-  mtlLoader.setPath('')
-
   mtlLoader.load(mtlFile, materials => {
     materials.preload()
-
     objLoader = new THREE.OBJLoader()
     objLoader.setMaterials(materials)
-    objLoader.setPath('')
     worldMat[i] = materials// for setting values dynamically
     objLoader.load(objFile, object => {
       object.position.set(positioner[i].x(), positioner[i].y(), positioner[i].z())
-      worldModel[i] = object
-      worldModel[i].scale.set(scale, scale, scale)
-
-      worldModel[i].traverse(
+      worldModel = object
+      worldModel.scale.set(scale, scale, scale)
+      worldModel.traverse(
         child => {
           if (child instanceof THREE.Mesh) {
             child.castShadow = true
@@ -2406,58 +2347,16 @@ function objWorldModelLoader(i, objFile, mtlFile, scale, isPhysical) {
         })
 
       if (isPhysical)
-        triMeshBuilder(worldModel[i], worldScale, positioner[i])
+        triMeshBuilder(worldModel, worldScale, positioner[i])
 
-      scene.add(worldModel[i])
+      scene.add(worldModel)
 
-    }, onProgress, onError)
+    }, onProgress)
   })
 
 }// end obj world model loader
 
-// triMesh model loader
-function triMeshModelLoader(i, objFile, mtlFile, scale) {
-
-  const onProgress = function (xhr) {
-    if (xhr.lengthComputable) {
-      const percentComplete = xhr.loaded / xhr.total * 100
-      console.log(Math.round(percentComplete, 2) + '% downloaded')
-    }
-  }
-  const onError = function (xhr) { }
-
-  mtlLoader = new THREE.MTLLoader()
-  mtlLoader.setPath('')
-
-  mtlLoader.load(mtlFile, materials => {
-    materials.preload()
-
-    objLoader = new THREE.OBJLoader()
-    objLoader.setMaterials(materials)
-    objLoader.setPath('')
-    triMeshModelMat[i] = materials
-    objLoader.load(objFile, object => {
-      triMeshModel[i] = object
-      triMeshModel[i].scale.set(scale, scale, scale)
-
-      triMeshModel[i].traverse(
-        child => {
-          if (child instanceof THREE.Mesh) {
-            child.castShadow = true
-            child.receiveShadow = true
-          }
-        })
-
-      triMeshBuilder(triMeshModel[i], worldScale, positioner[i])
-      scene.add(triMeshModel[i])
-
-    }, onProgress, onError)
-  })
-
-}// end obj triMesh model loader
-
 function modifyCarMaterials(c) {
-
   for (i = 0; i < carMat[c].length; i++)
     if (typeof carMat[c][i] !== 'undefined') {
       const m = carMat[c][i].materials
@@ -2516,7 +2415,7 @@ function resetAllCars() {
     positioner[i].setX(positionerSave[i].x())
     positioner[i].setY(positionerSave[i].y())
     positioner[i].setZ(positionerSave[i].z())
-    worldModel[i].position.set(positionerSave[i].x(), -38, positionerSave[i].z())
+    worldModel.position.set(positionerSave[i].x(), -38, positionerSave[i].z())
 
     worldHidden[i] = false
     worldMat[i].materials.w3.opacity = 1

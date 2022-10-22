@@ -95,7 +95,7 @@ function shortcutSwitch() {
 }// end short cut switch
 
 function decalRayCast() {
-  if (typeof worldModel[decalWorldID].children[0] !== 'undefined' && typeof worldMat[0].materials.w3 !== 'undefined') {
+  if (typeof worldModel.children[0] !== 'undefined' && typeof worldMat[0].materials.w3 !== 'undefined') {
 
     let cp = new Ammo.btVector3(coordx[cci][coordi[cci]], 600, coordz[cci][coordi[cci]])
     let cpDownRayDir = new Ammo.btVector3(cp.x(), (cp.y() - 2000), cp.z())
@@ -112,7 +112,7 @@ function decalRayCast() {
       const tp3 = new THREE.Vector3(tp.x(), tp.y(), tp.z())
       decalPosition.copy(tp3)
 
-      const md = new THREE.Mesh(new THREE.DecalGeometry(worldModel[decalWorldID].children[0], decalPosition, decalOrientation, decalSizer), decalMaterialMandala)
+      const md = new THREE.Mesh(new THREE.DecalGeometry(worldModel.children[0], decalPosition, decalOrientation, decalSizer), decalMaterialMandala)
       decalsMandala.push(md)
       md.receiveShadow = true
       scene.add(md)
