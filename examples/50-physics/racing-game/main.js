@@ -98,18 +98,12 @@ const camAndKeyFunction = function () {
         case 'g':
           decalRayCast()
           break
-        case 'h': // h is used to show/hide the dat.gui param tweaker
-          guiF2.closed = true; guiF2.closed = false
-          break
         case 'i':
           if (el('opener').style.visibility == 'visible')
             el('opener').style.visibility = 'hidden'
           else
             el('opener').style.visibility = 'visible'
 
-          break
-        case 'k':
-          shortcutSwitch()
           break
         case 'l':
           toggleScore()
@@ -119,10 +113,10 @@ const camAndKeyFunction = function () {
           if (muted) soundListener.setMasterVolume(0); else soundListener.setMasterVolume(1)
           break
         case 'o':
-          muiSwitch()
+          menuSwitch()
           break
         case 'p':
-          muiSwitch()
+          menuSwitch()
           break
         case '0':
           lifter = true
@@ -453,7 +447,6 @@ const showScore = false
 var scoreUpdated = []
 var muted = false
 var camid = 0
-let showShortcuts = true
 let showMui = true
 var tv = new Ammo.btVector3(0, 0, 0)
 var tCamPoint = new Ammo.btVector3(0, 0, 0)
@@ -942,120 +935,6 @@ const paramTweaker = function () {
   this.CUBE_HALF_EXTENTS = CUBE_HALF_EXTENTS[cci]
   this.connectionHeight = connectionHeight[cci]
 }// end param tweaker
-
-const pt = new paramTweaker()
-const gui = new dat.GUI()
-dat.GUI.toggleHide()
-
-var guiF2 = gui.addFolder('Vehicle Tuner')
-guiF2.closed = false
-guiF2.add(pt, 'ShortCut')
-
-guiF2.add(pt, 'maxSpeed', 1, 230).step(1).onFinishChange(
-  () => {
-    maxSpeed[cci] = pt.maxSpeed
-  })
-
-guiF2.add(pt, 'maxEngineForce', 1, 12000).step(20).onFinishChange(
-  () => {
-    maxEngineForce[cci] = pt.maxEngineForce
-  })
-
-guiF2.add(pt, 'maxBreakingForce', 1, 12000).step(10).onFinishChange(
-  () => {
-    maxBreakingForce[cci] = pt.maxBreakingForce
-  })
-
-guiF2.add(pt, 'steeringIncrement', .005, .2).step(.001).onFinishChange(
-  () => {
-    steeringIncrement[cci] = pt.steeringIncrement
-  })
-
-guiF2.add(pt, 'steeringClamp', 0, 1).step(.01).onFinishChange(
-  () => {
-    steeringClamp[cci] = pt.steeringClamp
-  })
-
-guiF2.add(pt, 'steeringReturnRate', 0, 1).step(.01).onFinishChange(
-  () => {
-    steeringReturnRate[cci] = pt.steeringReturnRate
-  })
-
-guiF2.add(pt, 'wheelRadius', .01, 3).step(.01).onFinishChange(
-  () => {
-    wheelRadius[cci] = pt.wheelRadius; applyTuneUp()
-    let ws = objScales[cci][1] + (wheelRadius[cci] - wheelRadiusS[cci]) * 1.2
-    carModel[cci][1].scale.set(ws, ws, ws)
-    for (let i = 0; i < 3; i++) tireClones[cci][i].scale.set(ws, ws, ws)
-    ws = null
-  })
-
-guiF2.add(pt, 'wheelWidth', -2, 1).step(.001).onFinishChange(
-  () => {
-    wheelWidth[cci] = pt.wheelWidth; applyTuneUp()
-  })
-
-guiF2.add(pt, 'frictionSlip', 0, 10).step(.1).onFinishChange(
-  () => {
-    frictionSlip[cci] = pt.frictionSlip; applyTuneUp()
-  })
-
-guiF2.add(pt, 'rearWheelFriction', 0, 10).step(.1).onFinishChange(
-  () => {
-    rearWheelFriction[cci] = pt.rearWheelFriction; applyTuneUp()
-  })
-
-guiF2.add(pt, 'suspensionStiffness', 0, 500).step(.1).onFinishChange(
-  () => {
-    suspensionStiffness[cci] = pt.suspensionStiffness; applyTuneUp()
-  })
-
-guiF2.add(pt, 'suspensionDamping', 0, 100).step(.5).onFinishChange(
-  () => {
-    suspensionDamping[cci] = pt.suspensionDamping; applyTuneUp()
-  })
-
-guiF2.add(pt, 'suspensionCompression', 0, 100).step(.1).onFinishChange(
-  () => {
-    suspensionCompression[cci] = pt.suspensionCompression; applyTuneUp()
-  })
-
-guiF2.add(pt, 'rollInfluence', 0.0, 5.0).step(.001).onFinishChange(
-  () => {
-    rollInfluence[cci] = pt.rollInfluence; applyTuneUp()
-  })
-
-guiF2.add(pt, 'suspensionRestLength', 0, 10).step(.01).onFinishChange(
-  () => {
-    suspensionRestLength[cci] = pt.suspensionRestLength; applyTuneUp()
-  })
-
-guiF2.add(pt, 'maxSuspensionTravelCm', 0, 5000).step(5).onFinishChange(
-  () => {
-    maxSuspensionTravelCm[cci] = pt.maxSuspensionTravelCm; applyTuneUp()
-  })
-
-guiF2.add(pt, 'maxSuspensionForce', 0, 50000).step(10).onFinishChange(
-  () => {
-    maxSuspensionForce[cci] = pt.maxSuspensionForce; applyTuneUp()
-  })
-
-guiF2.add(pt, 'CUBE_HALF_EXTENTS', 0, 3).step(.01).onFinishChange(
-  () => {
-    CUBE_HALF_EXTENTS[cci] = pt.CUBE_HALF_EXTENTS; applyTuneUp()
-  })
-
-guiF2.add(pt, 'connectionHeight', 0, 3).step(.01).onFinishChange(
-  () => {
-    connectionHeight[cci] = pt.connectionHeight; applyTuneUp()
-  })
-
-gui.domElement.onmouseover = function () {
-  typing = true
-}
-gui.domElement.onmouseout = function () {
-  typing = false
-}
 
 function applyTuneUp() {
   for (let c = 0; c < numCars; c++) {

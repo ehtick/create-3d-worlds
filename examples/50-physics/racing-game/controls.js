@@ -1,22 +1,3 @@
-const numButtons = 13
-for (let i = 0; i < numButtons; i++) setButtonColors('button' + i)
-
-function setButtonColors(divid) {
-  el(divid).onmouseover = function() {
-    this.style.backgroundColor = '#535353'
-  }
-  el(divid).onmouseout = function() {
-    this.style.backgroundColor = '#000000'
-  }
-  el(divid).onmousedown = function() {
-    this.style.backgroundColor = '#787878'
-  }
-  el(divid).onmouseup = function() {
-    this.style.backgroundColor = '#535353'
-  }
-
-}// end set button colors
-
 function score(c) {
   if (showScore && !scoreUpdated[c]) {
     scoreUpdated[c] = true
@@ -65,7 +46,7 @@ function camSwitcher(i) {
 
 }// end cam switcher
 
-function muiSwitch() {
+function menuSwitch() {
   showMui = !showMui
   if (showMui) {
     const muiWidth = '220px'
@@ -79,20 +60,6 @@ function muiSwitch() {
     el('mui').style.visibility = 'hidden'
 
 }// end mui switch
-
-function shortcutSwitch() {
-  showShortcuts = !showShortcuts
-  if (showShortcuts) {
-    const scWidth = 400
-    const scHeight = SCREEN_HEIGHT * .8
-    el('shortcuts').style.visibility = 'visible'
-    el('shortcuts').style.width = scWidth + 'px'
-    el('shortcuts').style.height = scHeight + 'px'
-    el('shortcuts').style.left = SCREEN_WIDTH / 2 - scWidth / 2 + 'px'
-    el('shortcuts').style.top = SCREEN_HEIGHT / 2 - scHeight / 2 + 'px'
-    el('shortcuts').style.visibility = 'visible'
-  } else el('shortcuts').style.visibility = 'hidden'
-}// end short cut switch
 
 function decalRayCast() {
   if (typeof worldModel.children[0] !== 'undefined' && typeof worldMat.materials.w3 !== 'undefined') {
@@ -139,5 +106,4 @@ function toggleScore() {
   if (showScore) el('score').style.visibility = 'visible'; else el('score').style.visibility = 'hidden'
 }// end toggle score
 
-muiSwitch()
-shortcutSwitch()
+menuSwitch()

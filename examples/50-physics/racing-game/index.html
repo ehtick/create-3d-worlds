@@ -58,7 +58,6 @@
   <script src="stats.min.js"></script><!-- frames per second and memory usage info -->
   <script src="MTLLoader.js"></script><!-- material loader -->
   <script src="OBJLoader.js"></script><!-- .obj model loader -->
-  <script src="dat.gui.js"></script><!-- user interface -->
   <script src="DecalGeometry.js"></script><!-- for putting decals on models -->
   <script src="main.js"></script>
 
@@ -68,59 +67,11 @@
 
   <div id="opener"
     style="visibility:hidden;padding-left:6px;padding-bottom:2px;margin:2px;width:20px;height:20px;border:1px solid black;z-index:100002;position:fixed;bottom:0px;left:0px;color:black;background-color:white;font-family:monospace;font-size:20px;font-weight:bold;opacity:.5;cursor:pointer;"
-    onclick="muiSwitch();">?</div>
+    onclick="menuSwitch();">?</div>
 
   <div id="score"
     style="border-radius: 8px;visibility:hidden;padding:6px;border:1px solid white;z-index:100001;position:fixed;bottom:0px;left:32px;color:white;background-color:black;font-family:monospace;font-size:16px;opacity:.7;">
   </div>
-
-
-  <div id="shortcuts"
-    style="border-radius: 8px;z-index:10001;overflow-y:auto;position:absolute;top:0px;left:0px;color:white;background-color:black;font-family:monospace;font-size:12x;visibility:hidden;opacity:.9;border:1px solid white;">
-    <div style="padding:20px;">
-      <span
-        style="float:right;color:white;background-color:black;font-family:monospace;font-size:20px;cursor:pointer;font-weight:bold;"
-        onclick="shortcutSwitch();">x</span>
-      Up Arrow: Forward<BR>
-      Down Arrow: Reverse<BR>
-      Left Arrow: Steer Left<BR>
-      Right Arrow: Steer Right<BR>
-      SpaceBar: Brake<BR>
-      1: Inspection Camera<BR>
-      2: Follow Camera<BR>
-      3: Stop Camera<BR>
-      4: Switch Cars<BR>
-      5: Fog<BR>
-      6: FPS<BR>
-      7: Robo Cars<BR>
-      8: Be a Robot<BR>
-      9: Reset All Cars<BR>
-      H: Car Tuner<BR>
-      M: Mute<BR>
-      L: Score<BR>
-      Inspection Camera Only:
-      <ul>
-        <li>Page Up: Raise Camera
-        <li>Page Down: Lower Camera
-        <li>Scroll: Camera Distance
-        <li>Left Mouse: Orbit Car
-        <li>Right Mouse: Tilt Camera
-        <li>Z+Scroll: Camera Height
-      </ul>
-      Follow Camera Only:
-      <ul>
-        <li>N: Zoom In
-        <li>B: Zoom Out
-      </ul>
-      U: Switch Worlds<BR>
-      Alt: Pause<BR>
-      K: Shortcuts<BR>
-      I: Hide Question Mark<BR>
-      P: Options
-    </div>
-  </div>
-
-
 
   <div id="mui"
     style="overflow-y:auto;position:absolute;top:0px;left:0px;color:white;background-color:transparent;font-family:monospace;font-size:20px;visibility:hidden;opacity:.8;">
@@ -163,17 +114,13 @@
       style="border-radius: 6px;color:white;background-color:#000000;font-family:monospace;border:1px solid white;opacity:1;width:200px;padding:2px;margin:4px;text-align:center;cursor:pointer;"
       onclick="showFPS=!showFPS;statsSwitcher();">FPS</div>
 
-    <div id="button10"
-      style="border-radius: 6px;color:white;background-color:#000000;font-family:monospace;border:1px solid white;opacity:1;width:200px;padding:2px;margin:4px;text-align:center;cursor:pointer;"
-      onclick="shortcutSwitch();">ShortCut Keys</div>
-
     <div id="button11"
       style="border-radius: 6px;color:white;background-color:#000000;font-family:monospace;border:1px solid white;opacity:1;width:200px;padding:2px;margin:4px;text-align:center;cursor:pointer;"
       onclick="toggleScore();">Score</div>
 
     <div id="button12"
       style="border-radius: 6px;color:white;background-color:#000000;font-family:monospace;border:1px solid white;opacity:1;width:200px;padding:2px;margin:4px;text-align:center;cursor:pointer;"
-      onclick="muiSwitch();">&nbsp;&nbsp;Close/Open(P)
+      onclick="menuSwitch();">&nbsp;&nbsp;Close/Open(P)
 
       <span
         style="display:inline-block;padding:0px;margin:0px;display:block;border:1px solid gray;width:16px;height:16px;float:right;color:white;background-color:transparent;font-family:monospace;font-size:14px;cursor:pointer;font-weight:bold;text-align:center;">x</span>
