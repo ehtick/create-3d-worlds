@@ -129,10 +129,6 @@ const camAndKeyFunction = function () {
         case '4':
           switchCars()
           break
-        case '6':
-          showFPS = !showFPS
-          statsSwitcher()
-          break
         case '7':
           roboCars = !roboCars
           if (!roboCars) moveCarForward[cci] = false
@@ -145,21 +141,12 @@ const camAndKeyFunction = function () {
           break
         case 't':
           break
-        case 'Alt':
-          pauser = !pauser
-          if (pauser) {
-            if (engineSound.isPlaying) engineSound.stop()
-          } else
-            if (!engineSound.isPlaying) engineSound.play()
-
-          break
         case 'PageUp':
           pageUpper = true
           break
         case 'PageDown':
           pageDowner = true
           break
-
       }
 
     }
@@ -639,9 +626,7 @@ var mtlLoader
 const carColorInd = 0
 const numCarColors = 12
 const worldMatModified = false
-var pauser = false
 var camLag = .035, camLags = camLag
-var showFPS = false
 let md
 
 const triMeshModel = []
@@ -1806,15 +1791,6 @@ function skyInit() {
   scene.fog = new THREE.Fog(fogColor, 0, fogFar)
 }
 
-function statsSwitcher() {
-  if (showFPS) {
-    stats.dom.style.visibility = 'visible'
-    stats.dom.style.zIndex = '10000000'
-  } else
-    stats.dom.style.visibility = 'hidden'
-
-}// end stats switcher
-
 function init() {
 
   container = document.createElement('div')
@@ -1824,7 +1800,6 @@ function init() {
 
   stats = new Stats()
   container.appendChild(stats.dom)
-  statsSwitcher()
 
   camera = new THREE.PerspectiveCamera(70, SCREEN_WIDTH / SCREEN_HEIGHT, .01, 9000)
   camera.add(soundListener)
@@ -2235,38 +2210,33 @@ function switchCars() {
 
 function animate() {
   requestAnimationFrame(animate)
-  if (!pauser) {
-
-    // fade and delete decals after some ticks
-    for (i = 0; i < decals.length; i++)
-      if (decals[i] != null) {
-        decals[i].material.opacity -= .001
-        if (decals[i].material.opacity < 0) {
-          scene.remove(decals[i])
-          decals[i] = null
-        }
+  // fade and delete decals after some ticks
+  for (i = 0; i < decals.length; i++)
+    if (decals[i] != null) {
+      decals[i].material.opacity -= .001
+      if (decals[i].material.opacity < 0) {
+        scene.remove(decals[i])
+        decals[i] = null
       }
+    }
 
-    bulletStep()
+  bulletStep()
 
-    if (typeof carModel[numCars - 1][0] !== 'undefined') {
-      if (!loadingDone) {
-        soundListener.setMasterVolume(1);
-        container.style.paddingLeft = '0px';
-        container.style.paddingTop = '0px';
-        renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-        el('opener').style.visibility = 'visible';
-        container.focus();
-        document.body.style.backgroundImage = 'none';
-        decalRayCast();
-        loadingDone = true
-      }
+  if (typeof carModel[numCars - 1][0] !== 'undefined') {
+    if (!loadingDone) {
+      soundListener.setMasterVolume(1);
+      container.style.paddingLeft = '0px';
+      container.style.paddingTop = '0px';
+      renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+      el('opener').style.visibility = 'visible';
+      container.focus();
+      document.body.style.backgroundImage = 'none';
+      decalRayCast();
+      loadingDone = true
+    }
 
-      dt = clock.getDelta()
-      if (!camStop) camAndKeys.update(dt)
-      renderer.render(scene, camera)
-
-      if (showFPS) stats.update()
-    }// end ! undefined
-  }// end !pauser
+    dt = clock.getDelta()
+    if (!camStop) camAndKeys.update(dt)
+    renderer.render(scene, camera)
+  }// end ! undefined
 }
