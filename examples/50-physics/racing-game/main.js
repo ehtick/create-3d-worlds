@@ -9,53 +9,6 @@ const camAndKeyFunction = function () {
   onKeyDowner = function (event) {
     if (event.key == 'z') altKey = true
     switch (event.key) {
-
-      case 'v':
-        if (camPresets < 6) camPresets++; else camPresets = 0
-        if (camPresets != 6) camSwitcher(0)
-        switch (camPresets) {
-          case 0:
-            camDist = camDistS; camHeight = camHeightS; camTilt = camTiltS; camRotateCar = 0
-            break
-          case 1:
-            camDist = 5.65; camHeight = 2.45; camTilt = -.54; camRotateCar = 0
-            break
-          case 2:
-            camDist = 3.94; camHeight = 2.45; camTilt = -.54; camRotateCar = Math.PI
-            break
-          case 3:
-            camDist = 3.94; camHeight = 2.45; camTilt = -.49; camRotateCar = Math.PI / 2
-            break
-          case 4:
-            camDist = 17.03; camHeight = 12.52; camTilt = -.67; camRotateCar = 0
-            break
-          case 5:
-            camDist = 31.45; camHeight = 21.49; camTilt = -.58; camRotateCar = -Math.PI
-            break
-          case 6:
-            camDist = camDistS; camHeight = camHeightS; camTilt = camTiltS; camRotateCar = 0
-            camSwitcher(1)
-            chaseStarter = true
-            break
-        }
-
-        break
-      case 'b':
-        if (chaseCammer) {
-          if (camZoomer > .3) camZoomer -= .1; else camZoomer = .3
-          camera.zoom = camZoomer
-          camera.updateProjectionMatrix()
-        }
-        break
-      case 'n':
-        if (chaseCammer) {
-          if (camZoomer < 7) camZoomer += .1; else camZoomer = 7
-          camera.zoom = camZoomer
-          camera.updateProjectionMatrix()
-        }
-        break
-      case 'y':
-        break
       case 'ArrowUp':
       case 'w':
         moveCarForward[cci] = true
@@ -89,15 +42,6 @@ const camAndKeyFunction = function () {
         break
       case 'p':
         menuSwitch()
-        break
-      case '1':
-        camSwitcher(0)
-        break
-      case '2':
-        camSwitcher(1)
-        break
-      case '3':
-        if (camid !== 2) camSwitcher(2); else camSwitcher(1)
         break
       case '4':
         switchCars()
@@ -168,41 +112,7 @@ const camAndKeyFunction = function () {
     // if car rolls past threshold increase camLag
     if (bodRot > -.4) camLags = .001; else camLags = camLag
 
-    if (camFollowCar && !chaseCammer) {
-      // for camera to follow car position and heading
-      let qc = new THREE.Quaternion(0, 0, 0, 1)
-      if (carModel[cci][0] != undefined)
-        qc = carModel[cci][0].quaternion
-
-      // radians
-      carHeading = fixAngleRad((Math.PI + (Math.atan2(2 * qc.y * qc.w - 2 * qc.x * qc.z, 1 - 2 * (qc.y * qc.y) - 2 * (qc.z * qc.z)))) + camRotateCar)
-
-      // delay factor results in side view of car when turns
-      // radians
-      camHeading = fixAngleRad(camHeading + camLags * fixAngleRad(carHeading - camHeading))
-
-      // radians
-      camera.rotation.x = camTilt
-      camera.rotation.y = camHeading
-      camera.rotation.z = 0
-
-      camHeightAccelCalc()
-      camDistAccelCalc()
-
-      // camera position behind car
-      followCamPos.setValue(
-        carPos[cci].x() + Math.sin(fixAngleRad(Math.PI + camHeading)) * -camDist,
-        carPos[cci].y() + camHeight,
-        carPos[cci].z() + Math.cos(fixAngleRad(Math.PI + camHeading)) * -camDist
-      )
-
-      camera.position.x = followCamPos.x()
-      camera.position.y = followCamPos.y()
-      camera.position.z = followCamPos.z()
-
-    } else if (!camFollowCar && chaseCammer) {
-
-      // for camera to chase car as physics body
+    if (chaseCammer) {
       if (chaseCammer) {
 
         bodies[1].getMotionState().getWorldTransform(tranCam)
@@ -249,21 +159,15 @@ const camAndKeyFunction = function () {
         camera.lookAt(new THREE.Vector3(carPos[cci].x(), carPos[cci].y(), carPos[cci].z()))
 
         if (chaseStarter) {
-
           setChaseCam()
           tranCam.setIdentity()
           tranCam.setOrigin(tCamPoint)
-
           if (!worldSwitching[cci]) chaseStarter = false
         }// end if chaseStarter
 
         bodies[1].setWorldTransform(tranCam)
-
       }// end if chase cammer
-
-    } else if (!camFollowCar && !chaseCammer)  // camera stays still
-      camera.lookAt(new THREE.Vector3(carPos[cci].x(), carPos[cci].y(), carPos[cci].z()))
-    // end not following car, camera could be still or chasing
+    } 
 
     if (pageUpper)
       if (camHeight < maxCamHeight)
@@ -461,7 +365,6 @@ var maxCamDist = 25, minCamDist = 4, minCamHeight = .1, maxCamHeight = 20
 var camHeightS = camHeight, camDistS = camDist
 var camTilt = -23 * Math.PI / 180; camTiltS = camTilt
 let dt = 0.0
-var camFollowCar = false
 var chaseCammer = true, chaseStarter = chaseCammer
 const chaseTick = 0
 var camRotateCar = 0.0
@@ -1298,7 +1201,7 @@ function bulletStep() {
         )
 
         if (c == cci && i == 0) {
-          if (camFollowCar || chaseCammer)
+          if (chaseCammer)
             dirLight.position.set(carPos[c].x(), carPos[c].y() + 250, carPos[c].z())
           else
             dirLight.position.set(
@@ -1767,7 +1670,6 @@ function switchCars() {
   steerCarLeft[cci] = false
   steerCarRight[cci] = false
 
-  if (camid == 2) camSwitcher(1)
   if (chaseCammer) chaseStarter = true
 }
 

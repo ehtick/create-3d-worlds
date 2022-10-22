@@ -1,23 +1,3 @@
-function camSwitcher(i) {
-  camid = i
-  switch (camid) {
-    case 0: // follow car closely, but without following tilt of car
-      if (!camFollowCar) {
-        camFollowCar = true; chaseCammer = false; dirLight.target = carModel[cci][0]
-      }
-      break
-    case 1: // follow car loosely, but follow tilt of car
-      if (!chaseCammer) {
-        chaseCammer = true
-        chaseStarter = true
-        camFollowCar = false
-        dirLight.target = carModel[cci][0]
-      }
-      break
-  }
-
-}// end cam switcher
-
 function menuSwitch() {
   showMui = !showMui
   if (showMui) {
