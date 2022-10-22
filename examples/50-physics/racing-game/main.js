@@ -1,3 +1,5 @@
+/* global THREE, Ammo */
+
 function fixAngleRad(a) {
   if (a > Math.PI) a -= Math.PI * 2; else if (a < -Math.PI) a += Math.PI * 2; return a
 }
@@ -9,7 +11,6 @@ const SCREEN_WIDTH = window.innerWidth * widthLimit
 
 const worldFiles = ['courser14a']
 let worldModel
-let worldMat
 
 const camAndKeyFunction = function() {
   // camera.eulerOrder = 'ZYX'
@@ -37,12 +38,6 @@ const camAndKeyFunction = function() {
       case ' ': // spacebar
         gBreakingForce[cci] = maxBreakingForce[cci] * 2
         gEngineForce[cci] = 0.0
-        break
-      case 'o':
-        menuSwitch()
-        break
-      case 'p':
-        menuSwitch()
         break
       case '4':
         switchCars()
@@ -96,14 +91,8 @@ const camAndKeyFunction = function() {
         pageDowner = false
         break
     }
-
   }// end on key up
 
-  function contextmenu(event) {
-    event.preventDefault()
-  }
-
-  container.addEventListener('contextmenu', contextmenu, false)
   container.addEventListener('keydown', onKeyDowner, false)
   container.addEventListener('keyup', onKeyUpper, false)
 
@@ -113,61 +102,59 @@ const camAndKeyFunction = function() {
     // if car rolls past threshold increase camLag
     if (bodRot > -.4) camLags = .001; else camLags = camLag
 
-    if (chaseCammer)
-      if (chaseCammer) {
+    if (chaseCammer) {
+      bodies[1].getMotionState().getWorldTransform(tranCam)
 
-        bodies[1].getMotionState().getWorldTransform(tranCam)
+      chaseCamO = tranCam.getOrigin()
+      m_carChassis[cci].getMotionState().getWorldTransform(tranChass)
+      carO = tranChass.getOrigin()
 
-        chaseCamO = tranCam.getOrigin()
-        m_carChassis[cci].getMotionState().getWorldTransform(tranChass)
-        carO = tranChass.getOrigin()
+      // camera should never go underground
+      let toPointer = new Ammo.btVector3(chaseCamO.getX(), chaseCamO.getY() - 200, chaseCamO.getZ())
+      let rayer = new Ammo.ClosestRayResultCallback(chaseCamO, toPointer)
+      dynamicsWorld.rayTest(chaseCamO, toPointer, rayer)
+      if (rayer.hasHit())
+        groundY = rayer.get_m_hitPointWorld().getY() + 3
 
-        // camera should never go underground
-        let toPointer = new Ammo.btVector3(chaseCamO.getX(), chaseCamO.getY() - 200, chaseCamO.getZ())
-        let rayer = new Ammo.ClosestRayResultCallback(chaseCamO, toPointer)
-        dynamicsWorld.rayTest(chaseCamO, toPointer, rayer)
-        if (rayer.hasHit())
-          groundY = rayer.get_m_hitPointWorld().getY() + 3
+      Ammo.destroy(toPointer); toPointer = null
+      Ammo.destroy(rayer); rayer = null
 
-        Ammo.destroy(toPointer); toPointer = null
-        Ammo.destroy(rayer); rayer = null
+      setChaseCam()
 
+      xvelc = tCamPoint.x() - chaseCamO.x()
+      yvelc = tCamPoint.y() - chaseCamO.y()
+      zvelc = tCamPoint.z() - chaseCamO.z()
+
+      // if(tCamPoint.distance(chaseCamO)>camDist){
+      ctFac = 1
+      tv.setValue(xvelc * ctFac, yvelc * ctFac, zvelc * ctFac)
+      bodies[1].setLinearVelocity(tv)
+      bodies[1].getMotionState().getWorldTransform(tranCam)
+      // }
+      chaseCamO = tranCam.getOrigin()
+
+      camera.position.x = chaseCamO.x()
+      camera.position.y = chaseCamO.y()
+      camera.position.z = chaseCamO.z()
+
+      if (camera.position.y < groundY) {
+        chaseCamO.setY(groundY)
+        tranCam.setOrigin(chaseCamO)
+      }
+
+      bodies[1].setWorldTransform(tranCam)
+
+      camera.lookAt(new THREE.Vector3(carPos[cci].x(), carPos[cci].y(), carPos[cci].z()))
+
+      if (chaseStarter) {
         setChaseCam()
+        tranCam.setIdentity()
+        tranCam.setOrigin(tCamPoint)
+        if (!worldSwitching[cci]) chaseStarter = false
+      }// end if chaseStarter
 
-        xvelc = tCamPoint.x() - chaseCamO.x()
-        yvelc = tCamPoint.y() - chaseCamO.y()
-        zvelc = tCamPoint.z() - chaseCamO.z()
-
-        // if(tCamPoint.distance(chaseCamO)>camDist){
-        ctFac = 1
-        tv.setValue(xvelc * ctFac, yvelc * ctFac, zvelc * ctFac)
-        bodies[1].setLinearVelocity(tv)
-        bodies[1].getMotionState().getWorldTransform(tranCam)
-        // }
-        chaseCamO = tranCam.getOrigin()
-
-        camera.position.x = chaseCamO.x()
-        camera.position.y = chaseCamO.y()
-        camera.position.z = chaseCamO.z()
-
-        if (camera.position.y < groundY) {
-          chaseCamO.setY(groundY)
-          tranCam.setOrigin(chaseCamO)
-        }
-
-        bodies[1].setWorldTransform(tranCam)
-
-        camera.lookAt(new THREE.Vector3(carPos[cci].x(), carPos[cci].y(), carPos[cci].z()))
-
-        if (chaseStarter) {
-          setChaseCam()
-          tranCam.setIdentity()
-          tranCam.setOrigin(tCamPoint)
-          if (!worldSwitching[cci]) chaseStarter = false
-        }// end if chaseStarter
-
-        bodies[1].setWorldTransform(tranCam)
-      }// end if chase cammer
+      bodies[1].setWorldTransform(tranCam)
+    }// end if chase cammer
 
     if (pageUpper)
       if (camHeight < maxCamHeight)
@@ -182,33 +169,6 @@ const camAndKeyFunction = function() {
   }// end update
 } // end camera controls contstructor function
 
-function camHeightAccelCalc() {
-  if (camHeightUp && camHeight - camHeightOld < camHeight * .1) {
-    camHeightAccel += .001; camHeightDown = false
-  } else if (camHeightDown && camHeight - camHeightOld > camHeight * -.1) {
-    camHeightAccel -= .001; camHeightUp = false
-  } else {
-    camHeightUp = false; camHeightDown = false
-    if (camHeightAccel > 1) camHeightAccel -= .001; else if (camHeightAccel < 1) camHeightAccel += .001
-    if (Math.abs(camHeightAccel - 1) < .001) camHeightAccel = 1
-  }
-  camHeight *= camHeightAccel
-}// end camHeightAccelCalc()
-
-function camDistAccelCalc() {
-  if (camDistUp && camDist - camDistOld < camDist * .1) {
-    camDistAccel += .002; camDistDown = false
-  } else if (camDistDown && camDist - camDistOld > camDist * -.1) {
-    camDistAccel -= .002; camDistUp = false
-  } else {
-    camDistUp = false; camDistDown = false
-    if (camDistAccel > 1) camDistAccel -= .001; else if (camDistAccel < 1) camDistAccel += .001
-    if (Math.abs(camDistAccel - 1) < .001) camDistAccel = 1
-  }
-  camDist *= camDistAccel
-}// end camDistAccelCalc()
-
-// for setting initial position of chase cam behind followed vehicle
 function setChaseCam() {
   camDist = camDistS; camHeight = camHeightS; camTilt = camTiltS; camRotateCar = 0
 
@@ -235,16 +195,11 @@ function setChaseCam() {
   camera.position.y = tCamPoint.y()
   camera.position.z = tCamPoint.z()
   camera.lookAt(new THREE.Vector3(carOrigin.x(), carOrigin.y(), carOrigin.z()))
-}// end set chase cam
+}
 
 let container
-let timely2
-
-const camZoomer = 1
-
 const textureLoader_d = new THREE.TextureLoader()
 const decalDiffuse = textureLoader_d.load('track5.png')
-const decalNormal = textureLoader_d.load('track5.png')
 
 const decalMaterial = new THREE.MeshPhongMaterial({
   specular: 0x444444,
@@ -260,9 +215,6 @@ const decalMaterial = new THREE.MeshPhongMaterial({
 })
 
 let loadingDone = false
-const muted = false
-const camid = 0
-const showMui = true
 var tv = new Ammo.btVector3(0, 0, 0)
 var tCamPoint = new Ammo.btVector3(0, 0, 0)
 let carHit = false
@@ -275,14 +227,7 @@ let carHitForce = []
 let manifolder = []
 let highestHitForce = 0
 
-let decalWorldID = 0
 const downRayDir = new Ammo.btVector3(0, 0, 0)
-let frontRay
-const frontRayDir = new Ammo.btVector3(0, 0, 0)
-
-const hitSwitch = true
-const minPitch = .4
-let engPitch = minPitch
 
 const positioner = [
   new Ammo.btVector3(0, -38, 0), // center
@@ -298,7 +243,6 @@ const positioner = [
 const positionerSave = []
 positionerSave[0] = new Ammo.btVector3(positioner[0].x(), positioner[0].y(), positioner[0].z())
 
-const worldSet = false
 var cci = 3
 const dec = new Ammo.btVector3(0, 0, 0)
 const dec2 = new Ammo.btVector3(0, 0, 0)
@@ -313,10 +257,8 @@ let sparks = [], sparkler = false, hitPoint = new Ammo.btVector3(0, 0, 0)
 let sparksCount = 0
 const smokerCount3 = [0, 5]
 const smoUp = [true, true]
-let smoker2Scale = .1, smoker2Grow = 0
-const smoker3Scale = .1, smoker3Grow = 0
+let smoker2Scale = .1
 let carVel = new THREE.Vector3(0, 0, 0), oldCarPos = new THREE.Vector3(0, 0, 0), oldCarPos2 = new THREE.Vector3(0, 0, 0), decRot = 0
-let decal
 let decalCounter = 0
 let decals = []
 let material_d
@@ -324,76 +266,39 @@ const p_d = new THREE.Vector3(0, 0, 0)
 var r_d = new THREE.Vector3(0, 0, 0)
 var r_d = new THREE.Euler(0, 0, 0, 'XYZ')
 const s_d = new THREE.Vector3(90, 90, 90)
-const up_d = new THREE.Vector3(0, 1, 0)
-const check_d = new THREE.Vector3(1, 1, 1)
 
-const framesPerSecond = 100
 var objLoader, mtlLoader
 const worldScale = 22
-const worldWidth = 500
 const fogColor = new THREE.Color(0xae9a7b)// ae9a7b
-var ray, groundY = 0
+var groundY = 0
 var xvelc = 0, yvelc = 0, zvelc = 0, ctFac = 1.35
 var tranCam = new Ammo.btTransform()
 var tranChass = new Ammo.btTransform()
 var chaseCamO = new Ammo.btVector3()
-const toPoint = new Ammo.btVector3()
-var carO = new Ammo.btVector3()
 var carRot = new Ammo.btMatrix3x3()
-const camPointer = new Ammo.btMatrix3x3()
 var tCamPoint = new Ammo.btVector3()
 var bodRot = -1
 const camStop = false
-const carColorSetter = false
-const rimColorSetter = false
 const fogFar = 500
-let camera, scene, renderer, hemiLight, dirLight, lightSet = 0, pointLight
-var geometry, mat2, mat3, mat4, mat5, mesh, matBlank
+let camera, scene, renderer, hemiLight, dirLight, pointLight
+var matBlank
 const clock = new THREE.Clock()
-var altKey = false
-const followCamPos = new Ammo.btVector3(0, 0, 0)
-const carModRot = new Ammo.btQuaternion(0, 0, 0, 1)
-const carHeading = 0.0
-const camHeading = 0.0
 var pageUpper = false, pageDowner = false
-var camHeight = 4.0, camHeightUp = false, camHeightDown = false, camHeightOld = camHeight, camHeightAccel = 1.0
-const camPresets = 0
-var camDist = 8.0, camDistUp = false, camDistDown = false, camDistOld = camDist, camDistAccel = 1.0
-var maxCamDist = 25, minCamDist = 4, minCamHeight = .1, maxCamHeight = 20
+var camHeight = 4.0
+var camDist = 8.0
+var minCamHeight = .1, maxCamHeight = 20
 var camHeightS = camHeight, camDistS = camDist
 var camTilt = -23 * Math.PI / 180; camTiltS = camTilt
 let dt = 0.0
 var chaseCammer = true, chaseStarter = chaseCammer
-const chaseTick = 0
-var camRotateCar = 0.0
-const oldMouseX = 0.0
-const oldMouseY = 0.0
-const camInd = 0
 var objLoader
 var mtlLoader
-const carColorInd = 0
-const numCarColors = 12
-const worldMatModified = false
-var camLag = .035, camLags = camLag
+var camLag = .035
 let md
-
-const triMeshModel = []
-const triMeshModelMat = []
 
 const carNames = ['lada', 'hummer']
 const numCars = carNames.length
 if (cci >= numCars) cci = numCars - 1
-
-const carPlaces = [
-  { name: 'lada', place: 0 },
-  { name: 'hummer', place: 0 },
-]
-
-function sortPlaces(a, b) {
-  if (a.place < b.place) return 1
-  if (a.place > b.place) return -1
-  return 0
-}
 
 const carModel = []
 const tireClones = []
@@ -417,20 +322,12 @@ for (let c = 0; c < numCars; c++) {
   }
 }
 
-// bullet init
-const camPos = new Ammo.btVector3(0, 0, 0)
-const ACTIVE_TAG = 1
-const ISLAND_SLEEPING = 2
-const WANTS_DEACTIVATION = 3
 const DISABLE_DEACTIVATION = 4
-const DISABLE_SIMULATION = 5
-
-const numObjects = 2// ground is 0, camera is 1
+const numObjects = 2 // ground is 0, camera is 1
 let resetBulletObjectsBool = true
 
 const collisionConfiguration = new Ammo.btDefaultCollisionConfiguration()
 const dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration)
-// var overlappingPairCache= new Ammo.btDbvtBroadphase();
 const worldMin = new Ammo.btVector3(-1000, -1000, -1000)
 const worldMax = new Ammo.btVector3(1000, 1000, 1000)
 const overlappingPairCache = new Ammo.btAxisSweep3(worldMin, worldMax)
@@ -480,7 +377,6 @@ function triMeshBuilder(model, scale, positioner) {
   tbody.setFriction(.1)
   dynamicsWorld.addRigidBody(tbody)
   triMeshBody.push(tbody)
-
 }// end tri mesh builder
 
 /* for reference
@@ -510,7 +406,6 @@ const steeringIncrement = []
 const steeringClamp = []
 const steeringReturnRate = []
 const wheelRadius = [.36, .42, .36, .41, .36, .36, .36]
-const wheelRadiusS = [.36, .42, .36, .41, .36, .36, .36]
 const wheelWidth = [.2, .5, .2, -.05, .2, .2, .2]
 const frictionSlip = []
 const rearWheelFriction = []
@@ -535,13 +430,11 @@ var steerCarLeft = []
 var steerCarRight = []
 let m_tuning
 
-let carHeading2 = 0.0
 const coordi = []
 const coordRange = 300
 const numCoords = 100
 const coordx = []
 const coordz = []
-const tv3 = new THREE.Vector3(0, 0, 0)
 const bodRotTick = []
 
 var m_carChassis = []
@@ -673,7 +566,6 @@ function makeVehicle(c) {
 
   m_vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
-  // rear wheels
   isFrontWheel = true // for all wheel drive?
 
   m_tuning.set_m_frictionSlip(rearWheelFriction[c])
@@ -726,7 +618,7 @@ function resetVehicle(c) {
   dynamicsWorld.getBroadphase().getOverlappingPairCache().cleanProxyFromPairs(m_carChassis[c].getBroadphaseHandle(), dynamicsWorld.getDispatcher())
   if (m_vehicle[c]) {
     m_vehicle[c].resetSuspension()
-    for (i = 0; i < m_vehicle[c].getNumWheels(); i++)
+    for (let i = 0; i < m_vehicle[c].getNumWheels(); i++)
       // synchronize the wheels with the (interpolated) chassis worldtransform
       m_vehicle[c].updateWheelTransform(i, true)
   }
@@ -734,7 +626,7 @@ function resetVehicle(c) {
 }
 
 function tuneVehicle(c) {
-  for (i = 0; i < m_vehicle[c].getNumWheels(); i++) {
+  for (let i = 0; i < m_vehicle[c].getNumWheels(); i++) {
     const wheel = m_vehicle[c].getWheelInfo(i)
     wheel.set_m_suspensionStiffness = suspensionStiffness[c]
     wheel.set_m_wheelsDampingRelaxation = suspensionDamping[c]
@@ -765,7 +657,7 @@ matBlank.visible = false
 matBlank.side = THREE.FrontSide
 
 function initObjects(numObjects) {
-  for (i = 1; i < numObjects; i++) {// 0 is ground, 1 is camera
+  for (let i = 1; i < numObjects; i++) {// 0 is ground, 1 is camera
     var colShape
     var mass
     if (i == 1) {// camera object with index 1 gets built here
@@ -801,21 +693,10 @@ function initObjects(numObjects) {
 
 const obTrans = new Ammo.btTransform()
 var triMeshBodyTrans = new Ammo.btTransform()
-const stringer = ''
 
 function randRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
-
-function worldMoveOpacity(i) {
-  if (typeof worldMat !== 'undefined') {
-    const m = worldMat.materials
-    for (n in m) {
-      m[n].opacity += .001
-      m[n].needsUpdate = true
-    }
-  }
-}// end world move opacity
 
 function resetBulletObjects() {
   let clearTrans = new Ammo.btTransform()
@@ -1051,7 +932,6 @@ function bulletStep() {
 
         if (gVehicleSteering[c] < -steeringClamp[c]) gVehicleSteering[c] = -steeringClamp[c]
       }
-    // end if steering
 
     // if cars go upside down, flip them
     if (carHeightAboveGround[c] < 3) {
@@ -1217,9 +1097,7 @@ function bulletStep() {
           smokerCount2++; if (smokerCount2 > frame.length - 1) smokerCount2 = 0
 
         }// c==cci&&i==0
-
       }
-    // num car models
 
     // wheels, index 0 is the chassis shape
     for (i = 0; i < 4; i++) {
