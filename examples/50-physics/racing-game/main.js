@@ -5,11 +5,11 @@ let rightButtonDown = false
 const viewHalfX = 0
 const viewHalfY = 0
 
-const camAndKeyFunction = function() {
+const camAndKeyFunction = function () {
   camera.eulerOrder = 'ZYX'
   container.setAttribute('tabindex', -1)
 
-  this.onMouseDown = function(event) {
+  this.onMouseDown = function (event) {
     pauser = false
     container.focus()
 
@@ -28,7 +28,7 @@ const camAndKeyFunction = function() {
     mouseDragOn = true
   }// end on mouse down
 
-  this.onMouseUp = function(event) {
+  this.onMouseUp = function (event) {
     event.preventDefault()
     event.stopPropagation()
 
@@ -43,7 +43,7 @@ const camAndKeyFunction = function() {
     mouseDragOn = false
   }// end on mouse up
 
-  this.onMouseMove = function(event) {
+  this.onMouseMove = function (event) {
     container.focus()
     mouseX = event.pageX - container.offsetLeft - viewHalfX
     mouseY = event.pageY - container.offsetTop - viewHalfY
@@ -62,7 +62,7 @@ const camAndKeyFunction = function() {
     oldMouseY = mouseY
   }// end on mouse move
 
-  onKeyDowner = function(event) {
+  onKeyDowner = function (event) {
     if (!typing) {
       // event.preventDefault();
       if (event.key == 'z') altKey = true
@@ -216,7 +216,7 @@ const camAndKeyFunction = function() {
           if (pauser) {
             if (engineSound.isPlaying) engineSound.stop()
           } else
-          if (!engineSound.isPlaying) engineSound.play()
+            if (!engineSound.isPlaying) engineSound.play()
 
           break
         case 'PageUp':
@@ -232,7 +232,7 @@ const camAndKeyFunction = function() {
     event.repeat = false
   }// end on key down
 
-  onKeyUpper = function(event) {
+  onKeyUpper = function (event) {
     if (event.key = 'z') altKey = false
     switch (event.key) {
       case '0':
@@ -287,12 +287,12 @@ const camAndKeyFunction = function() {
   container.addEventListener('keyup', onKeyUpper, false)
 
   function bind(scope, fn) {
-    return function() {
+    return function () {
       fn.apply(scope, arguments)
     }
   }
 
-  this.update = function(delta) {
+  this.update = function (delta) {
     tv.setValue(0.0, -1.0, 0.0)
     bodRot = m_carChassis[cci].getWorldTransform().getBasis().getColumn(1).dot(tv)
     // if car rolls past threshold increase camLag
@@ -1037,7 +1037,7 @@ for (var c = 0; c < numCars; c++) {
   tuneup[c] = false
 }// num cars loop
 
-const paramTweaker = function() {
+const paramTweaker = function () {
   this.ShortCut = 'H Key Toggles This Tuner Panel'
   this.maxSpeed = maxSpeed[cci]
   this.maxEngineForce = maxEngineForce[cci]
@@ -1167,10 +1167,10 @@ guiF2.add(pt, 'connectionHeight', 0, 3).step(.01).onFinishChange(
     connectionHeight[cci] = pt.connectionHeight; applyTuneUp()
   })
 
-gui.domElement.onmouseover = function() {
+gui.domElement.onmouseover = function () {
   typing = true
 }
-gui.domElement.onmouseout = function() {
+gui.domElement.onmouseout = function () {
   typing = false
 }
 
@@ -1356,7 +1356,7 @@ function initObjects(numObjects) {
       threeObject[i] = new THREE.Mesh(new THREE.SphereGeometry(.1, 20, 20), matBlank)
       colShape = new Ammo.btSphereShape(1)
       mass = 1
-    } 
+    }
 
     const startTransform = new Ammo.btTransform()
     startTransform.setIdentity()
@@ -1807,12 +1807,12 @@ function bulletStep() {
 
         if (gVehicleSteering[c] > steeringClamp[c]) gVehicleSteering[c] = steeringClamp[c]
       } else
-      if (steerCarRight[c]) {
-        if (gVehicleSteering[c] > -.05) gVehicleSteering[c] -= .01; else
-          gVehicleSteering[c] *= 1 + steeringIncrement[c]
+        if (steerCarRight[c]) {
+          if (gVehicleSteering[c] > -.05) gVehicleSteering[c] -= .01; else
+            gVehicleSteering[c] *= 1 + steeringIncrement[c]
 
-        if (gVehicleSteering[c] < -steeringClamp[c]) gVehicleSteering[c] = -steeringClamp[c]
-      }
+          if (gVehicleSteering[c] < -steeringClamp[c]) gVehicleSteering[c] = -steeringClamp[c]
+        }
     // end if steering
 
     // if cars go upside down, flip them
@@ -2219,8 +2219,6 @@ function init() {
   container.style.paddingTop = '10px'
   renderer.setSize(SCREEN_WIDTH * .1, SCREEN_HEIGHT * .1)
 
-  window.addEventListener('resize', onWindowResize, false)
-
   let s_geometry = new THREE.BufferGeometry()
   let numFrames = 6
   for (var si = 0; si < numFrames; si++)
@@ -2373,7 +2371,7 @@ function shoot(c) {
 
 // obj model loader from OBJLoader.js and MTLLoader.js
 function objCarModelLoader(c, i, objFile, mtlFile, scale) {
-  const onProgress = function(xhr) {
+  const onProgress = function (xhr) {
 
     if (xhr.lengthComputable) {
       const percentComplete = xhr.loaded / xhr.total * 100
@@ -2383,7 +2381,7 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale) {
     }
   }
 
-  const onError = function(xhr) { }
+  const onError = function (xhr) { }
 
   mtlLoader = new THREE.MTLLoader()
   mtlLoader.setPath('')
@@ -2430,7 +2428,7 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale) {
 // world model loader
 function objWorldModelLoader(i, objFile, mtlFile, scale, isPhysical) {
 
-  const onProgress = function(xhr) {
+  const onProgress = function (xhr) {
     if (xhr.lengthComputable) {
       const percentComplete = xhr.loaded / xhr.total * 100
       // console.log(xhr.loaded+' '+ Math.round(percentComplete, 2) + '% downloaded' );
@@ -2439,7 +2437,7 @@ function objWorldModelLoader(i, objFile, mtlFile, scale, isPhysical) {
 
     }
   }
-  const onError = function(xhr) { }
+  const onError = function (xhr) { }
 
   mtlLoader = new THREE.MTLLoader()
   mtlLoader.setPath('')
@@ -2477,13 +2475,13 @@ function objWorldModelLoader(i, objFile, mtlFile, scale, isPhysical) {
 // triMesh model loader
 function triMeshModelLoader(i, objFile, mtlFile, scale) {
 
-  const onProgress = function(xhr) {
+  const onProgress = function (xhr) {
     if (xhr.lengthComputable) {
       const percentComplete = xhr.loaded / xhr.total * 100
       console.log(Math.round(percentComplete, 2) + '% downloaded')
     }
   }
-  const onError = function(xhr) { }
+  const onError = function (xhr) { }
 
   mtlLoader = new THREE.MTLLoader()
   mtlLoader.setPath('')
@@ -2521,8 +2519,6 @@ function modifyCarMaterials(c) {
     if (typeof carMat[c][i] !== 'undefined') {
       const m = carMat[c][i].materials
       for (n in m) {
-        // console.log(n);
-
         // tires and undercarriage do not reflect
         if (n != 'Material_#8t' && n != 'mat_3-van1t.jpg' && n != 'mat_1-moskvitch.jpgt' && n != 'Material_#33t' && n != 'mat_2-humvee_desert_tire_diffuse.jpgt' && n !== 'mat_0-taxi_cab.jpgt') {
           m[n].shininess = 900
@@ -2553,7 +2549,6 @@ function modifyCarMaterials(c) {
 
       }
     }
-
 }// end modify car materials
 
 function modifyWorldMaterials() {
@@ -2561,17 +2556,14 @@ function modifyWorldMaterials() {
     if (typeof worldMat[i] !== 'undefined') {
       const m = worldMat[i].materials
       for (n in m) {
-
         m[n].bumpMap = m[n].map
         m[n].bumpScale = .6
         m[n].shininess = 200
         m[n].specular.setHex(0x020202)
         // m[n].side=THREE.DoubleSide; //for seeing size of shadowmap on world
         m[n].needsUpdate = true
-
       }
     }
-
 }// end modify world materials
 
 function resetAllCars() {
@@ -2656,54 +2648,43 @@ function switchCars() {
   mandalaSet = false; decalRayCast()
 }// end switch cars
 
-function onWindowResize(event) {
-  SCREEN_HEIGHT = window.innerHeight * heightLimit
-  SCREEN_WIDTH = window.innerWidth * widthLimit
-  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
-  camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT
-  camera.updateProjectionMatrix()
-  if (showMui) {
-    muiSwitch(); muiSwitch() // twice for vertical scroll bar
-  }
-  if (showShortcuts) {
-    shortcutSwitch(); shortcutSwitch()
-  }
-}// end on window resize
+/* LOOP */
 
 function animate() {
-  setTimeout(() => {
-    requestAnimationFrame(animate)
-    if (!pauser) {
+  requestAnimationFrame(animate)
+  if (!pauser) {
 
-      // fade and delete decals after some ticks
-      for (i = 0; i < decals.length; i++)
-        if (decals[i] != null) {
-          decals[i].material.opacity -= .001
-          if (decals[i].material.opacity < 0) {
-            scene.remove(decals[i])
-            decals[i] = null
-          }
+    // fade and delete decals after some ticks
+    for (i = 0; i < decals.length; i++)
+      if (decals[i] != null) {
+        decals[i].material.opacity -= .001
+        if (decals[i].material.opacity < 0) {
+          scene.remove(decals[i])
+          decals[i] = null
         }
+      }
 
-      bulletStep()
+    bulletStep()
 
-      if (typeof carModel[numCars - 1][0] !== 'undefined') {
+    if (typeof carModel[numCars - 1][0] !== 'undefined') {
+      if (!loadingDone) {
+        resetAllCars();
+        soundListener.setMasterVolume(1);
+        container.style.paddingLeft = '0px';
+        container.style.paddingTop = '0px';
+        renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        el('opener').style.visibility = 'visible';
+        container.focus();
+        document.body.style.backgroundImage = 'none';
+        decalRayCast();
+        loadingDone = true
+      }
 
-        if (!loadingDone) {
-          timely2 = setTimeout('resetAllCars();soundListener.setMasterVolume(1);document.body.removeChild(el(\'loadiv\'));container.style.paddingLeft=\'0px\';container.style.paddingTop=\'0px\';renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT);el(\'opener\').style.visibility=\'visible\';container.focus();document.body.style.backgroundImage=\'none\';decalRayCast();', 9000)
-          loadingDone = true
-        }
+      dt = clock.getDelta()
+      if (!camStop) camAndKeys.update(dt)
+      renderer.render(scene, camera)
 
-        render()
-        if (showFPS) stats.update()
-      }// end ! undefined
-    }// end !pauser
-
-  }, 1000 / framesPerSecond)
-}// end animate
-
-function render() {
-  dt = clock.getDelta()
-  if (!camStop) camAndKeys.update(dt)
-  renderer.render(scene, camera)
-}// end render
+      if (showFPS) stats.update()
+    }// end ! undefined
+  }// end !pauser
+}
