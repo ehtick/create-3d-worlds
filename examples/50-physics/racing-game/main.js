@@ -113,9 +113,6 @@ const camAndKeyFunction = function () {
         case 'p':
           menuSwitch()
           break
-        case '0':
-          lifter = true
-          break
         case '1':
           camSwitcher(0)
           break
@@ -155,9 +152,6 @@ const camAndKeyFunction = function () {
   onKeyUpper = function (event) {
     if (event.key = 'z') altKey = false
     switch (event.key) {
-      case '0':
-        lifter = false
-        break
       case 'ArrowUp':
       case 'w':
         moveCarForward[cci] = false
@@ -205,7 +199,6 @@ const camAndKeyFunction = function () {
     if (bodRot > -.4) camLags = .001; else camLags = camLag
 
     if (camFollowCar && !chaseCammer) {
-
       // for camera to follow car position and heading
       let qc = new THREE.Quaternion(0, 0, 0, 1)
       if (carModel[cci][0] != undefined)
@@ -313,7 +306,6 @@ const camAndKeyFunction = function () {
       else camHeight = minCamHeight
 
   }// end update
-
 } // end camera controls contstructor function
 
 function camHeightAccelCalc() {
@@ -369,7 +361,6 @@ function setChaseCam() {
   camera.position.y = tCamPoint.y()
   camera.position.z = tCamPoint.z()
   camera.lookAt(new THREE.Vector3(carOrigin.x(), carOrigin.y(), carOrigin.z()))
-
 }// end set chase cam
 
 let container
@@ -409,8 +400,6 @@ const decalNormal = textureLoader_d.load('track5.png')
 const decalMaterial = new THREE.MeshPhongMaterial({
   specular: 0x444444,
   map: decalDiffuse,
-  // normalMap: decalNormal,
-  // normalScale: new THREE.Vector2( 1, 1 ),
   shininess: 900,
   transparent: true,
   depthTest: true,
@@ -590,7 +579,6 @@ const camStop = false
 const carColorSetter = false
 const rimColorSetter = false
 const fogFar = 500
-var lifter = false
 var typing = false
 let camera, scene, renderer, hemiLight, dirLight, lightSet = 0, pointLight
 var geometry, mat2, mat3, mat4, mat5, mesh, matBlank
@@ -1212,35 +1200,26 @@ function findGround(c) {
 
       if (c == cci)
         decalWorldID = downRay.get_m_collisionObject().getUserPointer()
-
     } else {
-
       let cp = new Ammo.btVector3(carPos[c].x(), carPos[c].y() + 1, carPos[c].z())
       downRayDir.setY(carPos[c].y() + 400)
       downRay = new Ammo.ClosestRayResultCallback(cp, downRayDir)
       dynamicsWorld.rayTest(cp, downRayDir, downRay)
       Ammo.destroy(cp); cp = null
-
       if (downRay.hasHit()) {
-
         // do not want ray from car a hitting car b above it, and getting moved above b, so set boolean for car to car hits when raycasting upward
-
         dp = dynamicsWorld.getDispatcher()
         numMan = dp.getNumManifolds()
         carHit = false
 
         for (let i = 0; i < numMan; i++) {
           manifold = dp.getManifoldByIndexInternal(i)
-
           num_contacts = manifold.getNumContacts()
           if (!(num_contacts === 0)) {
-
             bodyA = carObjects[c][manifold.getBody0()]
             bodyB = carObjects[c][manifold.getBody1()]
-
             if (bodyA != bodies[1] && bodyB != bodies[1])
               carHit = true// so do not move car a above car b when b is above a
-
           }
         }// end num man loop
 
@@ -1252,7 +1231,6 @@ function findGround(c) {
           pointAbove.setY(pointAbove.y() + 1.5)
           chassisWorldTrans[c].setOrigin(pointAbove)
           m_carChassis[c].setWorldTransform(chassisWorldTrans[c])
-
           Ammo.destroy(pointAbove); pointAbove = null
         }// end if !carHit
 
@@ -1268,11 +1246,6 @@ function bulletStep() {
 
   for (var c = 0; c < numCars; c++)
     findGround(c)
-
-  if (lifter) {
-    tv.setValue(-5, 0, 0)
-    m_carChassis[cci].setAngularVelocity(tv)
-  }
 
   carHitForce = []
   manifolder = []
@@ -2107,7 +2080,8 @@ function switchCars() {
 
   if (camid == 2) camSwitcher(1)
   if (chaseCammer) chaseStarter = true
-  mandalaSet = false; decalRayCast()
+  mandalaSet = false; 
+  decalRayCast()
 }// end switch cars
 
 /* LOOP */
@@ -2142,5 +2116,5 @@ function animate() {
     dt = clock.getDelta()
     if (!camStop) camAndKeys.update(dt)
     renderer.render(scene, camera)
-  }// end ! undefined
+  }
 }
