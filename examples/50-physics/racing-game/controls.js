@@ -95,7 +95,7 @@ function shortcutSwitch() {
 }// end short cut switch
 
 function decalRayCast() {
-  if (typeof worldModel.children[0] !== 'undefined' && typeof worldMat[0].materials.w3 !== 'undefined') {
+  if (typeof worldModel.children[0] !== 'undefined' && typeof worldMat.materials.w3 !== 'undefined') {
 
     let cp = new Ammo.btVector3(coordx[cci][coordi[cci]], 600, coordz[cci][coordi[cci]])
     let cpDownRayDir = new Ammo.btVector3(cp.x(), (cp.y() - 2000), cp.z())

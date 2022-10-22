@@ -1,6 +1,7 @@
 const worldFiles = ['courser14a']
 const numWorldModels = 1
 let worldModel
+let worldMat
 
 let mouseX = 0
 let mouseY = 0
@@ -723,7 +724,6 @@ var oldMouseY = 0.0
 const camInd = 0
 var objLoader
 var mtlLoader
-const worldMat = []
 const carColorInd = 0
 const numCarColors = 12
 const worldMatModified = false
@@ -736,7 +736,7 @@ const triMeshModel = []
 const triMeshModelMat = []
 
 const carNames = ['yellow', 'van', 'pickup', 'hummer', 'lada']
-var numCars = carNames.length; 
+var numCars = carNames.length;
 if (cci >= numCars) cci = numCars - 1
 
 var carPlaces = [
@@ -1342,17 +1342,16 @@ function randRange(min, max) {
 }
 
 function worldMoveOpacity(i) {
-  for (i = 0; i < worldMat.length; i++)
-    if (typeof worldMat[i] !== 'undefined') {
-      const m = worldMat[i].materials
-      for (n in m) {
-        m[n].opacity += .001
-        if (m[n].opacity > 1) {
-          worldHidden[i] = false; m[n].opacity = 1
-        }
-        m[n].needsUpdate = true
+  if (typeof worldMat !== 'undefined') {
+    const m = worldMat.materials
+    for (n in m) {
+      m[n].opacity += .001
+      if (m[n].opacity > 1) {
+        worldHidden[i] = false; m[n].opacity = 1
       }
+      m[n].needsUpdate = true
     }
+  }
 }// end world move opacity
 
 function resetBulletObjects() {
@@ -1510,7 +1509,6 @@ function bulletStep() {
 
   for (var i = 0; i < numWorldModels; i++)
     if (!resettingCars) {
-
       let nx = 1, nz = 1, distX = 0, distZ = 0
       if (cardir > 0) nx = -1
       if (cardir < Math.PI / 2 && cardir > -Math.PI / 2) nz = -1
@@ -1525,17 +1523,17 @@ function bulletStep() {
         if (Math.abs(distX) > 1500) {
           positioner[i].setX(positioner[i].x() + 2640 * nx)// 880*3
           worldHidden[i] = true
-          worldMat[i].materials.w3.transparent = true
-          worldMat[i].materials.w3.opacity = 0
-          worldMat[i].materials.w3.needsUpdate = true
+          worldMat.materials.w3.transparent = true
+          worldMat.materials.w3.opacity = 0
+          worldMat.materials.w3.needsUpdate = true
         }
 
         if (Math.abs(distZ) > 1500) {
           positioner[i].setZ(positioner[i].z() + 2640 * nz)
           worldHidden[i] = true
-          worldMat[i].materials.w3.transparent = true
-          worldMat[i].materials.w3.opacity = 0
-          worldMat[i].materials.w3.needsUpdate = true
+          worldMat.materials.w3.transparent = true
+          worldMat.materials.w3.opacity = 0
+          worldMat.materials.w3.needsUpdate = true
         }
 
         worldModel.position.set(positioner[i].x(), -38, positioner[i].z())
@@ -2333,7 +2331,7 @@ function objWorldModelLoader(i, objFile, mtlFile, scale, isPhysical) {
     materials.preload()
     objLoader = new THREE.OBJLoader()
     objLoader.setMaterials(materials)
-    worldMat[i] = materials// for setting values dynamically
+    worldMat = materials// for setting values dynamically
     objLoader.load(objFile, object => {
       object.position.set(positioner[i].x(), positioner[i].y(), positioner[i].z())
       worldModel = object
@@ -2395,8 +2393,8 @@ function modifyCarMaterials(c) {
 
 function modifyWorldMaterials() {
   for (i = 0; i < worldMat.length; i++)
-    if (typeof worldMat[i] !== 'undefined') {
-      const m = worldMat[i].materials
+    if (typeof worldMat !== 'undefined') {
+      const m = worldMat.materials
       for (n in m) {
         m[n].bumpMap = m[n].map
         m[n].bumpScale = .6
@@ -2418,8 +2416,8 @@ function resetAllCars() {
     worldModel.position.set(positionerSave[i].x(), -38, positionerSave[i].z())
 
     worldHidden[i] = false
-    worldMat[i].materials.w3.opacity = 1
-    worldMat[i].materials.w3.needsUpdate = true
+    worldMat.materials.w3.opacity = 1
+    worldMat.materials.w3.needsUpdate = true
 
     triMeshBodyTrans.setIdentity()
     triMeshBodyTrans.setOrigin(positioner[i])
