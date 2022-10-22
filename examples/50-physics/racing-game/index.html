@@ -1,86 +1,27 @@
 <html>
 
 <head>
-  <title>World</title>
-  <style>
-    body {
-      background: #fff;
-      color: #fff;
-      padding: 0;
-      margin: 0;
-      font-weight: bold;
-      overflow: hidden;
-      font-size: 13px;
-    }
-
-    div {
-      font-size: 15px;
-      text-align: left;
-      opacity: 1;
-    }
-
-    li {
-      padding-top: 0px;
-      margin-top: 0px;
-      padding-bottom: 0px;
-      margin-bottom: 0px;
-    }
-
-    ul {
-      padding-top: 0px;
-      margin-top: 0px;
-      padding-bottom: 0px;
-      margin-bottom: 0px;
-    }
-  </style>
-  <link rel="icon" href="car3.png" type="image/png" />
+  <title>Racing game</title>
 </head>
 
 <body>
   <!-- GAME: http://moygen.rf.gd/world/world.htm -->
 
-  <script>
-    function el(a) { return document.getElementById(a); }
-    function da(a, b) { if (el(a)) { el(a).innerHTML = b; } }
-    function elv(a) { return document.getElementById(a).value; }
-    function els(a) { return document.getElementById(a).style; }
-    function fixAngleDeg(a) { if (a > 180) { a -= 360; } else if (a < -Math.PI / 2) { a += 360; } return a; }
-    function fixAngleRad(a) { if (a > Math.PI) { a -= Math.PI * 2; } else if (a < -Math.PI) { a += Math.PI * 2; } return a; }
-
-    var heightLimit = 1;
-    var widthLimit = 1;
-    var SCREEN_HEIGHT = window.innerHeight * heightLimit;
-    var SCREEN_WIDTH = window.innerWidth * widthLimit;
-  </script>
-
-  <script src="ammo.asm.js"></script><!-- bullet physics ported to javascript -->
-  <script src="three3.js"></script><!-- 3d rendering library for javascript -->
-  <script src="MTLLoader.js"></script><!-- material loader -->
-  <script src="OBJLoader.js"></script><!-- .obj model loader -->
-  <script src="DecalGeometry.js"></script><!-- for putting decals on models -->
-  <script src="main.js"></script>
-
-  <div id="opener"
-    style="padding-left:6px;padding-bottom:2px;margin:2px;width:20px;height:20px;border:1px solid black;z-index:100002;position:fixed;bottom:0px;left:0px;color:black;background-color:white;font-family:monospace;font-size:20px;font-weight:bold;opacity:.5;cursor:pointer;"
-    onclick="menuSwitch();">?</div>
-
   <div id="mui"
-    style="overflow-y:auto;position:absolute;top:0px;left:0px;color:white;background-color:transparent;font-family:monospace;font-size:20px;visibility:hidden;opacity:.8;">
+    style="overflow-y:auto;position:absolute;top:0px;left:0px;font-size:20px;">
 
     <div id="button3"
-      style="border-radius: 6px;color:white;background-color:#000000;font-family:monospace;border:1px solid white;opacity:1;width:200px;padding:2px;margin:4px;text-align:center;cursor:pointer;"
+      style="border-radius:6px;color:white;background-color:#000000;font-family:monospace;width:200px;padding:2px;margin:4px;text-align:center;cursor:pointer;"
       onclick="switchCars();">Switch Cars</div>
-
-    <div id="button12"
-      style="border-radius: 6px;color:white;background-color:#000000;font-family:monospace;border:1px solid white;opacity:1;width:200px;padding:2px;margin:4px;text-align:center;cursor:pointer;"
-      onclick="menuSwitch();">&nbsp;&nbsp;Close/Open(P)
-
-      <span
-        style="display:inline-block;padding:0px;margin:0px;display:block;border:1px solid gray;width:16px;height:16px;float:right;color:white;background-color:transparent;font-family:monospace;font-size:14px;cursor:pointer;font-weight:bold;text-align:center;">x</span>
     </div>
   </div>
 
-  <script src="controls.js"></script>
+  <script src="ammo.asm.js"></script>
+  <script src="three3.js"></script>
+  <script src="MTLLoader.js"></script>
+  <script src="OBJLoader.js"></script>
+  <script src="DecalGeometry.js"></script>
+  <script src="main.js"></script>
 </body>
 
 </html>

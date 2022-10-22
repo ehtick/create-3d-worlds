@@ -1,3 +1,10 @@
+function fixAngleRad(a) { if (a > Math.PI) { a -= Math.PI * 2; } else if (a < -Math.PI) { a += Math.PI * 2; } return a; }
+
+var heightLimit = 1;
+var widthLimit = 1;
+var SCREEN_HEIGHT = window.innerHeight * heightLimit;
+var SCREEN_WIDTH = window.innerWidth * widthLimit;
+
 const worldFiles = ['courser14a']
 let worldModel
 let worldMat
