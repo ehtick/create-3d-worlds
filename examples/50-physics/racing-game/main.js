@@ -231,7 +231,6 @@ function setChaseCam() {
 
 let container
 let timely2
-let resettingCars = false
 
 var camZoomer = 1
 
@@ -344,7 +343,6 @@ let camera, scene, renderer, hemiLight, dirLight, lightSet = 0, pointLight
 var geometry, mat2, mat3, mat4, mat5, mesh, matBlank
 const clock = new THREE.Clock()
 var altKey = false
-const bullStop = false
 var followCamPos = new Ammo.btVector3(0, 0, 0)
 const carModRot = new Ammo.btQuaternion(0, 0, 0, 1)
 var carHeading = 0.0
@@ -477,14 +475,13 @@ function triMeshBuilder(model, scale, positioner) {
 
 }// end tri mesh builder
 
-/* //for reference
-CF_STATIC_OBJECT= 1,
-CF_KINEMATIC_OBJECT= 2,
-CF_NO_CONTACT_RESPONSE=4,
-CF_CUSTOM_MATERIAL_CALLBACK=8,//this allows per-triangle material (friction/restitution)
-CF_CHARACTER_OBJECT=16,
+/* for reference
+  CF_STATIC_OBJECT= 1,
+  CF_KINEMATIC_OBJECT= 2,
+  CF_NO_CONTACT_RESPONSE=4,
+  CF_CUSTOM_MATERIAL_CALLBACK=8,//this allows per-triangle material (friction/restitution)
+  CF_CHARACTER_OBJECT=16,
 */
-
 const maxSpeed = []
 const goingTooFast = []
 const spinningTooFast = []
@@ -551,7 +548,6 @@ const carObjects = []
 var allCoordSame = true
 
 for (var c = 0; c < numCars; c++) {
-
   bodRotTick[c] = 0
   coordi[c] = 0
   coordx[c] = []
@@ -614,38 +610,6 @@ for (var c = 0; c < numCars; c++) {
   tuneup[c] = false
 }// num cars loop
 
-const paramTweaker = function () {
-  this.ShortCut = 'H Key Toggles This Tuner Panel'
-  this.maxSpeed = maxSpeed[cci]
-  this.maxEngineForce = maxEngineForce[cci]
-  this.maxBreakingForce = maxBreakingForce[cci]
-  this.steeringIncrement = steeringIncrement[cci]
-  this.steeringClamp = steeringClamp[cci]
-  this.steeringReturnRate = steeringReturnRate[cci]
-  this.wheelRadius = wheelRadius[cci]
-  this.wheelWidth = wheelWidth[cci]
-  this.frictionSlip = frictionSlip[cci]
-  this.rearWheelFriction = rearWheelFriction[cci]
-  this.suspensionStiffness = suspensionStiffness[cci]
-  this.suspensionDamping = suspensionDamping[cci]
-  this.suspensionCompression = suspensionCompression[cci]
-  this.rollInfluence = rollInfluence[cci]
-  this.suspensionRestLength = suspensionRestLength[cci]
-  this.maxSuspensionTravelCm = maxSuspensionTravelCm[cci]
-  this.maxSuspensionForce = maxSuspensionForce[cci]
-  this.CUBE_HALF_EXTENTS = CUBE_HALF_EXTENTS[cci]
-  this.connectionHeight = connectionHeight[cci]
-}// end param tweaker
-
-function applyTuneUp() {
-  for (let c = 0; c < numCars; c++) {
-    dynamicsWorld.removeVehicle(m_vehicle[c])
-    tuneup[c] = true
-    makeVehicle(c)
-  }
-}// end tweak
-
-// init vehicle
 function initVehicle(c) {
   const startTransform = new Ammo.btTransform()
   startTransform.setIdentity()
@@ -670,9 +634,8 @@ function initVehicle(c) {
   carObjects[c][ptr] = m_carChassis[c]
   makeVehicle(c)
   Ammo.destroy(localInertia); localInertia = null
-}// end init vehicle
+}
 
-// create vehicle
 function makeVehicle(c) {
   m_tuning = new Ammo.btVehicleTuning()
   m_tuning.set_m_suspensionStiffness(suspensionStiffness[c])
@@ -730,7 +693,7 @@ function makeVehicle(c) {
   tuneVehicle(c)
   Ammo.destroy(connectionPointCS0); connectionPointCS0 = null
   Ammo.destroy(m_tuning); m_tuning = null
-}// end make vehicle
+}
 
 function resetVehicle(c) {
   tv.setValue(0, 0, 0)
@@ -751,18 +714,16 @@ function resetVehicle(c) {
 
     Ammo.destroy(carTrans); carTrans = null
     Ammo.destroy(quat); quat = null
-  }// end if ! tune up
+  }
   dynamicsWorld.getBroadphase().getOverlappingPairCache().cleanProxyFromPairs(m_carChassis[c].getBroadphaseHandle(), dynamicsWorld.getDispatcher())
   if (m_vehicle[c]) {
     m_vehicle[c].resetSuspension()
     for (i = 0; i < m_vehicle[c].getNumWheels(); i++)
       // synchronize the wheels with the (interpolated) chassis worldtransform
       m_vehicle[c].updateWheelTransform(i, true)
-
   }
   tuneup[c] = false
-
-}// end reset vehicle
+}
 
 function tuneVehicle(c) {
   for (i = 0; i < m_vehicle[c].getNumWheels(); i++) {
@@ -778,18 +739,7 @@ function tuneVehicle(c) {
     m_vehicle[c].updateWheelTransform(i, true)
   }
   m_vehicle[c].updateSuspension()
-}// end tuneVehicle
-
-function bulletDestroy() {
-  // Delete objects we created through |new|. We just do a few of them here, but you should do them all if you are not shutting down ammo.js
-  // we'll free the objects in reversed order as they were created via 'new' to avoid the 'dead' object links
-  Ammo.destroy(dynamicsWorld)
-  Ammo.destroy(solver)
-  Ammo.destroy(overlappingPairCache)
-  Ammo.destroy(dispatcher)
-  Ammo.destroy(collisionConfiguration)
-  Ammo.destroy(tv)
-}// end bullDestroy
+}
 
 tv.setValue(0, -40, 0)
 dynamicsWorld.setGravity(tv)
@@ -839,7 +789,7 @@ function initObjects(numObjects) {
     bodies.push(body)
     Ammo.destroy(localInertia); localInertia = null
   }
-}// end init objects
+}
 
 const obTrans = new Ammo.btTransform()
 var triMeshBodyTrans = new Ammo.btTransform()
@@ -872,7 +822,6 @@ function resetBulletObjects() {
     bodies[i].setWorldTransform(clearTrans)
     bodies[i].clearForces()
     bodies[i].activate()
-    // bodies[i].setLinearVelocity(new Ammo.btVector3(-rx,-ry,-rz));
   }
   Ammo.destroy(clearTrans); clearTrans = null
 }// end reset bullet objects
@@ -886,7 +835,7 @@ function decalMaintenance() {
     decals = []
     decalCounter = 0
   }
-}// end decalMaintenance
+}
 
 function tireSmoker(i, smokerModel, xval) {
   if (typeof carModel[cci][0] !== 'undefined') {
@@ -923,7 +872,7 @@ function tireSmoker(i, smokerModel, xval) {
       if (smokerCount3[i] >= frame.length) smokerCount3[i] = 0
     }
   }
-}// end tire smoker
+}
 
 function findGround(c) {
   if (typeof worldModel !== 'undefined' && typeof carModel[c] !== 'undefined') {
@@ -991,10 +940,10 @@ function findGround(c) {
 
     Ammo.destroy(downRay); downRay = null
   }// if !== undefined
-}// end find ground
+}
 
 function bulletStep() {
-  if (!bullStop) dynamicsWorld.stepSimulation(1 / 60)
+  dynamicsWorld.stepSimulation(1 / 60)
 
   for (var c = 0; c < numCars; c++)
     findGround(c)
@@ -1310,12 +1259,9 @@ function bulletStep() {
     threeObject[i].position.set(p.x(), p.y(), p.z())
     threeObject[i].quaternion.set(q.x(), q.y(), q.z(), q.w())
   }
-
-  resettingCars = false
 }// end bulletStep
 
 init()
-animate()
 
 function skyInit() {
   scene.background = fogColor
@@ -1323,7 +1269,6 @@ function skyInit() {
 }
 
 function init() {
-
   container = document.createElement('div')
   container.style.height = window.innerHeight + 'px'
   container.style.width = window.innerWidth + 'px'
@@ -1343,7 +1288,6 @@ function init() {
   for (var c = 0; c < numCars; c++)
     initVehicle(c)
 
-  // skyColor,world, intensity
   hemiLight = new THREE.HemisphereLight(
     new THREE.Color(0xd7bb60),
     new THREE.Color(0xf0d7bb),
@@ -1351,20 +1295,8 @@ function init() {
   hemiLight.position.set(0, 1, 0)
   scene.add(hemiLight)
 
-  // dirLight=new THREE.DirectionalLight( 0xD6D6D6, 1 );
   dirLight = new THREE.DirectionalLight(0xffffff, 2.6)
   dirLight.castShadow = true
-  dirLight.shadowCameraVisible = true
-  dirLight.shadow.mapSize.width = 2500
-  dirLight.shadow.mapSize.height = 2500
-  const d = 120
-  dirLight.shadow.camera.left = -d
-  dirLight.shadow.camera.right = d
-  dirLight.shadow.camera.top = d
-  dirLight.shadow.camera.bottom = -d
-  dirLight.shadow.camera.far = 400
-  dirLight.shadow.bias = 0.0001
-
   scene.add(dirLight)
 
   pointLight = new THREE.PointLight(0x0011ff, 5, 200)
@@ -1375,8 +1307,6 @@ function init() {
   for (var c = 0; c < numCars; c++)
     for (i = 0; i < numCars; i++)
       objCarModelLoader(c, i, objFile[c][i], mtlFile[c][i], objScales[c][i])
-
-  // end num cars loop
 
   camAndKeys = new camAndKeyFunction()
 
@@ -1611,7 +1541,7 @@ function switchCars() {
 
 /* LOOP */
 
-function animate() {
+void function animate() {
   requestAnimationFrame(animate)
   // fade and delete decals after some time
   for (i = 0; i < decals.length; i++)
@@ -1636,4 +1566,4 @@ function animate() {
     if (!camStop) camAndKeys.update(dt)
     renderer.render(scene, camera)
   }
-}
+}()
