@@ -760,13 +760,11 @@ var camRotateCar = 0.0
 var oldMouseX = 0.0
 var oldMouseY = 0.0
 const camInd = 0
-let cubeReflect
 var objLoader
 var mtlLoader
 const worldMat = []
 const carColorInd = 0
 const numCarColors = 12
-let showSky = false
 const worldMatModified = false
 var pauser = false
 var camLag = .035, camLags = camLag
@@ -1344,13 +1342,6 @@ var worldID = 2
 var bodies = []
 
 const threeObject = [] // index 0 is for the ground, 1 for the camera
-
-cubeUrls = [
-  'px.jpg', 'nx.jpg',
-  'py.jpg', 'ny.jpg',
-  'pz.jpg', 'nz.jpg']
-cubeReflect = new THREE.CubeTextureLoader().load(cubeUrls)
-cubeReflect.format = THREE.RGBFormat
 
 var matBlank = new THREE.MeshBasicMaterial()
 matBlank.visible = false
@@ -2153,15 +2144,11 @@ function init() {
   const sphereMaterialMandala = new THREE.MeshPhongMaterial({
     color: 0x666666,
     specular: 0x111111,
-    envMap: cubeReflect,
-    // emissive:0x0011ff,
     map: sphereTextureMandala,
     bumpMap: sphereTextureMandala,
     bumpScale: .1,
-    // transparent:true,
     opacity: 1,
     shininess: 900,
-    // side:THREE.DoubleSide
   })
   const sphering = new THREE.SphereBufferGeometry(10, 32, 32)
   markerSphere = new THREE.Mesh(sphering, sphereMaterialMandala)
@@ -2538,7 +2525,6 @@ function modifyCarMaterials(c) {
 
         // tires and undercarriage do not reflect
         if (n != 'Material_#8t' && n != 'mat_3-van1t.jpg' && n != 'mat_1-moskvitch.jpgt' && n != 'Material_#33t' && n != 'mat_2-humvee_desert_tire_diffuse.jpgt' && n !== 'mat_0-taxi_cab.jpgt') {
-          m[n].envMap = cubeReflect
           m[n].shininess = 900
         } else m[n].shininess = 0
 
