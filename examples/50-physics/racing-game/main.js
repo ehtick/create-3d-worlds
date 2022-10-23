@@ -119,7 +119,6 @@ const steerCarRight = []
 let m_tuning
 
 const coordi = []
-const coordRange = 300
 const numCoords = 100
 const coordx = []
 const coordz = []
@@ -134,7 +133,6 @@ const rimColor = []
 const chassisWorldTrans = []
 const tuneup = []
 const carObjects = []
-const allCoordSame = true
 
 for (let c = 0; c < numCars; c++) {
   bodRotTick[c] = 0
@@ -142,14 +140,10 @@ for (let c = 0; c < numCars; c++) {
   coordx[c] = []
   coordz[c] = []
 
-  for (let i = 0; i < numCoords; i++)
-    if (c > 0 && allCoordSame) {
-      coordx[c][i] = coordx[0][i]
-      coordz[c][i] = coordz[0][i]
-    } else {
-      coordx[c][i] = randRange(-coordRange, coordRange)
-      coordz[c][i] = randRange(-coordRange, coordRange)
-    }
+  for (let i = 0; i < numCoords; i++) {
+    coordx[c][i] = coordx[0][i]
+    coordz[c][i] = coordz[0][i]
+  }
 
   maxSpeed[c] = 150.0
   goingTooFast[c] = false
