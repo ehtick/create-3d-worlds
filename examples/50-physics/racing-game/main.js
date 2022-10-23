@@ -13,14 +13,11 @@ const downRayDir = new Ammo.btVector3(0, 0, 0)
 const center = new Ammo.btVector3(0, -38, 0)
 
 let cci = 3
-const dec = new Ammo.btVector3(0, 0, 0)
-const dec2 = new Ammo.btVector3(0, 0, 0)
-const dec3 = new Ammo.btVector3(0, 0, 0)
 const smo = new Ammo.btVector3(0, 0, 0)
 const smo2 = new Ammo.btVector3(0, 0, 0)
 const smo3 = new Ammo.btVector3(0, 0, 0)
 const smo4 = new THREE.Vector3(0, 0, 0)
-let s_material, s_material2, s_material3, smoker, smoker2, smoker3, smoker4, sparksMesh
+let smoker, smoker2, smoker3, smoker4, sparksMesh
 let smokerCount = 0, smokerCount2 = 6
 const frame = []
 let opacDown = false, opac = .1
@@ -774,7 +771,7 @@ function init() {
 
   s_geometry = new THREE.PlaneGeometry(2, 2, 1, 1)
 
-  s_material = new THREE.MeshPhongMaterial({
+  const s_material = new THREE.MeshPhongMaterial({
     map: frame[0],
     transparent: true,
     color: 0xffffff,
@@ -785,7 +782,7 @@ function init() {
     // side:THREE.DoubleSide
   })
 
-  s_material2 = new THREE.MeshPhongMaterial({
+  const s_material2 = new THREE.MeshPhongMaterial({
     map: frame[0],
     transparent: true,
     color: 0xffffff,
@@ -796,7 +793,7 @@ function init() {
     side: THREE.DoubleSide
   })
 
-  s_material3 = new THREE.MeshPhongMaterial({
+  const s_material3 = new THREE.MeshPhongMaterial({
     map: frame[0],
     transparent: true,
     color: 0xffffff,
@@ -834,6 +831,10 @@ function init() {
 }
 
 function shoot(c) {
+  const dec = new Ammo.btVector3(0, 0, 0)
+  const dec2 = new Ammo.btVector3(0, 0, 0)
+  const dec3 = new Ammo.btVector3(0, 0, 0)
+
   if (carModel[c][0] && carModel[c][1] && worldModel.children[0]) {
     const wheelRot = m_carChassis[c].getWorldTransform().getBasis()
     dec.setValue(-.2, 0, .2)
@@ -1184,8 +1185,10 @@ function updatePhysics() {
           smoker.position.set(smo4.x, smo4.y, smo4.z)
 
           smoker.material.map = frame[smokerCount]
-          if (opacDown) opac -= .02; else opac += .02
-          if (opac < .4) opacDown = false; else if (opac > 1.5) opacDown = true
+          if (opacDown) opac -= .02
+          else opac += .02
+          if (opac < .4) opacDown = false
+          else if (opac > 1.5) opacDown = true
           smoker.material.opacity = opac
           smokerCount++; if (smokerCount > frame.length - 1) smokerCount = 0
 
@@ -1255,7 +1258,7 @@ function updateDecals() {
     decal.material.opacity -= .001
     if (decal.material.opacity <= 0) scene.remove(decal)
   })
-  decals = decals.filter(decal => decal.material.opacity <= 0)
+  decals = decals.filter(decal => decal.material.opacity > 0)
 }
 
 void function animate() {
