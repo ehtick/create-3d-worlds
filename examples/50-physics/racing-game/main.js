@@ -45,23 +45,21 @@ let currentCarIndex = 1
 const carModel = []
 const tireClones = []
 const hubClones = []
-const objFile = []
-const mtlFile = []
 const objScales = []
 const worldSwitching = []
 const carHeightAboveGround = []
-
-for (let c = 0; c < numCars; c++) {
-  carHeightAboveGround[c] = 0
-  worldSwitching[c] = true
-  objScales[c] = [.57, .57]
-  if (c == 0) {
-    objFile[c] = ['ladavaz.obj', 'ladavazTire.obj']
-    mtlFile[c] = ['ladavaz.mtl', 'ladavazTire.mtl']
-  } else if (c == 1) {
-    objFile[c] = ['hummer.obj', 'hummerTire.obj']
-    mtlFile[c] = ['hummer.mtl', 'hummerTire.mtl']
-  }
+const objFile = [
+  ['ladavaz.obj', 'ladavazTire.obj'],
+  ['hummer.obj', 'hummerTire.obj'],
+]
+const mtlFile = [
+  ['ladavaz.mtl', 'ladavazTire.mtl'],
+  ['hummer.mtl', 'hummerTire.mtl'],
+]
+for (let i = 0; i < numCars; i++) {
+  carHeightAboveGround[i] = 0
+  worldSwitching[i] = true
+  objScales[i] = [.57, .57]
 }
 
 const DISABLE_DEACTIVATION = 4
