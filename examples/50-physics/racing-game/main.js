@@ -2,7 +2,8 @@
 const SCREEN_HEIGHT = window.innerHeight
 const SCREEN_WIDTH = window.innerWidth
 
-let worldModel
+let camera, scene, renderer, hemiLight, dirLight, pointLight, worldModel
+const clock = new THREE.Clock()
 const worldFiles = ['courser14a']
 const textureLoader = new THREE.TextureLoader()
 const decalDiffuse = textureLoader.load('track5.png')
@@ -12,7 +13,6 @@ let carHit = false
 const downRayDir = new Ammo.btVector3(0, 0, 0)
 const center = new Ammo.btVector3(0, -38, 0)
 
-let cci = 3
 const smo = new Ammo.btVector3(0, 0, 0)
 const smo2 = new Ammo.btVector3(0, 0, 0)
 const smo3 = new Ammo.btVector3(0, 0, 0)
@@ -25,42 +25,22 @@ const hitPoint = new Ammo.btVector3(0, 0, 0)
 const smokerCount3 = [0, 5]
 const smoUp = [true, true]
 let smoker2Scale = .1
-const carVel = new THREE.Vector3(0, 0, 0)
+const velocity = new THREE.Vector3(0, 0, 0)
 const oldCarPos = new THREE.Vector3(0, 0, 0)
 const oldCarPos2 = new THREE.Vector3(0, 0, 0)
 let decRot = 0
-let decalCounter = 0
 let decals = []
-let material_d
-const p_d = new THREE.Vector3(0, 0, 0)
-const r_d = new THREE.Euler(0, 0, 0, 'XYZ')
-const s_d = new THREE.Vector3(90, 90, 90)
 
-let objLoader, mtlLoader
-const worldScale = 22
-const fogColor = new THREE.Color(0xae9a7b)// ae9a7b
+const worldScale = 25
 let groundY = 0
-let xvelc = 0, yvelc = 0, zvelc = 0, ctFac = 1.35
-const tranCam = new Ammo.btTransform()
-const tranChass = new Ammo.btTransform()
-let chaseCamO = new Ammo.btVector3()
-let carRot = new Ammo.btMatrix3x3()
+const transformCam = new Ammo.btTransform()
+const transformChass = new Ammo.btTransform()
 let bodRot = -1
-const fogFar = 500
-let camera, scene, renderer, hemiLight, dirLight, pointLight
-const clock = new THREE.Clock()
-let pageUpper = false, pageDowner = false
-let camHeight = 4.0
-let camDist = 8.0
-const minCamHeight = .1, maxCamHeight = 20
-const camHeightS = camHeight, camDistS = camDist
-let dt = 0.0
-const chaseCammer = true
-let chaseStarter = chaseCammer
+let chaseStarter = true
 
 const carNames = ['lada', 'hummer']
 const numCars = carNames.length
-if (cci >= numCars) cci = numCars - 1
+let currentCarIndex = 1
 
 const carModel = []
 const tireClones = []
@@ -223,7 +203,7 @@ for (let c = 0; c < numCars; c++) {
   hubClones[c] = []
   carPos[c] = new Ammo.btVector3(0, 0, 0)
   carMat[c] = []
-  if (c == cci) {
+  if (c == currentCarIndex) {
     carColor[c] = new THREE.Color('rgb(95,118,103)')
     rimColor[c] = new THREE.Color('rgb(90,90,90)')
   } else {
@@ -275,79 +255,64 @@ function fixAngleRad(a) {
 
 function updateCamera() {
   tv.setValue(0.0, -1.0, 0.0)
-  bodRot = m_carChassis[cci].getWorldTransform().getBasis().getColumn(1).dot(tv)
-  if (chaseCammer) {
-    bodies[1].getMotionState().getWorldTransform(tranCam)
+  bodRot = m_carChassis[currentCarIndex].getWorldTransform().getBasis().getColumn(1).dot(tv)
+  bodies[1].getMotionState().getWorldTransform(transformCam)
 
-    chaseCamO = tranCam.getOrigin()
-    m_carChassis[cci].getMotionState().getWorldTransform(tranChass)
+  let chaseCam = transformCam.getOrigin()
+  m_carChassis[currentCarIndex].getMotionState().getWorldTransform(transformChass)
 
-    // camera should never go underground
-    let toPointer = new Ammo.btVector3(chaseCamO.getX(), chaseCamO.getY() - 200, chaseCamO.getZ())
-    let rayer = new Ammo.ClosestRayResultCallback(chaseCamO, toPointer)
-    dynamicsWorld.rayTest(chaseCamO, toPointer, rayer)
-    if (rayer.hasHit())
-      groundY = rayer.get_m_hitPointWorld().getY() + 3
+  // camera should never go underground
+  let toPointer = new Ammo.btVector3(chaseCam.getX(), chaseCam.getY() - 200, chaseCam.getZ())
+  let rayer = new Ammo.ClosestRayResultCallback(chaseCam, toPointer)
+  dynamicsWorld.rayTest(chaseCam, toPointer, rayer)
+  if (rayer.hasHit())
+    groundY = rayer.get_m_hitPointWorld().getY() + 3
 
-    Ammo.destroy(toPointer); toPointer = null
-    Ammo.destroy(rayer); rayer = null
+  Ammo.destroy(toPointer); toPointer = null
+  Ammo.destroy(rayer); rayer = null
 
-    setChaseCam()
+  setChaseCam()
 
-    xvelc = tCamPoint.x() - chaseCamO.x()
-    yvelc = tCamPoint.y() - chaseCamO.y()
-    zvelc = tCamPoint.z() - chaseCamO.z()
+  const xvelc = tCamPoint.x() - chaseCam.x()
+  const yvelc = tCamPoint.y() - chaseCam.y()
+  const zvelc = tCamPoint.z() - chaseCam.z()
 
-    ctFac = 1
-    tv.setValue(xvelc * ctFac, yvelc * ctFac, zvelc * ctFac)
-    bodies[1].setLinearVelocity(tv)
-    bodies[1].getMotionState().getWorldTransform(tranCam)
-    chaseCamO = tranCam.getOrigin()
+  tv.setValue(xvelc, yvelc, zvelc)
+  bodies[1].setLinearVelocity(tv)
+  bodies[1].getMotionState().getWorldTransform(transformCam)
+  chaseCam = transformCam.getOrigin()
 
-    camera.position.x = chaseCamO.x()
-    camera.position.y = chaseCamO.y()
-    camera.position.z = chaseCamO.z()
+  camera.position.x = chaseCam.x()
+  camera.position.y = chaseCam.y()
+  camera.position.z = chaseCam.z()
 
-    if (camera.position.y < groundY) {
-      chaseCamO.setY(groundY)
-      tranCam.setOrigin(chaseCamO)
-    }
-
-    bodies[1].setWorldTransform(tranCam)
-    camera.lookAt(new THREE.Vector3(carPos[cci].x(), carPos[cci].y(), carPos[cci].z()))
-
-    if (chaseStarter) {
-      setChaseCam()
-      tranCam.setIdentity()
-      tranCam.setOrigin(tCamPoint)
-      if (!worldSwitching[cci]) chaseStarter = false
-    }
-    bodies[1].setWorldTransform(tranCam)
+  if (camera.position.y < groundY) {
+    chaseCam.setY(groundY)
+    transformCam.setOrigin(chaseCam)
   }
 
-  if (pageUpper)
-    if (camHeight < maxCamHeight)
-      camHeight *= 1.05
-    else camHeight = maxCamHeight
+  bodies[1].setWorldTransform(transformCam)
+  camera.lookAt(new THREE.Vector3(carPos[currentCarIndex].x(), carPos[currentCarIndex].y(), carPos[currentCarIndex].z()))
 
-  else if (pageDowner)
-    if (camHeight > minCamHeight)
-      camHeight *= .95
-    else camHeight = minCamHeight
+  if (chaseStarter) {
+    setChaseCam()
+    transformCam.setIdentity()
+    transformCam.setOrigin(tCamPoint)
+    if (!worldSwitching[currentCarIndex]) chaseStarter = false
+  }
+  bodies[1].setWorldTransform(transformCam)
 }
 
-function setChaseCam() {
-  camDist = camDistS; camHeight = camHeightS
-
-  carRot = m_carChassis[cci].getWorldTransform().getBasis()
-  const c2 = new Ammo.btVector3(0, camHeightS, -camDistS)
+function setChaseCam(camHeight = 4, camDist = 8) {
+  const carRot = m_carChassis[currentCarIndex].getWorldTransform().getBasis()
+  const c2 = new Ammo.btVector3(0, camHeight, -camDist)
   const camPointer = new Ammo.btVector3(
     carRot.getRow(0).x() * c2.x() + carRot.getRow(0).y() * c2.y() + carRot.getRow(0).z() * c2.z(),
     carRot.getRow(1).x() * c2.x() + carRot.getRow(1).y() * c2.y() + carRot.getRow(1).z() * c2.z(),
     carRot.getRow(2).x() * c2.x() + carRot.getRow(2).y() * c2.y() + carRot.getRow(2).z() * c2.z()
   )
 
-  const carOrigin = m_carChassis[cci].getWorldTransform().getOrigin()
+  const carOrigin = m_carChassis[currentCarIndex].getWorldTransform().getOrigin()
   tCamPoint.setValue(
     camPointer.x() + carOrigin.x(),
     camPointer.y() + carOrigin.y(),
@@ -586,19 +551,8 @@ function resetBulletObjects() {
   Ammo.destroy(clearTrans); clearTrans = null
 }
 
-function decalMaintenance() {
-  decalCounter += 2
-  if (decalCounter > 120) decalCounter = 0
-
-  if (decals.length > 1000) {
-    for (let i = 0; i < decals.length; i++) scene.remove(decals[i])
-    decals = []
-    decalCounter = 0
-  }
-}
-
 function tireSmoker(i, smokerModel, xval) {
-  if (typeof carModel[cci][0] !== 'undefined') {
+  if (carModel[currentCarIndex][0]) {
     smokerModel.quaternion.set(
       camera.quaternion.x,
       camera.quaternion.y,
@@ -606,8 +560,8 @@ function tireSmoker(i, smokerModel, xval) {
       camera.quaternion.w
     )
 
-    if ((moveCarForward[cci] || moveCarBackward[cci]) && Math.abs(kmh[cci]) < maxSpeed[cci] / 4) {
-      const s_caro = m_carChassis[cci].getWorldTransform().getBasis()
+    if ((moveCarForward[currentCarIndex] || moveCarBackward[currentCarIndex]) && Math.abs(kmh[currentCarIndex]) < maxSpeed[currentCarIndex] / 4) {
+      const s_caro = m_carChassis[currentCarIndex].getWorldTransform().getBasis()
       smo.setValue(xval, .1, -1.8)
       smo2.setValue(
         s_caro.getRow(0).x() * smo.x() + s_caro.getRow(0).y() * smo.y() + s_caro.getRow(0).z() * smo.z(),
@@ -615,9 +569,9 @@ function tireSmoker(i, smokerModel, xval) {
         s_caro.getRow(2).x() * smo.x() + s_caro.getRow(2).y() * smo.y() + s_caro.getRow(2).z() * smo.z()
       )
       smo3.setValue(
-        smo2.x() + carModel[cci][0].position.x,
-        smo2.y() + carModel[cci][0].position.y,
-        smo2.z() + carModel[cci][0].position.z
+        smo2.x() + carModel[currentCarIndex][0].position.x,
+        smo2.y() + carModel[currentCarIndex][0].position.y,
+        smo2.z() + carModel[currentCarIndex][0].position.z
       )
       smo4.set(smo3.x(), smo3.y(), smo3.z())
       smokerModel.position.set(smo4.x, smo4.y, smo4.z)
@@ -633,7 +587,7 @@ function tireSmoker(i, smokerModel, xval) {
 }
 
 function findGround(c) {
-  if (typeof worldModel !== 'undefined' && typeof carModel[c] !== 'undefined') {
+  if (worldModel && carModel[c]) {
     m_carChassis[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
     carPos[c] = chassisWorldTrans[c].getOrigin()
     downRayDir.setX(carPos[c].x())
@@ -644,7 +598,6 @@ function findGround(c) {
 
     if (downRay.hasHit()) {
       carHeightAboveGround[c] = carPos[c].distance(downRay.get_m_hitPointWorld())
-
       m_carChassis[c].setDamping(0, 0)
 
       if (worldSwitching[c]) {
@@ -696,8 +649,9 @@ function findGround(c) {
 }
 
 function skyInit() {
+  const fogColor = new THREE.Color(0xae9a7b)
   scene.background = fogColor
-  scene.fog = new THREE.Fog(fogColor, 0, fogFar)
+  scene.fog = new THREE.Fog(fogColor, 0, 500)
 }
 
 function init() {
@@ -814,6 +768,10 @@ function shoot(c) {
   const dec2 = new Ammo.btVector3(0, 0, 0)
   const dec3 = new Ammo.btVector3(0, 0, 0)
 
+  const p_d = new THREE.Vector3(0, 0, 0)
+  const r_d = new THREE.Euler(0, 0, 0, 'XYZ')
+  const s_d = new THREE.Vector3(90, 90, 90)
+
   if (carModel[c][0] && carModel[c][1] && worldModel.children[0]) {
     const wheelRot = m_carChassis[c].getWorldTransform().getBasis()
     dec.setValue(-.2, 0, .2)
@@ -830,24 +788,24 @@ function shoot(c) {
 
     p_d.set(dec3.x(), dec3.y(), dec3.z())
 
-    carVel.x = p_d.x - oldCarPos.x
-    carVel.y = p_d.y - oldCarPos.y
-    carVel.z = p_d.z - oldCarPos.z
+    velocity.x = p_d.x - oldCarPos.x
+    velocity.y = p_d.y - oldCarPos.y
+    velocity.z = p_d.z - oldCarPos.z
 
     oldCarPos.x = p_d.x
     oldCarPos.y = p_d.y
     oldCarPos.z = p_d.z
     // angle from velocity
-    decRot = -fixAngleRad(Math.atan2(carVel.z, carVel.x) + Math.PI / 2)
+    decRot = -fixAngleRad(Math.atan2(velocity.z, velocity.x) + Math.PI / 2)
 
     r_d.set(0, decRot, 0)
-    if (carVel.length() > 2) {
-      carVel.x = 0
-      carVel.y = 0
-      carVel.z = 0
+    if (velocity.length() > 2) {
+      velocity.x = 0
+      velocity.y = 0
+      velocity.z = 0
     }
-    s_d.set(1, 1, carVel.length())
-    material_d = decalMaterial.clone()
+    s_d.set(1, 1, velocity.length())
+    const material_d = decalMaterial.clone()
     let md = new THREE.Mesh(new THREE.DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
     decals.push(md)
     scene.add(md)
@@ -865,21 +823,21 @@ function shoot(c) {
     )
     p_d.set(dec3.x(), dec3.y(), dec3.z())
 
-    carVel.x = p_d.x - oldCarPos2.x
-    carVel.y = p_d.y - oldCarPos2.y
-    carVel.z = p_d.z - oldCarPos2.z
+    velocity.x = p_d.x - oldCarPos2.x
+    velocity.y = p_d.y - oldCarPos2.y
+    velocity.z = p_d.z - oldCarPos2.z
 
     oldCarPos2.x = p_d.x
     oldCarPos2.y = p_d.y
     oldCarPos2.z = p_d.z
 
-    decRot = -fixAngleRad(Math.atan2(carVel.z, carVel.x) + Math.PI / 2)
+    decRot = -fixAngleRad(Math.atan2(velocity.z, velocity.x) + Math.PI / 2)
     r_d.set(0, decRot, 0)
 
-    if (carVel.length() > 2) {
-      carVel.x = 0; carVel.y = 0; carVel.z = 0
+    if (velocity.length() > 2) {
+      velocity.x = 0; velocity.y = 0; velocity.z = 0
     }
-    s_d.set(1, 1, carVel.length())
+    s_d.set(1, 1, velocity.length())
 
     md = new THREE.Mesh(new THREE.DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
     decals.push(md)
@@ -888,11 +846,11 @@ function shoot(c) {
 }
 
 function objCarModelLoader(c, i, objFile, mtlFile, scale) {
-  mtlLoader = new THREE.MTLLoader()
+  const mtlLoader = new THREE.MTLLoader()
   mtlLoader.load(mtlFile, materials => {
     carMat[c][i] = materials
     materials.preload()
-    objLoader = new THREE.OBJLoader()
+    const objLoader = new THREE.OBJLoader()
     objLoader.setMaterials(materials)
     objLoader.load(objFile, object => {
       object.position.set(0, 0, 0)
@@ -906,7 +864,7 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale) {
           }
         })
       scene.add(carModel[c][i])
-      if (c == cci && i == 0) dirLight.target = carModel[cci][0]
+      if (c == currentCarIndex && i == 0) dirLight.target = carModel[currentCarIndex][0]
 
       // make three copies each of tire
       if (i == 1)
@@ -919,10 +877,10 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale) {
 }
 
 function objWorldModelLoader(objFile, mtlFile, scale) {
-  mtlLoader = new THREE.MTLLoader()
+  const mtlLoader = new THREE.MTLLoader()
   mtlLoader.load(mtlFile, materials => {
     materials.preload()
-    objLoader = new THREE.OBJLoader()
+    const objLoader = new THREE.OBJLoader()
     objLoader.setMaterials(materials)
     objLoader.load(objFile, object => {
       object.position.set(0, -38, 0)
@@ -938,16 +896,16 @@ function objWorldModelLoader(objFile, mtlFile, scale) {
 }
 
 function switchCars() {
-  cci++; if (cci >= numCars) cci = 0
-  dirLight.target = carModel[cci][0]
+  currentCarIndex++; if (currentCarIndex >= numCars) currentCarIndex = 0
+  dirLight.target = carModel[currentCarIndex][0]
 
-  moveCarForward[cci] = false
-  moveCarBackward[cci] = false
-  gVehicleSteering[cci] = 0
-  steerCarLeft[cci] = false
-  steerCarRight[cci] = false
+  moveCarForward[currentCarIndex] = false
+  moveCarBackward[currentCarIndex] = false
+  gVehicleSteering[currentCarIndex] = 0
+  steerCarLeft[currentCarIndex] = false
+  steerCarRight[currentCarIndex] = false
 
-  if (chaseCammer) chaseStarter = true
+  chaseStarter = true
 }
 
 /* LOOP */
@@ -969,9 +927,9 @@ function updatePhysics() {
     const manifold = dp.getManifoldByIndexInternal(i)
     const num_contacts = manifold.getNumContacts()
     if (num_contacts !== 0) {
-      const bodyA = carObjects[cci][manifold.getBody0()]
-      const bodyB = carObjects[cci][manifold.getBody1()]
-      if ((bodyA == m_carChassis[cci] || bodyB == m_carChassis[cci]) && !(bodyA == bodies[1] || bodyB == bodies[1])) {
+      const bodyA = carObjects[currentCarIndex][manifold.getBody0()]
+      const bodyB = carObjects[currentCarIndex][manifold.getBody1()]
+      if ((bodyA == m_carChassis[currentCarIndex] || bodyB == m_carChassis[currentCarIndex]) && !(bodyA == bodies[1] || bodyB == bodies[1])) {
         carHit = true
         carHitForce.push(manifold.getContactPoint().get_m_appliedImpulse())
         manifolder.push(manifold)
@@ -996,10 +954,9 @@ function updatePhysics() {
   }
 
   for (let c = 0; c < numCars; c++) {
-    if (c == cci)
+    if (c == currentCarIndex)
       if (m_vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveCarForward[c] || moveCarBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4)) {
         shoot(c)
-        decalMaintenance()
         tireSmoker(0, smoker3, .9)
         tireSmoker(1, smoker4, -1.1)
       } else {
@@ -1052,7 +1009,7 @@ function updatePhysics() {
       } else bodRotTick[c] = 0
     }
 
-    if (c != cci) moveCarForward[c] = false
+    if (c != currentCarIndex) moveCarForward[c] = false
 
     accelerating[c] = (moveCarForward[c] || moveCarBackward[c])
 
@@ -1092,7 +1049,7 @@ function updatePhysics() {
     carPos[c] = chassisWorldTrans[c].getOrigin()
 
     for (let i = 0; i < numCars; i++)
-      if (typeof carModel[c][i] !== 'undefined') {
+      if (carModel[c][i]) {
         carModel[c][i].position.set(carPos[c].x(), carPos[c].y(), carPos[c].z())
         carModel[c][i].quaternion.set(
           chassisWorldTrans[c].getRotation().x(),
@@ -1101,16 +1058,8 @@ function updatePhysics() {
           chassisWorldTrans[c].getRotation().w()
         )
 
-        if (c == cci && i == 0) {
-          if (chaseCammer)
-            dirLight.position.set(carPos[c].x(), carPos[c].y() + 250, carPos[c].z())
-          else
-            dirLight.position.set(
-              camera.position.x,
-              camera.position.y + 250,
-              camera.position.z
-            )
-
+        if (c == currentCarIndex && i == 0) {
+          dirLight.position.set(carPos[c].x(), carPos[c].y() + 250, carPos[c].z())
           smoker.quaternion.set(
             camera.quaternion.x,
             camera.quaternion.y,
@@ -1180,19 +1129,19 @@ function updatePhysics() {
       const q = wheelTrans.getRotation()
       // clones of tire and hub
       if (i < 3) {
-        if (typeof tireClones[c][i] !== 'undefined') {
+        if (tireClones[c][i]) {
           tireClones[c][i].position.set(p.x(), p.y(), p.z())
           tireClones[c][i].quaternion.set(q.x(), q.y(), q.z(), q.w())
           if (i == 0) tireClones[c][i].rotateY(- Math.PI)
         }
-        if (typeof hubClones[c][i] !== 'undefined') {
+        if (hubClones[c][i]) {
           hubClones[c][i].position.set(p.x(), p.y(), p.z())
           hubClones[c][i].quaternion.set(q.x(), q.y(), q.z(), q.w())
           if (i == 0) hubClones[c][i].rotateY(- Math.PI)
         }
       } else if (i == 3)
         // original copy of tire and hub for wheels
-        if (typeof carModel[c][1] !== 'undefined') {
+        if (carModel[c][1]) {
           carModel[c][1].position.set(p.x(), p.y(), p.z())
           carModel[c][1].quaternion.set(q.x(), q.y(), q.z(), q.w())
           carModel[c][1].rotateY(- Math.PI)
@@ -1220,7 +1169,7 @@ function updateDecals() {
 
 void function animate() {
   requestAnimationFrame(animate)
-  dt = clock.getDelta()
+  const dt = clock.getDelta()
   updatePhysics()
   updateDecals()
   updateCamera(dt)
@@ -1233,43 +1182,34 @@ const onKeyDowner = function(event) {
   switch (event.key) {
     case 'ArrowUp':
     case 'w':
-      moveCarForward[cci] = true
+      moveCarForward[currentCarIndex] = true
       break
     case 'ArrowLeft':
     case 'a':
-      steerCarLeft[cci] = true
+      steerCarLeft[currentCarIndex] = true
       break
     case 'ArrowDown':
     case 's':
-      moveCarBackward[cci] = true
+      moveCarBackward[currentCarIndex] = true
       break
     case 'ArrowRight':
     case 'd':
-      steerCarRight[cci] = true
+      steerCarRight[currentCarIndex] = true
       break
     case ' ': // spacebar
-      gBreakingForce[cci] = maxBreakingForce[cci] * 2
-      gEngineForce[cci] = 0.0
+      gBreakingForce[currentCarIndex] = maxBreakingForce[currentCarIndex] * 2
+      gEngineForce[currentCarIndex] = 0.0
       break
     case '4':
       switchCars()
       break
     case '8':
-      moveCarForward[cci] = false
-      steerCarLeft[cci] = false
-      steerCarRight[cci] = false
-      gVehicleSteering[cci] = 0
-      break
-    case 't':
-      break
-    case 'PageUp':
-      pageUpper = true
-      break
-    case 'PageDown':
-      pageDowner = true
+      moveCarForward[currentCarIndex] = false
+      steerCarLeft[currentCarIndex] = false
+      steerCarRight[currentCarIndex] = false
+      gVehicleSteering[currentCarIndex] = 0
       break
   }
-
   event.repeat = false
 }
 
@@ -1277,29 +1217,19 @@ const onKeyUpper = function(event) {
   switch (event.key) {
     case 'ArrowUp':
     case 'w':
-      moveCarForward[cci] = false
+      moveCarForward[currentCarIndex] = false
       break
-
     case 'ArrowLeft':
     case 'a':
-      steerCarLeft[cci] = false
+      steerCarLeft[currentCarIndex] = false
       break
-
     case 'ArrowDown':
     case 's':
-      moveCarBackward[cci] = false
+      moveCarBackward[currentCarIndex] = false
       break
-
     case 'ArrowRight':
     case 'd':
-      steerCarRight[cci] = false
-      break
-
-    case 'PageUp':
-      pageUpper = false
-      break
-    case 'PageDown':
-      pageDowner = false
+      steerCarRight[currentCarIndex] = false
       break
   }
 }
