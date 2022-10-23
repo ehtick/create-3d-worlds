@@ -657,8 +657,6 @@ function init() {
   renderer.shadowMap.type = THREE.PCFSoftShadowMap
   container.appendChild(renderer.domElement)
 
-  container.style.paddingLeft = '30px'
-  container.style.paddingTop = '10px'
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
 
   const numFrames = 14
@@ -1155,7 +1153,6 @@ const onKeyDowner = function(event) {
       gVehicleSteering[currentCarIndex] = 0
       break
   }
-  event.repeat = false
 }
 
 const onKeyUpper = function(event) {
