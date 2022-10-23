@@ -17,14 +17,11 @@ const smo = new Ammo.btVector3(0, 0, 0)
 const smo2 = new Ammo.btVector3(0, 0, 0)
 const smo3 = new Ammo.btVector3(0, 0, 0)
 const smo4 = new THREE.Vector3(0, 0, 0)
-let smoker, smoker2, smoker3, smoker4, sparksMesh
+let smoker, smoker2, smoker3, smoker4
 let smokerCount = 0, smokerCount2 = 6
 const frame = []
 let opacDown = false, opac = .1
-const sparks = []
-let sparkler = false
 const hitPoint = new Ammo.btVector3(0, 0, 0)
-let sparksCount = 0
 const smokerCount3 = [0, 5]
 const smoUp = [true, true]
 let smoker2Scale = .1
@@ -760,16 +757,11 @@ function init() {
   container.style.paddingTop = '10px'
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
 
-  let s_geometry = new THREE.BufferGeometry()
-  let numFrames = 6
-  for (let si = 0; si < numFrames; si++)
-    sparks[si] = new THREE.TextureLoader().load('animations/sparks_' + si + '.gif')
-
-  numFrames = 14
+  const numFrames = 14
   for (let si = 0; si < numFrames; si++)
     frame[si] = new THREE.TextureLoader().load('animations/dirty2_' + si + '.gif')
 
-  s_geometry = new THREE.PlaneGeometry(2, 2, 1, 1)
+  const s_geometry = new THREE.PlaneGeometry(2, 2, 1, 1)
 
   const s_material = new THREE.MeshPhongMaterial({
     map: frame[0],
@@ -804,15 +796,6 @@ function init() {
     side: THREE.DoubleSide
   })
 
-  const s_material4 = new THREE.MeshBasicMaterial({
-    map: sparks[0],
-    transparent: true,
-    visible: false,
-    color: 0xffffff,
-    opacity: .7,
-    side: THREE.DoubleSide
-  })
-
   smoker = new THREE.Mesh(s_geometry, s_material)
   smoker.scale.set(.4, .4, .4)
   smoker2 = new THREE.Mesh(s_geometry, s_material2)
@@ -820,14 +803,10 @@ function init() {
   smoker3 = new THREE.Mesh(s_geometry, s_material3)
   smoker4 = new THREE.Mesh(s_geometry, s_material3)
 
-  sparksMesh = new THREE.Mesh(s_geometry, s_material4)
-  sparksMesh.receiveShadow = false
-
   scene.add(smoker)
   scene.add(smoker2)
   scene.add(smoker3)
   scene.add(smoker4)
-  scene.add(sparksMesh)
 }
 
 function shoot(c) {
@@ -1009,28 +988,6 @@ function updatePhysics() {
         hitPoint.setY(manifolder[i].getContactPoint().getPositionWorldOnA().y())
         hitPoint.setZ(manifolder[i].getContactPoint().getPositionWorldOnA().z())
       }
-  }
-
-  if (sparkler) {
-    sparksMesh.quaternion.set(
-      camera.quaternion.x,
-      camera.quaternion.y,
-      camera.quaternion.z,
-      camera.quaternion.w
-    )
-
-    sparksMesh.position.set(hitPoint.x(), hitPoint.y(), hitPoint.z())
-
-    sparksMesh.material.map = sparks[sparksCount]
-    sparksMesh.material.visible = true
-    sparksMesh.material.opacity = 1
-    sparksMesh.scale.set(5, 5, 5)
-    sparksCount++
-    if (sparksCount >= sparks.length) {
-      sparksCount = 0
-      sparkler = false
-      sparksMesh.material.visible = false
-    }
   }
 
   if (resetBulletObjectsBool) {
