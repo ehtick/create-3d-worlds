@@ -46,7 +46,6 @@ const carModel = []
 const tireClones = []
 const hubClones = []
 const objScales = []
-const worldSwitching = []
 const carHeightAboveGround = []
 const objFile = [
   ['ladavaz.obj', 'ladavazTire.obj'],
@@ -58,13 +57,11 @@ const mtlFile = [
 ]
 for (let i = 0; i < numCars; i++) {
   carHeightAboveGround[i] = 0
-  worldSwitching[i] = true
   objScales[i] = [.57, .57]
 }
 
 const DISABLE_DEACTIVATION = 4
 const numObjects = 2 // ground is 0, camera is 1
-let resetBulletObjectsBool = true
 
 const collisionConfiguration = new Ammo.btDefaultCollisionConfiguration()
 const dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration)
@@ -74,19 +71,9 @@ const overlappingPairCache = new Ammo.btAxisSweep3(worldMin, worldMax)
 const solver = new Ammo.btSequentialImpulseConstraintSolver()
 
 const dynamicsWorld = new Ammo.btDiscreteDynamicsWorld(
-  dispatcher,
-  overlappingPairCache,
-  solver,
-  collisionConfiguration
+  dispatcher, overlappingPairCache, solver, collisionConfiguration
 )
 
-/* for reference
-  CF_STATIC_OBJECT= 1,
-  CF_KINEMATIC_OBJECT= 2,
-  CF_NO_CONTACT_RESPONSE=4,
-  CF_CUSTOM_MATERIAL_CALLBACK=8,//this allows per-triangle material (friction/restitution)
-  CF_CHARACTER_OBJECT=16,
-*/
 const maxSpeed = []
 const goingTooFast = []
 const spinningTooFast = []
@@ -296,7 +283,6 @@ function updateCamera() {
     setChaseCam()
     transformCam.setIdentity()
     transformCam.setOrigin(tCamPoint)
-    if (!worldSwitching[currentCarIndex]) chaseStarter = false
   }
   bodies[1].setWorldTransform(transformCam)
 }
@@ -532,23 +518,6 @@ function randRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-function resetBulletObjects() {
-  let clearTrans = new Ammo.btTransform()
-  let rx = 0, ry = 0, rz = 0
-  for (let i = 2; i < bodies.length; i++) {
-    clearTrans.setIdentity()
-    rx = randRange(-5, 5) * i
-    rz = randRange(-5, 5) * i
-    ry = -35
-    tv.setValue(rx, ry, rz)
-    clearTrans.setOrigin(tv)
-    bodies[i].setWorldTransform(clearTrans)
-    bodies[i].clearForces()
-    bodies[i].activate()
-  }
-  Ammo.destroy(clearTrans); clearTrans = null
-}
-
 function tireSmoker(i, smokerModel, xval) {
   if (carModel[currentCarIndex][0]) {
     smokerModel.quaternion.set(
@@ -597,16 +566,6 @@ function findGround(c) {
     if (downRay.hasHit()) {
       carHeightAboveGround[c] = carPos[c].distance(downRay.get_m_hitPointWorld())
       m_carChassis[c].setDamping(0, 0)
-
-      if (worldSwitching[c]) {
-        let pointBelow = downRay.get_m_hitPointWorld()
-        m_carChassis[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
-        pointBelow.setY(pointBelow.y() + 1)
-        chassisWorldTrans[c].setOrigin(pointBelow)
-        m_carChassis[c].setWorldTransform(chassisWorldTrans[c])
-        Ammo.destroy(pointBelow); pointBelow = null
-      }
-      worldSwitching[c] = false
     } else {
       let cp = new Ammo.btVector3(carPos[c].x(), carPos[c].y() + 1, carPos[c].z())
       downRayDir.setY(carPos[c].y() + 400)
@@ -631,7 +590,6 @@ function findGround(c) {
         }
 
         if (!carHit) {
-          worldSwitching[c] = false
           let pointAbove = downRay.get_m_hitPointWorld()
           m_carChassis[c].setDamping(.99, .99)
           m_carChassis[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
@@ -944,11 +902,6 @@ function updatePhysics() {
         hitPoint.setY(manifolder[i].getContactPoint().getPositionWorldOnA().y())
         hitPoint.setZ(manifolder[i].getContactPoint().getPositionWorldOnA().z())
       }
-  }
-
-  if (resetBulletObjectsBool) {
-    resetBulletObjectsBool = false
-    resetBulletObjects()
   }
 
   for (let c = 0; c < numCars; c++) {
