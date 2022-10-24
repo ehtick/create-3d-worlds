@@ -1,4 +1,11 @@
 /* global THREE, Ammo */
+
+/**
+ * TODO:
+ * ujednaciti nazive (videti primer vozila i sl)
+ * izvuci šta vredi za druge primere (kameru, tragove, dim...)
+ */
+
 const SCREEN_HEIGHT = window.innerHeight
 const SCREEN_WIDTH = window.innerWidth
 
@@ -70,7 +77,7 @@ const worldMax = new Ammo.btVector3(1000, 1000, 1000)
 const overlappingPairCache = new Ammo.btAxisSweep3(worldMin, worldMax)
 const solver = new Ammo.btSequentialImpulseConstraintSolver()
 
-const dynamicsWorld = new Ammo.btDiscreteDynamicsWorld(
+const physicsWorld = new Ammo.btDiscreteDynamicsWorld(
   dispatcher, overlappingPairCache, solver, collisionConfiguration
 )
 
@@ -124,8 +131,8 @@ const coordx = []
 const coordz = []
 const bodRotTick = []
 
-const m_carChassis = []
-const m_vehicle = []
+const body = []
+const vehicle = []
 const carPos = []
 const carMat = []
 const carColor = []
@@ -175,8 +182,8 @@ for (let c = 0; c < numCars; c++) {
   suspensionDamping[c] = 4
 
   carObjects[c] = {}
-  m_carChassis[c] = []
-  m_vehicle[c] = []
+  body[c] = []
+  vehicle[c] = []
   carModel[c] = []
   tireClones[c] = []
   hubClones[c] = []
@@ -194,7 +201,7 @@ for (let c = 0; c < numCars; c++) {
 }
 
 tv.setValue(0, -40, 0)
-dynamicsWorld.setGravity(tv)
+physicsWorld.setGravity(tv)
 
 const triMeshBody = []
 let tbody
@@ -234,16 +241,16 @@ function fixAngleRad(a) {
 
 function updateCamera() {
   tv.setValue(0.0, -1.0, 0.0)
-  bodRot = m_carChassis[currentCarIndex].getWorldTransform().getBasis().getColumn(1).dot(tv)
+  bodRot = body[currentCarIndex].getWorldTransform().getBasis().getColumn(1).dot(tv)
   bodies[1].getMotionState().getWorldTransform(transformCam)
 
   let chaseCam = transformCam.getOrigin()
-  m_carChassis[currentCarIndex].getMotionState().getWorldTransform(transformChass)
+  body[currentCarIndex].getMotionState().getWorldTransform(transformChass)
 
   // camera should never go underground
   let toPointer = new Ammo.btVector3(chaseCam.getX(), chaseCam.getY() - 200, chaseCam.getZ())
   let rayer = new Ammo.ClosestRayResultCallback(chaseCam, toPointer)
-  dynamicsWorld.rayTest(chaseCam, toPointer, rayer)
+  physicsWorld.rayTest(chaseCam, toPointer, rayer)
   if (rayer.hasHit())
     groundY = rayer.get_m_hitPointWorld().getY() + 3
 
@@ -282,7 +289,7 @@ function updateCamera() {
 }
 
 function setChaseCam(camHeight = 4, camDist = 8) {
-  const carRot = m_carChassis[currentCarIndex].getWorldTransform().getBasis()
+  const carRot = body[currentCarIndex].getWorldTransform().getBasis()
   const c2 = new Ammo.btVector3(0, camHeight, -camDist)
   const camPointer = new Ammo.btVector3(
     carRot.getRow(0).x() * c2.x() + carRot.getRow(0).y() * c2.y() + carRot.getRow(0).z() * c2.z(),
@@ -290,7 +297,7 @@ function setChaseCam(camHeight = 4, camDist = 8) {
     carRot.getRow(2).x() * c2.x() + carRot.getRow(2).y() * c2.y() + carRot.getRow(2).z() * c2.z()
   )
 
-  const carOrigin = m_carChassis[currentCarIndex].getWorldTransform().getOrigin()
+  const carOrigin = body[currentCarIndex].getWorldTransform().getOrigin()
   tCamPoint.setValue(
     camPointer.x() + carOrigin.x(),
     camPointer.y() + carOrigin.y(),
@@ -339,7 +346,7 @@ function triMeshBuilder(model, scale) {
   tbody.setCollisionFlags(tbody.getCollisionFlags() | 1)
   tbody.setActivationState(DISABLE_DEACTIVATION)
   tbody.setFriction(.1)
-  dynamicsWorld.addRigidBody(tbody)
+  physicsWorld.addRigidBody(tbody)
   triMeshBody.push(tbody)
 }
 
@@ -360,11 +367,11 @@ function initVehicle(c) {
   compound.calculateLocalInertia(mass, localInertia)
   const myMotionState = new Ammo.btDefaultMotionState(startTransform)
   const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, compound, localInertia)
-  m_carChassis[c] = new Ammo.btRigidBody(rbInfo)
-  m_carChassis[c].setFriction(1)
-  dynamicsWorld.addRigidBody(m_carChassis[c])
-  const ptr = m_carChassis[c].a || m_carChassis[c].ptr
-  carObjects[c][ptr] = m_carChassis[c]
+  body[c] = new Ammo.btRigidBody(rbInfo)
+  body[c].setFriction(1)
+  physicsWorld.addRigidBody(body[c])
+  const ptr = body[c].a || body[c].ptr
+  carObjects[c][ptr] = body[c]
   makeVehicle(c)
   Ammo.destroy(localInertia); localInertia = null
 }
@@ -378,13 +385,13 @@ function makeVehicle(c) {
   m_tuning.set_m_frictionSlip(frictionSlip[c])
   m_tuning.set_m_maxSuspensionForce(maxSuspensionForce[c])
 
-  const m_vehicleRayCaster = new Ammo.btDefaultVehicleRaycaster(dynamicsWorld)
-  m_vehicle[c] = new Ammo.btRaycastVehicle(m_tuning, m_carChassis[c], m_vehicleRayCaster)
-  m_carChassis[c].setActivationState(DISABLE_DEACTIVATION)
-  dynamicsWorld.addVehicle(m_vehicle[c])
+  const m_vehicleRayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
+  vehicle[c] = new Ammo.btRaycastVehicle(m_tuning, body[c], m_vehicleRayCaster)
+  body[c].setActivationState(DISABLE_DEACTIVATION)
+  physicsWorld.addAction(vehicle[c])
 
   // choose coordinate system
-  m_vehicle[c].setCoordinateSystem(rightIndex, upIndex, forwardIndex)
+  vehicle[c].setCoordinateSystem(rightIndex, upIndex, forwardIndex)
 
   // front wheels
   let isFrontWheel = true
@@ -392,11 +399,11 @@ function makeVehicle(c) {
 
   connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight[c], 2 * CUBE_HALF_EXTENTS[c] - wheelRadius[c])
 
-  m_vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
   connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight[c], 2 * CUBE_HALF_EXTENTS[c] - wheelRadius[c])
 
-  m_vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
   isFrontWheel = true // for all wheel drive?
 
@@ -404,22 +411,22 @@ function makeVehicle(c) {
 
   connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight[c], -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
-  m_vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
   connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight[c], -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
-  m_vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
   // these last two of the six total wheels are for rendering
 
   m_tuning.set_m_frictionSlip(rearWheelFriction[c])
   isFrontWheel = true
   connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight[c], -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
-  m_vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
   connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight[c], -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
-  m_vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
   resetVehicle(c)
   tuneVehicle(c)
@@ -432,34 +439,34 @@ function resetVehicle(c) {
   if (!tuneup[c]) {// initially reposition
     gVehicleSteering[c] = 0.0
     let carTrans = new Ammo.btTransform()
-    m_carChassis[c].setCenterOfMassTransform(carTrans.getIdentity())
-    m_carChassis[c].setLinearVelocity(tv)
-    m_carChassis[c].setAngularVelocity(tv)
-    m_carChassis[c].getMotionState().getWorldTransform(carTrans)
+    body[c].setCenterOfMassTransform(carTrans.getIdentity())
+    body[c].setLinearVelocity(tv)
+    body[c].setAngularVelocity(tv)
+    body[c].getMotionState().getWorldTransform(carTrans)
     tv.setValue(0, 0, (c * 10))
     carTrans.setOrigin(tv)
     let quat = new Ammo.btQuaternion()
     quat.setEuler(-Math.PI / 2, 0, 0)
     carTrans.setRotation(quat)
 
-    m_carChassis[c].setWorldTransform(carTrans)
+    body[c].setWorldTransform(carTrans)
 
     Ammo.destroy(carTrans); carTrans = null
     Ammo.destroy(quat); quat = null
   }
-  dynamicsWorld.getBroadphase().getOverlappingPairCache().cleanProxyFromPairs(m_carChassis[c].getBroadphaseHandle(), dynamicsWorld.getDispatcher())
-  if (m_vehicle[c]) {
-    m_vehicle[c].resetSuspension()
-    for (let i = 0; i < m_vehicle[c].getNumWheels(); i++)
+  physicsWorld.getBroadphase().getOverlappingPairCache().cleanProxyFromPairs(body[c].getBroadphaseHandle(), physicsWorld.getDispatcher())
+  if (vehicle[c]) {
+    vehicle[c].resetSuspension()
+    for (let i = 0; i < vehicle[c].getNumWheels(); i++)
       // synchronize the wheels with the (interpolated) chassis worldtransform
-      m_vehicle[c].updateWheelTransform(i, true)
+      vehicle[c].updateWheelTransform(i, true)
   }
   tuneup[c] = false
 }
 
 function tuneVehicle(c) {
-  for (let i = 0; i < m_vehicle[c].getNumWheels(); i++) {
-    const wheel = m_vehicle[c].getWheelInfo(i)
+  for (let i = 0; i < vehicle[c].getNumWheels(); i++) {
+    const wheel = vehicle[c].getWheelInfo(i)
     wheel.set_m_suspensionStiffness = suspensionStiffness[c]
     wheel.set_m_wheelsDampingRelaxation = suspensionDamping[c]
     wheel.set_m_wheelsDampingCompression = suspensionCompression[c]
@@ -468,9 +475,9 @@ function tuneVehicle(c) {
 
     wheel.set_m_rollInfluence(rollInfluence[c])
     // synchronize the wheels with the (interpolated) chassis worldtransform
-    m_vehicle[c].updateWheelTransform(i, true)
+    vehicle[c].updateWheelTransform(i, true)
   }
-  m_vehicle[c].updateSuspension()
+  vehicle[c].updateSuspension()
 }
 
 function initObjects(numObjects) {
@@ -502,7 +509,7 @@ function initObjects(numObjects) {
       body.setCollisionFlags(body.getCollisionFlags() | 4)
       body.setActivationState(DISABLE_DEACTIVATION)
     }
-    dynamicsWorld.addRigidBody(body)
+    physicsWorld.addRigidBody(body)
     bodies.push(body)
     Ammo.destroy(localInertia); localInertia = null
   }
@@ -522,7 +529,7 @@ function tireSmoker(i, smokerModel, xval) {
     )
 
     if ((moveCarForward[currentCarIndex] || moveCarBackward[currentCarIndex]) && Math.abs(kmh[currentCarIndex]) < maxSpeed[currentCarIndex] / 4) {
-      const s_caro = m_carChassis[currentCarIndex].getWorldTransform().getBasis()
+      const s_caro = body[currentCarIndex].getWorldTransform().getBasis()
       smo.setValue(xval, .1, -1.8)
       smo2.setValue(
         s_caro.getRow(0).x() * smo.x() + s_caro.getRow(0).y() * smo.y() + s_caro.getRow(0).z() * smo.z(),
@@ -549,26 +556,26 @@ function tireSmoker(i, smokerModel, xval) {
 
 function findGround(c) {
   if (worldModel && carModel[c]) {
-    m_carChassis[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
+    body[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
     carPos[c] = chassisWorldTrans[c].getOrigin()
     downRayDir.setX(carPos[c].x())
     downRayDir.setY(carPos[c].y() - 2000)
     downRayDir.setZ(carPos[c].z())
     let downRay = new Ammo.ClosestRayResultCallback(carPos[c], downRayDir)
-    dynamicsWorld.rayTest(carPos[c], downRayDir, downRay)
+    physicsWorld.rayTest(carPos[c], downRayDir, downRay)
 
     if (downRay.hasHit()) {
       carHeightAboveGround[c] = carPos[c].distance(downRay.get_m_hitPointWorld())
-      m_carChassis[c].setDamping(0, 0)
+      body[c].setDamping(0, 0)
     } else {
       let cp = new Ammo.btVector3(carPos[c].x(), carPos[c].y() + 1, carPos[c].z())
       downRayDir.setY(carPos[c].y() + 400)
       downRay = new Ammo.ClosestRayResultCallback(cp, downRayDir)
-      dynamicsWorld.rayTest(cp, downRayDir, downRay)
+      physicsWorld.rayTest(cp, downRayDir, downRay)
       Ammo.destroy(cp); cp = null
       if (downRay.hasHit()) {
         // do not want ray from car a hitting car b above it, and getting moved above b, so set boolean for car to car hits when raycasting upward
-        const dp = dynamicsWorld.getDispatcher()
+        const dp = physicsWorld.getDispatcher()
         const numMan = dp.getNumManifolds()
         carHit = false
 
@@ -585,11 +592,11 @@ function findGround(c) {
 
         if (!carHit) {
           let pointAbove = downRay.get_m_hitPointWorld()
-          m_carChassis[c].setDamping(.99, .99)
-          m_carChassis[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
+          body[c].setDamping(.99, .99)
+          body[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
           pointAbove.setY(pointAbove.y() + 1.5)
           chassisWorldTrans[c].setOrigin(pointAbove)
-          m_carChassis[c].setWorldTransform(chassisWorldTrans[c])
+          body[c].setWorldTransform(chassisWorldTrans[c])
           Ammo.destroy(pointAbove); pointAbove = null
         }
       }
@@ -721,7 +728,7 @@ function shoot(c) {
   const s_d = new THREE.Vector3(90, 90, 90)
 
   if (carModel[c][0] && carModel[c][1] && worldModel.children[0]) {
-    const wheelRot = m_carChassis[c].getWorldTransform().getBasis()
+    const wheelRot = body[c].getWorldTransform().getBasis()
     dec.setValue(-.2, 0, .2)
     dec2.setValue(
       wheelRot.getRow(0).x() * dec.x() + wheelRot.getRow(0).y() * dec.y() + wheelRot.getRow(0).z() * dec.z(),
@@ -859,7 +866,7 @@ function switchCars() {
 /* LOOP */
 
 function updatePhysics() {
-  dynamicsWorld.stepSimulation(1 / 60)
+  physicsWorld.stepSimulation(1 / 60)
 
   for (let c = 0; c < numCars; c++)
     findGround(c)
@@ -868,7 +875,7 @@ function updatePhysics() {
   const manifolder = []
   let highestHitForce = 0
   carHit = false
-  const dp = dynamicsWorld.getDispatcher()
+  const dp = physicsWorld.getDispatcher()
   const numMan = dp.getNumManifolds()
 
   for (let i = 0; i < numMan; i++) {
@@ -877,7 +884,7 @@ function updatePhysics() {
     if (num_contacts !== 0) {
       const bodyA = carObjects[currentCarIndex][manifold.getBody0()]
       const bodyB = carObjects[currentCarIndex][manifold.getBody1()]
-      if ((bodyA == m_carChassis[currentCarIndex] || bodyB == m_carChassis[currentCarIndex]) && !(bodyA == bodies[1] || bodyB == bodies[1])) {
+      if ((bodyA == body[currentCarIndex] || bodyB == body[currentCarIndex]) && !(bodyA == bodies[1] || bodyB == bodies[1])) {
         carHit = true
         carHitForce.push(manifold.getContactPoint().get_m_appliedImpulse())
         manifolder.push(manifold)
@@ -898,7 +905,7 @@ function updatePhysics() {
 
   for (let c = 0; c < numCars; c++) {
     if (c == currentCarIndex)
-      if (m_vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveCarForward[c] || moveCarBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4)) {
+      if (vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveCarForward[c] || moveCarBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4)) {
         shoot(c)
         tireSmoker(0, smoker3, .9)
         tireSmoker(1, smoker4, -1.1)
@@ -908,7 +915,7 @@ function updatePhysics() {
       }
 
     lastKmh[c] = kmh[c]
-    kmh[c] = m_vehicle[c].getCurrentSpeedKmHour()
+    kmh[c] = vehicle[c].getCurrentSpeedKmHour()
     steering[c] = (steerCarLeft[c] || steerCarRight[c])
 
     if (!steering[c])
@@ -931,19 +938,19 @@ function updatePhysics() {
     // if cars go upside down, flip them
     if (carHeightAboveGround[c] < 3) {
       tv.setValue(0.0, -1.0, 0.0)
-      bodRot = m_carChassis[c].getWorldTransform().getBasis().getColumn(1).dot(tv)
+      bodRot = body[c].getWorldTransform().getBasis().getColumn(1).dot(tv)
       if (bodRot > .8) {
         bodRotTick[c]++; if (bodRotTick[c] > 60) {
-          let bodyRot2 = m_carChassis[c].getWorldTransform().getBasis()
-          let tempVec2 = new Ammo.btVector3(m_carChassis[c].getLinearVelocity().x(), 10, m_carChassis[c].getLinearVelocity().z())
-          m_carChassis[c].setLinearVelocity(tempVec2)
+          let bodyRot2 = body[c].getWorldTransform().getBasis()
+          let tempVec2 = new Ammo.btVector3(body[c].getLinearVelocity().x(), 10, body[c].getLinearVelocity().z())
+          body[c].setLinearVelocity(tempVec2)
           let tempVec = new Ammo.btVector3(0, 0, -5)
           tempVec2.setValue(
             bodyRot2.getRow(0).x() * tempVec.x() + bodyRot2.getRow(0).y() * tempVec.y() + bodyRot2.getRow(0).z() * tempVec.z(),
             bodyRot2.getRow(1).x() * tempVec.x() + bodyRot2.getRow(1).y() * tempVec.y() + bodyRot2.getRow(1).z() * tempVec.z(),
             bodyRot2.getRow(2).x() * tempVec.x() + bodyRot2.getRow(2).y() * tempVec.y() + bodyRot2.getRow(2).z() * tempVec.z()
           )
-          m_carChassis[c].setAngularVelocity(tempVec2)
+          body[c].setAngularVelocity(tempVec2)
           Ammo.destroy(tempVec2); tempVec2 = null
           Ammo.destroy(tempVec); tempVec = null
           Ammo.destroy(bodyRot2); bodyRot2 = null
@@ -975,20 +982,20 @@ function updatePhysics() {
       }
 
     // 0,1 front; 2,3 back
-    m_vehicle[c].applyEngineForce(gEngineForce[c], 0)
-    m_vehicle[c].setBrake(gBreakingForce[c], 0)
-    m_vehicle[c].setSteeringValue(gVehicleSteering[c], 0)
-    m_vehicle[c].setSteeringValue(-gVehicleSteering[c] * 1.2, 4)// for drifting, 5th wheel (rear)
+    vehicle[c].applyEngineForce(gEngineForce[c], 0)
+    vehicle[c].setBrake(gBreakingForce[c], 0)
+    vehicle[c].setSteeringValue(gVehicleSteering[c], 0)
+    vehicle[c].setSteeringValue(-gVehicleSteering[c] * 1.2, 4)// for drifting, 5th wheel (rear)
 
-    m_vehicle[c].applyEngineForce(gEngineForce[c], 4)
-    m_vehicle[c].applyEngineForce(gEngineForce[c], 1)
-    m_vehicle[c].setBrake(gBreakingForce[c], 1)
-    m_vehicle[c].setSteeringValue(gVehicleSteering[c], 1)
-    m_vehicle[c].setSteeringValue(-gVehicleSteering[c] * 1.2, 5) // for drifting, 6th wheel (rear)
-    m_vehicle[c].applyEngineForce(gEngineForce[c], 5)
+    vehicle[c].applyEngineForce(gEngineForce[c], 4)
+    vehicle[c].applyEngineForce(gEngineForce[c], 1)
+    vehicle[c].setBrake(gBreakingForce[c], 1)
+    vehicle[c].setSteeringValue(gVehicleSteering[c], 1)
+    vehicle[c].setSteeringValue(-gVehicleSteering[c] * 1.2, 5) // for drifting, 6th wheel (rear)
+    vehicle[c].applyEngineForce(gEngineForce[c], 5)
 
     // chassis
-    m_carChassis[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
+    body[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
     carPos[c] = chassisWorldTrans[c].getOrigin()
 
     for (let i = 0; i < numCars; i++)
@@ -1016,7 +1023,7 @@ function updatePhysics() {
             camera.quaternion.w
           )
 
-          const s_caro = m_carChassis[c].getWorldTransform().getBasis()
+          const s_caro = body[c].getWorldTransform().getBasis()
 
           // first smoker
           smo.setValue(-.5, .3, -2.7)
@@ -1066,8 +1073,8 @@ function updatePhysics() {
     // wheels, index 0 is chassis shape
     for (let i = 0; i < 4; i++) {
       // synchronize the wheels with the (interpolated) chassis worldtransform
-      m_vehicle[c].updateWheelTransform(i, true)
-      wheelTrans = m_vehicle[c].getWheelInfo(i).get_m_worldTransform()
+      vehicle[c].updateWheelTransform(i, true)
+      wheelTrans = vehicle[c].getWheelInfo(i).get_m_worldTransform()
       const p = wheelTrans.getOrigin()
       const q = wheelTrans.getRotation()
       // clones of tire and hub
