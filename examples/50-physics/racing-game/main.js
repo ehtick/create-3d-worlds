@@ -446,7 +446,7 @@ function resetVehicle(c) {
     tv.setValue(0, 0, (c * 10))
     carTrans.setOrigin(tv)
     let quat = new Ammo.btQuaternion()
-    quat.setEuler(-Math.PI / 2, 0, 0)
+    quat.setEulerZYX(-Math.PI / 2, 0, 0)
     carTrans.setRotation(quat)
 
     body[c].setWorldTransform(carTrans)
