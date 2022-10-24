@@ -248,11 +248,11 @@ function updateCamera() {
   body[currentCarIndex].getMotionState().getWorldTransform(transformChass)
 
   // camera should never go underground
-  let toPointer = new Ammo.btVector3(chaseCam.getX(), chaseCam.getY() - 200, chaseCam.getZ())
+  let toPointer = new Ammo.btVector3(chaseCam.x(), chaseCam.y() - 200, chaseCam.z())
   let rayer = new Ammo.ClosestRayResultCallback(chaseCam, toPointer)
   physicsWorld.rayTest(chaseCam, toPointer, rayer)
   if (rayer.hasHit())
-    groundY = rayer.get_m_hitPointWorld().getY() + 3
+    groundY = rayer.get_m_hitPointWorld().y() + 3
 
   Ammo.destroy(toPointer); toPointer = null
   Ammo.destroy(rayer); rayer = null
