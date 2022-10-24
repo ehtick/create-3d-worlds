@@ -43,28 +43,31 @@ function generateObject() {
   const rand2 = 1 + Math.random() * objectSize
   const rand3 = 1 + Math.random() * objectSize
 
+  const color = Math.floor(Math.random() * (1 << 24))
+  const material = new THREE.MeshPhongMaterial({ color })
+
   switch (objectType) {
     case 1:
       // Sphere
-      mesh = new THREE.Mesh(new THREE.SphereGeometry(rand1, 20, 20), createObjectMaterial())
+      mesh = new THREE.Mesh(new THREE.SphereGeometry(rand1, 20, 20), material)
       shape = new AMMO.btSphereShape(rand1)
       shape.setMargin(margin)
       break
     case 2:
       // Box
-      mesh = new THREE.Mesh(new THREE.BoxGeometry(rand1, rand2, rand3, 1, 1, 1), createObjectMaterial())
+      mesh = new THREE.Mesh(new THREE.BoxGeometry(rand1, rand2, rand3, 1, 1, 1), material)
       shape = new AMMO.btBoxShape(new AMMO.btVector3(rand1 * 0.5, rand2 * 0.5, rand3 * 0.5))
       shape.setMargin(margin)
       break
     case 3:
       // Cylinder
-      mesh = new THREE.Mesh(new THREE.CylinderGeometry(rand1, rand1, rand2, 20, 1), createObjectMaterial())
+      mesh = new THREE.Mesh(new THREE.CylinderGeometry(rand1, rand1, rand2, 20, 1), material)
       shape = new AMMO.btCylinderShape(new AMMO.btVector3(rand1, rand2 * 0.5, rand1))
       shape.setMargin(margin)
       break
     default:
       // Cone
-      mesh = new THREE.Mesh(new THREE.ConeGeometry(rand1, rand2, 20, 2), createObjectMaterial())
+      mesh = new THREE.Mesh(new THREE.ConeGeometry(rand1, rand2, 20, 2), material)
       shape = new AMMO.btConeShape(rand1, rand2)
       break
   }
@@ -88,11 +91,6 @@ function generateObject() {
   scene.add(mesh)
   rigidBodies.push(mesh)
   physicsWorld.addRigidBody(body)
-}
-
-function createObjectMaterial() {
-  const c = Math.floor(Math.random() * (1 << 24))
-  return new THREE.MeshPhongMaterial({ color: c })
 }
 
 /* LOOP */
