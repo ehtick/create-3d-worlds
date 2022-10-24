@@ -2,7 +2,6 @@
 
 /**
  * TODO:
- * ujednaciti nazive (videti primer vozila i sl)
  * izvuci šta vredi za druge primere (kameru, tragove, dim...)
  */
 
@@ -42,7 +41,6 @@ const worldScale = 25
 let groundY = 0
 const transformCam = new Ammo.btTransform()
 const transformChass = new Ammo.btTransform()
-let bodRot = -1
 let chaseStarter = true
 
 const carNames = ['lada', 'hummer']
@@ -240,8 +238,8 @@ function fixAngleRad(a) {
 }
 
 function updateCamera() {
+  const tv = new Ammo.btVector3(0, 0, 0)
   tv.setValue(0.0, -1.0, 0.0)
-  bodRot = body[currentCarIndex].getWorldTransform().getBasis().getColumn(1).dot(tv)
   bodies[1].getMotionState().getWorldTransform(transformCam)
 
   let chaseCam = transformCam.getOrigin()
@@ -513,10 +511,6 @@ function initObjects(numObjects) {
     bodies.push(body)
     Ammo.destroy(localInertia); localInertia = null
   }
-}
-
-function randRange(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 function tireSmoker(i, smokerModel, xval) {
@@ -934,30 +928,6 @@ function updatePhysics() {
 
         if (gVehicleSteering[c] < -steeringClamp[c]) gVehicleSteering[c] = -steeringClamp[c]
       }
-
-    // if cars go upside down, flip them
-    if (carHeightAboveGround[c] < 3) {
-      tv.setValue(0.0, -1.0, 0.0)
-      bodRot = body[c].getWorldTransform().getBasis().getColumn(1).dot(tv)
-      if (bodRot > .8) {
-        bodRotTick[c]++; if (bodRotTick[c] > 60) {
-          let bodyRot2 = body[c].getWorldTransform().getBasis()
-          let tempVec2 = new Ammo.btVector3(body[c].getLinearVelocity().x(), 10, body[c].getLinearVelocity().z())
-          body[c].setLinearVelocity(tempVec2)
-          let tempVec = new Ammo.btVector3(0, 0, -5)
-          tempVec2.setValue(
-            bodyRot2.getRow(0).x() * tempVec.x() + bodyRot2.getRow(0).y() * tempVec.y() + bodyRot2.getRow(0).z() * tempVec.z(),
-            bodyRot2.getRow(1).x() * tempVec.x() + bodyRot2.getRow(1).y() * tempVec.y() + bodyRot2.getRow(1).z() * tempVec.z(),
-            bodyRot2.getRow(2).x() * tempVec.x() + bodyRot2.getRow(2).y() * tempVec.y() + bodyRot2.getRow(2).z() * tempVec.z()
-          )
-          body[c].setAngularVelocity(tempVec2)
-          Ammo.destroy(tempVec2); tempVec2 = null
-          Ammo.destroy(tempVec); tempVec = null
-          Ammo.destroy(bodyRot2); bodyRot2 = null
-          bodRotTick[c] = 0
-        }
-      } else bodRotTick[c] = 0
-    }
 
     if (c != currentCarIndex) moveCarForward[c] = false
 
