@@ -68,15 +68,12 @@ const moveBackward = []
 const steerLeft = []
 const steerRight = []
 
-const bodRotTick = []
-const body = []
+const bodies = []
 const vehicles = []
 const carPos = []
 const chassisWorldTrans = []
-const carObjects = []
 
 for (let c = 0; c < numCars; c++) {
-  bodRotTick[c] = 0
   kmh[c] = .00001
   steering[c] = false
   accelerating[c] = false
@@ -88,13 +85,11 @@ for (let c = 0; c < numCars; c++) {
   gBreakingForce[c] = 0
   gVehicleSteering[c] = 0
 
-  carObjects[c] = {}
-  body[c] = []
+  bodies[c] = []
   vehicles[c] = []
   carModels[c] = []
   tireClones[c] = []
   hubClones[c] = []
-  carPos[c] = new Ammo.btVector3(0, 0, 0)
   chassisWorldTrans[c] = new Ammo.btTransform()
 }
 
@@ -104,7 +99,7 @@ physicsWorld.setGravity(tv)
 const triMeshBody = []
 let tbody
 
-const bodies = []
+const rigidBodies = []
 const threeObject = [] // index 0 is for the ground, 1 for the camera
 
 const matBlank = new THREE.MeshBasicMaterial()
@@ -133,7 +128,7 @@ function createPhysicsWorld() {
 }
 
 function setChaseCam(camHeight = 4, camDist = 8) {
-  const carRot = body[currentCarIndex].getWorldTransform().getBasis()
+  const carRot = bodies[currentCarIndex].getWorldTransform().getBasis()
   const c2 = new Ammo.btVector3(0, camHeight, -camDist)
   const camPointer = new Ammo.btVector3(
     carRot.getRow(0).x() * c2.x() + carRot.getRow(0).y() * c2.y() + carRot.getRow(0).z() * c2.z(),
@@ -141,15 +136,15 @@ function setChaseCam(camHeight = 4, camDist = 8) {
     carRot.getRow(2).x() * c2.x() + carRot.getRow(2).y() * c2.y() + carRot.getRow(2).z() * c2.z()
   )
 
-  const carOrigin = body[currentCarIndex].getWorldTransform().getOrigin()
+  const carOrigin = bodies[currentCarIndex].getWorldTransform().getOrigin()
   camera.position.set(
     camPointer.x() + carOrigin.x(),
     camPointer.y() + carOrigin.y(),
     camPointer.z() + carOrigin.z()
   )
   tv.setValue(0, 0, 0)
-  bodies[1].setLinearVelocity(tv)
-  bodies[1].setAngularVelocity(tv)
+  rigidBodies[1].setLinearVelocity(tv)
+  rigidBodies[1].setAngularVelocity(tv)
 
   camera.lookAt(new THREE.Vector3(carOrigin.x(), carOrigin.y(), carOrigin.z()))
 }
@@ -207,11 +202,9 @@ function initVehicle(c) {
   compound.calculateLocalInertia(mass, localInertia)
   const myMotionState = new Ammo.btDefaultMotionState(startTransform)
   const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, compound, localInertia)
-  body[c] = new Ammo.btRigidBody(rbInfo)
-  body[c].setFriction(1)
-  physicsWorld.addRigidBody(body[c])
-  const ptr = body[c].a || body[c].ptr
-  carObjects[c][ptr] = body[c]
+  bodies[c] = new Ammo.btRigidBody(rbInfo)
+  bodies[c].setFriction(1)
+  physicsWorld.addRigidBody(bodies[c])
   makeVehicle(c)
 }
 
@@ -225,8 +218,8 @@ function makeVehicle(c) {
   m_tuning.set_m_maxSuspensionForce(maxSuspensionForce)
 
   const m_vehicleRayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
-  vehicles[c] = new Ammo.btRaycastVehicle(m_tuning, body[c], m_vehicleRayCaster)
-  body[c].setActivationState(DISABLE_DEACTIVATION)
+  vehicles[c] = new Ammo.btRaycastVehicle(m_tuning, bodies[c], m_vehicleRayCaster)
+  bodies[c].setActivationState(DISABLE_DEACTIVATION)
   physicsWorld.addAction(vehicles[c])
 
   // choose coordinate system
@@ -298,14 +291,14 @@ function initObjects(numObjects) {
       body.setActivationState(DISABLE_DEACTIVATION)
     }
     physicsWorld.addRigidBody(body)
-    bodies.push(body)
+    rigidBodies.push(body)
   }
 }
 
 function findGround(c) {
   const downRayDir = new Ammo.btVector3(0, 0, 0)
   if (worldModel && carModels[c]) {
-    body[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
+    bodies[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
     carPos[c] = chassisWorldTrans[c].getOrigin()
     downRayDir.setX(carPos[c].x())
     downRayDir.setY(carPos[c].y() - 2000)
@@ -314,7 +307,7 @@ function findGround(c) {
     physicsWorld.rayTest(carPos[c], downRayDir, downRay)
 
     if (downRay.hasHit())
-      body[c].setDamping(0, 0)
+      bodies[c].setDamping(0, 0)
     else {
       const cp = new Ammo.btVector3(carPos[c].x(), carPos[c].y() + 1, carPos[c].z())
       downRayDir.setY(carPos[c].y() + 400)
@@ -322,11 +315,11 @@ function findGround(c) {
       physicsWorld.rayTest(cp, downRayDir, downRay)
       if (downRay.hasHit()) {
         const pointAbove = downRay.get_m_hitPointWorld()
-        body[c].setDamping(.99, .99)
-        body[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
+        bodies[c].setDamping(.99, .99)
+        bodies[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
         pointAbove.setY(pointAbove.y() + 1.5)
         chassisWorldTrans[c].setOrigin(pointAbove)
-        body[c].setWorldTransform(chassisWorldTrans[c])
+        bodies[c].setWorldTransform(chassisWorldTrans[c])
       }
     }
   }
@@ -350,10 +343,10 @@ function init() {
 
   skyInit()
 
-  bodies.push({})
+  rigidBodies.push({})
 
   initObjects(numObjects)
-  for (let i = 1; i < bodies.length; i++)
+  for (let i = 1; i < rigidBodies.length; i++)
     scene.add(threeObject[i])
 
   for (let c = 0; c < numCars; c++)
@@ -447,7 +440,7 @@ function updatePhysics() {
     findGround(c)
     if (c == currentCarIndex)
       if (vehicles[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward[c] || moveBackward[c]) && Math.abs(kmh[c]) < maxSpeed / 4))
-        shootDecals(c, carModels, worldModel, body, tireClones, scene)
+        shootDecals(c, carModels, worldModel, bodies, tireClones, scene)
 
     kmh[c] = vehicles[c].getCurrentSpeedKmHour()
     steering[c] = (steerLeft[c] || steerRight[c])
@@ -503,7 +496,7 @@ function updatePhysics() {
     vehicles[c].applyEngineForce(gEngineForce[c], 5)
 
     // chassis
-    body[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
+    bodies[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
     carPos[c] = chassisWorldTrans[c].getOrigin()
 
     for (let i = 0; i < numCars; i++)
@@ -548,8 +541,8 @@ function updatePhysics() {
   }
 
   // index 0 is ground, index 1 is camera
-  for (let i = 2; i < bodies.length; i++) {
-    bodies[i].getMotionState().getWorldTransform(obTrans)
+  for (let i = 2; i < rigidBodies.length; i++) {
+    rigidBodies[i].getMotionState().getWorldTransform(obTrans)
     const p = obTrans.getOrigin()
     const q = obTrans.getRotation()
     threeObject[i].position.set(p.x(), p.y(), p.z())

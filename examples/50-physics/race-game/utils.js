@@ -26,7 +26,7 @@ function fixAngleRad(a) {
   return a
 }
 
-export function shootDecals(i, carModel, worldModel, body, tireClones, scene) {
+export function shootDecals(i, carModels, worldModel, bodies, tireClones, scene) {
   const velocity = new THREE.Vector3(0, 0, 0)
   const dec = new Ammo.btVector3(0, 0, 0)
   const dec2 = new Ammo.btVector3(0, 0, 0)
@@ -36,8 +36,8 @@ export function shootDecals(i, carModel, worldModel, body, tireClones, scene) {
   const r_d = new THREE.Euler(0, 0, 0, 'XYZ')
   const s_d = new THREE.Vector3(90, 90, 90)
 
-  if (carModel[i][0] && carModel[i][1] && worldModel.children[0]) {
-    const wheelRot = body[i].getWorldTransform().getBasis()
+  if (carModels[i][0] && carModels[i][1] && worldModel.children[0]) {
+    const wheelRot = bodies[i].getWorldTransform().getBasis()
     dec.setValue(-.2, 0, .2)
     dec2.setValue(
       wheelRot.getRow(0).x() * dec.x() + wheelRot.getRow(0).y() * dec.y() + wheelRot.getRow(0).z() * dec.z(),
@@ -45,9 +45,9 @@ export function shootDecals(i, carModel, worldModel, body, tireClones, scene) {
       wheelRot.getRow(2).x() * dec.x() + wheelRot.getRow(2).y() * dec.y() + wheelRot.getRow(2).z() * dec.z()
     )
     dec3.setValue(
-      dec2.x() + carModel[i][1].position.x,
-      dec2.y() + carModel[i][1].position.y,
-      dec2.z() + carModel[i][1].position.z
+      dec2.x() + carModels[i][1].position.x,
+      dec2.y() + carModels[i][1].position.y,
+      dec2.z() + carModels[i][1].position.z
     )
 
     p_d.set(dec3.x(), dec3.y(), dec3.z())
