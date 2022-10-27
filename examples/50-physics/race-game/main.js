@@ -40,31 +40,23 @@ const steeringReturnRate = .6
 
 const kmh = []
 const steering = []
-const accelerating = []
-const moveForward = []
-const moveBackward = []
-const steerLeft = []
-const steerRight = []
+let accelerating = false
+let moveForward = false
+let moveBackward = false
+let steerLeft = false
+let steerRight = false
 
 const bodies = []
 const vehicles = []
 const carPos = []
 const chassisWorldTrans = []
-const gEngineForce = []
-const gBreakingForce = []
-const gVehicleSteering = []
+let gEngineForce = 0
+let gBreakingForce = 0
+let gVehicleSteering = 0
 
 for (let c = 0; c < numCars; c++) {
   kmh[c] = .00001
   steering[c] = false
-  accelerating[c] = false
-  moveForward[c] = false
-  moveBackward[c] = false
-  steerLeft[c] = false
-  steerRight[c] = false
-  gEngineForce[c] = 0
-  gBreakingForce[c] = 0
-  gVehicleSteering[c] = 0
 
   bodies[c] = []
   vehicles[c] = []
@@ -339,68 +331,72 @@ function objWorldModelLoader(objFile, mtlFile, scale) {
 
 /* LOOP */
 
+function handleInput(c) {
+  if (c === 1) return
+
+  if (vehicles[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward || moveBackward) && Math.abs(kmh[c]) < maxSpeed / 4))
+    shootDecals(c, carModels, worldModel, bodies, tireClones, scene)
+
+  kmh[c] = vehicles[c].getCurrentSpeedKmHour()
+  steering[c] = (steerLeft || steerRight)
+
+  if (!steering[c])
+    gVehicleSteering *= steeringReturnRate
+  else if (steering[c])
+
+    if (steerLeft) {
+      if (gVehicleSteering < .05) gVehicleSteering += .01; else
+        gVehicleSteering *= 1 + steeringIncrement
+
+      if (gVehicleSteering > steeringClamp) gVehicleSteering = steeringClamp
+    } else
+    if (steerRight) {
+      if (gVehicleSteering > -.05) gVehicleSteering -= .01; else
+        gVehicleSteering *= 1 + steeringIncrement
+
+      if (gVehicleSteering < -steeringClamp) gVehicleSteering = -steeringClamp
+    }
+
+  accelerating = (moveForward || moveBackward)
+
+  if (!accelerating) {
+    gEngineForce = 0
+    if (Math.abs(kmh[c]) > 20) gBreakingForce += 5
+  } else if (accelerating)
+    if (moveForward && kmh[c] < maxSpeed) {
+      if (kmh[c] < maxSpeed / 5) gEngineForce = maxEngineForce * turboForce; else gEngineForce = maxEngineForce
+      gBreakingForce = 0.0
+    } else if (moveForward && kmh[c] >= maxSpeed) {
+      gEngineForce = 0.0
+      gBreakingForce = 0.0
+    } else if (moveBackward && kmh[c] > -maxSpeed) {
+      gEngineForce = -maxEngineForce
+      gBreakingForce = 0.0
+    } else if (moveBackward && kmh[c] <= maxSpeed) {
+      gEngineForce = 0.0
+      gBreakingForce = 0.0
+    }
+
+  // 0,1 front; 2,3 back
+  vehicles[c].applyEngineForce(gEngineForce, 0)
+  vehicles[c].setBrake(gBreakingForce, 0)
+  vehicles[c].setSteeringValue(gVehicleSteering, 0)
+  vehicles[c].setSteeringValue(-gVehicleSteering * 1.2, 4)// for drifting, 5th wheel (rear)
+
+  vehicles[c].applyEngineForce(gEngineForce, 4)
+  vehicles[c].applyEngineForce(gEngineForce, 1)
+  vehicles[c].setBrake(gBreakingForce, 1)
+  vehicles[c].setSteeringValue(gVehicleSteering, 1)
+  vehicles[c].setSteeringValue(-gVehicleSteering * 1.2, 5) // for drifting, 6th wheel (rear)
+  vehicles[c].applyEngineForce(gEngineForce, 5)
+}
+
 function updatePhysics() {
   physicsWorld.stepSimulation(1 / 60)
 
   for (let c = 0; c < numCars; c++) {
     findGround(c)
-    if (c == currentCarIndex)
-      if (vehicles[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward[c] || moveBackward[c]) && Math.abs(kmh[c]) < maxSpeed / 4))
-        shootDecals(c, carModels, worldModel, bodies, tireClones, scene)
-
-    kmh[c] = vehicles[c].getCurrentSpeedKmHour()
-    steering[c] = (steerLeft[c] || steerRight[c])
-
-    if (!steering[c])
-      gVehicleSteering[c] *= steeringReturnRate
-    else if (steering[c])
-
-      if (steerLeft[c]) {
-        if (gVehicleSteering[c] < .05) gVehicleSteering[c] += .01; else
-          gVehicleSteering[c] *= 1 + steeringIncrement
-
-        if (gVehicleSteering[c] > steeringClamp) gVehicleSteering[c] = steeringClamp
-      } else
-      if (steerRight[c]) {
-        if (gVehicleSteering[c] > -.05) gVehicleSteering[c] -= .01; else
-          gVehicleSteering[c] *= 1 + steeringIncrement
-
-        if (gVehicleSteering[c] < -steeringClamp) gVehicleSteering[c] = -steeringClamp
-      }
-
-    accelerating[c] = (moveForward[c] || moveBackward[c])
-
-    if (!accelerating[c]) {
-      gEngineForce[c] = 0
-      if (Math.abs(kmh[c]) > 20) gBreakingForce[c] += 5
-    } else if (accelerating[c])
-      if (moveForward[c] && kmh[c] < maxSpeed) {
-        if (kmh[c] < maxSpeed / 5) gEngineForce[c] = maxEngineForce * turboForce; else gEngineForce[c] = maxEngineForce
-        gBreakingForce[c] = 0.0
-      } else if (moveForward[c] && kmh[c] >= maxSpeed) {
-        gEngineForce[c] = 0.0
-        gBreakingForce[c] = 0.0
-      } else if (moveBackward[c] && kmh[c] > -maxSpeed) {
-        gEngineForce[c] = -maxEngineForce
-        gBreakingForce[c] = 0.0
-      } else if (moveBackward[c] && kmh[c] <= maxSpeed) {
-        gEngineForce[c] = 0.0
-        gBreakingForce[c] = 0.0
-      }
-
-    // 0,1 front; 2,3 back
-    vehicles[c].applyEngineForce(gEngineForce[c], 0)
-    vehicles[c].setBrake(gBreakingForce[c], 0)
-    vehicles[c].setSteeringValue(gVehicleSteering[c], 0)
-    vehicles[c].setSteeringValue(-gVehicleSteering[c] * 1.2, 4)// for drifting, 5th wheel (rear)
-
-    vehicles[c].applyEngineForce(gEngineForce[c], 4)
-    vehicles[c].applyEngineForce(gEngineForce[c], 1)
-    vehicles[c].setBrake(gBreakingForce[c], 1)
-    vehicles[c].setSteeringValue(gVehicleSteering[c], 1)
-    vehicles[c].setSteeringValue(-gVehicleSteering[c] * 1.2, 5) // for drifting, 6th wheel (rear)
-    vehicles[c].applyEngineForce(gEngineForce[c], 5)
-
+    handleInput(c)
     // chassis
     bodies[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
     carPos[c] = chassisWorldTrans[c].getOrigin()
@@ -418,7 +414,7 @@ function updatePhysics() {
 
     // wheels, index 0 is chassis shape
     for (let i = 0; i < 4; i++) {
-      // synchronize the wheels with the (interpolated) chassis worldtransform
+      // synchronize wheels with chassis
       vehicles[c].updateWheelTransform(i, true)
       let wheelTrans = new Ammo.btTransform()
       wheelTrans = vehicles[c].getWheelInfo(i).get_m_worldTransform()
@@ -470,29 +466,29 @@ const onKeyDowner = function(event) {
   switch (event.key) {
     case 'ArrowUp':
     case 'w':
-      moveForward[currentCarIndex] = true
+      moveForward = true
       break
     case 'ArrowLeft':
     case 'a':
-      steerLeft[currentCarIndex] = true
+      steerLeft = true
       break
     case 'ArrowDown':
     case 's':
-      moveBackward[currentCarIndex] = true
+      moveBackward = true
       break
     case 'ArrowRight':
     case 'd':
-      steerRight[currentCarIndex] = true
+      steerRight = true
       break
     case ' ': // spacebar
-      gBreakingForce[currentCarIndex] = maxBreakingForce * 2
-      gEngineForce[currentCarIndex] = 0.0
+      gBreakingForce = maxBreakingForce * 2
+      gEngineForce = 0.0
       break
     case '8':
-      moveForward[currentCarIndex] = false
-      steerLeft[currentCarIndex] = false
-      steerRight[currentCarIndex] = false
-      gVehicleSteering[currentCarIndex] = 0
+      moveForward = false
+      steerLeft = false
+      steerRight = false
+      gVehicleSteering = 0
       break
   }
 }
@@ -501,19 +497,19 @@ const onKeyUpper = function(event) {
   switch (event.key) {
     case 'ArrowUp':
     case 'w':
-      moveForward[currentCarIndex] = false
+      moveForward = false
       break
     case 'ArrowLeft':
     case 'a':
-      steerLeft[currentCarIndex] = false
+      steerLeft = false
       break
     case 'ArrowDown':
     case 's':
-      moveBackward[currentCarIndex] = false
+      moveBackward = false
       break
     case 'ArrowRight':
     case 'd':
-      steerRight[currentCarIndex] = false
+      steerRight = false
       break
   }
 }
