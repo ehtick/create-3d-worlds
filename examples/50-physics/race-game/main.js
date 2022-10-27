@@ -80,8 +80,6 @@ document.body.appendChild(container)
 const camera = new THREE.PerspectiveCamera(70, SCREEN_WIDTH / SCREEN_HEIGHT, .01, 9000)
 const scene = new THREE.Scene()
 
-skyInit()
-
 rigidBodies.push({})
 
 initObjects(numObjects)
@@ -241,39 +239,33 @@ function initObjects(numObjects) {
 }
 
 function findGround(c) {
-  const downRayDir = new Ammo.btVector3(0, 0, 0)
-  if (worldModel && carModels[c]) {
-    bodies[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
-    carPos[c] = chassisWorldTrans[c].getOrigin()
-    downRayDir.setX(carPos[c].x())
-    downRayDir.setY(carPos[c].y() - 2000)
-    downRayDir.setZ(carPos[c].z())
-    let downRay = new Ammo.ClosestRayResultCallback(carPos[c], downRayDir)
-    physicsWorld.rayTest(carPos[c], downRayDir, downRay)
+  if (!worldModel || !carModels[c]) return
 
-    if (downRay.hasHit())
-      bodies[c].setDamping(0, 0)
-    else {
-      const cp = new Ammo.btVector3(carPos[c].x(), carPos[c].y() + 1, carPos[c].z())
-      downRayDir.setY(carPos[c].y() + 400)
-      downRay = new Ammo.ClosestRayResultCallback(cp, downRayDir)
-      physicsWorld.rayTest(cp, downRayDir, downRay)
-      if (downRay.hasHit()) {
-        const pointAbove = downRay.get_m_hitPointWorld()
-        bodies[c].setDamping(.99, .99)
-        bodies[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
-        pointAbove.setY(pointAbove.y() + 1.5)
-        chassisWorldTrans[c].setOrigin(pointAbove)
-        bodies[c].setWorldTransform(chassisWorldTrans[c])
-      }
+  bodies[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
+  carPos[c] = chassisWorldTrans[c].getOrigin()
+  const downRayDir = new Ammo.btVector3(0, 0, 0)
+  downRayDir.setX(carPos[c].x())
+  downRayDir.setY(carPos[c].y() - 2000)
+  downRayDir.setZ(carPos[c].z())
+  let downRay = new Ammo.ClosestRayResultCallback(carPos[c], downRayDir)
+  physicsWorld.rayTest(carPos[c], downRayDir, downRay)
+
+  if (downRay.hasHit())
+    bodies[c].setDamping(0, 0)
+  else {
+    const cp = new Ammo.btVector3(carPos[c].x(), carPos[c].y() + 1, carPos[c].z())
+    downRayDir.setY(carPos[c].y() + 400)
+    downRay = new Ammo.ClosestRayResultCallback(cp, downRayDir)
+    physicsWorld.rayTest(cp, downRayDir, downRay)
+    if (downRay.hasHit()) {
+      const pointAbove = downRay.get_m_hitPointWorld()
+      bodies[c].setDamping(.99, .99)
+      bodies[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
+      pointAbove.setY(pointAbove.y() + 1.5)
+      chassisWorldTrans[c].setOrigin(pointAbove)
+      bodies[c].setWorldTransform(chassisWorldTrans[c])
     }
   }
-}
-
-function skyInit() {
-  const fogColor = new THREE.Color(0xae9a7b)
-  scene.background = fogColor
-  scene.fog = new THREE.Fog(fogColor, 0, 500)
 }
 
 function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
