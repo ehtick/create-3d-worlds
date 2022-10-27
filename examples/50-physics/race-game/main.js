@@ -17,7 +17,6 @@ const numCars = carNames.length
 const currentCarIndex = 0
 const carModels = []
 const tires = []
-const hubClones = []
 const objFile = [
   ['hummer.obj', 'hummerTire.obj'],
   ['ladavaz.obj', 'ladavazTire.obj'],
@@ -52,7 +51,6 @@ for (let c = 0; c < numCars; c++) {
   vehicles[c] = []
   carModels[c] = []
   tires[c] = []
-  hubClones[c] = []
   chassisWorldTrans[c] = new Ammo.btTransform()
 }
 
@@ -385,11 +383,6 @@ function updateTires(c) {
         tires[c][i].position.set(p.x(), p.y(), p.z())
         tires[c][i].quaternion.set(q.x(), q.y(), q.z(), q.w())
         if (i == 0) tires[c][i].rotateY(- Math.PI)
-      }
-      if (hubClones[c][i]) {
-        hubClones[c][i].position.set(p.x(), p.y(), p.z())
-        hubClones[c][i].quaternion.set(q.x(), q.y(), q.z(), q.w())
-        if (i == 0) hubClones[c][i].rotateY(- Math.PI)
       }
     } else if (i == 3)
     // original copy of tire and hub for wheels
