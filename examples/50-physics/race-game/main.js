@@ -24,7 +24,6 @@ const currentCarIndex = 0
 const carModel = []
 const tireClones = []
 const hubClones = []
-const objScales = []
 const carHeightAboveGround = []
 const objFile = [
   ['hummer.obj', 'hummerTire.obj'],
@@ -34,10 +33,8 @@ const mtlFile = [
   ['hummer.mtl', 'hummerTire.mtl'],
   ['ladavaz.mtl', 'ladavazTire.mtl'],
 ]
-for (let i = 0; i < numCars; i++) {
+for (let i = 0; i < numCars; i++)
   carHeightAboveGround[i] = 0
-  objScales[i] = [.57, .57]
-}
 
 const DISABLE_DEACTIVATION = 4
 const numObjects = 2 // ground is 0, camera is 1
@@ -449,7 +446,7 @@ function init() {
 
   for (let c = 0; c < numCars; c++)
     for (let i = 0; i < numCars; i++)
-      objCarModelLoader(c, i, objFile[c][i], mtlFile[c][i], objScales[c][i])
+      objCarModelLoader(c, i, objFile[c][i], mtlFile[c][i])
 
   container.setAttribute('tabindex', -1)
 
@@ -548,7 +545,7 @@ function shoot(i) {
   }
 }
 
-function objCarModelLoader(c, i, objFile, mtlFile, scale) {
+function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
   const mtlLoader = new THREE.MTLLoader()
   mtlLoader.load(mtlFile, materials => {
     carMat[c][i] = materials
@@ -600,9 +597,9 @@ function updatePhysics() {
 
   for (let c = 0; c < numCars; c++) {
     findGround(c)
-    // if (c == currentCarIndex)
-    //   if (vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward[c] || moveBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4))
-    //     shoot(c)
+    if (c == currentCarIndex)
+      if (vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward[c] || moveBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4))
+        shoot(c)
 
     lastKmh[c] = kmh[c]
     kmh[c] = vehicle[c].getCurrentSpeedKmHour()
