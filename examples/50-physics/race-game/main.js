@@ -1,4 +1,5 @@
 /* global THREE, Ammo */
+import keyboard from '/utils/classes/Keyboard.js'
 import { leaveDecals, fadeDecals } from './utils.js'
 import { makeVehicle } from './vehicle.js'
 
@@ -40,11 +41,6 @@ const steeringReturnRate = .6
 
 let kmh = .00001
 let steering = false
-let accelerating = false
-let moveForward = false
-let moveBackward = false
-let steerLeft = false
-let steerRight = false
 
 const bodies = []
 const vehicles = []
@@ -331,45 +327,43 @@ function objWorldModelLoader(objFile, mtlFile, scale) {
 function handleInput() {
   const vehicle = vehicles[0]
 
-  if (vehicle.getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward || moveBackward) && Math.abs(kmh) < maxSpeed / 4))
+  if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || ((keyboard.up || keyboard.down) && Math.abs(kmh) < maxSpeed / 4))
     leaveDecals(carModels[0], worldModel, bodies[0], tireClones[0], scene)
 
   kmh = vehicle.getCurrentSpeedKmHour()
-  steering = (steerLeft || steerRight)
+  steering = (keyboard.left || keyboard.right)
 
-  if (!steering)
-    gVehicleSteering *= steeringReturnRate
+  if (!steering) gVehicleSteering *= steeringReturnRate
   else if (steering)
-
-    if (steerLeft) {
+    if (keyboard.left) {
       if (gVehicleSteering < .05) gVehicleSteering += .01; else
         gVehicleSteering *= 1 + steeringIncrement
 
       if (gVehicleSteering > steeringClamp) gVehicleSteering = steeringClamp
     } else
-    if (steerRight) {
+    if (keyboard.right) {
       if (gVehicleSteering > -.05) gVehicleSteering -= .01; else
         gVehicleSteering *= 1 + steeringIncrement
 
       if (gVehicleSteering < -steeringClamp) gVehicleSteering = -steeringClamp
     }
 
-  accelerating = (moveForward || moveBackward)
+  const accelerating = keyboard.up || keyboard.down
 
   if (!accelerating) {
     gEngineForce = 0
     if (Math.abs(kmh) > 20) gBreakingForce += 5
   } else if (accelerating)
-    if (moveForward && kmh < maxSpeed) {
+    if (keyboard.up && kmh < maxSpeed) {
       if (kmh < maxSpeed / 5) gEngineForce = maxEngineForce * turboForce; else gEngineForce = maxEngineForce
       gBreakingForce = 0.0
-    } else if (moveForward && kmh >= maxSpeed) {
+    } else if (keyboard.up && kmh >= maxSpeed) {
       gEngineForce = 0.0
       gBreakingForce = 0.0
-    } else if (moveBackward && kmh > -maxSpeed) {
+    } else if (keyboard.down && kmh > -maxSpeed) {
       gEngineForce = -maxEngineForce
       gBreakingForce = 0.0
-    } else if (moveBackward && kmh <= maxSpeed) {
+    } else if (keyboard.down && kmh <= maxSpeed) {
       gEngineForce = 0.0
       gBreakingForce = 0.0
     }
@@ -459,57 +453,9 @@ void function animate() {
 
 /* EVENTS */
 
-const onKeyDowner = function(event) {
-  switch (event.key) {
-    case 'ArrowUp':
-    case 'w':
-      moveForward = true
-      break
-    case 'ArrowLeft':
-    case 'a':
-      steerLeft = true
-      break
-    case 'ArrowDown':
-    case 's':
-      moveBackward = true
-      break
-    case 'ArrowRight':
-    case 'd':
-      steerRight = true
-      break
-    case ' ': // spacebar
-      gBreakingForce = maxBreakingForce * 2
-      gEngineForce = 0.0
-      break
-    case '8':
-      moveForward = false
-      steerLeft = false
-      steerRight = false
-      gVehicleSteering = 0
-      break
+document.addEventListener('keydown', () => {
+  if (keyboard.space) {
+    gBreakingForce = maxBreakingForce * 2
+    gEngineForce = 0.0
   }
-}
-
-const onKeyUpper = function(event) {
-  switch (event.key) {
-    case 'ArrowUp':
-    case 'w':
-      moveForward = false
-      break
-    case 'ArrowLeft':
-    case 'a':
-      steerLeft = false
-      break
-    case 'ArrowDown':
-    case 's':
-      moveBackward = false
-      break
-    case 'ArrowRight':
-    case 'd':
-      steerRight = false
-      break
-  }
-}
-
-document.addEventListener('keydown', onKeyDowner, false)
-document.addEventListener('keyup', onKeyUpper, false)
+})
