@@ -8,7 +8,6 @@ const SCREEN_HEIGHT = window.innerHeight
 const SCREEN_WIDTH = window.innerWidth
 
 let camera, scene, renderer, hemiLight, dirLight, pointLight, worldModel
-const worldFiles = ['courser14a']
 const textureLoader = new THREE.TextureLoader()
 const decalDiffuse = textureLoader.load('track5.png')
 const tv = new Ammo.btVector3(0, 0, 0)
@@ -24,9 +23,9 @@ let decals = []
 
 const worldScale = 25
 
-const carNames = ['lada', 'hummer']
+const carNames = ['hummer', 'lada']
 const numCars = carNames.length
-const currentCarIndex = 1
+const currentCarIndex = 0
 
 const carModel = []
 const tireClones = []
@@ -34,12 +33,12 @@ const hubClones = []
 const objScales = []
 const carHeightAboveGround = []
 const objFile = [
-  ['ladavaz.obj', 'ladavazTire.obj'],
   ['hummer.obj', 'hummerTire.obj'],
+  ['ladavaz.obj', 'ladavazTire.obj'],
 ]
 const mtlFile = [
-  ['ladavaz.mtl', 'ladavazTire.mtl'],
   ['hummer.mtl', 'hummerTire.mtl'],
+  ['ladavaz.mtl', 'ladavazTire.mtl'],
 ]
 for (let i = 0; i < numCars; i++) {
   carHeightAboveGround[i] = 0
@@ -114,8 +113,6 @@ const body = []
 const vehicle = []
 const carPos = []
 const carMat = []
-const carColor = []
-const rimColor = []
 const chassisWorldTrans = []
 const tuneup = []
 const carObjects = []
@@ -178,9 +175,7 @@ physicsWorld.setGravity(tv)
 const triMeshBody = []
 let tbody
 
-const worldID = 0
 const bodies = []
-
 const threeObject = [] // index 0 is for the ground, 1 for the camera
 
 const matBlank = new THREE.MeshBasicMaterial()
@@ -512,7 +507,7 @@ function init() {
   pointLight = new THREE.PointLight(0x0011ff, 5, 200)
   scene.add(pointLight)
 
-  objWorldModelLoader(worldFiles[worldID] + '.obj', worldFiles[worldID] + '.mtl', worldScale)
+  objWorldModelLoader('courser14a.obj', 'courser14a.mtl', worldScale)
 
   for (let c = 0; c < numCars; c++)
     for (let i = 0; i < numCars; i++)
@@ -533,7 +528,7 @@ function init() {
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
 }
 
-function shoot(c) {
+function shoot(i) {
   const dec = new Ammo.btVector3(0, 0, 0)
   const dec2 = new Ammo.btVector3(0, 0, 0)
   const dec3 = new Ammo.btVector3(0, 0, 0)
@@ -542,8 +537,8 @@ function shoot(c) {
   const r_d = new THREE.Euler(0, 0, 0, 'XYZ')
   const s_d = new THREE.Vector3(90, 90, 90)
 
-  if (carModel[c][0] && carModel[c][1] && worldModel.children[0]) {
-    const wheelRot = body[c].getWorldTransform().getBasis()
+  if (carModel[i][0] && carModel[i][1] && worldModel.children[0]) {
+    const wheelRot = body[i].getWorldTransform().getBasis()
     dec.setValue(-.2, 0, .2)
     dec2.setValue(
       wheelRot.getRow(0).x() * dec.x() + wheelRot.getRow(0).y() * dec.y() + wheelRot.getRow(0).z() * dec.z(),
@@ -551,9 +546,9 @@ function shoot(c) {
       wheelRot.getRow(2).x() * dec.x() + wheelRot.getRow(2).y() * dec.y() + wheelRot.getRow(2).z() * dec.z()
     )
     dec3.setValue(
-      dec2.x() + carModel[c][1].position.x,
-      dec2.y() + carModel[c][1].position.y,
-      dec2.z() + carModel[c][1].position.z
+      dec2.x() + carModel[i][1].position.x,
+      dec2.y() + carModel[i][1].position.y,
+      dec2.z() + carModel[i][1].position.z
     )
 
     p_d.set(dec3.x(), dec3.y(), dec3.z())
@@ -587,9 +582,9 @@ function shoot(c) {
       wheelRot.getRow(2).x() * dec.x() + wheelRot.getRow(2).y() * dec.y() + wheelRot.getRow(2).z() * dec.z()
     )
     dec3.setValue(
-      dec2.x() + tireClones[c][2].position.x,
-      dec2.y() + tireClones[c][2].position.y,
-      dec2.z() + tireClones[c][2].position.z
+      dec2.x() + tireClones[i][2].position.x,
+      dec2.y() + tireClones[i][2].position.y,
+      dec2.z() + tireClones[i][2].position.z
     )
     p_d.set(dec3.x(), dec3.y(), dec3.z())
 
@@ -669,13 +664,11 @@ function objWorldModelLoader(objFile, mtlFile, scale) {
 function updatePhysics() {
   physicsWorld.stepSimulation(1 / 60)
 
-  for (let c = 0; c < numCars; c++)
-    findGround(c)
-
   for (let c = 0; c < numCars; c++) {
-    if (c == currentCarIndex)
-      if (vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveCarForward[c] || moveCarBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4))
-        shoot(c)
+    findGround(c)
+    // if (c == currentCarIndex)
+    //   if (vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveCarForward[c] || moveCarBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4))
+    //     shoot(c)
 
     lastKmh[c] = kmh[c]
     kmh[c] = vehicle[c].getCurrentSpeedKmHour()
@@ -697,8 +690,6 @@ function updatePhysics() {
 
         if (gVehicleSteering[c] < -steeringClamp[c]) gVehicleSteering[c] = -steeringClamp[c]
       }
-
-    if (c != currentCarIndex) moveCarForward[c] = false
 
     accelerating[c] = (moveCarForward[c] || moveCarBackward[c])
 
@@ -746,9 +737,6 @@ function updatePhysics() {
           chassisWorldTrans[c].getRotation().z(),
           chassisWorldTrans[c].getRotation().w()
         )
-
-        if (c == currentCarIndex && i == 0)
-          dirLight.position.set(carPos[c].x(), carPos[c].y() + 250, carPos[c].z())
       }
 
     // wheels, index 0 is chassis shape
