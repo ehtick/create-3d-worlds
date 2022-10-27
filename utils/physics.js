@@ -82,6 +82,8 @@ export function createBrick(length, height, width, pos, halfBrick) {
   return createBox({ width, height, depth, mass, pos })
 }
 
+/* STRUCTURES */
+
 export function createWall() {
   const pos = new THREE.Vector3()
   const bricks = []
@@ -112,6 +114,19 @@ export function createWall() {
     pos.y += brickHeight
   }
   return bricks
+}
+
+export function createCrates(size = .75, nw = 8, nh = 6) {
+  const crates = []
+  for (let j = 0; j < nw; j++)
+    for (let i = 0; i < nh; i++) {
+      const crate = createBox({
+        pos: new THREE.Vector3(size * j - (size * (nw - 1)) / 2, size * i, 10),
+        width: size, height: size, depth: size, mass: 10, color: 0xfca400, friction: 1
+      })
+      crates.push(crate)
+    }
+  return crates
 }
 
 /* TERRAIN */
