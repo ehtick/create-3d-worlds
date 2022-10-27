@@ -5,7 +5,7 @@ import { ConvexGeometry } from '/node_modules/three/examples/jsm/geometries/Conv
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
-import { AMMO, createPhysicsWorld, updateMesh } from '/utils/physics.js'
+import { AMMO, createPhysicsWorld, updateMesh, createRigidBody } from '/utils/physics.js'
 
 const { Vector3 } = THREE
 
@@ -106,30 +106,8 @@ function createConvexHullPhysicsShape(coords) {
   return shape
 }
 
-function createRigidBody({ mesh, shape, mass, pos, vel, angVel }) {
-  mesh.position.copy(pos)
-  const transform = new AMMO.btTransform()
-  transform.setIdentity()
-  transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
-  const motionState = new AMMO.btDefaultMotionState(transform)
-  const localInertia = new AMMO.btVector3(0, 0, 0)
-  shape.calculateLocalInertia(mass, localInertia)
-  const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia)
-  const body = new AMMO.btRigidBody(rbInfo)
-  body.setFriction(0.5)
-  if (vel)
-    body.setLinearVelocity(new AMMO.btVector3(vel.x, vel.y, vel.z))
-  if (angVel)
-    body.setAngularVelocity(new AMMO.btVector3(angVel.x, angVel.y, angVel.z))
-  mesh.userData.body = body
-  mesh.userData.collided = false
-
-  if (mass > 0) body.setActivationState(4) // Disable deactivation
-
-  return { mesh, body, mass }
-}
-
 function addRigidBody({ mesh, body, mass }) {
+  mesh.userData.collided = false
   scene.add(mesh)
   if (mass > 0) rigidBodies.push(mesh)
   physicsWorld.addRigidBody(body)
