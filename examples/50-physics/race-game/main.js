@@ -385,7 +385,10 @@ function findGround(c) {
     physicsWorld.rayTest(carPos[c], downRayDir, downRay)
 
     if (downRay.hasHit()) {
-      carHeightAboveGround[c] = carPos[c].distance(downRay.get_m_hitPointWorld())
+      const hPoint = downRay.get_m_hitPointWorld()
+      const distanceToGround = new THREE.Vector3(carPos[c].x(), carPos[c].y(), carPos[c].z())
+        .distanceTo(new THREE.Vector3(hPoint.x(), hPoint.y(), hPoint.z()))
+      carHeightAboveGround[c] = distanceToGround
       body[c].setDamping(0, 0)
     } else {
       const cp = new Ammo.btVector3(carPos[c].x(), carPos[c].y() + 1, carPos[c].z())
