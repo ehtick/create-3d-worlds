@@ -38,8 +38,8 @@ const steeringIncrement = 0.09
 const steeringClamp = .44
 const steeringReturnRate = .6
 
-const kmh = []
-const steering = []
+let kmh = .00001
+let steering = false
 let accelerating = false
 let moveForward = false
 let moveBackward = false
@@ -55,9 +55,6 @@ let gBreakingForce = 0
 let gVehicleSteering = 0
 
 for (let c = 0; c < numCars; c++) {
-  kmh[c] = .00001
-  steering[c] = false
-
   bodies[c] = []
   vehicles[c] = []
   carModels[c] = []
@@ -332,17 +329,17 @@ function objWorldModelLoader(objFile, mtlFile, scale) {
 /* LOOP */
 
 function handleInput(c) {
-  if (c === 1) return
+  const vehicle = vehicles[0]
 
-  if (vehicles[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward || moveBackward) && Math.abs(kmh[c]) < maxSpeed / 4))
+  if (vehicle.getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward || moveBackward) && Math.abs(kmh) < maxSpeed / 4))
     shootDecals(c, carModels, worldModel, bodies, tireClones, scene)
 
-  kmh[c] = vehicles[c].getCurrentSpeedKmHour()
-  steering[c] = (steerLeft || steerRight)
+  kmh = vehicle.getCurrentSpeedKmHour()
+  steering = (steerLeft || steerRight)
 
-  if (!steering[c])
+  if (!steering)
     gVehicleSteering *= steeringReturnRate
-  else if (steering[c])
+  else if (steering)
 
     if (steerLeft) {
       if (gVehicleSteering < .05) gVehicleSteering += .01; else
@@ -361,34 +358,34 @@ function handleInput(c) {
 
   if (!accelerating) {
     gEngineForce = 0
-    if (Math.abs(kmh[c]) > 20) gBreakingForce += 5
+    if (Math.abs(kmh) > 20) gBreakingForce += 5
   } else if (accelerating)
-    if (moveForward && kmh[c] < maxSpeed) {
-      if (kmh[c] < maxSpeed / 5) gEngineForce = maxEngineForce * turboForce; else gEngineForce = maxEngineForce
+    if (moveForward && kmh < maxSpeed) {
+      if (kmh < maxSpeed / 5) gEngineForce = maxEngineForce * turboForce; else gEngineForce = maxEngineForce
       gBreakingForce = 0.0
-    } else if (moveForward && kmh[c] >= maxSpeed) {
+    } else if (moveForward && kmh >= maxSpeed) {
       gEngineForce = 0.0
       gBreakingForce = 0.0
-    } else if (moveBackward && kmh[c] > -maxSpeed) {
+    } else if (moveBackward && kmh > -maxSpeed) {
       gEngineForce = -maxEngineForce
       gBreakingForce = 0.0
-    } else if (moveBackward && kmh[c] <= maxSpeed) {
+    } else if (moveBackward && kmh <= maxSpeed) {
       gEngineForce = 0.0
       gBreakingForce = 0.0
     }
 
   // 0,1 front; 2,3 back
-  vehicles[c].applyEngineForce(gEngineForce, 0)
-  vehicles[c].setBrake(gBreakingForce, 0)
-  vehicles[c].setSteeringValue(gVehicleSteering, 0)
-  vehicles[c].setSteeringValue(-gVehicleSteering * 1.2, 4)// for drifting, 5th wheel (rear)
+  vehicle.applyEngineForce(gEngineForce, 0)
+  vehicle.setBrake(gBreakingForce, 0)
+  vehicle.setSteeringValue(gVehicleSteering, 0)
+  vehicle.setSteeringValue(-gVehicleSteering * 1.2, 4)// for drifting, 5th wheel (rear)
 
-  vehicles[c].applyEngineForce(gEngineForce, 4)
-  vehicles[c].applyEngineForce(gEngineForce, 1)
-  vehicles[c].setBrake(gBreakingForce, 1)
-  vehicles[c].setSteeringValue(gVehicleSteering, 1)
-  vehicles[c].setSteeringValue(-gVehicleSteering * 1.2, 5) // for drifting, 6th wheel (rear)
-  vehicles[c].applyEngineForce(gEngineForce, 5)
+  vehicle.applyEngineForce(gEngineForce, 4)
+  vehicle.applyEngineForce(gEngineForce, 1)
+  vehicle.setBrake(gBreakingForce, 1)
+  vehicle.setSteeringValue(gVehicleSteering, 1)
+  vehicle.setSteeringValue(-gVehicleSteering * 1.2, 5) // for drifting, 6th wheel (rear)
+  vehicle.applyEngineForce(gEngineForce, 5)
 }
 
 function updatePhysics() {
