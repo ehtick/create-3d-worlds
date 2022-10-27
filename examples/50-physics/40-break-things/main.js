@@ -5,7 +5,7 @@ import { ConvexGeometry } from '/node_modules/three/examples/jsm/geometries/Conv
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
-import { AMMO, createPhysicsWorld, updateMesh, createRigidBody } from '/utils/physics.js'
+import { AMMO, createPhysicsWorld, updateMesh, createRigidBody, createBall } from '/utils/physics.js'
 
 const { Vector3 } = THREE
 
@@ -207,25 +207,14 @@ void function animate() {
 /* EVENTS */
 
 const raycaster = new THREE.Raycaster()
-const ballMaterial = new THREE.MeshPhongMaterial({ color: 0x202020 })
 
-window.addEventListener('pointerdown', event => {
-  const mouse = normalizeMouse(event)
+window.addEventListener('pointerdown', e => {
+  const mouse = normalizeMouse(e)
   raycaster.setFromCamera(mouse, camera)
-  // Creates a mesh and throws it
-  const mass = 35
-  const ballRadius = 0.4
-  const mesh = new THREE.Mesh(new THREE.SphereGeometry(ballRadius, 14, 10), ballMaterial)
-  mesh.castShadow = true
-  mesh.receiveShadow = true
-  const shape = new AMMO.btSphereShape(ballRadius)
-  shape.setMargin(margin)
   const pos = new Vector3()
-  pos.copy(raycaster.ray.direction)
-  pos.add(raycaster.ray.origin)
-  const { body } = createRigidBody({ mesh, shape, mass, pos })
-  addRigidBody({ mesh, body, mass })
-  pos.copy(raycaster.ray.direction)
-  pos.multiplyScalar(24)
-  body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
+    .copy(raycaster.ray.direction).add(raycaster.ray.origin)
+  const obj = createBall(0.4, 35, pos)
+  addRigidBody(obj)
+  pos.copy(raycaster.ray.direction).multiplyScalar(24)
+  obj.body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
 })
