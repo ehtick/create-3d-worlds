@@ -236,7 +236,7 @@ function initVehicle(c) {
   bodies[c] = new Ammo.btRigidBody(rbInfo)
   bodies[c].setFriction(1)
   physicsWorld.addRigidBody(bodies[c])
-  makeVehicle(c)
+  vehicles[c] = makeVehicle(c)
 }
 
 function makeVehicle(c) {
@@ -251,12 +251,12 @@ function makeVehicle(c) {
   m_tuning.set_m_maxSuspensionForce(maxSuspensionForce)
 
   const m_vehicleRayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
-  vehicles[c] = new Ammo.btRaycastVehicle(m_tuning, bodies[c], m_vehicleRayCaster)
+  const vehicle = new Ammo.btRaycastVehicle(m_tuning, bodies[c], m_vehicleRayCaster)
   bodies[c].setActivationState(DISABLE_DEACTIVATION)
-  physicsWorld.addAction(vehicles[c])
+  physicsWorld.addAction(vehicle)
 
   // choose coordinate system
-  vehicles[c].setCoordinateSystem(rightIndex, upIndex, forwardIndex)
+  vehicle.setCoordinateSystem(rightIndex, upIndex, forwardIndex)
 
   // front wheels
   let isFrontWheel = true
@@ -264,11 +264,11 @@ function makeVehicle(c) {
 
   connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight, 2 * CUBE_HALF_EXTENTS[c] - wheelRadius[c])
 
-  vehicles[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicle.addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
   connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight, 2 * CUBE_HALF_EXTENTS[c] - wheelRadius[c])
 
-  vehicles[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicle.addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
   isFrontWheel = true // for all wheel drive?
 
@@ -276,22 +276,25 @@ function makeVehicle(c) {
 
   connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight, -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
-  vehicles[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicle.addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
   connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight, -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
-  vehicles[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicle.addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+
   // these last two of the six total wheels are for rendering
+  // m_tuning.set_m_frictionSlip(rearWheelFriction)
 
-  m_tuning.set_m_frictionSlip(rearWheelFriction)
-  isFrontWheel = true
-  connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight, -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
+  // isFrontWheel = true
+  // connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight, -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
-  vehicles[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  // vehicle.addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
-  connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight, -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
+  // connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight, -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
-  vehicles[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  // vehicle.addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+
+  return vehicle
 }
 
 function initObjects(numObjects) {
@@ -371,20 +374,19 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
     const objLoader = new THREE.OBJLoader()
     objLoader.setMaterials(materials)
     objLoader.load(objFile, object => {
-      carModels[c][i] = object
-      carModels[c][i].scale.set(scale, scale, scale)
-      carModels[c][i].traverse(
+      object.scale.set(scale, scale, scale)
+      object.traverse(
         child => {
           child.castShadow = child.receiveShadow = child.isMesh
         })
-      scene.add(carModels[c][i])
-
       // make three copies each of tire
       if (i == 1)
         for (let j = 0; j < 3; j++) {
-          tireClones[c][j] = carModels[c][i].clone()
+          tireClones[c][j] = object.clone()
           scene.add(tireClones[c][j])
         }
+      scene.add(object)
+      carModels[c][i] = object
     })
   })
 }
@@ -397,13 +399,13 @@ function objWorldModelLoader(objFile, mtlFile, scale) {
     objLoader.setMaterials(materials)
     objLoader.load(objFile, object => {
       object.position.set(0, -38, 0)
-      worldModel = object
-      worldModel.scale.set(scale, scale, scale)
-      worldModel.traverse(child => {
+      object.scale.set(scale, scale, scale)
+      object.traverse(child => {
         child.castShadow = child.receiveShadow = child.isMesh
       })
-      triMeshBuilder(worldModel, worldScale)
-      scene.add(worldModel)
+      triMeshBuilder(object, worldScale)
+      scene.add(object)
+      worldModel = object
     })
   })
 }
