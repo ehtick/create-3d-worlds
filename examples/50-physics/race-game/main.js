@@ -463,7 +463,7 @@ function init() {
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
 }
 
-function shoot(i) {
+function shootDecals(i) {
   const dec = new Ammo.btVector3(0, 0, 0)
   const dec2 = new Ammo.btVector3(0, 0, 0)
   const dec3 = new Ammo.btVector3(0, 0, 0)
@@ -599,7 +599,7 @@ function updatePhysics() {
     findGround(c)
     if (c == currentCarIndex)
       if (vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward[c] || moveBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4))
-        shoot(c)
+        shootDecals(c)
 
     lastKmh[c] = kmh[c]
     kmh[c] = vehicle[c].getCurrentSpeedKmHour()
