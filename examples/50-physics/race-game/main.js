@@ -81,7 +81,6 @@ const rearWheelFriction = []
 const suspensionStiffness = [58.0, 45.0, 58.0, 36.0, 58.0, 58.0, 58.0]
 const suspensionDamping = []
 const suspensionCompression = []
-const rollInfluence = [.01, .01, .01, .01, .01, .01, .01]
 const maxSuspensionTravelCm = []
 const maxSuspensionForce = []
 const CUBE_HALF_EXTENTS = [.96, 1.12, .97, 1., .94, .99, .99]
@@ -276,7 +275,7 @@ function initVehicle(c) {
   compound.addChildShape(localTrans, chassisShape)
   const mass = 680
 
-  let localInertia = new Ammo.btVector3(1, 1, 1)
+  const localInertia = new Ammo.btVector3(1, 1, 1)
   compound.calculateLocalInertia(mass, localInertia)
   const myMotionState = new Ammo.btDefaultMotionState(startTransform)
   const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, compound, localInertia)
@@ -286,7 +285,6 @@ function initVehicle(c) {
   const ptr = body[c].a || body[c].ptr
   carObjects[c][ptr] = body[c]
   makeVehicle(c)
-  Ammo.destroy(localInertia); localInertia = null
 }
 
 function makeVehicle(c) {
@@ -308,7 +306,7 @@ function makeVehicle(c) {
 
   // front wheels
   let isFrontWheel = true
-  let connectionPointCS0 = new Ammo.btVector3(0, 0, 0)
+  const connectionPointCS0 = new Ammo.btVector3(0, 0, 0)
 
   connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight[c], 2 * CUBE_HALF_EXTENTS[c] - wheelRadius[c])
 
@@ -340,57 +338,6 @@ function makeVehicle(c) {
   connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight[c], -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
   vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
-
-  resetVehicle(c)
-  tuneVehicle(c)
-  Ammo.destroy(connectionPointCS0); connectionPointCS0 = null
-  Ammo.destroy(m_tuning); m_tuning = null
-}
-
-function resetVehicle(c) {
-  tv.setValue(0, 0, 0)
-  if (!tuneup[c]) {// initially reposition
-    gVehicleSteering[c] = 0.0
-    let carTrans = new Ammo.btTransform()
-    body[c].setCenterOfMassTransform(carTrans.getIdentity())
-    body[c].setLinearVelocity(tv)
-    body[c].setAngularVelocity(tv)
-    body[c].getMotionState().getWorldTransform(carTrans)
-    tv.setValue(0, 0, (c * 10))
-    carTrans.setOrigin(tv)
-    let quat = new Ammo.btQuaternion()
-    quat.setEulerZYX(-Math.PI / 2, 0, 0)
-    carTrans.setRotation(quat)
-
-    body[c].setWorldTransform(carTrans)
-
-    Ammo.destroy(carTrans); carTrans = null
-    Ammo.destroy(quat); quat = null
-  }
-  physicsWorld.getBroadphase().getOverlappingPairCache().cleanProxyFromPairs(body[c].getBroadphaseHandle(), physicsWorld.getDispatcher())
-  if (vehicle[c]) {
-    vehicle[c].resetSuspension()
-    for (let i = 0; i < vehicle[c].getNumWheels(); i++)
-      // synchronize the wheels with the (interpolated) chassis worldtransform
-      vehicle[c].updateWheelTransform(i, true)
-  }
-  tuneup[c] = false
-}
-
-function tuneVehicle(c) {
-  for (let i = 0; i < vehicle[c].getNumWheels(); i++) {
-    const wheel = vehicle[c].getWheelInfo(i)
-    wheel.set_m_suspensionStiffness = suspensionStiffness[c]
-    wheel.set_m_wheelsDampingRelaxation = suspensionDamping[c]
-    wheel.set_m_wheelsDampingCompression = suspensionCompression[c]
-    if (i > 1) wheel.m_frictionSlip = rearWheelFriction[c]; else
-      wheel.set_m_frictionSlip = frictionSlip[c]
-
-    wheel.set_m_rollInfluence(rollInfluence[c])
-    // synchronize the wheels with the (interpolated) chassis worldtransform
-    vehicle[c].updateWheelTransform(i, true)
-  }
-  vehicle[c].updateSuspension()
 }
 
 function initObjects(numObjects) {
@@ -407,7 +354,7 @@ function initObjects(numObjects) {
     startTransform.setIdentity()
 
     const isDynamic = (mass !== 0)
-    let localInertia = new Ammo.btVector3(0, 0, 0)
+    const localInertia = new Ammo.btVector3(0, 0, 0)
     if (isDynamic) colShape.calculateLocalInertia(mass, localInertia)
     tv.setValue(0, 0, 0)
     startTransform.setOrigin(tv)
@@ -424,7 +371,6 @@ function initObjects(numObjects) {
     }
     physicsWorld.addRigidBody(body)
     bodies.push(body)
-    Ammo.destroy(localInertia); localInertia = null
   }
 }
 
@@ -442,22 +388,19 @@ function findGround(c) {
       carHeightAboveGround[c] = carPos[c].distance(downRay.get_m_hitPointWorld())
       body[c].setDamping(0, 0)
     } else {
-      let cp = new Ammo.btVector3(carPos[c].x(), carPos[c].y() + 1, carPos[c].z())
+      const cp = new Ammo.btVector3(carPos[c].x(), carPos[c].y() + 1, carPos[c].z())
       downRayDir.setY(carPos[c].y() + 400)
       downRay = new Ammo.ClosestRayResultCallback(cp, downRayDir)
       physicsWorld.rayTest(cp, downRayDir, downRay)
-      Ammo.destroy(cp); cp = null
       if (downRay.hasHit()) {
-        let pointAbove = downRay.get_m_hitPointWorld()
+        const pointAbove = downRay.get_m_hitPointWorld()
         body[c].setDamping(.99, .99)
         body[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
         pointAbove.setY(pointAbove.y() + 1.5)
         chassisWorldTrans[c].setOrigin(pointAbove)
         body[c].setWorldTransform(chassisWorldTrans[c])
-        Ammo.destroy(pointAbove); pointAbove = null
       }
     }
-    Ammo.destroy(downRay); downRay = null
   }
 }
 
