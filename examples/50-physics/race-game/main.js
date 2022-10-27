@@ -4,7 +4,6 @@
  * refaktorisati logiku za jedna kola: currentCarIndex, numCars, carNames...
  * implement smoke
  */
-
 const SCREEN_HEIGHT = window.innerHeight
 const SCREEN_WIDTH = window.innerWidth
 
@@ -14,11 +13,9 @@ const textureLoader = new THREE.TextureLoader()
 const decalDiffuse = textureLoader.load('track5.png')
 const tv = new Ammo.btVector3(0, 0, 0)
 const tCamPoint = new Ammo.btVector3(0, 0, 0)
-let carHit = false
 const downRayDir = new Ammo.btVector3(0, 0, 0)
 const center = new Ammo.btVector3(0, -38, 0)
 
-const hitPoint = new Ammo.btVector3(0, 0, 0)
 const velocity = new THREE.Vector3(0, 0, 0)
 const oldCarPos = new THREE.Vector3(0, 0, 0)
 const oldCarPos2 = new THREE.Vector3(0, 0, 0)
@@ -171,13 +168,6 @@ for (let c = 0; c < numCars; c++) {
   hubClones[c] = []
   carPos[c] = new Ammo.btVector3(0, 0, 0)
   carMat[c] = []
-  if (c == currentCarIndex) {
-    carColor[c] = new THREE.Color('rgb(95,118,103)')
-    rimColor[c] = new THREE.Color('rgb(90,90,90)')
-  } else {
-    carColor[c] = new THREE.Color('rgb(90,90,80)')
-    rimColor[c] = new THREE.Color('rgb(80,80,80)')
-  }
   chassisWorldTrans[c] = new Ammo.btTransform()
   tuneup[c] = false
 }
@@ -468,31 +458,13 @@ function findGround(c) {
       physicsWorld.rayTest(cp, downRayDir, downRay)
       Ammo.destroy(cp); cp = null
       if (downRay.hasHit()) {
-        // do not want ray from car a hitting car b above it, and getting moved above b, so set boolean for car to car hits when raycasting upward
-        const dp = physicsWorld.getDispatcher()
-        const numMan = dp.getNumManifolds()
-        carHit = false
-
-        for (let i = 0; i < numMan; i++) {
-          const manifold = dp.getManifoldByIndexInternal(i)
-          const num_contacts = manifold.getNumContacts()
-          if (num_contacts !== 0) {
-            const bodyA = carObjects[c][manifold.getBody0()]
-            const bodyB = carObjects[c][manifold.getBody1()]
-            if (bodyA != bodies[1] && bodyB != bodies[1])
-              carHit = true// so do not move car a above car b when b is above a
-          }
-        }
-
-        if (!carHit) {
-          let pointAbove = downRay.get_m_hitPointWorld()
-          body[c].setDamping(.99, .99)
-          body[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
-          pointAbove.setY(pointAbove.y() + 1.5)
-          chassisWorldTrans[c].setOrigin(pointAbove)
-          body[c].setWorldTransform(chassisWorldTrans[c])
-          Ammo.destroy(pointAbove); pointAbove = null
-        }
+        let pointAbove = downRay.get_m_hitPointWorld()
+        body[c].setDamping(.99, .99)
+        body[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
+        pointAbove.setY(pointAbove.y() + 1.5)
+        chassisWorldTrans[c].setOrigin(pointAbove)
+        body[c].setWorldTransform(chassisWorldTrans[c])
+        Ammo.destroy(pointAbove); pointAbove = null
       }
     }
     Ammo.destroy(downRay); downRay = null
@@ -662,7 +634,6 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale) {
           }
         })
       scene.add(carModel[c][i])
-      if (c == currentCarIndex && i == 0) dirLight.target = carModel[currentCarIndex][0]
 
       // make three copies each of tire
       if (i == 1)
@@ -700,38 +671,6 @@ function updatePhysics() {
 
   for (let c = 0; c < numCars; c++)
     findGround(c)
-
-  const carHitForce = []
-  const manifolder = []
-  let highestHitForce = 0
-  carHit = false
-  const dp = physicsWorld.getDispatcher()
-  const numMan = dp.getNumManifolds()
-
-  for (let i = 0; i < numMan; i++) {
-    const manifold = dp.getManifoldByIndexInternal(i)
-    const num_contacts = manifold.getNumContacts()
-    if (num_contacts !== 0) {
-      const bodyA = carObjects[currentCarIndex][manifold.getBody0()]
-      const bodyB = carObjects[currentCarIndex][manifold.getBody1()]
-      if ((bodyA == body[currentCarIndex] || bodyB == body[currentCarIndex]) && !(bodyA == bodies[1] || bodyB == bodies[1])) {
-        carHit = true
-        carHitForce.push(manifold.getContactPoint().get_m_appliedImpulse())
-        manifolder.push(manifold)
-      }
-    }
-  }
-
-  if (carHitForce.length > 0) {
-    highestHitForce = Math.max(...carHitForce)
-    for (let i = 0; i < carHitForce.length; i++)
-      if (highestHitForce == carHitForce[i]) {
-        manifolder[i].getContactPoint().set_m_appliedImpulse(0)
-        hitPoint.setX(manifolder[i].getContactPoint().getPositionWorldOnA().x())
-        hitPoint.setY(manifolder[i].getContactPoint().getPositionWorldOnA().y())
-        hitPoint.setZ(manifolder[i].getContactPoint().getPositionWorldOnA().z())
-      }
-  }
 
   for (let c = 0; c < numCars; c++) {
     if (c == currentCarIndex)
