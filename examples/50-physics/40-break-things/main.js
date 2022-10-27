@@ -20,32 +20,21 @@ const margin = 0.05
 const convexBreaker = new ConvexObjectBreaker()
 const rigidBodies = []
 
-const pos = new Vector3()
-
 const objectsToRemove = []
 let numObjectsToRemove = 0
-
-const impactPoint = new Vector3()
-const impactNormal = new Vector3()
-
-const transform = new AMMO.btTransform()
-const tempBtVec3 = new AMMO.btVector3(0, 0, 0)
 
 const physicsWorld = createPhysicsWorld({ gravity: 7.8 })
 
 createGround(40, 1, 40, 0, new Vector3(0, -0.5, 0), 0xFFFFFF)
 
-// towers
 createBox({ mass: 1000, size: new Vector3(4, 10, 4), pos: new Vector3(-8, 5, 0), color: 0xB03014 })
 createBox({ mass: 1000, size: new Vector3(4, 10, 4), pos: new Vector3(8, 5, 0), color: 0xB03014 })
-
-// bridge
 createBox({ mass: 100, size: new Vector3(14, 0.4, 3), pos: new Vector3(0, 10.2, 0), color: 0xB3B865 })
 
-// stones
-const numStones = 8
-for (let i = 0; i < numStones; i++) {
-  pos.set(0, 2, 15 * (0.5 - i / (numStones + 1)))
+const numDominos = 8
+for (let i = 0; i < numDominos; i++) {
+  const pos = new Vector3()
+  pos.set(0, 2, 15 * (0.5 - i / (numDominos + 1)))
   createBox({ mass: 120, size: new Vector3(2, 4, .3), pos, color: 0xB0B0B0 })
 }
 
@@ -65,6 +54,7 @@ function createBox({ mass, size, pos, color = createRandomColor() }) {
 function createPyramid() {
   const pyramidMass = 860
   const pyramidHalfExtents = new Vector3(4, 5, 4)
+  const pos = new Vector3()
   pos.set(5, pyramidHalfExtents.y * 0.5, - 7)
   const pyramidPoints = []
   pyramidPoints.push(new Vector3(pyramidHalfExtents.x, - pyramidHalfExtents.y, pyramidHalfExtents.z))
@@ -105,6 +95,7 @@ function removeDebris(mesh) {
 
 function createConvexHullPhysicsShape(coords) {
   const shape = new AMMO.btConvexHullShape()
+  const tempBtVec3 = new AMMO.btVector3(0, 0, 0)
   for (let i = 0, il = coords.length; i < il; i += 3) {
     tempBtVec3.setValue(coords[i], coords[i + 1], coords[i + 2])
     const lastOne = (i >= (il - 3))
@@ -152,7 +143,10 @@ function updatePhysics(dt) {
   physicsWorld.stepSimulation(dt, 10)
   rigidBodies.forEach(updateMesh)
 
+  const impactPoint = new Vector3()
+  const impactNormal = new Vector3()
   const dispatcher = physicsWorld.getDispatcher()
+
   for (let i = 0, il = dispatcher.getNumManifolds(); i < il; i++) {
     const contactManifold = dispatcher.getManifoldByIndexInternal(i)
     const rb0 = AMMO.castObject(contactManifold.getBody0(), AMMO.btRigidBody)
@@ -248,6 +242,7 @@ window.addEventListener('pointerdown', event => {
   ball.receiveShadow = true
   const ballShape = new AMMO.btSphereShape(ballRadius)
   ballShape.setMargin(margin)
+  const pos = new Vector3()
   pos.copy(raycaster.ray.direction)
   pos.add(raycaster.ray.origin)
   const { body } = createRigidBody(ball, ballShape, ballMass, pos)
