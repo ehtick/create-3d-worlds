@@ -237,55 +237,6 @@ function fixAngleRad(a) {
   if (a > Math.PI) a -= Math.PI * 2; else if (a < -Math.PI) a += Math.PI * 2; return a
 }
 
-function updateCamera() {
-  const tv = new Ammo.btVector3(0, 0, 0)
-  tv.setValue(0.0, -1.0, 0.0)
-  bodies[1].getMotionState().getWorldTransform(transformCam)
-
-  let chaseCam = transformCam.getOrigin()
-  body[currentCarIndex].getMotionState().getWorldTransform(transformChass)
-
-  // camera should never go underground
-  let toPointer = new Ammo.btVector3(chaseCam.x(), chaseCam.y() - 200, chaseCam.z())
-  let rayer = new Ammo.ClosestRayResultCallback(chaseCam, toPointer)
-  physicsWorld.rayTest(chaseCam, toPointer, rayer)
-  if (rayer.hasHit())
-    groundY = rayer.get_m_hitPointWorld().y() + 3
-
-  Ammo.destroy(toPointer); toPointer = null
-  Ammo.destroy(rayer); rayer = null
-
-  setChaseCam()
-
-  const xvelc = tCamPoint.x() - chaseCam.x()
-  const yvelc = tCamPoint.y() - chaseCam.y()
-  const zvelc = tCamPoint.z() - chaseCam.z()
-
-  tv.setValue(xvelc, yvelc, zvelc)
-  bodies[1].setLinearVelocity(tv)
-  bodies[1].getMotionState().getWorldTransform(transformCam)
-  chaseCam = transformCam.getOrigin()
-
-  camera.position.x = chaseCam.x()
-  camera.position.y = chaseCam.y()
-  camera.position.z = chaseCam.z()
-
-  if (camera.position.y < groundY) {
-    chaseCam.setY(groundY)
-    transformCam.setOrigin(chaseCam)
-  }
-
-  bodies[1].setWorldTransform(transformCam)
-  camera.lookAt(new THREE.Vector3(carPos[currentCarIndex].x(), carPos[currentCarIndex].y(), carPos[currentCarIndex].z()))
-
-  if (chaseStarter) {
-    setChaseCam()
-    transformCam.setIdentity()
-    transformCam.setOrigin(tCamPoint)
-  }
-  bodies[1].setWorldTransform(transformCam)
-}
-
 function setChaseCam(camHeight = 4, camDist = 8) {
   const carRot = body[currentCarIndex].getWorldTransform().getBasis()
   const c2 = new Ammo.btVector3(0, camHeight, -camDist)
@@ -1089,10 +1040,9 @@ function updateDecals() {
 
 void function animate() {
   requestAnimationFrame(animate)
-  const dt = clock.getDelta()
   updatePhysics()
   updateDecals()
-  updateCamera(dt)
+  setChaseCam()
   renderer.render(scene, camera)
 }()
 
