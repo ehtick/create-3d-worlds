@@ -18,18 +18,7 @@ let carHit = false
 const downRayDir = new Ammo.btVector3(0, 0, 0)
 const center = new Ammo.btVector3(0, -38, 0)
 
-const smo = new Ammo.btVector3(0, 0, 0)
-const smo2 = new Ammo.btVector3(0, 0, 0)
-const smo3 = new Ammo.btVector3(0, 0, 0)
-const smo4 = new THREE.Vector3(0, 0, 0)
-let smoker, smoker2, smoker3, smoker4
-let smokerCount = 0, smokerCount2 = 6
-const frame = []
-let opacDown = false, opac = .1
 const hitPoint = new Ammo.btVector3(0, 0, 0)
-const smokerCount3 = [0, 5]
-const smoUp = [true, true]
-let smoker2Scale = .1
 const velocity = new THREE.Vector3(0, 0, 0)
 const oldCarPos = new THREE.Vector3(0, 0, 0)
 const oldCarPos2 = new THREE.Vector3(0, 0, 0)
@@ -570,57 +559,6 @@ function init() {
   container.appendChild(renderer.domElement)
 
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
-
-  const numFrames = 14
-  for (let si = 0; si < numFrames; si++)
-    frame[si] = new THREE.TextureLoader().load('animations/dirty2_' + si + '.gif')
-
-  const s_geometry = new THREE.PlaneGeometry(2, 2, 1, 1)
-
-  const s_material = new THREE.MeshPhongMaterial({
-    map: frame[0],
-    transparent: true,
-    color: 0xffffff,
-    shininess: 0,
-    depthTest: true,
-    depthWrite: false,
-    opacity: opac
-    // side:THREE.DoubleSide
-  })
-
-  const s_material2 = new THREE.MeshPhongMaterial({
-    map: frame[0],
-    transparent: true,
-    color: 0xffffff,
-    shininess: 0,
-    depthTest: true,
-    depthWrite: false,
-    opacity: .3,
-    side: THREE.DoubleSide
-  })
-
-  const s_material3 = new THREE.MeshPhongMaterial({
-    map: frame[0],
-    transparent: true,
-    color: 0xffffff,
-    shininess: 0,
-    depthTest: true,
-    depthWrite: false,
-    opacity: .3,
-    side: THREE.DoubleSide
-  })
-
-  smoker = new THREE.Mesh(s_geometry, s_material)
-  smoker.scale.set(.4, .4, .4)
-  smoker2 = new THREE.Mesh(s_geometry, s_material2)
-  smoker2.scale.set(.6, .6, .6)
-  smoker3 = new THREE.Mesh(s_geometry, s_material3)
-  smoker4 = new THREE.Mesh(s_geometry, s_material3)
-
-  scene.add(smoker)
-  scene.add(smoker2)
-  scene.add(smoker3)
-  scene.add(smoker4)
 }
 
 function shoot(c) {
@@ -810,10 +748,6 @@ function updatePhysics() {
     if (c == currentCarIndex)
       if (vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveCarForward[c] || moveCarBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4))
         shoot(c)
-      else {
-        smoker3.material.visible = false
-        smoker4.material.visible = false
-      }
 
     lastKmh[c] = kmh[c]
     kmh[c] = vehicle[c].getCurrentSpeedKmHour()
@@ -885,66 +819,8 @@ function updatePhysics() {
           chassisWorldTrans[c].getRotation().w()
         )
 
-        if (c == currentCarIndex && i == 0) {
+        if (c == currentCarIndex && i == 0)
           dirLight.position.set(carPos[c].x(), carPos[c].y() + 250, carPos[c].z())
-          smoker.quaternion.set(
-            camera.quaternion.x,
-            camera.quaternion.y,
-            camera.quaternion.z,
-            camera.quaternion.w
-          )
-          smoker2.quaternion.set(
-            camera.quaternion.x,
-            camera.quaternion.y,
-            camera.quaternion.z,
-            camera.quaternion.w
-          )
-
-          const s_caro = body[c].getWorldTransform().getBasis()
-
-          // first smoker
-          smo.setValue(-.5, .3, -2.7)
-          smo2.setValue(
-            s_caro.getRow(0).x() * smo.x() + s_caro.getRow(0).y() * smo.y() + s_caro.getRow(0).z() * smo.z(),
-            s_caro.getRow(1).x() * smo.x() + s_caro.getRow(1).y() * smo.y() + s_caro.getRow(1).z() * smo.z(),
-            s_caro.getRow(2).x() * smo.x() + s_caro.getRow(2).y() * smo.y() + s_caro.getRow(2).z() * smo.z()
-          )
-          smo3.setValue(
-            smo2.x() + carModel[c][0].position.x,
-            smo2.y() + carModel[c][0].position.y,
-            smo2.z() + carModel[c][0].position.z
-          )
-          smo4.set(smo3.x(), smo3.y(), smo3.z())
-          smoker.position.set(smo4.x, smo4.y, smo4.z)
-
-          smoker.material.map = frame[smokerCount]
-          if (opacDown) opac -= .02
-          else opac += .02
-          if (opac < .4) opacDown = false
-          else if (opac > 1.5) opacDown = true
-          smoker.material.opacity = opac
-          smokerCount++; if (smokerCount > frame.length - 1) smokerCount = 0
-
-          // second smoker
-          smo.setValue(-.5, .3, -2.95)
-          smo2.setValue(
-            s_caro.getRow(0).x() * smo.x() + s_caro.getRow(0).y() * smo.y() + s_caro.getRow(0).z() * smo.z(),
-            s_caro.getRow(1).x() * smo.x() + s_caro.getRow(1).y() * smo.y() + s_caro.getRow(1).z() * smo.z(),
-            s_caro.getRow(2).x() * smo.x() + s_caro.getRow(2).y() * smo.y() + s_caro.getRow(2).z() * smo.z()
-          )
-          smo3.setValue(
-            smo2.x() + carModel[c][0].position.x,
-            smo2.y() + carModel[c][0].position.y,
-            smo2.z() + carModel[c][0].position.z
-          )
-          smo4.set(smo3.x(), smo3.y(), smo3.z())
-          smoker2.position.set(smo4.x, smo4.y, smo4.z)
-          smoker2.material.map = frame[smokerCount2]
-          smoker2.material.opacity = .5
-          smoker2Scale = .5
-          smoker2.scale.set(smoker2Scale, smoker2Scale, smoker2Scale)
-          smokerCount2++; if (smokerCount2 > frame.length - 1) smokerCount2 = 0
-        }
       }
 
     // wheels, index 0 is chassis shape
