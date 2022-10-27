@@ -40,6 +40,10 @@ export function createRigidBody({
   const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, shape, inertia)
   const body = new AMMO.btRigidBody(rbInfo)
   if (friction) body.setFriction(friction)
+  if (vel)
+    body.setLinearVelocity(new AMMO.btVector3(vel.x, vel.y, vel.z))
+  if (angVel)
+    body.setAngularVelocity(new AMMO.btVector3(angVel.x, angVel.y, angVel.z))
   mesh.userData.body = body
 
   if (mass > 0) body.setActivationState(4) // Disable deactivation

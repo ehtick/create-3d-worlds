@@ -72,7 +72,8 @@ function createGround(sx, sy, sz, mass, pos, color) {
   const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), new THREE.MeshPhongMaterial({ color }))
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(sx * 0.5, sy * 0.5, sz * 0.5))
   shape.setMargin(margin)
-  createRigidBody(mesh, shape, mass, pos)
+  const { body } = createRigidBody(mesh, shape, mass, pos)
+  addRigidBody({ mesh, body, mass })
   mesh.receiveShadow = true
   return mesh
 }
@@ -84,7 +85,8 @@ function createDebrisFromBreakableObject(mesh) {
   // set pointer back to the three mesh
   const btVecUserData = new AMMO.btVector3(0, 0, 0)
   btVecUserData.threeObject = mesh
-  const { body } = createRigidBody(mesh, shape, mesh.userData.mass, mesh.position, mesh.userData.velocity, mesh.userData.angularVelocity)
+  const { body, mass } = createRigidBody(mesh, shape, mesh.userData.mass, mesh.position, mesh.userData.velocity, mesh.userData.angularVelocity)
+  addRigidBody({ mesh, body, mass })
   body.setUserPointer(btVecUserData)
 }
 
@@ -104,15 +106,15 @@ function createConvexHullPhysicsShape(coords) {
   return shape
 }
 
-function createRigidBody(mesh, physicsShape, mass, pos, vel, angVel) {
+function createRigidBody(mesh, shape, mass, pos, vel, angVel) {
   mesh.position.copy(pos)
   const transform = new AMMO.btTransform()
   transform.setIdentity()
   transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
   const motionState = new AMMO.btDefaultMotionState(transform)
   const localInertia = new AMMO.btVector3(0, 0, 0)
-  physicsShape.calculateLocalInertia(mass, localInertia)
-  const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, physicsShape, localInertia)
+  shape.calculateLocalInertia(mass, localInertia)
+  const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia)
   const body = new AMMO.btRigidBody(rbInfo)
   body.setFriction(0.5)
   if (vel)
@@ -123,8 +125,6 @@ function createRigidBody(mesh, physicsShape, mass, pos, vel, angVel) {
   mesh.userData.collided = false
 
   if (mass > 0) body.setActivationState(4) // Disable deactivation
-
-  addRigidBody({ mesh, body, mass })
 
   return { mesh, body, mass }
 }
@@ -234,18 +234,19 @@ const ballMaterial = new THREE.MeshPhongMaterial({ color: 0x202020 })
 window.addEventListener('pointerdown', event => {
   const mouse = normalizeMouse(event)
   raycaster.setFromCamera(mouse, camera)
-  // Creates a ball and throws it
-  const ballMass = 35
+  // Creates a mesh and throws it
+  const mass = 35
   const ballRadius = 0.4
-  const ball = new THREE.Mesh(new THREE.SphereGeometry(ballRadius, 14, 10), ballMaterial)
-  ball.castShadow = true
-  ball.receiveShadow = true
-  const ballShape = new AMMO.btSphereShape(ballRadius)
-  ballShape.setMargin(margin)
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(ballRadius, 14, 10), ballMaterial)
+  mesh.castShadow = true
+  mesh.receiveShadow = true
+  const shape = new AMMO.btSphereShape(ballRadius)
+  shape.setMargin(margin)
   const pos = new Vector3()
   pos.copy(raycaster.ray.direction)
   pos.add(raycaster.ray.origin)
-  const { body } = createRigidBody(ball, ballShape, ballMass, pos)
+  const { body } = createRigidBody(mesh, shape, mass, pos)
+  addRigidBody({ mesh, body, mass })
   pos.copy(raycaster.ray.direction)
   pos.multiplyScalar(24)
   body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
