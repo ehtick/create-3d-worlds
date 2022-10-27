@@ -1,5 +1,5 @@
 /* global THREE, Ammo */
-import { shootDecals, fadeDecals } from './utils.js'
+import { leaveDecals, fadeDecals } from './utils.js'
 import { makeVehicle } from './vehicle.js'
 
 const SCREEN_HEIGHT = window.innerHeight
@@ -328,11 +328,11 @@ function objWorldModelLoader(objFile, mtlFile, scale) {
 
 /* LOOP */
 
-function handleInput(c) {
+function handleInput() {
   const vehicle = vehicles[0]
 
   if (vehicle.getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward || moveBackward) && Math.abs(kmh) < maxSpeed / 4))
-    shootDecals(c, carModels, worldModel, bodies, tireClones, scene)
+    leaveDecals(carModels[0], worldModel, bodies[0], tireClones, scene)
 
   kmh = vehicle.getCurrentSpeedKmHour()
   steering = (steerLeft || steerRight)
@@ -393,7 +393,7 @@ function updatePhysics() {
 
   for (let c = 0; c < numCars; c++) {
     findGround(c)
-    handleInput(c)
+    handleInput()
     // chassis
     bodies[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
     carPos[c] = chassisWorldTrans[c].getOrigin()
