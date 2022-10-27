@@ -91,14 +91,8 @@ const moveForward = []
 const moveBackward = []
 const steerLeft = []
 const steerRight = []
-let m_tuning
 
-const coordi = []
-const numCoords = 100
-const coordx = []
-const coordz = []
 const bodRotTick = []
-
 const body = []
 const vehicle = []
 const carPos = []
@@ -109,15 +103,6 @@ const carObjects = []
 
 for (let c = 0; c < numCars; c++) {
   bodRotTick[c] = 0
-  coordi[c] = 0
-  coordx[c] = []
-  coordz[c] = []
-
-  for (let i = 0; i < numCoords; i++) {
-    coordx[c][i] = coordx[0][i]
-    coordz[c][i] = coordz[0][i]
-  }
-
   goingTooFast[c] = false
   spinningTooFast[c] = false
   kmh[c] = .00001
@@ -267,7 +252,7 @@ function initVehicle(c) {
 }
 
 function makeVehicle(c) {
-  m_tuning = new Ammo.btVehicleTuning()
+  const m_tuning = new Ammo.btVehicleTuning()
   m_tuning.set_m_suspensionStiffness(suspensionStiffness[c])
   m_tuning.set_m_suspensionCompression(suspensionCompression)
   m_tuning.set_m_suspensionDamping(suspensionDamping)
