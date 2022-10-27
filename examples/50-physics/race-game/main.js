@@ -50,7 +50,7 @@ const physicsWorld = new Ammo.btDiscreteDynamicsWorld(
   dispatcher, overlappingPairCache, solver, collisionConfiguration
 )
 
-const maxSpeed = []
+const maxSpeed = 150.0
 const goingTooFast = []
 const spinningTooFast = []
 const rightIndex = 0
@@ -62,26 +62,26 @@ const wheelAxleCS = new Ammo.btVector3(-1, 0, 0)
 const gEngineForce = []
 const gBreakingForce = []
 const turboForce = 1.7
-const maxEngineForce = []
-const maxBreakingForce = []
+const maxEngineForce = 8000.0
+const maxBreakingForce = maxEngineForce * 2
 const gVehicleSteering = []
 
-const steeringIncrement = []
-const steeringClamp = []
-const steeringReturnRate = []
+const steeringIncrement = 0.09
+const steeringClamp = .44
+const steeringReturnRate = .6
 const wheelRadius = [.36, .42, .36, .41, .36, .36, .36]
 const wheelWidth = [.2, .5, .2, -.05, .2, .2, .2]
-const frictionSlip = []
-const rearWheelFriction = []
+const frictionSlip = 3.5
+const rearWheelFriction = 4.5
 
 const suspensionStiffness = [58.0, 45.0, 58.0, 36.0, 58.0, 58.0, 58.0]
-const suspensionDamping = []
-const suspensionCompression = []
-const maxSuspensionTravelCm = []
-const maxSuspensionForce = []
+const suspensionDamping = 4
+const suspensionCompression = 2.4
+const maxSuspensionTravelCm = 1500.0
+const maxSuspensionForce = 50000.0
 const CUBE_HALF_EXTENTS = [.96, 1.12, .97, 1., .94, .99, .99]
 const suspensionRestLength = [1.1, 1.05, 1.1, 1.25, 1.1, 1.2, 1.2]
-const connectionHeight = []
+const connectionHeight = 1.2
 
 const kmh = []
 const lastKmh = []
@@ -118,7 +118,6 @@ for (let c = 0; c < numCars; c++) {
     coordz[c][i] = coordz[0][i]
   }
 
-  maxSpeed[c] = 150.0
   goingTooFast[c] = false
   spinningTooFast[c] = false
   kmh[c] = .00001
@@ -129,23 +128,9 @@ for (let c = 0; c < numCars; c++) {
   moveBackward[c] = false
   steerLeft[c] = false
   steerRight[c] = false
-
   gEngineForce[c] = 0
   gBreakingForce[c] = 0
   gVehicleSteering[c] = 0
-
-  maxEngineForce[c] = 8000.0
-  maxBreakingForce[c] = maxEngineForce[c] * 2
-  steeringIncrement[c] = 0.09
-  steeringClamp[c] = .44
-  steeringReturnRate[c] = .6
-  frictionSlip[c] = 3.5
-  rearWheelFriction[c] = 4.5
-  suspensionCompression[c] = 2.4
-  maxSuspensionTravelCm[c] = 1500.0
-  maxSuspensionForce[c] = 50000.0
-  connectionHeight[c] = 1.2
-  suspensionDamping[c] = 4
 
   carObjects[c] = {}
   body[c] = []
@@ -284,11 +269,11 @@ function initVehicle(c) {
 function makeVehicle(c) {
   m_tuning = new Ammo.btVehicleTuning()
   m_tuning.set_m_suspensionStiffness(suspensionStiffness[c])
-  m_tuning.set_m_suspensionCompression(suspensionCompression[c])
-  m_tuning.set_m_suspensionDamping(suspensionDamping[c])
-  m_tuning.set_m_maxSuspensionTravelCm(maxSuspensionTravelCm[c])
-  m_tuning.set_m_frictionSlip(frictionSlip[c])
-  m_tuning.set_m_maxSuspensionForce(maxSuspensionForce[c])
+  m_tuning.set_m_suspensionCompression(suspensionCompression)
+  m_tuning.set_m_suspensionDamping(suspensionDamping)
+  m_tuning.set_m_maxSuspensionTravelCm(maxSuspensionTravelCm)
+  m_tuning.set_m_frictionSlip(frictionSlip)
+  m_tuning.set_m_maxSuspensionForce(maxSuspensionForce)
 
   const m_vehicleRayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
   vehicle[c] = new Ammo.btRaycastVehicle(m_tuning, body[c], m_vehicleRayCaster)
@@ -302,34 +287,34 @@ function makeVehicle(c) {
   let isFrontWheel = true
   const connectionPointCS0 = new Ammo.btVector3(0, 0, 0)
 
-  connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight[c], 2 * CUBE_HALF_EXTENTS[c] - wheelRadius[c])
+  connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight, 2 * CUBE_HALF_EXTENTS[c] - wheelRadius[c])
 
   vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
-  connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight[c], 2 * CUBE_HALF_EXTENTS[c] - wheelRadius[c])
+  connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight, 2 * CUBE_HALF_EXTENTS[c] - wheelRadius[c])
 
   vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
   isFrontWheel = true // for all wheel drive?
 
-  m_tuning.set_m_frictionSlip(rearWheelFriction[c])
+  m_tuning.set_m_frictionSlip(rearWheelFriction)
 
-  connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight[c], -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
+  connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight, -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
   vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
-  connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight[c], -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
+  connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight, -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
   vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
   // these last two of the six total wheels are for rendering
 
-  m_tuning.set_m_frictionSlip(rearWheelFriction[c])
+  m_tuning.set_m_frictionSlip(rearWheelFriction)
   isFrontWheel = true
-  connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight[c], -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
+  connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight, -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
   vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
-  connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight[c], -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
+  connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight, -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
   vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 }
@@ -598,7 +583,7 @@ function updatePhysics() {
   for (let c = 0; c < numCars; c++) {
     findGround(c)
     if (c == currentCarIndex)
-      if (vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward[c] || moveBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4))
+      if (vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward[c] || moveBackward[c]) && Math.abs(kmh[c]) < maxSpeed / 4))
         shootDecals(c)
 
     lastKmh[c] = kmh[c]
@@ -606,20 +591,20 @@ function updatePhysics() {
     steering[c] = (steerLeft[c] || steerRight[c])
 
     if (!steering[c])
-      gVehicleSteering[c] *= steeringReturnRate[c]
+      gVehicleSteering[c] *= steeringReturnRate
     else if (steering[c])
 
       if (steerLeft[c]) {
         if (gVehicleSteering[c] < .05) gVehicleSteering[c] += .01; else
-          gVehicleSteering[c] *= 1 + steeringIncrement[c]
+          gVehicleSteering[c] *= 1 + steeringIncrement
 
-        if (gVehicleSteering[c] > steeringClamp[c]) gVehicleSteering[c] = steeringClamp[c]
+        if (gVehicleSteering[c] > steeringClamp) gVehicleSteering[c] = steeringClamp
       } else
       if (steerRight[c]) {
         if (gVehicleSteering[c] > -.05) gVehicleSteering[c] -= .01; else
-          gVehicleSteering[c] *= 1 + steeringIncrement[c]
+          gVehicleSteering[c] *= 1 + steeringIncrement
 
-        if (gVehicleSteering[c] < -steeringClamp[c]) gVehicleSteering[c] = -steeringClamp[c]
+        if (gVehicleSteering[c] < -steeringClamp) gVehicleSteering[c] = -steeringClamp
       }
 
     accelerating[c] = (moveForward[c] || moveBackward[c])
@@ -628,16 +613,16 @@ function updatePhysics() {
       gEngineForce[c] = 0
       if (Math.abs(kmh[c]) > 20) gBreakingForce[c] += 5
     } else if (accelerating[c])
-      if (moveForward[c] && kmh[c] < maxSpeed[c]) {
-        if (kmh[c] < maxSpeed[c] / 5) gEngineForce[c] = maxEngineForce[c] * turboForce; else gEngineForce[c] = maxEngineForce[c]
+      if (moveForward[c] && kmh[c] < maxSpeed) {
+        if (kmh[c] < maxSpeed / 5) gEngineForce[c] = maxEngineForce * turboForce; else gEngineForce[c] = maxEngineForce
         gBreakingForce[c] = 0.0
-      } else if (moveForward[c] && kmh[c] >= maxSpeed[c]) {
+      } else if (moveForward[c] && kmh[c] >= maxSpeed) {
         gEngineForce[c] = 0.0
         gBreakingForce[c] = 0.0
-      } else if (moveBackward[c] && kmh[c] > -maxSpeed[c]) {
-        gEngineForce[c] = -maxEngineForce[c]
+      } else if (moveBackward[c] && kmh[c] > -maxSpeed) {
+        gEngineForce[c] = -maxEngineForce
         gBreakingForce[c] = 0.0
-      } else if (moveBackward[c] && kmh[c] <= maxSpeed[c]) {
+      } else if (moveBackward[c] && kmh[c] <= maxSpeed) {
         gEngineForce[c] = 0.0
         gBreakingForce[c] = 0.0
       }
@@ -746,7 +731,7 @@ const onKeyDowner = function(event) {
       steerRight[currentCarIndex] = true
       break
     case ' ': // spacebar
-      gBreakingForce[currentCarIndex] = maxBreakingForce[currentCarIndex] * 2
+      gBreakingForce[currentCarIndex] = maxBreakingForce * 2
       gEngineForce[currentCarIndex] = 0.0
       break
     case '8':
