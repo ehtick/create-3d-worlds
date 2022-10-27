@@ -26,7 +26,7 @@ function fixAngleRad(a) {
   return a
 }
 
-export function leaveDecals(carModel, worldModel, body, tireClones, scene) {
+export function leaveDecals(carModel, worldModel, body, tires, scene) {
   const velocity = new THREE.Vector3(0, 0, 0)
   const dec = new Ammo.btVector3(0, 0, 0)
   const dec2 = new Ammo.btVector3(0, 0, 0)
@@ -81,9 +81,9 @@ export function leaveDecals(carModel, worldModel, body, tireClones, scene) {
       wheelRot.getRow(2).x() * dec.x() + wheelRot.getRow(2).y() * dec.y() + wheelRot.getRow(2).z() * dec.z()
     )
     dec3.setValue(
-      dec2.x() + tireClones[0][2].position.x,
-      dec2.y() + tireClones[0][2].position.y,
-      dec2.z() + tireClones[0][2].position.z
+      dec2.x() + tires[2].position.x,
+      dec2.y() + tires[2].position.y,
+      dec2.z() + tires[2].position.z
     )
     p_d.set(dec3.x(), dec3.y(), dec3.z())
 

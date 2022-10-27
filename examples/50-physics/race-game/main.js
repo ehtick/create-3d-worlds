@@ -332,7 +332,7 @@ function handleInput() {
   const vehicle = vehicles[0]
 
   if (vehicle.getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward || moveBackward) && Math.abs(kmh) < maxSpeed / 4))
-    leaveDecals(carModels[0], worldModel, bodies[0], tireClones, scene)
+    leaveDecals(carModels[0], worldModel, bodies[0], tireClones[0], scene)
 
   kmh = vehicle.getCurrentSpeedKmHour()
   steering = (steerLeft || steerRight)
