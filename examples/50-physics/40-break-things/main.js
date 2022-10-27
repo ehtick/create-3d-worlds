@@ -34,7 +34,7 @@ createBox({ mass: 100, size: new Vector3(14, 0.4, 3), pos: new Vector3(0, 10.2, 
 const numDominos = 8
 for (let i = 0; i < numDominos; i++) {
   const pos = new Vector3()
-  pos.set(0, 2, 15 * (0.5 - i / (numDominos + 1)))
+  pos.set(0, 2, 15 * (0.5 -i / (numDominos + 1)))
   createBox({ mass: 120, size: new Vector3(2, 4, .3), pos, color: 0xB0B0B0 })
 }
 
@@ -53,16 +53,16 @@ function createBox({ mass, size, pos, color = createRandomColor() }) {
 
 function createPyramid() {
   const pyramidMass = 860
-  const pyramidHalfExtents = new Vector3(4, 5, 4)
-  const pos = new Vector3()
-  pos.set(5, pyramidHalfExtents.y * 0.5, - 7)
-  const pyramidPoints = []
-  pyramidPoints.push(new Vector3(pyramidHalfExtents.x, - pyramidHalfExtents.y, pyramidHalfExtents.z))
-  pyramidPoints.push(new Vector3(- pyramidHalfExtents.x, - pyramidHalfExtents.y, pyramidHalfExtents.z))
-  pyramidPoints.push(new Vector3(pyramidHalfExtents.x, - pyramidHalfExtents.y, - pyramidHalfExtents.z))
-  pyramidPoints.push(new Vector3(- pyramidHalfExtents.x, - pyramidHalfExtents.y, - pyramidHalfExtents.z))
-  pyramidPoints.push(new Vector3(0, pyramidHalfExtents.y, 0))
-  const pyramid = new THREE.Mesh(new ConvexGeometry(pyramidPoints), new THREE.MeshPhongMaterial({ color: 0xB03814 }))
+  const half = new Vector3(4, 5, 4)
+  const pos = new Vector3().set(5, half.y * 0.5, -7)
+  const points = [
+    new Vector3(half.x, -half.y, half.z),
+    new Vector3(-half.x, -half.y, half.z),
+    new Vector3(half.x, -half.y, -half.z),
+    new Vector3(-half.x, -half.y, -half.z),
+    new Vector3(0, half.y, 0),
+  ]
+  const pyramid = new THREE.Mesh(new ConvexGeometry(points), new THREE.MeshPhongMaterial({ color: 0xB03814 }))
   pyramid.position.copy(pos)
   convexBreaker.prepareBreakableObject(pyramid, pyramidMass, new Vector3(), new Vector3(), true)
   createDebrisFromBreakableObject(pyramid)
@@ -100,7 +100,7 @@ function createConvexHullPhysicsShape(coords) {
   const tempBtVec3 = new AMMO.btVector3(0, 0, 0)
   for (let i = 0, il = coords.length; i < il; i += 3) {
     tempBtVec3.setValue(coords[i], coords[i + 1], coords[i + 2])
-    const lastOne = (i >= (il - 3))
+    const lastOne = (i >= (il -3))
     shape.addPoint(tempBtVec3, lastOne)
   }
   return shape
