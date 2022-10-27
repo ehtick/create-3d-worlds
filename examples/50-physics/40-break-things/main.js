@@ -27,32 +27,30 @@ const physicsWorld = createPhysicsWorld({ gravity: 7.8 })
 
 addRigidBody(createGround({ size: 100 }))
 
-createBox({ mass: 1000, size: new Vector3(4, 10, 4), pos: new Vector3(-8, 5, 0), color: 0xB03014 })
-createBox({ mass: 1000, size: new Vector3(4, 10, 4), pos: new Vector3(8, 5, 0), color: 0xB03014 })
-createBox({ mass: 100, size: new Vector3(14, 0.4, 3), pos: new Vector3(0, 10.2, 0), color: 0xB3B865 })
+createBreakableBox({ mass: 1000, size: new Vector3(4, 10, 4), pos: new Vector3(-8, 5, 0), color: 0xB03014 })
+createBreakableBox({ mass: 1000, size: new Vector3(4, 10, 4), pos: new Vector3(8, 5, 0), color: 0xB03014 })
+createBreakableBox({ mass: 100, size: new Vector3(14, 0.4, 3), pos: new Vector3(0, 10.2, 0), color: 0xB3B865 })
 
 const numDominos = 8
 for (let i = 0; i < numDominos; i++) {
   const pos = new Vector3()
   pos.set(0, 2, 15 * (0.5 - i / (numDominos + 1)))
-  createBox({ mass: 120, size: new Vector3(2, 4, .3), pos, color: 0xB0B0B0 })
+  createBreakableBox({ mass: 120, size: new Vector3(2, 4, .3), pos, color: 0xB0B0B0 })
 }
 
 createPyramid()
 
 /* FUNCTION */
 
-function createBox({ mass, size, pos, color = createRandomColor() }) {
-  const mesh = new THREE.Mesh(
-    new THREE.BoxGeometry(size.x, size.y, size.z),
-    new THREE.MeshPhongMaterial({ color }))
+function createBreakableBox({ mass, size, pos, color }) {
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(...size), new THREE.MeshPhongMaterial({ color }))
   mesh.position.copy(pos)
   convexBreaker.prepareBreakableObject(mesh, mass, new Vector3(), new Vector3(), true)
   createDebrisFromBreakableObject(mesh)
 }
 
 function createPyramid() {
-  const pyramidMass = 860
+  const mass = 860
   const half = new Vector3(4, 5, 4)
   const pos = new Vector3().set(5, half.y * 0.5, -7)
   const points = [
@@ -64,7 +62,7 @@ function createPyramid() {
   ]
   const pyramid = new THREE.Mesh(new ConvexGeometry(points), new THREE.MeshPhongMaterial({ color: 0xB03814 }))
   pyramid.position.copy(pos)
-  convexBreaker.prepareBreakableObject(pyramid, pyramidMass, new Vector3(), new Vector3(), true)
+  convexBreaker.prepareBreakableObject(pyramid, mass, new Vector3(), new Vector3(), true)
   createDebrisFromBreakableObject(pyramid)
 }
 
@@ -72,12 +70,11 @@ function createDebrisFromBreakableObject(mesh) {
   mesh.castShadow = mesh.receiveShadow = true
   const shape = createConvexHullPhysicsShape(mesh.geometry.attributes.position.array)
   shape.setMargin(margin)
-  // set pointer back to the three mesh
   const btVecUserData = new AMMO.btVector3(0, 0, 0)
-  btVecUserData.threeObject = mesh
-  const { body, mass } = createRigidBody({ mesh, shape, mass: mesh.userData.mass, pos: mesh.position, vel: mesh.userData.velocity, angVel: mesh.userData.angularVelocity })
-  addRigidBody({ mesh, body, mass })
-  body.setUserPointer(btVecUserData)
+  btVecUserData.threeObject = mesh // set pointer back to mesh
+  const obj = createRigidBody({ mesh, shape, mass: mesh.userData.mass, pos: mesh.position, vel: mesh.userData.velocity, angVel: mesh.userData.angularVelocity })
+  addRigidBody(obj)
+  obj.body.setUserPointer(btVecUserData)
 }
 
 function removeDebris(mesh) {
@@ -85,11 +82,11 @@ function removeDebris(mesh) {
   physicsWorld.removeRigidBody(mesh.userData.body)
 }
 
-function createConvexHullPhysicsShape(coords) {
+function createConvexHullPhysicsShape(positions) {
   const shape = new AMMO.btConvexHullShape()
   const tempBtVec3 = new AMMO.btVector3(0, 0, 0)
-  for (let i = 0, il = coords.length; i < il; i += 3) {
-    tempBtVec3.setValue(coords[i], coords[i + 1], coords[i + 2])
+  for (let i = 0, il = positions.length; i < il; i += 3) {
+    tempBtVec3.setValue(positions[i], positions[i + 1], positions[i + 2])
     const lastOne = (i >= (il - 3))
     shape.addPoint(tempBtVec3, lastOne)
   }
@@ -101,10 +98,6 @@ function addRigidBody({ mesh, body, mass }) {
   scene.add(mesh)
   if (mass > 0) rigidBodies.push(mesh)
   physicsWorld.addRigidBody(body)
-}
-
-function createRandomColor() {
-  return Math.floor(Math.random() * (1 << 24))
 }
 
 function updatePhysics(dt) {
@@ -121,16 +114,14 @@ function updatePhysics(dt) {
     const rb1 = AMMO.castObject(contactManifold.getBody1(), AMMO.btRigidBody)
     const mesh0 = AMMO.castObject(rb0.getUserPointer(), AMMO.btVector3).threeObject
     const mesh1 = AMMO.castObject(rb1.getUserPointer(), AMMO.btVector3).threeObject
-    if (!mesh0 && !mesh1)
-      continue
-    const userData0 = mesh0 ? mesh0.userData : null
-    const userData1 = mesh1 ? mesh1.userData : null
-    const breakable0 = userData0 ? userData0.breakable : false
-    const breakable1 = userData1 ? userData1.breakable : false
-    const collided0 = userData0 ? userData0.collided : false
-    const collided1 = userData1 ? userData1.collided : false
-    if ((!breakable0 && !breakable1) || (collided0 && collided1))
-      continue
+    if (!mesh0 && !mesh1) continue
+
+    const breakable0 = mesh0?.userData?.breakable
+    const breakable1 = mesh1?.userData?.breakable
+    const collided0 = mesh0?.userData?.collided
+    const collided1 = mesh1?.userData?.collided
+    if ((!breakable0 && !breakable1) || (collided0 && collided1)) continue
+
     let contact = false
     let maxImpulse = 0
     for (let j = 0, jl = contactManifold.getNumContacts(); j < jl; j++) {
@@ -148,8 +139,8 @@ function updatePhysics(dt) {
         break
       }
     }
-    // If no point has contact, abort
-    if (!contact) continue
+    if (!contact) continue // if no point has contact
+
     // Subdivision
     const fractureImpulse = 250
     if (breakable0 && !collided0 && maxImpulse > fractureImpulse) {
@@ -164,7 +155,7 @@ function updatePhysics(dt) {
         createDebrisFromBreakableObject(fragment)
       }
       objectsToRemove[numObjectsToRemove++] = mesh0
-      userData0.collided = true
+      mesh0.userData.collided = true
     }
     if (breakable1 && !collided1 && maxImpulse > fractureImpulse) {
       const debris = convexBreaker.subdivideByImpact(mesh1, impactPoint, impactNormal, 1, 2, 1.5)
@@ -178,7 +169,7 @@ function updatePhysics(dt) {
         createDebrisFromBreakableObject(fragment)
       }
       objectsToRemove[numObjectsToRemove++] = mesh1
-      userData1.collided = true
+      mesh1.userData.collided = true
     }
   }
   for (let i = 0; i < numObjectsToRemove; i++) removeDebris(objectsToRemove[i])
@@ -201,8 +192,7 @@ const raycaster = new THREE.Raycaster()
 window.addEventListener('pointerdown', e => {
   const mouse = normalizeMouse(e)
   raycaster.setFromCamera(mouse, camera)
-  const pos = new Vector3()
-    .copy(raycaster.ray.direction).add(raycaster.ray.origin)
+  const pos = new Vector3().copy(raycaster.ray.direction).add(raycaster.ray.origin)
   const obj = createBall(0.4, 35, pos)
   addRigidBody(obj)
   pos.copy(raycaster.ray.direction).multiplyScalar(24)
