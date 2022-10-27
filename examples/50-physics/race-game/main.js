@@ -9,7 +9,6 @@ const SCREEN_HEIGHT = window.innerHeight
 const SCREEN_WIDTH = window.innerWidth
 
 let camera, scene, renderer, hemiLight, dirLight, pointLight, worldModel
-const clock = new THREE.Clock()
 const worldFiles = ['courser14a']
 const textureLoader = new THREE.TextureLoader()
 const decalDiffuse = textureLoader.load('track5.png')
@@ -38,10 +37,6 @@ let decRot = 0
 let decals = []
 
 const worldScale = 25
-let groundY = 0
-const transformCam = new Ammo.btTransform()
-const transformChass = new Ammo.btTransform()
-let chaseStarter = true
 
 const carNames = ['lada', 'hummer']
 const numCars = carNames.length
@@ -464,41 +459,6 @@ function initObjects(numObjects) {
   }
 }
 
-function tireSmoker(i, smokerModel, xval) {
-  if (carModel[currentCarIndex][0]) {
-    smokerModel.quaternion.set(
-      camera.quaternion.x,
-      camera.quaternion.y,
-      camera.quaternion.z,
-      camera.quaternion.w
-    )
-
-    if ((moveCarForward[currentCarIndex] || moveCarBackward[currentCarIndex]) && Math.abs(kmh[currentCarIndex]) < maxSpeed[currentCarIndex] / 4) {
-      const s_caro = body[currentCarIndex].getWorldTransform().getBasis()
-      smo.setValue(xval, .1, -1.8)
-      smo2.setValue(
-        s_caro.getRow(0).x() * smo.x() + s_caro.getRow(0).y() * smo.y() + s_caro.getRow(0).z() * smo.z(),
-        s_caro.getRow(1).x() * smo.x() + s_caro.getRow(1).y() * smo.y() + s_caro.getRow(1).z() * smo.z(),
-        s_caro.getRow(2).x() * smo.x() + s_caro.getRow(2).y() * smo.y() + s_caro.getRow(2).z() * smo.z()
-      )
-      smo3.setValue(
-        smo2.x() + carModel[currentCarIndex][0].position.x,
-        smo2.y() + carModel[currentCarIndex][0].position.y,
-        smo2.z() + carModel[currentCarIndex][0].position.z
-      )
-      smo4.set(smo3.x(), smo3.y(), smo3.z())
-      smokerModel.position.set(smo4.x, smo4.y, smo4.z)
-      smokerModel.material.map = frame[smokerCount3[i]]
-      smokerModel.material.visible = true
-      smokerModel.material.opacity = 1
-      smokerModel.scale.set(.9, .9, .9)
-      smoUp[i] = !smoUp[i]
-      if (smoUp[i]) smokerCount3[i]++
-      if (smokerCount3[i] >= frame.length) smokerCount3[i] = 0
-    }
-  }
-}
-
 function findGround(c) {
   if (worldModel && carModel[c]) {
     body[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
@@ -804,8 +764,6 @@ function switchCars() {
   gVehicleSteering[currentCarIndex] = 0
   steerCarLeft[currentCarIndex] = false
   steerCarRight[currentCarIndex] = false
-
-  chaseStarter = true
 }
 
 /* LOOP */
@@ -850,11 +808,9 @@ function updatePhysics() {
 
   for (let c = 0; c < numCars; c++) {
     if (c == currentCarIndex)
-      if (vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveCarForward[c] || moveCarBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4)) {
+      if (vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveCarForward[c] || moveCarBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4))
         shoot(c)
-        tireSmoker(0, smoker3, .9)
-        tireSmoker(1, smoker4, -1.1)
-      } else {
+      else {
         smoker3.material.visible = false
         smoker4.material.visible = false
       }
@@ -1030,7 +986,7 @@ function updatePhysics() {
   }
 }
 
-function updateDecals() {
+function fadeDecals() {
   decals.forEach(decal => {
     decal.material.opacity -= .001
     if (decal.material.opacity <= 0) scene.remove(decal)
@@ -1041,7 +997,7 @@ function updateDecals() {
 void function animate() {
   requestAnimationFrame(animate)
   updatePhysics()
-  updateDecals()
+  fadeDecals()
   setChaseCam()
   renderer.render(scene, camera)
 }()
