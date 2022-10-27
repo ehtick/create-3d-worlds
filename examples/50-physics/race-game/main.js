@@ -16,7 +16,7 @@ const carNames = ['hummer', 'lada']
 const numCars = carNames.length
 const currentCarIndex = 0
 const carModels = []
-const tireClones = []
+const tires = []
 const hubClones = []
 const objFile = [
   ['hummer.obj', 'hummerTire.obj'],
@@ -51,7 +51,7 @@ for (let c = 0; c < numCars; c++) {
   bodies[c] = []
   vehicles[c] = []
   carModels[c] = []
-  tireClones[c] = []
+  tires[c] = []
   hubClones[c] = []
   chassisWorldTrans[c] = new Ammo.btTransform()
 }
@@ -283,8 +283,8 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
       // make three copies each of tire
       if (i == 1)
         for (let j = 0; j < 3; j++) {
-          tireClones[c][j] = object.clone()
-          scene.add(tireClones[c][j])
+          tires[c][j] = object.clone()
+          scene.add(tires[c][j])
         }
       scene.add(object)
       carModels[c][i] = object
@@ -318,7 +318,7 @@ function handleInput() {
   const kmh = vehicle.getCurrentSpeedKmHour()
 
   if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || ((keyboard.up || keyboard.down) && Math.abs(kmh) < maxSpeed / 4))
-    leaveDecals(carModels[0], worldModel, bodies[0], tireClones[0], scene)
+    leaveDecals(carModels[0], worldModel, bodies[0], tires[0], scene)
 
   const steering = (keyboard.left || keyboard.right)
 
@@ -371,6 +371,36 @@ function handleInput() {
   vehicle.applyEngineForce(gEngineForce, 5)
 }
 
+function updateTires(c) {
+  // wheels, index 0 is chassis shape
+  for (let i = 0; i < 4; i++) {
+    vehicles[c].updateWheelTransform(i, true)
+    let wheelTrans = new Ammo.btTransform()
+    wheelTrans = vehicles[c].getWheelInfo(i).get_m_worldTransform()
+    const p = wheelTrans.getOrigin()
+    const q = wheelTrans.getRotation()
+    // clones of tire and hub
+    if (i < 3) {
+      if (tires[c][i]) {
+        tires[c][i].position.set(p.x(), p.y(), p.z())
+        tires[c][i].quaternion.set(q.x(), q.y(), q.z(), q.w())
+        if (i == 0) tires[c][i].rotateY(- Math.PI)
+      }
+      if (hubClones[c][i]) {
+        hubClones[c][i].position.set(p.x(), p.y(), p.z())
+        hubClones[c][i].quaternion.set(q.x(), q.y(), q.z(), q.w())
+        if (i == 0) hubClones[c][i].rotateY(- Math.PI)
+      }
+    } else if (i == 3)
+    // original copy of tire and hub for wheels
+      if (carModels[c][1]) {
+        carModels[c][1].position.set(p.x(), p.y(), p.z())
+        carModels[c][1].quaternion.set(q.x(), q.y(), q.z(), q.w())
+        carModels[c][1].rotateY(- Math.PI)
+      }
+  }
+}
+
 function updatePhysics() {
   physicsWorld.stepSimulation(1 / 60)
 
@@ -391,35 +421,7 @@ function updatePhysics() {
           chassisWorldTrans[c].getRotation().w()
         )
       }
-
-    // wheels, index 0 is chassis shape
-    for (let i = 0; i < 4; i++) {
-      // synchronize wheels with chassis
-      vehicles[c].updateWheelTransform(i, true)
-      let wheelTrans = new Ammo.btTransform()
-      wheelTrans = vehicles[c].getWheelInfo(i).get_m_worldTransform()
-      const p = wheelTrans.getOrigin()
-      const q = wheelTrans.getRotation()
-      // clones of tire and hub
-      if (i < 3) {
-        if (tireClones[c][i]) {
-          tireClones[c][i].position.set(p.x(), p.y(), p.z())
-          tireClones[c][i].quaternion.set(q.x(), q.y(), q.z(), q.w())
-          if (i == 0) tireClones[c][i].rotateY(- Math.PI)
-        }
-        if (hubClones[c][i]) {
-          hubClones[c][i].position.set(p.x(), p.y(), p.z())
-          hubClones[c][i].quaternion.set(q.x(), q.y(), q.z(), q.w())
-          if (i == 0) hubClones[c][i].rotateY(- Math.PI)
-        }
-      } else if (i == 3)
-        // original copy of tire and hub for wheels
-        if (carModels[c][1]) {
-          carModels[c][1].position.set(p.x(), p.y(), p.z())
-          carModels[c][1].quaternion.set(q.x(), q.y(), q.z(), q.w())
-          carModels[c][1].rotateY(- Math.PI)
-        }
-    }
+    updateTires(c)
   }
 
   // index 0 is ground, index 1 is camera
