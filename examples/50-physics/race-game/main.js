@@ -3,10 +3,10 @@ import { shootDecals, fadeDecals } from './utils.js'
 
 const SCREEN_HEIGHT = window.innerHeight
 const SCREEN_WIDTH = window.innerWidth
+let worldModel
+const physicsWorld = createPhysicsWorld()
 
-let camera, scene, renderer, hemiLight, dirLight, pointLight, worldModel
-const tv = new Ammo.btVector3(0, 0, 0)
-
+const tempVector = new Ammo.btVector3(0, 0, 0)
 const center = new Ammo.btVector3(0, -38, 0)
 const worldScale = 25
 
@@ -28,20 +28,13 @@ const mtlFile = [
 const DISABLE_DEACTIVATION = 4
 const numObjects = 2 // ground is 0, camera is 1
 
-const physicsWorld = createPhysicsWorld()
-
 const maxSpeed = 150.0
 const rightIndex = 0
 const upIndex = 1
 const forwardIndex = 2
-const wheelDirectionCS0 = new Ammo.btVector3(0, -1, 0)
-const wheelAxleCS = new Ammo.btVector3(-1, 0, 0)
-const gEngineForce = []
-const gBreakingForce = []
 const turboForce = 1.7
 const maxEngineForce = 8000.0
 const maxBreakingForce = maxEngineForce * 2
-const gVehicleSteering = []
 
 const steeringIncrement = 0.09
 const steeringClamp = .44
@@ -72,6 +65,9 @@ const bodies = []
 const vehicles = []
 const carPos = []
 const chassisWorldTrans = []
+const gEngineForce = []
+const gBreakingForce = []
+const gVehicleSteering = []
 
 for (let c = 0; c < numCars; c++) {
   kmh[c] = .00001
@@ -93,9 +89,6 @@ for (let c = 0; c < numCars; c++) {
   chassisWorldTrans[c] = new Ammo.btTransform()
 }
 
-tv.setValue(0, -40, 0)
-physicsWorld.setGravity(tv)
-
 const triMeshBody = []
 let tbody
 
@@ -109,7 +102,46 @@ matBlank.side = THREE.FrontSide
 const obTrans = new Ammo.btTransform()
 const triMeshBodyTrans = new Ammo.btTransform()
 
-init()
+/* INIT */
+
+const container = document.createElement('div')
+container.style.height = window.innerHeight + 'px'
+container.style.width = window.innerWidth + 'px'
+container.focus()
+document.body.appendChild(container)
+
+const camera = new THREE.PerspectiveCamera(70, SCREEN_WIDTH / SCREEN_HEIGHT, .01, 9000)
+const scene = new THREE.Scene()
+
+skyInit()
+
+rigidBodies.push({})
+
+initObjects(numObjects)
+for (let i = 1; i < rigidBodies.length; i++)
+  scene.add(threeObject[i])
+
+for (let c = 0; c < numCars; c++)
+  initVehicle(c)
+
+const hemiLight = new THREE.HemisphereLight(0xd7bb60, 0xf0d7bb, 1.0)
+hemiLight.position.set(0, 1, 0)
+scene.add(hemiLight)
+
+const dirLight = new THREE.DirectionalLight(0xffffff, 2.6)
+dirLight.castShadow = true
+scene.add(dirLight)
+
+objWorldModelLoader('courser14a.obj', 'courser14a.mtl', worldScale)
+
+for (let c = 0; c < numCars; c++)
+  for (let i = 0; i < numCars; i++)
+    objCarModelLoader(c, i, objFile[c][i], mtlFile[c][i])
+
+const renderer = new THREE.WebGLRenderer({ antialias: true })
+renderer.setPixelRatio(window.devicePixelRatio)
+renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
+container.appendChild(renderer.domElement)
 
 /* FUNCTION */
 
@@ -121,9 +153,8 @@ function createPhysicsWorld() {
   const overlappingPairCache = new Ammo.btAxisSweep3(worldMin, worldMax)
   const solver = new Ammo.btSequentialImpulseConstraintSolver()
 
-  const physicsWorld = new Ammo.btDiscreteDynamicsWorld(
-    dispatcher, overlappingPairCache, solver, collisionConfiguration
-  )
+  const physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration)
+  physicsWorld.setGravity(new Ammo.btVector3(0, -40, 0))
   return physicsWorld
 }
 
@@ -142,9 +173,9 @@ function setChaseCam(camHeight = 4, camDist = 8) {
     camPointer.y() + carOrigin.y(),
     camPointer.z() + carOrigin.z()
   )
-  tv.setValue(0, 0, 0)
-  rigidBodies[1].setLinearVelocity(tv)
-  rigidBodies[1].setAngularVelocity(tv)
+  tempVector.setValue(0, 0, 0)
+  rigidBodies[1].setLinearVelocity(tempVector)
+  rigidBodies[1].setAngularVelocity(tempVector)
 
   camera.lookAt(new THREE.Vector3(carOrigin.x(), carOrigin.y(), carOrigin.z()))
 }
@@ -176,8 +207,8 @@ function triMeshBuilder(model, scale) {
   triMeshBodyTrans.setIdentity()
   triMeshBodyTrans.setOrigin(center)
   const motionStated = new Ammo.btDefaultMotionState(triMeshBodyTrans)
-  tv.setValue(0, 0, 0)
-  tbody = new Ammo.btRigidBody(0, motionStated, concaveShape, tv)
+  tempVector.setValue(0, 0, 0)
+  tbody = new Ammo.btRigidBody(0, motionStated, concaveShape, tempVector)
   tbody.setCollisionFlags(tbody.getCollisionFlags() | 1)
   tbody.setActivationState(DISABLE_DEACTIVATION)
   tbody.setFriction(.1)
@@ -188,13 +219,13 @@ function triMeshBuilder(model, scale) {
 function initVehicle(c) {
   const startTransform = new Ammo.btTransform()
   startTransform.setIdentity()
-  tv.setValue(1.2, .5, 2.4)
-  const chassisShape = new Ammo.btBoxShape(tv)
+  tempVector.setValue(1.2, .5, 2.4)
+  const chassisShape = new Ammo.btBoxShape(tempVector)
   const compound = new Ammo.btCompoundShape()
   const localTrans = new Ammo.btTransform()
   localTrans.setIdentity()
-  tv.setValue(0, 1, 0)
-  localTrans.setOrigin(tv)
+  tempVector.setValue(0, 1, 0)
+  localTrans.setOrigin(tempVector)
   compound.addChildShape(localTrans, chassisShape)
   const mass = 680
 
@@ -210,6 +241,8 @@ function initVehicle(c) {
 
 function makeVehicle(c) {
   const m_tuning = new Ammo.btVehicleTuning()
+  const wheelAxleCS = new Ammo.btVector3(-1, 0, 0)
+  const wheelDirectionCS0 = new Ammo.btVector3(0, -1, 0)
   m_tuning.set_m_suspensionStiffness(suspensionStiffness[c])
   m_tuning.set_m_suspensionCompression(suspensionCompression)
   m_tuning.set_m_suspensionDamping(suspensionDamping)
@@ -277,8 +310,8 @@ function initObjects(numObjects) {
     const isDynamic = (mass !== 0)
     const localInertia = new Ammo.btVector3(0, 0, 0)
     if (isDynamic) colShape.calculateLocalInertia(mass, localInertia)
-    tv.setValue(0, 0, 0)
-    startTransform.setOrigin(tv)
+    tempVector.setValue(0, 0, 0)
+    startTransform.setOrigin(tempVector)
     const myMotionState = new Ammo.btDefaultMotionState(startTransform)
     const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia)
     const body = new Ammo.btRigidBody(rbInfo)
@@ -329,62 +362,6 @@ function skyInit() {
   const fogColor = new THREE.Color(0xae9a7b)
   scene.background = fogColor
   scene.fog = new THREE.Fog(fogColor, 0, 500)
-}
-
-function init() {
-  const container = document.createElement('div')
-  container.style.height = window.innerHeight + 'px'
-  container.style.width = window.innerWidth + 'px'
-  container.focus()
-  document.body.appendChild(container)
-
-  camera = new THREE.PerspectiveCamera(70, SCREEN_WIDTH / SCREEN_HEIGHT, .01, 9000)
-  scene = new THREE.Scene()
-
-  skyInit()
-
-  rigidBodies.push({})
-
-  initObjects(numObjects)
-  for (let i = 1; i < rigidBodies.length; i++)
-    scene.add(threeObject[i])
-
-  for (let c = 0; c < numCars; c++)
-    initVehicle(c)
-
-  hemiLight = new THREE.HemisphereLight(
-    new THREE.Color(0xd7bb60),
-    new THREE.Color(0xf0d7bb),
-    1.0)
-  hemiLight.position.set(0, 1, 0)
-  scene.add(hemiLight)
-
-  dirLight = new THREE.DirectionalLight(0xffffff, 2.6)
-  dirLight.castShadow = true
-  scene.add(dirLight)
-
-  pointLight = new THREE.PointLight(0x0011ff, 5, 200)
-  scene.add(pointLight)
-
-  objWorldModelLoader('courser14a.obj', 'courser14a.mtl', worldScale)
-
-  for (let c = 0; c < numCars; c++)
-    for (let i = 0; i < numCars; i++)
-      objCarModelLoader(c, i, objFile[c][i], mtlFile[c][i])
-
-  container.setAttribute('tabindex', -1)
-
-  renderer = new THREE.WebGLRenderer({ antialias: true })
-  renderer.setPixelRatio(window.devicePixelRatio)
-  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
-  renderer.toneMapping = THREE.Uncharted2ToneMapping
-  renderer.toneMappingExposure = 1.0
-  renderer.shadowMap.enabled = true
-  renderer.shadowMap.renderReverseSided = true
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap
-  container.appendChild(renderer.domElement)
-
-  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
 }
 
 function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
