@@ -1,8 +1,8 @@
 /* global THREE, Ammo */
-
 /**
  * TODO:
- * izvuci šta vredi za druge primere (kameru, tragove, dim...)
+ * refaktorisati logiku za jedna kola: currentCarIndex, numCars, carNames...
+ * implement smoke
  */
 
 const SCREEN_HEIGHT = window.innerHeight
@@ -29,7 +29,7 @@ const worldScale = 25
 
 const carNames = ['lada', 'hummer']
 const numCars = carNames.length
-let currentCarIndex = 1
+const currentCarIndex = 1
 
 const carModel = []
 const tireClones = []
@@ -693,17 +693,6 @@ function objWorldModelLoader(objFile, mtlFile, scale) {
   })
 }
 
-function switchCars() {
-  currentCarIndex++; if (currentCarIndex >= numCars) currentCarIndex = 0
-  dirLight.target = carModel[currentCarIndex][0]
-
-  moveCarForward[currentCarIndex] = false
-  moveCarBackward[currentCarIndex] = false
-  gVehicleSteering[currentCarIndex] = 0
-  steerCarLeft[currentCarIndex] = false
-  steerCarRight[currentCarIndex] = false
-}
-
 /* LOOP */
 
 function updatePhysics() {
@@ -901,9 +890,6 @@ const onKeyDowner = function(event) {
     case ' ': // spacebar
       gBreakingForce[currentCarIndex] = maxBreakingForce[currentCarIndex] * 2
       gEngineForce[currentCarIndex] = 0.0
-      break
-    case '4':
-      switchCars()
       break
     case '8':
       moveCarForward[currentCarIndex] = false
