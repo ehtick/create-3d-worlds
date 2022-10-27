@@ -1,16 +1,16 @@
 /* global Ammo */
 
-const suspensionStiffness = [58.0, 45.0, 58.0, 36.0, 58.0, 58.0, 58.0]
+const suspensionStiffness = [58.0, 45.0]
 const suspensionDamping = 4
 const suspensionCompression = 2.4
 const maxSuspensionTravelCm = 1500.0
 const maxSuspensionForce = 50000.0
-const CUBE_HALF_EXTENTS = [.96, 1.12, .97, 1., .94, .99, .99]
-const suspensionRestLength = [1.1, 1.05, 1.1, 1.25, 1.1, 1.2, 1.2]
+const CUBE_HALF_EXTENTS = [.96, 1.12]
+const suspensionRestLength = [1.1, 1.05]
 const connectionHeight = 1.2
 
-const wheelRadius = [.36, .42, .36, .41, .36, .36, .36]
-const wheelWidth = [.2, .5, .2, -.05, .2, .2, .2]
+const wheelRadius = [.36, .42]
+const wheelWidth = [.2, .5]
 const frictionSlip = 3.5
 const rearWheelFriction = 4.5
 
