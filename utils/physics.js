@@ -72,6 +72,9 @@ export function createBox({ width, height, depth, mass = 0, pos, quat, color = r
   return createRigidBody({ mesh, shape, mass, pos, quat, friction })
 }
 
+export const createGround = ({ size = 100, color = 0xFFFFFF } = {}) =>
+  createBox({ width: size, height: 1, depth: size, mass: 0, pos: new THREE.Vector3(0, -0.5, 0), color })
+
 export function createBrick(length, height, width, pos, halfBrick) {
   const defaultMass = 0.5
   const depth = halfBrick ? length * .5 : length

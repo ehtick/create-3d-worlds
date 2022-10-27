@@ -5,7 +5,7 @@ import { ConvexGeometry } from '/node_modules/three/examples/jsm/geometries/Conv
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
-import { AMMO, createPhysicsWorld, updateMesh, createRigidBody, createBall } from '/utils/physics.js'
+import { AMMO, createPhysicsWorld, updateMesh, createRigidBody, createBall, createGround } from '/utils/physics.js'
 
 const { Vector3 } = THREE
 
@@ -25,7 +25,7 @@ let numObjectsToRemove = 0
 
 const physicsWorld = createPhysicsWorld({ gravity: 7.8 })
 
-createGround(40, 1, 40, 0, new Vector3(0, -0.5, 0), 0xFFFFFF)
+addRigidBody(createGround({ size: 100 }))
 
 createBox({ mass: 1000, size: new Vector3(4, 10, 4), pos: new Vector3(-8, 5, 0), color: 0xB03014 })
 createBox({ mass: 1000, size: new Vector3(4, 10, 4), pos: new Vector3(8, 5, 0), color: 0xB03014 })
@@ -34,7 +34,7 @@ createBox({ mass: 100, size: new Vector3(14, 0.4, 3), pos: new Vector3(0, 10.2, 
 const numDominos = 8
 for (let i = 0; i < numDominos; i++) {
   const pos = new Vector3()
-  pos.set(0, 2, 15 * (0.5 -i / (numDominos + 1)))
+  pos.set(0, 2, 15 * (0.5 - i / (numDominos + 1)))
   createBox({ mass: 120, size: new Vector3(2, 4, .3), pos, color: 0xB0B0B0 })
 }
 
@@ -68,16 +68,6 @@ function createPyramid() {
   createDebrisFromBreakableObject(pyramid)
 }
 
-function createGround(sx, sy, sz, mass, pos, color) {
-  const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), new THREE.MeshPhongMaterial({ color }))
-  const shape = new AMMO.btBoxShape(new AMMO.btVector3(sx * 0.5, sy * 0.5, sz * 0.5))
-  shape.setMargin(margin)
-  const { body } = createRigidBody({ mesh, shape, mass, pos })
-  addRigidBody({ mesh, body, mass })
-  mesh.receiveShadow = true
-  return mesh
-}
-
 function createDebrisFromBreakableObject(mesh) {
   mesh.castShadow = mesh.receiveShadow = true
   const shape = createConvexHullPhysicsShape(mesh.geometry.attributes.position.array)
@@ -100,7 +90,7 @@ function createConvexHullPhysicsShape(coords) {
   const tempBtVec3 = new AMMO.btVector3(0, 0, 0)
   for (let i = 0, il = coords.length; i < il; i += 3) {
     tempBtVec3.setValue(coords[i], coords[i + 1], coords[i + 2])
-    const lastOne = (i >= (il -3))
+    const lastOne = (i >= (il - 3))
     shape.addPoint(tempBtVec3, lastOne)
   }
   return shape
