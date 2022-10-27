@@ -1,9 +1,4 @@
 /* global THREE, Ammo */
-/**
- * TODO:
- * refaktorisati logiku za jedna kola: currentCarIndex, numCars, carNames...
- * implement smoke
- */
 const SCREEN_HEIGHT = window.innerHeight
 const SCREEN_WIDTH = window.innerWidth
 
@@ -97,10 +92,10 @@ const kmh = []
 const lastKmh = []
 const steering = []
 const accelerating = []
-const moveCarForward = []
-const moveCarBackward = []
-const steerCarLeft = []
-const steerCarRight = []
+const moveForward = []
+const moveBackward = []
+const steerLeft = []
+const steerRight = []
 let m_tuning
 
 const coordi = []
@@ -135,10 +130,10 @@ for (let c = 0; c < numCars; c++) {
   lastKmh[c] = kmh[c]
   steering[c] = false
   accelerating[c] = false
-  moveCarForward[c] = false
-  moveCarBackward[c] = false
-  steerCarLeft[c] = false
-  steerCarRight[c] = false
+  moveForward[c] = false
+  moveBackward[c] = false
+  steerLeft[c] = false
+  steerRight[c] = false
 
   gEngineForce[c] = 0
   gBreakingForce[c] = 0
@@ -667,46 +662,46 @@ function updatePhysics() {
   for (let c = 0; c < numCars; c++) {
     findGround(c)
     // if (c == currentCarIndex)
-    //   if (vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveCarForward[c] || moveCarBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4))
+    //   if (vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward[c] || moveBackward[c]) && Math.abs(kmh[c]) < maxSpeed[c] / 4))
     //     shoot(c)
 
     lastKmh[c] = kmh[c]
     kmh[c] = vehicle[c].getCurrentSpeedKmHour()
-    steering[c] = (steerCarLeft[c] || steerCarRight[c])
+    steering[c] = (steerLeft[c] || steerRight[c])
 
     if (!steering[c])
       gVehicleSteering[c] *= steeringReturnRate[c]
     else if (steering[c])
 
-      if (steerCarLeft[c]) {
+      if (steerLeft[c]) {
         if (gVehicleSteering[c] < .05) gVehicleSteering[c] += .01; else
           gVehicleSteering[c] *= 1 + steeringIncrement[c]
 
         if (gVehicleSteering[c] > steeringClamp[c]) gVehicleSteering[c] = steeringClamp[c]
       } else
-      if (steerCarRight[c]) {
+      if (steerRight[c]) {
         if (gVehicleSteering[c] > -.05) gVehicleSteering[c] -= .01; else
           gVehicleSteering[c] *= 1 + steeringIncrement[c]
 
         if (gVehicleSteering[c] < -steeringClamp[c]) gVehicleSteering[c] = -steeringClamp[c]
       }
 
-    accelerating[c] = (moveCarForward[c] || moveCarBackward[c])
+    accelerating[c] = (moveForward[c] || moveBackward[c])
 
     if (!accelerating[c]) {
       gEngineForce[c] = 0
       if (Math.abs(kmh[c]) > 20) gBreakingForce[c] += 5
     } else if (accelerating[c])
-      if (moveCarForward[c] && kmh[c] < maxSpeed[c]) {
+      if (moveForward[c] && kmh[c] < maxSpeed[c]) {
         if (kmh[c] < maxSpeed[c] / 5) gEngineForce[c] = maxEngineForce[c] * turboForce; else gEngineForce[c] = maxEngineForce[c]
         gBreakingForce[c] = 0.0
-      } else if (moveCarForward[c] && kmh[c] >= maxSpeed[c]) {
+      } else if (moveForward[c] && kmh[c] >= maxSpeed[c]) {
         gEngineForce[c] = 0.0
         gBreakingForce[c] = 0.0
-      } else if (moveCarBackward[c] && kmh[c] > -maxSpeed[c]) {
+      } else if (moveBackward[c] && kmh[c] > -maxSpeed[c]) {
         gEngineForce[c] = -maxEngineForce[c]
         gBreakingForce[c] = 0.0
-      } else if (moveCarBackward[c] && kmh[c] <= maxSpeed[c]) {
+      } else if (moveBackward[c] && kmh[c] <= maxSpeed[c]) {
         gEngineForce[c] = 0.0
         gBreakingForce[c] = 0.0
       }
@@ -800,28 +795,28 @@ const onKeyDowner = function(event) {
   switch (event.key) {
     case 'ArrowUp':
     case 'w':
-      moveCarForward[currentCarIndex] = true
+      moveForward[currentCarIndex] = true
       break
     case 'ArrowLeft':
     case 'a':
-      steerCarLeft[currentCarIndex] = true
+      steerLeft[currentCarIndex] = true
       break
     case 'ArrowDown':
     case 's':
-      moveCarBackward[currentCarIndex] = true
+      moveBackward[currentCarIndex] = true
       break
     case 'ArrowRight':
     case 'd':
-      steerCarRight[currentCarIndex] = true
+      steerRight[currentCarIndex] = true
       break
     case ' ': // spacebar
       gBreakingForce[currentCarIndex] = maxBreakingForce[currentCarIndex] * 2
       gEngineForce[currentCarIndex] = 0.0
       break
     case '8':
-      moveCarForward[currentCarIndex] = false
-      steerCarLeft[currentCarIndex] = false
-      steerCarRight[currentCarIndex] = false
+      moveForward[currentCarIndex] = false
+      steerLeft[currentCarIndex] = false
+      steerRight[currentCarIndex] = false
       gVehicleSteering[currentCarIndex] = 0
       break
   }
@@ -831,19 +826,19 @@ const onKeyUpper = function(event) {
   switch (event.key) {
     case 'ArrowUp':
     case 'w':
-      moveCarForward[currentCarIndex] = false
+      moveForward[currentCarIndex] = false
       break
     case 'ArrowLeft':
     case 'a':
-      steerCarLeft[currentCarIndex] = false
+      steerLeft[currentCarIndex] = false
       break
     case 'ArrowDown':
     case 's':
-      moveCarBackward[currentCarIndex] = false
+      moveBackward[currentCarIndex] = false
       break
     case 'ArrowRight':
     case 'd':
-      steerCarRight[currentCarIndex] = false
+      steerRight[currentCarIndex] = false
       break
   }
 }
