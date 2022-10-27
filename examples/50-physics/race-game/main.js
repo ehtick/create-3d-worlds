@@ -6,7 +6,6 @@ let camera, scene, renderer, hemiLight, dirLight, pointLight, worldModel
 const textureLoader = new THREE.TextureLoader()
 const decalDiffuse = textureLoader.load('track5.png')
 const tv = new Ammo.btVector3(0, 0, 0)
-const tCamPoint = new Ammo.btVector3(0, 0, 0)
 const downRayDir = new Ammo.btVector3(0, 0, 0)
 const center = new Ammo.btVector3(0, -38, 0)
 
@@ -197,7 +196,9 @@ init()
 /* FUNCTION */
 
 function fixAngleRad(a) {
-  if (a > Math.PI) a -= Math.PI * 2; else if (a < -Math.PI) a += Math.PI * 2; return a
+  if (a > Math.PI) a -= Math.PI * 2
+  else if (a < -Math.PI) a += Math.PI * 2
+  return a
 }
 
 function setChaseCam(camHeight = 4, camDist = 8) {
@@ -210,19 +211,15 @@ function setChaseCam(camHeight = 4, camDist = 8) {
   )
 
   const carOrigin = body[currentCarIndex].getWorldTransform().getOrigin()
-  tCamPoint.setValue(
+  camera.position.set(
     camPointer.x() + carOrigin.x(),
     camPointer.y() + carOrigin.y(),
     camPointer.z() + carOrigin.z()
   )
-
   tv.setValue(0, 0, 0)
   bodies[1].setLinearVelocity(tv)
   bodies[1].setAngularVelocity(tv)
 
-  camera.position.x = tCamPoint.x()
-  camera.position.y = tCamPoint.y()
-  camera.position.z = tCamPoint.z()
   camera.lookAt(new THREE.Vector3(carOrigin.x(), carOrigin.y(), carOrigin.z()))
 }
 
@@ -559,15 +556,11 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale) {
     const objLoader = new THREE.OBJLoader()
     objLoader.setMaterials(materials)
     objLoader.load(objFile, object => {
-      object.position.set(0, 0, 0)
       carModel[c][i] = object
       carModel[c][i].scale.set(scale, scale, scale)
       carModel[c][i].traverse(
         child => {
-          if (child instanceof THREE.Mesh) {
-            child.castShadow = true
-            child.receiveShadow = false
-          }
+          child.castShadow = child.receiveShadow = child.isMesh
         })
       scene.add(carModel[c][i])
 
