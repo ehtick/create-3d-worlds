@@ -6,19 +6,16 @@ const SCREEN_WIDTH = window.innerWidth
 
 let camera, scene, renderer, hemiLight, dirLight, pointLight, worldModel
 const tv = new Ammo.btVector3(0, 0, 0)
-const downRayDir = new Ammo.btVector3(0, 0, 0)
-const center = new Ammo.btVector3(0, -38, 0)
 
+const center = new Ammo.btVector3(0, -38, 0)
 const worldScale = 25
 
 const carNames = ['hummer', 'lada']
 const numCars = carNames.length
 const currentCarIndex = 0
-
-const carModel = []
+const carModels = []
 const tireClones = []
 const hubClones = []
-const carHeightAboveGround = []
 const objFile = [
   ['hummer.obj', 'hummerTire.obj'],
   ['ladavaz.obj', 'ladavazTire.obj'],
@@ -27,31 +24,17 @@ const mtlFile = [
   ['hummer.mtl', 'hummerTire.mtl'],
   ['ladavaz.mtl', 'ladavazTire.mtl'],
 ]
-for (let i = 0; i < numCars; i++)
-  carHeightAboveGround[i] = 0
 
 const DISABLE_DEACTIVATION = 4
 const numObjects = 2 // ground is 0, camera is 1
 
-const collisionConfiguration = new Ammo.btDefaultCollisionConfiguration()
-const dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration)
-const worldMin = new Ammo.btVector3(-1000, -1000, -1000)
-const worldMax = new Ammo.btVector3(1000, 1000, 1000)
-const overlappingPairCache = new Ammo.btAxisSweep3(worldMin, worldMax)
-const solver = new Ammo.btSequentialImpulseConstraintSolver()
-
-const physicsWorld = new Ammo.btDiscreteDynamicsWorld(
-  dispatcher, overlappingPairCache, solver, collisionConfiguration
-)
+const physicsWorld = createPhysicsWorld()
 
 const maxSpeed = 150.0
-const goingTooFast = []
-const spinningTooFast = []
 const rightIndex = 0
 const upIndex = 1
 const forwardIndex = 2
 const wheelDirectionCS0 = new Ammo.btVector3(0, -1, 0)
-let wheelTrans = new Ammo.btTransform()
 const wheelAxleCS = new Ammo.btVector3(-1, 0, 0)
 const gEngineForce = []
 const gBreakingForce = []
@@ -78,7 +61,6 @@ const suspensionRestLength = [1.1, 1.05, 1.1, 1.25, 1.1, 1.2, 1.2]
 const connectionHeight = 1.2
 
 const kmh = []
-const lastKmh = []
 const steering = []
 const accelerating = []
 const moveForward = []
@@ -88,19 +70,14 @@ const steerRight = []
 
 const bodRotTick = []
 const body = []
-const vehicle = []
+const vehicles = []
 const carPos = []
-const carMat = []
 const chassisWorldTrans = []
-const tuneup = []
 const carObjects = []
 
 for (let c = 0; c < numCars; c++) {
   bodRotTick[c] = 0
-  goingTooFast[c] = false
-  spinningTooFast[c] = false
   kmh[c] = .00001
-  lastKmh[c] = kmh[c]
   steering[c] = false
   accelerating[c] = false
   moveForward[c] = false
@@ -113,14 +90,12 @@ for (let c = 0; c < numCars; c++) {
 
   carObjects[c] = {}
   body[c] = []
-  vehicle[c] = []
-  carModel[c] = []
+  vehicles[c] = []
+  carModels[c] = []
   tireClones[c] = []
   hubClones[c] = []
   carPos[c] = new Ammo.btVector3(0, 0, 0)
-  carMat[c] = []
   chassisWorldTrans[c] = new Ammo.btTransform()
-  tuneup[c] = false
 }
 
 tv.setValue(0, -40, 0)
@@ -142,6 +117,20 @@ const triMeshBodyTrans = new Ammo.btTransform()
 init()
 
 /* FUNCTION */
+
+function createPhysicsWorld() {
+  const collisionConfiguration = new Ammo.btDefaultCollisionConfiguration()
+  const dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration)
+  const worldMin = new Ammo.btVector3(-1000, -1000, -1000)
+  const worldMax = new Ammo.btVector3(1000, 1000, 1000)
+  const overlappingPairCache = new Ammo.btAxisSweep3(worldMin, worldMax)
+  const solver = new Ammo.btSequentialImpulseConstraintSolver()
+
+  const physicsWorld = new Ammo.btDiscreteDynamicsWorld(
+    dispatcher, overlappingPairCache, solver, collisionConfiguration
+  )
+  return physicsWorld
+}
 
 function setChaseCam(camHeight = 4, camDist = 8) {
   const carRot = body[currentCarIndex].getWorldTransform().getBasis()
@@ -236,12 +225,12 @@ function makeVehicle(c) {
   m_tuning.set_m_maxSuspensionForce(maxSuspensionForce)
 
   const m_vehicleRayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
-  vehicle[c] = new Ammo.btRaycastVehicle(m_tuning, body[c], m_vehicleRayCaster)
+  vehicles[c] = new Ammo.btRaycastVehicle(m_tuning, body[c], m_vehicleRayCaster)
   body[c].setActivationState(DISABLE_DEACTIVATION)
-  physicsWorld.addAction(vehicle[c])
+  physicsWorld.addAction(vehicles[c])
 
   // choose coordinate system
-  vehicle[c].setCoordinateSystem(rightIndex, upIndex, forwardIndex)
+  vehicles[c].setCoordinateSystem(rightIndex, upIndex, forwardIndex)
 
   // front wheels
   let isFrontWheel = true
@@ -249,11 +238,11 @@ function makeVehicle(c) {
 
   connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight, 2 * CUBE_HALF_EXTENTS[c] - wheelRadius[c])
 
-  vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicles[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
   connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight, 2 * CUBE_HALF_EXTENTS[c] - wheelRadius[c])
 
-  vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicles[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
   isFrontWheel = true // for all wheel drive?
 
@@ -261,22 +250,22 @@ function makeVehicle(c) {
 
   connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight, -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
-  vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicles[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
   connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight, -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
-  vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicles[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
   // these last two of the six total wheels are for rendering
 
   m_tuning.set_m_frictionSlip(rearWheelFriction)
   isFrontWheel = true
   connectionPointCS0.setValue(-CUBE_HALF_EXTENTS[c] + (0.3 * wheelWidth[c]), connectionHeight, -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
-  vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicles[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 
   connectionPointCS0.setValue(CUBE_HALF_EXTENTS[c] - (0.3 * wheelWidth[c]), connectionHeight, -2 * CUBE_HALF_EXTENTS[c] + wheelRadius[c])
 
-  vehicle[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
+  vehicles[c].addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength[c], wheelRadius[c], m_tuning, isFrontWheel)
 }
 
 function initObjects(numObjects) {
@@ -314,7 +303,8 @@ function initObjects(numObjects) {
 }
 
 function findGround(c) {
-  if (worldModel && carModel[c]) {
+  const downRayDir = new Ammo.btVector3(0, 0, 0)
+  if (worldModel && carModels[c]) {
     body[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
     carPos[c] = chassisWorldTrans[c].getOrigin()
     downRayDir.setX(carPos[c].x())
@@ -323,13 +313,9 @@ function findGround(c) {
     let downRay = new Ammo.ClosestRayResultCallback(carPos[c], downRayDir)
     physicsWorld.rayTest(carPos[c], downRayDir, downRay)
 
-    if (downRay.hasHit()) {
-      const hPoint = downRay.get_m_hitPointWorld()
-      const distanceToGround = new THREE.Vector3(carPos[c].x(), carPos[c].y(), carPos[c].z())
-        .distanceTo(new THREE.Vector3(hPoint.x(), hPoint.y(), hPoint.z()))
-      carHeightAboveGround[c] = distanceToGround
+    if (downRay.hasHit())
       body[c].setDamping(0, 0)
-    } else {
+    else {
       const cp = new Ammo.btVector3(carPos[c].x(), carPos[c].y() + 1, carPos[c].z())
       downRayDir.setY(carPos[c].y() + 400)
       downRay = new Ammo.ClosestRayResultCallback(cp, downRayDir)
@@ -411,23 +397,22 @@ function init() {
 function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
   const mtlLoader = new THREE.MTLLoader()
   mtlLoader.load(mtlFile, materials => {
-    carMat[c][i] = materials
     materials.preload()
     const objLoader = new THREE.OBJLoader()
     objLoader.setMaterials(materials)
     objLoader.load(objFile, object => {
-      carModel[c][i] = object
-      carModel[c][i].scale.set(scale, scale, scale)
-      carModel[c][i].traverse(
+      carModels[c][i] = object
+      carModels[c][i].scale.set(scale, scale, scale)
+      carModels[c][i].traverse(
         child => {
           child.castShadow = child.receiveShadow = child.isMesh
         })
-      scene.add(carModel[c][i])
+      scene.add(carModels[c][i])
 
       // make three copies each of tire
       if (i == 1)
         for (let j = 0; j < 3; j++) {
-          tireClones[c][j] = carModel[c][i].clone()
+          tireClones[c][j] = carModels[c][i].clone()
           scene.add(tireClones[c][j])
         }
     })
@@ -461,11 +446,10 @@ function updatePhysics() {
   for (let c = 0; c < numCars; c++) {
     findGround(c)
     if (c == currentCarIndex)
-      if (vehicle[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward[c] || moveBackward[c]) && Math.abs(kmh[c]) < maxSpeed / 4))
-        shootDecals(c, carModel, worldModel, body, tireClones, scene)
+      if (vehicles[c].getWheelInfo(2).get_m_skidInfo() < .8 || ((moveForward[c] || moveBackward[c]) && Math.abs(kmh[c]) < maxSpeed / 4))
+        shootDecals(c, carModels, worldModel, body, tireClones, scene)
 
-    lastKmh[c] = kmh[c]
-    kmh[c] = vehicle[c].getCurrentSpeedKmHour()
+    kmh[c] = vehicles[c].getCurrentSpeedKmHour()
     steering[c] = (steerLeft[c] || steerRight[c])
 
     if (!steering[c])
@@ -506,26 +490,26 @@ function updatePhysics() {
       }
 
     // 0,1 front; 2,3 back
-    vehicle[c].applyEngineForce(gEngineForce[c], 0)
-    vehicle[c].setBrake(gBreakingForce[c], 0)
-    vehicle[c].setSteeringValue(gVehicleSteering[c], 0)
-    vehicle[c].setSteeringValue(-gVehicleSteering[c] * 1.2, 4)// for drifting, 5th wheel (rear)
+    vehicles[c].applyEngineForce(gEngineForce[c], 0)
+    vehicles[c].setBrake(gBreakingForce[c], 0)
+    vehicles[c].setSteeringValue(gVehicleSteering[c], 0)
+    vehicles[c].setSteeringValue(-gVehicleSteering[c] * 1.2, 4)// for drifting, 5th wheel (rear)
 
-    vehicle[c].applyEngineForce(gEngineForce[c], 4)
-    vehicle[c].applyEngineForce(gEngineForce[c], 1)
-    vehicle[c].setBrake(gBreakingForce[c], 1)
-    vehicle[c].setSteeringValue(gVehicleSteering[c], 1)
-    vehicle[c].setSteeringValue(-gVehicleSteering[c] * 1.2, 5) // for drifting, 6th wheel (rear)
-    vehicle[c].applyEngineForce(gEngineForce[c], 5)
+    vehicles[c].applyEngineForce(gEngineForce[c], 4)
+    vehicles[c].applyEngineForce(gEngineForce[c], 1)
+    vehicles[c].setBrake(gBreakingForce[c], 1)
+    vehicles[c].setSteeringValue(gVehicleSteering[c], 1)
+    vehicles[c].setSteeringValue(-gVehicleSteering[c] * 1.2, 5) // for drifting, 6th wheel (rear)
+    vehicles[c].applyEngineForce(gEngineForce[c], 5)
 
     // chassis
     body[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
     carPos[c] = chassisWorldTrans[c].getOrigin()
 
     for (let i = 0; i < numCars; i++)
-      if (carModel[c][i]) {
-        carModel[c][i].position.set(carPos[c].x(), carPos[c].y(), carPos[c].z())
-        carModel[c][i].quaternion.set(
+      if (carModels[c][i]) {
+        carModels[c][i].position.set(carPos[c].x(), carPos[c].y(), carPos[c].z())
+        carModels[c][i].quaternion.set(
           chassisWorldTrans[c].getRotation().x(),
           chassisWorldTrans[c].getRotation().y(),
           chassisWorldTrans[c].getRotation().z(),
@@ -536,8 +520,9 @@ function updatePhysics() {
     // wheels, index 0 is chassis shape
     for (let i = 0; i < 4; i++) {
       // synchronize the wheels with the (interpolated) chassis worldtransform
-      vehicle[c].updateWheelTransform(i, true)
-      wheelTrans = vehicle[c].getWheelInfo(i).get_m_worldTransform()
+      vehicles[c].updateWheelTransform(i, true)
+      let wheelTrans = new Ammo.btTransform()
+      wheelTrans = vehicles[c].getWheelInfo(i).get_m_worldTransform()
       const p = wheelTrans.getOrigin()
       const q = wheelTrans.getRotation()
       // clones of tire and hub
@@ -554,10 +539,10 @@ function updatePhysics() {
         }
       } else if (i == 3)
         // original copy of tire and hub for wheels
-        if (carModel[c][1]) {
-          carModel[c][1].position.set(p.x(), p.y(), p.z())
-          carModel[c][1].quaternion.set(q.x(), q.y(), q.z(), q.w())
-          carModel[c][1].rotateY(- Math.PI)
+        if (carModels[c][1]) {
+          carModels[c][1].position.set(p.x(), p.y(), p.z())
+          carModels[c][1].quaternion.set(q.x(), q.y(), q.z(), q.w())
+          carModels[c][1].rotateY(- Math.PI)
         }
     }
   }
