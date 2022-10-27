@@ -5,8 +5,8 @@ import { makeVehicle } from './vehicle.js'
 
 const SCREEN_HEIGHT = window.innerHeight
 const SCREEN_WIDTH = window.innerWidth
-let worldModel
 const physicsWorld = createPhysicsWorld()
+let worldModel
 
 const tempVector = new Ammo.btVector3(0, 0, 0)
 const center = new Ammo.btVector3(0, -38, 0)
@@ -38,9 +38,6 @@ const maxBreakingForce = maxEngineForce * 2
 const steeringIncrement = 0.09
 const steeringClamp = .44
 const steeringReturnRate = .6
-
-let kmh = .00001
-let steering = false
 
 const bodies = []
 const vehicles = []
@@ -326,12 +323,12 @@ function objWorldModelLoader(objFile, mtlFile, scale) {
 
 function handleInput() {
   const vehicle = vehicles[0]
+  const kmh = vehicle.getCurrentSpeedKmHour()
 
   if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || ((keyboard.up || keyboard.down) && Math.abs(kmh) < maxSpeed / 4))
     leaveDecals(carModels[0], worldModel, bodies[0], tireClones[0], scene)
 
-  kmh = vehicle.getCurrentSpeedKmHour()
-  steering = (keyboard.left || keyboard.right)
+  const steering = (keyboard.left || keyboard.right)
 
   if (!steering) gVehicleSteering *= steeringReturnRate
   else if (steering)
