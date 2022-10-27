@@ -72,7 +72,7 @@ function createGround(sx, sy, sz, mass, pos, color) {
   const mesh = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1), new THREE.MeshPhongMaterial({ color }))
   const shape = new AMMO.btBoxShape(new AMMO.btVector3(sx * 0.5, sy * 0.5, sz * 0.5))
   shape.setMargin(margin)
-  const { body } = createRigidBody(mesh, shape, mass, pos)
+  const { body } = createRigidBody({ mesh, shape, mass, pos })
   addRigidBody({ mesh, body, mass })
   mesh.receiveShadow = true
   return mesh
@@ -85,7 +85,7 @@ function createDebrisFromBreakableObject(mesh) {
   // set pointer back to the three mesh
   const btVecUserData = new AMMO.btVector3(0, 0, 0)
   btVecUserData.threeObject = mesh
-  const { body, mass } = createRigidBody(mesh, shape, mesh.userData.mass, mesh.position, mesh.userData.velocity, mesh.userData.angularVelocity)
+  const { body, mass } = createRigidBody({ mesh, shape, mass: mesh.userData.mass, pos: mesh.position, vel: mesh.userData.velocity, angVel: mesh.userData.angularVelocity })
   addRigidBody({ mesh, body, mass })
   body.setUserPointer(btVecUserData)
 }
@@ -106,7 +106,7 @@ function createConvexHullPhysicsShape(coords) {
   return shape
 }
 
-function createRigidBody(mesh, shape, mass, pos, vel, angVel) {
+function createRigidBody({ mesh, shape, mass, pos, vel, angVel }) {
   mesh.position.copy(pos)
   const transform = new AMMO.btTransform()
   transform.setIdentity()
@@ -245,7 +245,7 @@ window.addEventListener('pointerdown', event => {
   const pos = new Vector3()
   pos.copy(raycaster.ray.direction)
   pos.add(raycaster.ray.origin)
-  const { body } = createRigidBody(mesh, shape, mass, pos)
+  const { body } = createRigidBody({ mesh, shape, mass, pos })
   addRigidBody({ mesh, body, mass })
   pos.copy(raycaster.ray.direction)
   pos.multiplyScalar(24)
