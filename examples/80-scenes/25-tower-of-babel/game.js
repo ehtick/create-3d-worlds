@@ -21,7 +21,7 @@ lava.translateY(1.5)
 
 scene.add(terrain, lava, babelTower, baradDur, spaceTower)
 
-const player = new Avatar({ camera, skin: 'disco' })
+const player = new Avatar({ camera })
 player.mesh.position.set(60, 4, 0)
 player.addSolids(terrain, babelTower, baradDur, spaceTower)
 scene.add(player.mesh)

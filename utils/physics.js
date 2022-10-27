@@ -40,6 +40,10 @@ export function createRigidBody({
   const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, shape, inertia)
   const body = new AMMO.btRigidBody(rbInfo)
   if (friction) body.setFriction(friction)
+  if (vel)
+    body.setLinearVelocity(new AMMO.btVector3(vel.x, vel.y, vel.z))
+  if (angVel)
+    body.setAngularVelocity(new AMMO.btVector3(angVel.x, angVel.y, angVel.z))
   mesh.userData.body = body
 
   if (mass > 0) body.setActivationState(4) // Disable deactivation
@@ -68,12 +72,17 @@ export function createBox({ width, height, depth, mass = 0, pos, quat, color = r
   return createRigidBody({ mesh, shape, mass, pos, quat, friction })
 }
 
+export const createGround = ({ size = 100, color = 0xFFFFFF } = {}) =>
+  createBox({ width: size, height: 1, depth: size, mass: 0, pos: new THREE.Vector3(0, -0.5, 0), color })
+
 export function createBrick(length, height, width, pos, halfBrick) {
   const defaultMass = 0.5
   const depth = halfBrick ? length * .5 : length
   const mass = halfBrick ? defaultMass * .5 : defaultMass
   return createBox({ width, height, depth, mass, pos })
 }
+
+/* STRUCTURES */
 
 export function createWall() {
   const pos = new THREE.Vector3()
@@ -105,6 +114,19 @@ export function createWall() {
     pos.y += brickHeight
   }
   return bricks
+}
+
+export function createCrates(size = .75, nw = 8, nh = 6) {
+  const crates = []
+  for (let j = 0; j < nw; j++)
+    for (let i = 0; i < nh; i++) {
+      const crate = createBox({
+        pos: new THREE.Vector3(size * j - (size * (nw - 1)) / 2, size * i, 10),
+        width: size, height: size, depth: size, mass: 10, color: 0xfca400, friction: 1
+      })
+      crates.push(crate)
+    }
+  return crates
 }
 
 /* TERRAIN */

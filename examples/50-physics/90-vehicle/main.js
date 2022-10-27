@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { createPhysicsWorld, createBox, updateMesh } from '/utils/physics.js'
+import { createPhysicsWorld, createBox, updateMesh, createCrates } from '/utils/physics.js'
 import { createVehicle, updateVehicle } from './vehicle.js'
 
 const { Vector3 } = THREE
@@ -25,7 +25,8 @@ quat.setFromAxisAngle(new Vector3(1, 0, 0), -Math.PI / 18)
 const jumpBoard = createBox({ pos: new Vector3(0, -1.5, 0), quat, width: 8, height: 4, depth: 10, friction: 1, color: 0x999999 })
 addRigidBody(jumpBoard)
 
-createCrates()
+const crates = createCrates()
+crates.forEach(addRigidBody)
 
 const { vehicle, wheels, chassis } = createVehicle(new Vector3(0, 4, -20), physicsWorld)
 scene.add(...wheels, chassis) // bez točkova kao tenk
@@ -42,17 +43,6 @@ function addRigidBody({ mesh, body, mass }) {
   scene.add(mesh)
   if (mass > 0) rigidBodies.push(mesh)
   physicsWorld.addRigidBody(body)
-}
-
-function createCrates(size = .75, nw = 8, nh = 6) {
-  for (let j = 0; j < nw; j++)
-    for (let i = 0; i < nh; i++) {
-      const brick = createBox({
-        pos: new Vector3(size * j - (size * (nw - 1)) / 2, size * i, 10),
-        width: size, height: size, depth: size, mass: 10, color: 0xfca400, friction: 1
-      })
-      addRigidBody(brick)
-    }
 }
 
 /* LOOP */

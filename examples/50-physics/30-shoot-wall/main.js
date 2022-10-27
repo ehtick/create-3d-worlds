@@ -1,4 +1,3 @@
-/* global Ammo */
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { AMMO, createBox, createBall, createWall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
@@ -11,7 +10,6 @@ const rigidBodies = []
 const sun = createSun({ position: [-5, 10, 5] })
 scene.add(sun)
 
-const transform = new AMMO.btTransform()
 const physicsWorld = createPhysicsWorld()
 
 const ground = createBox({ width: 40, height: 1, depth: 40, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
