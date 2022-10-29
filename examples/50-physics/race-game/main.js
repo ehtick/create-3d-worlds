@@ -4,9 +4,15 @@ import { OBJLoader } from '/node_modules/three/examples/jsm/loaders/OBJLoader.js
 import { MTLLoader } from '/node_modules/three/examples/jsm/loaders/MTLLoader.js'
 
 import keyboard from '/utils/classes/Keyboard.js'
-import { scene, camera, renderer } from '/utils/scene.js'
+import { scene, camera, renderer, fixColors } from '/utils/scene.js'
+import { createSun, hemLight } from '/utils/light.js'
 import { leaveDecals, fadeDecals } from './utils.js'
 import { makeVehicle } from './vehicle.js'
+
+hemLight({ groundColor: 0xf0d7bb })
+scene.add(createSun({ position: [10, 195, 0] }))
+
+fixColors()
 
 const physicsWorld = createPhysicsWorld()
 let worldModel
@@ -56,16 +62,6 @@ for (let c = 0; c < numCars; c++) {
   for (let i = 0; i < 2; i++)
     objCarModelLoader(c, i, objFile[c][i], mtlFile[c][i])
 }
-
-/* INIT */
-
-const hemiLight = new THREE.HemisphereLight(0xd7bb60, 0xf0d7bb, 1.0)
-hemiLight.position.set(0, 1, 0)
-scene.add(hemiLight)
-
-const dirLight = new THREE.DirectionalLight(0xffffff, 2.6)
-dirLight.castShadow = true
-scene.add(dirLight)
 
 objWorldModelLoader('courser14a.obj', 'courser14a.mtl', worldScale)
 
