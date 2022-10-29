@@ -4,11 +4,10 @@ import { OBJLoader } from '/node_modules/three/examples/jsm/loaders/OBJLoader.js
 import { MTLLoader } from '/node_modules/three/examples/jsm/loaders/MTLLoader.js'
 
 import keyboard from '/utils/classes/Keyboard.js'
+import { scene, camera, renderer } from '/utils/scene.js'
 import { leaveDecals, fadeDecals } from './utils.js'
 import { makeVehicle } from './vehicle.js'
 
-const SCREEN_HEIGHT = window.innerHeight
-const SCREEN_WIDTH = window.innerWidth
 const physicsWorld = createPhysicsWorld()
 let worldModel
 
@@ -61,15 +60,6 @@ for (let c = 0; c < numCars; c++) {
 
 /* INIT */
 
-const container = document.createElement('div')
-container.style.height = window.innerHeight + 'px'
-container.style.width = window.innerWidth + 'px'
-container.focus()
-document.body.appendChild(container)
-
-const camera = new THREE.PerspectiveCamera(70, SCREEN_WIDTH / SCREEN_HEIGHT, .01, 9000)
-const scene = new THREE.Scene()
-
 const hemiLight = new THREE.HemisphereLight(0xd7bb60, 0xf0d7bb, 1.0)
 hemiLight.position.set(0, 1, 0)
 scene.add(hemiLight)
@@ -79,11 +69,6 @@ dirLight.castShadow = true
 scene.add(dirLight)
 
 objWorldModelLoader('courser14a.obj', 'courser14a.mtl', worldScale)
-
-const renderer = new THREE.WebGLRenderer({ antialias: true })
-renderer.setPixelRatio(window.devicePixelRatio)
-renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT)
-container.appendChild(renderer.domElement)
 
 /* FUNCTION */
 
@@ -292,6 +277,11 @@ function handleInput() {
       gBreakingForce = 0.0
     }
 
+  if (keyboard.space) {
+    gBreakingForce = maxBreakingForce * 2
+    gEngineForce = 0.0
+  }
+
   // 0,1 front; 2,3 back
   vehicle.applyEngineForce(gEngineForce, 0)
   vehicle.setBrake(gBreakingForce, 0)
@@ -336,7 +326,6 @@ function updatePhysics() {
   const transform = new Ammo.btTransform()
   for (let i = 0; i < numCars; i++) {
     findGround(i)
-    handleInput()
     bodies[i].getMotionState().getWorldTransform(transform)
     const pos = transform.getOrigin()
     const quat = transform.getRotation()
@@ -350,17 +339,9 @@ function updatePhysics() {
 
 void function animate() {
   requestAnimationFrame(animate)
+  handleInput()
   updatePhysics()
   fadeDecals(scene)
   setChaseCam()
   renderer.render(scene, camera)
 }()
-
-/* EVENTS */
-
-document.addEventListener('keydown', () => {
-  if (keyboard.space) {
-    gBreakingForce = maxBreakingForce * 2
-    gEngineForce = 0.0
-  }
-})
