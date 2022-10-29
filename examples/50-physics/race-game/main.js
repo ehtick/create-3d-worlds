@@ -14,8 +14,7 @@ let worldModel
 const center = new Ammo.btVector3(0, -38, 0)
 const worldScale = 25
 
-const carNames = ['hummer', 'lada']
-const numCars = carNames.length
+const numCars = 2
 const currentCarIndex = 0
 const carModels = []
 const tires = []
