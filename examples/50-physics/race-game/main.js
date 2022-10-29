@@ -18,7 +18,6 @@ scene.add(createSun({ position: [10, 195, 0] }))
 fixColors()
 
 const physicsWorld = createPhysicsWorld()
-let worldModel
 
 const center = new Ammo.btVector3(0, -38, 0)
 const worldScale = 25
@@ -66,27 +65,15 @@ for (let c = 0; c < numCars; c++) {
     objCarModelLoader(c, i, objFile[c][i], mtlFile[c][i])
 }
 
-objWorldModelLoader('courser14a.obj', 'courser14a.mtl', worldScale)
-
-// const { mesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl' })
-
-function objWorldModelLoader(objFile, mtlFile, worldScale) {
-  const mtlLoader = new MTLLoader()
-  mtlLoader.load(assets + mtlFile, materials => {
-    const objLoader = new OBJLoader()
-    objLoader.setMaterials(materials)
-    objLoader.load(assets + objFile, object => {
-      object.position.set(0, -38, 0)
-      object.scale.set(worldScale, worldScale, worldScale)
-      object.traverse(child => {
-        child.castShadow = child.receiveShadow = child.isMesh
-      })
-      triMeshBuilder(object, worldScale)
-      scene.add(object)
-      worldModel = object
-    })
-  })
-}
+const { mesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl' })
+const worldModel = mesh.children[0]
+worldModel.position.set(0, -38, 0)
+worldModel.scale.set(worldScale, worldScale, worldScale)
+worldModel.traverse(child => {
+  child.castShadow = child.receiveShadow = child.isMesh
+})
+triMeshBuilder(worldModel, worldScale)
+scene.add(worldModel)
 
 /* FUNCTION */
 
