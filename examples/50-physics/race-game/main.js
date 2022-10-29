@@ -40,7 +40,6 @@ const steeringReturnRate = .6
 
 const bodies = []
 const vehicles = []
-const carPos = []
 const chassisWorldTrans = []
 let gEngineForce = 0
 let gBreakingForce = 0
@@ -240,19 +239,16 @@ function findGround(c) {
   if (!worldModel || !carModels[c]) return
 
   bodies[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
-  carPos[c] = chassisWorldTrans[c].getOrigin()
-  const downRayDir = new Ammo.btVector3(0, 0, 0)
-  downRayDir.setX(carPos[c].x())
-  downRayDir.setY(carPos[c].y() - 2000)
-  downRayDir.setZ(carPos[c].z())
-  let downRay = new Ammo.ClosestRayResultCallback(carPos[c], downRayDir)
-  physicsWorld.rayTest(carPos[c], downRayDir, downRay)
+  const pos = chassisWorldTrans[c].getOrigin()
+  const downRayDir = new Ammo.btVector3(pos.x(), pos.y() - 2000, pos.z())
+  let downRay = new Ammo.ClosestRayResultCallback(pos, downRayDir)
+  physicsWorld.rayTest(pos, downRayDir, downRay)
 
   if (downRay.hasHit())
     bodies[c].setDamping(0, 0)
   else {
-    const cp = new Ammo.btVector3(carPos[c].x(), carPos[c].y() + 1, carPos[c].z())
-    downRayDir.setY(carPos[c].y() + 400)
+    const cp = new Ammo.btVector3(pos.x(), pos.y() + 1, pos.z())
+    downRayDir.setY(pos.y() + 400)
     downRay = new Ammo.ClosestRayResultCallback(cp, downRayDir)
     physicsWorld.rayTest(cp, downRayDir, downRay)
     if (downRay.hasHit()) {
@@ -402,11 +398,11 @@ function updatePhysics() {
     handleInput()
     // chassis
     bodies[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
-    carPos[c] = chassisWorldTrans[c].getOrigin()
+    const pos = chassisWorldTrans[c].getOrigin()
 
     for (let i = 0; i < numCars; i++)
       if (carModels[c][i]) {
-        carModels[c][i].position.set(carPos[c].x(), carPos[c].y(), carPos[c].z())
+        carModels[c][i].position.set(pos.x(), pos.y(), pos.z())
         carModels[c][i].quaternion.set(
           chassisWorldTrans[c].getRotation().x(),
           chassisWorldTrans[c].getRotation().y(),
