@@ -27,7 +27,6 @@ const mtlFile = [
 ]
 
 const DISABLE_DEACTIVATION = 4
-const numObjects = 1 // ground is 0
 
 const maxSpeed = 150.0
 const turboForce = 1.7
@@ -51,8 +50,6 @@ for (let c = 0; c < numCars; c++) {
   tires[c] = []
 }
 
-const threeObject = [] // index 0 is for the ground, 1 for the camera
-
 const matBlank = new THREE.MeshBasicMaterial()
 matBlank.visible = false
 matBlank.side = THREE.FrontSide
@@ -70,8 +67,6 @@ document.body.appendChild(container)
 
 const camera = new THREE.PerspectiveCamera(70, SCREEN_WIDTH / SCREEN_HEIGHT, .01, 9000)
 const scene = new THREE.Scene()
-
-initObjects(numObjects)
 
 for (let c = 0; c < numCars; c++)
   initVehicle(c)
@@ -185,22 +180,6 @@ function initVehicle(c) {
   bodies[c].setFriction(1)
   physicsWorld.addRigidBody(bodies[c])
   vehicles[c] = makeVehicle(c, physicsWorld, bodies)
-}
-
-function initObjects(numObjects) {
-  for (let i = 1; i < numObjects; i++) {// 0 is ground, 1 is camera
-    let colShape
-    const mass = 0
-    const transform = new Ammo.btTransform()
-    const localInertia = new Ammo.btVector3(0, 0, 0)
-    tempVector.setValue(0, 0, 0)
-    transform.setOrigin(tempVector)
-    const motionState = new Ammo.btDefaultMotionState(transform)
-    const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, colShape, localInertia)
-    const body = new Ammo.btRigidBody(rbInfo)
-    body.setFriction(3.0)
-    physicsWorld.addRigidBody(body)
-  }
 }
 
 function findGround(c) {
