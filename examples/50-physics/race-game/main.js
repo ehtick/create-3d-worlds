@@ -40,7 +40,6 @@ const steeringReturnRate = .6
 
 const bodies = []
 const vehicles = []
-const chassisWorldTrans = []
 let gEngineForce = 0
 let gBreakingForce = 0
 let gVehicleSteering = 0
@@ -50,7 +49,6 @@ for (let c = 0; c < numCars; c++) {
   vehicles[c] = []
   carModels[c] = []
   tires[c] = []
-  chassisWorldTrans[c] = new Ammo.btTransform()
 }
 
 const triMeshBody = []
@@ -238,14 +236,17 @@ function initObjects(numObjects) {
 function findGround(c) {
   if (!worldModel || !carModels[c]) return
 
-  bodies[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
-  const pos = chassisWorldTrans[c].getOrigin()
+  const body = bodies[c]
+  const transform = new Ammo.btTransform()
+
+  body.getMotionState().getWorldTransform(transform)
+  const pos = transform.getOrigin()
   const downRayDir = new Ammo.btVector3(pos.x(), pos.y() - 2000, pos.z())
   let downRay = new Ammo.ClosestRayResultCallback(pos, downRayDir)
   physicsWorld.rayTest(pos, downRayDir, downRay)
 
   if (downRay.hasHit())
-    bodies[c].setDamping(0, 0)
+    body.setDamping(0, 0)
   else {
     const cp = new Ammo.btVector3(pos.x(), pos.y() + 1, pos.z())
     downRayDir.setY(pos.y() + 400)
@@ -253,11 +254,11 @@ function findGround(c) {
     physicsWorld.rayTest(cp, downRayDir, downRay)
     if (downRay.hasHit()) {
       const pointAbove = downRay.get_m_hitPointWorld()
-      bodies[c].setDamping(.99, .99)
-      bodies[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
+      body.setDamping(.99, .99)
+      body.getMotionState().getWorldTransform(transform)
       pointAbove.setY(pointAbove.y() + 1.5)
-      chassisWorldTrans[c].setOrigin(pointAbove)
-      bodies[c].setWorldTransform(chassisWorldTrans[c])
+      transform.setOrigin(pointAbove)
+      body.setWorldTransform(transform)
     }
   }
 }
@@ -390,24 +391,24 @@ function updateTires(c) {
   }
 }
 
+const transform = new Ammo.btTransform()
+
 function updatePhysics() {
   physicsWorld.stepSimulation(1 / 60)
 
   for (let c = 0; c < numCars; c++) {
     findGround(c)
     handleInput()
-    // chassis
-    bodies[c].getMotionState().getWorldTransform(chassisWorldTrans[c])
-    const pos = chassisWorldTrans[c].getOrigin()
-
+    bodies[c].getMotionState().getWorldTransform(transform)
+    const pos = transform.getOrigin()
     for (let i = 0; i < numCars; i++)
       if (carModels[c][i]) {
         carModels[c][i].position.set(pos.x(), pos.y(), pos.z())
         carModels[c][i].quaternion.set(
-          chassisWorldTrans[c].getRotation().x(),
-          chassisWorldTrans[c].getRotation().y(),
-          chassisWorldTrans[c].getRotation().z(),
-          chassisWorldTrans[c].getRotation().w()
+          transform.getRotation().x(),
+          transform.getRotation().y(),
+          transform.getRotation().z(),
+          transform.getRotation().w()
         )
       }
     updateTires(c)
