@@ -18,7 +18,7 @@ const rightIndex = 0
 const upIndex = 1
 const forwardIndex = 2
 
-export function makeVehicle(c, physicsWorld, bodies) {
+export function makeVehicle(physicsWorld, body) {
   const m_tuning = new Ammo.btVehicleTuning()
   const wheelAxleCS = new Ammo.btVector3(-1, 0, 0)
   const wheelDirectionCS0 = new Ammo.btVector3(0, -1, 0)
@@ -30,8 +30,8 @@ export function makeVehicle(c, physicsWorld, bodies) {
   m_tuning.set_m_maxSuspensionForce(maxSuspensionForce)
 
   const m_vehicleRayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
-  const vehicle = new Ammo.btRaycastVehicle(m_tuning, bodies[c], m_vehicleRayCaster)
-  bodies[c].setActivationState(4)
+  const vehicle = new Ammo.btRaycastVehicle(m_tuning, body, m_vehicleRayCaster)
+  body.setActivationState(4)
   physicsWorld.addAction(vehicle)
 
   // choose coordinate system

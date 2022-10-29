@@ -8,7 +8,6 @@ const SCREEN_WIDTH = window.innerWidth
 const physicsWorld = createPhysicsWorld()
 let worldModel
 
-const tempVector = new Ammo.btVector3(0, 0, 0)
 const center = new Ammo.btVector3(0, -38, 0)
 const worldScale = 25
 
@@ -50,12 +49,10 @@ for (let c = 0; c < numCars; c++) {
   tires[c] = []
 }
 
-const matBlank = new THREE.MeshBasicMaterial()
-matBlank.visible = false
-matBlank.side = THREE.FrontSide
-
+// ako se nešto od ovoga obriše ili premesti nestaje lada??
 const obTrans = new Ammo.btTransform() // eslint-disable-line no-unused-vars
 const triMeshBodyTrans = new Ammo.btTransform()
+const tempVector = new Ammo.btVector3()
 
 /* INIT */
 
@@ -125,38 +122,36 @@ function setChaseCam(camHeight = 4, camDist = 8) {
 }
 
 function triMeshBuilder(model, scale) {
-  const trimesh = new Ammo.btTriangleMesh()
-  const v = model.children[0].geometry.attributes.position.array
-  const vcount = v.length
-  for (let c = 0; c < vcount; c += 9) {
-    const v0 = v[c] * scale
-    const v1 = v[c + 1] * scale
-    const v2 = v[c + 2] * scale
-    const v3 = v[c + 3] * scale
-    const v4 = v[c + 4] * scale
-    const v5 = v[c + 5] * scale
-    const v6 = v[c + 6] * scale
-    const v7 = v[c + 7] * scale
-    const v8 = v[c + 8] * scale
+  const triangleMesh = new Ammo.btTriangleMesh()
+  const pos = model.children[0].geometry.attributes.position.array
+  for (let c = 0; c < pos.length; c += 9) {
+    const v0 = pos[c] * scale
+    const v1 = pos[c + 1] * scale
+    const v2 = pos[c + 2] * scale
+    const v3 = pos[c + 3] * scale
+    const v4 = pos[c + 4] * scale
+    const v5 = pos[c + 5] * scale
+    const v6 = pos[c + 6] * scale
+    const v7 = pos[c + 7] * scale
+    const v8 = pos[c + 8] * scale
 
-    // need 9 numbers per triangle
-    trimesh.addTriangle(
+    triangleMesh.addTriangle(
       new Ammo.btVector3(v0, v1, v2),
       new Ammo.btVector3(v3, v4, v5),
       new Ammo.btVector3(v6, v7, v8)
     )
   }
 
-  const concaveShape = new Ammo.btBvhTriangleMeshShape(trimesh, true)
+  const shape = new Ammo.btBvhTriangleMeshShape(triangleMesh, true)
   triMeshBodyTrans.setIdentity()
   triMeshBodyTrans.setOrigin(center)
   const motionStated = new Ammo.btDefaultMotionState(triMeshBodyTrans)
   tempVector.setValue(0, 0, 0)
-  const tbody = new Ammo.btRigidBody(0, motionStated, concaveShape, tempVector)
-  tbody.setCollisionFlags(tbody.getCollisionFlags() | 1)
-  tbody.setActivationState(DISABLE_DEACTIVATION)
-  tbody.setFriction(.1)
-  physicsWorld.addRigidBody(tbody)
+  const body = new Ammo.btRigidBody(0, motionStated, shape, tempVector)
+  body.setCollisionFlags(body.getCollisionFlags() | 1)
+  body.setActivationState(DISABLE_DEACTIVATION)
+  body.setFriction(.1)
+  physicsWorld.addRigidBody(body)
 }
 
 function initVehicle(c) {
@@ -165,21 +160,21 @@ function initVehicle(c) {
   tempVector.setValue(1.2, .5, 2.4)
   const chassisShape = new Ammo.btBoxShape(tempVector)
   const compound = new Ammo.btCompoundShape()
-  const localTrans = new Ammo.btTransform()
-  localTrans.setIdentity()
+  const transform = new Ammo.btTransform()
+  transform.setIdentity()
   tempVector.setValue(0, 1, 0)
-  localTrans.setOrigin(tempVector)
-  compound.addChildShape(localTrans, chassisShape)
+  transform.setOrigin(tempVector)
+  compound.addChildShape(transform, chassisShape)
   const mass = 680
 
-  const localInertia = new Ammo.btVector3(1, 1, 1)
-  compound.calculateLocalInertia(mass, localInertia)
+  const inertia = new Ammo.btVector3(1, 1, 1)
+  compound.calculateLocalInertia(mass, inertia)
   const motionState = new Ammo.btDefaultMotionState(startTransform)
-  const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, compound, localInertia)
+  const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, compound, inertia)
   bodies[c] = new Ammo.btRigidBody(rbInfo)
   bodies[c].setFriction(1)
   physicsWorld.addRigidBody(bodies[c])
-  vehicles[c] = makeVehicle(c, physicsWorld, bodies)
+  vehicles[c] = makeVehicle(physicsWorld, bodies[c])
 }
 
 function findGround(c) {
@@ -340,10 +335,9 @@ function updateTires(c) {
   }
 }
 
-const transform = new Ammo.btTransform()
-
 function updatePhysics() {
   physicsWorld.stepSimulation(1 / 60)
+  const transform = new Ammo.btTransform()
 
   for (let c = 0; c < numCars; c++) {
     findGround(c)
