@@ -212,7 +212,7 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
         child => {
           child.castShadow = child.receiveShadow = child.isMesh
         })
-      // make three copies each of tire
+      // 3 copies each of tire
       if (i == 1)
         for (let j = 0; j < 3; j++) {
           tires[c][j] = object.clone()
