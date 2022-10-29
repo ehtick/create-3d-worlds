@@ -1,4 +1,7 @@
-/* global THREE, Ammo */
+/* global Ammo */
+import * as THREE from 'three'
+import { DecalGeometry } from '/node_modules/three/examples/jsm/geometries/DecalGeometry.js'
+
 const textureLoader = new THREE.TextureLoader()
 const decalDiffuse = textureLoader.load('track5.png')
 
@@ -70,7 +73,7 @@ export function leaveDecals(carModel, worldModel, body, tires, scene) {
     }
     s_d.set(1, 1, velocity.length())
     const material_d = decalMaterial.clone()
-    let md = new THREE.Mesh(new THREE.DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
+    let md = new THREE.Mesh(new DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
     decals.push(md)
     scene.add(md)
 
@@ -103,7 +106,7 @@ export function leaveDecals(carModel, worldModel, body, tires, scene) {
     }
     s_d.set(1, 1, velocity.length())
 
-    md = new THREE.Mesh(new THREE.DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
+    md = new THREE.Mesh(new DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
     decals.push(md)
     scene.add(md)
   }

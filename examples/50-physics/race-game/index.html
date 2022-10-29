@@ -8,10 +8,13 @@
   <!-- GAME: http://moygen.rf.gd/world/world.htm -->
 
   <script src="ammo.asm.js"></script>
-  <script src="three3.js"></script>
-  <script src="MTLLoader.js"></script>
-  <script src="OBJLoader.js"></script>
-  <script src="DecalGeometry.js"></script>
+  <script type="importmap">
+    {
+        "imports": {
+            "three": "/node_modules/three/build/three.module.js"
+        }
+    }
+  </script>
   <script src="main.js" type="module"></script>
 </body>
 

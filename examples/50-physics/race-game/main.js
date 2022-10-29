@@ -1,4 +1,8 @@
-/* global THREE, Ammo */
+/* global Ammo */
+import * as THREE from 'three'
+import { OBJLoader } from '/node_modules/three/examples/jsm/loaders/OBJLoader.js'
+import { MTLLoader } from '/node_modules/three/examples/jsm/loaders/MTLLoader.js'
+
 import keyboard from '/utils/classes/Keyboard.js'
 import { leaveDecals, fadeDecals } from './utils.js'
 import { makeVehicle } from './vehicle.js'
@@ -202,9 +206,9 @@ function findGround(c) {
 }
 
 function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
-  const mtlLoader = new THREE.MTLLoader()
+  const mtlLoader = new MTLLoader()
   mtlLoader.load(mtlFile, materials => {
-    const objLoader = new THREE.OBJLoader()
+    const objLoader = new OBJLoader()
     objLoader.setMaterials(materials)
     objLoader.load(objFile, object => {
       object.scale.set(scale, scale, scale)
@@ -225,9 +229,9 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
 }
 
 function objWorldModelLoader(objFile, mtlFile, scale) {
-  const mtlLoader = new THREE.MTLLoader()
+  const mtlLoader = new MTLLoader()
   mtlLoader.load(mtlFile, materials => {
-    const objLoader = new THREE.OBJLoader()
+    const objLoader = new OBJLoader()
     objLoader.setMaterials(materials)
     objLoader.load(objFile, object => {
       object.position.set(0, -38, 0)
