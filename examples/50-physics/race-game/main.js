@@ -27,7 +27,7 @@ const mtlFile = [
 ]
 
 const DISABLE_DEACTIVATION = 4
-const numObjects = 2 // ground is 0, camera is 1
+const numObjects = 1 // ground is 0
 
 const maxSpeed = 150.0
 const turboForce = 1.7
@@ -51,17 +51,13 @@ for (let c = 0; c < numCars; c++) {
   tires[c] = []
 }
 
-const triMeshBody = []
-let tbody
-
-const rigidBodies = []
 const threeObject = [] // index 0 is for the ground, 1 for the camera
 
 const matBlank = new THREE.MeshBasicMaterial()
 matBlank.visible = false
 matBlank.side = THREE.FrontSide
 
-const obTrans = new Ammo.btTransform()
+const obTrans = new Ammo.btTransform() // eslint-disable-line no-unused-vars
 const triMeshBodyTrans = new Ammo.btTransform()
 
 /* INIT */
@@ -75,11 +71,7 @@ document.body.appendChild(container)
 const camera = new THREE.PerspectiveCamera(70, SCREEN_WIDTH / SCREEN_HEIGHT, .01, 9000)
 const scene = new THREE.Scene()
 
-rigidBodies.push({})
-
 initObjects(numObjects)
-for (let i = 1; i < rigidBodies.length; i++)
-  scene.add(threeObject[i])
 
 for (let c = 0; c < numCars; c++)
   initVehicle(c)
@@ -134,9 +126,6 @@ function setChaseCam(camHeight = 4, camDist = 8) {
     camPointer.z() + carOrigin.z()
   )
   tempVector.setValue(0, 0, 0)
-  rigidBodies[1].setLinearVelocity(tempVector)
-  rigidBodies[1].setAngularVelocity(tempVector)
-
   camera.lookAt(new THREE.Vector3(carOrigin.x(), carOrigin.y(), carOrigin.z()))
 }
 
@@ -168,12 +157,11 @@ function triMeshBuilder(model, scale) {
   triMeshBodyTrans.setOrigin(center)
   const motionStated = new Ammo.btDefaultMotionState(triMeshBodyTrans)
   tempVector.setValue(0, 0, 0)
-  tbody = new Ammo.btRigidBody(0, motionStated, concaveShape, tempVector)
+  const tbody = new Ammo.btRigidBody(0, motionStated, concaveShape, tempVector)
   tbody.setCollisionFlags(tbody.getCollisionFlags() | 1)
   tbody.setActivationState(DISABLE_DEACTIVATION)
   tbody.setFriction(.1)
   physicsWorld.addRigidBody(tbody)
-  triMeshBody.push(tbody)
 }
 
 function initVehicle(c) {
@@ -191,8 +179,8 @@ function initVehicle(c) {
 
   const localInertia = new Ammo.btVector3(1, 1, 1)
   compound.calculateLocalInertia(mass, localInertia)
-  const myMotionState = new Ammo.btDefaultMotionState(startTransform)
-  const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, compound, localInertia)
+  const motionState = new Ammo.btDefaultMotionState(startTransform)
+  const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, compound, localInertia)
   bodies[c] = new Ammo.btRigidBody(rbInfo)
   bodies[c].setFriction(1)
   physicsWorld.addRigidBody(bodies[c])
@@ -202,34 +190,16 @@ function initVehicle(c) {
 function initObjects(numObjects) {
   for (let i = 1; i < numObjects; i++) {// 0 is ground, 1 is camera
     let colShape
-    let mass
-    if (i == 1) {// camera object with index 1 gets built here
-      threeObject[i] = new THREE.Mesh(new THREE.SphereGeometry(.1, 20, 20), matBlank)
-      colShape = new Ammo.btSphereShape(1)
-      mass = 1
-    }
-
-    const startTransform = new Ammo.btTransform()
-    startTransform.setIdentity()
-
-    const isDynamic = (mass !== 0)
+    const mass = 0
+    const transform = new Ammo.btTransform()
     const localInertia = new Ammo.btVector3(0, 0, 0)
-    if (isDynamic) colShape.calculateLocalInertia(mass, localInertia)
     tempVector.setValue(0, 0, 0)
-    startTransform.setOrigin(tempVector)
-    const myMotionState = new Ammo.btDefaultMotionState(startTransform)
-    const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia)
+    transform.setOrigin(tempVector)
+    const motionState = new Ammo.btDefaultMotionState(transform)
+    const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, colShape, localInertia)
     const body = new Ammo.btRigidBody(rbInfo)
-    threeObject[i].userData.physicsBody = body
-    threeObject[i].receiveShadow = true
-    threeObject[i].castShadow = true
     body.setFriction(3.0)
-    if (i == 1) {// no contact response for camera
-      body.setCollisionFlags(body.getCollisionFlags() | 4)
-      body.setActivationState(DISABLE_DEACTIVATION)
-    }
     physicsWorld.addRigidBody(body)
-    rigidBodies.push(body)
   }
 }
 
@@ -412,15 +382,6 @@ function updatePhysics() {
         )
       }
     updateTires(c)
-  }
-
-  // index 0 is ground, index 1 is camera
-  for (let i = 2; i < rigidBodies.length; i++) {
-    rigidBodies[i].getMotionState().getWorldTransform(obTrans)
-    const p = obTrans.getOrigin()
-    const q = obTrans.getRotation()
-    threeObject[i].position.set(p.x(), p.y(), p.z())
-    threeObject[i].quaternion.set(q.x(), q.y(), q.z(), q.w())
   }
 }
 
