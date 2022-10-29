@@ -65,17 +65,37 @@ for (let c = 0; c < numCars; c++) {
     objCarModelLoader(c, i, objFile[c][i], mtlFile[c][i])
 }
 
-const { mesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl' })
+const { mesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl', receiveShadow: true, castShadow: false })
 const worldModel = mesh.children[0]
 worldModel.position.set(0, -38, 0)
 worldModel.scale.set(worldScale, worldScale, worldScale)
-worldModel.traverse(child => {
-  child.castShadow = child.receiveShadow = child.isMesh
-})
-triMeshBuilder(worldModel, worldScale)
+bodyBuilder(worldModel, worldScale)
 scene.add(worldModel)
 
 /* FUNCTION */
+
+function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
+  const mtlLoader = new MTLLoader()
+  mtlLoader.load(assets + mtlFile, materials => {
+    const objLoader = new OBJLoader()
+    objLoader.setMaterials(materials)
+    objLoader.load(assets + objFile, object => {
+      object.scale.set(scale, scale, scale)
+      object.traverse(
+        child => {
+          child.castShadow = child.receiveShadow = child.isMesh
+        })
+      // 3 copies each of tire
+      if (i == 1)
+        for (let j = 0; j < 3; j++) {
+          tires[c][j] = object.clone()
+          scene.add(tires[c][j])
+        }
+      scene.add(object)
+      carModels[c][i] = object
+    })
+  })
+}
 
 function createPhysicsWorld() {
   const collisionConfiguration = new Ammo.btDefaultCollisionConfiguration()
@@ -109,7 +129,7 @@ function setChaseCam(camHeight = 4, camDist = 8) {
   camera.lookAt(new THREE.Vector3(carOrigin.x(), carOrigin.y(), carOrigin.z()))
 }
 
-function triMeshBuilder(model, scale) {
+function bodyBuilder(model, scale) {
   const triangleMesh = new Ammo.btTriangleMesh()
   const pos = model.children[0].geometry.attributes.position.array
   for (let c = 0; c < pos.length; c += 9) {
@@ -193,29 +213,6 @@ function findGround(c) {
       body.setWorldTransform(transform)
     }
   }
-}
-
-function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
-  const mtlLoader = new MTLLoader()
-  mtlLoader.load(assets + mtlFile, materials => {
-    const objLoader = new OBJLoader()
-    objLoader.setMaterials(materials)
-    objLoader.load(assets + objFile, object => {
-      object.scale.set(scale, scale, scale)
-      object.traverse(
-        child => {
-          child.castShadow = child.receiveShadow = child.isMesh
-        })
-      // 3 copies each of tire
-      if (i == 1)
-        for (let j = 0; j < 3; j++) {
-          tires[c][j] = object.clone()
-          scene.add(tires[c][j])
-        }
-      scene.add(object)
-      carModels[c][i] = object
-    })
-  })
 }
 
 /* LOOP */
