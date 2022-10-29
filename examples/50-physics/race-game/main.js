@@ -42,11 +42,11 @@ let gEngineForce = 0
 let gBreakingForce = 0
 let gVehicleSteering = 0
 
-for (let c = 0; c < numCars; c++) {
-  bodies[c] = []
-  vehicles[c] = []
-  carModels[c] = []
-  tires[c] = []
+for (let i = 0; i < numCars; i++) {
+  bodies[i] = []
+  vehicles[i] = []
+  carModels[i] = []
+  tires[i] = []
 }
 
 // ako se nešto od ovoga obriše ili premesti nestaje lada??
@@ -65,8 +65,8 @@ document.body.appendChild(container)
 const camera = new THREE.PerspectiveCamera(70, SCREEN_WIDTH / SCREEN_HEIGHT, .01, 9000)
 const scene = new THREE.Scene()
 
-for (let c = 0; c < numCars; c++)
-  initVehicle(c)
+for (let i = 0; i < numCars; i++)
+  initVehicle(i)
 
 const hemiLight = new THREE.HemisphereLight(0xd7bb60, 0xf0d7bb, 1.0)
 hemiLight.position.set(0, 1, 0)
@@ -338,23 +338,17 @@ function updateTires(c) {
 function updatePhysics() {
   physicsWorld.stepSimulation(1 / 60)
   const transform = new Ammo.btTransform()
-
-  for (let c = 0; c < numCars; c++) {
-    findGround(c)
+  for (let i = 0; i < numCars; i++) {
+    findGround(i)
     handleInput()
-    bodies[c].getMotionState().getWorldTransform(transform)
+    bodies[i].getMotionState().getWorldTransform(transform)
     const pos = transform.getOrigin()
-    for (let i = 0; i < numCars; i++)
-      if (carModels[c][i]) {
-        carModels[c][i].position.set(pos.x(), pos.y(), pos.z())
-        carModels[c][i].quaternion.set(
-          transform.getRotation().x(),
-          transform.getRotation().y(),
-          transform.getRotation().z(),
-          transform.getRotation().w()
-        )
-      }
-    updateTires(c)
+    const quat = transform.getRotation()
+    if (carModels[i][0]) {
+      carModels[i][0].position.set(pos.x(), pos.y(), pos.z())
+      carModels[i][0].quaternion.set(quat.x(), quat.y(), quat.z(), quat.w())
+    }
+    updateTires(i)
   }
 }
 
