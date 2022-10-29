@@ -42,17 +42,18 @@ let gEngineForce = 0
 let gBreakingForce = 0
 let gVehicleSteering = 0
 
-for (let i = 0; i < numCars; i++) {
-  bodies[i] = []
-  vehicles[i] = []
-  carModels[i] = []
-  tires[i] = []
-}
-
 // ako se nešto od ovoga obriše ili premesti nestaje lada??
 const obTrans = new Ammo.btTransform() // eslint-disable-line no-unused-vars
 const triMeshBodyTrans = new Ammo.btTransform()
 const tempVector = new Ammo.btVector3()
+
+for (let c = 0; c < numCars; c++) {
+  carModels[c] = []
+  tires[c] = []
+  initVehicle(c)
+  for (let i = 0; i < 2; i++)
+    objCarModelLoader(c, i, objFile[c][i], mtlFile[c][i])
+}
 
 /* INIT */
 
@@ -65,9 +66,6 @@ document.body.appendChild(container)
 const camera = new THREE.PerspectiveCamera(70, SCREEN_WIDTH / SCREEN_HEIGHT, .01, 9000)
 const scene = new THREE.Scene()
 
-for (let i = 0; i < numCars; i++)
-  initVehicle(i)
-
 const hemiLight = new THREE.HemisphereLight(0xd7bb60, 0xf0d7bb, 1.0)
 hemiLight.position.set(0, 1, 0)
 scene.add(hemiLight)
@@ -77,10 +75,6 @@ dirLight.castShadow = true
 scene.add(dirLight)
 
 objWorldModelLoader('courser14a.obj', 'courser14a.mtl', worldScale)
-
-for (let c = 0; c < numCars; c++)
-  for (let i = 0; i < numCars; i++)
-    objCarModelLoader(c, i, objFile[c][i], mtlFile[c][i])
 
 const renderer = new THREE.WebGLRenderer({ antialias: true })
 renderer.setPixelRatio(window.devicePixelRatio)
@@ -210,7 +204,6 @@ function findGround(c) {
 function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
   const mtlLoader = new THREE.MTLLoader()
   mtlLoader.load(mtlFile, materials => {
-    materials.preload()
     const objLoader = new THREE.OBJLoader()
     objLoader.setMaterials(materials)
     objLoader.load(objFile, object => {
@@ -234,7 +227,6 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
 function objWorldModelLoader(objFile, mtlFile, scale) {
   const mtlLoader = new THREE.MTLLoader()
   mtlLoader.load(mtlFile, materials => {
-    materials.preload()
     const objLoader = new THREE.OBJLoader()
     objLoader.setMaterials(materials)
     objLoader.load(objFile, object => {
@@ -323,14 +315,14 @@ function updateTires(c) {
       if (tires[c][i]) {
         tires[c][i].position.set(p.x(), p.y(), p.z())
         tires[c][i].quaternion.set(q.x(), q.y(), q.z(), q.w())
-        if (i == 0) tires[c][i].rotateY(- Math.PI)
+        if (i == 0) tires[c][i].rotateY(-Math.PI)
       }
     } else if (i == 3)
     // original copy of tire and hub for wheels
       if (carModels[c][1]) {
         carModels[c][1].position.set(p.x(), p.y(), p.z())
         carModels[c][1].quaternion.set(q.x(), q.y(), q.z(), q.w())
-        carModels[c][1].rotateY(- Math.PI)
+        carModels[c][1].rotateY(-Math.PI)
       }
   }
 }
