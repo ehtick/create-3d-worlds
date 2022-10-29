@@ -6,8 +6,11 @@ import { MTLLoader } from '/node_modules/three/examples/jsm/loaders/MTLLoader.js
 import keyboard from '/utils/classes/Keyboard.js'
 import { scene, camera, renderer, fixColors } from '/utils/scene.js'
 import { createSun, hemLight } from '/utils/light.js'
+import { loadModel } from '/utils/loaders.js'
 import { leaveDecals, fadeDecals } from './utils.js'
 import { makeVehicle } from './vehicle.js'
+
+const assets = '/assets/models/racing/'
 
 hemLight({ groundColor: 0xf0d7bb })
 scene.add(createSun({ position: [10, 195, 0] }))
@@ -64,6 +67,26 @@ for (let c = 0; c < numCars; c++) {
 }
 
 objWorldModelLoader('courser14a.obj', 'courser14a.mtl', worldScale)
+
+// const { mesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl' })
+
+function objWorldModelLoader(objFile, mtlFile, worldScale) {
+  const mtlLoader = new MTLLoader()
+  mtlLoader.load(assets + mtlFile, materials => {
+    const objLoader = new OBJLoader()
+    objLoader.setMaterials(materials)
+    objLoader.load(assets + objFile, object => {
+      object.position.set(0, -38, 0)
+      object.scale.set(worldScale, worldScale, worldScale)
+      object.traverse(child => {
+        child.castShadow = child.receiveShadow = child.isMesh
+      })
+      triMeshBuilder(object, worldScale)
+      scene.add(object)
+      worldModel = object
+    })
+  })
+}
 
 /* FUNCTION */
 
@@ -187,10 +210,10 @@ function findGround(c) {
 
 function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
   const mtlLoader = new MTLLoader()
-  mtlLoader.load(mtlFile, materials => {
+  mtlLoader.load(assets + mtlFile, materials => {
     const objLoader = new OBJLoader()
     objLoader.setMaterials(materials)
-    objLoader.load(objFile, object => {
+    objLoader.load(assets + objFile, object => {
       object.scale.set(scale, scale, scale)
       object.traverse(
         child => {
@@ -204,24 +227,6 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
         }
       scene.add(object)
       carModels[c][i] = object
-    })
-  })
-}
-
-function objWorldModelLoader(objFile, mtlFile, scale) {
-  const mtlLoader = new MTLLoader()
-  mtlLoader.load(mtlFile, materials => {
-    const objLoader = new OBJLoader()
-    objLoader.setMaterials(materials)
-    objLoader.load(objFile, object => {
-      object.position.set(0, -38, 0)
-      object.scale.set(scale, scale, scale)
-      object.traverse(child => {
-        child.castShadow = child.receiveShadow = child.isMesh
-      })
-      triMeshBuilder(object, worldScale)
-      scene.add(object)
-      worldModel = object
     })
   })
 }
