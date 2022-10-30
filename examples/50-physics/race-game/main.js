@@ -35,17 +35,8 @@ let gVehicleSteering = 0
 const obTrans = new Ammo.btTransform() // eslint-disable-line no-unused-vars
 const triMeshBodyTrans = new Ammo.btTransform()
 
-const { mesh: hummerMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
-
-const { mesh: ladaMesh } = await loadModel({ file: 'racing/ladavaz.obj', mtl: 'racing/ladavaz.mtl', scale: .57 })
-
 const { mesh: hummerTireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl', scale: .57 })
-const hummerTires = []
-for (let j = 0; j < 4; j++) hummerTires.push(hummerTireMesh.clone())
-
 const { mesh: ladaTireMesh } = await loadModel({ file: 'racing/ladavazTire.obj', mtl: 'racing/ladavazTire.mtl', scale: .57 })
-const ladaTires = []
-for (let j = 0; j < 4; j++) ladaTires.push(ladaTireMesh.clone())
 
 const { mesh: worldMesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl', receiveShadow: true, castShadow: false, scale: worldScale })
 const worldModel = worldMesh.children[0]
@@ -53,11 +44,20 @@ worldModel.position.set(0, -38, 0)
 worldBodyBuilder(worldModel, worldScale)
 
 const cars = [
-  { mesh: hummerMesh, tires: hummerTires, ...initVehicle() },
-  { mesh: ladaMesh, tires: ladaTires, ...initVehicle() },
+  {
+    ...await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 }),
+    tires: [...Array(4)].map(() => hummerTireMesh.clone()),
+    ...initVehicle()
+  },
+  {
+    ...await loadModel({ file: 'racing/ladavaz.obj', mtl: 'racing/ladavaz.mtl', scale: .57 }),
+    tires: [...Array(4)].map(() => ladaTireMesh.clone()),
+    ...initVehicle()
+  },
 ]
 
-scene.add(worldModel, hummerMesh, ladaMesh, ...hummerTires, ...ladaTires)
+cars.forEach(car => scene.add(car.mesh, ...car.tires))
+scene.add(worldModel)
 
 /* FUNCTION */
 
@@ -159,11 +159,11 @@ function findGround(body) {
 /* LOOP */
 
 function handleInput(car) {
-  const { vehicle, body } = car
+  const { vehicle, body, tires } = car
   const kmh = vehicle.getCurrentSpeedKmHour()
 
   if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || ((keyboard.up || keyboard.down) && Math.abs(kmh) < maxSpeed / 4))
-    leaveDecals(worldModel, body, hummerTires, scene)
+    leaveDecals(worldModel, body, tires, scene)
 
   const steering = (keyboard.left || keyboard.right)
 
