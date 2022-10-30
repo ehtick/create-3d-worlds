@@ -6,7 +6,7 @@ import { scene, camera, renderer } from '/utils/scene.js'
 import { createSun, hemLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { leaveDecals, fadeDecals } from './utils.js'
-import { makeVehicle } from './vehicle.js'
+import { Car } from './Car.js'
 
 hemLight({ groundColor: 0xf0d7bb })
 scene.add(createSun({ position: [10, 195, 0] }))
@@ -34,24 +34,9 @@ const worldModel = worldMesh.children[0]
 worldModel.position.set(0, -38, 0)
 addWorldBody(worldModel, worldScale)
 
-class Car {
-  constructor({ objFile, tireFile, scale = .57 }) {
-    return (async() => {
-      const { mesh } = await loadModel({ file: `racing/${objFile}.obj`, mtl: `racing/${objFile}.mtl`, scale })
-      const { mesh: tireMesh } = await loadModel({ file: `racing/${tireFile}.obj`, mtl: `racing/${tireFile}.mtl`, scale })
-      const { vehicle, body } = makeVehicle(physicsWorld)
-      this.mesh = mesh
-      this.vehicle = vehicle
-      this.body = body
-      this.tires = [...Array(4)].map(() => tireMesh.clone())
-      return this
-    })()
-  }
-}
-
 const cars = [
-  await new Car({ objFile: 'hummer', tireFile: 'hummerTire' }),
-  await new Car({ objFile: 'ladavaz', tireFile: 'ladavazTire' }),
+  await new Car({ objFile: 'hummer', tireFile: 'hummerTire', physicsWorld }),
+  await new Car({ objFile: 'ladavaz', tireFile: 'ladavazTire', physicsWorld }),
 ]
 
 cars.forEach(car => scene.add(car.mesh, ...car.tires))
