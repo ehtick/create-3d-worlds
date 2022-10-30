@@ -61,5 +61,5 @@ export function makeVehicle(physicsWorld, body) {
 
   vehicle.addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, m_tuning, isFrontWheel)
 
-  return vehicle
+  return { vehicle }
 }

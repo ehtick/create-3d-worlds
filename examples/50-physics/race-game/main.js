@@ -30,7 +30,6 @@ const steeringClamp = .44
 const steeringReturnRate = .6
 
 const bodies = []
-const vehicles = []
 let gEngineForce = 0
 let gBreakingForce = 0
 let gVehicleSteering = 0
@@ -40,8 +39,8 @@ const obTrans = new Ammo.btTransform() // eslint-disable-line no-unused-vars
 const triMeshBodyTrans = new Ammo.btTransform()
 const tempVector = new Ammo.btVector3()
 
-initVehicle(0)
-initVehicle(1)
+const { vehicle: hummerVehicle } = initVehicle(0)
+const { vehicle: ladaVehicle } = initVehicle(1)
 
 const { mesh: hummerMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
 
@@ -150,7 +149,7 @@ function initVehicle(c) {
   bodies[c] = new Ammo.btRigidBody(rbInfo)
   bodies[c].setFriction(1)
   physicsWorld.addRigidBody(bodies[c])
-  vehicles[c] = makeVehicle(physicsWorld, bodies[c])
+  return makeVehicle(physicsWorld, bodies[c])
 }
 
 function findGround(c) {
@@ -183,8 +182,7 @@ function findGround(c) {
 
 /* LOOP */
 
-function handleInput() {
-  const vehicle = vehicles[0]
+function handleInput(vehicle) {
   const kmh = vehicle.getCurrentSpeedKmHour()
 
   if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || ((keyboard.up || keyboard.down) && Math.abs(kmh) < maxSpeed / 4))
@@ -271,13 +269,13 @@ function updatePhysics() {
       car.quaternion.set(quat.x(), quat.y(), quat.z(), quat.w())
     }
   })
-  updateTires(hummerTires, vehicles[0])
-  updateTires(ladaTires, vehicles[1])
+  updateTires(hummerTires, hummerVehicle)
+  updateTires(ladaTires, ladaVehicle)
 }
 
 void function animate() {
   requestAnimationFrame(animate)
-  handleInput()
+  handleInput(hummerVehicle)
   updatePhysics()
   fadeDecals(scene)
   setChaseCam()
