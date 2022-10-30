@@ -57,13 +57,11 @@ for (let c = 0; c < numCars; c++) {
   loadObj(1, 1, 'ladavazTire.obj', 'ladavazTire.mtl')
 }
 
-const { mesh: hummerMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', size: 0 })
-hummerMesh.scale.set(.57, .57, .57)
+const { mesh: hummerMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
 scene.add(hummerMesh)
 carModels[0][0] = hummerMesh
 
-const { mesh: ladaMesh } = await loadModel({ file: 'racing/ladavaz.obj', mtl: 'racing/ladavaz.mtl', size: 0 })
-ladaMesh.scale.set(.57, .57, .57)
+const { mesh: ladaMesh } = await loadModel({ file: 'racing/ladavaz.obj', mtl: 'racing/ladavaz.mtl', scale: .57 })
 scene.add(ladaMesh)
 carModels[1][0] = ladaMesh
 
