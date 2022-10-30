@@ -41,7 +41,7 @@ const { mesh: ladaTireMesh } = await loadModel({ file: 'racing/ladavazTire.obj',
 const { mesh: worldMesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl', receiveShadow: true, castShadow: false, scale: worldScale })
 const worldModel = worldMesh.children[0]
 worldModel.position.set(0, -38, 0)
-worldBodyBuilder(worldModel, worldScale)
+addWorldBody(worldModel, worldScale)
 
 // props: mesh, tires, body, vehicle
 const cars = [
@@ -93,20 +93,19 @@ function setChaseCam(body, camHeight = 4, camDist = 8) {
   camera.lookAt(new THREE.Vector3(carOrigin.x(), carOrigin.y(), carOrigin.z()))
 }
 
-function worldBodyBuilder(model, scale) {
+function addWorldBody(model, scale) {
   const triangleMesh = new Ammo.btTriangleMesh()
   const pos = model.children[0].geometry.attributes.position.array
-  for (let c = 0; c < pos.length; c += 9) {
-    const v0 = pos[c] * scale
-    const v1 = pos[c + 1] * scale
-    const v2 = pos[c + 2] * scale
-    const v3 = pos[c + 3] * scale
-    const v4 = pos[c + 4] * scale
-    const v5 = pos[c + 5] * scale
-    const v6 = pos[c + 6] * scale
-    const v7 = pos[c + 7] * scale
-    const v8 = pos[c + 8] * scale
-
+  for (let i = 0; i < pos.length; i += 9) {
+    const v0 = pos[i] * scale
+    const v1 = pos[i + 1] * scale
+    const v2 = pos[i + 2] * scale
+    const v3 = pos[i + 3] * scale
+    const v4 = pos[i + 4] * scale
+    const v5 = pos[i + 5] * scale
+    const v6 = pos[i + 6] * scale
+    const v7 = pos[i + 7] * scale
+    const v8 = pos[i + 8] * scale
     triangleMesh.addTriangle(
       new Ammo.btVector3(v0, v1, v2),
       new Ammo.btVector3(v3, v4, v5),
@@ -117,18 +116,16 @@ function worldBodyBuilder(model, scale) {
   const shape = new Ammo.btBvhTriangleMeshShape(triangleMesh, true)
   triMeshBodyTrans.setIdentity()
   triMeshBodyTrans.setOrigin(center)
-  const motionStated = new Ammo.btDefaultMotionState(triMeshBodyTrans)
-  const tempVector = new Ammo.btVector3()
-  const body = new Ammo.btRigidBody(0, motionStated, shape, tempVector)
+  const motionState = new Ammo.btDefaultMotionState(triMeshBodyTrans)
+  const body = new Ammo.btRigidBody(0, motionState, shape)
   body.setCollisionFlags(body.getCollisionFlags() | 1)
   body.setActivationState(DISABLE_DEACTIVATION)
-  body.setFriction(.1)
+  body.setFriction(.5)
   physicsWorld.addRigidBody(body)
 }
 
 function findGround(body) {
   const transform = new Ammo.btTransform()
-
   body.getMotionState().getWorldTransform(transform)
   const pos = transform.getOrigin()
   const downRayDir = new Ammo.btVector3(pos.x(), pos.y() - 2000, pos.z())
