@@ -2,7 +2,7 @@
 import * as THREE from 'three'
 
 import keyboard from '/utils/classes/Keyboard.js'
-import { scene, camera, renderer, fixColors } from '/utils/scene.js'
+import { scene, camera, renderer } from '/utils/scene.js'
 import { createSun, hemLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { leaveDecals, fadeDecals } from './utils.js'
@@ -10,8 +10,6 @@ import { makeVehicle } from './vehicle.js'
 
 hemLight({ groundColor: 0xf0d7bb })
 scene.add(createSun({ position: [10, 195, 0] }))
-
-fixColors()
 
 const physicsWorld = createPhysicsWorld()
 
@@ -36,7 +34,6 @@ let gVehicleSteering = 0
 // ako se nešto od ovoga obriše ili premesti nestaje lada??
 const obTrans = new Ammo.btTransform() // eslint-disable-line no-unused-vars
 const triMeshBodyTrans = new Ammo.btTransform()
-const tempVector = new Ammo.btVector3()
 
 const { vehicle: hummerVehicle, body: body1 } = initVehicle(0)
 const { vehicle: ladaVehicle, body: body2 } = initVehicle(1)
@@ -53,18 +50,17 @@ const { mesh: ladaTireMesh } = await loadModel({ file: 'racing/ladavazTire.obj',
 const ladaTires = []
 for (let j = 0; j < 4; j++) ladaTires.push(ladaTireMesh.clone())
 
-scene.add(hummerMesh, ladaMesh, ...hummerTires, ...ladaTires)
-
 const { mesh: worldMesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl', receiveShadow: true, castShadow: false, scale: worldScale })
 const worldModel = worldMesh.children[0]
 worldModel.position.set(0, -38, 0)
-bodyBuilder(worldModel, worldScale)
-scene.add(worldModel)
+worldBodyBuilder(worldModel, worldScale)
 
 const cars = [
   { mesh: hummerMesh, tires: hummerTires, vehicle: hummerVehicle, body: body1 },
   { mesh: ladaMesh, tires: ladaTires, vehicle: ladaVehicle, body: body2 },
 ]
+
+scene.add(worldModel, hummerMesh, ladaMesh, ...hummerTires, ...ladaTires)
 
 /* FUNCTION */
 
@@ -96,11 +92,10 @@ function setChaseCam(camHeight = 4, camDist = 8) {
     camPointer.y() + carOrigin.y(),
     camPointer.z() + carOrigin.z()
   )
-  tempVector.setValue(0, 0, 0)
   camera.lookAt(new THREE.Vector3(carOrigin.x(), carOrigin.y(), carOrigin.z()))
 }
 
-function bodyBuilder(model, scale) {
+function worldBodyBuilder(model, scale) {
   const triangleMesh = new Ammo.btTriangleMesh()
   const pos = model.children[0].geometry.attributes.position.array
   for (let c = 0; c < pos.length; c += 9) {
@@ -125,7 +120,7 @@ function bodyBuilder(model, scale) {
   triMeshBodyTrans.setIdentity()
   triMeshBodyTrans.setOrigin(center)
   const motionStated = new Ammo.btDefaultMotionState(triMeshBodyTrans)
-  tempVector.setValue(0, 0, 0)
+  const tempVector = new Ammo.btVector3()
   const body = new Ammo.btRigidBody(0, motionStated, shape, tempVector)
   body.setCollisionFlags(body.getCollisionFlags() | 1)
   body.setActivationState(DISABLE_DEACTIVATION)
