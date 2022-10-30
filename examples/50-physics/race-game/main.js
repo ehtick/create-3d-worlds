@@ -5,7 +5,7 @@ import keyboard from '/utils/classes/Keyboard.js'
 import { scene, camera, renderer } from '/utils/scene.js'
 import { createSun, hemLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
-import { leaveDecals, fadeDecals } from './utils.js'
+import { leaveDecals, fadeDecals } from './decals.js'
 import { Car } from './Car.js'
 
 hemLight({ groundColor: 0xf0d7bb })
