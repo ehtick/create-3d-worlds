@@ -31,9 +31,6 @@ let gEngineForce = 0
 let gBreakingForce = 0
 let gVehicleSteering = 0
 
-// ako se nešto od ovoga obriše ili premesti nestaje lada??
-const triMeshBodyTrans = new Ammo.btTransform()
-
 const { mesh: hummerTireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl', scale: .57 })
 const { mesh: ladaTireMesh } = await loadModel({ file: 'racing/ladavazTire.obj', mtl: 'racing/ladavazTire.mtl', scale: .57 })
 
@@ -112,10 +109,11 @@ function addWorldBody(model, scale) {
     )
   }
 
+  const transform = new Ammo.btTransform()
+  transform.setIdentity()
+  transform.setOrigin(center)
+  const motionState = new Ammo.btDefaultMotionState(transform)
   const shape = new Ammo.btBvhTriangleMeshShape(triangleMesh, true)
-  triMeshBodyTrans.setIdentity()
-  triMeshBodyTrans.setOrigin(center)
-  const motionState = new Ammo.btDefaultMotionState(triMeshBodyTrans)
   const body = new Ammo.btRigidBody(0, motionState, shape)
   body.setCollisionFlags(body.getCollisionFlags() | 1)
   body.setActivationState(DISABLE_DEACTIVATION)
