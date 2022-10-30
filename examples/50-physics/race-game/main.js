@@ -12,8 +12,6 @@ hemLight({ groundColor: 0xf0d7bb })
 scene.add(createSun({ position: [10, 195, 0] }))
 
 const physicsWorld = createPhysicsWorld()
-
-const center = new Ammo.btVector3(0, -38, 0)
 const worldScale = 25
 
 const DISABLE_DEACTIVATION = 4
@@ -111,6 +109,7 @@ function addWorldBody(model, scale) {
 
   const transform = new Ammo.btTransform()
   transform.setIdentity()
+  const center = new Ammo.btVector3(0, -38, 0)
   transform.setOrigin(center)
   const motionState = new Ammo.btDefaultMotionState(transform)
   const shape = new Ammo.btBvhTriangleMeshShape(triangleMesh, true)
