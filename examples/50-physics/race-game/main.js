@@ -35,9 +35,6 @@ let gVehicleSteering = 0
 const obTrans = new Ammo.btTransform() // eslint-disable-line no-unused-vars
 const triMeshBodyTrans = new Ammo.btTransform()
 
-const { vehicle: hummerVehicle, body: body1 } = initVehicle()
-const { vehicle: ladaVehicle, body: body2 } = initVehicle()
-
 const { mesh: hummerMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
 
 const { mesh: ladaMesh } = await loadModel({ file: 'racing/ladavaz.obj', mtl: 'racing/ladavaz.mtl', scale: .57 })
@@ -56,8 +53,8 @@ worldModel.position.set(0, -38, 0)
 worldBodyBuilder(worldModel, worldScale)
 
 const cars = [
-  { mesh: hummerMesh, tires: hummerTires, vehicle: hummerVehicle, body: body1 },
-  { mesh: ladaMesh, tires: ladaTires, vehicle: ladaVehicle, body: body2 },
+  { mesh: hummerMesh, tires: hummerTires, ...initVehicle() },
+  { mesh: ladaMesh, tires: ladaTires, ...initVehicle() },
 ]
 
 scene.add(worldModel, hummerMesh, ladaMesh, ...hummerTires, ...ladaTires)
@@ -77,8 +74,8 @@ function createPhysicsWorld() {
   return physicsWorld
 }
 
-function setChaseCam(camHeight = 4, camDist = 8) {
-  const carRot = body1.getWorldTransform().getBasis()
+function setChaseCam(body, camHeight = 4, camDist = 8) {
+  const carRot = body.getWorldTransform().getBasis()
   const c2 = new Ammo.btVector3(0, camHeight, -camDist)
   const camPointer = new Ammo.btVector3(
     carRot.getRow(0).x() * c2.x() + carRot.getRow(0).y() * c2.y() + carRot.getRow(0).z() * c2.z(),
@@ -86,7 +83,7 @@ function setChaseCam(camHeight = 4, camDist = 8) {
     carRot.getRow(2).x() * c2.x() + carRot.getRow(2).y() * c2.y() + carRot.getRow(2).z() * c2.z()
   )
 
-  const carOrigin = body1.getWorldTransform().getOrigin()
+  const carOrigin = body.getWorldTransform().getOrigin()
   camera.position.set(
     camPointer.x() + carOrigin.x(),
     camPointer.y() + carOrigin.y(),
@@ -161,11 +158,12 @@ function findGround(body) {
 
 /* LOOP */
 
-function handleInput(vehicle) {
+function handleInput(car) {
+  const { vehicle, body } = car
   const kmh = vehicle.getCurrentSpeedKmHour()
 
   if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || ((keyboard.up || keyboard.down) && Math.abs(kmh) < maxSpeed / 4))
-    leaveDecals(worldModel, body1, hummerTires, scene)
+    leaveDecals(worldModel, body, hummerTires, scene)
 
   const steering = (keyboard.left || keyboard.right)
 
@@ -251,9 +249,9 @@ function updatePhysics() {
 
 void function animate() {
   requestAnimationFrame(animate)
-  handleInput(hummerVehicle)
+  handleInput(cars[0])
   updatePhysics()
   fadeDecals(scene)
-  setChaseCam()
+  setChaseCam(cars[0].body)
   renderer.render(scene, camera)
 }()
