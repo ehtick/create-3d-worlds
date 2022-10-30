@@ -1,7 +1,5 @@
 /* global Ammo */
 import * as THREE from 'three'
-import { OBJLoader } from '/node_modules/three/examples/jsm/loaders/OBJLoader.js'
-import { MTLLoader } from '/node_modules/three/examples/jsm/loaders/MTLLoader.js'
 
 import keyboard from '/utils/classes/Keyboard.js'
 import { scene, camera, renderer, fixColors } from '/utils/scene.js'
@@ -9,8 +7,6 @@ import { createSun, hemLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { leaveDecals, fadeDecals } from './utils.js'
 import { makeVehicle } from './vehicle.js'
-
-const assets = '/assets/models/racing/'
 
 hemLight({ groundColor: 0xf0d7bb })
 scene.add(createSun({ position: [10, 195, 0] }))
@@ -208,7 +204,7 @@ function handleInput() {
   const kmh = vehicle.getCurrentSpeedKmHour()
 
   if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || ((keyboard.up || keyboard.down) && Math.abs(kmh) < maxSpeed / 4))
-    leaveDecals(models[0], worldModel, bodies[0], tires[0], scene)
+    leaveDecals(hummerTireMesh, worldModel, bodies[0], tires[0], scene)
 
   const steering = (keyboard.left || keyboard.right)
 
