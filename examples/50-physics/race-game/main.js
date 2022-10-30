@@ -66,8 +66,8 @@ for (let j = 0; j < 4; j++) {
 }
 
 const models = [
-  [hummerMesh, hummerTireMesh],
-  [ladaMesh, ladaTireMesh]
+  [hummerMesh],
+  [ladaMesh]
 ]
 scene.add(hummerMesh, ladaMesh)
 
@@ -168,8 +168,6 @@ function initVehicle(c) {
 }
 
 function findGround(c) {
-  if (!worldModel || !models[c]) return
-
   const body = bodies[c]
   const transform = new Ammo.btTransform()
 
@@ -265,8 +263,6 @@ function handleInput() {
 function updateTires(c) {
   for (let i = 0; i < 4; i++) {
     vehicles[c].updateWheelTransform(i, true)
-    if (!tires[c][i]) return
-
     const wheelTrans = vehicles[c].getWheelInfo(i).get_m_worldTransform()
     const p = wheelTrans.getOrigin()
     const q = wheelTrans.getRotation()

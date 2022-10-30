@@ -30,8 +30,6 @@ function fixAngleRad(a) {
 }
 
 export function leaveDecals(worldModel, body, tires, scene) {
-  if (!tires.length || !worldModel.children[0]) return
-
   const velocity = new THREE.Vector3(0, 0, 0)
   const dec = new Ammo.btVector3(0, 0, 0)
   const dec2 = new Ammo.btVector3(0, 0, 0)
