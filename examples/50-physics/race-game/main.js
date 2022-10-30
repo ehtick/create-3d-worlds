@@ -29,26 +29,29 @@ let gEngineForce = 0
 let gBreakingForce = 0
 let gVehicleSteering = 0
 
-const { mesh: hummerTireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl', scale: .57 })
-const { mesh: ladaTireMesh } = await loadModel({ file: 'racing/ladavazTire.obj', mtl: 'racing/ladavazTire.mtl', scale: .57 })
-
 const { mesh: worldMesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl', receiveShadow: true, castShadow: false, scale: worldScale })
 const worldModel = worldMesh.children[0]
 worldModel.position.set(0, -38, 0)
 addWorldBody(worldModel, worldScale)
 
-// car props: mesh, tires, body, vehicle
+class Car {
+  constructor({ objFile, tireFile, scale = .57 }) {
+    return (async() => {
+      const { mesh } = await loadModel({ file: `racing/${objFile}.obj`, mtl: `racing/${objFile}.mtl`, scale })
+      const { mesh: tireMesh } = await loadModel({ file: `racing/${tireFile}.obj`, mtl: `racing/${tireFile}.mtl`, scale })
+      const { vehicle, body } = makeVehicle(physicsWorld)
+      this.mesh = mesh
+      this.vehicle = vehicle
+      this.body = body
+      this.tires = [...Array(4)].map(() => tireMesh.clone())
+      return this
+    })()
+  }
+}
+
 const cars = [
-  {
-    ...await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 }),
-    tires: [...Array(4)].map(() => hummerTireMesh.clone()),
-    ...makeVehicle(physicsWorld)
-  },
-  {
-    ...await loadModel({ file: 'racing/ladavaz.obj', mtl: 'racing/ladavaz.mtl', scale: .57 }),
-    tires: [...Array(4)].map(() => ladaTireMesh.clone()),
-    ...makeVehicle(physicsWorld)
-  },
+  await new Car({ objFile: 'hummer', tireFile: 'hummerTire' }),
+  await new Car({ objFile: 'ladavaz', tireFile: 'ladavazTire' }),
 ]
 
 cars.forEach(car => scene.add(car.mesh, ...car.tires))
