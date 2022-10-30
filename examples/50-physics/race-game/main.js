@@ -42,27 +42,28 @@ const tempVector = new Ammo.btVector3()
 
 const numCars = 2
 const currentCarIndex = 0
-const tires = []
 
-for (let c = 0; c < numCars; c++) {
-  tires[c] = []
+for (let c = 0; c < numCars; c++)
   initVehicle(c)
-}
 
 const { mesh: hummerMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
 
 const { mesh: ladaMesh } = await loadModel({ file: 'racing/ladavaz.obj', mtl: 'racing/ladavaz.mtl', scale: .57 })
 
+const hummerTires = []
 const { mesh: hummerTireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl', scale: .57 })
 for (let j = 0; j < 4; j++) {
-  tires[0][j] = hummerTireMesh.clone()
-  scene.add(tires[0][j])
+  const tire = hummerTireMesh.clone()
+  hummerTires.push(tire)
+  scene.add(tire)
 }
 
+const ladaTires = []
 const { mesh: ladaTireMesh } = await loadModel({ file: 'racing/ladavazTire.obj', mtl: 'racing/ladavazTire.mtl', scale: .57 })
 for (let j = 0; j < 4; j++) {
-  tires[1][j] = ladaTireMesh.clone()
-  scene.add(tires[1][j])
+  const tire = ladaTireMesh.clone()
+  ladaTires.push(tire)
+  scene.add(tire)
 }
 
 const cars = [hummerMesh, ladaMesh]
@@ -199,7 +200,7 @@ function handleInput() {
   const kmh = vehicle.getCurrentSpeedKmHour()
 
   if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || ((keyboard.up || keyboard.down) && Math.abs(kmh) < maxSpeed / 4))
-    leaveDecals(worldModel, bodies[0], tires[0], scene)
+    leaveDecals(worldModel, bodies[0], hummerTires, scene)
 
   const steering = (keyboard.left || keyboard.right)
 
@@ -257,16 +258,16 @@ function handleInput() {
   vehicle.applyEngineForce(gEngineForce, 5)
 }
 
-function updateTires(c) {
-  for (let i = 0; i < 4; i++) {
-    vehicles[c].updateWheelTransform(i, true)
-    const wheelTrans = vehicles[c].getWheelInfo(i).get_m_worldTransform()
+function updateTires(tires, vehicle) {
+  tires.forEach((tire, i) => {
+    vehicle.updateWheelTransform(i, true)
+    const wheelTrans = vehicle.getWheelInfo(i).get_m_worldTransform()
     const p = wheelTrans.getOrigin()
     const q = wheelTrans.getRotation()
-    tires[c][i].position.set(p.x(), p.y(), p.z())
-    tires[c][i].quaternion.set(q.x(), q.y(), q.z(), q.w())
-    if (i == 0) tires[c][i].rotateY(-Math.PI)
-  }
+    tire.position.set(p.x(), p.y(), p.z())
+    tire.quaternion.set(q.x(), q.y(), q.z(), q.w())
+    if (i == 0) tire.rotateY(-Math.PI)
+  })
 }
 
 function updatePhysics() {
@@ -281,8 +282,9 @@ function updatePhysics() {
       car.position.set(pos.x(), pos.y(), pos.z())
       car.quaternion.set(quat.x(), quat.y(), quat.z(), quat.w())
     }
-    updateTires(i)
   })
+  updateTires(hummerTires, vehicles[0])
+  updateTires(ladaTires, vehicles[1])
 }
 
 void function animate() {
