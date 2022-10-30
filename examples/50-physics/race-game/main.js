@@ -40,7 +40,6 @@ const tempVector = new Ammo.btVector3()
 
 const { vehicle: hummerVehicle, body: body1 } = initVehicle(0)
 const { vehicle: ladaVehicle, body: body2 } = initVehicle(1)
-const bodies = [body1, body2]
 
 const { mesh: hummerMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
 
@@ -61,6 +60,11 @@ const worldModel = worldMesh.children[0]
 worldModel.position.set(0, -38, 0)
 bodyBuilder(worldModel, worldScale)
 scene.add(worldModel)
+
+const cars = [
+  { mesh: hummerMesh, tires: hummerTires, vehicle: hummerVehicle, body: body1 },
+  { mesh: ladaMesh, tires: ladaTires, vehicle: ladaVehicle, body: body2 },
+]
 
 /* FUNCTION */
 
@@ -133,8 +137,7 @@ function initVehicle() {
   return makeVehicle(physicsWorld)
 }
 
-function findGround(c) {
-  const body = bodies[c]
+function findGround(body) {
   const transform = new Ammo.btTransform()
 
   body.getMotionState().getWorldTransform(transform)
@@ -240,18 +243,15 @@ function updateTires(tires, vehicle) {
 function updatePhysics() {
   physicsWorld.stepSimulation(1 / 60)
   const transform = new Ammo.btTransform()
-  ;[hummerMesh, ladaMesh].forEach((car, i) => {
-    findGround(i)
-    bodies[i].getMotionState().getWorldTransform(transform)
+  cars.forEach(car => {
+    findGround(car.body)
+    car.body.getMotionState().getWorldTransform(transform)
     const pos = transform.getOrigin()
     const quat = transform.getRotation()
-    if (car) {
-      car.position.set(pos.x(), pos.y(), pos.z())
-      car.quaternion.set(quat.x(), quat.y(), quat.z(), quat.w())
-    }
+    car.mesh.position.set(pos.x(), pos.y(), pos.z())
+    car.mesh.quaternion.set(quat.x(), quat.y(), quat.z(), quat.w())
+    updateTires(car.tires, car.vehicle)
   })
-  updateTires(hummerTires, hummerVehicle)
-  updateTires(ladaTires, ladaVehicle)
 }
 
 void function animate() {
