@@ -32,7 +32,6 @@ let gBreakingForce = 0
 let gVehicleSteering = 0
 
 // ako se nešto od ovoga obriše ili premesti nestaje lada??
-const obTrans = new Ammo.btTransform() // eslint-disable-line no-unused-vars
 const triMeshBodyTrans = new Ammo.btTransform()
 
 const { mesh: hummerTireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl', scale: .57 })
@@ -43,7 +42,7 @@ const worldModel = worldMesh.children[0]
 worldModel.position.set(0, -38, 0)
 addWorldBody(worldModel, worldScale)
 
-// props: mesh, tires, body, vehicle
+// car props: mesh, tires, body, vehicle
 const cars = [
   {
     ...await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 }),
@@ -62,7 +61,7 @@ scene.add(worldModel)
 
 /* FUNCTION */
 
-function createPhysicsWorld() {
+function createPhysicsWorld(gravity = 40) {
   const collisionConfiguration = new Ammo.btDefaultCollisionConfiguration()
   const dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration)
   const worldMin = new Ammo.btVector3(-1000, -1000, -1000)
@@ -71,26 +70,26 @@ function createPhysicsWorld() {
   const solver = new Ammo.btSequentialImpulseConstraintSolver()
 
   const physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration)
-  physicsWorld.setGravity(new Ammo.btVector3(0, -40, 0))
+  physicsWorld.setGravity(new Ammo.btVector3(0, -gravity, 0))
   return physicsWorld
 }
 
-function setChaseCam(body, camHeight = 4, camDist = 8) {
-  const carRot = body.getWorldTransform().getBasis()
-  const c2 = new Ammo.btVector3(0, camHeight, -camDist)
+function setChaseCam(body, camHeight = 4, distance = 8) {
+  const row = n => body.getWorldTransform().getBasis().getRow(n)
+  const dist = new Ammo.btVector3(0, camHeight, -distance)
   const camPointer = new Ammo.btVector3(
-    carRot.getRow(0).x() * c2.x() + carRot.getRow(0).y() * c2.y() + carRot.getRow(0).z() * c2.z(),
-    carRot.getRow(1).x() * c2.x() + carRot.getRow(1).y() * c2.y() + carRot.getRow(1).z() * c2.z(),
-    carRot.getRow(2).x() * c2.x() + carRot.getRow(2).y() * c2.y() + carRot.getRow(2).z() * c2.z()
+    row(0).x() * dist.x() + row(0).y() * dist.y() + row(0).z() * dist.z(),
+    row(1).x() * dist.x() + row(1).y() * dist.y() + row(1).z() * dist.z(),
+    row(2).x() * dist.x() + row(2).y() * dist.y() + row(2).z() * dist.z()
   )
 
-  const carOrigin = body.getWorldTransform().getOrigin()
+  const target = body.getWorldTransform().getOrigin()
   camera.position.set(
-    camPointer.x() + carOrigin.x(),
-    camPointer.y() + carOrigin.y(),
-    camPointer.z() + carOrigin.z()
+    camPointer.x() + target.x(),
+    camPointer.y() + target.y(),
+    camPointer.z() + target.z()
   )
-  camera.lookAt(new THREE.Vector3(carOrigin.x(), carOrigin.y(), carOrigin.z()))
+  camera.lookAt(new THREE.Vector3(target.x(), target.y(), target.z()))
 }
 
 function addWorldBody(model, scale) {
