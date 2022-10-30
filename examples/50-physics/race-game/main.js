@@ -54,13 +54,13 @@ const { mesh: hummerMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: '
 const { mesh: ladaMesh } = await loadModel({ file: 'racing/ladavaz.obj', mtl: 'racing/ladavaz.mtl', scale: .57 })
 
 const { mesh: hummerTireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl', scale: .57 })
-for (let j = 0; j < 3; j++) {
+for (let j = 0; j < 4; j++) {
   tires[0][j] = hummerTireMesh.clone()
   scene.add(tires[0][j])
 }
 
 const { mesh: ladaTireMesh } = await loadModel({ file: 'racing/ladavazTire.obj', mtl: 'racing/ladavazTire.mtl', scale: .57 })
-for (let j = 0; j < 3; j++) {
+for (let j = 0; j < 4; j++) {
   tires[1][j] = ladaTireMesh.clone()
   scene.add(tires[1][j])
 }
@@ -69,7 +69,7 @@ const models = [
   [hummerMesh, hummerTireMesh],
   [ladaMesh, ladaTireMesh]
 ]
-scene.add(hummerMesh, ladaMesh, hummerTireMesh, ladaTireMesh)
+scene.add(hummerMesh, ladaMesh)
 
 const { mesh: worldMesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl', receiveShadow: true, castShadow: false, scale: worldScale })
 const worldModel = worldMesh.children[0]
@@ -204,7 +204,7 @@ function handleInput() {
   const kmh = vehicle.getCurrentSpeedKmHour()
 
   if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || ((keyboard.up || keyboard.down) && Math.abs(kmh) < maxSpeed / 4))
-    leaveDecals(hummerTireMesh, worldModel, bodies[0], tires[0], scene)
+    leaveDecals(worldModel, bodies[0], tires[0], scene)
 
   const steering = (keyboard.left || keyboard.right)
 
@@ -263,27 +263,16 @@ function handleInput() {
 }
 
 function updateTires(c) {
-  // wheels, index 0 is chassis shape
   for (let i = 0; i < 4; i++) {
     vehicles[c].updateWheelTransform(i, true)
-    let wheelTrans = new Ammo.btTransform()
-    wheelTrans = vehicles[c].getWheelInfo(i).get_m_worldTransform()
+    if (!tires[c][i]) return
+
+    const wheelTrans = vehicles[c].getWheelInfo(i).get_m_worldTransform()
     const p = wheelTrans.getOrigin()
     const q = wheelTrans.getRotation()
-    // clones of tire and hub
-    if (i < 3) {
-      if (tires[c][i]) {
-        tires[c][i].position.set(p.x(), p.y(), p.z())
-        tires[c][i].quaternion.set(q.x(), q.y(), q.z(), q.w())
-        if (i == 0) tires[c][i].rotateY(-Math.PI)
-      }
-    } else if (i == 3)
-    // original copy of tire and hub for wheels
-      if (models[c][1]) {
-        models[c][1].position.set(p.x(), p.y(), p.z())
-        models[c][1].quaternion.set(q.x(), q.y(), q.z(), q.w())
-        models[c][1].rotateY(-Math.PI)
-      }
+    tires[c][i].position.set(p.x(), p.y(), p.z())
+    tires[c][i].quaternion.set(q.x(), q.y(), q.z(), q.w())
+    if (i == 0) tires[c][i].rotateY(-Math.PI)
   }
 }
 
