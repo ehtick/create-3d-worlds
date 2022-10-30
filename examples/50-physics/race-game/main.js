@@ -48,41 +48,32 @@ const numCars = 2
 const currentCarIndex = 0
 const carModels = []
 const tires = []
-const objFile = [
-  ['hummer.obj', 'hummerTire.obj'],
-  ['ladavaz.obj', 'ladavazTire.obj'],
-]
-const mtlFile = [
-  ['hummer.mtl', 'hummerTire.mtl'],
-  ['ladavaz.mtl', 'ladavazTire.mtl'],
-]
 
 for (let c = 0; c < numCars; c++) {
   carModels[c] = []
   tires[c] = []
   initVehicle(c)
-  objCarModelLoader(0, 0, objFile[0][0], mtlFile[0][0])
-  objCarModelLoader(0, 1, objFile[0][1], mtlFile[0][1])
-  objCarModelLoader(1, 0, objFile[1][0], mtlFile[1][0])
-  objCarModelLoader(1, 1, objFile[1][1], mtlFile[1][1])
+  loadObj(0, 1, 'hummerTire.obj', 'hummerTire.mtl')
+  loadObj(1, 1, 'ladavazTire.obj', 'ladavazTire.mtl')
 }
 
-const { mesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl', receiveShadow: true, castShadow: false })
-const worldModel = mesh.children[0]
-worldModel.position.set(0, -38, 0)
-worldModel.scale.set(worldScale, worldScale, worldScale)
-bodyBuilder(worldModel, worldScale)
-scene.add(worldModel)
+const { mesh: hummerMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', size: 0 })
+hummerMesh.scale.set(.57, .57, .57)
+scene.add(hummerMesh)
+carModels[0][0] = hummerMesh
 
-/* FUNCTION */
+const { mesh: ladaMesh } = await loadModel({ file: 'racing/ladavaz.obj', mtl: 'racing/ladavaz.mtl', size: 0 })
+ladaMesh.scale.set(.57, .57, .57)
+scene.add(ladaMesh)
+carModels[1][0] = ladaMesh
 
-function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
+function loadObj(c, i, objFile, mtlFile) {
   const mtlLoader = new MTLLoader()
   mtlLoader.load(assets + mtlFile, materials => {
     const objLoader = new OBJLoader()
     objLoader.setMaterials(materials)
     objLoader.load(assets + objFile, object => {
-      object.scale.set(scale, scale, scale)
+      object.scale.set(.57, .57, .57)
       object.traverse(
         child => {
           child.castShadow = child.receiveShadow = child.isMesh
@@ -98,6 +89,15 @@ function objCarModelLoader(c, i, objFile, mtlFile, scale = .57) {
     })
   })
 }
+
+const { mesh: worldMesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl', receiveShadow: true, castShadow: false })
+const worldModel = worldMesh.children[0]
+worldModel.position.set(0, -38, 0)
+worldModel.scale.set(worldScale, worldScale, worldScale)
+bodyBuilder(worldModel, worldScale)
+scene.add(worldModel)
+
+/* FUNCTION */
 
 function createPhysicsWorld() {
   const collisionConfiguration = new Ammo.btDefaultCollisionConfiguration()
