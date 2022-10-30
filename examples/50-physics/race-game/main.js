@@ -29,7 +29,6 @@ const steeringIncrement = 0.09
 const steeringClamp = .44
 const steeringReturnRate = .6
 
-const bodies = []
 let gEngineForce = 0
 let gBreakingForce = 0
 let gVehicleSteering = 0
@@ -39,8 +38,9 @@ const obTrans = new Ammo.btTransform() // eslint-disable-line no-unused-vars
 const triMeshBodyTrans = new Ammo.btTransform()
 const tempVector = new Ammo.btVector3()
 
-const { vehicle: hummerVehicle } = initVehicle(0)
-const { vehicle: ladaVehicle } = initVehicle(1)
+const { vehicle: hummerVehicle, body: body1 } = initVehicle(0)
+const { vehicle: ladaVehicle, body: body2 } = initVehicle(1)
+const bodies = [body1, body2]
 
 const { mesh: hummerMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
 
@@ -78,7 +78,7 @@ function createPhysicsWorld() {
 }
 
 function setChaseCam(camHeight = 4, camDist = 8) {
-  const carRot = bodies[0].getWorldTransform().getBasis()
+  const carRot = body1.getWorldTransform().getBasis()
   const c2 = new Ammo.btVector3(0, camHeight, -camDist)
   const camPointer = new Ammo.btVector3(
     carRot.getRow(0).x() * c2.x() + carRot.getRow(0).y() * c2.y() + carRot.getRow(0).z() * c2.z(),
@@ -86,7 +86,7 @@ function setChaseCam(camHeight = 4, camDist = 8) {
     carRot.getRow(2).x() * c2.x() + carRot.getRow(2).y() * c2.y() + carRot.getRow(2).z() * c2.z()
   )
 
-  const carOrigin = bodies[0].getWorldTransform().getOrigin()
+  const carOrigin = body1.getWorldTransform().getOrigin()
   camera.position.set(
     camPointer.x() + carOrigin.x(),
     camPointer.y() + carOrigin.y(),
@@ -129,27 +129,8 @@ function bodyBuilder(model, scale) {
   physicsWorld.addRigidBody(body)
 }
 
-function initVehicle(c) {
-  const startTransform = new Ammo.btTransform()
-  startTransform.setIdentity()
-  tempVector.setValue(1.2, .5, 2.4)
-  const chassisShape = new Ammo.btBoxShape(tempVector)
-  const compound = new Ammo.btCompoundShape()
-  const transform = new Ammo.btTransform()
-  transform.setIdentity()
-  tempVector.setValue(0, 1, 0)
-  transform.setOrigin(tempVector)
-  compound.addChildShape(transform, chassisShape)
-  const mass = 680
-
-  const inertia = new Ammo.btVector3(1, 1, 1)
-  compound.calculateLocalInertia(mass, inertia)
-  const motionState = new Ammo.btDefaultMotionState(startTransform)
-  const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, compound, inertia)
-  bodies[c] = new Ammo.btRigidBody(rbInfo)
-  bodies[c].setFriction(1)
-  physicsWorld.addRigidBody(bodies[c])
-  return makeVehicle(physicsWorld, bodies[c])
+function initVehicle() {
+  return makeVehicle(physicsWorld)
 }
 
 function findGround(c) {
@@ -186,7 +167,7 @@ function handleInput(vehicle) {
   const kmh = vehicle.getCurrentSpeedKmHour()
 
   if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || ((keyboard.up || keyboard.down) && Math.abs(kmh) < maxSpeed / 4))
-    leaveDecals(worldModel, bodies[0], hummerTires, scene)
+    leaveDecals(worldModel, body1, hummerTires, scene)
 
   const steering = (keyboard.left || keyboard.right)
 

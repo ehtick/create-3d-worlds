@@ -18,7 +18,27 @@ const rightIndex = 0
 const upIndex = 1
 const forwardIndex = 2
 
-export function makeVehicle(physicsWorld, body) {
+export function makeVehicle(physicsWorld) {
+  const startTransform = new Ammo.btTransform()
+  const tempVector = new Ammo.btVector3()
+
+  startTransform.setIdentity()
+  tempVector.setValue(1.2, .5, 2.4)
+  const chassisShape = new Ammo.btBoxShape(tempVector)
+  const compound = new Ammo.btCompoundShape()
+  const transform = new Ammo.btTransform()
+  transform.setIdentity()
+  tempVector.setValue(0, 1, 0)
+  transform.setOrigin(tempVector)
+  compound.addChildShape(transform, chassisShape)
+  const mass = 680
+
+  const inertia = new Ammo.btVector3(1, 1, 1)
+  compound.calculateLocalInertia(mass, inertia)
+  const motionState = new Ammo.btDefaultMotionState(startTransform)
+  const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, compound, inertia)
+  const body = new Ammo.btRigidBody(rbInfo)
+
   const m_tuning = new Ammo.btVehicleTuning()
   const wheelAxleCS = new Ammo.btVector3(-1, 0, 0)
   const wheelDirectionCS0 = new Ammo.btVector3(0, -1, 0)
@@ -32,6 +52,7 @@ export function makeVehicle(physicsWorld, body) {
   const m_vehicleRayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
   const vehicle = new Ammo.btRaycastVehicle(m_tuning, body, m_vehicleRayCaster)
   body.setActivationState(4)
+  body.setFriction(1)
   physicsWorld.addAction(vehicle)
 
   // choose coordinate system
@@ -61,5 +82,7 @@ export function makeVehicle(physicsWorld, body) {
 
   vehicle.addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, m_tuning, isFrontWheel)
 
-  return { vehicle }
+  physicsWorld.addRigidBody(body)
+
+  return { vehicle, body }
 }
