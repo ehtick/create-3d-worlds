@@ -40,34 +40,22 @@ const obTrans = new Ammo.btTransform() // eslint-disable-line no-unused-vars
 const triMeshBodyTrans = new Ammo.btTransform()
 const tempVector = new Ammo.btVector3()
 
-const numCars = 2
-const currentCarIndex = 0
-
-for (let c = 0; c < numCars; c++)
-  initVehicle(c)
+initVehicle(0)
+initVehicle(1)
 
 const { mesh: hummerMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
 
 const { mesh: ladaMesh } = await loadModel({ file: 'racing/ladavaz.obj', mtl: 'racing/ladavaz.mtl', scale: .57 })
 
-const hummerTires = []
 const { mesh: hummerTireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl', scale: .57 })
-for (let j = 0; j < 4; j++) {
-  const tire = hummerTireMesh.clone()
-  hummerTires.push(tire)
-  scene.add(tire)
-}
+const hummerTires = []
+for (let j = 0; j < 4; j++) hummerTires.push(hummerTireMesh.clone())
 
-const ladaTires = []
 const { mesh: ladaTireMesh } = await loadModel({ file: 'racing/ladavazTire.obj', mtl: 'racing/ladavazTire.mtl', scale: .57 })
-for (let j = 0; j < 4; j++) {
-  const tire = ladaTireMesh.clone()
-  ladaTires.push(tire)
-  scene.add(tire)
-}
+const ladaTires = []
+for (let j = 0; j < 4; j++) ladaTires.push(ladaTireMesh.clone())
 
-const cars = [hummerMesh, ladaMesh]
-scene.add(hummerMesh, ladaMesh)
+scene.add(hummerMesh, ladaMesh, ...hummerTires, ...ladaTires)
 
 const { mesh: worldMesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl', receiveShadow: true, castShadow: false, scale: worldScale })
 const worldModel = worldMesh.children[0]
@@ -91,7 +79,7 @@ function createPhysicsWorld() {
 }
 
 function setChaseCam(camHeight = 4, camDist = 8) {
-  const carRot = bodies[currentCarIndex].getWorldTransform().getBasis()
+  const carRot = bodies[0].getWorldTransform().getBasis()
   const c2 = new Ammo.btVector3(0, camHeight, -camDist)
   const camPointer = new Ammo.btVector3(
     carRot.getRow(0).x() * c2.x() + carRot.getRow(0).y() * c2.y() + carRot.getRow(0).z() * c2.z(),
@@ -99,7 +87,7 @@ function setChaseCam(camHeight = 4, camDist = 8) {
     carRot.getRow(2).x() * c2.x() + carRot.getRow(2).y() * c2.y() + carRot.getRow(2).z() * c2.z()
   )
 
-  const carOrigin = bodies[currentCarIndex].getWorldTransform().getOrigin()
+  const carOrigin = bodies[0].getWorldTransform().getOrigin()
   camera.position.set(
     camPointer.x() + carOrigin.x(),
     camPointer.y() + carOrigin.y(),
@@ -273,7 +261,7 @@ function updateTires(tires, vehicle) {
 function updatePhysics() {
   physicsWorld.stepSimulation(1 / 60)
   const transform = new Ammo.btTransform()
-  cars.forEach((car, i) => {
+  ;[hummerMesh, ladaMesh].forEach((car, i) => {
     findGround(i)
     bodies[i].getMotionState().getWorldTransform(transform)
     const pos = transform.getOrigin()
