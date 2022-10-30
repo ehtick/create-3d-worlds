@@ -46,52 +46,38 @@ const tempVector = new Ammo.btVector3()
 
 const numCars = 2
 const currentCarIndex = 0
-const carModels = []
 const tires = []
 
 for (let c = 0; c < numCars; c++) {
-  carModels[c] = []
   tires[c] = []
   initVehicle(c)
-  loadObj(0, 1, 'hummerTire.obj', 'hummerTire.mtl')
-  loadObj(1, 1, 'ladavazTire.obj', 'ladavazTire.mtl')
 }
 
 const { mesh: hummerMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
-scene.add(hummerMesh)
-carModels[0][0] = hummerMesh
 
 const { mesh: ladaMesh } = await loadModel({ file: 'racing/ladavaz.obj', mtl: 'racing/ladavaz.mtl', scale: .57 })
-scene.add(ladaMesh)
-carModels[1][0] = ladaMesh
 
-function loadObj(c, i, objFile, mtlFile) {
-  const mtlLoader = new MTLLoader()
-  mtlLoader.load(assets + mtlFile, materials => {
-    const objLoader = new OBJLoader()
-    objLoader.setMaterials(materials)
-    objLoader.load(assets + objFile, object => {
-      object.scale.set(.57, .57, .57)
-      object.traverse(
-        child => {
-          child.castShadow = child.receiveShadow = child.isMesh
-        })
-      // 3 copies each of tire
-      if (i == 1)
-        for (let j = 0; j < 3; j++) {
-          tires[c][j] = object.clone()
-          scene.add(tires[c][j])
-        }
-      scene.add(object)
-      carModels[c][i] = object
-    })
-  })
+const { mesh: hummerTireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl', scale: .57 })
+for (let j = 0; j < 3; j++) {
+  tires[0][j] = hummerTireMesh.clone()
+  scene.add(tires[0][j])
 }
 
-const { mesh: worldMesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl', receiveShadow: true, castShadow: false })
+const { mesh: ladaTireMesh } = await loadModel({ file: 'racing/ladavazTire.obj', mtl: 'racing/ladavazTire.mtl', scale: .57 })
+for (let j = 0; j < 3; j++) {
+  tires[1][j] = ladaTireMesh.clone()
+  scene.add(tires[1][j])
+}
+
+const models = [
+  [hummerMesh, hummerTireMesh],
+  [ladaMesh, ladaTireMesh]
+]
+scene.add(hummerMesh, ladaMesh, hummerTireMesh, ladaTireMesh)
+
+const { mesh: worldMesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl', receiveShadow: true, castShadow: false, scale: worldScale })
 const worldModel = worldMesh.children[0]
 worldModel.position.set(0, -38, 0)
-worldModel.scale.set(worldScale, worldScale, worldScale)
 bodyBuilder(worldModel, worldScale)
 scene.add(worldModel)
 
@@ -186,7 +172,7 @@ function initVehicle(c) {
 }
 
 function findGround(c) {
-  if (!worldModel || !carModels[c]) return
+  if (!worldModel || !models[c]) return
 
   const body = bodies[c]
   const transform = new Ammo.btTransform()
@@ -222,7 +208,7 @@ function handleInput() {
   const kmh = vehicle.getCurrentSpeedKmHour()
 
   if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || ((keyboard.up || keyboard.down) && Math.abs(kmh) < maxSpeed / 4))
-    leaveDecals(carModels[0], worldModel, bodies[0], tires[0], scene)
+    leaveDecals(models[0], worldModel, bodies[0], tires[0], scene)
 
   const steering = (keyboard.left || keyboard.right)
 
@@ -297,10 +283,10 @@ function updateTires(c) {
       }
     } else if (i == 3)
     // original copy of tire and hub for wheels
-      if (carModels[c][1]) {
-        carModels[c][1].position.set(p.x(), p.y(), p.z())
-        carModels[c][1].quaternion.set(q.x(), q.y(), q.z(), q.w())
-        carModels[c][1].rotateY(-Math.PI)
+      if (models[c][1]) {
+        models[c][1].position.set(p.x(), p.y(), p.z())
+        models[c][1].quaternion.set(q.x(), q.y(), q.z(), q.w())
+        models[c][1].rotateY(-Math.PI)
       }
   }
 }
@@ -313,9 +299,9 @@ function updatePhysics() {
     bodies[i].getMotionState().getWorldTransform(transform)
     const pos = transform.getOrigin()
     const quat = transform.getRotation()
-    if (carModels[i][0]) {
-      carModels[i][0].position.set(pos.x(), pos.y(), pos.z())
-      carModels[i][0].quaternion.set(quat.x(), quat.y(), quat.z(), quat.w())
+    if (models[i][0]) {
+      models[i][0].position.set(pos.x(), pos.y(), pos.z())
+      models[i][0].quaternion.set(quat.x(), quat.y(), quat.z(), quat.w())
     }
     updateTires(i)
   }
