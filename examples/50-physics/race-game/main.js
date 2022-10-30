@@ -35,8 +35,8 @@ let gVehicleSteering = 0
 const obTrans = new Ammo.btTransform() // eslint-disable-line no-unused-vars
 const triMeshBodyTrans = new Ammo.btTransform()
 
-const { vehicle: hummerVehicle, body: body1 } = initVehicle(0)
-const { vehicle: ladaVehicle, body: body2 } = initVehicle(1)
+const { vehicle: hummerVehicle, body: body1 } = initVehicle()
+const { vehicle: ladaVehicle, body: body2 } = initVehicle()
 
 const { mesh: hummerMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
 
