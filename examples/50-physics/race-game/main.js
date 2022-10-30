@@ -43,16 +43,17 @@ const worldModel = worldMesh.children[0]
 worldModel.position.set(0, -38, 0)
 worldBodyBuilder(worldModel, worldScale)
 
+// props: mesh, tires, body, vehicle
 const cars = [
   {
     ...await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 }),
     tires: [...Array(4)].map(() => hummerTireMesh.clone()),
-    ...initVehicle()
+    ...makeVehicle(physicsWorld)
   },
   {
     ...await loadModel({ file: 'racing/ladavaz.obj', mtl: 'racing/ladavaz.mtl', scale: .57 }),
     tires: [...Array(4)].map(() => ladaTireMesh.clone()),
-    ...initVehicle()
+    ...makeVehicle(physicsWorld)
   },
 ]
 
@@ -125,10 +126,6 @@ function worldBodyBuilder(model, scale) {
   physicsWorld.addRigidBody(body)
 }
 
-function initVehicle() {
-  return makeVehicle(physicsWorld)
-}
-
 function findGround(body) {
   const transform = new Ammo.btTransform()
 
@@ -166,28 +163,29 @@ function handleInput(car) {
     leaveDecals(worldModel, body, tires, scene)
 
   const steering = (keyboard.left || keyboard.right)
+  const accelerating = keyboard.up || keyboard.down
 
   if (!steering) gVehicleSteering *= steeringReturnRate
-  else if (steering)
+
+  if (steering)
     if (keyboard.left) {
       if (gVehicleSteering < .05) gVehicleSteering += .01; else
         gVehicleSteering *= 1 + steeringIncrement
 
       if (gVehicleSteering > steeringClamp) gVehicleSteering = steeringClamp
-    } else
-    if (keyboard.right) {
+    } else if (keyboard.right) {
       if (gVehicleSteering > -.05) gVehicleSteering -= .01; else
         gVehicleSteering *= 1 + steeringIncrement
 
       if (gVehicleSteering < -steeringClamp) gVehicleSteering = -steeringClamp
     }
 
-  const accelerating = keyboard.up || keyboard.down
-
   if (!accelerating) {
     gEngineForce = 0
     if (Math.abs(kmh) > 20) gBreakingForce += 5
-  } else if (accelerating)
+  }
+
+  if (accelerating)
     if (keyboard.up && kmh < maxSpeed) {
       if (kmh < maxSpeed / 5) gEngineForce = maxEngineForce * turboForce; else gEngineForce = maxEngineForce
       gBreakingForce = 0.0
@@ -233,24 +231,24 @@ function updateTires(tires, vehicle) {
   })
 }
 
-function updatePhysics() {
-  physicsWorld.stepSimulation(1 / 60)
+function updateCars() {
   const transform = new Ammo.btTransform()
-  cars.forEach(car => {
-    findGround(car.body)
-    car.body.getMotionState().getWorldTransform(transform)
+  cars.forEach(({ body, mesh, tires, vehicle }) => {
+    findGround(body)
+    body.getMotionState().getWorldTransform(transform)
     const pos = transform.getOrigin()
     const quat = transform.getRotation()
-    car.mesh.position.set(pos.x(), pos.y(), pos.z())
-    car.mesh.quaternion.set(quat.x(), quat.y(), quat.z(), quat.w())
-    updateTires(car.tires, car.vehicle)
+    mesh.position.set(pos.x(), pos.y(), pos.z())
+    mesh.quaternion.set(quat.x(), quat.y(), quat.z(), quat.w())
+    updateTires(tires, vehicle)
   })
 }
 
 void function animate() {
   requestAnimationFrame(animate)
   handleInput(cars[0])
-  updatePhysics()
+  physicsWorld.stepSimulation(1 / 60)
+  updateCars()
   fadeDecals(scene)
   setChaseCam(cars[0].body)
   renderer.render(scene, camera)
