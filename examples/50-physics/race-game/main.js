@@ -65,10 +65,7 @@ for (let j = 0; j < 4; j++) {
   scene.add(tires[1][j])
 }
 
-const models = [
-  [hummerMesh],
-  [ladaMesh]
-]
+const cars = [hummerMesh, ladaMesh]
 scene.add(hummerMesh, ladaMesh)
 
 const { mesh: worldMesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl', receiveShadow: true, castShadow: false, scale: worldScale })
@@ -275,17 +272,17 @@ function updateTires(c) {
 function updatePhysics() {
   physicsWorld.stepSimulation(1 / 60)
   const transform = new Ammo.btTransform()
-  for (let i = 0; i < numCars; i++) {
+  cars.forEach((car, i) => {
     findGround(i)
     bodies[i].getMotionState().getWorldTransform(transform)
     const pos = transform.getOrigin()
     const quat = transform.getRotation()
-    if (models[i][0]) {
-      models[i][0].position.set(pos.x(), pos.y(), pos.z())
-      models[i][0].quaternion.set(quat.x(), quat.y(), quat.z(), quat.w())
+    if (car) {
+      car.position.set(pos.x(), pos.y(), pos.z())
+      car.quaternion.set(quat.x(), quat.y(), quat.z(), quat.w())
     }
     updateTires(i)
-  }
+  })
 }
 
 void function animate() {
