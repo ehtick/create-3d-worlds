@@ -22,19 +22,6 @@ const physicsWorld = createPhysicsWorld()
 const center = new Ammo.btVector3(0, -38, 0)
 const worldScale = 25
 
-const numCars = 2
-const currentCarIndex = 0
-const carModels = []
-const tires = []
-const objFile = [
-  ['hummer.obj', 'hummerTire.obj'],
-  ['ladavaz.obj', 'ladavazTire.obj'],
-]
-const mtlFile = [
-  ['hummer.mtl', 'hummerTire.mtl'],
-  ['ladavaz.mtl', 'ladavazTire.mtl'],
-]
-
 const DISABLE_DEACTIVATION = 4
 
 const maxSpeed = 150.0
@@ -57,12 +44,27 @@ const obTrans = new Ammo.btTransform() // eslint-disable-line no-unused-vars
 const triMeshBodyTrans = new Ammo.btTransform()
 const tempVector = new Ammo.btVector3()
 
+const numCars = 2
+const currentCarIndex = 0
+const carModels = []
+const tires = []
+const objFile = [
+  ['hummer.obj', 'hummerTire.obj'],
+  ['ladavaz.obj', 'ladavazTire.obj'],
+]
+const mtlFile = [
+  ['hummer.mtl', 'hummerTire.mtl'],
+  ['ladavaz.mtl', 'ladavazTire.mtl'],
+]
+
 for (let c = 0; c < numCars; c++) {
   carModels[c] = []
   tires[c] = []
   initVehicle(c)
-  for (let i = 0; i < 2; i++)
-    objCarModelLoader(c, i, objFile[c][i], mtlFile[c][i])
+  objCarModelLoader(0, 0, objFile[0][0], mtlFile[0][0])
+  objCarModelLoader(0, 1, objFile[0][1], mtlFile[0][1])
+  objCarModelLoader(1, 0, objFile[1][0], mtlFile[1][0])
+  objCarModelLoader(1, 1, objFile[1][1], mtlFile[1][1])
 }
 
 const { mesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl', receiveShadow: true, castShadow: false })
