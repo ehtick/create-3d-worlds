@@ -14,8 +14,6 @@ scene.add(createSun({ position: [10, 195, 0] }))
 const physicsWorld = createPhysicsWorld()
 const worldScale = 25
 
-const DISABLE_DEACTIVATION = 4
-
 const maxSpeed = 150.0
 const turboForce = 1.7
 const maxEngineForce = 8000.0
@@ -30,6 +28,7 @@ let gBreakingForce = 0
 let gVehicleSteering = 0
 
 const { mesh: worldMesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl', receiveShadow: true, castShadow: false, scale: worldScale })
+
 const worldModel = worldMesh.children[0]
 worldModel.position.set(0, -38, 0)
 addWorldBody(worldModel, worldScale)
@@ -55,24 +54,6 @@ function createPhysicsWorld(gravity = 40) {
   const physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration)
   physicsWorld.setGravity(new Ammo.btVector3(0, -gravity, 0))
   return physicsWorld
-}
-
-function setChaseCam(body, camHeight = 4, distance = 8) {
-  const row = n => body.getWorldTransform().getBasis().getRow(n)
-  const dist = new Ammo.btVector3(0, camHeight, -distance)
-  const camPointer = new Ammo.btVector3(
-    row(0).x() * dist.x() + row(0).y() * dist.y() + row(0).z() * dist.z(),
-    row(1).x() * dist.x() + row(1).y() * dist.y() + row(1).z() * dist.z(),
-    row(2).x() * dist.x() + row(2).y() * dist.y() + row(2).z() * dist.z()
-  )
-
-  const target = body.getWorldTransform().getOrigin()
-  camera.position.set(
-    camPointer.x() + target.x(),
-    camPointer.y() + target.y(),
-    camPointer.z() + target.z()
-  )
-  camera.lookAt(new THREE.Vector3(target.x(), target.y(), target.z()))
 }
 
 function addWorldBody(model, scale) {
@@ -103,7 +84,7 @@ function addWorldBody(model, scale) {
   const shape = new Ammo.btBvhTriangleMeshShape(triangleMesh, true)
   const body = new Ammo.btRigidBody(0, motionState, shape)
   body.setCollisionFlags(body.getCollisionFlags() | 1)
-  body.setActivationState(DISABLE_DEACTIVATION)
+  body.setActivationState(4) // DISABLE_DEACTIVATION
   body.setFriction(.5)
   physicsWorld.addRigidBody(body)
 }
@@ -134,17 +115,35 @@ function findGround(body) {
   }
 }
 
+function chaseCam(body, camHeight = 4, distance = 8) {
+  const row = n => body.getWorldTransform().getBasis().getRow(n)
+  const dist = new Ammo.btVector3(0, camHeight, -distance)
+  const camPointer = new Ammo.btVector3(
+    row(0).x() * dist.x() + row(0).y() * dist.y() + row(0).z() * dist.z(),
+    row(1).x() * dist.x() + row(1).y() * dist.y() + row(1).z() * dist.z(),
+    row(2).x() * dist.x() + row(2).y() * dist.y() + row(2).z() * dist.z()
+  )
+
+  const target = body.getWorldTransform().getOrigin()
+  camera.position.set(
+    camPointer.x() + target.x(),
+    camPointer.y() + target.y(),
+    camPointer.z() + target.z()
+  )
+  camera.lookAt(new THREE.Vector3(target.x(), target.y(), target.z()))
+}
+
 /* LOOP */
 
 function handleInput(car) {
   const { vehicle, body, tires } = car
   const kmh = vehicle.getCurrentSpeedKmHour()
 
-  if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || ((keyboard.up || keyboard.down) && Math.abs(kmh) < maxSpeed / 4))
-    leaveDecals(worldModel, body, tires, scene)
-
-  const steering = (keyboard.left || keyboard.right)
+  const steering = keyboard.left || keyboard.right
   const accelerating = keyboard.up || keyboard.down
+
+  if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || (accelerating && Math.abs(kmh) < maxSpeed / 4))
+    leaveDecals(worldModel, body, tires, scene)
 
   if (!steering) gVehicleSteering *= steeringReturnRate
 
@@ -231,6 +230,6 @@ void function animate() {
   physicsWorld.stepSimulation(1 / 60)
   updateCars()
   fadeDecals(scene)
-  setChaseCam(cars[0].body)
+  chaseCam(cars[0].body)
   renderer.render(scene, camera)
 }()
