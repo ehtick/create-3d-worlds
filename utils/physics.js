@@ -86,7 +86,7 @@ export function createBrick(length, height, width, pos, halfBrick) {
 
 export function createWall() {
   const pos = new THREE.Vector3()
-  const bricks = []
+  const bricks = new THREE.Group()
 
   const brickLength = 1.2
   const brickHeight = brickLength * 0.5
@@ -104,7 +104,7 @@ export function createWall() {
     for (let i = 0; i < nRow; i ++) {
       const firstOrLast = oddRow && (i == 0 || i == nRow - 1)
       const brick = createBrick(brickLength, brickHeight, 0.6, pos, firstOrLast)
-      bricks.push(brick)
+      bricks.add(brick)
 
       pos.z = oddRow && (i == 0 || i == nRow - 2)
         ? pos.z + brickLength * .75

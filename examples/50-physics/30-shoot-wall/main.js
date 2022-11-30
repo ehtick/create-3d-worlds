@@ -15,9 +15,10 @@ const physicsWorld = createPhysicsWorld()
 const ground = createBox({ width: 40, height: 1, depth: 40, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
 addRigidBody(ground)
 
-const bricks = createWall()
-bricks.forEach(mesh => {
-  scene.add(mesh)
+const wall = createWall()
+scene.add(wall)
+
+wall.children.forEach(mesh => {
   rigidBodies.push(mesh)
   physicsWorld.addRigidBody(mesh.userData.body)
 })
