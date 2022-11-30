@@ -39,7 +39,7 @@ camera.lookAt(lookAt)
 
 /* FUNCTIONS */
 
-function addRigidBody({ mesh }) {
+function addRigidBody(mesh) {
   scene.add(mesh)
   rigidBodies.push(mesh)
   physicsWorld.addRigidBody(mesh.userData.body)

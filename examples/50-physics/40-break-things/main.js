@@ -72,9 +72,9 @@ function createDebrisFromBreakableObject(mesh) {
   shape.setMargin(margin)
   const btVecUserData = new AMMO.btVector3(0, 0, 0)
   btVecUserData.threeObject = mesh // set pointer back to mesh
-  const obj = createRigidBody({ mesh, shape, mass: mesh.userData.mass, pos: mesh.position, vel: mesh.userData.velocity, angVel: mesh.userData.angularVelocity })
-  addRigidBody(obj)
-  obj.mesh.userData.body.setUserPointer(btVecUserData)
+  const rigidMesh = createRigidBody({ mesh, shape, mass: mesh.userData.mass, pos: mesh.position, vel: mesh.userData.velocity, angVel: mesh.userData.angularVelocity })
+  addRigidBody(rigidMesh)
+  rigidMesh.userData.body.setUserPointer(btVecUserData)
 }
 
 function removeDebris(mesh) {
@@ -93,7 +93,7 @@ function createConvexHullPhysicsShape(positions) {
   return shape
 }
 
-function addRigidBody({ mesh }) {
+function addRigidBody(mesh) {
   mesh.userData.collided = false
   scene.add(mesh)
   rigidBodies.push(mesh)
@@ -193,8 +193,8 @@ window.addEventListener('pointerdown', e => {
   const mouse = normalizeMouse(e)
   raycaster.setFromCamera(mouse, camera)
   const pos = new Vector3().copy(raycaster.ray.direction).add(raycaster.ray.origin)
-  const obj = createBall({ radius: 0.4, mass: 35, pos })
-  addRigidBody(obj)
+  const mesh = createBall({ radius: 0.4, mass: 35, pos })
+  addRigidBody(mesh)
   pos.copy(raycaster.ray.direction).multiplyScalar(24)
-  obj.mesh.userData.body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
+  mesh.userData.body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
 })

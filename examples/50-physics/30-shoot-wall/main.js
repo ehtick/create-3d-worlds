@@ -16,7 +16,7 @@ const ground = createBox({ width: 40, height: 1, depth: 40, mass: 0, pos: { x: 0
 addRigidBody(ground)
 
 const bricks = createWall()
-bricks.forEach(({ mesh }) => {
+bricks.forEach(mesh => {
   scene.add(mesh)
   rigidBodies.push(mesh)
   physicsWorld.addRigidBody(mesh.userData.body)
@@ -24,16 +24,16 @@ bricks.forEach(({ mesh }) => {
 
 /* FUNCTIONS */
 
-function addRigidBody({ mesh }) {
+function addRigidBody(mesh) {
   scene.add(mesh)
   rigidBodies.push(mesh)
   physicsWorld.addRigidBody(mesh.userData.body)
 }
 
 function shoot() {
-  const ball = createBall({ radius: .6, mass: 1.2, pos: { x: -3, y: 2, z: 0 } })
-  addRigidBody(ball)
-  ball.mesh.userData.body.setLinearVelocity(new AMMO.btVector3(20, 0, 0))
+  const mesh = createBall({ radius: .6, mass: 1.2, pos: { x: -3, y: 2, z: 0 } })
+  addRigidBody(mesh)
+  mesh.userData.body.setLinearVelocity(new AMMO.btVector3(20, 0, 0))
 }
 
 /* LOOP */

@@ -48,7 +48,7 @@ export function createRigidBody({
 
   if (mass > 0) body.setActivationState(4) // Disable deactivation
 
-  return { mesh, body, mass }
+  return mesh
 }
 
 export function createBall({ radius = 0.6, mass = 1.2, pos, quat }) {
@@ -57,9 +57,9 @@ export function createBall({ radius = 0.6, mass = 1.2, pos, quat }) {
   mesh.castShadow = mesh.receiveShadow = true
   const shape = new AMMO.btSphereShape(radius)
   shape.setMargin(margin)
-  const res = createRigidBody({ mesh, shape, mass, pos, quat })
-  res.body.setFriction(0.5)
-  return res
+  const rigidMesh = createRigidBody({ mesh, shape, mass, pos, quat })
+  rigidMesh.userData.body.setFriction(0.5)
+  return rigidMesh
 }
 
 export function createBox({ width, height, depth, mass = 0, pos, quat, color = randomColor(), friction }) {
