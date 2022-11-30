@@ -2,7 +2,13 @@ import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scen
 import { createSun } from '/utils/light.js'
 import { AMMO, createBox, createBall, createWall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
 
-camera.position.set(-7, 5, 8)
+/**
+ * dodati zid kutija iz vozila
+ * dodati top
+ * srediti nišanjenje
+ */
+
+camera.position.set(-10, 3, 0)
 createOrbitControls()
 
 const rigidBodies = []
@@ -32,7 +38,7 @@ function addRigidBody(mesh) {
 }
 
 function shoot() {
-  const mesh = createBall({ radius: .6, mass: 1.2, pos: { x: -3, y: 2, z: 0 } })
+  const mesh = createBall({ radius: .6, mass: 1.2, pos: camera.position })
   addRigidBody(mesh)
   mesh.userData.body.setLinearVelocity(new AMMO.btVector3(20, 0, 0))
 }

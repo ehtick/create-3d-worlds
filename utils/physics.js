@@ -117,14 +117,14 @@ export function createWall() {
 }
 
 export function createCrates(size = .75, nw = 8, nh = 6) {
-  const crates = []
+  const crates = new THREE.Group()
   for (let j = 0; j < nw; j++)
     for (let i = 0; i < nh; i++) {
       const crate = createBox({
         pos: new THREE.Vector3(size * j - (size * (nw - 1)) / 2, size * i, 10),
         width: size, height: size, depth: size, mass: 10, color: 0xfca400, friction: 1
       })
-      crates.push(crate)
+      crates.add(crate)
     }
   return crates
 }

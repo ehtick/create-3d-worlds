@@ -26,7 +26,11 @@ const jumpBoard = createBox({ pos: new Vector3(0, -1.5, 0), quat, width: 8, heig
 addRigidBody(jumpBoard)
 
 const crates = createCrates()
-crates.forEach(addRigidBody)
+scene.add(crates)
+crates.children.forEach(mesh => {
+  rigidBodies.push(mesh)
+  physicsWorld.addRigidBody(mesh.userData.body)
+})
 
 const { vehicle, wheels, chassis } = createVehicle(new Vector3(0, 4, -20), physicsWorld)
 scene.add(...wheels, chassis) // bez točkova kao tenk
