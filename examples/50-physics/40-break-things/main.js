@@ -193,7 +193,7 @@ window.addEventListener('pointerdown', e => {
   const mouse = normalizeMouse(e)
   raycaster.setFromCamera(mouse, camera)
   const pos = new Vector3().copy(raycaster.ray.direction).add(raycaster.ray.origin)
-  const obj = createBall(0.4, 35, pos)
+  const obj = createBall({ radius: 0.4, mass: 35, pos })
   addRigidBody(obj)
   pos.copy(raycaster.ray.direction).multiplyScalar(24)
   obj.body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))

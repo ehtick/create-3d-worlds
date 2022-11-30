@@ -51,7 +51,7 @@ export function createRigidBody({
   return { mesh, body, mass }
 }
 
-export function createBall(radius = 0.6, mass = 1.2, pos, quat) {
+export function createBall({ radius = 0.6, mass = 1.2, pos, quat }) {
   const mesh = new THREE.Mesh(
     new THREE.SphereGeometry(radius, 20, 20), new THREE.MeshPhongMaterial({ color: 0x202020 }))
   mesh.castShadow = mesh.receiveShadow = true

@@ -13,11 +13,9 @@ scene.add(sun)
 const physicsWorld = createPhysicsWorld()
 
 const ground = createBox({ width: 40, height: 1, depth: 40, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
-
 addRigidBody(ground)
 
-const ballRadius = 0.6
-const ball = createBall(ballRadius, 1.2, { x: -3, y: 2, z: 0 })
+const ball = createBall({ radius: .6, mass: 1.2, pos: { x: -3, y: 2, z: 0 } })
 addRigidBody(ball)
 
 const bricks = createWall()
