@@ -39,10 +39,10 @@ camera.lookAt(lookAt)
 
 /* FUNCTIONS */
 
-function addRigidBody({ mesh, body, mass }) {
+function addRigidBody({ mesh }) {
   scene.add(mesh)
-  if (mass > 0) rigidBodies.push(mesh)
-  physicsWorld.addRigidBody(body)
+  rigidBodies.push(mesh)
+  physicsWorld.addRigidBody(mesh.userData.body)
 }
 
 /* LOOP */

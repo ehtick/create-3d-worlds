@@ -74,7 +74,7 @@ function createDebrisFromBreakableObject(mesh) {
   btVecUserData.threeObject = mesh // set pointer back to mesh
   const obj = createRigidBody({ mesh, shape, mass: mesh.userData.mass, pos: mesh.position, vel: mesh.userData.velocity, angVel: mesh.userData.angularVelocity })
   addRigidBody(obj)
-  obj.body.setUserPointer(btVecUserData)
+  obj.mesh.userData.body.setUserPointer(btVecUserData)
 }
 
 function removeDebris(mesh) {
@@ -93,11 +93,11 @@ function createConvexHullPhysicsShape(positions) {
   return shape
 }
 
-function addRigidBody({ mesh, body, mass }) {
+function addRigidBody({ mesh }) {
   mesh.userData.collided = false
   scene.add(mesh)
-  if (mass > 0) rigidBodies.push(mesh)
-  physicsWorld.addRigidBody(body)
+  rigidBodies.push(mesh)
+  physicsWorld.addRigidBody(mesh.userData.body)
 }
 
 function updatePhysics(dt) {
@@ -196,5 +196,5 @@ window.addEventListener('pointerdown', e => {
   const obj = createBall({ radius: 0.4, mass: 35, pos })
   addRigidBody(obj)
   pos.copy(raycaster.ray.direction).multiplyScalar(24)
-  obj.body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
+  obj.mesh.userData.body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
 })
