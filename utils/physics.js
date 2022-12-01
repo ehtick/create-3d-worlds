@@ -86,15 +86,11 @@ export function createBrick(length, height, width, pos, halfBrick) {
 
 /* STRUCTURES */
 
-export function createWall() {
-  const pos = new THREE.Vector3()
+export function createWall({ brickLength = 0.5, numBricksLength = 6, numBricksHeight = 8 } = {}) {
   const bricks = []
-
-  const brickLength = 1.2
   const brickHeight = brickLength * 0.5
-  const numBricksLength = 6
-  const numBricksHeight = 8
   const z = -numBricksLength * brickLength * 0.5
+  const pos = new THREE.Vector3()
   pos.set(0, brickHeight * 0.5, z)
 
   for (let j = 0; j < numBricksHeight; j ++) {

@@ -1,6 +1,7 @@
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
+import { AMMO, createBox, createBall, createWall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
 import { createSun } from '/utils/light.js'
-import { AMMO, createBox, createBall, createWall, createCrates, createPhysicsWorld, updateMesh } from '/utils/physics.js'
+import { loadModel } from '/utils/loaders.js'
 
 /**
  * dodati zid kutija iz vozila
@@ -8,7 +9,7 @@ import { AMMO, createBox, createBall, createWall, createCrates, createPhysicsWor
  * srediti nišanjenje
  */
 
-camera.position.set(-10, 3, 0)
+camera.position.set(-7, 1, 0)
 createOrbitControls()
 
 const rigidBodies = []
@@ -28,6 +29,10 @@ wall.forEach(mesh => {
   physicsWorld.addRigidBody(mesh.userData.body)
 })
 
+const { mesh: cannon } = await loadModel({ file: 'weapon/cannon/civil-war-cannon.fbx' })
+cannon.translateX(-5)
+scene.add(cannon)
+
 /* FUNCTIONS */
 
 function addRigidBody(mesh) {
@@ -37,7 +42,7 @@ function addRigidBody(mesh) {
 }
 
 function shoot() {
-  const mesh = createBall({ radius: .6, mass: 1.2, pos: camera.position })
+  const mesh = createBall({ radius: .1, mass: 1.2, pos: camera.position })
   addRigidBody(mesh)
   mesh.userData.body.setLinearVelocity(new AMMO.btVector3(20, 0, 0))
 }
