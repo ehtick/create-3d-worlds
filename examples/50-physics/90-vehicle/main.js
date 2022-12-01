@@ -26,8 +26,8 @@ const jumpBoard = createBox({ pos: new Vector3(0, -1.5, 0), quat, width: 8, heig
 addRigidBody(jumpBoard)
 
 const crates = createCrates()
-scene.add(crates)
-crates.children.forEach(mesh => {
+crates.forEach(mesh => {
+  scene.add(mesh)
   rigidBodies.push(mesh)
   physicsWorld.addRigidBody(mesh.userData.body)
 })

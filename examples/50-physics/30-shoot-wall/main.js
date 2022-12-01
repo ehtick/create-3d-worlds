@@ -1,6 +1,6 @@
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
-import { AMMO, createBox, createBall, createWall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
+import { AMMO, createBox, createBall, createWall, createCrates, createPhysicsWorld, updateMesh } from '/utils/physics.js'
 
 /**
  * dodati zid kutija iz vozila
@@ -22,9 +22,8 @@ const ground = createBox({ width: 40, height: 1, depth: 40, mass: 0, pos: { x: 0
 addRigidBody(ground)
 
 const wall = createWall()
-scene.add(wall)
-
-wall.children.forEach(mesh => {
+wall.forEach(mesh => {
+  scene.add(mesh)
   rigidBodies.push(mesh)
   physicsWorld.addRigidBody(mesh.userData.body)
 })

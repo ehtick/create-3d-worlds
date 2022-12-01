@@ -1,5 +1,7 @@
 /* global Ammo */
 import * as THREE from 'three'
+import { randomGray } from '/utils/helpers.js'
+
 export const AMMO = await Ammo()
 
 const margin = 0.05
@@ -62,7 +64,7 @@ export function createBall({ radius = 0.6, mass = 1.2, pos, quat }) {
   return rigidMesh
 }
 
-export function createBox({ width, height, depth, mass = 0, pos, quat, color = randomColor(), friction }) {
+export function createBox({ width, height, depth, mass = 0, pos, quat, color = randomGray(), friction }) {
   const geometry = new THREE.BoxGeometry(width, height, depth, 1, 1, 1)
   const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
   mesh.castShadow = mesh.receiveShadow = true
@@ -86,7 +88,7 @@ export function createBrick(length, height, width, pos, halfBrick) {
 
 export function createWall() {
   const pos = new THREE.Vector3()
-  const bricks = new THREE.Group()
+  const bricks = []
 
   const brickLength = 1.2
   const brickHeight = brickLength * 0.5
@@ -104,7 +106,7 @@ export function createWall() {
     for (let i = 0; i < nRow; i ++) {
       const firstOrLast = oddRow && (i == 0 || i == nRow - 1)
       const brick = createBrick(brickLength, brickHeight, 0.6, pos, firstOrLast)
-      bricks.add(brick)
+      bricks.push(brick)
 
       pos.z = oddRow && (i == 0 || i == nRow - 2)
         ? pos.z + brickLength * .75
@@ -117,14 +119,14 @@ export function createWall() {
 }
 
 export function createCrates(size = .75, nw = 8, nh = 6) {
-  const crates = new THREE.Group()
+  const crates = []
   for (let j = 0; j < nw; j++)
     for (let i = 0; i < nh; i++) {
       const crate = createBox({
         pos: new THREE.Vector3(size * j - (size * (nw - 1)) / 2, size * i, 10),
         width: size, height: size, depth: size, mass: 10, color: 0xfca400, friction: 1
       })
-      crates.add(crate)
+      crates.push(crate)
     }
   return crates
 }
