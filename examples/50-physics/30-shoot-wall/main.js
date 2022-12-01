@@ -29,9 +29,11 @@ wall.forEach(mesh => {
   physicsWorld.addRigidBody(mesh.userData.body)
 })
 
-const { mesh: cannon } = await loadModel({ file: 'weapon/cannon/civil-war-cannon.fbx', size: 1, angle: -Math.PI * .5 })
+// const { mesh: cannon } = await loadModel({ file: 'weapon/cannon/civil-war-cannon.fbx', size: 1, angle: -Math.PI * .5 })
+const { mesh: cannon } = await loadModel({ file: 'weapon/cannon/mortar/mortar.obj', mtl: 'weapon/cannon/mortar/mortar.mtl', size: 1, angle: Math.PI, shouldAdjustHeight: true })
 cannon.translateX(-5)
-console.log(cannon.position)
+
+console.log(cannon)
 scene.add(cannon)
 
 /* FUNCTIONS */
@@ -44,10 +46,10 @@ function addRigidBody(mesh) {
 
 function shoot() {
   const pos = cannon.position.clone()
-  pos.y += 0.9
+  pos.y += 0.75
   const mesh = createBall({ radius: .1, mass: 1.2, pos })
   addRigidBody(mesh)
-  mesh.userData.body.setLinearVelocity(new AMMO.btVector3(20, 0, 0))
+  mesh.userData.body.setLinearVelocity(new AMMO.btVector3(20, 5, 0))
 }
 
 /* LOOP */
