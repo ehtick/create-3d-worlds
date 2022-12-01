@@ -2,6 +2,7 @@ import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scen
 import { AMMO, createBox, createBall, createWall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
+import keyboard from '/utils/classes/Keyboard.js'
 
 /**
  * dodati zid kutija iz vozila
@@ -32,8 +33,6 @@ wall.forEach(mesh => {
 // const { mesh: cannon } = await loadModel({ file: 'weapon/cannon/civil-war-cannon.fbx', size: 1, angle: -Math.PI * .5 })
 const { mesh: cannon } = await loadModel({ file: 'weapon/cannon/mortar/mortar.obj', mtl: 'weapon/cannon/mortar/mortar.mtl', size: 1, angle: Math.PI, shouldAdjustHeight: true })
 cannon.translateX(-5)
-
-console.log(cannon)
 scene.add(cannon)
 
 /* FUNCTIONS */
@@ -52,11 +51,19 @@ function shoot() {
   mesh.userData.body.setLinearVelocity(new AMMO.btVector3(20, 5, 0))
 }
 
+function move(cannon, dt) {
+  if (keyboard.up) cannon.translateX(dt * .5)
+  if (keyboard.down) cannon.translateX(-dt * .5)
+  if (keyboard.left) cannon.rotateY(dt * .2)
+  if (keyboard.right) cannon.rotateY(-dt * .2)
+}
+
 /* LOOP */
 
 void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
+  move(cannon, dt)
   physicsWorld.stepSimulation(dt, 10)
   rigidBodies.forEach(updateMesh)
   renderer.render(scene, camera)
