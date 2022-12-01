@@ -29,8 +29,9 @@ wall.forEach(mesh => {
   physicsWorld.addRigidBody(mesh.userData.body)
 })
 
-const { mesh: cannon } = await loadModel({ file: 'weapon/cannon/civil-war-cannon.fbx' })
+const { mesh: cannon } = await loadModel({ file: 'weapon/cannon/civil-war-cannon.fbx', size: 1, angle: -Math.PI * .5 })
 cannon.translateX(-5)
+console.log(cannon.position)
 scene.add(cannon)
 
 /* FUNCTIONS */
@@ -42,7 +43,9 @@ function addRigidBody(mesh) {
 }
 
 function shoot() {
-  const mesh = createBall({ radius: .1, mass: 1.2, pos: camera.position })
+  const pos = cannon.position.clone()
+  pos.y += 0.9
+  const mesh = createBall({ radius: .1, mass: 1.2, pos })
   addRigidBody(mesh)
   mesh.userData.body.setLinearVelocity(new AMMO.btVector3(20, 0, 0))
 }

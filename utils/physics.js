@@ -86,16 +86,16 @@ export function createBrick(length, height, width, pos, halfBrick) {
 
 /* STRUCTURES */
 
-export function createWall({ brickLength = 0.5, numBricksLength = 6, numBricksHeight = 8 } = {}) {
+export function createWall({ brickLength = 1, rows = 8, columns = 6 } = {}) {
   const bricks = []
   const brickHeight = brickLength * 0.5
-  const z = -numBricksLength * brickLength * 0.5
+  const z = -columns * brickLength * 0.5
   const pos = new THREE.Vector3()
   pos.set(0, brickHeight * 0.5, z)
 
-  for (let j = 0; j < numBricksHeight; j ++) {
+  for (let j = 0; j < rows; j ++) {
     const oddRow = (j % 2) == 1
-    const nRow = oddRow ? numBricksLength + 1 : numBricksLength
+    const nRow = oddRow ? columns + 1 : columns
 
     pos.z = oddRow ? z - brickLength * .25 : z
 
