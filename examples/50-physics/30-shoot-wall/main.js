@@ -6,9 +6,13 @@ import { loadModel } from '/utils/loaders.js'
 import { mapRange } from '/utils/helpers.js'
 
 /**
- * jačina pucanja kad se drži
- * dodati zid kutija iz vozila
+ * srediti nišanjenje (ima BUG)
+ * prikazati jačinu pucanja
  */
+
+const minMagnitude = 15
+const maxMagnitude = 30
+let magnitude = minMagnitude
 
 camera.position.set(-7, 1, 0)
 createOrbitControls()
@@ -48,17 +52,19 @@ function shoot() {
   pos.y += 0.75
   const ball = createBall({ radius: .1, mass: 1.2, pos })
   addRigidBody(ball)
-  const magnitude = 20 // (10-30)
   const x = mapRange(cannon.rotation.y, -Math.PI * .5, Math.PI * .5, magnitude, 0)
   const z = mapRange(cannon.rotation.y, -Math.PI * .5, Math.PI * .5, -magnitude, magnitude)
   ball.userData.body.setLinearVelocity(new AMMO.btVector3(x, magnitude * .2, -z))
+  magnitude = minMagnitude
 }
 
-function move(cannon, dt) {
+function handleInput(cannon, dt) {
   if (keyboard.up) cannon.translateX(dt * .5)
   if (keyboard.down) cannon.translateX(-dt * .5)
   if (keyboard.left && cannon.rotation.y < Math.PI * .25) cannon.rotateY(dt * .2)
   if (keyboard.right && cannon.rotation.y > -Math.PI * .25) cannon.rotateY(-dt * .2)
+
+  if (keyboard.pressed.mouse && magnitude < maxMagnitude) magnitude += .1
 }
 
 /* LOOP */
@@ -66,7 +72,7 @@ function move(cannon, dt) {
 void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
-  move(cannon, dt)
+  handleInput(cannon, dt)
   physicsWorld.stepSimulation(dt, 10)
   rigidBodies.forEach(updateMesh)
   renderer.render(scene, camera)
@@ -74,4 +80,4 @@ void function loop() {
 
 /* EVENTS */
 
-document.addEventListener('click', shoot)
+document.addEventListener('mouseup', shoot)
