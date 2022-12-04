@@ -7,7 +7,6 @@ import { mapRange } from '/utils/helpers.js'
 
 /**
  * jačina pucanja kad se drži
- * srediti nišanjenje (ograničiti ugao vrtenja?)
  * dodati zid kutija iz vozila
  */
 
@@ -49,9 +48,10 @@ function shoot() {
   pos.y += 0.75
   const ball = createBall({ radius: .1, mass: 1.2, pos })
   addRigidBody(ball)
-  const x = mapRange(cannon.rotation.y, -Math.PI * .5, Math.PI * .5, 20, 0)
-  const z = mapRange(cannon.rotation.y, -Math.PI * .5, Math.PI * .5, -20, 20)
-  ball.userData.body.setLinearVelocity(new AMMO.btVector3(x, 5, -z))
+  const magnitude = 20 // (10-30)
+  const x = mapRange(cannon.rotation.y, -Math.PI * .5, Math.PI * .5, magnitude, 0)
+  const z = mapRange(cannon.rotation.y, -Math.PI * .5, Math.PI * .5, -magnitude, magnitude)
+  ball.userData.body.setLinearVelocity(new AMMO.btVector3(x, magnitude * .2, -z))
 }
 
 function move(cannon, dt) {
