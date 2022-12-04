@@ -1,8 +1,9 @@
-import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { AMMO, createBox, createBall, createWall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
+import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
+import keyboard from '/utils/classes/Keyboard.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
-import keyboard from '/utils/classes/Keyboard.js'
+import { mapRange } from '/utils/helpers.js'
 
 /**
  * dodati zid kutija iz vozila
@@ -46,9 +47,13 @@ function addRigidBody(mesh) {
 function shoot() {
   const pos = cannon.position.clone()
   pos.y += 0.75
-  const mesh = createBall({ radius: .1, mass: 1.2, pos })
-  addRigidBody(mesh)
-  mesh.userData.body.setLinearVelocity(new AMMO.btVector3(20, 5, 0))
+  const ball = createBall({ radius: .1, mass: 1.2, pos })
+  addRigidBody(ball)
+  const x = mapRange(cannon.rotation.y, -Math.PI * .5, Math.PI * .5, 20, 0)
+  const z = mapRange(cannon.rotation.y, -Math.PI * .5, Math.PI * .5, -20, 20)
+  console.log(cannon.rotation.y) // in PI
+  console.log(x, z)
+  ball.userData.body.setLinearVelocity(new AMMO.btVector3(x, 5, -z))
 }
 
 function move(cannon, dt) {
