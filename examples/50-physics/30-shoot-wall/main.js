@@ -51,10 +51,9 @@ function shoot() {
   pos.y += 0.75
   const ball = createBall({ radius: .1, mass: 1.2, pos })
   addRigidBody(ball)
-  magnitude = 20
-  console.log(cannon.rotation.y)
-  const x = magnitude * Math.sin(cannon.rotation.y + Math.PI * .5)
-  const z = magnitude * Math.cos(cannon.rotation.y + Math.PI * .5)
+  const angle = cannon.rotation.y + Math.PI * .5
+  const x = magnitude * Math.sin(angle)
+  const z = magnitude * Math.cos(angle)
   ball.userData.body.setLinearVelocity(new AMMO.btVector3(x, magnitude * .2, z))
   magnitude = minMagnitude
 }
@@ -62,8 +61,8 @@ function shoot() {
 function handleInput(cannon, dt) {
   if (keyboard.up) cannon.translateX(dt * .5)
   if (keyboard.down) cannon.translateX(-dt * .5)
-  if (keyboard.left) cannon.rotateY(dt * 1.2)
-  if (keyboard.right) cannon.rotateY(-dt * 1.2)
+  if (keyboard.left) cannon.rotateY(dt * .25)
+  if (keyboard.right) cannon.rotateY(-dt * .25)
 
   if (keyboard.pressed.mouse && magnitude < maxMagnitude) magnitude += .1
 }
