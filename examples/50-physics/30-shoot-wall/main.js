@@ -6,9 +6,9 @@ import { loadModel } from '/utils/loaders.js'
 import { mapRange } from '/utils/helpers.js'
 
 /**
+ * jačina pucanja kad se drži
+ * srediti nišanjenje (ograničiti ugao vrtenja?)
  * dodati zid kutija iz vozila
- * dodati top
- * srediti nišanjenje
  */
 
 camera.position.set(-7, 1, 0)
@@ -51,16 +51,14 @@ function shoot() {
   addRigidBody(ball)
   const x = mapRange(cannon.rotation.y, -Math.PI * .5, Math.PI * .5, 20, 0)
   const z = mapRange(cannon.rotation.y, -Math.PI * .5, Math.PI * .5, -20, 20)
-  console.log(cannon.rotation.y) // in PI
-  console.log(x, z)
   ball.userData.body.setLinearVelocity(new AMMO.btVector3(x, 5, -z))
 }
 
 function move(cannon, dt) {
   if (keyboard.up) cannon.translateX(dt * .5)
   if (keyboard.down) cannon.translateX(-dt * .5)
-  if (keyboard.left) cannon.rotateY(dt * .2)
-  if (keyboard.right) cannon.rotateY(-dt * .2)
+  if (keyboard.left && cannon.rotation.y < Math.PI * .25) cannon.rotateY(dt * .2)
+  if (keyboard.right && cannon.rotation.y > -Math.PI * .25) cannon.rotateY(-dt * .2)
 }
 
 /* LOOP */
