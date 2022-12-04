@@ -1,3 +1,4 @@
+import * as THREE from 'three'
 import { AMMO, createBox, createBall, createWall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import keyboard from '/utils/classes/Keyboard.js'
@@ -48,12 +49,17 @@ function addRigidBody(mesh) {
 
 function shoot() {
   const pos = cannon.position.clone()
-  pos.y += 0.75
-  const ball = createBall({ radius: .1, mass: 1.2, pos })
-  addRigidBody(ball)
+  pos.y += 0.9
+
   const angle = cannon.rotation.y + Math.PI * .5
   const x = magnitude * Math.sin(angle)
   const z = magnitude * Math.cos(angle)
+
+  const ballDistance = .7
+  const b = new THREE.Vector3(ballDistance * Math.sin(angle), 0, ballDistance * Math.cos(angle))
+  pos.add(b)
+  const ball = createBall({ radius: .15, mass: 2, pos })
+  addRigidBody(ball)
   ball.userData.body.setLinearVelocity(new AMMO.btVector3(x, magnitude * .2, z))
   magnitude = minMagnitude
 }

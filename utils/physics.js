@@ -6,10 +6,6 @@ export const AMMO = await Ammo()
 
 const margin = 0.05
 
-function randomColor() {
-  return Math.floor(Math.random() * (1 << 24))
-}
-
 /* WORLD */
 
 export function createPhysicsWorld({ gravity = 9.82, softBody = false } = {}) {
@@ -78,7 +74,7 @@ export const createGround = ({ size = 100, color = 0xFFFFFF } = {}) =>
   createBox({ width: size, height: 1, depth: size, mass: 0, pos: new THREE.Vector3(0, -0.5, 0), color })
 
 export function createBrick(length, height, width, pos, halfBrick) {
-  const defaultMass = 0.5
+  const defaultMass = 2
   const depth = halfBrick ? length * .5 : length
   const mass = halfBrick ? defaultMass * .5 : defaultMass
   return createBox({ width, height, depth, mass, pos })
