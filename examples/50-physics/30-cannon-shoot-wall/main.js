@@ -10,8 +10,9 @@ const maxMagnitude = 30
 const magnitude = document.getElementById('magnitude')
 magnitude.value = minMagnitude
 
-camera.position.set(-7, 1, 0)
 createOrbitControls()
+camera.position.set(-3, 1.5, 0)
+camera.lookAt(10, 0, 0)
 
 const rigidBodies = []
 
@@ -34,6 +35,7 @@ const { mesh: cannon } = await loadModel({ file: 'weapon/cannon/mortar/mortar.ob
 cannon.translateX(-5)
 cannon.rotation.reorder('YZX') // 'YZX', 'ZXY', 'XZY', 'YXZ' and 'ZYX'.
 scene.add(cannon)
+cannon.add(camera)
 
 /* FUNCTIONS */
 
