@@ -7,8 +7,8 @@ import { loadModel } from '/utils/loaders.js'
 
 const minMagnitude = 15
 const maxMagnitude = 30
-const magnitudeInput = document.getElementById('magnitude')
-let magnitude = magnitudeInput.value = minMagnitude
+const magnitude = document.getElementById('magnitude')
+magnitude.value = minMagnitude
 
 camera.position.set(-7, 1, 0)
 createOrbitControls()
@@ -48,16 +48,16 @@ function shoot() {
   pos.y += 0.9
 
   const angle = cannon.rotation.y + Math.PI * .5
-  const x = magnitude * Math.sin(angle)
-  const z = magnitude * Math.cos(angle)
+  const x = magnitude.value * Math.sin(angle)
+  const z = magnitude.value * Math.cos(angle)
 
   const ballDistance = .7
   const b = new THREE.Vector3(ballDistance * Math.sin(angle), 0, ballDistance * Math.cos(angle))
   pos.add(b)
   const ball = createBall({ radius: .15, mass: 2, pos })
   addRigidBody(ball)
-  ball.userData.body.setLinearVelocity(new AMMO.btVector3(x, magnitude * .2, z))
-  magnitudeInput.value = magnitude = minMagnitude
+  ball.userData.body.setLinearVelocity(new AMMO.btVector3(x, magnitude.value * .2, z))
+  magnitude.value = minMagnitude
 }
 
 function handleInput(cannon, dt) {
@@ -65,8 +65,8 @@ function handleInput(cannon, dt) {
   if (keyboard.down) cannon.translateX(-dt * .5)
   if (keyboard.left) cannon.rotateY(dt * .25)
   if (keyboard.right) cannon.rotateY(-dt * .25)
-
-  if (keyboard.pressed.mouse && magnitude < maxMagnitude) magnitudeInput.value = magnitude += .2
+  if (keyboard.pressed.mouse && magnitude.value < maxMagnitude)
+    magnitude.value = parseFloat(magnitude.value) + .2
 }
 
 /* LOOP */
