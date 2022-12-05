@@ -5,13 +5,10 @@ import keyboard from '/utils/classes/Keyboard.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 
-/**
- * prikazati jačinu pucanja
- */
-
 const minMagnitude = 15
 const maxMagnitude = 30
-let magnitude = minMagnitude
+const magnitudeInput = document.getElementById('magnitude')
+let magnitude = magnitudeInput.value = minMagnitude
 
 camera.position.set(-7, 1, 0)
 createOrbitControls()
@@ -36,7 +33,6 @@ wall.forEach(mesh => {
 const { mesh: cannon } = await loadModel({ file: 'weapon/cannon/mortar/mortar.obj', mtl: 'weapon/cannon/mortar/mortar.mtl', size: 1, angle: Math.PI, shouldAdjustHeight: true })
 cannon.translateX(-5)
 cannon.rotation.reorder('YZX') // 'YZX', 'ZXY', 'XZY', 'YXZ' and 'ZYX'.
-
 scene.add(cannon)
 
 /* FUNCTIONS */
@@ -61,7 +57,7 @@ function shoot() {
   const ball = createBall({ radius: .15, mass: 2, pos })
   addRigidBody(ball)
   ball.userData.body.setLinearVelocity(new AMMO.btVector3(x, magnitude * .2, z))
-  magnitude = minMagnitude
+  magnitudeInput.value = magnitude = minMagnitude
 }
 
 function handleInput(cannon, dt) {
@@ -70,7 +66,7 @@ function handleInput(cannon, dt) {
   if (keyboard.left) cannon.rotateY(dt * .25)
   if (keyboard.right) cannon.rotateY(-dt * .25)
 
-  if (keyboard.pressed.mouse && magnitude < maxMagnitude) magnitude += .1
+  if (keyboard.pressed.mouse && magnitude < maxMagnitude) magnitudeInput.value = magnitude += .2
 }
 
 /* LOOP */
