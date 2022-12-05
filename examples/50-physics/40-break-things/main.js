@@ -9,13 +9,11 @@ import { AMMO, createPhysicsWorld, updateMesh, createRigidBody, createBall, crea
 
 const { Vector3 } = THREE
 
-camera.position.set(-14, 8, 16)
+camera.position.set(-7, 4, 20)
 createOrbitControls()
 
 const sun = createSun({ position: [5, 15, 15] })
 scene.add(sun)
-
-const margin = 0.05
 
 const convexBreaker = new ConvexObjectBreaker()
 const rigidBodies = []
@@ -69,7 +67,7 @@ function createPyramid() {
 function createDebrisFromBreakableObject(mesh) {
   mesh.castShadow = mesh.receiveShadow = true
   const shape = createConvexHullPhysicsShape(mesh.geometry.attributes.position.array)
-  shape.setMargin(margin)
+  shape.setMargin(0.05)
   const btVecUserData = new AMMO.btVector3(0, 0, 0)
   btVecUserData.threeObject = mesh // set pointer back to mesh
   const rigidMesh = createRigidBody({ mesh, shape, mass: mesh.userData.mass, pos: mesh.position, vel: mesh.userData.velocity, angVel: mesh.userData.angularVelocity })
@@ -193,8 +191,8 @@ window.addEventListener('pointerdown', e => {
   const mouse = normalizeMouse(e)
   raycaster.setFromCamera(mouse, camera)
   const pos = new Vector3().copy(raycaster.ray.direction).add(raycaster.ray.origin)
-  const mesh = createBall({ radius: 0.4, mass: 35, pos })
-  addRigidBody(mesh)
+  const ball = createBall({ radius: 0.4, mass: 35, pos })
+  addRigidBody(ball)
   pos.copy(raycaster.ray.direction).multiplyScalar(24)
-  mesh.userData.body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
+  ball.userData.body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
 })
