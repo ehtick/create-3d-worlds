@@ -11,7 +11,7 @@ npx live-server
 
 ### Physics
 - razaranje zamka topom
-  - dodati proceduralni zamak (možda može i model)
+  - napraviti proceduralni zamak ili bar 4 zida
 - Steampunk vozilo
   - dodati fiziku na steam tenk ili lokomotivu (vidi vozilo-physijs)
   - da gazi i gura prepreke
