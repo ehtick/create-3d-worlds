@@ -73,16 +73,15 @@ export function createBox({ width, height, depth, mass = 0, pos, quat, color = r
 export const createGround = ({ size = 100, color = 0xFFFFFF } = {}) =>
   createBox({ width: size, height: 1, depth: size, mass: 0, pos: new THREE.Vector3(0, -0.5, 0), color })
 
-export function createBrick(length, height, width, pos, halfBrick) {
-  const defaultMass = 2
-  const depth = halfBrick ? length * .5 : length
-  const mass = halfBrick ? defaultMass * .5 : defaultMass
+export function createBrick({ length, height, width, pos, isHalfBrick, brickMass = 2 }) {
+  const depth = isHalfBrick ? length * .5 : length
+  const mass = isHalfBrick ? brickMass * .5 : brickMass
   return createBox({ width, height, depth, mass, pos })
 }
 
 /* STRUCTURES */
 
-export function createWall({ brickLength = 1, rows = 8, columns = 6 } = {}) {
+export function createWall({ brickLength = 1, rows = 8, columns = 6, brickMass } = {}) {
   const bricks = []
   const brickHeight = brickLength * 0.5
   const z = -columns * brickLength * 0.5
@@ -97,7 +96,9 @@ export function createWall({ brickLength = 1, rows = 8, columns = 6 } = {}) {
 
     for (let i = 0; i < nRow; i ++) {
       const firstOrLast = oddRow && (i == 0 || i == nRow - 1)
-      const brick = createBrick(brickLength, brickHeight, 0.6, pos, firstOrLast)
+      const brick = createBrick({
+        length: brickLength, height: brickHeight, width: 0.6, pos, isHalfBrick: firstOrLast, brickMass
+      })
       bricks.push(brick)
 
       pos.z = oddRow && (i == 0 || i == nRow - 2)
