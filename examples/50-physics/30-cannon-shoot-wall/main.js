@@ -11,7 +11,7 @@ const magnitude = document.getElementById('magnitude')
 magnitude.value = minMagnitude
 
 createOrbitControls()
-camera.position.set(-.75, 1, 0)
+camera.position.set(-.95, 1, 0)
 camera.lookAt(10, 0, 0)
 
 const rigidBodies = []
@@ -60,7 +60,7 @@ function shoot() {
   addRigidBody(ball)
   ball.userData.body.setLinearVelocity(new AMMO.btVector3(x, magnitude.value * .2, z))
   magnitude.value = minMagnitude
-  cannon.translateX(-.3)
+  cannon.translateX(-.1)
 }
 
 function handleInput(cannon, dt) {
