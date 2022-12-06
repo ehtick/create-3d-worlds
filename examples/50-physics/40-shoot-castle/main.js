@@ -11,7 +11,7 @@ const maxMagnitude = 30
 magnitude.value = minMagnitude
 
 createOrbitControls()
-camera.position.set(0, 50, 250)
+camera.position.set(0, 50, 500)
 camera.lookAt(0, 50, 0)
 
 const rigidBodies = []
@@ -21,11 +21,10 @@ scene.add(sun)
 
 const physicsWorld = createPhysicsWorld()
 
-const ground = createBox({ width: 500, depth: 500, height: 1, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
+const ground = createBox({ width: 1500, depth: 1500, height: 1, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
 addRigidBody(ground)
 
-const castle = buildCastle()
-castle.forEach(block => scene.add(block))
+buildCastle()
 
 /* FUNCTIONS */
 
@@ -48,13 +47,8 @@ export function buildCastle({ rows = 10, brickInWall = 30, rowSize = 10 } = {}) 
   const isEven = y => Math.floor(y / brickSize) % 2 == 0
 
   function addBlock(x, y, z) {
-    // createBox({ width: 500, depth: 500, height: 1, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
-    const block = new THREE.Mesh(
-      new THREE.BoxGeometry(rowSize, rowSize, rowSize),
-      new THREE.MeshNormalMaterial()
-    )
-    block.position.set(x, y, z)
-    blocks.push(block)
+    const box = createBox({ width: rowSize, depth: rowSize, height: rowSize, mass: 2, pos: { x, y, z } })
+    addRigidBody(box)
   }
 
   function addFourBlocks(x, y) {
