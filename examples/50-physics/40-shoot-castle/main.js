@@ -4,7 +4,7 @@ import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/Buf
 import { AMMO, createBox, createBall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
-import { normalizeMouse, centerMesh, adjustHeight } from '/utils/helpers.js'
+import { normalizeMouse } from '/utils/helpers.js'
 import keyboard from '/utils/classes/Keyboard.js'
 
 const magnitude = document.getElementById('magnitude')
@@ -48,16 +48,11 @@ function addRigidBody(mesh) {
   physicsWorld.addRigidBody(mesh.userData.body)
 }
 
-export function buildCastle({ rows = 10, brickInWall = 30, rowSize = 10, towerRadius = 20 } = {}) {
+export function buildCastle({ rows = 10, brickInWall = 30, rowSize = 10 } = {}) {
   const spacing = 0.2
   const brickSize = rowSize + spacing
   const wallWidth = brickSize * brickInWall
-  const towerCoords = [
-    [0, 0],
-    [0, wallWidth],
-    [wallWidth, 0],
-    [wallWidth, wallWidth]
-  ]
+
   const geometries = []
 
   const notPlaceForGate = (x, y) =>
@@ -96,16 +91,8 @@ export function buildCastle({ rows = 10, brickInWall = 30, rowSize = 10, towerRa
 
   buildWalls(0)
 
-  towerCoords.forEach(([x, z]) => {
-    const geometry = buildTower({ x, z, radius: towerRadius })
-    geometries.push(geometry)
-  })
-
   const merged = BufferGeometryUtils.mergeBufferGeometries(geometries)
-  merged.rotateY(-Math.PI / 2)
   const castle = new THREE.Mesh(merged, new THREE.MeshNormalMaterial())
-  centerMesh(castle)
-  adjustHeight(castle)
   return castle
 }
 
