@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { AMMO, createBox, createBall, createWall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
-import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
+import { scene, camera, renderer, clock } from '/utils/scene.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
@@ -10,9 +10,8 @@ const maxMagnitude = 30
 const magnitude = document.getElementById('magnitude')
 magnitude.value = minMagnitude
 
-createOrbitControls()
-camera.position.set(-.95, 1, 0)
-camera.lookAt(10, 0, 0)
+camera.position.set(-2, 1.25, 0)
+camera.lookAt(10, 1, 0)
 
 const rigidBodies = []
 
@@ -21,7 +20,7 @@ scene.add(sun)
 
 const physicsWorld = createPhysicsWorld()
 
-const ground = createBox({ width: 40, height: 1, depth: 40, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
+const ground = createBox({ width: 40, height: 1, depth: 40, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0x509f53 })
 addRigidBody(ground)
 
 const wall = createWall({ brickMass: 3, friction: 5 })
@@ -56,7 +55,7 @@ function shoot() {
   const ballDistance = .7
   const b = new THREE.Vector3(ballDistance * Math.sin(angle), 0, ballDistance * Math.cos(angle))
   pos.add(b)
-  const ball = createBall({ radius: .2, mass: 4, pos })
+  const ball = createBall({ radius: .22, mass: 4, pos })
   addRigidBody(ball)
   ball.userData.body.setLinearVelocity(new AMMO.btVector3(x, magnitude.value * .2, z))
   magnitude.value = minMagnitude
