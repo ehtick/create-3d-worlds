@@ -67,7 +67,7 @@ function handleInput(cannon, dt) {
   if (keyboard.down) cannon.translateX(-dt * .5)
   if (keyboard.left) cannon.rotateY(dt * .25)
   if (keyboard.right) cannon.rotateY(-dt * .25)
-  if (keyboard.pressed.mouse && magnitude.value < maxMagnitude)
+  if (keyboard.space && magnitude.value < maxMagnitude)
     magnitude.value = parseFloat(magnitude.value) + .2
 }
 
@@ -84,4 +84,6 @@ void function loop() {
 
 /* EVENTS */
 
-document.addEventListener('mouseup', shoot)
+document.addEventListener('keyup', e => {
+  if (e.code == 'Space') shoot()
+})
