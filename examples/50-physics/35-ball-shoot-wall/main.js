@@ -24,10 +24,10 @@ const physicsWorld = createPhysicsWorld()
 const ground = createBox({ width: 40, height: 1, depth: 40, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
 addRigidBody(ground)
 
-const frontWall = createWall({ brickMass: 5, friction: 5, startX: -3.2 })
-const backWall = createWall({ brickMass: 5, friction: 5, startX: 2.2 })
-const leftWall = createSideWall({ brickMass: 5, friction: 5, startZ: -3.8 })
-const rightWall = createSideWall({ brickMass: 5, friction: 5, startZ: 2.8 })
+const frontWall = createWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, startX: -3.2 })
+const backWall = createWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, startX: 2.2 })
+const leftWall = createSideWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, startZ: -3.8 })
+const rightWall = createSideWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, startZ: 2.8 })
 
 ;[...frontWall, ...backWall, ...leftWall, ...rightWall].forEach(mesh => {
   scene.add(mesh)
