@@ -73,18 +73,12 @@ export function createBox({ width, height, depth, mass = 0, pos, quat, color = r
 export const createGround = ({ size = 100, color = 0xFFFFFF } = {}) =>
   createBox({ width: size, height: 1, depth: size, mass: 0, pos: new THREE.Vector3(0, -0.5, 0), color })
 
-export function createBrick({ length, height, width, pos, firstOrLast, brickMass = 2, friction }) {
-  const depth = firstOrLast ? length * .5 : length
-  const mass = firstOrLast ? brickMass * .5 : brickMass
-  return createBox({ width, height, depth, mass, pos, friction })
-}
-
 /* STRUCTURES */
 
-export function createWall({ brickLength = 1, rows = 8, columns = 6, brickMass, friction } = {}) {
+export function createWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns = 6, brickMass = 2, friction } = {}) {
   const bricks = []
-  const brickHeight = brickLength * 0.5
-  const z = -columns * brickLength * 0.5
+  const brickHeight = brickDepth * 0.5
+  const z = -columns * brickDepth * 0.5
   const pos = new THREE.Vector3()
   pos.set(0, brickHeight * 0.5, z)
 
@@ -92,28 +86,19 @@ export function createWall({ brickLength = 1, rows = 8, columns = 6, brickMass, 
     const oddRow = (j % 2) == 1
     const nRow = oddRow ? columns + 1 : columns
 
-    pos.z = oddRow ? z - brickLength * .25 : z
+    pos.z = oddRow ? z - brickDepth * .25 : z
 
     for (let i = 0; i < nRow; i ++) {
       const firstOrLast = oddRow && (i == 0 || i == nRow - 1)
+      const depth = firstOrLast ? brickDepth * .5 : brickDepth
+      const mass = firstOrLast ? brickMass * .5 : brickMass
+      const brick = createBox({ width: brickWidth, height: brickHeight, depth, mass, pos, friction })
 
-      const brick = createBrick({
-        length: brickLength,
-        height: brickHeight,
-        width: 0.6,
-        pos,
-        firstOrLast,
-        brickMass,
-        friction
-      })
-      // const depth = firstOrLast ? length * .5 : length
-      // const mass = firstOrLast ? brickMass * .5 : brickMass
-      // const brick = createBox({ width:0.6, height:brickHeight, depth, mass, pos, friction })
       bricks.push(brick)
 
       pos.z = oddRow && (i == 0 || i == nRow - 2)
-        ? pos.z + brickLength * .75
-        : pos.z + brickLength
+        ? pos.z + brickDepth * .75
+        : pos.z + brickDepth
     }
 
     pos.y += brickHeight

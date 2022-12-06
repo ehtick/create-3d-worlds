@@ -24,7 +24,7 @@ const physicsWorld = createPhysicsWorld()
 const ground = createBox({ width: 40, height: 1, depth: 40, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
 addRigidBody(ground)
 
-const wall = createWall()
+const wall = createWall({ brickMass: 3, friction: 5 })
 wall.forEach(mesh => {
   scene.add(mesh)
   rigidBodies.push(mesh)
@@ -56,7 +56,7 @@ function shoot() {
   const ballDistance = .7
   const b = new THREE.Vector3(ballDistance * Math.sin(angle), 0, ballDistance * Math.cos(angle))
   pos.add(b)
-  const ball = createBall({ radius: .15, mass: 2, pos })
+  const ball = createBall({ radius: .2, mass: 4, pos })
   addRigidBody(ball)
   ball.userData.body.setLinearVelocity(new AMMO.btVector3(x, magnitude.value * .2, z))
   magnitude.value = minMagnitude

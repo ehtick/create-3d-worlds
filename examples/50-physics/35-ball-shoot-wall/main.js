@@ -60,7 +60,7 @@ window.addEventListener('pointerup', e => {
   const mouse = normalizeMouse(e)
   raycaster.setFromCamera(mouse, camera)
   const pos = new THREE.Vector3().copy(raycaster.ray.direction).add(raycaster.ray.origin)
-  const ball = createBall({ radius: 0.4, mass: 5, pos })
+  const ball = createBall({ radius: .4, mass: 5, pos })
   addRigidBody(ball)
   pos.copy(raycaster.ray.direction).multiplyScalar(magnitude.value)
   ball.userData.body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
