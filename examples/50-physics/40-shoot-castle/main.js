@@ -1,6 +1,4 @@
 import * as THREE from 'three'
-import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
-
 import { AMMO, createBox, createBall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
@@ -27,20 +25,9 @@ const ground = createBox({ width: 500, depth: 500, height: 1, mass: 0, pos: { x:
 addRigidBody(ground)
 
 const castle = buildCastle()
-scene.add(castle)
+castle.forEach(block => scene.add(block))
 
 /* FUNCTIONS */
-
-function buildTower({ x = 0, z = 0, radius = 15, height = 200 } = {}) {
-  const towerGeometry = new THREE.CylinderGeometry(radius, radius, height * .75, 15)
-  towerGeometry.translate(x, 70, z)
-
-  const coneGeometry = new THREE.CylinderGeometry(0, radius * 1.2, height * .25, 15)
-  coneGeometry.translate(x, 170, z)
-
-  const merged = BufferGeometryUtils.mergeBufferGeometries([towerGeometry, coneGeometry])
-  return merged
-}
 
 function addRigidBody(mesh) {
   scene.add(mesh)
@@ -53,7 +40,7 @@ export function buildCastle({ rows = 10, brickInWall = 30, rowSize = 10 } = {}) 
   const brickSize = rowSize + spacing
   const wallWidth = brickSize * brickInWall
 
-  const geometries = []
+  const blocks = []
 
   const notPlaceForGate = (x, y) =>
     (x < wallWidth * 3 / 8 || x > wallWidth * 5 / 8) || y > rows * brickSize / 2  // not in center and not to hight
@@ -62,9 +49,12 @@ export function buildCastle({ rows = 10, brickInWall = 30, rowSize = 10 } = {}) 
 
   function addBlock(x, y, z) {
     // createBox({ width: 500, depth: 500, height: 1, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
-    const geometry = new THREE.BoxGeometry(rowSize, rowSize, rowSize)
-    geometry.translate(x, y, z)
-    geometries.push(geometry)
+    const block = new THREE.Mesh(
+      new THREE.BoxGeometry(rowSize, rowSize, rowSize),
+      new THREE.MeshNormalMaterial()
+    )
+    block.position.set(x, y, z)
+    blocks.push(block)
   }
 
   function addFourBlocks(x, y) {
@@ -91,9 +81,7 @@ export function buildCastle({ rows = 10, brickInWall = 30, rowSize = 10 } = {}) 
 
   buildWalls(0)
 
-  const merged = BufferGeometryUtils.mergeBufferGeometries(geometries)
-  const castle = new THREE.Mesh(merged, new THREE.MeshNormalMaterial())
-  return castle
+  return blocks
 }
 
 /* LOOP */
