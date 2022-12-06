@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 
-import { AMMO, createBox as createRigidBox, createBall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
+import { AMMO, createBox, createBall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { normalizeMouse, centerMesh, adjustHeight } from '/utils/helpers.js'
@@ -23,7 +23,7 @@ scene.add(sun)
 
 const physicsWorld = createPhysicsWorld()
 
-const ground = createRigidBox({ width: 500, depth: 500, height: 1, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
+const ground = createBox({ width: 500, depth: 500, height: 1, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
 addRigidBody(ground)
 
 const castle = buildCastle()
@@ -32,10 +32,10 @@ scene.add(castle)
 /* FUNCTIONS */
 
 function buildTower({ x = 0, z = 0, radius = 15, height = 200 } = {}) {
-  const towerGeometry = new THREE.CylinderBufferGeometry(radius, radius, height * .75, 15)
+  const towerGeometry = new THREE.CylinderGeometry(radius, radius, height * .75, 15)
   towerGeometry.translate(x, 70, z)
 
-  const coneGeometry = new THREE.CylinderBufferGeometry(0, radius * 1.2, height * .25, 15)
+  const coneGeometry = new THREE.CylinderGeometry(0, radius * 1.2, height * .25, 15)
   coneGeometry.translate(x, 170, z)
 
   const merged = BufferGeometryUtils.mergeBufferGeometries([towerGeometry, coneGeometry])
@@ -66,7 +66,8 @@ export function buildCastle({ rows = 10, brickInWall = 30, rowSize = 10, towerRa
   const isEven = y => Math.floor(y / brickSize) % 2 == 0
 
   function addBlock(x, y, z) {
-    const geometry = new THREE.BoxBufferGeometry(rowSize, rowSize, rowSize)
+    // createBox({ width: 500, depth: 500, height: 1, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
+    const geometry = new THREE.BoxGeometry(rowSize, rowSize, rowSize)
     geometry.translate(x, y, z)
     geometries.push(geometry)
   }

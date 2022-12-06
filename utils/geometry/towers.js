@@ -63,10 +63,10 @@ export function createSpiralStairs({ floors = 5, radius = 30, stairsInCirle = 30
 // CASTLE
 
 function buildTower({ x = 0, z = 0, radius = 15, height = 200 } = {}) {
-  const towerGeometry = new THREE.CylinderBufferGeometry(radius, radius, height * .75, 15)
+  const towerGeometry = new THREE.CylinderGeometry(radius, radius, height * .75, 15)
   towerGeometry.translate(x, 70, z)
 
-  const coneGeometry = new THREE.CylinderBufferGeometry(0, radius * 1.2, height * .25, 15)
+  const coneGeometry = new THREE.CylinderGeometry(0, radius * 1.2, height * .25, 15)
   coneGeometry.translate(x, 170, z)
 
   const merged = BufferGeometryUtils.mergeBufferGeometries([towerGeometry, coneGeometry])
@@ -91,7 +91,7 @@ export function buildCastle({ rows = 10, brickInWall = 30, rowSize = 10, towerRa
   const isEven = y => Math.floor(y / brickSize) % 2 == 0
 
   function addBlock(x, y, z) {
-    const geometry = new THREE.BoxBufferGeometry(rowSize, rowSize, rowSize)
+    const geometry = new THREE.BoxGeometry(rowSize, rowSize, rowSize)
     geometry.translate(x, y, z)
     geometries.push(geometry)
   }
