@@ -11,17 +11,17 @@ const maxMagnitude = 30
 magnitude.value = minMagnitude
 
 createOrbitControls()
-camera.position.set(0, 50, 500)
+camera.position.set(0, 50, 300)
 camera.lookAt(0, 50, 0)
 
 const rigidBodies = []
 
-const sun = createSun({ position: [-5, 10, 5] })
+const sun = createSun({ position: [-50, 150, 50] })
 scene.add(sun)
 
 const physicsWorld = createPhysicsWorld()
 
-const ground = createBox({ width: 1500, depth: 1500, height: 1, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
+const ground = createBox({ width: 1500, depth: 1500, height: 1, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0x509f53 })
 addRigidBody(ground)
 
 buildCastle()
@@ -34,15 +34,10 @@ function addRigidBody(mesh) {
   physicsWorld.addRigidBody(mesh.userData.body)
 }
 
-export function buildCastle({ rows = 10, brickInWall = 30, rowSize = 10 } = {}) {
+export function buildCastle({ rows = 8, brickInWall = 20, rowSize = 8 } = {}) {
   const spacing = 0.2
   const brickSize = rowSize + spacing
   const wallWidth = brickSize * brickInWall
-
-  const blocks = []
-
-  const notPlaceForGate = (x, y) =>
-    (x < wallWidth * 3 / 8 || x > wallWidth * 5 / 8) || y > rows * brickSize / 2  // not in center and not to hight
 
   const isEven = y => Math.floor(y / brickSize) % 2 == 0
 
@@ -55,7 +50,7 @@ export function buildCastle({ rows = 10, brickInWall = 30, rowSize = 10 } = {}) 
     addBlock(x, y, 0)
     addBlock(x, y, wallWidth)
     addBlock(0, y, x)
-    if (notPlaceForGate(x, y)) addBlock(wallWidth, y, x)
+    addBlock(wallWidth, y, x)
   }
 
   function buildRow(y, x) {
@@ -74,8 +69,6 @@ export function buildCastle({ rows = 10, brickInWall = 30, rowSize = 10 } = {}) 
   }
 
   buildWalls(0)
-
-  return blocks
 }
 
 /* LOOP */
@@ -99,7 +92,7 @@ window.addEventListener('pointerup', e => {
   const mouse = normalizeMouse(e)
   raycaster.setFromCamera(mouse, camera)
   const pos = new THREE.Vector3().copy(raycaster.ray.direction).add(raycaster.ray.origin)
-  const ball = createBall({ radius: 4, mass: 5, pos })
+  const ball = createBall({ radius: 3, mass: 5, pos })
   addRigidBody(ball)
   pos.copy(raycaster.ray.direction).multiplyScalar(100) // magnitude.value
   ball.userData.body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
