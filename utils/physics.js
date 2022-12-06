@@ -75,12 +75,12 @@ export const createGround = ({ size = 100, color = 0xFFFFFF } = {}) =>
 
 /* STRUCTURES */
 
-export function createWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns = 6, brickMass = 2, friction } = {}) {
+export function createWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns = 6, brickMass = 2, friction, startX = 0 } = {}) {
   const bricks = []
   const brickHeight = brickDepth * 0.5
   const z = -columns * brickDepth * 0.5
   const pos = new THREE.Vector3()
-  pos.set(0, brickHeight * 0.5, z)
+  pos.set(startX, brickHeight * 0.5, z)
 
   for (let j = 0; j < rows; j ++) {
     const oddRow = (j % 2) == 1
@@ -99,6 +99,37 @@ export function createWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns
       pos.z = oddRow && (i == 0 || i == nRow - 2)
         ? pos.z + brickDepth * .75
         : pos.z + brickDepth
+    }
+
+    pos.y += brickHeight
+  }
+  return bricks
+}
+
+export function createSideWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns = 6, brickMass = 2, friction, startZ = 0 } = {}) {
+  const bricks = []
+  const brickHeight = brickDepth * 0.5
+  const x = -columns * brickDepth * 0.5
+  const pos = new THREE.Vector3()
+  pos.set(x, brickHeight * 0.5, startZ)
+
+  for (let j = 0; j < rows; j ++) {
+    const oddRow = (j % 2) == 1
+    const nRow = oddRow ? columns + 1 : columns
+
+    pos.x = oddRow ? x - brickDepth * .25 : x
+
+    for (let i = 0; i < nRow; i ++) {
+      const firstOrLast = oddRow && (i == 0 || i == nRow - 1)
+      const depth = firstOrLast ? brickDepth * .5 : brickDepth
+      const mass = firstOrLast ? brickMass * .5 : brickMass
+      const brick = createBox({ width: depth, height: brickHeight, depth: brickWidth, mass, pos, friction })
+
+      bricks.push(brick)
+
+      pos.x = oddRow && (i == 0 || i == nRow - 2)
+        ? pos.x + brickDepth * .75
+        : pos.x + brickDepth
     }
 
     pos.y += brickHeight

@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { AMMO, createBox, createBall, createWall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
+import { AMMO, createBox, createBall, createWall, createSideWall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
@@ -11,7 +11,7 @@ const maxMagnitude = 30
 magnitude.value = minMagnitude
 
 createOrbitControls()
-camera.position.set(-7, 1.5, 0)
+camera.position.set(-10, 1.5, 0)
 camera.lookAt(10, 0, 0)
 
 const rigidBodies = []
@@ -24,8 +24,13 @@ const physicsWorld = createPhysicsWorld()
 const ground = createBox({ width: 40, height: 1, depth: 40, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
 addRigidBody(ground)
 
-const wall = createWall({ brickMass: 5, friction: 5 })
-wall.forEach(mesh => {
+const wallDistance = 3.6
+const frontWall = createWall({ brickMass: 5, friction: 5, startX: -wallDistance })
+const backWall = createWall({ brickMass: 5, friction: 5, startX: wallDistance })
+const leftWall = createSideWall({ brickMass: 5, friction: 5, startZ: -wallDistance })
+const rightWall = createSideWall({ brickMass: 5, friction: 5, startZ: wallDistance })
+
+;[...frontWall, ...backWall, ...leftWall, ...rightWall].forEach(mesh => {
   scene.add(mesh)
   rigidBodies.push(mesh)
   physicsWorld.addRigidBody(mesh.userData.body)
