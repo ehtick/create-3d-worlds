@@ -8,9 +8,9 @@ export class Car {
       const { mesh: tireMesh } = await loadModel({ file: `racing/${tireFile}.obj`, mtl: `racing/${tireFile}.mtl`, scale })
       const { vehicle, body } = makeVehicle(physicsWorld)
 
+      mesh.userData.body = body
       this.mesh = mesh
       this.vehicle = vehicle
-      this.body = body
       this.tires = [...Array(4)].map(() => tireMesh.clone())
 
       return this

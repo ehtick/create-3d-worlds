@@ -8,12 +8,13 @@ const margin = 0.05
 /* WORLD */
 
 export function createPhysicsWorld({ gravity = 9.82, softBody = false } = {}) {
-  const collisionConfiguration = new Ammo.btSoftBodyRigidBodyCollisionConfiguration()
+  const collisionConfiguration = new Ammo.btDefaultCollisionConfiguration()
   const dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration)
   const broadphase = new Ammo.btDbvtBroadphase()
   const solver = new Ammo.btSequentialImpulseConstraintSolver()
   const softBodySolver = softBody && new Ammo.btDefaultSoftBodySolver()
-  const physicsWorld = new Ammo.btSoftRigidDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration, softBodySolver)
+
+  const physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration, softBodySolver)
   physicsWorld.setGravity(new Ammo.btVector3(0, -gravity, 0))
   return physicsWorld
 }

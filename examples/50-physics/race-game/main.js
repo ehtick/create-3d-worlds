@@ -7,6 +7,7 @@ import { createSun, hemLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { leaveDecals, fadeDecals } from './decals.js'
 import { Car } from './Car.js'
+import { createPhysicsWorld, updateMesh } from '/utils/physics.js'
 
 hemLight({ groundColor: 0xf0d7bb })
 scene.add(createSun({ position: [10, 195, 0] }))
@@ -42,19 +43,6 @@ cars.forEach(car => scene.add(car.mesh, ...car.tires))
 scene.add(worldModel)
 
 /* FUNCTION */
-
-function createPhysicsWorld(gravity = 40) {
-  const collisionConfiguration = new Ammo.btDefaultCollisionConfiguration()
-  const dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration)
-  const worldMin = new Ammo.btVector3(-1000, -1000, -1000)
-  const worldMax = new Ammo.btVector3(1000, 1000, 1000)
-  const overlappingPairCache = new Ammo.btAxisSweep3(worldMin, worldMax)
-  const solver = new Ammo.btSequentialImpulseConstraintSolver()
-
-  const physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration)
-  physicsWorld.setGravity(new Ammo.btVector3(0, -gravity, 0))
-  return physicsWorld
-}
 
 function addWorldBody(model, scale) {
   const triangleMesh = new Ammo.btTriangleMesh()
@@ -136,8 +124,9 @@ function chaseCam(body, camHeight = 4, distance = 8) {
 /* LOOP */
 
 function handleInput(car) {
-  const { vehicle, body, tires } = car
+  const { vehicle, mesh, tires } = car
   const kmh = vehicle.getCurrentSpeedKmHour()
+  const { body } = mesh.userData
 
   const steering = keyboard.left || keyboard.right
   const accelerating = keyboard.up || keyboard.down
@@ -212,14 +201,9 @@ function updateTires(tires, vehicle) {
 }
 
 function updateCars() {
-  const transform = new Ammo.btTransform()
-  cars.forEach(({ body, mesh, tires, vehicle }) => {
-    findGround(body)
-    body.getMotionState().getWorldTransform(transform)
-    const pos = transform.getOrigin()
-    const quat = transform.getRotation()
-    mesh.position.set(pos.x(), pos.y(), pos.z())
-    mesh.quaternion.set(quat.x(), quat.y(), quat.z(), quat.w())
+  cars.forEach(({ mesh, tires, vehicle }) => {
+    findGround(mesh.userData.body)
+    updateMesh(mesh)
     updateTires(tires, vehicle)
   })
 }
@@ -230,6 +214,6 @@ void function animate() {
   physicsWorld.stepSimulation(1 / 60)
   updateCars()
   fadeDecals(scene)
-  chaseCam(cars[0].body)
+  chaseCam(cars[0].mesh.userData.body)
   renderer.render(scene, camera)
 }()

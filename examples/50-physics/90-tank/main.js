@@ -30,10 +30,10 @@ let gVehicleSteering = 0
 
 const { mesh: worldMesh } = await loadModel({ file: 'racing/courser14a.obj', mtl: 'racing/courser14a.mtl', receiveShadow: true, castShadow: false, scale: worldScale })
 
-// const worldModel = worldMesh.children[0]
-// worldModel.position.set(0, -38, 0)
-// addWorldBody(worldModel, worldScale)
-// scene.add(worldModel)
+const worldModel = worldMesh.children[0]
+worldModel.position.set(0, -38, 0)
+addWorldBody(worldModel, worldScale)
+scene.add(worldModel)
 
 const ground = createBox({ pos: new THREE.Vector3(0, -0.5, 0), width: 100, height: 1, depth: 100, friction: 2, color: 0x999999 })
 // addRigidBody(ground)
