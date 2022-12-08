@@ -200,6 +200,24 @@ export function createTerrainBodyFromData({ data, width, depth, mapWidth, mapDep
   return body
 }
 
+export function chaseCam({ body, camHeight = 4, distance = 8, camera } = {}) {
+  const row = n => body.getWorldTransform().getBasis().getRow(n)
+  const dist = new Ammo.btVector3(0, camHeight, -distance)
+  const camPointer = new Ammo.btVector3(
+    row(0).x() * dist.x() + row(0).y() * dist.y() + row(0).z() * dist.z(),
+    row(1).x() * dist.x() + row(1).y() * dist.y() + row(1).z() * dist.z(),
+    row(2).x() * dist.x() + row(2).y() * dist.y() + row(2).z() * dist.z()
+  )
+
+  const target = body.getWorldTransform().getOrigin()
+  camera.position.set(
+    camPointer.x() + target.x(),
+    camPointer.y() + target.y(),
+    camPointer.z() + target.z()
+  )
+  camera.lookAt(new THREE.Vector3(target.x(), target.y(), target.z()))
+}
+
 /* UPDATE */
 
 export function updateMesh(mesh) {

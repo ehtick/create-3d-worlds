@@ -1,13 +1,11 @@
 /* global Ammo */
-import * as THREE from 'three'
-
 import keyboard from '/utils/classes/Keyboard.js'
-import { scene, camera, renderer } from '/utils/scene.js'
+import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSun, hemLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { leaveDecals, fadeDecals } from './decals.js'
 import { Car } from './Car.js'
-import { createPhysicsWorld, updateMesh } from '/utils/physics.js'
+import { createPhysicsWorld, updateMesh, chaseCam } from '/utils/physics.js'
 
 hemLight({ groundColor: 0xf0d7bb })
 scene.add(createSun({ position: [10, 195, 0] }))
@@ -103,24 +101,6 @@ function findGround(body) {
   }
 }
 
-function chaseCam(body, camHeight = 4, distance = 8) {
-  const row = n => body.getWorldTransform().getBasis().getRow(n)
-  const dist = new Ammo.btVector3(0, camHeight, -distance)
-  const camPointer = new Ammo.btVector3(
-    row(0).x() * dist.x() + row(0).y() * dist.y() + row(0).z() * dist.z(),
-    row(1).x() * dist.x() + row(1).y() * dist.y() + row(1).z() * dist.z(),
-    row(2).x() * dist.x() + row(2).y() * dist.y() + row(2).z() * dist.z()
-  )
-
-  const target = body.getWorldTransform().getOrigin()
-  camera.position.set(
-    camPointer.x() + target.x(),
-    camPointer.y() + target.y(),
-    camPointer.z() + target.z()
-  )
-  camera.lookAt(new THREE.Vector3(target.x(), target.y(), target.z()))
-}
-
 /* LOOP */
 
 function handleInput(car) {
@@ -211,9 +191,10 @@ function updateCars() {
 void function animate() {
   requestAnimationFrame(animate)
   handleInput(cars[0])
-  physicsWorld.stepSimulation(1 / 60)
+  const dt = clock.getDelta()
+  physicsWorld.stepSimulation(dt, 10) // physicsWorld.stepSimulation(1 / 60)
   updateCars()
   fadeDecals(scene)
-  chaseCam(cars[0].mesh.userData.body)
+  chaseCam({ camera, body: cars[0].mesh.userData.body })
   renderer.render(scene, camera)
 }()
