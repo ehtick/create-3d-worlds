@@ -75,6 +75,19 @@ export const createGround = ({ size = 100, color = 0xFFFFFF } = {}) =>
 
 /* STRUCTURES */
 
+export function createCrates(size = .75, nw = 8, nh = 6) {
+  const crates = []
+  for (let j = 0; j < nw; j++)
+    for (let i = 0; i < nh; i++) {
+      const crate = createBox({
+        pos: new THREE.Vector3(size * j - (size * (nw - 1)) / 2, size * i, 10),
+        width: size, height: size, depth: size, mass: 10, color: 0xfca400, friction: 1
+      })
+      crates.push(crate)
+    }
+  return crates
+}
+
 export function createWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns = 6, brickMass = 2, friction, startX = 0 } = {}) {
   const bricks = []
   const brickHeight = brickDepth * 0.5
