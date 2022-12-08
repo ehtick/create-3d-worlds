@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { AMMO } from '/utils/physics.js'
+import { Ammo } from '/utils/physics.js'
 
 import keyboard from '/utils/classes/Keyboard.js'
 
@@ -59,29 +59,29 @@ export function createVehicle(pos, physicsWorld) {
   const rollInfluence = 0.2
 
   // Chassis
-  const shape = new AMMO.btBoxShape(new AMMO.btVector3(chassisWidth * .5, chassisHeight * .5, chassisLength * .5))
-  const transform = new AMMO.btTransform()
+  const shape = new Ammo.btBoxShape(new Ammo.btVector3(chassisWidth * .5, chassisHeight * .5, chassisLength * .5))
+  const transform = new Ammo.btTransform()
   transform.setIdentity()
-  transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
-  const motionState = new AMMO.btDefaultMotionState(transform)
-  const inertia = new AMMO.btVector3(0, 0, 0)
+  transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z))
+  const motionState = new Ammo.btDefaultMotionState(transform)
+  const inertia = new Ammo.btVector3(0, 0, 0)
   shape.calculateLocalInertia(massVehicle, inertia)
-  const body = new AMMO.btRigidBody(new AMMO.btRigidBodyConstructionInfo(massVehicle, motionState, shape, inertia))
+  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(massVehicle, motionState, shape, inertia))
   body.setActivationState(4)
   physicsWorld.addRigidBody(body)
   const chassis = createChassis(chassisWidth, chassisHeight, chassisLength)
 
   // Raycast Vehicle
-  const tuning = new AMMO.btVehicleTuning()
-  const rayCaster = new AMMO.btDefaultVehicleRaycaster(physicsWorld)
-  const vehicle = new AMMO.btRaycastVehicle(tuning, body, rayCaster)
+  const tuning = new Ammo.btVehicleTuning()
+  const rayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
+  const vehicle = new Ammo.btRaycastVehicle(tuning, body, rayCaster)
   vehicle.setCoordinateSystem(0, 1, 2)
   physicsWorld.addAction(vehicle)
 
   // Wheels
   const wheels = []
-  const wheelDirection = new AMMO.btVector3(0, -1, 0)
-  const wheelAxle = new AMMO.btVector3(-1, 0, 0)
+  const wheelDirection = new Ammo.btVector3(0, -1, 0)
+  const wheelAxle = new Ammo.btVector3(-1, 0, 0)
 
   function addWheel(isFront, pos, radius, width, index) {
     const wheelInfo = vehicle.addWheel(
@@ -101,10 +101,10 @@ export function createVehicle(pos, physicsWorld) {
     wheels[index] = createWheel(radius, width)
   }
 
-  addWheel(true, new AMMO.btVector3(wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisFrontPosition), wheelRadiusFront, wheelWidthFront, FRONT_LEFT)
-  addWheel(true, new AMMO.btVector3(-wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisFrontPosition), wheelRadiusFront, wheelWidthFront, FRONT_RIGHT)
-  addWheel(false, new AMMO.btVector3(-wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_LEFT)
-  addWheel(false, new AMMO.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_RIGHT)
+  addWheel(true, new Ammo.btVector3(wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisFrontPosition), wheelRadiusFront, wheelWidthFront, FRONT_LEFT)
+  addWheel(true, new Ammo.btVector3(-wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisFrontPosition), wheelRadiusFront, wheelWidthFront, FRONT_RIGHT)
+  addWheel(false, new Ammo.btVector3(-wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_LEFT)
+  addWheel(false, new Ammo.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_RIGHT)
 
   return { vehicle, wheels, chassis }
 }

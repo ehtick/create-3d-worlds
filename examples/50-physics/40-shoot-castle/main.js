@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { AMMO, createBox, createBall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
+import { Ammo, createBox, createBall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
@@ -95,6 +95,6 @@ window.addEventListener('pointerup', e => {
   const ball = createBall({ radius: 3, mass: 5, pos })
   addRigidBody(ball)
   pos.copy(raycaster.ray.direction).multiplyScalar(100) // magnitude.value
-  ball.userData.body.setLinearVelocity(new AMMO.btVector3(pos.x, pos.y, pos.z))
+  ball.userData.body.setLinearVelocity(new Ammo.btVector3(pos.x, pos.y, pos.z))
   magnitude.value = minMagnitude
 })

@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { AMMO, createBox, createBall, createWall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
+import { Ammo, createBox, createBall, createWall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { createSun } from '/utils/light.js'
@@ -57,7 +57,7 @@ function shoot() {
   pos.add(b)
   const ball = createBall({ radius: .22, mass: 4, pos })
   addRigidBody(ball)
-  ball.userData.body.setLinearVelocity(new AMMO.btVector3(x, magnitude.value * .2, z))
+  ball.userData.body.setLinearVelocity(new Ammo.btVector3(x, magnitude.value * .2, z))
   magnitude.value = minMagnitude
   cannon.translateX(-.1)
 }

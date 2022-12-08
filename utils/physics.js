@@ -1,21 +1,20 @@
-/* global Ammo */
 import * as THREE from 'three'
 import { randomGray } from '/utils/helpers.js'
 
-export const AMMO = await Ammo()
+export const Ammo = typeof window.Ammo == 'function' ? await window.Ammo() : window.Ammo
 
 const margin = 0.05
 
 /* WORLD */
 
 export function createPhysicsWorld({ gravity = 9.82, softBody = false } = {}) {
-  const collisionConfiguration = new AMMO.btSoftBodyRigidBodyCollisionConfiguration()
-  const dispatcher = new AMMO.btCollisionDispatcher(collisionConfiguration)
-  const broadphase = new AMMO.btDbvtBroadphase()
-  const solver = new AMMO.btSequentialImpulseConstraintSolver()
-  const softBodySolver = softBody && new AMMO.btDefaultSoftBodySolver()
-  const physicsWorld = new AMMO.btSoftRigidDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration, softBodySolver)
-  physicsWorld.setGravity(new AMMO.btVector3(0, -gravity, 0))
+  const collisionConfiguration = new Ammo.btSoftBodyRigidBodyCollisionConfiguration()
+  const dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration)
+  const broadphase = new Ammo.btDbvtBroadphase()
+  const solver = new Ammo.btSequentialImpulseConstraintSolver()
+  const softBodySolver = softBody && new Ammo.btDefaultSoftBodySolver()
+  const physicsWorld = new Ammo.btSoftRigidDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration, softBodySolver)
+  physicsWorld.setGravity(new Ammo.btVector3(0, -gravity, 0))
   return physicsWorld
 }
 
@@ -27,21 +26,21 @@ export function createRigidBody({
   mesh.position.copy(pos)
   mesh.quaternion.copy(quat)
 
-  const transform = new AMMO.btTransform()
-  transform.setOrigin(new AMMO.btVector3(pos.x, pos.y, pos.z))
-  transform.setRotation(new AMMO.btQuaternion(quat.x, quat.y, quat.z, quat.w))
-  const motionState = new AMMO.btDefaultMotionState(transform)
+  const transform = new Ammo.btTransform()
+  transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z))
+  transform.setRotation(new Ammo.btQuaternion(quat.x, quat.y, quat.z, quat.w))
+  const motionState = new Ammo.btDefaultMotionState(transform)
 
-  const inertia = new AMMO.btVector3(0, 0, 0)
+  const inertia = new Ammo.btVector3(0, 0, 0)
   shape.calculateLocalInertia(mass, inertia)
 
-  const rbInfo = new AMMO.btRigidBodyConstructionInfo(mass, motionState, shape, inertia)
-  const body = new AMMO.btRigidBody(rbInfo)
+  const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia)
+  const body = new Ammo.btRigidBody(rbInfo)
   if (friction) body.setFriction(friction)
   if (vel)
-    body.setLinearVelocity(new AMMO.btVector3(vel.x, vel.y, vel.z))
+    body.setLinearVelocity(new Ammo.btVector3(vel.x, vel.y, vel.z))
   if (angVel)
-    body.setAngularVelocity(new AMMO.btVector3(angVel.x, angVel.y, angVel.z))
+    body.setAngularVelocity(new Ammo.btVector3(angVel.x, angVel.y, angVel.z))
   mesh.userData.body = body
 
   if (mass > 0) body.setActivationState(4) // Disable deactivation
@@ -53,7 +52,7 @@ export function createBall({ radius = 0.6, mass = 1.2, pos, quat }) {
   const mesh = new THREE.Mesh(
     new THREE.SphereGeometry(radius, 20, 20), new THREE.MeshPhongMaterial({ color: 0x202020 }))
   mesh.castShadow = mesh.receiveShadow = true
-  const shape = new AMMO.btSphereShape(radius)
+  const shape = new Ammo.btSphereShape(radius)
   shape.setMargin(margin)
   const rigidMesh = createRigidBody({ mesh, shape, mass, pos, quat })
   rigidMesh.userData.body.setFriction(0.5)
@@ -65,7 +64,7 @@ export function createBox({ width, height, depth, mass = 0, pos, quat, color = r
   const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
   mesh.castShadow = mesh.receiveShadow = true
 
-  const shape = new AMMO.btBoxShape(new AMMO.btVector3(width * 0.5, height * 0.5, depth * 0.5))
+  const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * 0.5, height * 0.5, depth * 0.5))
   shape.setMargin(margin)
   return createRigidBody({ mesh, shape, mass, pos, quat, friction })
 }
@@ -157,40 +156,40 @@ export function createTerrainShape({ data, width, depth, mapWidth, mapDepth, min
   const upAxis = 1 // 0: X, 1: Y, 2: Z. normally Y is used.
   const hdt = 'PHY_FLOAT' // height data type
   const flipQuadEdges = false // inverts the triangles
-  const ammoHeightData = AMMO._malloc(4 * width * depth) // Creates height data buffer in AMMO heap
-  // Copy the javascript height data array to the AMMO one
+  const ammoHeightData = Ammo._malloc(4 * width * depth) // Creates height data buffer in Ammo heap
+  // Copy the javascript height data array to the Ammo one
   let p = 0
   let p2 = 0
   for (let j = 0; j < depth; j++)
     for (let i = 0; i < width; i++) {
       // write 32-bit float data to memory
-      AMMO.HEAPF32[ammoHeightData + p2 >> 2] = data[p]
+      Ammo.HEAPF32[ammoHeightData + p2 >> 2] = data[p]
       p++
       // 4 bytes/float
       p2 += 4
     }
 
-  const terrainShape = new AMMO.btHeightfieldTerrainShape(
+  const terrainShape = new Ammo.btHeightfieldTerrainShape(
     width, depth, ammoHeightData, heightScale, minHeight, maxHeight, upAxis, hdt, flipQuadEdges
   )
 
   const scaleX = mapWidth / (width - 1)
   const scaleZ = mapDepth / (depth - 1)
-  terrainShape.setLocalScaling(new AMMO.btVector3(scaleX, 1, scaleZ))
+  terrainShape.setLocalScaling(new Ammo.btVector3(scaleX, 1, scaleZ))
   terrainShape.setMargin(0.05)
 
   return terrainShape
 }
 
 export function createTerrainBody(shape, minHeight, maxHeight) {
-  const transform = new AMMO.btTransform()
+  const transform = new Ammo.btTransform()
   transform.setIdentity()
   // Shifts the terrain, since bullet re-centers it on its bounding box.
-  transform.setOrigin(new AMMO.btVector3(0, (maxHeight + minHeight) / 2, 0))
+  transform.setOrigin(new Ammo.btVector3(0, (maxHeight + minHeight) / 2, 0))
   const groundMass = 0
-  const inertia = new AMMO.btVector3(0, 0, 0)
-  const motionState = new AMMO.btDefaultMotionState(transform)
-  const body = new AMMO.btRigidBody(new AMMO.btRigidBodyConstructionInfo(groundMass, motionState, shape, inertia))
+  const inertia = new Ammo.btVector3(0, 0, 0)
+  const motionState = new Ammo.btDefaultMotionState(transform)
+  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(groundMass, motionState, shape, inertia))
   return body
 }
 
@@ -205,7 +204,7 @@ export function createTerrainBodyFromData({ data, width, depth, mapWidth, mapDep
 export function updateMesh(mesh) {
   const ms = mesh.userData.body.getMotionState()
   if (!ms) return
-  const transform = new AMMO.btTransform()
+  const transform = new Ammo.btTransform()
   ms.getWorldTransform(transform)
   const p = transform.getOrigin()
   const q = transform.getRotation()
