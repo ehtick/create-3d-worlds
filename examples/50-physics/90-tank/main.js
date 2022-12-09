@@ -1,14 +1,13 @@
 /* global Ammo */
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { createSun, hemLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 import { fadeDecals } from './decals.js'
 import { Car } from './Car.js'
 import { handleInput, updateTires } from './update-vehicle.js'
 import { createPhysicsWorld, updateMesh, chaseCam, createBox } from '/utils/physics.js'
 
-hemLight({ groundColor: 0xf0d7bb })
-scene.add(createSun({ position: [10, 195, 0] }))
+scene.add(createSun({ position: [10, 50, 0] }))
 
 const physicsWorld = createPhysicsWorld()
 
