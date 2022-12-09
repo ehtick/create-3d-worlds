@@ -15,7 +15,7 @@ let gEngineForce = 0
 let gBreakingForce = 0
 let gVehicleSteering = 0
 
-export function handleInput({ vehicle, mesh, tires }, ground) {
+export function handleInput({ vehicle, mesh, tires, ground }) {
   const { body } = mesh.userData
   const kmh = vehicle.getCurrentSpeedKmHour()
   const steering = keyboard.left || keyboard.right

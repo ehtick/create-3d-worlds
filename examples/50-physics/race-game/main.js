@@ -74,7 +74,7 @@ function updateCars() {
 
 void function animate() {
   requestAnimationFrame(animate)
-  handleInput(cars[0], worldModel)
+  handleInput({ ...cars[0], ground: worldModel })
   const dt = clock.getDelta()
   physicsWorld.stepSimulation(dt, 10) // physicsWorld.stepSimulation(1 / 60)
   updateCars()
