@@ -1,7 +1,6 @@
 /* global Ammo */
 import * as THREE from 'three'
 import { DecalGeometry } from '/node_modules/three/examples/jsm/geometries/DecalGeometry.js'
-
 import keyboard from '/utils/classes/Keyboard.js'
 import { scene } from '/utils/scene.js'
 
@@ -10,6 +9,29 @@ const textureLoader = new THREE.TextureLoader()
 let gEngineForce = 0
 let gBreakingForce = 0
 let gVehicleSteering = 0
+
+/* DECALS CONFIG */
+
+const oldCarPos = new THREE.Vector3(0, 0, 0)
+const oldCarPos2 = new THREE.Vector3(0, 0, 0)
+
+let decRot = 0
+let decals = []
+
+const decalMaterial = new THREE.MeshPhongMaterial({
+  specular: 0x444444,
+  map: textureLoader.load('/assets/images/car-track.png'),
+  shininess: 900,
+  transparent: true,
+  depthTest: true,
+  depthWrite: false,
+  polygonOffset: true,
+  polygonOffsetFactor: -4,
+  wireframe: false,
+  opacity: .4
+})
+
+/* FUNCTIONS */
 
 export function makeVehicle(physicsWorld) {
 
@@ -186,26 +208,6 @@ export function updateTires(tires, vehicle) {
 }
 
 /* DECALS */
-
-const decalTexture = textureLoader.load('/assets/images/car-track.png')
-
-const oldCarPos = new THREE.Vector3(0, 0, 0)
-const oldCarPos2 = new THREE.Vector3(0, 0, 0)
-let decRot = 0
-let decals = []
-
-const decalMaterial = new THREE.MeshPhongMaterial({
-  specular: 0x444444,
-  map: decalTexture,
-  shininess: 900,
-  transparent: true,
-  depthTest: true,
-  depthWrite: false,
-  polygonOffset: true,
-  polygonOffsetFactor: - 4,
-  wireframe: false,
-  opacity: .4
-})
 
 function fixAngleRad(a) {
   if (a > Math.PI) a -= Math.PI * 2
