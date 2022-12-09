@@ -2,21 +2,22 @@ import keyboard from '/utils/classes/Keyboard.js'
 import { leaveDecals } from './decals.js'
 import { scene } from '/utils/scene.js'
 
-const maxSpeed = 150.0
-const turboForce = 1.7
-const maxEngineForce = 8000.0
-const maxBreakingForce = maxEngineForce * 2
-
-const steeringIncrement = 0.09
-const steeringClamp = .44
-const steeringReturnRate = .6
-
 let gEngineForce = 0
 let gBreakingForce = 0
 let gVehicleSteering = 0
 
 export function handleInput({ vehicle, mesh, tires, ground }) {
   const { body } = mesh.userData
+
+  const maxSpeed = 150.0
+  const turboForce = 1.7
+  const maxEngineForce = 8000.0
+  const maxBreakingForce = maxEngineForce * 2
+
+  const steeringIncrement = 0.09
+  const steeringClamp = .44
+  const steeringReturnRate = .6
+
   const kmh = vehicle.getCurrentSpeedKmHour()
   const steering = keyboard.left || keyboard.right
   const accelerating = keyboard.up || keyboard.down

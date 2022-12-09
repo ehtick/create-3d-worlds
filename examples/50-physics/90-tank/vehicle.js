@@ -1,24 +1,25 @@
 /* global Ammo */
 
-const suspensionStiffness = 50
-const suspensionDamping = 4
-const suspensionCompression = 2.4
-const maxSuspensionTravelCm = 1500.0
-const maxSuspensionForce = 50000.0
-const CUBE_HALF_EXTENTS = 1
-const suspensionRestLength = 1.3
-const connectionHeight = 1.2
-
-const wheelRadius = .39
-const wheelWidth = .35
-const frictionSlip = 3.5
-const rearWheelFriction = 4.5
-
-const rightIndex = 0
-const upIndex = 1
-const forwardIndex = 2
-
 export function makeVehicle(physicsWorld) {
+
+  const suspensionStiffness = 50
+  const suspensionDamping = 4
+  const suspensionCompression = 2.4
+  const maxSuspensionTravelCm = 1500.0
+  const maxSuspensionForce = 50000.0
+  const CUBE_HALF_EXTENTS = 1
+  const suspensionRestLength = 1.3
+  const connectionHeight = 1.2
+
+  const wheelRadius = .39
+  const wheelWidth = .35
+  const frictionSlip = 3.5
+  const rearWheelFriction = 4.5
+
+  const rightIndex = 0
+  const upIndex = 1
+  const forwardIndex = 2
+
   const startTransform = new Ammo.btTransform()
   const tempVector = new Ammo.btVector3()
 
