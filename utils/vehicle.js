@@ -28,12 +28,9 @@ function createChassis(w, l, h) {
   return mesh
 }
 
-export function createVehicle({ physicsWorld, pos } = {}) {
-  const width = 1.8
-  const height = .6
-  const length = 4
-  const mass = 800
-
+export function createVehicle({
+  physicsWorld, pos, width = 1.8, height = .6, length = 4, mass = 800 } = {}
+) {
   const wheelAxisPositionBack = -1
   const wheelRadiusBack = .4
   const wheelWidthBack = .3

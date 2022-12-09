@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
+import { getSize } from '/utils/helpers.js'
 import { createPhysicsWorld, updateMesh, chaseCam, createBox, findGround } from '/utils/physics.js'
 import { loadModel } from '/utils/loaders.js'
 import { makeVehicle, handleInput, updateTires, fadeDecals } from '/utils/vehicle2.js'
@@ -15,12 +16,14 @@ physicsWorld.addRigidBody(ground.userData.body)
 
 const { mesh: carMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
 const { mesh: tireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl', scale: .57 })
-const { vehicle, body } = makeVehicle({ physicsWorld, pos: new THREE.Vector3(0, 1, 0) })
-
-carMesh.userData.body = body
 const tires = [...Array(4)].map(() => tireMesh.clone())
-
 scene.add(carMesh, ...tires)
+
+const { x, y, z } = getSize(carMesh)
+const { vehicle, body } = makeVehicle({
+  physicsWorld, pos: new THREE.Vector3(0, 1, 0), width: x, height: y, length: z
+})
+carMesh.userData.body = body
 
 /* LOOP */
 

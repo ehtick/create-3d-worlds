@@ -69,7 +69,14 @@ export const isCollide = (bounds1, bounds2) =>
 // @param key: x, y or z
 export const getSize = (mesh, key) => {
   const box = new THREE.Box3().setFromObject(mesh)
-  return box.max[key] - box.min[key]
+
+  return key
+    ? box.max[key] - box.min[key]
+    : {
+      x: box.max.x - box.min.x,
+      y: box.max.y - box.min.y,
+      z: box.max.z - box.min.z,
+    }
 }
 
 export const getHeight = mesh => getSize(mesh, 'y')
