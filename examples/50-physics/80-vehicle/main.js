@@ -16,7 +16,7 @@ scene.add(dirLight)
 
 const physicsWorld = createPhysicsWorld()
 
-const ground = createBox({ pos: new Vector3(0, -0.5, 0), width: 100, height: 1, depth: 100, friction: 2, color: 0x999999 })
+const ground = createBox({ pos: new Vector3(0, -0.5, 0), width: 100, height: 1, depth: 100, friction: 2, color: 0x509f53 })
 addRigidBody(ground)
 
 const quat = new THREE.Quaternion(0, 0, 0, 1)
