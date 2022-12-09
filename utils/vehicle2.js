@@ -33,6 +33,7 @@ const decalMaterial = new THREE.MeshPhongMaterial({
 
 /* FUNCTIONS */
 
+// without mesh
 export function makeVehicle({
   physicsWorld, pos = new THREE.Vector3(0, 1, 0), width = 2.4, height = 1, length = 4.8, mass = 680 } = {}
 ) {

@@ -28,6 +28,7 @@ function createChassis(w, l, h) {
   return mesh
 }
 
+// with mesh
 export function createVehicle({
   physicsWorld, pos, width = 1.8, height = .6, length = 4, mass = 800 } = {}
 ) {
