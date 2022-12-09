@@ -15,42 +15,30 @@ const ground = createBox({ pos: new THREE.Vector3(0, -0.5, 0), width: 100, heigh
 scene.add(ground)
 physicsWorld.addRigidBody(ground.userData.body)
 
-class Car {
-  constructor() {
-    return (async() => {
-      const { mesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
-      const { mesh: tireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl', scale: .57 })
-      const { vehicle, body } = makeVehicle(physicsWorld)
+const { mesh: carMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
+const { mesh: tireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl', scale: .57 })
+const { vehicle, body } = makeVehicle(physicsWorld)
 
-      mesh.userData.body = body
-      this.mesh = mesh
-      this.vehicle = vehicle
-      this.tires = [...Array(4)].map(() => tireMesh.clone())
+carMesh.userData.body = body
+const tires = [...Array(4)].map(() => tireMesh.clone())
 
-      return this
-    })()
-  }
-}
-
-const car = await new Car({ objFile: 'hummer', tireFile: 'hummerTire', physicsWorld })
-scene.add(car.mesh, ...car.tires)
+scene.add(carMesh, ...tires)
 
 /* LOOP */
 
 function updateCar() {
-  const { mesh, tires, vehicle } = car
-  findGround(mesh.userData.body, physicsWorld)
-  updateMesh(mesh)
+  findGround(carMesh.userData.body, physicsWorld)
+  updateMesh(carMesh)
   updateTires(tires, vehicle)
 }
 
 void function animate() {
   requestAnimationFrame(animate)
-  handleInput(car, ground)
+  handleInput({ vehicle, carMesh, tires, ground })
   const dt = clock.getDelta()
   physicsWorld.stepSimulation(dt, 10)
   updateCar()
   fadeDecals(scene)
-  chaseCam({ camera, body: car.mesh.userData.body })
+  chaseCam({ camera, body: carMesh.userData.body })
   renderer.render(scene, camera)
 }()
