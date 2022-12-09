@@ -34,6 +34,9 @@ const decalMaterial = new THREE.MeshPhongMaterial({
 /* FUNCTIONS */
 
 export function makeVehicle(physicsWorld, pos = new THREE.Vector3(0, 1, 0)) {
+  const width = 2.4, height = 1, length = 4.8
+  const mass = 680
+
   const suspensionStiffness = 50
   const suspensionDamping = 4
   const suspensionCompression = 2.4
@@ -53,17 +56,14 @@ export function makeVehicle(physicsWorld, pos = new THREE.Vector3(0, 1, 0)) {
   const forwardIndex = 2
 
   const startTransform = new Ammo.btTransform()
-  const tempVector = new Ammo.btVector3()
 
   startTransform.setIdentity()
-  tempVector.setValue(1.2, .5, 2.4)
-  const chassisShape = new Ammo.btBoxShape(tempVector)
+  const chassisShape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .5, length * .5))
   const compound = new Ammo.btCompoundShape()
   const transform = new Ammo.btTransform()
   transform.setIdentity()
   transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z))
   compound.addChildShape(transform, chassisShape)
-  const mass = 680
 
   const inertia = new Ammo.btVector3(1, 1, 1)
   compound.calculateLocalInertia(mass, inertia)
