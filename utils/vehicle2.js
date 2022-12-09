@@ -10,7 +10,7 @@ let gEngineForce = 0
 let gBreakingForce = 0
 let gVehicleSteering = 0
 
-/* DECALS CONFIG */
+/* decals config */
 
 const oldCarPos = new THREE.Vector3(0, 0, 0)
 const oldCarPos2 = new THREE.Vector3(0, 0, 0)
@@ -34,7 +34,6 @@ const decalMaterial = new THREE.MeshPhongMaterial({
 /* FUNCTIONS */
 
 export function makeVehicle(physicsWorld) {
-
   const suspensionStiffness = 50
   const suspensionDamping = 4
   const suspensionCompression = 2.4
