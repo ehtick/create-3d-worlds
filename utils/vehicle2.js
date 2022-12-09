@@ -33,7 +33,7 @@ const decalMaterial = new THREE.MeshPhongMaterial({
 
 /* FUNCTIONS */
 
-export function makeVehicle(physicsWorld) {
+export function makeVehicle(physicsWorld, pos = new THREE.Vector3(0, 1, 0)) {
   const suspensionStiffness = 50
   const suspensionDamping = 4
   const suspensionCompression = 2.4
@@ -61,8 +61,7 @@ export function makeVehicle(physicsWorld) {
   const compound = new Ammo.btCompoundShape()
   const transform = new Ammo.btTransform()
   transform.setIdentity()
-  tempVector.setValue(0, 1, 0)
-  transform.setOrigin(tempVector)
+  transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z))
   compound.addChildShape(transform, chassisShape)
   const mass = 680
 

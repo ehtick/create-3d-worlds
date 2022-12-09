@@ -15,7 +15,7 @@ physicsWorld.addRigidBody(ground.userData.body)
 
 const { mesh: carMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
 const { mesh: tireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl', scale: .57 })
-const { vehicle, body } = makeVehicle(physicsWorld)
+const { vehicle, body } = makeVehicle(physicsWorld, new THREE.Vector3(0, 1, 0))
 
 carMesh.userData.body = body
 const tires = [...Array(4)].map(() => tireMesh.clone())
