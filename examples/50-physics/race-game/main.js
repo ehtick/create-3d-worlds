@@ -2,9 +2,8 @@
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSun, hemLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
-import { fadeDecals } from './decals.js'
 import { Car } from './Car.js'
-import { handleInput, updateTires } from './update-vehicle.js'
+import { handleInput, updateTires, fadeDecals } from '/utils/vehicle2.js'
 import { createPhysicsWorld, updateMesh, chaseCam, findGround } from '/utils/physics.js'
 
 hemLight({ groundColor: 0xf0d7bb })

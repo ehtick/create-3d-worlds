@@ -1,5 +1,5 @@
 import { loadModel } from '/utils/loaders.js'
-import { makeVehicle } from './vehicle.js'
+import { makeVehicle } from '/utils/vehicle2.js'
 
 export class Car {
   constructor({ objFile, tireFile, scale = .57, physicsWorld }) {
