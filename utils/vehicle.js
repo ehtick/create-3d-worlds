@@ -69,7 +69,7 @@ export function createVehicle(pos, physicsWorld) {
   const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(massVehicle, motionState, shape, inertia))
   body.setActivationState(4)
   physicsWorld.addRigidBody(body)
-  const chassis = createChassis(chassisWidth, chassisHeight, chassisLength)
+  const mesh = createChassis(chassisWidth, chassisHeight, chassisLength)
 
   // Raycast Vehicle
   const tuning = new Ammo.btVehicleTuning()
@@ -106,10 +106,10 @@ export function createVehicle(pos, physicsWorld) {
   addWheel(false, new Ammo.btVector3(-wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_LEFT)
   addWheel(false, new Ammo.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_RIGHT)
 
-  return { vehicle, wheels, chassis }
+  return { vehicle, wheels, mesh }
 }
 
-export function updateVehicle({ vehicle, wheels, chassis }) {
+export function updateVehicle({ vehicle, wheels, mesh }) {
   const speed = vehicle.getCurrentSpeedKmHour()
   breakingForce = 0
   engineForce = 0
@@ -162,6 +162,6 @@ export function updateVehicle({ vehicle, wheels, chassis }) {
   tm = vehicle.getChassisWorldTransform()
   p = tm.getOrigin()
   q = tm.getRotation()
-  chassis.position.set(p.x(), p.y(), p.z())
-  chassis.quaternion.set(q.x(), q.y(), q.z(), q.w())
+  mesh.position.set(p.x(), p.y(), p.z())
+  mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
 }

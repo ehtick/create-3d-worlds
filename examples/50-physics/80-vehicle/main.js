@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createPhysicsWorld, createBox, updateMesh, createCrates } from '/utils/physics.js'
-import { createVehicle, updateVehicle } from './vehicle.js'
+import { createVehicle, updateVehicle } from '../../../utils/vehicle.js'
 
 const { Vector3 } = THREE
 
@@ -32,13 +32,13 @@ crates.forEach(mesh => {
   physicsWorld.addRigidBody(mesh.userData.body)
 })
 
-const { vehicle, wheels, chassis } = createVehicle(new Vector3(0, 4, -20), physicsWorld)
-scene.add(...wheels, chassis) // bez točkova kao tenk
+const { vehicle, wheels, mesh } = createVehicle(new Vector3(0, 4, -20), physicsWorld)
+scene.add(...wheels, mesh) // bez točkova kao tenk
 
 camera.position.set(0, 1.5, -1)
-chassis.add(camera)
+mesh.add(camera)
 
-const lookAt = new Vector3(chassis.position.x, chassis.position.y, chassis.position.z + 4)
+const lookAt = new Vector3(mesh.position.x, mesh.position.y, mesh.position.z + 4)
 camera.lookAt(lookAt)
 
 /* FUNCTIONS */
@@ -54,7 +54,7 @@ function addRigidBody(mesh) {
 void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
-  updateVehicle({ vehicle, wheels, chassis })
+  updateVehicle({ vehicle, mesh, wheels })
   rigidBodies.forEach(updateMesh)
   physicsWorld.stepSimulation(dt, 10)
   renderer.render(scene, camera)
