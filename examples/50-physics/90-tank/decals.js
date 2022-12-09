@@ -29,7 +29,8 @@ function fixAngleRad(a) {
   return a
 }
 
-export function leaveDecals(worldModel, body, tires, scene) {
+export function leaveDecals(ground, body, tires, scene) {
+  const groundMesh = ground?.children?.length ? ground.children[0] : ground
   const velocity = new THREE.Vector3(0, 0, 0)
   const dec = new Ammo.btVector3(0, 0, 0)
   const dec2 = new Ammo.btVector3(0, 0, 0)
@@ -72,7 +73,8 @@ export function leaveDecals(worldModel, body, tires, scene) {
   }
   s_d.set(1, 1, velocity.length())
   const material_d = decalMaterial.clone()
-  let md = new THREE.Mesh(new DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
+
+  let md = new THREE.Mesh(new DecalGeometry(groundMesh, p_d, r_d, s_d), material_d)
   decals.push(md)
   scene.add(md)
 
@@ -105,7 +107,7 @@ export function leaveDecals(worldModel, body, tires, scene) {
   }
   s_d.set(1, 1, velocity.length())
 
-  md = new THREE.Mesh(new DecalGeometry(worldModel.children[0], p_d, r_d, s_d), material_d)
+  md = new THREE.Mesh(new DecalGeometry(groundMesh, p_d, r_d, s_d), material_d)
   decals.push(md)
   scene.add(md)
 }
