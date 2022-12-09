@@ -2,10 +2,9 @@ import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { fadeDecals } from './decals.js'
-import { handleInput, updateTires } from './update-vehicle.js'
 import { createPhysicsWorld, updateMesh, chaseCam, createBox, findGround } from '/utils/physics.js'
 import { loadModel } from '/utils/loaders.js'
-import { makeVehicle } from './vehicle.js'
+import { makeVehicle, handleInput, updateTires } from './vehicle.js'
 
 scene.add(createSun({ position: [10, 50, 0] }))
 
