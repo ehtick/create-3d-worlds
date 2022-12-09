@@ -218,6 +218,32 @@ export function chaseCam({ body, camHeight = 4, distance = 8, camera } = {}) {
   camera.lookAt(new THREE.Vector3(target.x(), target.y(), target.z()))
 }
 
+export function findGround(body, physicsWorld) {
+  const transform = new Ammo.btTransform()
+  body.getMotionState().getWorldTransform(transform)
+  const pos = transform.getOrigin()
+  const downRayDir = new Ammo.btVector3(pos.x(), pos.y() - 2000, pos.z())
+  let downRay = new Ammo.ClosestRayResultCallback(pos, downRayDir)
+  physicsWorld.rayTest(pos, downRayDir, downRay)
+
+  if (downRay.hasHit())
+    body.setDamping(0, 0)
+  else {
+    const cp = new Ammo.btVector3(pos.x(), pos.y() + 1, pos.z())
+    downRayDir.setY(pos.y() + 400)
+    downRay = new Ammo.ClosestRayResultCallback(cp, downRayDir)
+    physicsWorld.rayTest(cp, downRayDir, downRay)
+    if (downRay.hasHit()) {
+      const pointAbove = downRay.get_m_hitPointWorld()
+      body.setDamping(.99, .99)
+      body.getMotionState().getWorldTransform(transform)
+      pointAbove.setY(pointAbove.y() + 1.5)
+      transform.setOrigin(pointAbove)
+      body.setWorldTransform(transform)
+    }
+  }
+}
+
 /* UPDATE */
 
 export function updateMesh(mesh) {

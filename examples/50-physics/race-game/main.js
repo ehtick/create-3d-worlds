@@ -5,7 +5,7 @@ import { loadModel } from '/utils/loaders.js'
 import { fadeDecals } from './decals.js'
 import { Car } from './Car.js'
 import { handleInput, updateTires } from './update-vehicle.js'
-import { createPhysicsWorld, updateMesh, chaseCam } from '/utils/physics.js'
+import { createPhysicsWorld, updateMesh, chaseCam, findGround } from '/utils/physics.js'
 
 hemLight({ groundColor: 0xf0d7bb })
 scene.add(createSun({ position: [10, 195, 0] }))
@@ -62,37 +62,11 @@ function addWorldBody(model, scale) {
   physicsWorld.addRigidBody(body)
 }
 
-function findGround(body) {
-  const transform = new Ammo.btTransform()
-  body.getMotionState().getWorldTransform(transform)
-  const pos = transform.getOrigin()
-  const downRayDir = new Ammo.btVector3(pos.x(), pos.y() - 2000, pos.z())
-  let downRay = new Ammo.ClosestRayResultCallback(pos, downRayDir)
-  physicsWorld.rayTest(pos, downRayDir, downRay)
-
-  if (downRay.hasHit())
-    body.setDamping(0, 0)
-  else {
-    const cp = new Ammo.btVector3(pos.x(), pos.y() + 1, pos.z())
-    downRayDir.setY(pos.y() + 400)
-    downRay = new Ammo.ClosestRayResultCallback(cp, downRayDir)
-    physicsWorld.rayTest(cp, downRayDir, downRay)
-    if (downRay.hasHit()) {
-      const pointAbove = downRay.get_m_hitPointWorld()
-      body.setDamping(.99, .99)
-      body.getMotionState().getWorldTransform(transform)
-      pointAbove.setY(pointAbove.y() + 1.5)
-      transform.setOrigin(pointAbove)
-      body.setWorldTransform(transform)
-    }
-  }
-}
-
 /* LOOP */
 
 function updateCars() {
   cars.forEach(({ mesh, tires, vehicle }) => {
-    findGround(mesh.userData.body)
+    findGround(mesh.userData.body, physicsWorld)
     updateMesh(mesh)
     updateTires(tires, vehicle)
   })
