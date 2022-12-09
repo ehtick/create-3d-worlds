@@ -34,7 +34,7 @@ function updateCar() {
 
 void function animate() {
   requestAnimationFrame(animate)
-  handleInput({ vehicle, carMesh, tires, ground })
+  handleInput({ vehicle, mesh: carMesh, tires, ground })
   const dt = clock.getDelta()
   physicsWorld.stepSimulation(dt, 10)
   updateCar()
