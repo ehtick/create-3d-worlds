@@ -21,8 +21,9 @@ export function handleInput({ vehicle, mesh, tires }, ground) {
   const steering = keyboard.left || keyboard.right
   const accelerating = keyboard.up || keyboard.down
 
-  if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || (accelerating && Math.abs(kmh) < maxSpeed / 4))
-    leaveDecals(ground, body, tires, scene)
+  if (ground)
+    if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || (accelerating && Math.abs(kmh) < maxSpeed / 4))
+      leaveDecals(ground, body, tires, scene)
 
   if (!steering) gVehicleSteering *= steeringReturnRate
 

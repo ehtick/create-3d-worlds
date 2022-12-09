@@ -12,15 +12,12 @@ scene.add(createSun({ position: [10, 195, 0] }))
 
 const physicsWorld = createPhysicsWorld()
 
-const ground = createBox({ pos: new THREE.Vector3(0, -0.5, 0), width: 100, height: 1, depth: 100, friction: 2, color: 0x999999 })
+const ground = createBox({ pos: new THREE.Vector3(0, -0.5, 0), width: 100, height: 1, depth: 100, friction: 2, color: 0x509f53 })
 scene.add(ground)
 physicsWorld.addRigidBody(ground.userData.body)
 
-const cars = [
-  await new Car({ objFile: 'hummer', tireFile: 'hummerTire', physicsWorld }),
-]
-
-cars.forEach(car => scene.add(car.mesh, ...car.tires))
+const car = await new Car({ objFile: 'hummer', tireFile: 'hummerTire', physicsWorld })
+scene.add(car.mesh, ...car.tires)
 
 /* FUNCTION */
 
@@ -52,21 +49,20 @@ function findGround(body) {
 
 /* LOOP */
 
-function updateCars() {
-  cars.forEach(({ mesh, tires, vehicle }) => {
-    findGround(mesh.userData.body)
-    updateMesh(mesh)
-    updateTires(tires, vehicle)
-  })
+function updateCar() {
+  const { mesh, tires, vehicle } = car
+  findGround(mesh.userData.body)
+  updateMesh(mesh)
+  updateTires(tires, vehicle)
 }
 
 void function animate() {
   requestAnimationFrame(animate)
-  handleInput(cars[0], ground)
+  handleInput(car, ground)
   const dt = clock.getDelta()
-  physicsWorld.stepSimulation(dt, 10) // physicsWorld.stepSimulation(1 / 60)
-  updateCars()
+  physicsWorld.stepSimulation(dt, 10)
+  updateCar()
   fadeDecals(scene)
-  chaseCam({ camera, body: cars[0].mesh.userData.body })
+  chaseCam({ camera, body: car.mesh.userData.body })
   renderer.render(scene, camera)
 }()
