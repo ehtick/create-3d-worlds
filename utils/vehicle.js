@@ -8,11 +8,6 @@ const FRONT_RIGHT = 1
 const BACK_LEFT = 2
 const BACK_RIGHT = 3
 
-const steeringIncrement = .04
-const steeringClamp = .5
-const maxEngineForce = 2000
-const maxBreakingForce = 100
-
 let engineForce = 0
 let vehicleSteering = 0
 let breakingForce = 0
@@ -20,9 +15,9 @@ let breakingForce = 0
 const carMaterial = new THREE.MeshPhongMaterial({ color: 0x990000 })
 
 function createWheel(radius, width) {
-  const t = new THREE.CylinderGeometry(radius, radius, width, 24, 1)
-  t.rotateZ(Math.PI / 2)
-  const mesh = new THREE.Mesh(t, carMaterial)
+  const geometry = new THREE.CylinderGeometry(radius, radius, width, 24, 1)
+  geometry.rotateZ(Math.PI / 2)
+  const mesh = new THREE.Mesh(geometry, carMaterial)
   mesh.add(new THREE.Mesh(new THREE.BoxGeometry(width * 1.5, radius * 1.75, radius * .25, 1, 1, 1), carMaterial))
   return mesh
 }
@@ -34,10 +29,10 @@ function createChassis(w, l, h) {
 }
 
 export function createVehicle(pos, physicsWorld) {
-  const chassisWidth = 1.8
-  const chassisHeight = .6
-  const chassisLength = 4
-  const massVehicle = 800
+  const width = 1.8
+  const height = .6
+  const length = 4
+  const mass = 800
 
   const wheelAxisPositionBack = -1
   const wheelRadiusBack = .4
@@ -59,17 +54,17 @@ export function createVehicle(pos, physicsWorld) {
   const rollInfluence = 0.2
 
   // Chassis
-  const shape = new Ammo.btBoxShape(new Ammo.btVector3(chassisWidth * .5, chassisHeight * .5, chassisLength * .5))
+  const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .5, length * .5))
   const transform = new Ammo.btTransform()
   transform.setIdentity()
   transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z))
   const motionState = new Ammo.btDefaultMotionState(transform)
   const inertia = new Ammo.btVector3(0, 0, 0)
-  shape.calculateLocalInertia(massVehicle, inertia)
-  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(massVehicle, motionState, shape, inertia))
+  shape.calculateLocalInertia(mass, inertia)
+  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia))
   body.setActivationState(4)
   physicsWorld.addRigidBody(body)
-  const mesh = createChassis(chassisWidth, chassisHeight, chassisLength)
+  const mesh = createChassis(width, height, length)
 
   // Raycast Vehicle
   const tuning = new Ammo.btVehicleTuning()
@@ -110,6 +105,11 @@ export function createVehicle(pos, physicsWorld) {
 }
 
 export function updateVehicle({ vehicle, wheels, mesh }) {
+  const steeringIncrement = .04
+  const steeringClamp = .5
+  const maxEngineForce = 2000
+  const maxBreakingForce = 100
+
   const speed = vehicle.getCurrentSpeedKmHour()
   breakingForce = 0
   engineForce = 0
