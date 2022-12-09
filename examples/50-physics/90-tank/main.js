@@ -27,7 +27,7 @@ scene.add(carMesh, ...tires)
 /* LOOP */
 
 function updateCar() {
-  findGround(carMesh.userData.body, physicsWorld)
+  findGround(body, physicsWorld)
   updateMesh(carMesh)
   updateTires(tires, vehicle)
 }
@@ -39,6 +39,6 @@ void function animate() {
   physicsWorld.stepSimulation(dt, 10)
   updateCar()
   fadeDecals(scene)
-  chaseCam({ camera, body: carMesh.userData.body })
+  chaseCam({ camera, body })
   renderer.render(scene, camera)
 }()
