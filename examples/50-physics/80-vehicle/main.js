@@ -32,7 +32,7 @@ crates.forEach(mesh => {
   physicsWorld.addRigidBody(mesh.userData.body)
 })
 
-const { vehicle, wheels, mesh } = createVehicle(physicsWorld, new Vector3(0, 4, -20))
+const { vehicle, wheels, mesh } = createVehicle({ physicsWorld, pos: new Vector3(0, 4, -20) })
 scene.add(...wheels, mesh) // bez točkova kao tenk
 
 camera.position.set(0, 1.5, -1)
