@@ -34,7 +34,7 @@ crates.forEach(mesh => {
 })
 
 const width = 1.8, height = .6, length = 4
-const { mesh: carMesh } = await loadModel({ file: 'vehicle/car/ford-t-speedster-1915/model.fbx', angle: Math.PI })
+const { mesh: carMesh } = await loadModel({ file: 'vehicle/train/locomotive-lowpoly/parovoZ1.fbx' })
 
 const { vehicle, wheels } = createSimpleVehicle({
   physicsWorld, width, height, length, pos: new Vector3(0, 4, -20),
