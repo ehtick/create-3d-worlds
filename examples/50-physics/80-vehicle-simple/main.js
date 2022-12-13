@@ -1,11 +1,10 @@
 import * as THREE from 'three'
-import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
-import { createPhysicsWorld, createBox, updateMesh, createCrates } from '/utils/physics.js'
+import { scene, camera, renderer, clock } from '/utils/scene.js'
+import { createPhysicsWorld, createBox, updateMesh, createCrates, chaseCam } from '/utils/physics.js'
 import { createSimpleVehicle, updateVehicle } from '../../../utils/vehicle-simple.js'
 import { loadModel } from '/utils/loaders.js'
 
 const { Vector3 } = THREE
-createOrbitControls()
 const rigidBodies = []
 
 const ambientLight = new THREE.AmbientLight(0x404040)
@@ -34,9 +33,9 @@ crates.forEach(mesh => {
 })
 
 const width = 1.8, height = .6, length = 4
-const { mesh: carMesh } = await loadModel({ file: 'vehicle/train/locomotive-lowpoly/parovoZ1.fbx' })
+const { mesh: carMesh } = await loadModel({ file: 'tank/steampunk/model.fbx', angle: Math.PI })
 
-const { vehicle, wheels } = createSimpleVehicle({
+const { vehicle, wheels, body } = createSimpleVehicle({
   physicsWorld, width, height, length, pos: new Vector3(0, 4, -20),
   wheelAxisPositionBack: -1,
   wheelRadiusBack: .4,
@@ -51,10 +50,9 @@ const { vehicle, wheels } = createSimpleVehicle({
   wheelWidthFront: .2,
 })
 
-scene.add(...wheels, carMesh) // bez točkova kao tenk
+scene.add(carMesh) // bez točkova kao tenk
 
-camera.position.set(0, 1.5, -1)
-carMesh.add(camera)
+camera.position.set(0, 5, -4)
 
 const lookAt = new Vector3(carMesh.position.x, carMesh.position.y, carMesh.position.z + 4)
 camera.lookAt(lookAt)
@@ -74,6 +72,7 @@ void function loop() {
   const dt = clock.getDelta()
   updateVehicle({ vehicle, mesh: carMesh, wheels })
   rigidBodies.forEach(updateMesh)
+  chaseCam({ camera, body })
   physicsWorld.stepSimulation(dt, 10)
   renderer.render(scene, camera)
 }()

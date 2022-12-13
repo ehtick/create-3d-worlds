@@ -89,7 +89,7 @@ export function createSimpleVehicle({
   addWheel(false, new Ammo.btVector3(-wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_LEFT)
   addWheel(false, new Ammo.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_RIGHT)
 
-  return { vehicle, wheels }
+  return { vehicle, wheels, body }
 }
 
 export function updateVehicle({ vehicle, wheels, mesh }) {
