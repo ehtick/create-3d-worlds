@@ -33,14 +33,14 @@ crates.forEach(mesh => {
 })
 
 const width = 1.8, height = .6, length = 4
-const mesh = createCarMesh(width, height, length)
+const carMesh = createCarMesh(width, height, length)
 const { vehicle, wheels } = createSimpleVehicle({ physicsWorld, width, height, length, pos: new Vector3(0, 4, -20) })
-scene.add(...wheels, mesh) // bez točkova kao tenk
+scene.add(...wheels, carMesh) // bez točkova kao tenk
 
 camera.position.set(0, 1.5, -1)
-mesh.add(camera)
+carMesh.add(camera)
 
-const lookAt = new Vector3(mesh.position.x, mesh.position.y, mesh.position.z + 4)
+const lookAt = new Vector3(carMesh.position.x, carMesh.position.y, carMesh.position.z + 4)
 camera.lookAt(lookAt)
 
 /* FUNCTIONS */
@@ -62,7 +62,7 @@ function addRigidBody(mesh) {
 void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
-  updateVehicle({ vehicle, mesh, wheels })
+  updateVehicle({ vehicle, mesh: carMesh, wheels })
   rigidBodies.forEach(updateMesh)
   physicsWorld.stepSimulation(dt, 10)
   renderer.render(scene, camera)
