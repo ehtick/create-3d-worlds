@@ -32,7 +32,9 @@ crates.forEach(mesh => {
   physicsWorld.addRigidBody(mesh.userData.body)
 })
 
-const { vehicle, wheels, mesh } = createSimpleVehicle({ physicsWorld, width: 1.8, height: .6, length: 4, pos: new Vector3(0, 4, -20) })
+const width = 1.8, height = .6, length = 4
+const mesh = createCarMesh(width, height, length)
+const { vehicle, wheels } = createSimpleVehicle({ physicsWorld, width, height, length, pos: new Vector3(0, 4, -20) })
 scene.add(...wheels, mesh) // bez točkova kao tenk
 
 camera.position.set(0, 1.5, -1)
@@ -42,6 +44,12 @@ const lookAt = new Vector3(mesh.position.x, mesh.position.y, mesh.position.z + 4
 camera.lookAt(lookAt)
 
 /* FUNCTIONS */
+
+function createCarMesh(w, l, h) {
+  const geometry = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
+  const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: 0x990000 }))
+  return mesh
+}
 
 function addRigidBody(mesh) {
   scene.add(mesh)

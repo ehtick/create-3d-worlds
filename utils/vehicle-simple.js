@@ -19,13 +19,6 @@ function createWheel(radius, width) {
   return mesh
 }
 
-function createCarMesh(w, l, h) {
-  const geometry = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
-  const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: 0x990000 }))
-  return mesh
-}
-
-// with mesh
 export function createSimpleVehicle({
   physicsWorld, pos, width = 1.8, height = .6, length = 4, mass = 800 } = {}
 ) {
@@ -59,7 +52,6 @@ export function createSimpleVehicle({
   const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia))
   body.setActivationState(4)
   physicsWorld.addRigidBody(body)
-  const mesh = createCarMesh(width, height, length)
 
   // Raycast Vehicle
   const tuning = new Ammo.btVehicleTuning()
@@ -96,7 +88,7 @@ export function createSimpleVehicle({
   addWheel(false, new Ammo.btVector3(-wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_LEFT)
   addWheel(false, new Ammo.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_RIGHT)
 
-  return { vehicle, wheels, mesh }
+  return { vehicle, wheels }
 }
 
 export function updateVehicle({ vehicle, wheels, mesh }) {
