@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createPhysicsWorld, createBox, updateMesh, createCrates } from '/utils/physics.js'
-import { createVehicle, updateVehicle } from '../../../utils/vehicle-simple.js'
+import { createSimpleVehicle, updateVehicle } from '../../../utils/vehicle-simple.js'
 
 const { Vector3 } = THREE
 
@@ -32,7 +32,7 @@ crates.forEach(mesh => {
   physicsWorld.addRigidBody(mesh.userData.body)
 })
 
-const { vehicle, wheels, mesh } = createVehicle({ physicsWorld, pos: new Vector3(0, 4, -20) })
+const { vehicle, wheels, mesh } = createSimpleVehicle({ physicsWorld, width: 1.8, height: .6, length: 4, pos: new Vector3(0, 4, -20) })
 scene.add(...wheels, mesh) // bez točkova kao tenk
 
 camera.position.set(0, 1.5, -1)

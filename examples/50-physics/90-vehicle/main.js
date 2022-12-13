@@ -4,7 +4,7 @@ import { createSun } from '/utils/light.js'
 import { getSize } from '/utils/helpers.js'
 import { createPhysicsWorld, updateMesh, chaseCam, createBox, findGround } from '/utils/physics.js'
 import { loadModel } from '/utils/loaders.js'
-import { makeVehicle, handleInput, updateTires, fadeDecals } from '/utils/vehicle.js'
+import { createVehicle, handleInput, updateTires, fadeDecals } from '/utils/vehicle.js'
 
 scene.add(createSun({ position: [10, 50, 0] }))
 
@@ -20,7 +20,7 @@ const tires = [...Array(4)].map(() => tireMesh.clone())
 scene.add(carModel, ...tires)
 
 const { x, y, z } = getSize(carModel)
-const { vehicle, body } = makeVehicle({
+const { vehicle, body } = createVehicle({
   physicsWorld, pos: new THREE.Vector3(0, 1, 0), width: x, height: y, length: z
 })
 carModel.userData.body = body

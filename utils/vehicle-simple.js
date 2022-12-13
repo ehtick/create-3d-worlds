@@ -29,7 +29,7 @@ function createCarMesh(w, l, h) {
 }
 
 // with mesh
-export function createVehicle({
+export function createSimpleVehicle({
   physicsWorld, pos, width = 1.8, height = .6, length = 4, mass = 800 } = {}
 ) {
   const wheelAxisPositionBack = -1
