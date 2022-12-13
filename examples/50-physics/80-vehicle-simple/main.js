@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { createPhysicsWorld, createBox, updateMesh, createCrates, chaseCam } from '/utils/physics.js'
+import { createPhysicsWorld, createBox, createGround, updateMesh, createCrates, chaseCam } from '/utils/physics.js'
 import { createSimpleVehicle, updateVehicle } from '../../../utils/vehicle-simple.js'
 import { loadModel } from '/utils/loaders.js'
 
@@ -16,7 +16,7 @@ scene.add(dirLight)
 
 const physicsWorld = createPhysicsWorld()
 
-const ground = createBox({ pos: new Vector3(0, -0.5, 0), width: 100, height: 1, depth: 100, friction: 2, color: 0x509f53 })
+const ground = createGround({ color: 0x509f53 })
 addRigidBody(ground)
 
 const quat = new THREE.Quaternion(0, 0, 0, 1)
@@ -26,31 +26,17 @@ const jumpBoard = createBox({ pos: new Vector3(0, -1.5, 0), quat, width: 8, heig
 addRigidBody(jumpBoard)
 
 const crates = createCrates()
-crates.forEach(mesh => {
-  scene.add(mesh)
-  rigidBodies.push(mesh)
-  physicsWorld.addRigidBody(mesh.userData.body)
-})
+crates.forEach(addRigidBody)
 
 const width = 1.8, height = .6, length = 4
-const { mesh: carMesh } = await loadModel({ file: 'tank/steampunk/model.fbx', angle: Math.PI })
+// const { mesh: carMesh } = await loadModel({ file: 'tank/steampunk/model.fbx', angle: Math.PI })
+const { mesh: carMesh } = await loadModel({ file: 'vehicle/train/locomotive-lowpoly/parovoZ1.fbx' })
 
 const { vehicle, wheels, body } = createSimpleVehicle({
   physicsWorld, width, height, length, pos: new Vector3(0, 4, -20),
-  wheelAxisPositionBack: -1,
-  wheelRadiusBack: .4,
-  wheelWidthBack: .3,
-  wheelHalfTrackBack: 1,
-  wheelAxisHeightBack: .3,
-
-  wheelAxisFrontPosition: 1.7,
-  wheelHalfTrackFront: 1,
-  wheelAxisHeightFront: .3,
-  wheelRadiusFront: .35,
-  wheelWidthFront: .2,
 })
 
-scene.add(carMesh) // bez točkova kao tenk
+scene.add(carMesh, ...wheels)
 
 camera.position.set(0, 5, -4)
 

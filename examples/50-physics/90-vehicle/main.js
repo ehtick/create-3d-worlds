@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { getSize } from '/utils/helpers.js'
-import { createPhysicsWorld, updateMesh, chaseCam, createBox, findGround } from '/utils/physics.js'
+import { createPhysicsWorld, updateMesh, chaseCam, createGround, findGround } from '/utils/physics.js'
 import { loadModel } from '/utils/loaders.js'
 import { createVehicle, handleInput, updateTires, fadeDecals } from '/utils/vehicle.js'
 
@@ -10,7 +10,7 @@ scene.add(createSun({ position: [10, 50, 0] }))
 
 const physicsWorld = createPhysicsWorld()
 
-const ground = createBox({ pos: new THREE.Vector3(0, -0.5, 0), width: 100, height: 1, depth: 100, friction: 2, color: 0x509f53 })
+const ground = createGround({ color: 0x509f53 })
 scene.add(ground)
 physicsWorld.addRigidBody(ground.userData.body)
 
