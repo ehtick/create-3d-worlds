@@ -12,19 +12,16 @@ let engineForce = 0
 let vehicleSteering = 0
 let breakingForce = 0
 
-const carMaterial = new THREE.MeshPhongMaterial({ color: 0x990000 })
-
 function createWheel(radius, width) {
   const geometry = new THREE.CylinderGeometry(radius, radius, width, 24, 1)
   geometry.rotateZ(Math.PI / 2)
-  const mesh = new THREE.Mesh(geometry, carMaterial)
-  mesh.add(new THREE.Mesh(new THREE.BoxGeometry(width * 1.5, radius * 1.75, radius * .25, 1, 1, 1), carMaterial))
+  const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: 0x333333 }))
   return mesh
 }
 
 function createCarMesh(w, l, h) {
   const geometry = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
-  const mesh = new THREE.Mesh(geometry, carMaterial)
+  const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: 0x990000 }))
   return mesh
 }
 
