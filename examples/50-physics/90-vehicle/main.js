@@ -14,28 +14,28 @@ const ground = createBox({ pos: new THREE.Vector3(0, -0.5, 0), width: 100, heigh
 scene.add(ground)
 physicsWorld.addRigidBody(ground.userData.body)
 
-const { mesh: carModel } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
+const { mesh: carMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl', scale: .57 })
 const { mesh: tireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl', scale: .57 })
 const tires = [...Array(4)].map(() => tireMesh.clone())
-scene.add(carModel, ...tires)
+scene.add(carMesh, ...tires)
 
-const { x, y, z } = getSize(carModel)
+const { x, y, z } = getSize(carMesh)
 const { vehicle, body } = createVehicle({
   physicsWorld, pos: new THREE.Vector3(0, 1, 0), width: x, height: y, length: z
 })
-carModel.userData.body = body
+carMesh.userData.body = body
 
 /* LOOP */
 
 function updateCar() {
   findGround(body, physicsWorld)
-  updateMesh(carModel)
+  updateMesh(carMesh)
   updateTires(tires, vehicle)
 }
 
 void function animate() {
   requestAnimationFrame(animate)
-  handleInput({ vehicle, mesh: carModel, tires, ground })
+  handleInput({ vehicle, mesh: carMesh, tires, ground })
   const dt = clock.getDelta()
   physicsWorld.stepSimulation(dt, 10)
   updateCar()
