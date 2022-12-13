@@ -1,165 +1,305 @@
+/* global Ammo */
 import * as THREE from 'three'
-import { Ammo } from '/utils/physics.js'
-
+import { DecalGeometry } from '/node_modules/three/examples/jsm/geometries/DecalGeometry.js'
 import keyboard from '/utils/classes/Keyboard.js'
+import { scene } from '/utils/scene.js'
 
-const FRONT_LEFT = 0
-const FRONT_RIGHT = 1
-const BACK_LEFT = 2
-const BACK_RIGHT = 3
+const textureLoader = new THREE.TextureLoader()
 
-let engineForce = 0
-let vehicleSteering = 0
-let breakingForce = 0
+let gEngineForce = 0
+let gBreakingForce = 0
+let gVehicleSteering = 0
 
-const carMaterial = new THREE.MeshPhongMaterial({ color: 0x990000 })
+/* decals config */
 
-function createWheel(radius, width) {
-  const geometry = new THREE.CylinderGeometry(radius, radius, width, 24, 1)
-  geometry.rotateZ(Math.PI / 2)
-  const mesh = new THREE.Mesh(geometry, carMaterial)
-  mesh.add(new THREE.Mesh(new THREE.BoxGeometry(width * 1.5, radius * 1.75, radius * .25, 1, 1, 1), carMaterial))
-  return mesh
-}
+const oldCarPos = new THREE.Vector3(0, 0, 0)
+const oldCarPos2 = new THREE.Vector3(0, 0, 0)
 
-function createChassis(w, l, h) {
-  const geometry = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
-  const mesh = new THREE.Mesh(geometry, carMaterial)
-  return mesh
-}
+let decRot = 0
+let decals = []
 
-// with mesh
-export function createVehicle({
-  physicsWorld, pos, width = 1.8, height = .6, length = 4, mass = 800 } = {}
+const decalMaterial = new THREE.MeshPhongMaterial({
+  specular: 0x444444,
+  map: textureLoader.load('/assets/images/car-track.png'),
+  shininess: 900,
+  transparent: true,
+  depthTest: true,
+  depthWrite: false,
+  polygonOffset: true,
+  polygonOffsetFactor: -4,
+  wireframe: false,
+  opacity: .4
+})
+
+/* FUNCTIONS */
+
+// without mesh
+export function makeVehicle({
+  physicsWorld, pos = new THREE.Vector3(0, 1, 0), width = 2.4, height = 1, length = 4.8, mass = 680 } = {}
 ) {
-  const wheelAxisPositionBack = -1
-  const wheelRadiusBack = .4
-  const wheelWidthBack = .3
-  const wheelHalfTrackBack = 1
-  const wheelAxisHeightBack = .3
+  const suspensionStiffness = 50
+  const suspensionDamping = 4
+  const suspensionCompression = 2.4
+  const maxSuspensionTravelCm = 1500.0
+  const maxSuspensionForce = 50000.0
+  const CUBE_HALF_EXTENTS = 1
+  const suspensionRestLength = 1.3
+  const connectionHeight = 1.2
 
-  const wheelAxisFrontPosition = 1.7
-  const wheelHalfTrackFront = 1
-  const wheelAxisHeightFront = .3
-  const wheelRadiusFront = .35
-  const wheelWidthFront = .2
+  const wheelRadius = .39
+  const wheelWidth = .35
+  const frictionSlip = 3.5
+  const rearWheelFriction = 4.5
 
-  const friction = 1000
-  const suspensionStiffness = 20.0
-  const suspensionDamping = 2.3
-  const suspensionCompression = 4.4
-  const suspensionRestLength = 0.6
-  const rollInfluence = 0.2
+  const rightIndex = 0
+  const upIndex = 1
+  const forwardIndex = 2
 
-  // Chassis
-  const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .5, length * .5))
+  const startTransform = new Ammo.btTransform()
+
+  startTransform.setIdentity()
+  const chassisShape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .5, length * .5))
+  const compound = new Ammo.btCompoundShape()
   const transform = new Ammo.btTransform()
   transform.setIdentity()
   transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z))
-  const motionState = new Ammo.btDefaultMotionState(transform)
-  const inertia = new Ammo.btVector3(0, 0, 0)
-  shape.calculateLocalInertia(mass, inertia)
-  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia))
-  body.setActivationState(4)
-  physicsWorld.addRigidBody(body)
-  const mesh = createChassis(width, height, length)
+  compound.addChildShape(transform, chassisShape)
 
-  // Raycast Vehicle
-  const tuning = new Ammo.btVehicleTuning()
-  const rayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
-  const vehicle = new Ammo.btRaycastVehicle(tuning, body, rayCaster)
-  vehicle.setCoordinateSystem(0, 1, 2)
+  const inertia = new Ammo.btVector3(1, 1, 1)
+  compound.calculateLocalInertia(mass, inertia)
+  const motionState = new Ammo.btDefaultMotionState(startTransform)
+  const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, compound, inertia)
+  const body = new Ammo.btRigidBody(rbInfo)
+
+  const m_tuning = new Ammo.btVehicleTuning()
+  const wheelAxleCS = new Ammo.btVector3(-1, 0, 0)
+  const wheelDirectionCS0 = new Ammo.btVector3(0, -1, 0)
+  m_tuning.set_m_suspensionStiffness(suspensionStiffness)
+  m_tuning.set_m_suspensionCompression(suspensionCompression)
+  m_tuning.set_m_suspensionDamping(suspensionDamping)
+  m_tuning.set_m_maxSuspensionTravelCm(maxSuspensionTravelCm)
+  m_tuning.set_m_frictionSlip(frictionSlip)
+  m_tuning.set_m_maxSuspensionForce(maxSuspensionForce)
+
+  const m_vehicleRayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
+  const vehicle = new Ammo.btRaycastVehicle(m_tuning, body, m_vehicleRayCaster)
+  body.setActivationState(4)
+  body.setFriction(1)
   physicsWorld.addAction(vehicle)
 
-  // Wheels
-  const wheels = []
-  const wheelDirection = new Ammo.btVector3(0, -1, 0)
-  const wheelAxle = new Ammo.btVector3(-1, 0, 0)
+  // choose coordinate system
+  vehicle.setCoordinateSystem(rightIndex, upIndex, forwardIndex)
 
-  function addWheel(isFront, pos, radius, width, index) {
-    const wheelInfo = vehicle.addWheel(
-      pos,
-      wheelDirection,
-      wheelAxle,
-      suspensionRestLength,
-      radius,
-      tuning,
-      isFront)
+  // front wheels
+  let isFrontWheel = true
+  const connectionPointCS0 = new Ammo.btVector3(0, 0, 0)
 
-    wheelInfo.set_m_suspensionStiffness(suspensionStiffness)
-    wheelInfo.set_m_wheelsDampingRelaxation(suspensionDamping)
-    wheelInfo.set_m_wheelsDampingCompression(suspensionCompression)
-    wheelInfo.set_m_frictionSlip(friction)
-    wheelInfo.set_m_rollInfluence(rollInfluence)
-    wheels[index] = createWheel(radius, width)
-  }
+  connectionPointCS0.setValue(CUBE_HALF_EXTENTS - (0.3 * wheelWidth), connectionHeight, 2 * CUBE_HALF_EXTENTS - wheelRadius)
 
-  addWheel(true, new Ammo.btVector3(wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisFrontPosition), wheelRadiusFront, wheelWidthFront, FRONT_LEFT)
-  addWheel(true, new Ammo.btVector3(-wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisFrontPosition), wheelRadiusFront, wheelWidthFront, FRONT_RIGHT)
-  addWheel(false, new Ammo.btVector3(-wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_LEFT)
-  addWheel(false, new Ammo.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_RIGHT)
+  vehicle.addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, m_tuning, isFrontWheel)
 
-  return { vehicle, wheels, mesh }
+  connectionPointCS0.setValue(-CUBE_HALF_EXTENTS + (0.3 * wheelWidth), connectionHeight, 2 * CUBE_HALF_EXTENTS - wheelRadius)
+
+  vehicle.addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, m_tuning, isFrontWheel)
+
+  isFrontWheel = true // for all wheel drive?
+
+  m_tuning.set_m_frictionSlip(rearWheelFriction)
+
+  connectionPointCS0.setValue(-CUBE_HALF_EXTENTS + (0.3 * wheelWidth), connectionHeight, -2 * CUBE_HALF_EXTENTS + wheelRadius)
+
+  vehicle.addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, m_tuning, isFrontWheel)
+
+  connectionPointCS0.setValue(CUBE_HALF_EXTENTS - (0.3 * wheelWidth), connectionHeight, -2 * CUBE_HALF_EXTENTS + wheelRadius)
+
+  vehicle.addWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, m_tuning, isFrontWheel)
+
+  physicsWorld.addRigidBody(body)
+
+  return { vehicle, body }
 }
 
-export function updateVehicle({ vehicle, wheels, mesh }) {
-  const steeringIncrement = .04
-  const steeringClamp = .5
-  const maxEngineForce = 2000
-  const maxBreakingForce = 100
+export function handleInput({ vehicle, mesh, tires, ground }) {
+  const { body } = mesh.userData
 
-  const speed = vehicle.getCurrentSpeedKmHour()
-  breakingForce = 0
-  engineForce = 0
+  const maxSpeed = 150.0
+  const turboForce = 1.7
+  const maxEngineForce = 8000.0
+  const maxBreakingForce = maxEngineForce * 2
 
-  if (keyboard.up)
-    if (speed < 0) breakingForce = maxBreakingForce
-    else engineForce = maxEngineForce
+  const steeringIncrement = 0.09
+  const steeringClamp = .44
+  const steeringReturnRate = .6
 
-  if (keyboard.down)
-    if (speed > 0) breakingForce = maxBreakingForce
-    else engineForce = -maxEngineForce / 2
+  const kmh = vehicle.getCurrentSpeedKmHour()
+  const steering = keyboard.left || keyboard.right
+  const accelerating = keyboard.up || keyboard.down
 
-  if (keyboard.left)
-    if (vehicleSteering < steeringClamp)
-      vehicleSteering += steeringIncrement
+  if (ground)
+    if (vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || (accelerating && Math.abs(kmh) < maxSpeed / 4))
+      leaveDecals(ground, body, tires, scene)
 
-  if (keyboard.right)
-    if (vehicleSteering > -steeringClamp)
-      vehicleSteering -= steeringIncrement
+  if (!steering) gVehicleSteering *= steeringReturnRate
 
-  if (!keyboard.left && !keyboard.right)
-    if (vehicleSteering < -steeringIncrement)
-      vehicleSteering += steeringIncrement
-    else if (vehicleSteering > steeringIncrement)
-      vehicleSteering -= steeringIncrement
-    else
-      vehicleSteering = 0
+  if (steering)
+    if (keyboard.left) {
+      if (gVehicleSteering < .05) gVehicleSteering += .01; else
+        gVehicleSteering *= 1 + steeringIncrement
 
-  vehicle.applyEngineForce(engineForce, BACK_LEFT)
-  vehicle.applyEngineForce(engineForce, BACK_RIGHT)
+      if (gVehicleSteering > steeringClamp) gVehicleSteering = steeringClamp
+    } else if (keyboard.right) {
+      if (gVehicleSteering > -.05) gVehicleSteering -= .01; else
+        gVehicleSteering *= 1 + steeringIncrement
 
-  vehicle.setBrake(breakingForce / 2, FRONT_LEFT)
-  vehicle.setBrake(breakingForce / 2, FRONT_RIGHT)
-  vehicle.setBrake(breakingForce, BACK_LEFT)
-  vehicle.setBrake(breakingForce, BACK_RIGHT)
+      if (gVehicleSteering < -steeringClamp) gVehicleSteering = -steeringClamp
+    }
 
-  vehicle.setSteeringValue(vehicleSteering, FRONT_LEFT)
-  vehicle.setSteeringValue(vehicleSteering, FRONT_RIGHT)
-
-  let tm, p, q, i
-  const n = vehicle.getNumWheels()
-  for (i = 0; i < n; i++) {
-    vehicle.updateWheelTransform(i, true)
-    tm = vehicle.getWheelTransformWS(i)
-    p = tm.getOrigin()
-    q = tm.getRotation()
-    wheels[i].position.set(p.x(), p.y(), p.z())
-    wheels[i].quaternion.set(q.x(), q.y(), q.z(), q.w())
+  if (!accelerating) {
+    gEngineForce = 0
+    if (Math.abs(kmh) > 20) gBreakingForce += 5
   }
-  tm = vehicle.getChassisWorldTransform()
-  p = tm.getOrigin()
-  q = tm.getRotation()
-  mesh.position.set(p.x(), p.y(), p.z())
-  mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
+
+  if (accelerating)
+    if (keyboard.up && kmh < maxSpeed) {
+      if (kmh < maxSpeed / 5) gEngineForce = maxEngineForce * turboForce; else gEngineForce = maxEngineForce
+      gBreakingForce = 0.0
+    } else if (keyboard.up && kmh >= maxSpeed) {
+      gEngineForce = 0.0
+      gBreakingForce = 0.0
+    } else if (keyboard.down && kmh > -maxSpeed) {
+      gEngineForce = -maxEngineForce
+      gBreakingForce = 0.0
+    } else if (keyboard.down && kmh <= maxSpeed) {
+      gEngineForce = 0.0
+      gBreakingForce = 0.0
+    }
+
+  if (keyboard.space) {
+    gBreakingForce = maxBreakingForce * 2
+    gEngineForce = 0.0
+  }
+
+  // 0,1 front; 2,3 back
+  vehicle.applyEngineForce(gEngineForce, 0)
+  vehicle.setBrake(gBreakingForce, 0)
+  vehicle.setSteeringValue(gVehicleSteering, 0)
+  vehicle.setSteeringValue(-gVehicleSteering * 1.2, 4)// for drifting, 5th wheel (rear)
+
+  vehicle.applyEngineForce(gEngineForce, 4)
+  vehicle.applyEngineForce(gEngineForce, 1)
+  vehicle.setBrake(gBreakingForce, 1)
+  vehicle.setSteeringValue(gVehicleSteering, 1)
+  vehicle.setSteeringValue(-gVehicleSteering * 1.2, 5) // for drifting, 6th wheel (rear)
+  vehicle.applyEngineForce(gEngineForce, 5)
+}
+
+export function updateTires(tires, vehicle) {
+  tires.forEach((tire, i) => {
+    vehicle.updateWheelTransform(i, true)
+    const wheelTrans = vehicle.getWheelInfo(i).get_m_worldTransform()
+    const p = wheelTrans.getOrigin()
+    const q = wheelTrans.getRotation()
+    tire.position.set(p.x(), p.y(), p.z())
+    tire.quaternion.set(q.x(), q.y(), q.z(), q.w())
+    if (i == 0) tire.rotateY(-Math.PI)
+  })
+}
+
+/* DECALS */
+
+function fixAngleRad(a) {
+  if (a > Math.PI) a -= Math.PI * 2
+  else if (a < -Math.PI) a += Math.PI * 2
+  return a
+}
+
+export function leaveDecals(ground, body, tires, scene) {
+  const groundMesh = ground?.children?.length ? ground.children[0] : ground
+  const velocity = new THREE.Vector3(0, 0, 0)
+  const dec = new Ammo.btVector3(0, 0, 0)
+  const dec2 = new Ammo.btVector3(0, 0, 0)
+  const dec3 = new Ammo.btVector3(0, 0, 0)
+
+  const p_d = new THREE.Vector3(0, 0, 0)
+  const r_d = new THREE.Euler(0, 0, 0, 'XYZ')
+  const s_d = new THREE.Vector3(90, 90, 90)
+
+  const wheelRot = body.getWorldTransform().getBasis()
+  dec.setValue(-.2, 0, .2)
+  dec2.setValue(
+    wheelRot.getRow(0).x() * dec.x() + wheelRot.getRow(0).y() * dec.y() + wheelRot.getRow(0).z() * dec.z(),
+    wheelRot.getRow(1).x() * dec.x() + wheelRot.getRow(1).y() * dec.y() + wheelRot.getRow(1).z() * dec.z(),
+    wheelRot.getRow(2).x() * dec.x() + wheelRot.getRow(2).y() * dec.y() + wheelRot.getRow(2).z() * dec.z()
+  )
+  dec3.setValue(
+    dec2.x() + tires[3].position.x,
+    dec2.y() + tires[3].position.y,
+    dec2.z() + tires[3].position.z
+  )
+
+  p_d.set(dec3.x(), dec3.y(), dec3.z())
+
+  velocity.x = p_d.x - oldCarPos.x
+  velocity.y = p_d.y - oldCarPos.y
+  velocity.z = p_d.z - oldCarPos.z
+
+  oldCarPos.x = p_d.x
+  oldCarPos.y = p_d.y
+  oldCarPos.z = p_d.z
+  // angle from velocity
+  decRot = -fixAngleRad(Math.atan2(velocity.z, velocity.x) + Math.PI / 2)
+
+  r_d.set(0, decRot, 0)
+  if (velocity.length() > 2) {
+    velocity.x = 0
+    velocity.y = 0
+    velocity.z = 0
+  }
+  s_d.set(1, 1, velocity.length())
+  const material_d = decalMaterial.clone()
+
+  let md = new THREE.Mesh(new DecalGeometry(groundMesh, p_d, r_d, s_d), material_d)
+  decals.push(md)
+  scene.add(md)
+
+  dec.setValue(.2, 0, .2)
+  dec2.setValue(
+    wheelRot.getRow(0).x() * dec.x() + wheelRot.getRow(0).y() * dec.y() + wheelRot.getRow(0).z() * dec.z(),
+    wheelRot.getRow(1).x() * dec.x() + wheelRot.getRow(1).y() * dec.y() + wheelRot.getRow(1).z() * dec.z(),
+    wheelRot.getRow(2).x() * dec.x() + wheelRot.getRow(2).y() * dec.y() + wheelRot.getRow(2).z() * dec.z()
+  )
+  dec3.setValue(
+    dec2.x() + tires[2].position.x,
+    dec2.y() + tires[2].position.y,
+    dec2.z() + tires[2].position.z
+  )
+  p_d.set(dec3.x(), dec3.y(), dec3.z())
+
+  velocity.x = p_d.x - oldCarPos2.x
+  velocity.y = p_d.y - oldCarPos2.y
+  velocity.z = p_d.z - oldCarPos2.z
+
+  oldCarPos2.x = p_d.x
+  oldCarPos2.y = p_d.y
+  oldCarPos2.z = p_d.z
+
+  decRot = -fixAngleRad(Math.atan2(velocity.z, velocity.x) + Math.PI / 2)
+  r_d.set(0, decRot, 0)
+
+  if (velocity.length() > 2) {
+    velocity.x = 0; velocity.y = 0; velocity.z = 0
+  }
+  s_d.set(1, 1, velocity.length())
+
+  md = new THREE.Mesh(new DecalGeometry(groundMesh, p_d, r_d, s_d), material_d)
+  decals.push(md)
+  scene.add(md)
+}
+
+export function fadeDecals(scene) {
+  decals.forEach(decal => {
+    decal.material.opacity -= .001
+    if (decal.material.opacity <= 0) scene.remove(decal)
+  })
+  decals = decals.filter(decal => decal.material.opacity > 0)
 }

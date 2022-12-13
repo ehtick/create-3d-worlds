@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createPhysicsWorld, createBox, updateMesh, createCrates } from '/utils/physics.js'
-import { createVehicle, updateVehicle } from '../../../utils/vehicle.js'
+import { createVehicle, updateVehicle } from '../../../utils/vehicle-simple.js'
 
 const { Vector3 } = THREE
 
