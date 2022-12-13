@@ -20,20 +20,21 @@ function createWheel(radius, width) {
 }
 
 export function createSimpleVehicle({
-  physicsWorld, pos, width = 1.8, height = .6, length = 4, mass = 800 } = {}
+  physicsWorld, pos, width = 1.8, height = .6, length = 4, mass = 800,
+
+  wheelAxisPositionBack = -1,
+  wheelRadiusBack = .4,
+  wheelWidthBack = .3,
+  wheelHalfTrackBack = 1,
+  wheelAxisHeightBack = .3,
+
+  wheelAxisFrontPosition = 1.7,
+  wheelHalfTrackFront = 1,
+  wheelAxisHeightFront = .3,
+  wheelRadiusFront = .35,
+  wheelWidthFront = .2,
+} = {}
 ) {
-  const wheelAxisPositionBack = -1
-  const wheelRadiusBack = .4
-  const wheelWidthBack = .3
-  const wheelHalfTrackBack = 1
-  const wheelAxisHeightBack = .3
-
-  const wheelAxisFrontPosition = 1.7
-  const wheelHalfTrackFront = 1
-  const wheelAxisHeightFront = .3
-  const wheelRadiusFront = .35
-  const wheelWidthFront = .2
-
   const friction = 1000
   const suspensionStiffness = 20.0
   const suspensionDamping = 2.3

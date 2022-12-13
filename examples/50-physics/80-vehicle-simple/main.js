@@ -1,10 +1,11 @@
 import * as THREE from 'three'
-import { scene, camera, renderer, clock } from '/utils/scene.js'
+import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createPhysicsWorld, createBox, updateMesh, createCrates } from '/utils/physics.js'
 import { createSimpleVehicle, updateVehicle } from '../../../utils/vehicle-simple.js'
+import { loadModel } from '/utils/loaders.js'
 
 const { Vector3 } = THREE
-
+createOrbitControls()
 const rigidBodies = []
 
 const ambientLight = new THREE.AmbientLight(0x404040)
@@ -33,8 +34,23 @@ crates.forEach(mesh => {
 })
 
 const width = 1.8, height = .6, length = 4
-const carMesh = createCarMesh(width, height, length)
-const { vehicle, wheels } = createSimpleVehicle({ physicsWorld, width, height, length, pos: new Vector3(0, 4, -20) })
+const { mesh: carMesh } = await loadModel({ file: 'vehicle/car/ford-t-speedster-1915/model.fbx', angle: Math.PI })
+
+const { vehicle, wheels } = createSimpleVehicle({
+  physicsWorld, width, height, length, pos: new Vector3(0, 4, -20),
+  wheelAxisPositionBack: -1,
+  wheelRadiusBack: .4,
+  wheelWidthBack: .3,
+  wheelHalfTrackBack: 1,
+  wheelAxisHeightBack: .3,
+
+  wheelAxisFrontPosition: 1.7,
+  wheelHalfTrackFront: 1,
+  wheelAxisHeightFront: .3,
+  wheelRadiusFront: .35,
+  wheelWidthFront: .2,
+})
+
 scene.add(...wheels, carMesh) // bez točkova kao tenk
 
 camera.position.set(0, 1.5, -1)
@@ -44,12 +60,6 @@ const lookAt = new Vector3(carMesh.position.x, carMesh.position.y, carMesh.posit
 camera.lookAt(lookAt)
 
 /* FUNCTIONS */
-
-function createCarMesh(w, l, h) {
-  const geometry = new THREE.BoxGeometry(w, l, h, 1, 1, 1)
-  const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: 0x990000 }))
-  return mesh
-}
 
 function addRigidBody(mesh) {
   scene.add(mesh)
