@@ -2,6 +2,7 @@
 import AmmoTerrain from './AmmoTerrain.js'
 import CameraControls from './CameraControls.js'
 import AmmoWorld from './AmmoWorld.js'
+import AmmoVehicle from './AmmoVehicle.js'
 
 /* INIT */
 
@@ -42,7 +43,7 @@ scene.add(dirLight)
 // vehicule
 const position = new THREE.Vector3(0, 5, 0)
 const quaternion = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
-const ammoVehicle = new THREEx.AmmoVehicle(ammoWorld.physicsWorld, position, quaternion)
+const ammoVehicle = new AmmoVehicle(ammoWorld.physicsWorld, position, quaternion)
 scene.add(ammoVehicle.object3d)
 
 buildVehicleSkinVeyron(ammoVehicle.parameters, meshes => {
