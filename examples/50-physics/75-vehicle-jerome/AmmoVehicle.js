@@ -2,13 +2,10 @@
 
 export default class AmmoVehicle {
   constructor(btPhysicsWorld, position, quaternion) {
-    const _this = this
-
     this.object3d = new THREE.Group
-    // Vehicle contants
 
-    _this.parameters = {}
-    const opt = _this.parameters
+    this.parameters = {}
+    const opt = this.parameters
     opt.chassisWidth = 1.8
     opt.chassisHeight = .6
     opt.chassisLength = 4
@@ -38,23 +35,18 @@ export default class AmmoVehicle {
     opt.maxEngineForce = 2000
     opt.maxBreakingForce = 100
 
-    // ////////////////////////////////////////////////////////////////////////////
-    //		build THREE.Group
-    // ////////////////////////////////////////////////////////////////////////////
     // TODO should that be outside, built before this constructor
     const chassisMesh = new THREE.Group()
     chassisMesh.name = 'chassis'
-    _this.object3d.add(chassisMesh)
+    this.object3d.add(chassisMesh)
     const wheelMeshes = []
     for (let i = 0; i < 4; i++) {
       wheelMeshes[i] = new THREE.Group()
       wheelMeshes[i].name = 'wheel_' + i
-      _this.object3d.add(wheelMeshes[i])
+      this.object3d.add(wheelMeshes[i])
     }
 
-    // ////////////////////////////////////////////////////////////////////////////
-    //		build chassis
-    // ////////////////////////////////////////////////////////////////////////////
+    // build chassis
     const geometry = new Ammo.btBoxShape(new Ammo.btVector3(opt.chassisWidth * .5, opt.chassisHeight * .5, opt.chassisLength * .5))
     const transform = new Ammo.btTransform()
     transform.setIdentity()
@@ -79,27 +71,17 @@ export default class AmmoVehicle {
 
     this.vehicle = vehicle
 
-    // ////////////////////////////////////////////////////////////////////////////
-    //		build wheels physics
-    // ////////////////////////////////////////////////////////////////////////////
+    // build wheels physics
     const FRONT_LEFT = 0
     const FRONT_RIGHT = 1
     const BACK_LEFT = 2
     const BACK_RIGHT = 3
-    createWheel(true, new Ammo.btVector3(opt.wheelHalfTrackFront, opt.wheelAxisHeightFront, opt.wheelAxisPositionFront), opt.wheelRadiusFront, opt.wheelWidthFront, FRONT_LEFT)
-    createWheel(true, new Ammo.btVector3(-opt.wheelHalfTrackFront, opt.wheelAxisHeightFront, opt.wheelAxisPositionFront), opt.wheelRadiusFront, opt.wheelWidthFront, FRONT_RIGHT)
-    createWheel(false, new Ammo.btVector3(-opt.wheelHalfTrackBack, opt.wheelAxisHeightBack, opt.wheelAxisPositionBack), opt.wheelRadiusBack, opt.wheelWidthBack, BACK_LEFT)
-    createWheel(false, new Ammo.btVector3(opt.wheelHalfTrackBack, opt.wheelAxisHeightBack, opt.wheelAxisPositionBack), opt.wheelRadiusBack, opt.wheelWidthBack, BACK_RIGHT)
+    createWheel(true, new Ammo.btVector3(opt.wheelHalfTrackFront, opt.wheelAxisHeightFront, opt.wheelAxisPositionFront), opt.wheelRadiusFront)
+    createWheel(true, new Ammo.btVector3(-opt.wheelHalfTrackFront, opt.wheelAxisHeightFront, opt.wheelAxisPositionFront), opt.wheelRadiusFront)
+    createWheel(false, new Ammo.btVector3(-opt.wheelHalfTrackBack, opt.wheelAxisHeightBack, opt.wheelAxisPositionBack), opt.wheelRadiusBack)
+    createWheel(false, new Ammo.btVector3(opt.wheelHalfTrackBack, opt.wheelAxisHeightBack, opt.wheelAxisPositionBack), opt.wheelRadiusBack)
 
-    _this.updateGamepad = function(actions) {
-    // var actions = {
-    // 	'steering' : 0,		// between [-1,1] -1 means left, +1 means right
-    // 	'breaking' : 0,		// between [0,1]. 0 means no breaking, +1 means full breaking
-    // 	'acceleration' : 0,	// between [0,1]. 0 means no acceleration, +1 means full acceleration
-    // 	'jump': false,		// true if the vehicle should go jump
-    // }
-
-      // honor.jump
+    this.updateGamepad = function(actions) {
       if (actions.jump) {
         actions.jump = false
         const impulse = new Ammo.btVector3(0, opt.massVehicle * 5, 0)
@@ -124,19 +106,11 @@ export default class AmmoVehicle {
     }
 
     // states
-    _this.updateKeyboard = (function() {
+    this.updateKeyboard = (function() {
       let vehicleSteering = 0
 
       // Sync keybord actions and physics and graphics
       return function(actions) {
-      // var actions = {
-      // 	'acceleration' : false,	// true if the vehicle is accelerating
-      // 	'braking' : false,	// true if the vehicle is breaking
-      // 	'left' : false,		// true if the vehicle should go left
-      // 	'right': false,		// true if the vehicle should go right
-      // 	'jump': false,		// true if the vehicle should go jump
-      // }
-
         const speed = vehicle.getCurrentSpeedKmHour()
         let breakingForce = 0
         let engineForce = 0
@@ -167,7 +141,6 @@ export default class AmmoVehicle {
         else
           vehicleSteering = 0
 
-        // honor.jump
         if (actions.jump) {
           actions.jump = false
           const impulse = new Ammo.btVector3(0, opt.massVehicle * 5, 0)
@@ -193,21 +166,21 @@ export default class AmmoVehicle {
       const nWheels = vehicle.getNumWheels()
       for (let i = 0; i < nWheels; i++) {
         vehicle.updateWheelTransform(i, true)
-        var transform = vehicle.getWheelTransformWS(i)
-        var position = transform.getOrigin()
-        var quaternion = transform.getRotation()
+        const transform = vehicle.getWheelTransformWS(i)
+        const position = transform.getOrigin()
+        const quaternion = transform.getRotation()
         wheelMeshes[i].position.set(position.x(), position.y(), position.z())
         wheelMeshes[i].quaternion.set(quaternion.x(), quaternion.y(), quaternion.z(), quaternion.w())
       }
 
-      var transform = vehicle.getChassisWorldTransform()
-      var position = transform.getOrigin()
-      var quaternion = transform.getRotation()
+      const transform = vehicle.getChassisWorldTransform()
+      const position = transform.getOrigin()
+      const quaternion = transform.getRotation()
       chassisMesh.position.set(position.x(), position.y(), position.z())
       chassisMesh.quaternion.set(quaternion.x(), quaternion.y(), quaternion.z(), quaternion.w())
     }
 
-    function createWheel(isFront, position, radius, width, index) {
+    function createWheel(isFront, position, radius) {
       const wheelDirectionCS0 = new Ammo.btVector3(0, -1, 0)
       const wheelAxleCS = new Ammo.btVector3(-1, 0, 0)
 
