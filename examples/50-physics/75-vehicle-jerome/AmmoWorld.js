@@ -100,7 +100,6 @@ AmmoWorld.prototype._updateCollisions = function() {
     // go thru all contacts
     for (let j = 0; j < nContact; j++) {
       const btContactPoint = manifold.getContactPoint(j)
-      // get THREEx.AmmoControls
       const ammoControls0 = getAmmoControls(manifold.getBody0())
       const ammoControls1 = getAmmoControls(manifold.getBody1())
       // dispatchEvent
