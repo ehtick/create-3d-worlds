@@ -227,9 +227,21 @@ startUpTHREEjs(window, {
   // ////////////////////////////////////////////////////////////////////////////
   //                Code Separator
   // ////////////////////////////////////////////////////////////////////////////
+  const createFootball	= function() {
+    const texture	= THREE.ImageUtils.loadTexture('images/Footballballfree.jpg59a2a1dc-64c8-4bc3-83ef-1257c9147fd1Large.jpg')
+    const geometry	= new THREE.SphereGeometry(0.5, 32, 16)
+    const material	= new THREE.MeshPhongMaterial({
+      map: texture,
+      bumpMap: texture,
+      bumpScale: 0.1,
+    })
+    const mesh	= new THREE.Mesh(geometry, material)
+    return mesh
+  }
+
   ;(function() {
     // return
-    const mesh = THREEx.SportBalls.createFootball()
+    const mesh = createFootball()
     mesh.scale.multiplyScalar(2)
     mesh.position.y = 5
     mesh.position.z = -20
