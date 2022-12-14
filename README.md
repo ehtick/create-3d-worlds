@@ -10,7 +10,10 @@ npx live-server
 ```
 
 ### Physics
+- isprobati dodavanje sile na kuglu: applyForce, applyImpulse or setLinearVelocity
+  https://medium.com/@bluemagnificent/moving-objects-in-javascript-3d-physics-using-ammo-js-and-three-js-6e39eff6d9e5
 - vozilo
+  https://jeromeetienne.github.io/threex.ammo/examples/vehicle.html
   - dodati fiziku na steam tenk ili lokomotivu
   - da gazi i gura prepreke
 - napraviti sletanje na mesec 3d

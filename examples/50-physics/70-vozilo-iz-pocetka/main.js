@@ -2,6 +2,7 @@ import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scen
 import { createPhysicsWorld, createGround, updateMesh, createCrates } from '/utils/physics.js'
 import { loadModel } from '/utils/loaders.js'
 import { createSun } from '/utils/light.js'
+import { getSize } from '/utils/helpers.js'
 
 const rigidBodies = []
 createOrbitControls()
@@ -15,6 +16,10 @@ addRigidBody(ground)
 createCrates().forEach(addRigidBody)
 
 const { mesh: carMesh } = await loadModel({ file: 'tank/steampunk/model.fbx' })
+const { x, y, z } = getSize(carMesh)
+// const { vehicle, body } = createVehicle({
+//   physicsWorld, width: x, height: y, length: z
+// })
 
 scene.add(carMesh)
 
