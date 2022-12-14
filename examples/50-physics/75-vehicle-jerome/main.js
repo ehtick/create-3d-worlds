@@ -3,6 +3,7 @@ import AmmoTerrain from './AmmoTerrain.js'
 import CameraControls from './CameraControls.js'
 import AmmoWorld from './AmmoWorld.js'
 import AmmoVehicle from './AmmoVehicle.js'
+import AmmoControls from './AmmoControls.js'
 
 /* INIT */
 
@@ -105,7 +106,7 @@ const tremplinQuaternion = new THREE.Quaternion(0, 0, 0, 1)
 tremplinQuaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 15)
 mesh.quaternion.copy(tremplinQuaternion)
 
-const ammoControls = new THREEx.AmmoControls(mesh, { mass: 0 })
+const ammoControls = new AmmoControls(mesh, { mass: 0 })
 ammoWorld.add(ammoControls)
 
 const createFootball = function() {
@@ -132,7 +133,7 @@ ballMesh.quaternion.set(Math.random(), Math.random(), Math.random(), 1).normaliz
 
 scene.add(ballMesh)
 
-const ammoControlsBall = new THREEx.AmmoControls(ballMesh, { mass: 30 })
+const ammoControlsBall = new AmmoControls(ballMesh, { mass: 30 })
 ammoControlsBall.setFriction(0.9)
 ammoControlsBall.setRestitution(0.95)
 ammoWorld.add(ammoControlsBall)
@@ -162,7 +163,7 @@ function buildCratesPile(nCubes) {
         mesh.position.z += 6
         scene.add(mesh)
 
-        const ammoControls = new THREEx.AmmoControls(mesh)
+        const ammoControls = new AmmoControls(mesh)
         ammoWorld.add(ammoControls)
       }
 }

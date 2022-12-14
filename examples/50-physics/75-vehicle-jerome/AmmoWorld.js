@@ -1,4 +1,5 @@
 /* global THREE, Ammo */
+import AmmoControls from './AmmoControls.js'
 
 export default class AmmoWorld {
   constructor() {
@@ -54,7 +55,7 @@ AmmoWorld.prototype.update = function() {
 // //////////////////////////////////////////////////////////////////////////////
 
 AmmoWorld.prototype.add = function(ammoControls) {
-  console.assert(ammoControls instanceof THREEx.AmmoControls)
+  console.assert(ammoControls instanceof AmmoControls)
 
   this.physicsWorld.addRigidBody(ammoControls.physicsBody)
 
@@ -62,7 +63,7 @@ AmmoWorld.prototype.add = function(ammoControls) {
 }
 
 AmmoWorld.prototype.remove = function(ammoControls) {
-  console.assert(ammoControls instanceof THREEx.AmmoControls)
+  console.assert(ammoControls instanceof AmmoControls)
 
   if (this.contains(ammoControls) === false) return
 
