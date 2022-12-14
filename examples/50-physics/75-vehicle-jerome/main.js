@@ -1,6 +1,7 @@
-/* global THREE, Ammo */
+/* global THREE */
 import AmmoTerrain from './AmmoTerrain.js'
 import CameraControls from './CameraControls.js'
+import AmmoWorld from './AmmoWorld.js'
 
 /* INIT */
 
@@ -15,7 +16,7 @@ camera.position.z = 10
 
 const speedometer = document.getElementById('speedometer')
 const cameraControls = new CameraControls(camera)
-const ammoWorld = new THREEx.AmmoWorld()
+const ammoWorld = new AmmoWorld()
 
 let light = new THREE.AmbientLight(0x202020)
 scene.add(light)
