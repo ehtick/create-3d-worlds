@@ -1,6 +1,82 @@
+function startUpTHREEjs(exports, options, callback) {
+
+  // handle options default values
+  options.cameraControls = options.cameraControls !== undefined ? options.cameraControls : 'OrbitControls'
+
+  //////////////////////////////////////////////////////////////////////////////////
+  //		Init
+  //////////////////////////////////////////////////////////////////////////////////
+
+  // init renderer
+  var renderer = new THREE.WebGLRenderer({
+    antialias: true
+  });
+  renderer.setClearColor(new THREE.Color('black'), 1)
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  document.body.appendChild(renderer.domElement);
+
+  // array of functions for the rendering loop
+  var onRenderFcts = [];
+
+  // init scene and camera
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
+  camera.position.z = 10;
+  if (options.cameraControls === 'OrbitControls') {
+    var controls = new THREE.OrbitControls(camera, renderer.domElement)
+  } else if (options.cameraControls === false) {
+    var controls = null
+  } else {
+    console.assert(false, 'unknown options.cameraControls: ' + options.cameraControls)
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////
+  //		render the whole thing on the page
+  //////////////////////////////////////////////////////////////////////////////////
+
+  // handle window resize
+  window.addEventListener('resize', function () {
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()
+  }, false)
+
+  // render the scene
+  onRenderFcts.push(function () {
+    renderer.render(scene, camera);
+  })
+
+  // run the rendering loop
+  var lastTimeMsec = null
+  requestAnimationFrame(function animate(nowMsec) {
+    // keep looping
+    requestAnimationFrame(animate);
+    // measure time
+    lastTimeMsec = lastTimeMsec || nowMsec - 1000 / 60
+    var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
+    lastTimeMsec = nowMsec
+    // call each update function
+    onRenderFcts.forEach(function (onRenderFct) {
+      onRenderFct(deltaMsec / 1000, nowMsec / 1000)
+    })
+  })
+
+  //////////////////////////////////////////////////////////////////////////////
+  //		Code Separator
+  //////////////////////////////////////////////////////////////////////////////
+
+  exports.renderer = renderer
+  exports.scene = scene
+  exports.camera = camera
+  exports.controls = controls
+  exports.onRenderFcts = onRenderFcts
+
+  callback(exports)
+}
 
 startUpTHREEjs(window, {
-  // stats : false,
   cameraControls: false
 }, demo => {
 
@@ -22,39 +98,39 @@ startUpTHREEjs(window, {
     ammoWorld.update()
   })
 
-  // ////////////////////////////////////////////////////////////////////////////////
-  //		set 3 point lighting						//
-  // ////////////////////////////////////////////////////////////////////////////////
+    // ////////////////////////////////////////////////////////////////////////////////
+    //		set 3 point lighting						//
+    // ////////////////////////////////////////////////////////////////////////////////
 
-  ;(function() {
-    // add a ambient light
-    var light	= new THREE.AmbientLight(0x202020)
-    // var light	= new THREE.HemisphereLight(0.2)
-    scene.add(light)
-    // add a light in front
-    var light	= new THREE.DirectionalLight('white', 0.5)
-    light.position.set(0.2, 0.5, -2)
-    scene.add(light)
-  })()
+    ; (function () {
+      // add a ambient light
+      var light = new THREE.AmbientLight(0x202020)
+      // var light	= new THREE.HemisphereLight(0.2)
+      scene.add(light)
+      // add a light in front
+      var light = new THREE.DirectionalLight('white', 0.5)
+      light.position.set(0.2, 0.5, -2)
+      scene.add(light)
+    })()
 
-  ;(function() {
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8)
-    dirLight.position.set(-15, 10, 15).setLength(60)
-    dirLight.castShadow = true
-    dirLight.shadow.bias = -0.003
-    dirLight.shadow.bias = 0.001
-    dirLight.shadow.camera.near = 1
-    dirLight.shadow.camera.far = 200
-    dirLight.shadow.camera.right = 25 * 3
-    dirLight.shadow.camera.left = - 25 * 3
-    dirLight.shadow.camera.top	= 25
-    dirLight.shadow.camera.bottom = - 25
-    dirLight.shadow.mapSize.x = 512
-    dirLight.shadow.mapSize.y = 512
-    scene.add(dirLight)
+    ; (function () {
+      const dirLight = new THREE.DirectionalLight(0xffffff, 0.8)
+      dirLight.position.set(-15, 10, 15).setLength(60)
+      dirLight.castShadow = true
+      dirLight.shadow.bias = -0.003
+      dirLight.shadow.bias = 0.001
+      dirLight.shadow.camera.near = 1
+      dirLight.shadow.camera.far = 200
+      dirLight.shadow.camera.right = 25 * 3
+      dirLight.shadow.camera.left = - 25 * 3
+      dirLight.shadow.camera.top = 25
+      dirLight.shadow.camera.bottom = - 25
+      dirLight.shadow.mapSize.x = 512
+      dirLight.shadow.mapSize.y = 512
+      scene.add(dirLight)
 
-    // scene.add( new THREE.CameraHelper( dirLight.shadow.camera ) );
-  })()
+      // scene.add( new THREE.CameraHelper( dirLight.shadow.camera ) );
+    })()
 
   // ////////////////////////////////////////////////////////////////////////////
   //                add vehicule
@@ -132,7 +208,7 @@ startUpTHREEjs(window, {
   } else if (navigator.webkitGetGamepads)
     navigator.getGamepads = navigator.webkitGetGamepads
   else
-    navigator.getGamepads = function() {
+    navigator.getGamepads = function () {
       return []
     }
 
@@ -149,22 +225,22 @@ startUpTHREEjs(window, {
   window.addEventListener('gamepadconnected', event => {
     console.log('Gamepad connected at index %d: %s. %d buttons, %d axes.', event.gamepad.index, event.gamepad.id,
       event.gamepad.buttons.length, event.gamepad.axes.length)
-  // isGamepadConnected = true
+    // isGamepadConnected = true
   })
 
   window.addEventListener('gamepaddisconnected', e => {
     consolevent.log('Gamepad disconnected from index %d: %s', event.gamepad.index, event.gamepad.id)
-  // isGamepadConnected = false
+    // isGamepadConnected = false
   })
 
-  onRenderFcts.push((function() {
+  onRenderFcts.push((function () {
     let button1WasPressed = false
-    return function() {
+    return function () {
       if (navigator.getGamepads()[0] === undefined) return
 
       const gamepads = navigator.getGamepads()
       const gamepad = gamepads[0]
-      if (gamepad === undefined) 	return
+      if (gamepad === undefined) return
       // for a xbox 360 wired..
       vehicleGamepadActions.steering = -gamepad.axes[0]
       vehicleGamepadActions.acceleration = gamepad.buttons[7].value
@@ -192,112 +268,112 @@ startUpTHREEjs(window, {
     speedometer.innerHTML = (speed < 0 ? '(R) ' : '') + Math.abs(speed).toFixed(1) + ' km/h'
   })
 
-  // //////////////////////////////////////////////////////////////////////////////
-  //          display tremplin
-  // //////////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////////////
+    //          display tremplin
+    // //////////////////////////////////////////////////////////////////////////////
 
-  ;(function() {
-    // return
-    const geometry = new THREE.BoxGeometry(8, 4, 15)
-    const material = new THREE.MeshPhongMaterial({
-      map: new THREE.TextureLoader().load('textures/grid.png', texture => {
-        texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-        texture.repeat.set(geometry.parameters.width, geometry.parameters.depth)
-        texture.anisotropy = renderer.getMaxAnisotropy()
+    ; (function () {
+      // return
+      const geometry = new THREE.BoxGeometry(8, 4, 15)
+      const material = new THREE.MeshPhongMaterial({
+        map: new THREE.TextureLoader().load('textures/grid.png', texture => {
+          texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+          texture.repeat.set(geometry.parameters.width, geometry.parameters.depth)
+          texture.anisotropy = renderer.getMaxAnisotropy()
+        })
       })
-    })
-    const mesh = new THREE.Mesh(geometry, material)
-    mesh.position.x = -10
-    mesh.position.y = -mesh.geometry.parameters.height / 2 + 1.5
-    mesh.position.z = 20
-    mesh.receiveShadow = true
-    scene.add(mesh)
-    mesh.name = 'tremplin'
+      const mesh = new THREE.Mesh(geometry, material)
+      mesh.position.x = -10
+      mesh.position.y = -mesh.geometry.parameters.height / 2 + 1.5
+      mesh.position.z = 20
+      mesh.receiveShadow = true
+      scene.add(mesh)
+      mesh.name = 'tremplin'
 
-    const quaternion = new THREE.Quaternion(0, 0, 0, 1)
-    quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 15)
-    mesh.quaternion.copy(quaternion)
+      const quaternion = new THREE.Quaternion(0, 0, 0, 1)
+      quaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 15)
+      mesh.quaternion.copy(quaternion)
 
-    const ammoControls = new THREEx.AmmoControls(mesh, {
-      mass: 0
-    })
-    ammoWorld.add(ammoControls)
-  })()
+      const ammoControls = new THREEx.AmmoControls(mesh, {
+        mass: 0
+      })
+      ammoWorld.add(ammoControls)
+    })()
 
   // ////////////////////////////////////////////////////////////////////////////
   //                Code Separator
   // ////////////////////////////////////////////////////////////////////////////
-  const createFootball	= function() {
-    const texture	= THREE.ImageUtils.loadTexture('images/Footballballfree.jpg59a2a1dc-64c8-4bc3-83ef-1257c9147fd1Large.jpg')
-    const geometry	= new THREE.SphereGeometry(0.5, 32, 16)
-    const material	= new THREE.MeshPhongMaterial({
+  const createFootball = function () {
+    const texture = THREE.ImageUtils.loadTexture('images/Footballballfree.jpg59a2a1dc-64c8-4bc3-83ef-1257c9147fd1Large.jpg')
+    const geometry = new THREE.SphereGeometry(0.5, 32, 16)
+    const material = new THREE.MeshPhongMaterial({
       map: texture,
       bumpMap: texture,
       bumpScale: 0.1,
     })
-    const mesh	= new THREE.Mesh(geometry, material)
+    const mesh = new THREE.Mesh(geometry, material)
     return mesh
   }
 
-  ;(function() {
-    // return
-    const mesh = createFootball()
-    mesh.scale.multiplyScalar(2)
-    mesh.position.y = 5
-    mesh.position.z = -20
+    ; (function () {
+      // return
+      const mesh = createFootball()
+      mesh.scale.multiplyScalar(2)
+      mesh.position.y = 5
+      mesh.position.z = -20
 
-    mesh.castShadow = true
-    mesh.receiveShadow = true
+      mesh.castShadow = true
+      mesh.receiveShadow = true
 
-    mesh.quaternion.set(Math.random(), Math.random(), Math.random(), 1).normalize()
+      mesh.quaternion.set(Math.random(), Math.random(), Math.random(), 1).normalize()
 
-    scene.add(mesh)
+      scene.add(mesh)
 
-    const ammoControls = new THREEx.AmmoControls(mesh, {
-      mass: 30
-    })
-    ammoControls.setFriction(0.9)
-    ammoControls.setRestitution(0.95)
-    ammoWorld.add(ammoControls)
-  })()
+      const ammoControls = new THREEx.AmmoControls(mesh, {
+        mass: 30
+      })
+      ammoControls.setFriction(0.9)
+      ammoControls.setRestitution(0.95)
+      ammoWorld.add(ammoControls)
+    })()
 
-  // //////////////////////////////////////////////////////////////////////////////
-  //          Pile of crate
-  // //////////////////////////////////////////////////////////////////////////////
-  ;(function() {
-    return
-    const geometry = new THREE.BoxGeometry(0.75, 0.75, 0.75)
-    const material = new THREE.MeshPhongMaterial({
-    })
-    const model = new THREE.Mesh(geometry, material)
-    model.castShadow = true
-    model.receiveShadow = true
+    // //////////////////////////////////////////////////////////////////////////////
+    //          Pile of crate
+    // //////////////////////////////////////////////////////////////////////////////
+    ; (function () {
+      return
+      const geometry = new THREE.BoxGeometry(0.75, 0.75, 0.75)
+      const material = new THREE.MeshPhongMaterial({
+      })
+      const model = new THREE.Mesh(geometry, material)
+      model.castShadow = true
+      model.receiveShadow = true
 
-    const size = new THREE.Vector3().set(8, 6, 1)
-    buildCratesPile(size)
+      const size = new THREE.Vector3().set(8, 6, 1)
+      buildCratesPile(size)
 
-    return
+      return
 
-    function buildCratesPile(nCubes) {
-      for (let x = 0; x < nCubes.x; x++)
-        for (let y = 0; y < nCubes.y; y++)
-          for (let z = 0; z < nCubes.z; z++) {
-            const mesh = model.clone()
+      function buildCratesPile(nCubes) {
+        for (let x = 0; x < nCubes.x; x++)
+          for (let y = 0; y < nCubes.y; y++)
+            for (let z = 0; z < nCubes.z; z++) {
+              const mesh = model.clone()
 
-            mesh.position.x = (x - nCubes.x / 2 + 0.5) * mesh.scale.x * geometry.parameters.width
-            mesh.position.y = (y - nCubes.y / 2 + 0.5) * mesh.scale.y * geometry.parameters.height
-            mesh.position.z = (z - nCubes.z / 2 + 0.5) * mesh.scale.z * geometry.parameters.depth
+              mesh.position.x = (x - nCubes.x / 2 + 0.5) * mesh.scale.x * geometry.parameters.width
+              mesh.position.y = (y - nCubes.y / 2 + 0.5) * mesh.scale.y * geometry.parameters.height
+              mesh.position.z = (z - nCubes.z / 2 + 0.5) * mesh.scale.z * geometry.parameters.depth
 
-            mesh.position.y += nCubes.y / 2 * mesh.scale.y * geometry.parameters.height
-            mesh.position.z += 6
-            scene.add(mesh)
+              mesh.position.y += nCubes.y / 2 * mesh.scale.y * geometry.parameters.height
+              mesh.position.z += 6
+              scene.add(mesh)
 
-            const ammoControls = new THREEx.AmmoControls(mesh)
-            ammoWorld.add(ammoControls)
-          }
+              const ammoControls = new THREEx.AmmoControls(mesh)
+              ammoWorld.add(ammoControls)
+            }
 
-    }
-  })()
+      }
+    })()
 
   // ////////////////////////////////////////////////////////////////////////////
   //                Code Separator
@@ -361,42 +437,42 @@ startUpTHREEjs(window, {
       'Blue': new THREE.MeshLambertMaterial({ color: 0x001133, envMap: textureCube, combine: THREE.MixOperation, reflectivity: 0.3 }),
       'Red': new THREE.MeshLambertMaterial({ color: 0x660000, envMap: textureCube, combine: THREE.MixOperation, reflectivity: 0.25 }),
       'Black': new THREE.MeshLambertMaterial({ color: 0x000000, envMap: textureCube, combine: THREE.MixOperation, reflectivity: 0.15 }),
-      'White':	new THREE.MeshLambertMaterial({ color: 0xffffff, envMap: textureCube, combine: THREE.MixOperation, reflectivity: 0.25 }),
+      'White': new THREE.MeshLambertMaterial({ color: 0xffffff, envMap: textureCube, combine: THREE.MixOperation, reflectivity: 0.25 }),
 
       'Carmine': new THREE.MeshPhongMaterial({ color: 0x770000, specular: 0xffaaaa, envMap: textureCube, combine: THREE.MultiplyOperation }),
       'Gold': new THREE.MeshPhongMaterial({ color: 0xaa9944, specular: 0xbbaa99, shininess: 50, envMap: textureCube, combine: THREE.MultiplyOperation }),
-      'Bronze':	new THREE.MeshPhongMaterial({ color: 0x150505, specular: 0xee6600, shininess: 10, envMap: textureCube, combine: THREE.MixOperation, reflectivity: 0.25 }),
+      'Bronze': new THREE.MeshPhongMaterial({ color: 0x150505, specular: 0xee6600, shininess: 10, envMap: textureCube, combine: THREE.MixOperation, reflectivity: 0.25 }),
       'Chrome': new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff, envMap: textureCube, combine: THREE.MultiplyOperation }),
 
       'Orange metal': new THREE.MeshLambertMaterial({ color: 0xff6600, envMap: textureCube, combine: THREE.MultiplyOperation }),
       'Blue metal': new THREE.MeshLambertMaterial({ color: 0x001133, envMap: textureCube, combine: THREE.MultiplyOperation }),
       'Red metal': new THREE.MeshLambertMaterial({ color: 0x770000, envMap: textureCube, combine: THREE.MultiplyOperation }),
       'Green metal': new THREE.MeshLambertMaterial({ color: 0x007711, envMap: textureCube, combine: THREE.MultiplyOperation }),
-      'Black metal':	new THREE.MeshLambertMaterial({ color: 0x222222, envMap: textureCube, combine: THREE.MultiplyOperation }),
+      'Black metal': new THREE.MeshLambertMaterial({ color: 0x222222, envMap: textureCube, combine: THREE.MultiplyOperation }),
 
       'Pure chrome': new THREE.MeshLambertMaterial({ color: 0xffffff, envMap: textureCube }),
-      'Dark chrome':	new THREE.MeshLambertMaterial({ color: 0x444444, envMap: textureCube }),
+      'Dark chrome': new THREE.MeshLambertMaterial({ color: 0x444444, envMap: textureCube }),
       'Darker chrome': new THREE.MeshLambertMaterial({ color: 0x222222, envMap: textureCube }),
 
       'Black glass': new THREE.MeshLambertMaterial({ color: 0x101016, envMap: textureCube, opacity: 0.975, transparent: true }),
-      'Dark glass':	new THREE.MeshLambertMaterial({ color: 0x101046, envMap: textureCube, opacity: 0.25, transparent: true }),
-      'Blue glass':	new THREE.MeshLambertMaterial({ color: 0x668899, envMap: textureCube, opacity: 0.75, transparent: true }),
-      'Light glass':	new THREE.MeshBasicMaterial({ color: 0x223344, envMap: textureCube, opacity: 0.25, transparent: true, combine: THREE.MixOperation, reflectivity: 0.25 }),
+      'Dark glass': new THREE.MeshLambertMaterial({ color: 0x101046, envMap: textureCube, opacity: 0.25, transparent: true }),
+      'Blue glass': new THREE.MeshLambertMaterial({ color: 0x668899, envMap: textureCube, opacity: 0.75, transparent: true }),
+      'Light glass': new THREE.MeshBasicMaterial({ color: 0x223344, envMap: textureCube, opacity: 0.25, transparent: true, combine: THREE.MixOperation, reflectivity: 0.25 }),
 
-      'Red glass':	new THREE.MeshLambertMaterial({ color: 0xff0000, opacity: 0.75, transparent: true }),
-      'Yellow glass':	new THREE.MeshLambertMaterial({ color: 0xffffaa, opacity: 0.75, transparent: true }),
-      'Orange glass':	new THREE.MeshLambertMaterial({ color: 0x995500, opacity: 0.75, transparent: true }),
+      'Red glass': new THREE.MeshLambertMaterial({ color: 0xff0000, opacity: 0.75, transparent: true }),
+      'Yellow glass': new THREE.MeshLambertMaterial({ color: 0xffffaa, opacity: 0.75, transparent: true }),
+      'Orange glass': new THREE.MeshLambertMaterial({ color: 0x995500, opacity: 0.75, transparent: true }),
 
-      'Orange glass 50':	new THREE.MeshLambertMaterial({ color: 0xffbb00, opacity: 0.5, transparent: true }),
+      'Orange glass 50': new THREE.MeshLambertMaterial({ color: 0xffbb00, opacity: 0.5, transparent: true }),
       'Red glass 50': new THREE.MeshLambertMaterial({ color: 0xff0000, opacity: 0.5, transparent: true }),
 
-      'Fullblack rough':	new THREE.MeshLambertMaterial({ color: 0x000000 }),
-      'Black rough':	new THREE.MeshLambertMaterial({ color: 0x050505 }),
-      'Darkgray rough':	new THREE.MeshLambertMaterial({ color: 0x090909 }),
-      'Red rough':	new THREE.MeshLambertMaterial({ color: 0x330500 }),
+      'Fullblack rough': new THREE.MeshLambertMaterial({ color: 0x000000 }),
+      'Black rough': new THREE.MeshLambertMaterial({ color: 0x050505 }),
+      'Darkgray rough': new THREE.MeshLambertMaterial({ color: 0x090909 }),
+      'Red rough': new THREE.MeshLambertMaterial({ color: 0x330500 }),
 
-      'Darkgray shiny':	new THREE.MeshPhongMaterial({ color: 0x000000, specular: 0x050505 }),
-      'Gray shiny':	new THREE.MeshPhongMaterial({ color: 0x050505, shininess: 20 })
+      'Darkgray shiny': new THREE.MeshPhongMaterial({ color: 0x000000, specular: 0x050505 }),
+      'Gray shiny': new THREE.MeshPhongMaterial({ color: 0x050505, shininess: 20 })
 
     }
 
@@ -476,7 +552,7 @@ startUpTHREEjs(window, {
   // ////////////////////////////////////////////////////////////////////////////
   //		terrain
   // ////////////////////////////////////////////////////////////////////////////
-  ;(function() {
+  ; (function () {
     // Heightfield parameters
     const terrain3dWidth = 60
     const terrain3dDepth = 120
@@ -493,94 +569,94 @@ startUpTHREEjs(window, {
     scene.add(ammoTerrain.object3d)
   })()
 
-  // //////////////////////////////////////////////////////////////////////////////
-  //          wall around the terrain
-  // //////////////////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////////////////////
+    //          wall around the terrain
+    // //////////////////////////////////////////////////////////////////////////////
 
-  ;(function() {
-    const terrain3dWidth = 60
-    const terrain3dHeight = 30
-    const terrain3dDepth = 120
+    ; (function () {
+      const terrain3dWidth = 60
+      const terrain3dHeight = 30
+      const terrain3dDepth = 120
 
-    // east/west model
-    var geometry = new THREE.PlaneGeometry(terrain3dHeight, terrain3dDepth)
-    var material = new THREE.MeshLambertMaterial({
-      map: new THREE.TextureLoader().load('textures/grid.png', texture => {
-        texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-        texture.repeat.set(geometry.parameters.width, geometry.parameters.height)
-        // texture.anisotropy = renderer.getMaxAnisotropy()
-      }),
+      // east/west model
+      var geometry = new THREE.PlaneGeometry(terrain3dHeight, terrain3dDepth)
+      var material = new THREE.MeshLambertMaterial({
+        map: new THREE.TextureLoader().load('textures/grid.png', texture => {
+          texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+          texture.repeat.set(geometry.parameters.width, geometry.parameters.height)
+          // texture.anisotropy = renderer.getMaxAnisotropy()
+        }),
 
-    })
-    var model = new THREE.Mesh(geometry, material)
-    model.receiveShadow = true
-
-    // east wall
-    var mesh = model.clone()
-    mesh.position.x = terrain3dWidth / 2
-    mesh.position.y = terrain3dHeight / 2
-    mesh.rotateX(Math.PI / 2)
-    mesh.rotateY(-Math.PI / 2)
-    addStaticPlane(mesh)
-
-    // west wall
-    var mesh = model.clone()
-    mesh.position.x = -terrain3dWidth / 2
-    mesh.position.y = terrain3dHeight / 2
-    mesh.rotateX(Math.PI / 2)
-    mesh.rotateY(Math.PI / 2)
-    addStaticPlane(mesh)
-
-    // ////////////////////////////////////////////////////////////////////////////
-    //		Code Separator
-    // ////////////////////////////////////////////////////////////////////////////
-
-    // north/south model
-    var geometry = new THREE.PlaneGeometry(terrain3dHeight, terrain3dWidth)
-    var material = new THREE.MeshLambertMaterial({
-      map: new THREE.TextureLoader().load('textures/grid.png', texture => {
-        texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-        texture.repeat.set(geometry.parameters.width, geometry.parameters.height)
-        // texture.anisotropy = renderer.getMaxAnisotropy()
-      }),
-
-    })
-    var model = new THREE.Mesh(geometry, material)
-    model.receiveShadow = true
-
-    // north wall
-    var mesh = model.clone()
-    mesh.position.z = -terrain3dDepth / 2
-    mesh.position.y = terrain3dHeight / 2
-    // mesh.rotateX( Math.PI/2)
-    mesh.rotateZ(Math.PI / 2)
-    addStaticPlane(mesh)
-
-    // south wall
-    var mesh = model.clone()
-    mesh.position.z = terrain3dDepth / 2
-    mesh.position.y = terrain3dHeight / 2
-    mesh.rotateY(Math.PI)
-    mesh.rotateZ(Math.PI / 2)
-    addStaticPlane(mesh)
-
-    return
-
-    // ////////////////////////////////////////////////////////////////////////////
-    //		Code Separator
-    // ////////////////////////////////////////////////////////////////////////////
-
-    function addStaticPlane(mesh) {
-      scene.add(mesh)
-      // Create infinite ground plane 50 meters down. This is to make sure things don't fall down to infinity and irritate our collision detection
-      const shape = new Ammo.btStaticPlaneShape(new Ammo.btVector3(0, 0, 1), 0)
-      const ammoControls = new THREEx.AmmoControls(mesh, {
-        mass: 0,
-        shape,
       })
-      ammoControls.setRestitution(1.0)
-      ammoWorld.add(ammoControls)
-    }
-  })()
+      var model = new THREE.Mesh(geometry, material)
+      model.receiveShadow = true
+
+      // east wall
+      var mesh = model.clone()
+      mesh.position.x = terrain3dWidth / 2
+      mesh.position.y = terrain3dHeight / 2
+      mesh.rotateX(Math.PI / 2)
+      mesh.rotateY(-Math.PI / 2)
+      addStaticPlane(mesh)
+
+      // west wall
+      var mesh = model.clone()
+      mesh.position.x = -terrain3dWidth / 2
+      mesh.position.y = terrain3dHeight / 2
+      mesh.rotateX(Math.PI / 2)
+      mesh.rotateY(Math.PI / 2)
+      addStaticPlane(mesh)
+
+      // ////////////////////////////////////////////////////////////////////////////
+      //		Code Separator
+      // ////////////////////////////////////////////////////////////////////////////
+
+      // north/south model
+      var geometry = new THREE.PlaneGeometry(terrain3dHeight, terrain3dWidth)
+      var material = new THREE.MeshLambertMaterial({
+        map: new THREE.TextureLoader().load('textures/grid.png', texture => {
+          texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+          texture.repeat.set(geometry.parameters.width, geometry.parameters.height)
+          // texture.anisotropy = renderer.getMaxAnisotropy()
+        }),
+
+      })
+      var model = new THREE.Mesh(geometry, material)
+      model.receiveShadow = true
+
+      // north wall
+      var mesh = model.clone()
+      mesh.position.z = -terrain3dDepth / 2
+      mesh.position.y = terrain3dHeight / 2
+      // mesh.rotateX( Math.PI/2)
+      mesh.rotateZ(Math.PI / 2)
+      addStaticPlane(mesh)
+
+      // south wall
+      var mesh = model.clone()
+      mesh.position.z = terrain3dDepth / 2
+      mesh.position.y = terrain3dHeight / 2
+      mesh.rotateY(Math.PI)
+      mesh.rotateZ(Math.PI / 2)
+      addStaticPlane(mesh)
+
+      return
+
+      // ////////////////////////////////////////////////////////////////////////////
+      //		Code Separator
+      // ////////////////////////////////////////////////////////////////////////////
+
+      function addStaticPlane(mesh) {
+        scene.add(mesh)
+        // Create infinite ground plane 50 meters down. This is to make sure things don't fall down to infinity and irritate our collision detection
+        const shape = new Ammo.btStaticPlaneShape(new Ammo.btVector3(0, 0, 1), 0)
+        const ammoControls = new THREEx.AmmoControls(mesh, {
+          mass: 0,
+          shape,
+        })
+        ammoControls.setRestitution(1.0)
+        ammoWorld.add(ammoControls)
+      }
+    })()
 
 })
