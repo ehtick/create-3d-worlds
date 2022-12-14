@@ -1,5 +1,5 @@
 /* global THREE, Ammo */
-import AmmoControls from './AmmoControls.js'
+import AmmoBody from './AmmoBody.js'
 
 export default class AmmoWorld {
   constructor() {
@@ -55,7 +55,7 @@ AmmoWorld.prototype.update = function() {
 // //////////////////////////////////////////////////////////////////////////////
 
 AmmoWorld.prototype.add = function(ammoControls) {
-  console.assert(ammoControls instanceof AmmoControls)
+  console.assert(ammoControls instanceof AmmoBody)
 
   this.physicsWorld.addRigidBody(ammoControls.physicsBody)
 
@@ -63,7 +63,7 @@ AmmoWorld.prototype.add = function(ammoControls) {
 }
 
 AmmoWorld.prototype.remove = function(ammoControls) {
-  console.assert(ammoControls instanceof AmmoControls)
+  console.assert(ammoControls instanceof AmmoBody)
 
   if (this.contains(ammoControls) === false) return
 
@@ -112,7 +112,7 @@ AmmoWorld.prototype._updateCollisions = function() {
   function getAmmoControls(body) {
     const object3dId = body.getUserIndex()
     const ammoControls = _this._ammoControls.find(ammoControls => ammoControls.object3d.id === object3dId)
-    console.assert(ammoControls instanceof THREEx.AmmoControls === true)
+    console.assert(ammoControls instanceof THREEx.AmmoBody === true)
     return ammoControls
   }
 }

@@ -76,7 +76,7 @@ const guessMassFromObject3d = function(object3d) {
   return mass
 }
 
-export default class AmmoControls {
+export default class AmmoBody {
   constructor(object3d, options = {}) {
     this.object3d = object3d
 
@@ -129,4 +129,4 @@ export default class AmmoControls {
     this.body.activate()
   }
 }
-// Object.assign(AmmoControls.prototype, THREE.EventDispatcher.prototype)
+// Object.assign(AmmoBody.prototype, THREE.EventDispatcher.prototype)
