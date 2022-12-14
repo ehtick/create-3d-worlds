@@ -5,41 +5,13 @@ renderer.setClearColor(new THREE.Color('black'), 1)
 renderer.setSize(window.innerWidth, window.innerHeight)
 document.body.appendChild(renderer.domElement)
 
-// array of functions for the rendering loop
-const onRenderFcts = []
-
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000)
 camera.position.z = 10
 
-// render the scene
-onRenderFcts.push(() => {
-  renderer.render(scene, camera)
-})
-
-// run the rendering loop
-let lastTimeMsec = null
-requestAnimationFrame(function animate(nowMsec) {
-  requestAnimationFrame(animate)
-  // measure time
-  lastTimeMsec = lastTimeMsec || nowMsec - 1000 / 60
-  const deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
-  lastTimeMsec = nowMsec
-  // call each update function
-  onRenderFcts.forEach(callback => {
-    callback(deltaMsec / 1000, nowMsec / 1000)
-  })
-})
-
+const speedometer = document.getElementById('speedometer')
 const cameraControls = new THREEx.AmmoVehicleControls(camera)
-onRenderFcts.push(() => {
-  cameraControls.update(ammoVehicle)
-})
-
 const ammoWorld = new THREEx.AmmoWorld()
-onRenderFcts.push(() => {
-  ammoWorld.update()
-})
 
 let light = new THREE.AmbientLight(0x202020)
 scene.add(light)
@@ -66,9 +38,6 @@ scene.add(dirLight)
 const position = new THREE.Vector3(0, 5, 0)
 const quaternion = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
 const ammoVehicle = new THREEx.AmmoVehicle(ammoWorld.physicsWorld, position, quaternion)
-onRenderFcts.push(() => {
-  ammoVehicle.updateKeyboard(vehicleKeyboardActions)
-})
 scene.add(ammoVehicle.object3d)
 
 buildVehicleSkinVeyron(ammoVehicle.parameters, meshes => {
@@ -114,17 +83,6 @@ window.addEventListener('keyup', event => {
   vehicleKeyboardActions[keysActions[event.key]] = false
   event.preventDefault()
   event.stopPropagation()
-})
-
-// ////////////////////////////////////////////////////////////////////////////
-//                update speedometer
-// ////////////////////////////////////////////////////////////////////////////
-
-const speedometer = document.getElementById('speedometer')
-onRenderFcts.push(() => {
-  const speed = ammoVehicle.vehicle.getCurrentSpeedKmHour()
-
-  speedometer.innerHTML = (speed < 0 ? '(R) ' : '') + Math.abs(speed).toFixed(1) + ' km/h'
 })
 
 // //////////////////////////////////////////////////////////////////////////////
@@ -293,3 +251,15 @@ const ammoTerrain = new THREEx.AmmoTerrain(terrainWidth, terrainDepth, terrainMi
 ammoTerrain.body.setRestitution(0.9)
 ammoWorld.physicsWorld.addRigidBody(ammoTerrain.body)
 scene.add(ammoTerrain.object3d)
+
+/* LOOP */
+
+void function animate() {
+  requestAnimationFrame(animate)
+  ammoVehicle.updateKeyboard(vehicleKeyboardActions)
+  cameraControls.update(ammoVehicle)
+  ammoWorld.update()
+  const speed = ammoVehicle.vehicle.getCurrentSpeedKmHour()
+  speedometer.innerHTML = (speed < 0 ? '(R) ' : '') + Math.abs(speed).toFixed(1) + ' km/h'
+  renderer.render(scene, camera)
+}()
