@@ -195,39 +195,32 @@ ammoWorld.add(ammoControlsBall)
 // //////////////////////////////////////////////////////////////////////////////
 //          Pile of crate
 // //////////////////////////////////////////////////////////////////////////////
-; (function() {
-  const geometry = new THREE.BoxGeometry(0.75, 0.75, 0.75)
-  const material = new THREE.MeshPhongMaterial({
-  })
-  const model = new THREE.Mesh(geometry, material)
-  model.castShadow = true
-  model.receiveShadow = true
+const boxGeometry = new THREE.BoxGeometry(0.75, 0.75, 0.75)
+const boxMaterial = new THREE.MeshPhongMaterial()
+const model = new THREE.Mesh(boxGeometry, boxMaterial)
+model.castShadow = model.receiveShadow = true
 
-  const size = new THREE.Vector3().set(8, 6, 1)
-  buildCratesPile(size)
+const size = new THREE.Vector3().set(8, 6, 1)
+buildCratesPile(size)
 
-  return
+function buildCratesPile(nCubes) {
+  for (let x = 0; x < nCubes.x; x++)
+    for (let y = 0; y < nCubes.y; y++)
+      for (let z = 0; z < nCubes.z; z++) {
+        const mesh = model.clone()
 
-  function buildCratesPile(nCubes) {
-    for (let x = 0; x < nCubes.x; x++)
-      for (let y = 0; y < nCubes.y; y++)
-        for (let z = 0; z < nCubes.z; z++) {
-          const mesh = model.clone()
+        mesh.position.x = (x - nCubes.x / 2 + 0.5) * mesh.scale.x * boxGeometry.parameters.width
+        mesh.position.y = (y - nCubes.y / 2 + 0.5) * mesh.scale.y * boxGeometry.parameters.height
+        mesh.position.z = (z - nCubes.z / 2 + 0.5) * mesh.scale.z * boxGeometry.parameters.depth
 
-          mesh.position.x = (x - nCubes.x / 2 + 0.5) * mesh.scale.x * geometry.parameters.width
-          mesh.position.y = (y - nCubes.y / 2 + 0.5) * mesh.scale.y * geometry.parameters.height
-          mesh.position.z = (z - nCubes.z / 2 + 0.5) * mesh.scale.z * geometry.parameters.depth
+        mesh.position.y += nCubes.y / 2 * mesh.scale.y * boxGeometry.parameters.height
+        mesh.position.z += 6
+        scene.add(mesh)
 
-          mesh.position.y += nCubes.y / 2 * mesh.scale.y * geometry.parameters.height
-          mesh.position.z += 6
-          scene.add(mesh)
-
-          const ammoControls = new THREEx.AmmoControls(mesh)
-          ammoWorld.add(ammoControls)
-        }
-
-  }
-})()
+        const ammoControls = new THREEx.AmmoControls(mesh)
+        ammoWorld.add(ammoControls)
+      }
+}
 
 // ////////////////////////////////////////////////////////////////////////////
 //                Code Separator
