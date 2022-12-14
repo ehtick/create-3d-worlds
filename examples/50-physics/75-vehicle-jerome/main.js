@@ -2,116 +2,110 @@
 
 /* UTILS */
 
-const AmmoTerrain = function(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight, terrain3dWidth, terrain3dDepth) {
-  const heightData = generateHeightRocket(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight)
-  const geometry = new THREE.PlaneBufferGeometry(terrain3dWidth, terrain3dDepth, terrainWidth - 1, terrainDepth - 1)
-  geometry.rotateX(-Math.PI / 2)
-  const vertices = geometry.attributes.position.array
-  for (let i = 0; i < vertices.length; i++)
-  // j + 1 because it is the y component that we modify
-    vertices[i * 3 + 1] = heightData[i]
+class AmmoTerrain {
+  constructor(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight, terrain3dWidth, terrain3dDepth) {
+    const heightData = generateHeightRocket(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight)
+    const geometry = new THREE.PlaneBufferGeometry(terrain3dWidth, terrain3dDepth, terrainWidth - 1, terrainDepth - 1)
+    geometry.rotateX(-Math.PI / 2)
+    const vertices = geometry.attributes.position.array
+    for (let i = 0; i < vertices.length; i++)
+      vertices[i * 3 + 1] = heightData[i] // + 1 because we modify y component
+    geometry.computeVertexNormals()
+    const material = new THREE.MeshLambertMaterial({ color: 0xfffacd })
 
-  geometry.computeVertexNormals()
-  const material = new THREE.MeshLambertMaterial({
-    map: new THREE.TextureLoader().load('textures/grid.png', texture => {
-      texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-      texture.repeat.set(terrain3dWidth, terrain3dDepth)
-    }),
-    side: THREE.DoubleSide
-  })
+    const meshGround = new THREE.Mesh(geometry, material)
+    meshGround.receiveShadow = true
 
-  const meshGround = new THREE.Mesh(geometry, material)
-  meshGround.receiveShadow = true
+    const groundShape = createTerrainShape(heightData)
+    const groundTransform = new Ammo.btTransform()
+    groundTransform.setIdentity()
+    // Shifts the terrain, since bullet re-centers it on its bounding box.
+    groundTransform.setOrigin(new Ammo.btVector3(0, (terrainMaxHeight + terrainMinHeight) / 2, 0))
+    const groundMass = 0
+    const groundLocalInertia = new Ammo.btVector3(0, 0, 0)
+    const groundMotionState = new Ammo.btDefaultMotionState(groundTransform)
+    const groundBody = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(groundMass, groundMotionState, groundShape, groundLocalInertia))
 
-  const groundShape = createTerrainShape(heightData)
-  const groundTransform = new Ammo.btTransform()
-  groundTransform.setIdentity()
-  // Shifts the terrain, since bullet re-centers it on its bounding box.
-  groundTransform.setOrigin(new Ammo.btVector3(0, (terrainMaxHeight + terrainMinHeight) / 2, 0))
-  const groundMass = 0
-  const groundLocalInertia = new Ammo.btVector3(0, 0, 0)
-  const groundMotionState = new Ammo.btDefaultMotionState(groundTransform)
-  const groundBody = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(groundMass, groundMotionState, groundShape, groundLocalInertia))
+    this.object3d = meshGround
+    this.body = groundBody
 
-  this.object3d = meshGround
-  this.body = groundBody
-
-  function createTerrainShape(heightData) {
+    function createTerrainShape(heightData) {
     // This parameter is not really used, since we are using PHY_FLOAT height data type and hence it is ignored
-    const heightScale = 1
-    // Up axis = 0 for X, 1 for Y, 2 for Z. Normally 1 = Y is used.
-    const upAxis = 1
-    // hdt, height data type. "PHY_FLOAT" is used. Possible values are "PHY_FLOAT", "PHY_UCHAR", "PHY_SHORT"
-    const hdt = 'PHY_FLOAT'
-    // Set this to your needs (inverts the triangles)
-    const flipQuadEdges = false
-    // Creates height data buffer in Ammo heap
-    const ammoHeightData = Ammo._malloc(4 * terrainWidth * terrainDepth)
-    // Copy the javascript height data array to the Ammo one.
-    let p = 0
-    let p2 = 0
-    for (let j = 0; j < terrainDepth; j++)
-      for (let i = 0; i < terrainWidth; i++) {
+      const heightScale = 1
+      // Up axis = 0 for X, 1 for Y, 2 for Z. Normally 1 = Y is used.
+      const upAxis = 1
+      // hdt, height data type. "PHY_FLOAT" is used. Possible values are "PHY_FLOAT", "PHY_UCHAR", "PHY_SHORT"
+      const hdt = 'PHY_FLOAT'
+      // Set this to your needs (inverts the triangles)
+      const flipQuadEdges = false
+      // Creates height data buffer in Ammo heap
+      const ammoHeightData = Ammo._malloc(4 * terrainWidth * terrainDepth)
+      // Copy the javascript height data array to the Ammo one.
+      let p = 0
+      let p2 = 0
+      for (let j = 0; j < terrainDepth; j++)
+        for (let i = 0; i < terrainWidth; i++) {
         // write 32-bit float data to memory
-        Ammo.HEAPF32[ammoHeightData + p2 >> 2] = heightData[p]
-        p++
-        // 4 bytes/float
-        p2 += 4
-      }
-
-    const heightFieldShape = new Ammo.btHeightfieldTerrainShape(
-      terrainWidth,
-      terrainDepth,
-      ammoHeightData,
-      heightScale,
-      terrainMinHeight,
-      terrainMaxHeight,
-      upAxis,
-      hdt,
-      flipQuadEdges
-    )
-    // Set horizontal scale
-    const scaleX = terrain3dWidth / (terrainWidth - 1)
-    const scaleZ = terrain3dDepth / (terrainDepth - 1)
-    heightFieldShape.setLocalScaling(new Ammo.btVector3(scaleX, 1, scaleZ))
-    heightFieldShape.setMargin(0.05)
-    return heightFieldShape
-  }
-
-  function generateHeightRocket(width, depth, minHeight) {
-    const data = new Float32Array(width * depth)
-    const radiusX = 24 * 2
-    const radiusZ = 24 * 2
-    const radiusY = radiusX / 4
-
-    for (let index = 0, z = 0; z < depth; z++)
-      for (let x = 0; x < width; x++) {
-        let height = minHeight
-
-        if (x > width - radiusX) {
-          const delta = x - (width - radiusX)
-          const angle = Math.acos(delta / radiusX)
-          height = Math.max(height, minHeight - Math.sin(angle) * radiusY + radiusY)
+          Ammo.HEAPF32[ammoHeightData + p2 >> 2] = heightData[p]
+          p++
+          // 4 bytes/float
+          p2 += 4
         }
-        if (x < radiusX) {
-          const delta = radiusX - x
-          const angle = Math.acos(delta / radiusX)
-          height = Math.max(height, minHeight - Math.sin(angle) * radiusY + radiusY)
-        }
-        if (z > depth - radiusZ) {
-          const delta = z - (depth - radiusZ)
-          const angle = Math.acos(delta / radiusZ)
-          height = Math.max(height, minHeight - Math.sin(angle) * radiusY + radiusY)
-        }
-        if (z < radiusZ) {
-          const delta = radiusZ - z
-          const angle = Math.acos(delta / radiusZ)
-          height = Math.max(height, minHeight - Math.sin(angle) * radiusY + radiusY)
-        }
-        data[index++] = height
-      }
 
-    return data
+      const heightFieldShape = new Ammo.btHeightfieldTerrainShape(
+        terrainWidth,
+        terrainDepth,
+        ammoHeightData,
+        heightScale,
+        terrainMinHeight,
+        terrainMaxHeight,
+        upAxis,
+        hdt,
+        flipQuadEdges
+      )
+      // Set horizontal scale
+      const scaleX = terrain3dWidth / (terrainWidth - 1)
+      const scaleZ = terrain3dDepth / (terrainDepth - 1)
+      heightFieldShape.setLocalScaling(new Ammo.btVector3(scaleX, 1, scaleZ))
+      heightFieldShape.setMargin(0.05)
+      return heightFieldShape
+    }
+
+    function generateHeightRocket(width, depth, minHeight) {
+      const data = new Float32Array(width * depth)
+      const radiusX = 24 * 2
+      const radiusZ = 24 * 2
+      const radiusY = radiusX / 4
+
+      for (let index = 0, z = 0; z < depth; z++)
+        for (let x = 0; x < width; x++) {
+          let height = minHeight
+
+          if (x > width - radiusX) {
+            const delta = x - (width - radiusX)
+            const angle = Math.acos(delta / radiusX)
+            height = Math.max(height, minHeight - Math.sin(angle) * radiusY + radiusY)
+          }
+          if (x < radiusX) {
+            const delta = radiusX - x
+            const angle = Math.acos(delta / radiusX)
+            height = Math.max(height, minHeight - Math.sin(angle) * radiusY + radiusY)
+          }
+          if (z > depth - radiusZ) {
+            const delta = z - (depth - radiusZ)
+            const angle = Math.acos(delta / radiusZ)
+            height = Math.max(height, minHeight - Math.sin(angle) * radiusY + radiusY)
+          }
+          if (z < radiusZ) {
+            const delta = radiusZ - z
+            const angle = Math.acos(delta / radiusZ)
+            height = Math.max(height, minHeight - Math.sin(angle) * radiusY + radiusY)
+          }
+          data[index++] = height
+        }
+
+      return data
+    }
   }
 }
 
@@ -241,13 +235,7 @@ window.addEventListener('keyup', event => {
 
 // tremplin
 const geometry = new THREE.BoxGeometry(8, 4, 15)
-const material = new THREE.MeshPhongMaterial({
-  map: new THREE.TextureLoader().load('textures/grid.png', texture => {
-    texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-    texture.repeat.set(geometry.parameters.width, geometry.parameters.depth)
-    texture.anisotropy = renderer.getMaxAnisotropy()
-  })
-})
+const material = new THREE.MeshPhongMaterial({ color: 0xfffacd })
 const mesh = new THREE.Mesh(geometry, material)
 mesh.position.x = -10
 mesh.position.y = -mesh.geometry.parameters.height / 2 + 1.5
