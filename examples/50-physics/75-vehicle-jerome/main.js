@@ -1,4 +1,4 @@
-/* global Ammo, THREE */
+/* global THREE */
 
 const renderer = new THREE.WebGLRenderer()
 renderer.setClearColor(new THREE.Color('black'), 1)
@@ -231,53 +231,7 @@ function buildVehicleSkinVeyron(opt, onReady) {
     chassis: null,
     wheels: []
   }
-
   const s = 0.02
-
-  const mlib = {
-
-    'Orange': new THREE.MeshLambertMaterial({ color: 0xff6600, combine: THREE.MixOperation, reflectivity: 0.3 }),
-    'Blue': new THREE.MeshLambertMaterial({ color: 0x001133, combine: THREE.MixOperation, reflectivity: 0.3 }),
-    'Red': new THREE.MeshLambertMaterial({ color: 0x660000, combine: THREE.MixOperation, reflectivity: 0.25 }),
-    'Black': new THREE.MeshLambertMaterial({ color: 0x000000, combine: THREE.MixOperation, reflectivity: 0.15 }),
-    'White': new THREE.MeshLambertMaterial({ color: 0xffffff, combine: THREE.MixOperation, reflectivity: 0.25 }),
-
-    'Carmine': new THREE.MeshPhongMaterial({ color: 0x770000, specular: 0xffaaaa, combine: THREE.MultiplyOperation }),
-    'Gold': new THREE.MeshPhongMaterial({ color: 0xaa9944, specular: 0xbbaa99, shininess: 50, combine: THREE.MultiplyOperation }),
-    'Bronze': new THREE.MeshPhongMaterial({ color: 0x150505, specular: 0xee6600, shininess: 10, combine: THREE.MixOperation, reflectivity: 0.25 }),
-    'Chrome': new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0xffffff, combine: THREE.MultiplyOperation }),
-
-    'Orange metal': new THREE.MeshLambertMaterial({ color: 0xff6600, combine: THREE.MultiplyOperation }),
-    'Blue metal': new THREE.MeshLambertMaterial({ color: 0x001133, combine: THREE.MultiplyOperation }),
-    'Red metal': new THREE.MeshLambertMaterial({ color: 0x770000, combine: THREE.MultiplyOperation }),
-    'Green metal': new THREE.MeshLambertMaterial({ color: 0x007711, combine: THREE.MultiplyOperation }),
-    'Black metal': new THREE.MeshLambertMaterial({ color: 0x222222, combine: THREE.MultiplyOperation }),
-
-    'Pure chrome': new THREE.MeshLambertMaterial({ color: 0xffffff }),
-    'Dark chrome': new THREE.MeshLambertMaterial({ color: 0x444444 }),
-    'Darker chrome': new THREE.MeshLambertMaterial({ color: 0x222222 }),
-
-    'Black glass': new THREE.MeshLambertMaterial({ color: 0x101016, opacity: 0.975, transparent: true }),
-    'Dark glass': new THREE.MeshLambertMaterial({ color: 0x101046, opacity: 0.25, transparent: true }),
-    'Blue glass': new THREE.MeshLambertMaterial({ color: 0x668899, opacity: 0.75, transparent: true }),
-    'Light glass': new THREE.MeshBasicMaterial({ color: 0x223344, opacity: 0.25, transparent: true, combine: THREE.MixOperation, reflectivity: 0.25 }),
-
-    'Red glass': new THREE.MeshLambertMaterial({ color: 0xff0000, opacity: 0.75, transparent: true }),
-    'Yellow glass': new THREE.MeshLambertMaterial({ color: 0xffffaa, opacity: 0.75, transparent: true }),
-    'Orange glass': new THREE.MeshLambertMaterial({ color: 0x995500, opacity: 0.75, transparent: true }),
-
-    'Orange glass 50': new THREE.MeshLambertMaterial({ color: 0xffbb00, opacity: 0.5, transparent: true }),
-    'Red glass 50': new THREE.MeshLambertMaterial({ color: 0xff0000, opacity: 0.5, transparent: true }),
-
-    'Fullblack rough': new THREE.MeshLambertMaterial({ color: 0x000000 }),
-    'Black rough': new THREE.MeshLambertMaterial({ color: 0x050505 }),
-    'Darkgray rough': new THREE.MeshLambertMaterial({ color: 0x090909 }),
-    'Red rough': new THREE.MeshLambertMaterial({ color: 0x330500 }),
-
-    'Darkgray shiny': new THREE.MeshPhongMaterial({ color: 0x000000, specular: 0x050505 }),
-    'Gray shiny': new THREE.MeshPhongMaterial({ color: 0x050505, shininess: 20 })
-
-  }
 
   // Vehicle
   const wheelLoader = new THREE.BinaryLoader()
@@ -297,20 +251,10 @@ function buildVehicleSkinVeyron(opt, onReady) {
         )
       )
 
-      const bodyMaterial = new THREE.MultiMaterial()
-      bodyMaterial.materials.push(mlib['Pure chrome']) 		// back / top / front torso
-      bodyMaterial.materials.push(mlib['Pure chrome'])		// glass
-      bodyMaterial.materials.push(mlib['Pure chrome'])		// sides torso
-      bodyMaterial.materials.push(mlib['Pure chrome'])		// backlights
-      bodyMaterial.materials.push(mlib['Pure chrome'])		// backsignals
-      bodyMaterial.materials.push(mlib['Pure chrome'])		// engine
-      bodyMaterial.materials.push(mlib['Pure chrome'])		// backlights
-      bodyMaterial.materials.push(mlib['Pure chrome'])	// backsignals
-
+      const bodyMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff })
       const bodyMesh = new THREE.Mesh(bodyGeometry, bodyMaterial)
       bodyMesh.position.y = 0.25
       bodyMesh.castShadow = true
-      // bodyMesh.receiveShadow = true
 
       meshes.chassis = bodyMesh
 
@@ -341,12 +285,10 @@ function buildVehicleSkinVeyron(opt, onReady) {
         wheelmesh.receiveShadow = true
         if (i == 0 || i == 3)
           wheelmesh.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
-
         meshes.wheels.push(wheelmesh)
       }
 
       onReady(meshes)
-
     })
   })
 };
@@ -354,106 +296,17 @@ function buildVehicleSkinVeyron(opt, onReady) {
 // ////////////////////////////////////////////////////////////////////////////
 //		terrain
 // ////////////////////////////////////////////////////////////////////////////
-; (function() {
-  // Heightfield parameters
-  const terrain3dWidth = 60
-  const terrain3dDepth = 120
-  const terrainWidth = 128 * 2
-  const terrainDepth = 256 * 2
-  const terrainMaxHeight = 24 * 2
-  const terrainMinHeight = 0
+// Heightfield parameters
+const terrain3dWidth = 60
+const terrain3dDepth = 120
+const terrainWidth = 128 * 2
+const terrainDepth = 256 * 2
+const terrainMaxHeight = 24 * 2
+const terrainMinHeight = 0
 
-  const ammoTerrain = new THREEx.AmmoTerrain(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight, terrain3dWidth, terrain3dDepth)
+const ammoTerrain = new THREEx.AmmoTerrain(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight, terrain3dWidth, terrain3dDepth)
 
-  // ammoWorld.add( ammoTerrain );
-  ammoTerrain.body.setRestitution(0.9)
-  ammoWorld.physicsWorld.addRigidBody(ammoTerrain.body)
-  scene.add(ammoTerrain.object3d)
-})()
-
-// //////////////////////////////////////////////////////////////////////////////
-//          wall around the terrain
-// //////////////////////////////////////////////////////////////////////////////
-
-; (function() {
-  const terrain3dWidth = 60
-  const terrain3dHeight = 30
-  const terrain3dDepth = 120
-
-  // east/west model
-  let geometry = new THREE.PlaneGeometry(terrain3dHeight, terrain3dDepth)
-  let material = new THREE.MeshLambertMaterial({
-    map: new THREE.TextureLoader().load('textures/grid.png', texture => {
-      texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-      texture.repeat.set(geometry.parameters.width, geometry.parameters.height)
-      // texture.anisotropy = renderer.getMaxAnisotropy()
-    }),
-
-  })
-  let model = new THREE.Mesh(geometry, material)
-  model.receiveShadow = true
-
-  // east wall
-  let mesh = model.clone()
-  mesh.position.x = terrain3dWidth / 2
-  mesh.position.y = terrain3dHeight / 2
-  mesh.rotateX(Math.PI / 2)
-  mesh.rotateY(-Math.PI / 2)
-  addStaticPlane(mesh)
-
-  // west wall
-  mesh = model.clone()
-  mesh.position.x = -terrain3dWidth / 2
-  mesh.position.y = terrain3dHeight / 2
-  mesh.rotateX(Math.PI / 2)
-  mesh.rotateY(Math.PI / 2)
-  addStaticPlane(mesh)
-
-  // north/south model
-  geometry = new THREE.PlaneGeometry(terrain3dHeight, terrain3dWidth)
-  material = new THREE.MeshLambertMaterial({
-    map: new THREE.TextureLoader().load('textures/grid.png', texture => {
-      texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-      texture.repeat.set(geometry.parameters.width, geometry.parameters.height)
-      // texture.anisotropy = renderer.getMaxAnisotropy()
-    }),
-
-  })
-  model = new THREE.Mesh(geometry, material)
-  model.receiveShadow = true
-
-  // north wall
-  mesh = model.clone()
-  mesh.position.z = -terrain3dDepth / 2
-  mesh.position.y = terrain3dHeight / 2
-  // mesh.rotateX( Math.PI/2)
-  mesh.rotateZ(Math.PI / 2)
-  addStaticPlane(mesh)
-
-  // south wall
-  mesh = model.clone()
-  mesh.position.z = terrain3dDepth / 2
-  mesh.position.y = terrain3dHeight / 2
-  mesh.rotateY(Math.PI)
-  mesh.rotateZ(Math.PI / 2)
-  addStaticPlane(mesh)
-
-  return
-
-  // ////////////////////////////////////////////////////////////////////////////
-  //		Code Separator
-  // ////////////////////////////////////////////////////////////////////////////
-
-  function addStaticPlane(mesh) {
-    scene.add(mesh)
-    // Create infinite ground plane 50 meters down. This is to make sure things don't fall down to infinity and irritate our collision detection
-    const shape = new Ammo.btStaticPlaneShape(new Ammo.btVector3(0, 0, 1), 0)
-    const ammoControls = new THREEx.AmmoControls(mesh, {
-      mass: 0,
-      shape,
-    })
-    ammoControls.setRestitution(1.0)
-    ammoWorld.add(ammoControls)
-  }
-})()
-
+// ammoWorld.add( ammoTerrain );
+ammoTerrain.body.setRestitution(0.9)
+ammoWorld.physicsWorld.addRigidBody(ammoTerrain.body)
+scene.add(ammoTerrain.object3d)
