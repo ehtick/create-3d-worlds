@@ -25,7 +25,7 @@ quat.setFromAxisAngle(new Vector3(1, 0, 0), -Math.PI / 18)
 const jumpBoard = createBox({ pos: new Vector3(0, -1.5, 0), quat, width: 8, height: 4, depth: 10, friction: 1, color: 0x999999 })
 addRigidBody(jumpBoard)
 
-const crates = createCrates()
+const crates = createCrates({ z: 10 })
 crates.forEach(addRigidBody)
 
 const width = 1.8, height = .6, length = 4

@@ -1,10 +1,10 @@
-import { scene, camera, renderer, clock } from '/utils/scene.js'
+import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createPhysicsWorld, createGround, updateMesh, createCrates } from '/utils/physics.js'
 import { loadModel } from '/utils/loaders.js'
 import { createSun } from '/utils/light.js'
 
 const rigidBodies = []
-
+createOrbitControls()
 scene.add(createSun())
 
 const physicsWorld = createPhysicsWorld()
