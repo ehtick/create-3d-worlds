@@ -4,8 +4,7 @@ export default class AmmoVehicle {
   constructor(btPhysicsWorld, position, quaternion) {
     this.object3d = new THREE.Group
 
-    this.parameters = {}
-    const opt = this.parameters
+    const opt = {}
     opt.chassisWidth = 1.8
     opt.chassisHeight = .6
     opt.chassisLength = 4
@@ -105,62 +104,58 @@ export default class AmmoVehicle {
       updatePhysics()
     }
 
-    // states
-    this.updateKeyboard = (function() {
-      let vehicleSteering = 0
+    let vehicleSteering = 0
 
-      // Sync keybord actions and physics and graphics
-      return function(actions) {
-        const speed = vehicle.getCurrentSpeedKmHour()
-        let breakingForce = 0
-        let engineForce = 0
+    this.updateKeyboard = function(actions) {
+      const speed = vehicle.getCurrentSpeedKmHour()
+      let breakingForce = 0
+      let engineForce = 0
 
-        if (actions.acceleration)
-          if (speed < -1)
-            breakingForce = opt.maxBreakingForce
-          else engineForce = opt.maxEngineForce
+      if (actions.acceleration)
+        if (speed < -1)
+          breakingForce = opt.maxBreakingForce
+        else engineForce = opt.maxEngineForce
 
-        if (actions.braking)
-          if (speed > 1)
-            breakingForce = opt.maxBreakingForce
-          else engineForce = -opt.maxEngineForce / 2
+      if (actions.braking)
+        if (speed > 1)
+          breakingForce = opt.maxBreakingForce
+        else engineForce = -opt.maxEngineForce / 2
 
-        if (actions.left) {
-          if (vehicleSteering < opt.steeringClamp)
-            vehicleSteering += opt.steeringIncrement
-        } else
-        if (actions.right) {
-          if (vehicleSteering > -opt.steeringClamp)
-            vehicleSteering -= opt.steeringIncrement
-        } else
-        if (vehicleSteering < -opt.steeringIncrement)
+      if (actions.left) {
+        if (vehicleSteering < opt.steeringClamp)
           vehicleSteering += opt.steeringIncrement
-        else
-        if (vehicleSteering > opt.steeringIncrement)
+      } else
+      if (actions.right) {
+        if (vehicleSteering > -opt.steeringClamp)
           vehicleSteering -= opt.steeringIncrement
-        else
-          vehicleSteering = 0
+      } else
+      if (vehicleSteering < -opt.steeringIncrement)
+        vehicleSteering += opt.steeringIncrement
+      else
+      if (vehicleSteering > opt.steeringIncrement)
+        vehicleSteering -= opt.steeringIncrement
+      else
+        vehicleSteering = 0
 
-        if (actions.jump) {
-          actions.jump = false
-          const impulse = new Ammo.btVector3(0, opt.massVehicle * 5, 0)
-          chassisBody.applyCentralImpulse(impulse)
-        }
-
-        vehicle.applyEngineForce(engineForce, BACK_LEFT)
-        vehicle.applyEngineForce(engineForce, BACK_RIGHT)
-
-        vehicle.setBrake(breakingForce / 2, FRONT_LEFT)
-        vehicle.setBrake(breakingForce / 2, FRONT_RIGHT)
-        vehicle.setBrake(breakingForce, BACK_LEFT)
-        vehicle.setBrake(breakingForce, BACK_RIGHT)
-
-        vehicle.setSteeringValue(vehicleSteering, FRONT_LEFT)
-        vehicle.setSteeringValue(vehicleSteering, FRONT_RIGHT)
-
-        updatePhysics()
+      if (actions.jump) {
+        actions.jump = false
+        const impulse = new Ammo.btVector3(0, opt.massVehicle * 5, 0)
+        chassisBody.applyCentralImpulse(impulse)
       }
-    })()
+
+      vehicle.applyEngineForce(engineForce, BACK_LEFT)
+      vehicle.applyEngineForce(engineForce, BACK_RIGHT)
+
+      vehicle.setBrake(breakingForce / 2, FRONT_LEFT)
+      vehicle.setBrake(breakingForce / 2, FRONT_RIGHT)
+      vehicle.setBrake(breakingForce, BACK_LEFT)
+      vehicle.setBrake(breakingForce, BACK_RIGHT)
+
+      vehicle.setSteeringValue(vehicleSteering, FRONT_LEFT)
+      vehicle.setSteeringValue(vehicleSteering, FRONT_RIGHT)
+
+      updatePhysics()
+    }
 
     function updatePhysics() {
       const nWheels = vehicle.getNumWheels()
@@ -185,13 +180,9 @@ export default class AmmoVehicle {
       const wheelAxleCS = new Ammo.btVector3(-1, 0, 0)
 
       const wheelInfo = vehicle.addWheel(
-        position,
-        wheelDirectionCS0,
-        wheelAxleCS,
-        opt.suspensionRestLength,
-        radius,
-        tuning,
-        isFront)
+        position, wheelDirectionCS0, wheelAxleCS, opt.suspensionRestLength,
+        radius, tuning, isFront
+      )
 
       wheelInfo.set_m_suspensionStiffness(opt.suspensionStiffness)
       wheelInfo.set_m_wheelsDampingRelaxation(opt.suspensionDamping)
