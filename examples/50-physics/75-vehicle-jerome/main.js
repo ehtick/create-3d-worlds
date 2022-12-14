@@ -109,19 +109,13 @@ mesh.quaternion.copy(tremplinQuaternion)
 const ammoControls = new AmmoBody(mesh, { mass: 0 })
 ammoWorld.add(ammoControls)
 
-const createFootball = function() {
-  const texture = THREE.ImageUtils.loadTexture('images/Footballballfree.jpg59a2a1dc-64c8-4bc3-83ef-1257c9147fd1Large.jpg')
+const createBall = function() {
   const geometry = new THREE.SphereGeometry(0.5, 32, 16)
-  const material = new THREE.MeshPhongMaterial({
-    map: texture,
-    bumpMap: texture,
-    bumpScale: 0.1,
-  })
-  const mesh = new THREE.Mesh(geometry, material)
-  return mesh
+  const material = new THREE.MeshPhongMaterial({ color: 0x333333 })
+  return new THREE.Mesh(geometry, material)
 }
 
-const ballMesh = createFootball()
+const ballMesh = createBall()
 ballMesh.scale.multiplyScalar(2)
 ballMesh.position.y = 5
 ballMesh.position.z = -20
