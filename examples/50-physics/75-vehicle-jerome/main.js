@@ -31,15 +31,6 @@ requestAnimationFrame(function animate(nowMsec) {
   })
 })
 
-// ////////////////////////////////////////////////////////////////////////////
-//		Code Separator
-// ////////////////////////////////////////////////////////////////////////////
-
-window.renderer = renderer
-window.scene = scene
-window.camera = camera
-window.onRenderFcts = onRenderFcts
-
 const cameraControls = new THREEx.AmmoVehicleControls(camera)
 onRenderFcts.push(() => {
   cameraControls.update(ammoVehicle)
@@ -243,13 +234,11 @@ function buildVehicleSkinVeyron(opt, onReady) {
       bodyGeometry.applyMatrix(new THREE.Matrix4().makeScale(s, s, s))
       bodyGeometry.computeBoundingBox()
       let bb = bodyGeometry.boundingBox
-      bodyGeometry.applyMatrix(new THREE.Matrix4()
-        .makeTranslation(
-          -(bb.max.x + bb.min.x) * 0.5,
-          -(bb.max.y + bb.min.y) * 0.5,
-          -(bb.max.z + bb.min.z) * 0.5
-        )
-      )
+      bodyGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(
+        -(bb.max.x + bb.min.x) * 0.5,
+        -(bb.max.y + bb.min.y) * 0.5,
+        -(bb.max.z + bb.min.z) * 0.5
+      ))
 
       const bodyMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff })
       const bodyMesh = new THREE.Mesh(bodyGeometry, bodyMaterial)
@@ -271,13 +260,11 @@ function buildVehicleSkinVeyron(opt, onReady) {
       wheelGeometry.applyMatrix(new THREE.Matrix4().makeScale(s, s, s))
       wheelGeometry.computeBoundingBox()
       bb = wheelGeometry.boundingBox
-      wheelGeometry.applyMatrix(new THREE.Matrix4()
-        .makeTranslation(
-          -(bb.max.x + bb.min.x) * 0.5,
-          -(bb.max.y + bb.min.y) * 0.5,
-          -(bb.max.z + bb.min.z) * 0.5
-        )
-      )
+      wheelGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(
+        -(bb.max.x + bb.min.x) * 0.5,
+        -(bb.max.y + bb.min.y) * 0.5,
+        -(bb.max.z + bb.min.z) * 0.5
+      ))
 
       for (let i = 0; i < 4; i++) {
         const wheelmesh = new THREE.Mesh(wheelGeometry, wheelMaterial)
@@ -293,9 +280,6 @@ function buildVehicleSkinVeyron(opt, onReady) {
   })
 };
 
-// ////////////////////////////////////////////////////////////////////////////
-//		terrain
-// ////////////////////////////////////////////////////////////////////////////
 // Heightfield parameters
 const terrain3dWidth = 60
 const terrain3dDepth = 120
@@ -306,7 +290,6 @@ const terrainMinHeight = 0
 
 const ammoTerrain = new THREEx.AmmoTerrain(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight, terrain3dWidth, terrain3dDepth)
 
-// ammoWorld.add( ammoTerrain );
 ammoTerrain.body.setRestitution(0.9)
 ammoWorld.physicsWorld.addRigidBody(ammoTerrain.body)
 scene.add(ammoTerrain.object3d)
