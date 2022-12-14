@@ -60,38 +60,6 @@ function applyMeshesToVehicle(ammoVehicle, meshes) {
   }
 }
 
-// ////////////////////////////////////////////////////////////////////////////
-//                handle keyboard
-// ////////////////////////////////////////////////////////////////////////////
-const vehicleKeyboardActions = {
-  'acceleration': false,
-  'braking': false,
-  'left': false,
-  'right': false,
-  'jump': false,
-}
-
-const keysActions = {
-  'w': 'acceleration', 'ArrowUp': 'acceleration', 'i': 'acceleration',
-  's': 'braking', 'ArrowDown': 'braking', 'k': 'braking',
-  'a': 'left', 'ArrowLeft': 'left', 'j': 'left',
-  'd': 'right', 'ArrowRight': 'right', 'l': 'right',
-  ' ': 'jump'
-}
-
-window.addEventListener('keydown', event => {
-  if (!keysActions[event.key]) return
-  vehicleKeyboardActions[keysActions[event.key]] = true
-  event.preventDefault()
-  event.stopPropagation()
-})
-window.addEventListener('keyup', event => {
-  if (!keysActions[event.key]) return
-  vehicleKeyboardActions[keysActions[event.key]] = false
-  event.preventDefault()
-  event.stopPropagation()
-})
-
 // tremplin
 const geometry = new THREE.BoxGeometry(8, 4, 15)
 const material = new THREE.MeshPhongMaterial({ color: 0xfffacd })
@@ -243,7 +211,7 @@ scene.add(ammoTerrain.object3d)
 
 void function animate() {
   requestAnimationFrame(animate)
-  ammoVehicle.updateKeyboard(vehicleKeyboardActions)
+  ammoVehicle.updateKeyboard()
   cameraControls.update(ammoVehicle)
   ammoWorld.update()
   const speed = ammoVehicle.vehicle.getCurrentSpeedKmHour()
