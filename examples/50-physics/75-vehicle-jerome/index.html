@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
+<script src='libs/three.min.js'></script>
+<script src='libs/OrbitControls.js'></script>
+<script src="libs/BinaryLoader.js"></script>
+<script src='libs/stats.min.js'></script>
+<script src='libs/ammo.js'></script>
+<script src='libs/threex-ammoworld.js'></script>
+<script src='libs/threex-ammocontrols.js'></script>
+<script src='libs/threex-ammovehicle.js'></script>
+<script src='libs/threex-ammovehiclecontrols.js'></script>
+<script src='libs/threex-ammoterrain.js'></script>
+
+<script src='libs/startupThree.js'></script>
+<body style='margin: 0px; overflow: hidden; text-align:center;'>
+
+<script src="libs/threex.sportballs.js"></script>
+<script>THREEx.SportBalls.baseURL='libs/'</script>
+
+<script src='libs/threex.poolball.js'></script>
+
+<div style='position: absolute; top: 0px; width: 100%;font-family:arial; font-weight: bolder; padding-top: 5px; color: white;'>
+	Playing with <a href="http://threejs.org" target="_blank">three.js</a>
+	and <a href="https://github.com/kripken/ammo.js/">ammo.js</a> 
+	- More ammo.js <a href="index.html">examples</a>
+	<br> Use arrow to move the vehicle
+</div>
+
+<style>
+	#speedometer {
+		color: #ffffff;
+		background-color: #990000;
+		position: absolute;
+		bottom: 0px;
+		padding: 5px;
+	}
+</style>
+<div id='speedometer'>0.0 km/h</div>
+
+
+<script src="main.js"></script>
+
+</body>
