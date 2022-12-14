@@ -85,10 +85,7 @@ window.addEventListener('keyup', event => {
   event.stopPropagation()
 })
 
-// //////////////////////////////////////////////////////////////////////////////
-//          tremplin
-// //////////////////////////////////////////////////////////////////////////////
-
+// tremplin
 const geometry = new THREE.BoxGeometry(8, 4, 15)
 const material = new THREE.MeshPhongMaterial({
   map: new THREE.TextureLoader().load('textures/grid.png', texture => {
@@ -103,7 +100,6 @@ mesh.position.y = -mesh.geometry.parameters.height / 2 + 1.5
 mesh.position.z = 20
 mesh.receiveShadow = true
 scene.add(mesh)
-mesh.name = 'tremplin'
 
 const tremplinQuaternion = new THREE.Quaternion(0, 0, 0, 1)
 tremplinQuaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 15)
@@ -141,9 +137,7 @@ ammoControlsBall.setFriction(0.9)
 ammoControlsBall.setRestitution(0.95)
 ammoWorld.add(ammoControlsBall)
 
-// //////////////////////////////////////////////////////////////////////////////
-//          Pile of crate
-// //////////////////////////////////////////////////////////////////////////////
+// Pile of crate
 const boxGeometry = new THREE.BoxGeometry(0.75, 0.75, 0.75)
 const boxMaterial = new THREE.MeshPhongMaterial()
 const model = new THREE.Mesh(boxGeometry, boxMaterial)
@@ -151,6 +145,8 @@ model.castShadow = model.receiveShadow = true
 
 const size = new THREE.Vector3().set(8, 6, 1)
 buildCratesPile(size)
+
+/* FUNCTIONS */
 
 function buildCratesPile(nCubes) {
   for (let x = 0; x < nCubes.x; x++)
@@ -170,10 +166,6 @@ function buildCratesPile(nCubes) {
         ammoWorld.add(ammoControls)
       }
 }
-
-// ////////////////////////////////////////////////////////////////////////////
-//                Code Separator
-// ////////////////////////////////////////////////////////////////////////////
 
 function buildVehicleSkinVeyron(opt, onReady) {
   const meshes = {
