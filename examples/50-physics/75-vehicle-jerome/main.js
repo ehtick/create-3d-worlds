@@ -64,39 +64,19 @@ model.castShadow = model.receiveShadow = true
 const size = new THREE.Vector3(8, 6, 1)
 buildCrates(size)
 
-function applyMeshesToVehicle(ammoVehicle, meshes) {
-  const container = ammoVehicle.object3d.getObjectByName('chassis')
-  container.add(meshes.chassis)
-  for (let i = 0; i < 4; i++) {
-    const container = ammoVehicle.object3d.getObjectByName('wheel_' + i)
-    container.add(meshes.wheels[i])
-  }
-}
-
-/* FUNCTIONS */
-
 const { mesh: bodyMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl' })
 const { mesh: tireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl' })
 
-const meshes = {
-  chassis: null,
-  wheels: []
-}
-
 bodyMesh.position.y = 0.25
-bodyMesh.castShadow = true
-meshes.chassis = bodyMesh
+ammoVehicle.object3d.getObjectByName('chassis').add(bodyMesh)
 
 for (let i = 0; i < 4; i++) {
   const wheelmesh = tireMesh.clone()
-  wheelmesh.castShadow = true
-  wheelmesh.receiveShadow = true
-  if (i == 0 || i == 3)
-    wheelmesh.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
-  meshes.wheels.push(wheelmesh)
+  if (i == 0 || i == 3) wheelmesh.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
+  ammoVehicle.object3d.getObjectByName('wheel_' + i).add(wheelmesh)
 }
 
-applyMeshesToVehicle(ammoVehicle, meshes)
+/* FUNCTIONS */
 
 function buildCrates(nCubes) {
   for (let x = 0; x < nCubes.x; x++)
