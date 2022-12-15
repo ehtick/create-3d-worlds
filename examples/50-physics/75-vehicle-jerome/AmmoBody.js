@@ -1,4 +1,5 @@
-/* global THREE, Ammo */
+/* global Ammo */
+import * as THREE from 'three'
 
 const guessGeometryFromObject3d = function(object3d) {
   let parameters = null

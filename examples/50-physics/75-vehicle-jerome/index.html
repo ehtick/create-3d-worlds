@@ -4,9 +4,9 @@
 
 <body style='margin: 0px; overflow: hidden; text-align:center;'>
 
-  <script src='libs/three.min.js'></script>
+  <!-- <script src='libs/three.min.js'></script>
   <script src='libs/OrbitControls.js'></script>
-  <script src="libs/BinaryLoader.js"></script>
+  <script src="libs/BinaryLoader.js"></script> -->
   <script src='libs/ammo.js'></script>
 
   <style>
@@ -20,6 +20,13 @@
   </style>
   <div id='speedometer'>0.0 km/h</div>
 
+  <script type="importmap">
+    {
+        "imports": {
+            "three": "/node_modules/three/build/three.module.js"
+        }
+    }
+  </script>
   <script src="main.js" type="module"></script>
 
 </body>

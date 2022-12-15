@@ -1,4 +1,5 @@
-/* global THREE, Ammo */
+/* global Ammo */
+import * as THREE from 'three'
 import AmmoBody from './AmmoBody.js'
 
 export default class AmmoWorld {

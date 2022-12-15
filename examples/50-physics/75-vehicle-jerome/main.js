@@ -1,4 +1,5 @@
-/* global THREE */
+import * as THREE from 'three'
+
 import AmmoTerrain from './AmmoTerrain.js'
 import CameraControls from './CameraControls.js'
 import AmmoWorld from './AmmoWorld.js'
@@ -41,15 +42,15 @@ dirLight.shadow.mapSize.x = 512
 dirLight.shadow.mapSize.y = 512
 scene.add(dirLight)
 
-// vehicule
+// vehicle
 const position = new THREE.Vector3(0, 5, 0)
 const quaternion = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
 const ammoVehicle = new AmmoVehicle(ammoWorld.physicsWorld, position, quaternion)
 scene.add(ammoVehicle.object3d)
 
-buildVehicleSkinVeyron(ammoVehicle.parameters, meshes => {
-  applyMeshesToVehicle(ammoVehicle, meshes)
-})
+// loadVehicle(meshes => {
+//   applyMeshesToVehicle(ammoVehicle, meshes)
+// })
 
 function applyMeshesToVehicle(ammoVehicle, meshes) {
   const container = ammoVehicle.object3d.getObjectByName('chassis')
@@ -78,40 +79,34 @@ const ammoControls = new AmmoBody(mesh, { mass: 0 })
 ammoWorld.add(ammoControls)
 
 const createBall = function() {
-  const geometry = new THREE.SphereGeometry(0.5, 32, 16)
+  const geometry = new THREE.SphereGeometry(1, 32, 16)
   const material = new THREE.MeshPhongMaterial({ color: 0x333333 })
-  return new THREE.Mesh(geometry, material)
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.castShadow = mesh.receiveShadow = true
+  return mesh
 }
 
 const ballMesh = createBall()
-ballMesh.scale.multiplyScalar(2)
-ballMesh.position.y = 5
-ballMesh.position.z = -20
-
-ballMesh.castShadow = true
-ballMesh.receiveShadow = true
-
-ballMesh.quaternion.set(Math.random(), Math.random(), Math.random(), 1).normalize()
-
+ballMesh.position.set(0, 5, -20)
 scene.add(ballMesh)
 
-const ammoControlsBall = new AmmoBody(ballMesh, { mass: 30 })
-ammoControlsBall.setFriction(0.9)
-ammoControlsBall.setRestitution(0.95)
-ammoWorld.add(ammoControlsBall)
+const ammoBall = new AmmoBody(ballMesh, { mass: 30 })
+ammoBall.setFriction(0.9)
+ammoBall.setRestitution(0.95)
+ammoWorld.add(ammoBall)
 
-// Pile of crate
+// crates
 const boxGeometry = new THREE.BoxGeometry(0.75, 0.75, 0.75)
 const boxMaterial = new THREE.MeshPhongMaterial()
 const model = new THREE.Mesh(boxGeometry, boxMaterial)
 model.castShadow = model.receiveShadow = true
 
-const size = new THREE.Vector3().set(8, 6, 1)
-buildCratesPile(size)
+const size = new THREE.Vector3(8, 6, 1)
+buildCrates(size)
 
 /* FUNCTIONS */
 
-function buildCratesPile(nCubes) {
+function buildCrates(nCubes) {
   for (let x = 0; x < nCubes.x; x++)
     for (let y = 0; y < nCubes.y; y++)
       for (let z = 0; z < nCubes.z; z++) {
@@ -130,7 +125,7 @@ function buildCratesPile(nCubes) {
       }
 }
 
-function buildVehicleSkinVeyron(opt, onReady) {
+function loadVehicle(callback) {
   const meshes = {
     chassis: null,
     wheels: []
@@ -188,7 +183,7 @@ function buildVehicleSkinVeyron(opt, onReady) {
         meshes.wheels.push(wheelmesh)
       }
 
-      onReady(meshes)
+      callback(meshes)
     })
   })
 };

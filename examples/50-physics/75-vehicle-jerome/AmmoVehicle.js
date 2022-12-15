@@ -1,4 +1,5 @@
-/* global THREE, Ammo */
+/* global Ammo */
+import * as THREE from 'three'
 import keyboard from '/utils/classes/Keyboard.js'
 
 export default class AmmoVehicle {

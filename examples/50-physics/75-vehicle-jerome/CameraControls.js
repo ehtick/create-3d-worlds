@@ -1,4 +1,4 @@
-/* global THREE */
+import * as THREE from 'three'
 
 export default class CameraControls {
   constructor(object3d) {

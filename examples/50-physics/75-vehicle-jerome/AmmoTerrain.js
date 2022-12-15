@@ -1,4 +1,5 @@
-/* global THREE, Ammo */
+/* global Ammo */
+import * as THREE from 'three'
 
 export default class AmmoTerrain {
   constructor(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight, terrain3dWidth, terrain3dDepth) {
