@@ -1,4 +1,6 @@
 import * as THREE from 'three'
+import { scene, camera, renderer } from '/utils/scene.js'
+import { createSun } from '/utils/light.js'
 
 import AmmoTerrain from './AmmoTerrain.js'
 import CameraControls from './CameraControls.js'
@@ -6,43 +8,13 @@ import AmmoWorld from './AmmoWorld.js'
 import AmmoVehicle from './AmmoVehicle.js'
 import AmmoBody from './AmmoBody.js'
 
-/* INIT */
-
-const renderer = new THREE.WebGLRenderer()
-renderer.setClearColor(new THREE.Color('black'), 1)
-renderer.setSize(window.innerWidth, window.innerHeight)
-document.body.appendChild(renderer.domElement)
-
-const scene = new THREE.Scene()
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000)
 camera.position.z = 10
+scene.add(createSun())
 
 const speedometer = document.getElementById('speedometer')
 const cameraControls = new CameraControls(camera)
 const ammoWorld = new AmmoWorld()
 
-let light = new THREE.AmbientLight(0x202020)
-scene.add(light)
-light = new THREE.DirectionalLight('white', 0.5)
-light.position.set(0.2, 0.5, -2)
-scene.add(light)
-
-const dirLight = new THREE.DirectionalLight(0xffffff, 0.8)
-dirLight.position.set(-15, 10, 15).setLength(60)
-dirLight.castShadow = true
-dirLight.shadow.bias = -0.003
-dirLight.shadow.bias = 0.001
-dirLight.shadow.camera.near = 1
-dirLight.shadow.camera.far = 200
-dirLight.shadow.camera.right = 25 * 3
-dirLight.shadow.camera.left = - 25 * 3
-dirLight.shadow.camera.top = 25
-dirLight.shadow.camera.bottom = - 25
-dirLight.shadow.mapSize.x = 512
-dirLight.shadow.mapSize.y = 512
-scene.add(dirLight)
-
-// vehicle
 const position = new THREE.Vector3(0, 5, 0)
 const quaternion = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
 const ammoVehicle = new AmmoVehicle(ammoWorld.physicsWorld, position, quaternion)
@@ -210,6 +182,6 @@ void function animate() {
   cameraControls.update(ammoVehicle)
   ammoWorld.update()
   const speed = ammoVehicle.vehicle.getCurrentSpeedKmHour()
-  speedometer.innerHTML = (speed < 0 ? '(R) ' : '') + Math.abs(speed).toFixed(1) + ' km/h'
+  speedometer.innerHTML = speed.toFixed(1) + ' km/h'
   renderer.render(scene, camera)
 }()
