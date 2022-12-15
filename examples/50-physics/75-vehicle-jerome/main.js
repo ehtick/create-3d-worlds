@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
+import { loadModel } from '/utils/loaders.js'
 
 import AmmoTerrain from './AmmoTerrain.js'
 import CameraControls from './CameraControls.js'
@@ -19,19 +20,6 @@ const position = new THREE.Vector3(0, 5, 0)
 const quaternion = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
 const ammoVehicle = new AmmoVehicle(ammoWorld.physicsWorld, position, quaternion)
 scene.add(ammoVehicle.object3d)
-
-// loadVehicle(meshes => {
-//   applyMeshesToVehicle(ammoVehicle, meshes)
-// })
-
-function applyMeshesToVehicle(ammoVehicle, meshes) {
-  const container = ammoVehicle.object3d.getObjectByName('chassis')
-  container.add(meshes.chassis)
-  for (let i = 0; i < 4; i++) {
-    const container = ammoVehicle.object3d.getObjectByName('wheel_' + i)
-    container.add(meshes.wheels[i])
-  }
-}
 
 // tremplin
 const geometry = new THREE.BoxGeometry(8, 4, 15)
@@ -76,7 +64,39 @@ model.castShadow = model.receiveShadow = true
 const size = new THREE.Vector3(8, 6, 1)
 buildCrates(size)
 
+function applyMeshesToVehicle(ammoVehicle, meshes) {
+  const container = ammoVehicle.object3d.getObjectByName('chassis')
+  container.add(meshes.chassis)
+  for (let i = 0; i < 4; i++) {
+    const container = ammoVehicle.object3d.getObjectByName('wheel_' + i)
+    container.add(meshes.wheels[i])
+  }
+}
+
 /* FUNCTIONS */
+
+const { mesh: bodyMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl' })
+const { mesh: tireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl' })
+
+const meshes = {
+  chassis: null,
+  wheels: []
+}
+
+bodyMesh.position.y = 0.25
+bodyMesh.castShadow = true
+meshes.chassis = bodyMesh
+
+for (let i = 0; i < 4; i++) {
+  const wheelmesh = tireMesh.clone()
+  wheelmesh.castShadow = true
+  wheelmesh.receiveShadow = true
+  if (i == 0 || i == 3)
+    wheelmesh.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
+  meshes.wheels.push(wheelmesh)
+}
+
+applyMeshesToVehicle(ammoVehicle, meshes)
 
 function buildCrates(nCubes) {
   for (let x = 0; x < nCubes.x; x++)
@@ -96,69 +116,6 @@ function buildCrates(nCubes) {
         ammoWorld.add(ammoControls)
       }
 }
-
-function loadVehicle(callback) {
-  const meshes = {
-    chassis: null,
-    wheels: []
-  }
-  const s = 0.02
-
-  // Vehicle
-  const wheelLoader = new THREE.BinaryLoader()
-  wheelLoader.load('./obj/veyron_wheel_bin.js', wheelGeometry => {
-
-    const bodyLoader = new THREE.BinaryLoader()
-    bodyLoader.load('./obj/veyron_body_bin.js', bodyGeometry => {
-
-      bodyGeometry.applyMatrix(new THREE.Matrix4().makeScale(s, s, s))
-      bodyGeometry.computeBoundingBox()
-      let bb = bodyGeometry.boundingBox
-      bodyGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(
-        -(bb.max.x + bb.min.x) * 0.5,
-        -(bb.max.y + bb.min.y) * 0.5,
-        -(bb.max.z + bb.min.z) * 0.5
-      ))
-
-      const bodyMaterial = new THREE.MeshLambertMaterial({ color: 0xffffff })
-      const bodyMesh = new THREE.Mesh(bodyGeometry, bodyMaterial)
-      bodyMesh.position.y = 0.25
-      bodyMesh.castShadow = true
-
-      meshes.chassis = bodyMesh
-
-      const wheelMaterial = new THREE.MultiMaterial()
-      wheelMaterial.materials[0] = new THREE.MeshLambertMaterial({
-        color: 0xffffff,
-        reflectivity: 0.75,
-        combine: THREE.MixOperation,
-      })
-      wheelMaterial.materials[1] = new THREE.MeshLambertMaterial({
-        color: 0x333333,
-      })
-
-      wheelGeometry.applyMatrix(new THREE.Matrix4().makeScale(s, s, s))
-      wheelGeometry.computeBoundingBox()
-      bb = wheelGeometry.boundingBox
-      wheelGeometry.applyMatrix(new THREE.Matrix4().makeTranslation(
-        -(bb.max.x + bb.min.x) * 0.5,
-        -(bb.max.y + bb.min.y) * 0.5,
-        -(bb.max.z + bb.min.z) * 0.5
-      ))
-
-      for (let i = 0; i < 4; i++) {
-        const wheelmesh = new THREE.Mesh(wheelGeometry, wheelMaterial)
-        wheelmesh.castShadow = true
-        wheelmesh.receiveShadow = true
-        if (i == 0 || i == 3)
-          wheelmesh.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
-        meshes.wheels.push(wheelmesh)
-      }
-
-      callback(meshes)
-    })
-  })
-};
 
 // Heightfield parameters
 const terrain3dWidth = 60
