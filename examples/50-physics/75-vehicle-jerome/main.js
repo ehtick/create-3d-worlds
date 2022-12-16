@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { scene, camera, renderer } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
+import { createBox } from '/utils/geometry.js'
 
 import AmmoTerrain from './AmmoTerrain.js'
 import CameraControls from './CameraControls.js'
@@ -24,18 +25,16 @@ scene.add(ammoVehicle.object3d)
 // tremplin
 const geometry = new THREE.BoxGeometry(8, 4, 15)
 const material = new THREE.MeshPhongMaterial({ color: 0xfffacd })
-const mesh = new THREE.Mesh(geometry, material)
-mesh.position.x = -10
-mesh.position.y = -mesh.geometry.parameters.height / 2 + 1.5
-mesh.position.z = 20
-mesh.receiveShadow = true
-scene.add(mesh)
+const tremplin = new THREE.Mesh(geometry, material)
+tremplin.position.set(-10, -tremplin.geometry.parameters.height / 2 + 1.5, 20)
+tremplin.receiveShadow = true
+scene.add(tremplin)
 
 const tremplinQuaternion = new THREE.Quaternion(0, 0, 0, 1)
 tremplinQuaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 15)
-mesh.quaternion.copy(tremplinQuaternion)
+tremplin.quaternion.copy(tremplinQuaternion)
 
-const ammoControls = new AmmoBody(mesh, { mass: 0 })
+const ammoControls = new AmmoBody(tremplin, { mass: 0 })
 ammoWorld.add(ammoControls)
 
 const createBall = function() {

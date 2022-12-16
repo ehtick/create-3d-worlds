@@ -7,8 +7,8 @@ const textureLoader = new THREE.TextureLoader()
 
 /* BOXES */
 
-export function createBox({ size = 1, height = size, depth = size, file, bumpFile, color = randomGray(), castShadow = true, receiveShadow = false } = {}) {
-  const geometry = new THREE.BoxGeometry(size, height, depth)
+export function createBox({ size = 1, width = size, height = size, depth = size, file, bumpFile, color = randomGray(), castShadow = true, receiveShadow = false } = {}) {
+  const geometry = new THREE.BoxGeometry(width, height, depth)
   const options = {
     map: file ? textureLoader.load(`/assets/textures/${file}`) : null,
     color: !file ? color : null,
