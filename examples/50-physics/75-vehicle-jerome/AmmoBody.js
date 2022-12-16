@@ -4,32 +4,30 @@ import { Ammo } from '/utils/physics.js'
 const guessShapeFromMesh = function(mesh) {
   const { parameters, type } = mesh.geometry
   const { scale } = mesh
-
   const btVector3 = new Ammo.btVector3()
-  let shape, size
 
-  if (type === 'BoxGeometry') {
-    btVector3.setX(parameters.width / 2 * scale.x)
-    btVector3.setY(parameters.height / 2 * scale.y)
-    btVector3.setZ(parameters.depth / 2 * scale.z)
-    shape = new Ammo.btBoxShape(btVector3)
-  } else if (type === 'SphereGeometry') {
-    const radius = parameters.radius * scale.x
-    shape = new Ammo.btSphereShape(radius)
-  } else if (type === 'CylinderGeometry') {
-    size = new Ammo.btVector3(parameters.radiusTop * scale.x,
-      parameters.height * 0.5 * scale.y,
-      parameters.radiusBottom * scale.x)
-    shape = new Ammo.btCylinderShape(size)
-  } else {
-    const box3 = new THREE.Box3().setFromObject(mesh)
-    size = box3.getSize()
-    btVector3.setX(size.x / 2 * scale.x)
-    btVector3.setY(size.y / 2 * scale.y)
-    btVector3.setZ(size.z / 2 * scale.z)
-    shape = new Ammo.btBoxShape(btVector3)
+  switch (type) {
+    case 'BoxGeometry':
+      btVector3.setX(parameters.width / 2 * scale.x)
+      btVector3.setY(parameters.height / 2 * scale.y)
+      btVector3.setZ(parameters.depth / 2 * scale.z)
+      return new Ammo.btBoxShape(btVector3)
+    case 'SphereGeometry':
+      const radius = parameters.radius * scale.x
+      return new Ammo.btSphereShape(radius)
+    case 'CylinderGeometry':
+      const size = new Ammo.btVector3(parameters.radiusTop * scale.x,
+        parameters.height * 0.5 * scale.y,
+        parameters.radiusBottom * scale.x)
+      return new Ammo.btCylinderShape(size)
+    default:
+      const box3 = new THREE.Box3().setFromObject(mesh)
+      const boxSize = box3.getSize()
+      btVector3.setX(boxSize.x / 2 * scale.x)
+      btVector3.setY(boxSize.y / 2 * scale.y)
+      btVector3.setZ(boxSize.z / 2 * scale.z)
+      return new Ammo.btBoxShape(btVector3)
   }
-  return shape
 }
 
 const guessMassFromMesh = function(mesh) {
