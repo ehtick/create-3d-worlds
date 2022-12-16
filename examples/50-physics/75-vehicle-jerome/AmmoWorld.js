@@ -1,18 +1,13 @@
 /* global Ammo */
 import * as THREE from 'three'
+import { createPhysicsWorld } from '/utils/physics.js'
 
 export default class AmmoWorld {
   constructor() {
     this._ammoControls = []
     this._clock = new THREE.Clock()
     this.maxSteps = 100
-
-    const collisionConfiguration = new Ammo.btDefaultCollisionConfiguration()
-    const dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration)
-    const broadphase = new Ammo.btDbvtBroadphase()
-    const solver = new Ammo.btSequentialImpulseConstraintSolver()
-    this.physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration)
-    this.physicsWorld.setGravity(new Ammo.btVector3(0, -9.81, 0))
+    this.physicsWorld = createPhysicsWorld()
   }
 
   update() {
