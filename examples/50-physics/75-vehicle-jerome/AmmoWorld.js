@@ -1,6 +1,5 @@
-/* global Ammo */
 import * as THREE from 'three'
-import { createPhysicsWorld } from '/utils/physics.js'
+import { Ammo, createPhysicsWorld } from '/utils/physics.js'
 
 export default class AmmoWorld {
   constructor() {

@@ -1,5 +1,5 @@
-/* global Ammo */
 import * as THREE from 'three'
+import { Ammo } from '/utils/physics.js'
 
 const guessGeometryFromObject3d = function(object3d) {
   let parameters = null

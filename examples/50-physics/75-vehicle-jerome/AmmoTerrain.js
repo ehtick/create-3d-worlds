@@ -1,5 +1,5 @@
-/* global Ammo */
 import * as THREE from 'three'
+import { Ammo } from '/utils/physics.js'
 
 export default class AmmoTerrain {
   constructor(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight, terrain3dWidth, terrain3dDepth) {
