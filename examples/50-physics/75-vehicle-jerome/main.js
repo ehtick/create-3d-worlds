@@ -16,43 +16,32 @@ const speedometer = document.getElementById('speedometer')
 const cameraControls = new CameraControls(camera)
 const ammoWorld = new AmmoWorld()
 
-const position = new THREE.Vector3(0, 5, 0)
-const quaternion = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
-const ammoVehicle = new AmmoVehicle(ammoWorld.physicsWorld, position, quaternion)
-scene.add(ammoVehicle.mesh)
+// tremplin
+const tremplinMesh = createTremplin()
+tremplinMesh.position.set(-10, -tremplinMesh.geometry.parameters.height / 2 + 1.5, 20)
+scene.add(tremplinMesh)
 
-const tremplin = createTremplin()
-tremplin.position.set(-10, -tremplin.geometry.parameters.height / 2 + 1.5, 20)
-scene.add(tremplin)
+const tremplin = new AmmoBody(tremplinMesh, { mass: 0 })
+ammoWorld.add(tremplin)
 
-const ammoControls = new AmmoBody(tremplin, { mass: 0 })
-ammoWorld.add(ammoControls)
-
-const createBall = function() {
-  const geometry = new THREE.SphereGeometry(1, 32, 16)
-  const material = new THREE.MeshPhongMaterial({ color: 0x333333 })
-  const mesh = new THREE.Mesh(geometry, material)
-  mesh.castShadow = mesh.receiveShadow = true
-  return mesh
-}
-
+// ball
 const ballMesh = createBall()
 ballMesh.position.set(0, 5, -20)
 scene.add(ballMesh)
 
-const ammoBall = new AmmoBody(ballMesh, { mass: 30 })
-ammoBall.setFriction(0.9)
-ammoBall.setRestitution(0.95)
-ammoWorld.add(ammoBall)
+const ball = new AmmoBody(ballMesh, { mass: 30 })
+ball.setFriction(0.9)
+ball.setRestitution(0.95)
+ammoWorld.add(ball)
 
 // crates
-const boxGeometry = new THREE.BoxGeometry(0.75, 0.75, 0.75)
-const boxMaterial = new THREE.MeshPhongMaterial()
-const model = new THREE.Mesh(boxGeometry, boxMaterial)
-model.castShadow = model.receiveShadow = true
-
 const size = new THREE.Vector3(8, 6, 1)
 buildCrates(size)
+
+// vehicle
+const position = new THREE.Vector3(0, 5, 0)
+const ammoVehicle = new AmmoVehicle(ammoWorld.physicsWorld, position)
+scene.add(ammoVehicle.mesh)
 
 const { mesh: bodyMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl' })
 const { mesh: tireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl' })
@@ -68,6 +57,14 @@ for (let i = 0; i < 4; i++) {
 
 /* FUNCTIONS */
 
+function createBall() {
+  const geometry = new THREE.SphereGeometry(1, 32, 16)
+  const material = new THREE.MeshPhongMaterial({ color: 0x333333 })
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.castShadow = mesh.receiveShadow = true
+  return mesh
+}
+
 function createTremplin() {
   const geometry = new THREE.BoxGeometry(8, 4, 15)
   const material = new THREE.MeshPhongMaterial({ color: 0xfffacd })
@@ -78,10 +75,15 @@ function createTremplin() {
 }
 
 function buildCrates(nCubes) {
+  const boxGeometry = new THREE.BoxGeometry(0.75, 0.75, 0.75)
+  const boxMaterial = new THREE.MeshPhongMaterial()
+  const box = new THREE.Mesh(boxGeometry, boxMaterial)
+  box.castShadow = box.receiveShadow = true
+
   for (let x = 0; x < nCubes.x; x++)
     for (let y = 0; y < nCubes.y; y++)
       for (let z = 0; z < nCubes.z; z++) {
-        const mesh = model.clone()
+        const mesh = box.clone()
 
         mesh.position.x = (x - nCubes.x / 2 + 0.5) * mesh.scale.x * boxGeometry.parameters.width
         mesh.position.y = (y - nCubes.y / 2 + 0.5) * mesh.scale.y * boxGeometry.parameters.height
@@ -91,8 +93,8 @@ function buildCrates(nCubes) {
         mesh.position.z += 6
         scene.add(mesh)
 
-        const ammoControls = new AmmoBody(mesh)
-        ammoWorld.add(ammoControls)
+        const ammoBody = new AmmoBody(mesh)
+        ammoWorld.add(ammoBody)
       }
 }
 

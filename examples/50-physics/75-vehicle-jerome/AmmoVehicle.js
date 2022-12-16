@@ -2,8 +2,10 @@ import * as THREE from 'three'
 import { Ammo } from '/utils/physics.js'
 import keyboard from '/utils/classes/Keyboard.js'
 
+const defaultRotation = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
+
 export default class AmmoVehicle {
-  constructor(btPhysicsWorld, position, quaternion) {
+  constructor(physicsWorld, position, quaternion = defaultRotation) {
     this.mesh = new THREE.Group
 
     const chassisWidth = 1.8
@@ -58,14 +60,14 @@ export default class AmmoVehicle {
     const DISABLE_DEACTIVATION = 4
     chassisBody.setActivationState(DISABLE_DEACTIVATION)
     this.chassisBody = chassisBody
-    btPhysicsWorld.addRigidBody(chassisBody)
+    physicsWorld.addRigidBody(chassisBody)
 
     // Raycast Vehicle
     const tuning = new Ammo.btVehicleTuning()
-    const rayCaster = new Ammo.btDefaultVehicleRaycaster(btPhysicsWorld)
+    const rayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
     const vehicle = new Ammo.btRaycastVehicle(tuning, chassisBody, rayCaster)
     vehicle.setCoordinateSystem(0, 1, 2)
-    btPhysicsWorld.addAction(vehicle)
+    physicsWorld.addAction(vehicle)
 
     this.vehicle = vehicle
 
