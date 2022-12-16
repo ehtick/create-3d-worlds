@@ -98,17 +98,7 @@ function buildCrates(nCubes) {
       }
 }
 
-// Heightfield parameters
-const terrain3dWidth = 60
-const terrain3dDepth = 120
-const terrainWidth = 128 * 2
-const terrainDepth = 256 * 2
-const terrainMaxHeight = 24 * 2
-const terrainMinHeight = 0
-
-const ammoTerrain = new AmmoTerrain(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight, terrain3dWidth, terrain3dDepth)
-
-ammoTerrain.body.setRestitution(0.9)
+const ammoTerrain = new AmmoTerrain()
 ammoWorld.physicsWorld.addRigidBody(ammoTerrain.body)
 scene.add(ammoTerrain.mesh)
 

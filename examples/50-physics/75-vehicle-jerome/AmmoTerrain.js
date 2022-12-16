@@ -2,7 +2,14 @@ import * as THREE from 'three'
 import { Ammo } from '/utils/physics.js'
 
 export default class AmmoTerrain {
-  constructor(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight, terrain3dWidth, terrain3dDepth) {
+  constructor({
+    terrain3dWidth = 60,
+    terrain3dDepth = 120,
+    terrainWidth = 128 * 2,
+    terrainDepth = 256 * 2,
+    terrainMaxHeight = 24 * 2,
+    terrainMinHeight = 0,
+  } = {}) {
     const heightData = generateHeightRocket(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight)
     const geometry = new THREE.PlaneGeometry(terrain3dWidth, terrain3dDepth, terrainWidth - 1, terrainDepth - 1)
     geometry.rotateX(-Math.PI / 2)
@@ -24,6 +31,7 @@ export default class AmmoTerrain {
     const groundLocalInertia = new Ammo.btVector3(0, 0, 0)
     const groundMotionState = new Ammo.btDefaultMotionState(groundTransform)
     const groundBody = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(groundMass, groundMotionState, groundShape, groundLocalInertia))
+    groundBody.setRestitution(0.9)
 
     this.mesh = meshGround
     this.body = groundBody
