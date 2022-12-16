@@ -4,7 +4,7 @@ import { Ammo } from '/utils/physics.js'
 export default class AmmoTerrain {
   constructor(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight, terrain3dWidth, terrain3dDepth) {
     const heightData = generateHeightRocket(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight)
-    const geometry = new THREE.PlaneBufferGeometry(terrain3dWidth, terrain3dDepth, terrainWidth - 1, terrainDepth - 1)
+    const geometry = new THREE.PlaneGeometry(terrain3dWidth, terrain3dDepth, terrainWidth - 1, terrainDepth - 1)
     geometry.rotateX(-Math.PI / 2)
     const vertices = geometry.attributes.position.array
     for (let i = 0; i < vertices.length; i++)

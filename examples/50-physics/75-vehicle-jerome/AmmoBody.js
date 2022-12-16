@@ -1,19 +1,14 @@
 import * as THREE from 'three'
 import { Ammo } from '/utils/physics.js'
 
-const guessGeometryFromObject3d = function(object3d) {
-  let parameters = null
-  let type = 'unknown'
+const guessGeometryFromObject3d = function(mesh) {
+  const { parameters } = mesh.geometry
+  const { type } = mesh.geometry
 
-  if (object3d.geometry instanceof THREE.BoxGeometry || object3d.geometry instanceof THREE.SphereGeometry || object3d.geometry instanceof THREE.CylinderGeometry) {
-    parameters = object3d.geometry.parameters
-    type = object3d.geometry.type
-  }
-  // TODO this is a kludge to support basic shape in a-frame - ugly but harmless
-  if (object3d.children.length === 1 && object3d.children[0].geometry.type === 'BufferGeometry') {
-    parameters = object3d.children[0].geometry.metadata.parameters
-    type = object3d.children[0].geometry.metadata.type
-  }
+  console.log({
+    parameters,
+    type
+  })
 
   return {
     parameters,
@@ -21,10 +16,10 @@ const guessGeometryFromObject3d = function(object3d) {
   }
 }
 
-const guessShapeFromObject3d = function(object3d) {
-  const guessedGeometry = guessGeometryFromObject3d(object3d)
+const guessShapeFromObject3d = function(mesh) {
+  const guessedGeometry = guessGeometryFromObject3d(mesh)
   const p = guessedGeometry.parameters
-  const s = object3d.scale
+  const s = mesh.scale
 
   const btVector3 = new Ammo.btVector3()
   let shape, size
@@ -43,7 +38,7 @@ const guessShapeFromObject3d = function(object3d) {
       p.radiusBottom * s.x)
     shape = new Ammo.btCylinderShape(size)
   } else {
-    const box3 = new THREE.Box3().setFromObject(object3d)
+    const box3 = new THREE.Box3().setFromObject(mesh)
     size = box3.getSize()
     btVector3.setX(size.x / 2 * s.x)
     btVector3.setY(size.y / 2 * s.y)
@@ -53,10 +48,10 @@ const guessShapeFromObject3d = function(object3d) {
   return shape
 }
 
-const guessMassFromObject3d = function(object3d) {
-  const guessedGeometry = guessGeometryFromObject3d(object3d)
+const guessMassFromObject3d = function(mesh) {
+  const guessedGeometry = guessGeometryFromObject3d(mesh)
   const p = guessedGeometry.parameters
-  const s = object3d.scale
+  const s = mesh.scale
 
   let mass = 0
 
@@ -70,7 +65,7 @@ const guessMassFromObject3d = function(object3d) {
                         + p.radiusBottom * p.radiusTop * s.y * s.y
                         + p.radiusTop * p.radiusTop * s.x * s.x)
   else {
-    const box3 = new THREE.Box3().setFromObject(object3d)
+    const box3 = new THREE.Box3().setFromObject(mesh)
     const size = box3.getSize()
     mass = size.x * s.x * size.y * s.y * size.z * s.z
   }
@@ -78,12 +73,11 @@ const guessMassFromObject3d = function(object3d) {
 }
 
 export default class AmmoBody {
-  constructor(object3d, options = {}) {
+  constructor(object3d, {
+    shape = guessShapeFromObject3d(object3d),
+    mass = guessMassFromObject3d(object3d),
+  } = {}) {
     this.object3d = object3d
-
-    const shape = options.shape !== undefined ? options.shape : guessShapeFromObject3d(object3d)
-    const mass = options.mass !== undefined ? options.mass : guessMassFromObject3d(object3d)
-
     const margin = 0.05
     shape.setMargin(margin)
 
