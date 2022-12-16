@@ -50,8 +50,8 @@ const getMassFromMesh = function(mesh) {
 
 export default class AmmoBody {
   constructor(mesh, {
-    shape = getShapeFromMesh(mesh),
     mass = getMassFromMesh(mesh),
+    shape = getShapeFromMesh(mesh),
   } = {}) {
     this.mesh = mesh
     const margin = 0.05

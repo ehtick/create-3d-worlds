@@ -47,15 +47,16 @@ export default class AmmoVehicle {
     }
 
     // build chassis
-    const geometry = new Ammo.btBoxShape(new Ammo.btVector3(chassisWidth * .5, chassisHeight * .5, chassisLength * .5))
+    const size = new Ammo.btVector3(chassisWidth * .5, chassisHeight * .5, chassisLength * .5)
+    const shape = new Ammo.btBoxShape(size)
     const transform = new Ammo.btTransform()
     transform.setIdentity()
     transform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z))
     transform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w))
     const motionState = new Ammo.btDefaultMotionState(transform)
     const localInertia = new Ammo.btVector3(0, 0, 0)
-    geometry.calculateLocalInertia(massVehicle, localInertia)
-    const chassisBody = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(massVehicle, motionState, geometry, localInertia))
+    shape.calculateLocalInertia(massVehicle, localInertia)
+    const chassisBody = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(massVehicle, motionState, shape, localInertia))
 
     const DISABLE_DEACTIVATION = 4
     chassisBody.setActivationState(DISABLE_DEACTIVATION)
