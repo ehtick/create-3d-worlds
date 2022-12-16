@@ -1,11 +1,10 @@
-import * as THREE from 'three'
 import { Ammo } from '/utils/physics.js'
+import { getSize } from '/utils/helpers.js'
 
-const guessShapeFromMesh = function(mesh) {
-  const { parameters, type } = mesh.geometry
+const getShapeFromMesh = function(mesh) {
   const { scale } = mesh
+  const { parameters, type } = mesh.geometry
   const btVector3 = new Ammo.btVector3()
-
   switch (type) {
     case 'BoxGeometry':
       btVector3.setX(parameters.width / 2 * scale.x)
@@ -21,42 +20,38 @@ const guessShapeFromMesh = function(mesh) {
         parameters.radiusBottom * scale.x)
       return new Ammo.btCylinderShape(size)
     default:
-      const box3 = new THREE.Box3().setFromObject(mesh)
-      const boxSize = box3.getSize()
-      btVector3.setX(boxSize.x / 2 * scale.x)
-      btVector3.setY(boxSize.y / 2 * scale.y)
-      btVector3.setZ(boxSize.z / 2 * scale.z)
+      const { x, y, z } = getSize(mesh)
+      btVector3.setX(x / 2 * scale.x)
+      btVector3.setY(y / 2 * scale.y)
+      btVector3.setZ(z / 2 * scale.z)
       return new Ammo.btBoxShape(btVector3)
   }
 }
 
-const guessMassFromMesh = function(mesh) {
-  const { parameters, type } = mesh.geometry
+const getMassFromMesh = function(mesh) {
   const { scale } = mesh
-
-  let mass = 0
-
-  if (type === 'BoxGeometry')
-    mass = parameters.width * scale.x * parameters.height * scale.y * parameters.depth * scale.z
-  else if (type === 'SphereGeometry')
-    mass = 4 / 3 * Math.PI * Math.pow(parameters.radius * scale.x, 3)
-  else if (type === 'CylinderGeometry')
+  const { parameters, type } = mesh.geometry
+  switch (type) {
+    case 'BoxGeometry':
+      return parameters.width * scale.x * parameters.height * scale.y * parameters.depth * scale.z
+    case 'SphereGeometry':
+      return 4 / 3 * Math.PI * Math.pow(parameters.radius * scale.x, 3)
     // from http://jwilson.coe.uga.edu/emt725/Frustum/Frustum.cone.html
-    mass = Math.PI * parameters.height / 3 * (parameters.radiusBottom * parameters.radiusBottom * scale.x * scale.x
-                        + parameters.radiusBottom * parameters.radiusTop * scale.y * scale.y
-                        + parameters.radiusTop * parameters.radiusTop * scale.x * scale.x)
-  else {
-    const box3 = new THREE.Box3().setFromObject(mesh)
-    const size = box3.getSize()
-    mass = size.x * scale.x * size.y * scale.y * size.z * scale.z
+    case 'CylinderGeometry':
+      return Math.PI * parameters.height / 3 * (
+        parameters.radiusBottom * parameters.radiusBottom * scale.x * scale.x
+      + parameters.radiusBottom * parameters.radiusTop * scale.y * scale.y
+      + parameters.radiusTop * parameters.radiusTop * scale.x * scale.x)
+    default:
+      const { x, y, z } = getSize(mesh)
+      return x * scale.x * y * scale.y * z * scale.z
   }
-  return mass
 }
 
 export default class AmmoBody {
   constructor(mesh, {
-    shape = guessShapeFromMesh(mesh),
-    mass = guessMassFromMesh(mesh),
+    shape = getShapeFromMesh(mesh),
+    mass = getMassFromMesh(mesh),
   } = {}) {
     this.mesh = mesh
     const margin = 0.05
