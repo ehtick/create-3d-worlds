@@ -2,7 +2,6 @@ import * as THREE from 'three'
 import { scene, camera, renderer } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
-import { createBox } from '/utils/geometry.js'
 
 import AmmoTerrain from './AmmoTerrain.js'
 import CameraControls from './CameraControls.js'
@@ -22,17 +21,9 @@ const quaternion = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.V
 const ammoVehicle = new AmmoVehicle(ammoWorld.physicsWorld, position, quaternion)
 scene.add(ammoVehicle.object3d)
 
-// tremplin
-const geometry = new THREE.BoxGeometry(8, 4, 15)
-const material = new THREE.MeshPhongMaterial({ color: 0xfffacd })
-const tremplin = new THREE.Mesh(geometry, material)
+const tremplin = createTremplin()
 tremplin.position.set(-10, -tremplin.geometry.parameters.height / 2 + 1.5, 20)
-tremplin.receiveShadow = true
 scene.add(tremplin)
-
-const tremplinQuaternion = new THREE.Quaternion(0, 0, 0, 1)
-tremplinQuaternion.setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 15)
-tremplin.quaternion.copy(tremplinQuaternion)
 
 const ammoControls = new AmmoBody(tremplin, { mass: 0 })
 ammoWorld.add(ammoControls)
@@ -76,6 +67,15 @@ for (let i = 0; i < 4; i++) {
 }
 
 /* FUNCTIONS */
+
+function createTremplin() {
+  const geometry = new THREE.BoxGeometry(8, 4, 15)
+  const material = new THREE.MeshPhongMaterial({ color: 0xfffacd })
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.rotateX(-Math.PI / 15)
+  mesh.receiveShadow = true
+  return mesh
+}
 
 function buildCrates(nCubes) {
   for (let x = 0; x < nCubes.x; x++)
