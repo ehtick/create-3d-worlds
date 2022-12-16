@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { Ammo } from '/utils/physics.js'
 
-const guessGeometryFromObject3d = function(mesh) {
+const guessGeometryFromMesh = function(mesh) {
   const { parameters } = mesh.geometry
   const { type } = mesh.geometry
 
@@ -16,8 +16,8 @@ const guessGeometryFromObject3d = function(mesh) {
   }
 }
 
-const guessShapeFromObject3d = function(mesh) {
-  const guessedGeometry = guessGeometryFromObject3d(mesh)
+const guessShapeFromMesh = function(mesh) {
+  const guessedGeometry = guessGeometryFromMesh(mesh)
   const p = guessedGeometry.parameters
   const s = mesh.scale
 
@@ -48,8 +48,8 @@ const guessShapeFromObject3d = function(mesh) {
   return shape
 }
 
-const guessMassFromObject3d = function(mesh) {
-  const guessedGeometry = guessGeometryFromObject3d(mesh)
+const guessMassFromMesh = function(mesh) {
+  const guessedGeometry = guessGeometryFromMesh(mesh)
   const p = guessedGeometry.parameters
   const s = mesh.scale
 
@@ -73,11 +73,11 @@ const guessMassFromObject3d = function(mesh) {
 }
 
 export default class AmmoBody {
-  constructor(object3d, {
-    shape = guessShapeFromObject3d(object3d),
-    mass = guessMassFromObject3d(object3d),
+  constructor(mesh, {
+    shape = guessShapeFromMesh(mesh),
+    mass = guessMassFromMesh(mesh),
   } = {}) {
-    this.object3d = object3d
+    this.mesh = mesh
     const margin = 0.05
     shape.setMargin(margin)
 
@@ -89,17 +89,17 @@ export default class AmmoBody {
 
     const btTransform = new Ammo.btTransform()
     btTransform.setIdentity()
-    const { position } = this.object3d
+    const { position } = this.mesh
     btTransform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z))
-    const { quaternion } = this.object3d
+    const { quaternion } = this.mesh
     btTransform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w))
     const motionState = new Ammo.btDefaultMotionState(btTransform)
 
     const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia)
     const body = new Ammo.btRigidBody(rbInfo)
 
-    body.setUserIndex(this.object3d.id)
-    this.object3d.userData.ammoControls = this
+    body.setUserIndex(this.mesh.id)
+    this.mesh.userData.ammoControls = this
 
     this.body = body
     this.physicsBody = this.body // Deprecated

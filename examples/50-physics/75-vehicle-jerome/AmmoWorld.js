@@ -22,10 +22,10 @@ export default class AmmoWorld {
       motionState.getWorldTransform(btTransform)
 
       const position = btTransform.getOrigin()
-      ammoControls.object3d.position.set(position.x(), position.y(), position.z())
+      ammoControls.mesh.position.set(position.x(), position.y(), position.z())
 
       const quaternion = btTransform.getRotation()
-      ammoControls.object3d.quaternion.set(quaternion.x(), quaternion.y(), quaternion.z(), quaternion.w())
+      ammoControls.mesh.quaternion.set(quaternion.x(), quaternion.y(), quaternion.z(), quaternion.w())
     }
   }
 

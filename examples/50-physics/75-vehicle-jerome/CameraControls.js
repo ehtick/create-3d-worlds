@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 
 export default class CameraControls {
-  constructor(object3d) {
-    this.object3d = object3d
+  constructor(mesh) {
+    this.mesh = mesh
     this.offsetCamera = new THREE.Vector3(0, 2, -6).setLength(10)
     this.lookatCamera = new THREE.Vector3(0, 0, +4)
     this.tweenOffset = 0.1
@@ -12,7 +12,7 @@ export default class CameraControls {
   }
 
   update(ammoVehicle) {
-    const object3dVehicle = ammoVehicle.object3d.getObjectByName('chassis')
+    const object3dVehicle = ammoVehicle.mesh.getObjectByName('chassis')
 
     const offsetCamera = this.offsetCamera.clone()
     object3dVehicle.localToWorld(offsetCamera)
@@ -23,7 +23,7 @@ export default class CameraControls {
       this._currentOffset.multiplyScalar(1 - this.tweenOffset)
         .add(offsetCamera.clone().multiplyScalar(this.tweenOffset))
 
-    this.object3d.position.copy(this._currentOffset)
+    this.mesh.position.copy(this._currentOffset)
 
     const lookatCamera = this.lookatCamera.clone()
     object3dVehicle.localToWorld(lookatCamera)
@@ -33,6 +33,6 @@ export default class CameraControls {
       this._currentLookat.multiplyScalar(1 - this.tweenLookAt)
         .add(lookatCamera.clone().multiplyScalar(this.tweenLookAt))
 
-    this.object3d.lookAt(this._currentLookat)
+    this.mesh.lookAt(this._currentLookat)
   }
 }

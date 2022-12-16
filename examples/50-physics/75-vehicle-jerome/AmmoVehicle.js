@@ -4,7 +4,7 @@ import keyboard from '/utils/classes/Keyboard.js'
 
 export default class AmmoVehicle {
   constructor(btPhysicsWorld, position, quaternion) {
-    this.object3d = new THREE.Group
+    this.mesh = new THREE.Group
 
     const chassisWidth = 1.8
     const chassisHeight = .6
@@ -36,12 +36,12 @@ export default class AmmoVehicle {
     // TODO should that be outside, built before this constructor
     const chassisMesh = new THREE.Group()
     chassisMesh.name = 'chassis'
-    this.object3d.add(chassisMesh)
+    this.mesh.add(chassisMesh)
     const wheelMeshes = []
     for (let i = 0; i < 4; i++) {
       wheelMeshes[i] = new THREE.Group()
       wheelMeshes[i].name = 'wheel_' + i
-      this.object3d.add(wheelMeshes[i])
+      this.mesh.add(wheelMeshes[i])
     }
 
     // build chassis

@@ -19,7 +19,7 @@ const ammoWorld = new AmmoWorld()
 const position = new THREE.Vector3(0, 5, 0)
 const quaternion = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
 const ammoVehicle = new AmmoVehicle(ammoWorld.physicsWorld, position, quaternion)
-scene.add(ammoVehicle.object3d)
+scene.add(ammoVehicle.mesh)
 
 const tremplin = createTremplin()
 tremplin.position.set(-10, -tremplin.geometry.parameters.height / 2 + 1.5, 20)
@@ -58,12 +58,12 @@ const { mesh: bodyMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'ra
 const { mesh: tireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl' })
 
 bodyMesh.position.y = 0.25
-ammoVehicle.object3d.getObjectByName('chassis').add(bodyMesh)
+ammoVehicle.mesh.getObjectByName('chassis').add(bodyMesh)
 
 for (let i = 0; i < 4; i++) {
   const wheelmesh = tireMesh.clone()
   if (i == 0 || i == 3) wheelmesh.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
-  ammoVehicle.object3d.getObjectByName('wheel_' + i).add(wheelmesh)
+  ammoVehicle.mesh.getObjectByName('wheel_' + i).add(wheelmesh)
 }
 
 /* FUNCTIONS */
@@ -108,7 +108,7 @@ const ammoTerrain = new AmmoTerrain(terrainWidth, terrainDepth, terrainMinHeight
 
 ammoTerrain.body.setRestitution(0.9)
 ammoWorld.physicsWorld.addRigidBody(ammoTerrain.body)
-scene.add(ammoTerrain.object3d)
+scene.add(ammoTerrain.mesh)
 
 /* LOOP */
 

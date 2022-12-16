@@ -25,7 +25,7 @@ export default class AmmoTerrain {
     const groundMotionState = new Ammo.btDefaultMotionState(groundTransform)
     const groundBody = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(groundMass, groundMotionState, groundShape, groundLocalInertia))
 
-    this.object3d = meshGround
+    this.mesh = meshGround
     this.body = groundBody
 
     function createTerrainShape(heightData) {
