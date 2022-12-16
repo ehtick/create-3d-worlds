@@ -74,9 +74,6 @@ export default class AmmoBody {
     const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia)
     const body = new Ammo.btRigidBody(rbInfo)
 
-    body.setUserIndex(this.mesh.id)
-    this.mesh.userData.ammoControls = this
-
     this.body = body
     this.physicsBody = this.body // Deprecated
   }

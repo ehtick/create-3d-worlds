@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { scene, camera, renderer } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
+import { createBox } from '/utils/geometry.js'
 
 import AmmoTerrain from './AmmoTerrain.js'
 import CameraControls from './CameraControls.js'
