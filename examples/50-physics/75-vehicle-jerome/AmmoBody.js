@@ -75,7 +75,6 @@ export default class AmmoBody {
     const body = new Ammo.btRigidBody(rbInfo)
 
     this.body = body
-    this.physicsBody = this.body // Deprecated
   }
 
   setFriction(value) {

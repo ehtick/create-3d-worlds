@@ -18,7 +18,7 @@ export default class AmmoWorld {
     for (let i = 0; i < this._ammoControls.length; i++) {
       const ammoControls = this._ammoControls[i]
 
-      const motionState = ammoControls.physicsBody.getMotionState()
+      const motionState = ammoControls.body.getMotionState()
       motionState.getWorldTransform(btTransform)
 
       const position = btTransform.getOrigin()
@@ -30,7 +30,7 @@ export default class AmmoWorld {
   }
 
   add(ammoControls) {
-    this.physicsWorld.addRigidBody(ammoControls.physicsBody)
+    this.physicsWorld.addRigidBody(ammoControls.body)
     this._ammoControls.push(ammoControls)
   }
 
