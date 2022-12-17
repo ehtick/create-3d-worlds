@@ -13,14 +13,14 @@ export default class AmmoWorld {
     this.ammoBodies.forEach(ammoBody => updateMesh(ammoBody.mesh))
   }
 
-  add(ammoControls) {
-    this.physicsWorld.addRigidBody(ammoControls.body)
-    this.ammoBodies.push(ammoControls)
+  add(ammoBody) {
+    this.physicsWorld.addRigidBody(ammoBody.body)
+    this.ammoBodies.push(ammoBody)
   }
 
-  remove(ammoControls) {
-    if (!this.ammoBodies.contains(ammoControls)) return
-    this.physicsWorld.removeRigidBody(ammoControls.physicsWorld)
-    this.ammoBodies.splice(this.ammoBodies.indexOf(ammoControls), 1)
+  remove(ammoBody) {
+    if (!this.ammoBodies.contains(ammoBody)) return
+    this.physicsWorld.removeRigidBody(ammoBody.physicsWorld)
+    this.ammoBodies.splice(this.ammoBodies.indexOf(ammoBody), 1)
   }
 }

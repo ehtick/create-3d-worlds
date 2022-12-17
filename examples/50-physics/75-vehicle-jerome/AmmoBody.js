@@ -1,6 +1,8 @@
 import { Ammo } from '/utils/physics.js'
 import { getSize } from '/utils/helpers.js'
 
+const margin = 0.05
+
 const getShapeFromMesh = function(mesh) {
   const { scale } = mesh
   const { parameters, type } = mesh.geometry
@@ -48,34 +50,37 @@ const getMassFromMesh = function(mesh) {
   }
 }
 
+const calcInertia = (mass, shape) => {
+  let localInertia
+  if (mass) {
+    localInertia = new Ammo.btVector3(0, 10, 0)
+    shape.calculateLocalInertia(mass, localInertia)
+  }
+  return localInertia
+}
+
 export default class AmmoBody {
-  constructor(mesh, {
-    mass = getMassFromMesh(mesh),
-    shape = getShapeFromMesh(mesh),
+  constructor({
+    mesh, mass = getMassFromMesh(mesh), shape = getShapeFromMesh(mesh),
   } = {}) {
     this.mesh = mesh
-    const margin = 0.05
     shape.setMargin(margin)
-
-    let localInertia
-    if (mass !== 0) {
-      localInertia = new Ammo.btVector3(0, 10, 0)
-      shape.calculateLocalInertia(mass, localInertia)
-    }
 
     const btTransform = new Ammo.btTransform()
     btTransform.setIdentity()
-    const { position } = this.mesh
+    const { position, quaternion } = this.mesh
     btTransform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z))
-    const { quaternion } = this.mesh
     btTransform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w))
     const motionState = new Ammo.btDefaultMotionState(btTransform)
 
+    const localInertia = calcInertia(mass, shape)
     const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia)
-    const body = new Ammo.btRigidBody(rbInfo)
 
-    this.body = body
-    this.mesh.userData.body = body
+    this.mesh.userData.body = new Ammo.btRigidBody(rbInfo)
+  }
+
+  get body() {
+    return this.mesh.userData.body
   }
 
   setFriction(value) {

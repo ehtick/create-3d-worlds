@@ -22,7 +22,7 @@ const tremplinMesh = createTremplin()
 tremplinMesh.position.set(-10, -tremplinMesh.geometry.parameters.height / 2 + 1.5, 20)
 scene.add(tremplinMesh)
 
-const tremplin = new AmmoBody(tremplinMesh, { mass: 0 })
+const tremplin = new AmmoBody({ mesh: tremplinMesh, mass: 0 })
 ammoWorld.add(tremplin)
 
 // ball
@@ -30,7 +30,7 @@ const ballMesh = createBall()
 ballMesh.position.set(5, 0, -20)
 scene.add(ballMesh)
 
-const ball = new AmmoBody(ballMesh, { mass: 30 })
+const ball = new AmmoBody({ mesh: ballMesh, mass: 30 })
 ball.setFriction(0.9)
 ball.setRestitution(0.95)
 ammoWorld.add(ball)
@@ -88,7 +88,7 @@ function buildCrates({ width = 8, height = 6, depth = 2, boxSize = .75, x = 0, z
         mesh.position.z += 6
         scene.add(mesh)
 
-        const ammoBody = new AmmoBody(mesh)
+        const ammoBody = new AmmoBody({ mesh })
         ammoWorld.add(ammoBody)
       }
 }
