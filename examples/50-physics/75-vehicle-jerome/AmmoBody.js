@@ -63,15 +63,15 @@ export default class AmmoBody {
   constructor({
     mesh, mass = getMassFromMesh(mesh), shape = getShapeFromMesh(mesh),
   } = {}) {
+    const { position, quaternion } = mesh
     this.mesh = mesh
     shape.setMargin(margin)
 
-    const btTransform = new Ammo.btTransform()
-    btTransform.setIdentity()
-    const { position, quaternion } = this.mesh
-    btTransform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z))
-    btTransform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w))
-    const motionState = new Ammo.btDefaultMotionState(btTransform)
+    const transform = new Ammo.btTransform()
+    transform.setIdentity()
+    transform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z))
+    transform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w))
+    const motionState = new Ammo.btDefaultMotionState(transform)
 
     const localInertia = calcInertia(mass, shape)
     const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia)

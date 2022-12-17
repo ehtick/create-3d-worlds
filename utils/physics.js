@@ -21,7 +21,7 @@ export function createPhysicsWorld({ gravity = 9.82, softBody = false } = {}) {
 
 /* BODIES */
 
-export function createRigidBody({
+export function addRigidBody({
   mesh, shape, mass, pos, quat = { x: 0, y: 0, z: 0, w: 1 }, friction, vel, angVel
 }) {
   mesh.position.copy(pos)
@@ -55,9 +55,9 @@ export function createBall({ radius = 0.6, mass = 1.2, pos, quat }) {
   mesh.castShadow = mesh.receiveShadow = true
   const shape = new Ammo.btSphereShape(radius)
   shape.setMargin(margin)
-  const rigidMesh = createRigidBody({ mesh, shape, mass, pos, quat })
-  rigidMesh.userData.body.setFriction(0.5)
-  return rigidMesh
+  addRigidBody({ mesh, shape, mass, pos, quat })
+  mesh.userData.body.setFriction(0.5)
+  return mesh
 }
 
 export function createBox({ width, height, depth, mass = 0, pos, quat, color = randomGray(), friction }) {
@@ -67,7 +67,8 @@ export function createBox({ width, height, depth, mass = 0, pos, quat, color = r
 
   const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * 0.5, height * 0.5, depth * 0.5))
   shape.setMargin(margin)
-  return createRigidBody({ mesh, shape, mass, pos, quat, friction })
+  addRigidBody({ mesh, shape, mass, pos, quat, friction })
+  return mesh
 }
 
 export const createGround = ({ size = 100, color = 0xFFFFFF } = {}) =>
