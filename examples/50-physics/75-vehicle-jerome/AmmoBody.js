@@ -59,24 +59,23 @@ const calcInertia = (mass, shape) => {
   return localInertia
 }
 
+function createRigidBody({ mesh, mass, shape }) {
+  const { position, quaternion } = mesh
+  const transform = new Ammo.btTransform()
+  transform.setIdentity()
+  transform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z))
+  transform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w))
+  const motionState = new Ammo.btDefaultMotionState(transform)
+  const localInertia = calcInertia(mass, shape)
+  const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia)
+  return new Ammo.btRigidBody(rbInfo)
+}
+
 export default class AmmoBody {
-  constructor({
-    mesh, mass = getMassFromMesh(mesh), shape = getShapeFromMesh(mesh),
-  } = {}) {
-    const { position, quaternion } = mesh
+  constructor({ mesh, mass = getMassFromMesh(mesh), shape = getShapeFromMesh(mesh) } = {}) {
     this.mesh = mesh
     shape.setMargin(margin)
-
-    const transform = new Ammo.btTransform()
-    transform.setIdentity()
-    transform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z))
-    transform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w))
-    const motionState = new Ammo.btDefaultMotionState(transform)
-
-    const localInertia = calcInertia(mass, shape)
-    const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia)
-
-    this.mesh.userData.body = new Ammo.btRigidBody(rbInfo)
+    this.mesh.userData.body = createRigidBody({ mesh, mass, shape })
   }
 
   get body() {
