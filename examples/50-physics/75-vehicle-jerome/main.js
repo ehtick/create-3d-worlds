@@ -75,18 +75,18 @@ function createTremplin() {
   return mesh
 }
 
-function buildCrates(nCubes) {
-  const box = createBox({ size: .75 })
-  for (let x = 0; x < nCubes.x; x++)
-    for (let y = 0; y < nCubes.y; y++)
-      for (let z = 0; z < nCubes.z; z++) {
+function buildCrates({ width = 8, height = 6, depth = 1, boxSize = .75 } = {}) {
+  const box = createBox({ size: boxSize })
+  for (let x = 0; x < width; x++)
+    for (let y = 0; y < height; y++)
+      for (let z = 0; z < depth; z++) {
         const mesh = box.clone()
 
-        mesh.position.x = (x - nCubes.x / 2 + 0.5) * mesh.geometry.parameters.width
-        mesh.position.y = (y - nCubes.y / 2 + 0.5) * mesh.geometry.parameters.height
-        mesh.position.z = (z - nCubes.z / 2 + 0.5) * mesh.geometry.parameters.depth
+        mesh.position.x = (x - width / 2 + 0.5) * boxSize
+        mesh.position.y = (y - height / 2 + 0.5) * boxSize
+        mesh.position.z = (z - depth / 2 + 0.5) * boxSize
 
-        mesh.position.y += nCubes.y / 2 * mesh.geometry.parameters.height
+        mesh.position.y += height / 2 * boxSize
         mesh.position.z += 6
         scene.add(mesh)
 
