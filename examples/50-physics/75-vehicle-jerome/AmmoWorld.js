@@ -9,8 +9,7 @@ export default class AmmoWorld {
   }
 
   update() {
-    const deltaTime = clock.getDelta()
-    this.physicsWorld.stepSimulation(deltaTime, this.maxSteps)
+    this.physicsWorld.stepSimulation(clock.getDelta(), this.maxSteps)
     this.ammoBodies.forEach(ammoBody => updateMesh(ammoBody.mesh))
   }
 
@@ -20,12 +19,8 @@ export default class AmmoWorld {
   }
 
   remove(ammoControls) {
-    if (!this.contains(ammoControls)) return
+    if (!this.ammoBodies.contains(ammoControls)) return
     this.physicsWorld.removeRigidBody(ammoControls.physicsWorld)
     this.ammoBodies.splice(this.ammoBodies.indexOf(ammoControls), 1)
-  }
-
-  contains(ammoControls) {
-    return this.ammoBodies.indexOf(ammoControls) !== -1
   }
 }
