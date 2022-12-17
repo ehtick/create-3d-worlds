@@ -75,6 +75,7 @@ export default class AmmoBody {
     const body = new Ammo.btRigidBody(rbInfo)
 
     this.body = body
+    this.mesh.userData.body = body
   }
 
   setFriction(value) {
