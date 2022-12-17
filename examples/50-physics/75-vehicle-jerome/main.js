@@ -27,7 +27,7 @@ ammoWorld.add(tremplin)
 
 // ball
 const ballMesh = createBall()
-ballMesh.position.set(0, 5, -20)
+ballMesh.position.set(5, 0, -20)
 scene.add(ballMesh)
 
 const ball = new AmmoBody(ballMesh, { mass: 30 })
@@ -35,9 +35,7 @@ ball.setFriction(0.9)
 ball.setRestitution(0.95)
 ammoWorld.add(ball)
 
-// crates
-const size = new THREE.Vector3(8, 6, 1)
-buildCrates(size)
+buildCrates({ z: -10 })
 
 // vehicle
 const position = new THREE.Vector3(0, 5, 0)
@@ -75,16 +73,16 @@ function createTremplin() {
   return mesh
 }
 
-function buildCrates({ width = 8, height = 6, depth = 1, boxSize = .75 } = {}) {
+function buildCrates({ width = 8, height = 6, depth = 2, boxSize = .75, x = 0, z = 0 } = {}) {
   const box = createBox({ size: boxSize })
-  for (let x = 0; x < width; x++)
-    for (let y = 0; y < height; y++)
-      for (let z = 0; z < depth; z++) {
+  for (let w = 0; w < width; w++)
+    for (let h = 0; h < height; h++)
+      for (let d = 0; d < depth; d++) {
         const mesh = box.clone()
 
-        mesh.position.x = (x - width / 2 + 0.5) * boxSize
-        mesh.position.y = (y - height / 2 + 0.5) * boxSize
-        mesh.position.z = (z - depth / 2 + 0.5) * boxSize
+        mesh.position.x = (w - width / 2 + 0.5) * boxSize + x
+        mesh.position.y = (h - height / 2 + 0.5) * boxSize
+        mesh.position.z = (d - depth / 2 + 0.5) * boxSize + z
 
         mesh.position.y += height / 2 * boxSize
         mesh.position.z += 6
