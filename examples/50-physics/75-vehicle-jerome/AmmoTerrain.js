@@ -3,11 +3,11 @@ import { Ammo } from '/utils/physics.js'
 
 export default class AmmoTerrain {
   constructor({
-    terrain3dWidth = 60,
-    terrain3dDepth = 120,
-    terrainWidth = 128 * 2,
-    terrainDepth = 256 * 2,
-    terrainMaxHeight = 24 * 2,
+    terrain3dWidth = 90,
+    terrain3dDepth = 150,
+    terrainWidth = 256,
+    terrainDepth = 256,
+    terrainMaxHeight = 48,
     terrainMinHeight = 0,
   } = {}) {
     const heightData = generateHeightRocket(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight)
