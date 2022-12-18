@@ -1,34 +1,7 @@
-import { Ammo, createRigidBody } from '/utils/physics.js'
+import { Ammo, createRigidBody, createShapeFromMesh } from '/utils/physics.js'
 import { getSize } from '/utils/helpers.js'
 
 const margin = 0.05
-
-const getShapeFromMesh = function(mesh) {
-  const { scale } = mesh
-  const { parameters, type } = mesh.geometry
-  const btVector3 = new Ammo.btVector3()
-  switch (type) {
-    case 'BoxGeometry':
-      btVector3.setX(parameters.width / 2 * scale.x)
-      btVector3.setY(parameters.height / 2 * scale.y)
-      btVector3.setZ(parameters.depth / 2 * scale.z)
-      return new Ammo.btBoxShape(btVector3)
-    case 'SphereGeometry':
-      const radius = parameters.radius * scale.x
-      return new Ammo.btSphereShape(radius)
-    case 'CylinderGeometry':
-      const size = new Ammo.btVector3(parameters.radiusTop * scale.x,
-        parameters.height * 0.5 * scale.y,
-        parameters.radiusBottom * scale.x)
-      return new Ammo.btCylinderShape(size)
-    default:
-      const { x, y, z } = getSize(mesh)
-      btVector3.setX(x / 2 * scale.x)
-      btVector3.setY(y / 2 * scale.y)
-      btVector3.setZ(z / 2 * scale.z)
-      return new Ammo.btBoxShape(btVector3)
-  }
-}
 
 const getMassFromMesh = function(mesh) {
   const { scale } = mesh
@@ -51,7 +24,7 @@ const getMassFromMesh = function(mesh) {
 }
 
 export default class AmmoBody {
-  constructor({ mesh, mass = getMassFromMesh(mesh), shape = getShapeFromMesh(mesh) } = {}) {
+  constructor({ mesh, mass = getMassFromMesh(mesh), shape = createShapeFromMesh(mesh) } = {}) {
     this.mesh = mesh
     shape.setMargin(margin)
     this.mesh.userData.body = createRigidBody({ mesh, mass, shape })

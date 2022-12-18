@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { randomGray } from '/utils/helpers.js'
+import { randomGray, getSize } from '/utils/helpers.js'
 
 export const Ammo = typeof window.Ammo == 'function' ? await window.Ammo() : window.Ammo
 
@@ -17,6 +17,33 @@ export function createPhysicsWorld({ gravity = 9.82, softBody = false } = {}) {
   const physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration, softBodySolver)
   physicsWorld.setGravity(new Ammo.btVector3(0, -gravity, 0))
   return physicsWorld
+}
+
+export const createShapeFromMesh = function(mesh) {
+  const { scale } = mesh
+  const { parameters, type } = mesh.geometry
+  const btVector3 = new Ammo.btVector3()
+  switch (type) {
+    case 'BoxGeometry':
+      btVector3.setX(parameters.width / 2 * scale.x)
+      btVector3.setY(parameters.height / 2 * scale.y)
+      btVector3.setZ(parameters.depth / 2 * scale.z)
+      return new Ammo.btBoxShape(btVector3)
+    case 'SphereGeometry':
+      const radius = parameters.radius * scale.x
+      return new Ammo.btSphereShape(radius)
+    case 'CylinderGeometry':
+      const size = new Ammo.btVector3(parameters.radiusTop * scale.x,
+        parameters.height * 0.5 * scale.y,
+        parameters.radiusBottom * scale.x)
+      return new Ammo.btCylinderShape(size)
+    default:
+      const { x, y, z } = getSize(mesh)
+      btVector3.setX(x / 2 * scale.x)
+      btVector3.setY(y / 2 * scale.y)
+      btVector3.setZ(z / 2 * scale.z)
+      return new Ammo.btBoxShape(btVector3)
+  }
 }
 
 /* BODIES */
@@ -40,9 +67,9 @@ export function createRigidBody({ mesh, mass, shape, friction }) {
   return body
 }
 
-export function createBall({ radius = 0.6, mass = 1.2, pos, quat }) {
+export function createBall({ radius = 0.6, mass = 1.2, pos, quat, color = 0x202020 }) {
   const mesh = new THREE.Mesh(
-    new THREE.SphereGeometry(radius, 20, 20), new THREE.MeshPhongMaterial({ color: 0x202020 })
+    new THREE.SphereGeometry(radius, 20, 20), new THREE.MeshPhongMaterial({ color })
   )
   if (pos) mesh.position.copy(pos)
   if (quat) mesh.quaternion.copy(quat)
