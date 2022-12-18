@@ -1,4 +1,4 @@
-import { Ammo } from '/utils/physics.js'
+import { Ammo, createRigidBody } from '/utils/physics.js'
 import { getSize } from '/utils/helpers.js'
 
 const margin = 0.05
@@ -48,27 +48,6 @@ const getMassFromMesh = function(mesh) {
       const { x, y, z } = getSize(mesh)
       return x * scale.x * y * scale.y * z * scale.z
   }
-}
-
-const calcInertia = (mass, shape) => {
-  let localInertia
-  if (mass) {
-    localInertia = new Ammo.btVector3(0, 10, 0)
-    shape.calculateLocalInertia(mass, localInertia)
-  }
-  return localInertia
-}
-
-function createRigidBody({ mesh, mass, shape }) {
-  const { position, quaternion } = mesh
-  const transform = new Ammo.btTransform()
-  transform.setIdentity()
-  transform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z))
-  transform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w))
-  const motionState = new Ammo.btDefaultMotionState(transform)
-  const localInertia = calcInertia(mass, shape)
-  const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia)
-  return new Ammo.btRigidBody(rbInfo)
 }
 
 export default class AmmoBody {
