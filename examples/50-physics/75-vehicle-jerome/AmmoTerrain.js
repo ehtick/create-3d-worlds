@@ -7,30 +7,32 @@ export default class AmmoTerrain {
     terrainMaxHeight = 48, terrainMinHeight = 0,
   } = {}) {
     const heightData = generateHeightRocket(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight)
+
     const geometry = new THREE.PlaneGeometry(terrain3dWidth, terrain3dDepth, terrainWidth - 1, terrainDepth - 1)
     geometry.rotateX(-Math.PI / 2)
+
     const vertices = geometry.attributes.position.array
     for (let i = 0; i < vertices.length; i++)
-      vertices[i * 3 + 1] = heightData[i] // + 1 because we modify y component
+      vertices[i * 3 + 1] = heightData[i] // + 1 because we modify y
     geometry.computeVertexNormals()
+
     const material = new THREE.MeshLambertMaterial({ color: 0xfffacd })
+    const mesh = new THREE.Mesh(geometry, material)
+    mesh.receiveShadow = true
 
-    const meshGround = new THREE.Mesh(geometry, material)
-    meshGround.receiveShadow = true
-
-    const groundShape = createTerrainShape(heightData)
-    const groundTransform = new Ammo.btTransform()
-    groundTransform.setIdentity()
+    const shape = createTerrainShape(heightData)
+    const transform = new Ammo.btTransform()
+    transform.setIdentity()
     // Shifts the terrain, since bullet re-centers it on its bounding box.
-    groundTransform.setOrigin(new Ammo.btVector3(0, (terrainMaxHeight + terrainMinHeight) / 2, 0))
-    const groundMass = 0
-    const groundLocalInertia = new Ammo.btVector3(0, 0, 0)
-    const groundMotionState = new Ammo.btDefaultMotionState(groundTransform)
-    const groundBody = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(groundMass, groundMotionState, groundShape, groundLocalInertia))
-    groundBody.setRestitution(0.9)
+    transform.setOrigin(new Ammo.btVector3(0, (terrainMaxHeight + terrainMinHeight) / 2, 0))
+    const mass = 0
+    const inertia = new Ammo.btVector3(0, 0, 0)
+    const motionState = new Ammo.btDefaultMotionState(transform)
+    const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia))
+    body.setRestitution(0.9)
 
-    this.mesh = meshGround
-    this.body = groundBody
+    this.mesh = mesh
+    this.body = body
 
     function createTerrainShape(heightData) {
       const heightScale = 1 // ignored for PHY_FLOAT
