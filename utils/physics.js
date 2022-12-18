@@ -21,63 +21,51 @@ export function createPhysicsWorld({ gravity = 9.82, softBody = false } = {}) {
 
 /* BODIES */
 
-export function createRigidBody({ mesh, mass, shape }) {
+export function createRigidBody({ mesh, mass, shape, friction }) {
   const { position, quaternion } = mesh
+
   const transform = new Ammo.btTransform()
   transform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z))
   transform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w))
   const motionState = new Ammo.btDefaultMotionState(transform)
   const inertia = new Ammo.btVector3(0, 0, 0)
   shape.calculateLocalInertia(mass, inertia)
-  const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia)
-  const body = new Ammo.btRigidBody(rbInfo)
-  return body
-}
 
-export function attachRigidBody({
-  mesh, shape, mass, pos, quat = { x: 0, y: 0, z: 0, w: 1 }, friction, vel, angVel
-}) {
-  mesh.position.copy(pos)
-  mesh.quaternion.copy(quat)
-
-  const { position, quaternion } = mesh
-  const transform = new Ammo.btTransform()
-  transform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z))
-  transform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w))
-  const motionState = new Ammo.btDefaultMotionState(transform)
-  const inertia = new Ammo.btVector3(0, 0, 0)
-  shape.calculateLocalInertia(mass, inertia)
   const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia)
   const body = new Ammo.btRigidBody(rbInfo)
 
   if (friction) body.setFriction(friction)
-  if (vel) body.setLinearVelocity(new Ammo.btVector3(vel.x, vel.y, vel.z))
-  if (angVel) body.setAngularVelocity(new Ammo.btVector3(angVel.x, angVel.y, angVel.z))
   if (mass > 0) body.setActivationState(4) // Disable deactivation
 
-  mesh.userData.body = body
-  return mesh
+  return body
 }
 
 export function createBall({ radius = 0.6, mass = 1.2, pos, quat }) {
   const mesh = new THREE.Mesh(
-    new THREE.SphereGeometry(radius, 20, 20), new THREE.MeshPhongMaterial({ color: 0x202020 }))
+    new THREE.SphereGeometry(radius, 20, 20), new THREE.MeshPhongMaterial({ color: 0x202020 })
+  )
+  if (pos) mesh.position.copy(pos)
+  if (quat) mesh.quaternion.copy(quat)
   mesh.castShadow = mesh.receiveShadow = true
+
   const shape = new Ammo.btSphereShape(radius)
   shape.setMargin(margin)
-  attachRigidBody({ mesh, shape, mass, pos, quat })
-  mesh.userData.body.setFriction(0.5)
+
+  mesh.userData.body = createRigidBody({ mesh, mass, shape, friction: .5 })
   return mesh
 }
 
 export function createBox({ width, height, depth, mass = 0, pos, quat, color = randomGray(), friction }) {
   const geometry = new THREE.BoxGeometry(width, height, depth, 1, 1, 1)
   const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
+  if (pos) mesh.position.copy(pos)
+  if (quat) mesh.quaternion.copy(quat)
   mesh.castShadow = mesh.receiveShadow = true
 
   const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * 0.5, height * 0.5, depth * 0.5))
   shape.setMargin(margin)
-  attachRigidBody({ mesh, shape, mass, pos, quat, friction })
+
+  mesh.userData.body = createRigidBody({ mesh, mass, shape, friction })
   return mesh
 }
 
