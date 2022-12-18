@@ -3,12 +3,8 @@ import { Ammo } from '/utils/physics.js'
 
 export default class AmmoTerrain {
   constructor({
-    terrain3dWidth = 90,
-    terrain3dDepth = 150,
-    terrainWidth = 256,
-    terrainDepth = 256,
-    terrainMaxHeight = 48,
-    terrainMinHeight = 0,
+    terrain3dWidth = 90, terrain3dDepth = 150, terrainWidth = 256, terrainDepth = 256,
+    terrainMaxHeight = 48, terrainMinHeight = 0,
   } = {}) {
     const heightData = generateHeightRocket(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight)
     const geometry = new THREE.PlaneGeometry(terrain3dWidth, terrain3dDepth, terrainWidth - 1, terrainDepth - 1)
@@ -37,17 +33,13 @@ export default class AmmoTerrain {
     this.body = groundBody
 
     function createTerrainShape(heightData) {
-    // This parameter is not really used, since we are using PHY_FLOAT height data type and hence it is ignored
-      const heightScale = 1
-      // 0 for X, 1 for Y, 2 for Z
-      const upAxis = 1
-      // hdt, height data type. "PHY_FLOAT" is used. Possible values are "PHY_FLOAT", "PHY_UCHAR", "PHY_SHORT"
-      const hdt = 'PHY_FLOAT'
-      // inverts the triangles
+      const heightScale = 1 // ignored for PHY_FLOAT
+      const upAxis = 1 // 0=X, 1=Y, 2=Z
+      const hdt = 'PHY_FLOAT' // possible values: PHY_FLOAT, PHY_UCHAR, PHY_SHORT
       const flipQuadEdges = false
       // allocate height data in Ammo heap
       const ammoHeightData = Ammo._malloc(4 * terrainWidth * terrainDepth)
-      // Copy the javascript height data array to the Ammo one
+      // copy javascript data array to the Ammo one
       let p = 0
       let p2 = 0
       for (let j = 0; j < terrainDepth; j++)
@@ -55,20 +47,12 @@ export default class AmmoTerrain {
           // write 32-bit float data to memory
           Ammo.HEAPF32[ammoHeightData + p2 >> 2] = heightData[p]
           p++
-          // 4 bytes/float
-          p2 += 4
+          p2 += 4 // 4 bytes/float
         }
 
       const heightFieldShape = new Ammo.btHeightfieldTerrainShape(
-        terrainWidth,
-        terrainDepth,
-        ammoHeightData,
-        heightScale,
-        terrainMinHeight,
-        terrainMaxHeight,
-        upAxis,
-        hdt,
-        flipQuadEdges
+        terrainWidth, terrainDepth, ammoHeightData, heightScale,
+        terrainMinHeight, terrainMaxHeight, upAxis, hdt, flipQuadEdges
       )
       // Set horizontal scale
       const scaleX = terrain3dWidth / (terrainWidth - 1)
