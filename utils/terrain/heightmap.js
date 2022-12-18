@@ -12,15 +12,20 @@ export async function terrainFromHeightmap({
   material.uniforms.seaLevel.value = seaLevel
   material.uniforms.snow.value = snow
 
-  const geometry = new THREE.PlaneGeometry(width, depth, width - 1, depth - 1)
-  geometry.rotateX(- Math.PI / 2)
-  const { position } = geometry.attributes
+  const geometry = geometryFromData({ data, width, depth })
+  const mesh = new THREE.Mesh(geometry, material)
+  return mesh
+}
 
+export function geometryFromData({ data, width, depth }) {
+  const geometry = new THREE.PlaneGeometry(width, depth, width - 1, depth - 1)
+  geometry.rotateX(-Math.PI * .5)
+
+  const { position } = geometry.attributes
   for (let i = 0, l = position.count; i < l; i++)
     position.setY(i, data[i])
 
-  const mesh = new THREE.Mesh(geometry, material)
-  return mesh
+  return geometry
 }
 
 /* FUNCTIONS */

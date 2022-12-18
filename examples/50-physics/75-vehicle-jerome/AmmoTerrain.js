@@ -1,26 +1,19 @@
 import * as THREE from 'three'
 import { Ammo } from '/utils/physics.js'
+import { geometryFromData } from '/utils/terrain/heightmap.js'
 
 export default class AmmoTerrain {
   constructor({
-    planeWidth = 90, planeDepth = 150, terrainWidth = 256, terrainDepth = 256,
-    terrainMaxHeight = 48, terrainMinHeight = 0,
+    width = 90, depth = 150, terrainMaxHeight = 48, terrainMinHeight = 0,
   } = {}) {
-    const heightData = generateHeightData(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight)
+    const data = generateHeightData(width, depth, terrainMinHeight, terrainMaxHeight)
 
-    const geometry = new THREE.PlaneGeometry(planeWidth, planeDepth, terrainWidth - 1, terrainDepth - 1)
-    geometry.rotateX(-Math.PI / 2)
-
-    const vertices = geometry.attributes.position.array
-    for (let i = 0; i < vertices.length; i++)
-      vertices[i * 3 + 1] = heightData[i] // + 1 because we modify y
-    geometry.computeVertexNormals()
-
+    const geometry = geometryFromData({ data, width, depth })
     const material = new THREE.MeshLambertMaterial({ color: 0xfffacd })
     const mesh = new THREE.Mesh(geometry, material)
     mesh.receiveShadow = true
 
-    const shape = createTerrainShape(heightData)
+    const shape = createTerrainShape(data)
     const transform = new Ammo.btTransform()
     transform.setIdentity()
     // Shifts the terrain, since bullet re-centers it on its bounding box.
@@ -34,32 +27,27 @@ export default class AmmoTerrain {
     this.mesh = mesh
     this.body = body
 
-    function createTerrainShape(heightData) {
+    function createTerrainShape(data) {
       const heightScale = 1 // ignored for PHY_FLOAT
       const upAxis = 1 // 0=X, 1=Y, 2=Z
       const hdt = 'PHY_FLOAT' // possible values: PHY_FLOAT, PHY_UCHAR, PHY_SHORT
       const flipQuadEdges = false
-      // allocate height data in Ammo heap
-      const ammoHeightData = Ammo._malloc(4 * terrainWidth * terrainDepth)
+      const ammoHeightData = Ammo._malloc(4 * width * depth)
       // copy javascript data array to the Ammo one
       let p = 0
       let p2 = 0
-      for (let j = 0; j < terrainDepth; j++)
-        for (let i = 0; i < terrainWidth; i++) {
+      for (let j = 0; j < depth; j++)
+        for (let i = 0; i < width; i++) {
           // write 32-bit float data to memory
-          Ammo.HEAPF32[ammoHeightData + p2 >> 2] = heightData[p]
+          Ammo.HEAPF32[ammoHeightData + p2 >> 2] = data[p]
           p++
           p2 += 4 // 4 bytes/float
         }
 
       const heightFieldShape = new Ammo.btHeightfieldTerrainShape(
-        terrainWidth, terrainDepth, ammoHeightData, heightScale,
+        width, depth, ammoHeightData, heightScale,
         terrainMinHeight, terrainMaxHeight, upAxis, hdt, flipQuadEdges
       )
-      // Set horizontal scale
-      const scaleX = planeWidth / (terrainWidth - 1)
-      const scaleZ = planeDepth / (terrainDepth - 1)
-      heightFieldShape.setLocalScaling(new Ammo.btVector3(scaleX, 1, scaleZ))
       heightFieldShape.setMargin(0.05)
       return heightFieldShape
     }
