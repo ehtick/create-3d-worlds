@@ -1,23 +1,25 @@
 import * as THREE from 'three'
 import { Ammo } from '/utils/physics.js'
-import { geometryFromData } from '/utils/terrain/heightmap.js'
+import { geometryFromData, getHeightData } from '/utils/terrain/heightmap.js'
+
+const { data, width, depth } = await getHeightData('/assets/heightmaps/wiki.png')
 
 export default class AmmoTerrain {
   constructor({
-    width = 90, depth = 150, terrainMaxHeight = 48, terrainMinHeight = 0,
+    maxHeight = 24, minHeight = 0, // width = 90, depth = 150,
   } = {}) {
-    const data = generateHeightData(width, depth, terrainMinHeight, terrainMaxHeight)
+    // const data = generateHeightData(width, depth, minHeight, maxHeight)
 
     const geometry = geometryFromData({ data, width, depth })
     const material = new THREE.MeshLambertMaterial({ color: 0xfffacd })
     const mesh = new THREE.Mesh(geometry, material)
+    mesh.translateY(-maxHeight / 2)
     mesh.receiveShadow = true
 
     const shape = createTerrainShape(data)
     const transform = new Ammo.btTransform()
     transform.setIdentity()
-    // Shifts the terrain, since bullet re-centers it on its bounding box.
-    transform.setOrigin(new Ammo.btVector3(0, (terrainMaxHeight + terrainMinHeight) / 2, 0))
+    transform.setOrigin(new Ammo.btVector3(mesh.position.x, mesh.position.y + maxHeight / 2, mesh.position.z))
     const mass = 0
     const inertia = new Ammo.btVector3(0, 0, 0)
     const motionState = new Ammo.btDefaultMotionState(transform)
@@ -46,7 +48,7 @@ export default class AmmoTerrain {
 
       const heightFieldShape = new Ammo.btHeightfieldTerrainShape(
         width, depth, ammoHeightData, heightScale,
-        terrainMinHeight, terrainMaxHeight, upAxis, hdt, flipQuadEdges
+        minHeight, maxHeight, upAxis, hdt, flipQuadEdges
       )
       heightFieldShape.setMargin(0.05)
       return heightFieldShape

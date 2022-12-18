@@ -179,6 +179,18 @@ export function createSideWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, col
 
 /* TERRAIN */
 
+export function createTerrainBody(shape, minHeight, maxHeight) {
+  const transform = new Ammo.btTransform()
+  transform.setIdentity()
+  // Shifts the terrain, since bullet re-centers it on its bounding box.
+  transform.setOrigin(new Ammo.btVector3(0, (maxHeight + minHeight) / 2, 0))
+  const groundMass = 0
+  const inertia = new Ammo.btVector3(0, 0, 0)
+  const motionState = new Ammo.btDefaultMotionState(transform)
+  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(groundMass, motionState, shape, inertia))
+  return body
+}
+
 export function createTerrainShape({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight }) {
   const heightScale = 1
   const upAxis = 1 // 0: X, 1: Y, 2: Z. normally Y is used.
@@ -207,18 +219,6 @@ export function createTerrainShape({ data, width, depth, mapWidth, mapDepth, min
   terrainShape.setMargin(0.05)
 
   return terrainShape
-}
-
-export function createTerrainBody(shape, minHeight, maxHeight) {
-  const transform = new Ammo.btTransform()
-  transform.setIdentity()
-  // Shifts the terrain, since bullet re-centers it on its bounding box.
-  transform.setOrigin(new Ammo.btVector3(0, (maxHeight + minHeight) / 2, 0))
-  const groundMass = 0
-  const inertia = new Ammo.btVector3(0, 0, 0)
-  const motionState = new Ammo.btDefaultMotionState(transform)
-  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(groundMass, motionState, shape, inertia))
-  return body
 }
 
 export function createTerrainBodyFromData({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight }) {
