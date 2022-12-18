@@ -88,7 +88,7 @@ function buildCrates({ width = 8, height = 6, depth = 2, boxSize = .75, x = 0, z
         mesh.position.z += 6
         scene.add(mesh)
 
-        const ammoBody = new AmmoBody({ mesh })
+        const ammoBody = new AmmoBody({ mesh, mass: 10 })
         ammoWorld.add(ammoBody)
       }
 }

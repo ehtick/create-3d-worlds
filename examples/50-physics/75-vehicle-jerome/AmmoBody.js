@@ -1,32 +1,9 @@
 import { Ammo, createRigidBody, createShapeFromMesh } from '/utils/physics.js'
-import { getSize } from '/utils/helpers.js'
-
-const margin = 0.05
-
-const getMassFromMesh = function(mesh) {
-  const { scale } = mesh
-  const { parameters, type } = mesh.geometry
-  switch (type) {
-    case 'BoxGeometry':
-      return parameters.width * scale.x * parameters.height * scale.y * parameters.depth * scale.z
-    case 'SphereGeometry':
-      return 4 / 3 * Math.PI * Math.pow(parameters.radius * scale.x, 3)
-    // from http://jwilson.coe.uga.edu/emt725/Frustum/Frustum.cone.html
-    case 'CylinderGeometry':
-      return Math.PI * parameters.height / 3 * (
-        parameters.radiusBottom * parameters.radiusBottom * scale.x * scale.x
-      + parameters.radiusBottom * parameters.radiusTop * scale.y * scale.y
-      + parameters.radiusTop * parameters.radiusTop * scale.x * scale.x)
-    default:
-      const { x, y, z } = getSize(mesh)
-      return x * scale.x * y * scale.y * z * scale.z
-  }
-}
 
 export default class AmmoBody {
-  constructor({ mesh, mass = getMassFromMesh(mesh), shape = createShapeFromMesh(mesh) } = {}) {
+  constructor({ mesh, mass = 0, shape = createShapeFromMesh(mesh) } = {}) {
     this.mesh = mesh
-    shape.setMargin(margin)
+    shape.setMargin(.05)
     this.mesh.userData.body = createRigidBody({ mesh, mass, shape })
   }
 
