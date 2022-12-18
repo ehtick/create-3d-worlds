@@ -9,6 +9,8 @@ npm i
 npx live-server
 ```
 
+- isprobati generateHeightData sa terrainFromHeightmap, učiniti ih kompatibilnim
+
 ### Physics
 - isprobati dodavanje sile na kuglu: applyForce, applyImpulse or setLinearVelocity
   https://medium.com/@bluemagnificent/moving-objects-in-javascript-3d-physics-using-ammo-js-and-three-js-6e39eff6d9e5

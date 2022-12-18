@@ -3,12 +3,12 @@ import { Ammo } from '/utils/physics.js'
 
 export default class AmmoTerrain {
   constructor({
-    terrain3dWidth = 90, terrain3dDepth = 150, terrainWidth = 256, terrainDepth = 256,
+    planeWidth = 90, planeDepth = 150, terrainWidth = 256, terrainDepth = 256,
     terrainMaxHeight = 48, terrainMinHeight = 0,
   } = {}) {
-    const heightData = generateHeightRocket(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight)
+    const heightData = generateHeightData(terrainWidth, terrainDepth, terrainMinHeight, terrainMaxHeight)
 
-    const geometry = new THREE.PlaneGeometry(terrain3dWidth, terrain3dDepth, terrainWidth - 1, terrainDepth - 1)
+    const geometry = new THREE.PlaneGeometry(planeWidth, planeDepth, terrainWidth - 1, terrainDepth - 1)
     geometry.rotateX(-Math.PI / 2)
 
     const vertices = geometry.attributes.position.array
@@ -57,14 +57,14 @@ export default class AmmoTerrain {
         terrainMinHeight, terrainMaxHeight, upAxis, hdt, flipQuadEdges
       )
       // Set horizontal scale
-      const scaleX = terrain3dWidth / (terrainWidth - 1)
-      const scaleZ = terrain3dDepth / (terrainDepth - 1)
+      const scaleX = planeWidth / (terrainWidth - 1)
+      const scaleZ = planeDepth / (terrainDepth - 1)
       heightFieldShape.setLocalScaling(new Ammo.btVector3(scaleX, 1, scaleZ))
       heightFieldShape.setMargin(0.05)
       return heightFieldShape
     }
 
-    function generateHeightRocket(width, depth, minHeight) {
+    function generateHeightData(width, depth, minHeight) {
       const data = new Float32Array(width * depth)
       const radiusX = 24 * 2
       const radiusZ = 24 * 2
@@ -96,7 +96,6 @@ export default class AmmoTerrain {
           }
           data[index++] = height
         }
-
       return data
     }
   }
