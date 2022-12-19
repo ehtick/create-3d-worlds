@@ -70,10 +70,10 @@ export function createSphere({
   return mesh
 }
 
-export function createBall({ r = 1 } = {}) {
+export function createBall({ r = 1, color = 0xe5f2f2 } = {}) {
   const geometry = new THREE.DodecahedronGeometry(r, 1)
   const material = new THREE.MeshStandardMaterial({
-    color: 0xe5f2f2,
+    color,
     flatShading: true
   })
   const mesh = new THREE.Mesh(geometry, material)

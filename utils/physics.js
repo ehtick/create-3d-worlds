@@ -32,6 +32,7 @@ export const createShapeOnly = mesh => {
       btVector3.setZ(parameters.depth / 2 * scale.z)
       return new Ammo.btBoxShape(btVector3)
     case 'SphereGeometry':
+    case 'DodecahedronGeometry':
       const radius = parameters.radius * scale.x
       return new Ammo.btSphereShape(radius)
     case 'CylinderGeometry':
@@ -130,13 +131,13 @@ export function createWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns
   const pos = new THREE.Vector3()
   pos.set(startX, brickHeight * 0.5, z)
 
-  for (let j = 0; j < rows; j ++) {
+  for (let j = 0; j < rows; j++) {
     const oddRow = (j % 2) == 1
     const nRow = oddRow ? columns + 1 : columns
 
     pos.z = oddRow ? z - brickDepth * .25 : z
 
-    for (let i = 0; i < nRow; i ++) {
+    for (let i = 0; i < nRow; i++) {
       const firstOrLast = oddRow && (i == 0 || i == nRow - 1)
       const depth = firstOrLast ? brickDepth * .5 : brickDepth
       const mass = firstOrLast ? brickMass * .5 : brickMass
@@ -161,13 +162,13 @@ export function createSideWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, col
   const pos = new THREE.Vector3()
   pos.set(x, brickHeight * 0.5, startZ)
 
-  for (let j = 0; j < rows; j ++) {
+  for (let j = 0; j < rows; j++) {
     const oddRow = (j % 2) == 1
     const nRow = oddRow ? columns + 1 : columns
 
     pos.x = oddRow ? x - brickDepth * .25 : x
 
-    for (let i = 0; i < nRow; i ++) {
+    for (let i = 0; i < nRow; i++) {
       const firstOrLast = oddRow && (i == 0 || i == nRow - 1)
       const depth = firstOrLast ? brickDepth * .5 : brickDepth
       const mass = firstOrLast ? brickMass * .5 : brickMass
