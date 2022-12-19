@@ -2,14 +2,13 @@ import * as THREE from 'three'
 import { scene, camera, renderer } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
-import { createBox } from '/utils/geometry.js'
 import { getHeightData } from '/utils/terrain/heightmap.js'
 
-import CameraControls from './CameraControls.js'
-import AmmoTerrain from './AmmoTerrain.js'
-import AmmoWorld from './AmmoWorld.js'
-import AmmoVehicle from './AmmoVehicle.js'
-import AmmoBody from './AmmoBody.js'
+import CameraControls from '../75-vehicle-jerome/CameraControls.js'
+import AmmoTerrain from '../75-vehicle-jerome/AmmoTerrain.js'
+import AmmoWorld from '../75-vehicle-jerome/AmmoWorld.js'
+import AmmoVehicle from '../75-vehicle-jerome/AmmoVehicle.js'
+import AmmoBody from '../75-vehicle-jerome/AmmoBody.js'
 
 camera.position.z = 10
 scene.add(createSun())
