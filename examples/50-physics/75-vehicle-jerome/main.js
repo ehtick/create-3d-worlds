@@ -5,7 +5,7 @@ import { loadModel } from '/utils/loaders.js'
 import { createBox } from '/utils/geometry.js'
 import { createTerrain } from '/utils/physics.js'
 
-import CameraControls from './CameraControls.js'
+import VehicleCamera from './VehicleCamera.js'
 import AmmoWorld from './AmmoWorld.js'
 import AmmoVehicle from './AmmoVehicle.js'
 import AmmoBody from './AmmoBody.js'
@@ -14,7 +14,7 @@ camera.position.z = 10
 scene.add(createSun())
 
 const speedometer = document.getElementById('speedometer')
-const cameraControls = new CameraControls(camera)
+const cameraControls = new VehicleCamera({ mesh: camera })
 const ammoWorld = new AmmoWorld()
 
 const terrainMesh = createTerrain()
