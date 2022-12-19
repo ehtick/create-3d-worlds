@@ -1,5 +1,7 @@
 import * as THREE from 'three'
 import { randomGray, getSize } from '/utils/helpers.js'
+import { geometryFromData } from '/utils/terrain/heightmap.js'
+import { generateSimplePlayground } from '/utils/terrain/utils.js'
 
 export const Ammo = typeof window.Ammo == 'function' ? await window.Ammo() : window.Ammo
 
@@ -179,19 +181,32 @@ export function createSideWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, col
 
 /* TERRAIN */
 
-export function createTerrainBody(shape, minHeight, maxHeight) {
-  const transform = new Ammo.btTransform()
-  transform.setIdentity()
-  // shifts the terrain, since bullet centers it on its bounding box.
-  transform.setOrigin(new Ammo.btVector3(0, (maxHeight + minHeight) / 2, 0))
-  const mass = 0
-  const inertia = new Ammo.btVector3(0, 0, 0)
-  const motionState = new Ammo.btDefaultMotionState(transform)
-  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia))
-  return body
+function createTerrainShape({ data, width, depth, minHeight, maxHeight }) {
+  const heightScale = 1 // ignored for PHY_FLOAT
+  const upAxis = 1 // 0=X, 1=Y, 2=Z
+  const hdt = 'PHY_FLOAT' // possible values: PHY_FLOAT, PHY_UCHAR, PHY_SHORT
+  const flipQuadEdges = false
+  const ammoHeightData = Ammo._malloc(4 * width * depth)
+  // copy javascript data array to the Ammo one
+  let p = 0
+  let p2 = 0
+  for (let j = 0; j < depth; j++)
+    for (let i = 0; i < width; i++) {
+      // write 32-bit float data to memory
+      Ammo.HEAPF32[ammoHeightData + p2 >> 2] = data[p]
+      p++
+      p2 += 4 // 4 bytes/float
+    }
+
+  const shape = new Ammo.btHeightfieldTerrainShape(
+    width, depth, ammoHeightData, heightScale,
+    minHeight, maxHeight, upAxis, hdt, flipQuadEdges
+  )
+  shape.setMargin(0.05)
+  return shape
 }
 
-export function createTerrainShape({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight }) {
+export function createTerrainShapeAlt({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight }) {
   const heightScale = 1
   const upAxis = 1 // 0: X, 1: Y, 2: Z. normally Y is used.
   const hdt = 'PHY_FLOAT' // height data type
@@ -221,8 +236,48 @@ export function createTerrainShape({ data, width, depth, mapWidth, mapDepth, min
   return terrainShape
 }
 
+export function createTerrain({
+  maxHeight = 24, minHeight = 0, width = 90, depth = 150, data = generateSimplePlayground(width, depth, (maxHeight + minHeight) / 2)
+} = {}) {
+  const averageHeight = (maxHeight + minHeight) / 2
+
+  const geometry = geometryFromData({ data, width, depth })
+  const material = new THREE.MeshLambertMaterial({ color: 0xfffacd })
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.translateY(-averageHeight)
+  mesh.receiveShadow = true
+
+  const shape = createTerrainShape({ data, width, depth, minHeight, maxHeight })
+
+  const transform = new Ammo.btTransform()
+  transform.setIdentity()
+  transform.setOrigin(new Ammo.btVector3(mesh.position.x, mesh.position.y + averageHeight, mesh.position.z))
+  const mass = 0
+  const inertia = new Ammo.btVector3(0, 0, 0)
+  const motionState = new Ammo.btDefaultMotionState(transform)
+  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia))
+  body.setRestitution(0.9)
+
+  mesh.userData.body = body
+  return mesh
+}
+
+/* TERRAIN ALT */
+
+export function createTerrainBody(shape, minHeight, maxHeight) {
+  const transform = new Ammo.btTransform()
+  transform.setIdentity()
+  // shifts the terrain, since bullet centers it on its bounding box.
+  transform.setOrigin(new Ammo.btVector3(0, (maxHeight + minHeight) / 2, 0))
+  const mass = 0
+  const inertia = new Ammo.btVector3(0, 0, 0)
+  const motionState = new Ammo.btDefaultMotionState(transform)
+  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia))
+  return body
+}
+
 export function createTerrainBodyFromData({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight }) {
-  const shape = createTerrainShape({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight })
+  const shape = createTerrainShapeAlt({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight })
   const body = createTerrainBody(shape, minHeight, maxHeight)
   return body
 }
