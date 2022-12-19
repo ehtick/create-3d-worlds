@@ -20,7 +20,7 @@ const ammoWorld = new AmmoWorld()
 const { data, width, depth } = await getHeightData('/assets/heightmaps/wiki.png', 3)
 
 const ammoTerrain = new AmmoTerrain({ data, width, depth })
-ammoWorld.physicsWorld.addRigidBody(ammoTerrain.body)
+ammoWorld.physicsWorld.addRigidBody(ammoTerrain.mesh.userData.body)
 scene.add(ammoTerrain.mesh)
 
 const tremplinMesh = createTremplin()

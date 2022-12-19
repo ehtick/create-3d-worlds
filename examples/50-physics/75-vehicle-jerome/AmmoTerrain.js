@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { Ammo } from '/utils/physics.js'
 import { geometryFromData } from '/utils/terrain/heightmap.js'
 
-function generateHeightData(width, depth, averageHeight) {
+function generatePlayground(width, depth, averageHeight) {
   const data = new Float32Array(width * depth)
   const radiusX = 24 * 2
   const radiusZ = 24 * 2
@@ -39,7 +39,7 @@ function generateHeightData(width, depth, averageHeight) {
 
 export default class AmmoTerrain {
   constructor({
-    maxHeight = 24, minHeight = 0, width = 90, depth = 150, data = generateHeightData(width, depth, (maxHeight + minHeight) / 2)
+    maxHeight = 24, minHeight = 0, width = 90, depth = 150, data = generatePlayground(width, depth, (maxHeight + minHeight) / 2)
   } = {}) {
     const averageHeight = (maxHeight + minHeight) / 2
 
@@ -60,8 +60,8 @@ export default class AmmoTerrain {
     const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia))
     body.setRestitution(0.9)
 
+    mesh.userData.body = body
     this.mesh = mesh
-    this.body = body
 
     function createTerrainShape(data) {
       const heightScale = 1 // ignored for PHY_FLOAT

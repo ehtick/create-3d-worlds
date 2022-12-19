@@ -3,7 +3,6 @@ import { scene, camera, renderer } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { createBox } from '/utils/geometry.js'
-import { getHeightData } from '/utils/terrain/heightmap.js'
 
 import CameraControls from './CameraControls.js'
 import AmmoTerrain from './AmmoTerrain.js'
@@ -19,7 +18,7 @@ const cameraControls = new CameraControls(camera)
 const ammoWorld = new AmmoWorld()
 
 const ammoTerrain = new AmmoTerrain()
-ammoWorld.physicsWorld.addRigidBody(ammoTerrain.body)
+ammoWorld.physicsWorld.addRigidBody(ammoTerrain.mesh.userData.body)
 scene.add(ammoTerrain.mesh)
 
 // tremplin
