@@ -21,7 +21,7 @@ export function createPhysicsWorld({ gravity = 9.82, softBody = false } = {}) {
   return physicsWorld
 }
 
-export const createShapeFromMesh = function(mesh) {
+export const createShapeOnly = mesh => {
   const { scale } = mesh
   const { parameters, type } = mesh.geometry
   const btVector3 = new Ammo.btVector3()
@@ -46,6 +46,12 @@ export const createShapeFromMesh = function(mesh) {
       btVector3.setZ(z / 2 * scale.z)
       return new Ammo.btBoxShape(btVector3)
   }
+}
+
+export const createShapeFromMesh = mesh => {
+  const shape = createShapeOnly(mesh)
+  shape.setMargin(.05)
+  return shape
 }
 
 /* BODIES */
