@@ -1,5 +1,5 @@
 import { scene as defaultScene, clock } from '/utils/scene.js'
-import { createPhysicsWorld, updateMesh } from '/utils/physics.js'
+import { createPhysicsWorld, createRigidBody, updateMesh } from '/utils/physics.js'
 
 export default class PhysicsWorld {
   constructor({ scene = defaultScene, maxSteps = 10 } = {}) {
@@ -9,7 +9,8 @@ export default class PhysicsWorld {
     this.physicsWorld = createPhysicsWorld()
   }
 
-  add(mesh) {
+  add(mesh, mass = 0) {
+    if (!mesh.userData.body) mesh.userData.body = createRigidBody({ mesh, mass })
     this.physicsWorld.addRigidBody(mesh.userData.body)
     this.rigidBodies.push(mesh)
     if (this.scene) this.scene.add(mesh)

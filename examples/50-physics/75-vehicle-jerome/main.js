@@ -3,7 +3,7 @@ import { scene, camera, renderer } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { createBox } from '/utils/geometry.js'
-import { createTerrain, createRigidBody } from '/utils/physics.js'
+import { createTerrain } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 
@@ -12,30 +12,26 @@ import AmmoVehicle from './AmmoVehicle.js'
 camera.position.z = 10
 scene.add(createSun())
 
-const speedometer = document.getElementById('speedometer')
 const cameraControls = new VehicleCamera({ camera })
 const world = new PhysicsWorld()
 
-const terrainMesh = createTerrain()
-world.add(terrainMesh)
+const terrain = createTerrain()
+world.add(terrain)
 
-// tremplin
-const tremplinMesh = createTremplin()
-tremplinMesh.position.set(-10, -tremplinMesh.geometry.parameters.height / 2 + 1.5, 20)
-tremplinMesh.userData.body = createRigidBody({ mesh: tremplinMesh, mass: 0 })
-world.add(tremplinMesh)
+const tremplin = createTremplin()
+tremplin.position.set(-10, -tremplin.geometry.parameters.height / 2 + 1.5, 20)
+world.add(tremplin)
 
-// ball
-const ballMesh = createBall()
-ballMesh.position.set(5, 10, -10)
-ballMesh.userData.body = createRigidBody({ mesh: ballMesh, mass: 30 })
-ballMesh.userData.body.setFriction(0.9)
-ballMesh.userData.body.setRestitution(0.95)
-world.add(ballMesh)
+const ball = createBall()
+ball.position.set(5, 10, -10)
+world.add(ball, 30)
+ball.userData.body.setFriction(.9)
+ball.userData.body.setRestitution(.95)
 
 buildCrates({ z: -10 })
 
-// vehicle
+/* VEHICLE */
+
 const position = new THREE.Vector3(0, 5, 0)
 const ammoVehicle = new AmmoVehicle(world.physicsWorld, position)
 scene.add(ammoVehicle.mesh)
@@ -85,8 +81,7 @@ function buildCrates({ width = 8, height = 6, depth = 2, boxSize = .75, x = 0, z
         mesh.position.y += height / 2 * boxSize
         mesh.position.z += 6
 
-        mesh.userData.body = createRigidBody({ mesh, mass: 10 })
-        world.add(mesh)
+        world.add(mesh, 10)
       }
 }
 
@@ -97,7 +92,5 @@ void function animate() {
   ammoVehicle.updateKeyboard()
   cameraControls.update(ammoVehicle)
   world.update()
-  const speed = ammoVehicle.vehicle.getCurrentSpeedKmHour()
-  speedometer.innerHTML = speed.toFixed(1) + ' km/h'
   renderer.render(scene, camera)
 }()

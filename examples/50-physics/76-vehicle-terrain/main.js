@@ -3,7 +3,7 @@ import { scene, camera, renderer } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { getHeightData } from '/utils/terrain/heightmap.js'
-import { createTerrain, createRigidBody } from '/utils/physics.js'
+import { createTerrain } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 
@@ -18,23 +18,21 @@ const world = new PhysicsWorld()
 
 const { data, width, depth } = await getHeightData('/assets/heightmaps/wiki.png', 3)
 
-const terrainMesh = createTerrain({ data, width, depth })
-world.add(terrainMesh)
+const terrain = createTerrain({ data, width, depth })
+world.add(terrain)
 
-const tremplinMesh = createTremplin()
-tremplinMesh.position.set(-10, -7.5, 20)
-tremplinMesh.userData.body = createRigidBody({ mesh: tremplinMesh, mass: 0 })
-world.add(tremplinMesh)
+const tremplin = createTremplin()
+tremplin.position.set(-10, -7.5, 20)
+world.add(tremplin)
 
-// ball
-const ballMesh = createBall()
-ballMesh.position.set(5, 0, -20)
-ballMesh.userData.body = createRigidBody({ mesh: ballMesh, mass: 30 })
-ballMesh.userData.body.setFriction(0.9)
-ballMesh.userData.body.setRestitution(0.95)
-world.add(ballMesh)
+const ball = createBall()
+ball.position.set(5, 0, -20)
+world.add(ball, 30)
+ball.userData.body.setFriction(0.9)
+ball.userData.body.setRestitution(0.95)
 
-// vehicle
+/* VEHICLE */
+
 const position = new THREE.Vector3(0, 5, 0)
 const ammoVehicle = new AmmoVehicle(world.physicsWorld, position)
 scene.add(ammoVehicle.mesh)
