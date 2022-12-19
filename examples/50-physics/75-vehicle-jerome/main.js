@@ -18,21 +18,16 @@ const world = new PhysicsWorld()
 
 const terrainMesh = createTerrain()
 world.add(terrainMesh)
-scene.add(terrainMesh)
 
 // tremplin
 const tremplinMesh = createTremplin()
 tremplinMesh.position.set(-10, -tremplinMesh.geometry.parameters.height / 2 + 1.5, 20)
-scene.add(tremplinMesh)
-
 tremplinMesh.userData.body = createRigidBody({ mesh: tremplinMesh, mass: 0 })
 world.add(tremplinMesh)
 
 // ball
 const ballMesh = createBall()
-ballMesh.position.set(5, 0, -20)
-scene.add(ballMesh)
-
+ballMesh.position.set(5, 10, -10)
 ballMesh.userData.body = createRigidBody({ mesh: ballMesh, mass: 30 })
 ballMesh.userData.body.setFriction(0.9)
 ballMesh.userData.body.setRestitution(0.95)
@@ -89,7 +84,6 @@ function buildCrates({ width = 8, height = 6, depth = 2, boxSize = .75, x = 0, z
 
         mesh.position.y += height / 2 * boxSize
         mesh.position.z += 6
-        scene.add(mesh)
 
         mesh.userData.body = createRigidBody({ mesh, mass: 10 })
         world.add(mesh)
