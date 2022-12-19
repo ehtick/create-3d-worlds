@@ -3,12 +3,11 @@ import { scene, camera, renderer } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { createBox } from '/utils/geometry.js'
-import { createTerrain } from '/utils/physics.js'
+import { createTerrain, createRigidBody } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 
 import AmmoWorld from './AmmoWorld.js'
 import AmmoVehicle from './AmmoVehicle.js'
-import AmmoBody from './AmmoBody.js'
 
 camera.position.z = 10
 scene.add(createSun())
@@ -26,18 +25,18 @@ const tremplinMesh = createTremplin()
 tremplinMesh.position.set(-10, -tremplinMesh.geometry.parameters.height / 2 + 1.5, 20)
 scene.add(tremplinMesh)
 
-const tremplin = new AmmoBody({ mesh: tremplinMesh, mass: 0 })
-ammoWorld.add(tremplin)
+tremplinMesh.userData.body = createRigidBody({ mesh: tremplinMesh, mass: 0 })
+ammoWorld.add(tremplinMesh)
 
 // ball
 const ballMesh = createBall()
 ballMesh.position.set(5, 0, -20)
 scene.add(ballMesh)
 
-const ball = new AmmoBody({ mesh: ballMesh, mass: 30 })
-ball.mesh.userData.body.setFriction(0.9)
-ball.mesh.userData.body.setRestitution(0.95)
-ammoWorld.add(ball)
+ballMesh.userData.body = createRigidBody({ mesh: ballMesh, mass: 30 })
+ballMesh.userData.body.setFriction(0.9)
+ballMesh.userData.body.setRestitution(0.95)
+ammoWorld.add(ballMesh)
 
 buildCrates({ z: -10 })
 
@@ -92,8 +91,8 @@ function buildCrates({ width = 8, height = 6, depth = 2, boxSize = .75, x = 0, z
         mesh.position.z += 6
         scene.add(mesh)
 
-        const ammoBody = new AmmoBody({ mesh, mass: 10 })
-        ammoWorld.add(ammoBody)
+        mesh.userData.body = createRigidBody({ mesh, mass: 10 })
+        ammoWorld.add(mesh)
       }
 }
 

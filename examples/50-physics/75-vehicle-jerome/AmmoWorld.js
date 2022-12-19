@@ -3,18 +3,18 @@ import { createPhysicsWorld, updateMesh } from '/utils/physics.js'
 
 export default class AmmoWorld {
   constructor() {
-    this.ammoBodies = []
     this.maxSteps = 30
+    this.rigidBodies = []
     this.physicsWorld = createPhysicsWorld()
   }
 
-  add(ammoBody) {
-    this.physicsWorld.addRigidBody(ammoBody.mesh.userData.body)
-    this.ammoBodies.push(ammoBody.mesh)
+  add(mesh) {
+    this.physicsWorld.addRigidBody(mesh.userData.body)
+    this.rigidBodies.push(mesh)
   }
 
   update() {
     this.physicsWorld.stepSimulation(clock.getDelta(), this.maxSteps)
-    this.ammoBodies.forEach(updateMesh)
+    this.rigidBodies.forEach(updateMesh)
   }
 }
