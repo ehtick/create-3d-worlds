@@ -335,10 +335,11 @@ export function findGround(body, physicsWorld) {
 /* UPDATE */
 
 export function updateMesh(mesh) {
-  const ms = mesh.userData.body.getMotionState()
-  if (!ms) return
+  const { body } = mesh.userData
+  const motionState = body.getMotionState()
+  if (!motionState || !body.getInvMass()) return
   const transform = new Ammo.btTransform()
-  ms.getWorldTransform(transform)
+  motionState.getWorldTransform(transform)
   const p = transform.getOrigin()
   const q = transform.getRotation()
   mesh.position.set(p.x(), p.y(), p.z())

@@ -14,10 +14,10 @@ scene.add(createSun())
 
 const speedometer = document.getElementById('speedometer')
 const cameraControls = new VehicleCamera({ camera })
-const ammoWorld = new PhysicsWorld()
+const world = new PhysicsWorld()
 
 const terrainMesh = createTerrain()
-ammoWorld.physicsWorld.addRigidBody(terrainMesh.userData.body)
+world.add(terrainMesh)
 scene.add(terrainMesh)
 
 // tremplin
@@ -26,7 +26,7 @@ tremplinMesh.position.set(-10, -tremplinMesh.geometry.parameters.height / 2 + 1.
 scene.add(tremplinMesh)
 
 tremplinMesh.userData.body = createRigidBody({ mesh: tremplinMesh, mass: 0 })
-ammoWorld.add(tremplinMesh)
+world.add(tremplinMesh)
 
 // ball
 const ballMesh = createBall()
@@ -36,13 +36,13 @@ scene.add(ballMesh)
 ballMesh.userData.body = createRigidBody({ mesh: ballMesh, mass: 30 })
 ballMesh.userData.body.setFriction(0.9)
 ballMesh.userData.body.setRestitution(0.95)
-ammoWorld.add(ballMesh)
+world.add(ballMesh)
 
 buildCrates({ z: -10 })
 
 // vehicle
 const position = new THREE.Vector3(0, 5, 0)
-const ammoVehicle = new AmmoVehicle(ammoWorld.physicsWorld, position)
+const ammoVehicle = new AmmoVehicle(world.physicsWorld, position)
 scene.add(ammoVehicle.mesh)
 
 const { mesh: bodyMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl' })
@@ -92,7 +92,7 @@ function buildCrates({ width = 8, height = 6, depth = 2, boxSize = .75, x = 0, z
         scene.add(mesh)
 
         mesh.userData.body = createRigidBody({ mesh, mass: 10 })
-        ammoWorld.add(mesh)
+        world.add(mesh)
       }
 }
 
@@ -102,7 +102,7 @@ void function animate() {
   requestAnimationFrame(animate)
   ammoVehicle.updateKeyboard()
   cameraControls.update(ammoVehicle)
-  ammoWorld.update()
+  world.update()
   const speed = ammoVehicle.vehicle.getCurrentSpeedKmHour()
   speedometer.innerHTML = speed.toFixed(1) + ' km/h'
   renderer.render(scene, camera)
