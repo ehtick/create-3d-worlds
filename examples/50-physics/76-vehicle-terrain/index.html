@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<meta name='viewport' content='width=device-width'>
+<title>Vehicle</title>
+
+<body style='margin: 0px; overflow: hidden; text-align:center;'>
+
+  <style>
+    #speedometer {
+      color: #ffffff;
+      background-color: #990000;
+      position: absolute;
+      bottom: 0px;
+      padding: 5px;
+    }
+  </style>
+  <div id='speedometer'>0.0 km/h</div>
+
+  <script src="/libs/ammo.asm.js"></script>
+  <script type="importmap">
+    {
+        "imports": {
+            "three": "/node_modules/three/build/three.module.js"
+        }
+    }
+  </script>
+  <script src="main.js" type="module"></script>
+
+</body>

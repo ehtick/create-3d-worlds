@@ -18,15 +18,15 @@ const speedometer = document.getElementById('speedometer')
 const cameraControls = new CameraControls(camera)
 const ammoWorld = new AmmoWorld()
 
-const ammoTerrain = new AmmoTerrain()
+const { data, width, depth } = await getHeightData('/assets/heightmaps/wiki.png', 3)
+
+const ammoTerrain = new AmmoTerrain({ data, width, depth })
 ammoWorld.physicsWorld.addRigidBody(ammoTerrain.body)
 scene.add(ammoTerrain.mesh)
 
-// tremplin
 const tremplinMesh = createTremplin()
-tremplinMesh.position.set(-10, -tremplinMesh.geometry.parameters.height / 2 + 1.5, 20)
+tremplinMesh.position.set(-10, -7.5, 20)
 scene.add(tremplinMesh)
-
 const tremplin = new AmmoBody({ mesh: tremplinMesh, mass: 0 })
 ammoWorld.add(tremplin)
 
@@ -39,8 +39,6 @@ const ball = new AmmoBody({ mesh: ballMesh, mass: 30 })
 ball.setFriction(0.9)
 ball.setRestitution(0.95)
 ammoWorld.add(ball)
-
-buildCrates({ z: -10 })
 
 // vehicle
 const position = new THREE.Vector3(0, 5, 0)
@@ -76,26 +74,6 @@ function createTremplin() {
   mesh.rotateX(-Math.PI / 15)
   mesh.receiveShadow = true
   return mesh
-}
-
-function buildCrates({ width = 8, height = 6, depth = 2, boxSize = .75, x = 0, z = 0 } = {}) {
-  const box = createBox({ size: boxSize })
-  for (let w = 0; w < width; w++)
-    for (let h = 0; h < height; h++)
-      for (let d = 0; d < depth; d++) {
-        const mesh = box.clone()
-
-        mesh.position.x = (w - width / 2 + 0.5) * boxSize + x
-        mesh.position.y = (h - height / 2 + 0.5) * boxSize
-        mesh.position.z = (d - depth / 2 + 0.5) * boxSize + z
-
-        mesh.position.y += height / 2 * boxSize
-        mesh.position.z += 6
-        scene.add(mesh)
-
-        const ammoBody = new AmmoBody({ mesh, mass: 10 })
-        ammoWorld.add(ammoBody)
-      }
 }
 
 /* LOOP */
