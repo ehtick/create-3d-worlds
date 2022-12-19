@@ -14,7 +14,7 @@ camera.position.z = 10
 scene.add(createSun())
 
 const speedometer = document.getElementById('speedometer')
-const cameraControls = new VehicleCamera({ mesh: camera })
+const cameraControls = new VehicleCamera({ camera })
 const ammoWorld = new AmmoWorld()
 
 const terrainMesh = createTerrain()
