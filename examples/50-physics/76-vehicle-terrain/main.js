@@ -5,7 +5,7 @@ import { loadModel } from '/utils/loaders.js'
 import { getHeightData } from '/utils/terrain/heightmap.js'
 
 import CameraControls from '../75-vehicle-jerome/CameraControls.js'
-import AmmoTerrain from '../75-vehicle-jerome/AmmoTerrain.js'
+import { createTerrain } from '../75-vehicle-jerome/AmmoTerrain.js'
 import AmmoWorld from '../75-vehicle-jerome/AmmoWorld.js'
 import AmmoVehicle from '../75-vehicle-jerome/AmmoVehicle.js'
 import AmmoBody from '../75-vehicle-jerome/AmmoBody.js'
@@ -19,9 +19,9 @@ const ammoWorld = new AmmoWorld()
 
 const { data, width, depth } = await getHeightData('/assets/heightmaps/wiki.png', 3)
 
-const ammoTerrain = new AmmoTerrain({ data, width, depth })
-ammoWorld.physicsWorld.addRigidBody(ammoTerrain.mesh.userData.body)
-scene.add(ammoTerrain.mesh)
+const terrainMesh = createTerrain({ data, width, depth })
+ammoWorld.physicsWorld.addRigidBody(terrainMesh.userData.body)
+scene.add(terrainMesh)
 
 const tremplinMesh = createTremplin()
 tremplinMesh.position.set(-10, -7.5, 20)

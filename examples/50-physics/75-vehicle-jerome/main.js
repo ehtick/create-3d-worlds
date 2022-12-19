@@ -5,7 +5,7 @@ import { loadModel } from '/utils/loaders.js'
 import { createBox } from '/utils/geometry.js'
 
 import CameraControls from './CameraControls.js'
-import AmmoTerrain from './AmmoTerrain.js'
+import { createTerrain } from './AmmoTerrain.js'
 import AmmoWorld from './AmmoWorld.js'
 import AmmoVehicle from './AmmoVehicle.js'
 import AmmoBody from './AmmoBody.js'
@@ -17,9 +17,9 @@ const speedometer = document.getElementById('speedometer')
 const cameraControls = new CameraControls(camera)
 const ammoWorld = new AmmoWorld()
 
-const ammoTerrain = new AmmoTerrain()
-ammoWorld.physicsWorld.addRigidBody(ammoTerrain.mesh.userData.body)
-scene.add(ammoTerrain.mesh)
+const terrainMesh = createTerrain()
+ammoWorld.physicsWorld.addRigidBody(terrainMesh.userData.body)
+scene.add(terrainMesh)
 
 // tremplin
 const tremplinMesh = createTremplin()
