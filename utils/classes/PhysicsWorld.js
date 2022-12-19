@@ -19,6 +19,7 @@ export default class PhysicsWorld {
     if (!this.rigidBodies.includes(mesh)) return
     this.physicsWorld.removeRigidBody(mesh.userData.body)
     this.rigidBodies.splice(this.rigidBodies.indexOf(mesh), 1)
+    if (this.scene) this.scene.remove(mesh)
   }
 
   update() {
