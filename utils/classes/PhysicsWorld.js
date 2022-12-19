@@ -13,6 +13,12 @@ export default class PhysicsWorld {
     this.rigidBodies.push(mesh)
   }
 
+  remove(mesh) {
+    if (!this.rigidBodies.includes(mesh)) return
+    this.physicsWorld.removeRigidBody(mesh.userData.body)
+    this.rigidBodies.splice(this.rigidBodies.indexOf(mesh), 1)
+  }
+
   update() {
     this.physicsWorld.stepSimulation(clock.getDelta(), this.maxSteps)
     this.rigidBodies.forEach(updateMesh)

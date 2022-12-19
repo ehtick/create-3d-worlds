@@ -5,8 +5,8 @@ import { loadModel } from '/utils/loaders.js'
 import { createBox } from '/utils/geometry.js'
 import { createTerrain, createRigidBody } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
+import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 
-import PhysicsWorld from './PhysicsWorld.js'
 import AmmoVehicle from './AmmoVehicle.js'
 
 camera.position.z = 10

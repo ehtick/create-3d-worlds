@@ -5,8 +5,8 @@ import { loadModel } from '/utils/loaders.js'
 import { getHeightData } from '/utils/terrain/heightmap.js'
 import { createTerrain, createRigidBody } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
+import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 
-import PhysicsWorld from '../75-vehicle-jerome/PhysicsWorld.js'
 import AmmoVehicle from '../75-vehicle-jerome/AmmoVehicle.js'
 
 camera.position.z = 10
