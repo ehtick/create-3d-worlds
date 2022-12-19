@@ -6,6 +6,7 @@ import { getHeightData } from '/utils/terrain/heightmap.js'
 import { createTerrain } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
+import { createSphere } from '/utils/geometry.js'
 
 import AmmoVehicle from '../75-vehicle-jerome/AmmoVehicle.js'
 
@@ -25,7 +26,7 @@ const tremplin = createTremplin()
 tremplin.position.set(-10, -7.5, 20)
 world.add(tremplin)
 
-const ball = createBall()
+const ball = createSphere({ color: 0x333333 })
 ball.position.set(5, 0, -20)
 world.add(ball, 3000)
 
@@ -48,14 +49,6 @@ for (let i = 0; i < 4; i++) {
 }
 
 /* FUNCTIONS */
-
-function createBall() {
-  const geometry = new THREE.SphereGeometry(1, 32, 16)
-  const material = new THREE.MeshPhongMaterial({ color: 0x333333 })
-  const mesh = new THREE.Mesh(geometry, material)
-  mesh.castShadow = mesh.receiveShadow = true
-  return mesh
-}
 
 function createTremplin() {
   const geometry = new THREE.BoxGeometry(8, 4, 15)
