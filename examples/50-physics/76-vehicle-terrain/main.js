@@ -6,7 +6,7 @@ import { getHeightData } from '/utils/terrain/heightmap.js'
 import { createTerrain, createRigidBody } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 
-import AmmoWorld from '../75-vehicle-jerome/AmmoWorld.js'
+import PhysicsWorld from '../75-vehicle-jerome/PhysicsWorld.js'
 import AmmoVehicle from '../75-vehicle-jerome/AmmoVehicle.js'
 
 camera.position.z = 10
@@ -14,7 +14,7 @@ scene.add(createSun())
 
 const speedometer = document.getElementById('speedometer')
 const cameraControls = new VehicleCamera({ camera })
-const ammoWorld = new AmmoWorld()
+const ammoWorld = new PhysicsWorld()
 
 const { data, width, depth } = await getHeightData('/assets/heightmaps/wiki.png', 3)
 

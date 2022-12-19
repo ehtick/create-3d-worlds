@@ -1,7 +1,7 @@
 import { clock } from '/utils/scene.js'
 import { createPhysicsWorld, updateMesh } from '/utils/physics.js'
 
-export default class AmmoWorld {
+export default class PhysicsWorld {
   constructor() {
     this.maxSteps = 30
     this.rigidBodies = []

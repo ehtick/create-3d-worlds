@@ -6,7 +6,7 @@ import { createBox } from '/utils/geometry.js'
 import { createTerrain, createRigidBody } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 
-import AmmoWorld from './AmmoWorld.js'
+import PhysicsWorld from './PhysicsWorld.js'
 import AmmoVehicle from './AmmoVehicle.js'
 
 camera.position.z = 10
@@ -14,7 +14,7 @@ scene.add(createSun())
 
 const speedometer = document.getElementById('speedometer')
 const cameraControls = new VehicleCamera({ camera })
-const ammoWorld = new AmmoWorld()
+const ammoWorld = new PhysicsWorld()
 
 const terrainMesh = createTerrain()
 ammoWorld.physicsWorld.addRigidBody(terrainMesh.userData.body)
