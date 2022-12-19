@@ -35,8 +35,8 @@ ballMesh.position.set(5, 0, -20)
 scene.add(ballMesh)
 
 const ball = new AmmoBody({ mesh: ballMesh, mass: 30 })
-ball.setFriction(0.9)
-ball.setRestitution(0.95)
+ball.mesh.userData.body.setFriction(0.9)
+ball.mesh.userData.body.setRestitution(0.95)
 ammoWorld.add(ball)
 
 buildCrates({ z: -10 })

@@ -56,7 +56,7 @@ export const createShapeFromMesh = mesh => {
 
 /* BODIES */
 
-export function createRigidBody({ mesh, mass, shape, friction }) {
+export function createRigidBody({ mesh, mass, shape = createShapeFromMesh(mesh), friction }) {
   const { position, quaternion } = mesh
 
   const transform = new Ammo.btTransform()
