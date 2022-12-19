@@ -9,13 +9,12 @@ npm i
 npx live-server
 ```
 
-- isprobati generateHeightData sa terrainFromHeightmap, učiniti ih kompatibilnim
-
 ### Physics
-- isprobati dodavanje sile na kuglu: applyForce, applyImpulse or setLinearVelocity
+top:
+  - isprobati dodavanje sile na kuglu: applyForce, applyImpulse or setLinearVelocity
   https://medium.com/@bluemagnificent/moving-objects-in-javascript-3d-physics-using-ammo-js-and-three-js-6e39eff6d9e5
-- vozilo
-  https://jeromeetienne.github.io/threex.ammo/examples/vehicle.html
+vozilo:
+  - ostaviti oba primera terena: jerome i heightmap
   - dodati fiziku na steam tenk ili lokomotivu
   - da gazi i gura prepreke
 - napraviti sletanje na mesec 3d

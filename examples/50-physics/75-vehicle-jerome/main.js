@@ -35,7 +35,7 @@ ball.setFriction(0.9)
 ball.setRestitution(0.95)
 ammoWorld.add(ball)
 
-buildCrates({ z: -10 })
+// buildCrates({ z: -10 })
 
 // vehicle
 const position = new THREE.Vector3(0, 5, 0)

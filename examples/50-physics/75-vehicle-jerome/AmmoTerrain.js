@@ -2,24 +2,26 @@ import * as THREE from 'three'
 import { Ammo } from '/utils/physics.js'
 import { geometryFromData, getHeightData } from '/utils/terrain/heightmap.js'
 
-const { data, width, depth } = await getHeightData('/assets/heightmaps/wiki.png')
+const { data, width, depth } = await getHeightData('/assets/heightmaps/wiki.png', 3)
 
 export default class AmmoTerrain {
   constructor({
     maxHeight = 24, minHeight = 0, // width = 90, depth = 150,
   } = {}) {
     // const data = generateHeightData(width, depth, minHeight, maxHeight)
+    const averageHeight = (maxHeight + minHeight) / 2
 
     const geometry = geometryFromData({ data, width, depth })
     const material = new THREE.MeshLambertMaterial({ color: 0xfffacd })
     const mesh = new THREE.Mesh(geometry, material)
-    mesh.translateY(-maxHeight / 2)
+    mesh.translateY(-averageHeight)
     mesh.receiveShadow = true
 
     const shape = createTerrainShape(data)
+
     const transform = new Ammo.btTransform()
     transform.setIdentity()
-    transform.setOrigin(new Ammo.btVector3(mesh.position.x, mesh.position.y + maxHeight / 2, mesh.position.z))
+    transform.setOrigin(new Ammo.btVector3(mesh.position.x, mesh.position.y + averageHeight, mesh.position.z))
     const mass = 0
     const inertia = new Ammo.btVector3(0, 0, 0)
     const motionState = new Ammo.btDefaultMotionState(transform)

@@ -182,12 +182,12 @@ export function createSideWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, col
 export function createTerrainBody(shape, minHeight, maxHeight) {
   const transform = new Ammo.btTransform()
   transform.setIdentity()
-  // Shifts the terrain, since bullet re-centers it on its bounding box.
+  // shifts the terrain, since bullet centers it on its bounding box.
   transform.setOrigin(new Ammo.btVector3(0, (maxHeight + minHeight) / 2, 0))
-  const groundMass = 0
+  const mass = 0
   const inertia = new Ammo.btVector3(0, 0, 0)
   const motionState = new Ammo.btDefaultMotionState(transform)
-  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(groundMass, motionState, shape, inertia))
+  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia))
   return body
 }
 
