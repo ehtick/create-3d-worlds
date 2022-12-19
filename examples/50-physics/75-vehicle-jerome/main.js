@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { scene, camera, renderer } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
-import { createBox, createSphere } from '/utils/geometry.js'
+import { createBox, createSphere, createCrates } from '/utils/geometry.js'
 import { createTerrain } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
@@ -28,7 +28,7 @@ world.add(ball, 30)
 ball.userData.body.setFriction(.9)
 ball.userData.body.setRestitution(.95)
 
-buildCrates({ z: -10 })
+createCrates({ z: -10 }).forEach(mesh => world.add(mesh, 10))
 
 /* VEHICLE */
 
@@ -46,26 +46,6 @@ for (let i = 0; i < 4; i++) {
   const wheelmesh = tireMesh.clone()
   if (i == 0 || i == 3) wheelmesh.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
   ammoVehicle.mesh.getObjectByName('wheel_' + i).add(wheelmesh)
-}
-
-/* FUNCTIONS */
-
-function buildCrates({ width = 8, height = 6, depth = 2, boxSize = .75, x = 0, z = 0 } = {}) {
-  const box = createBox({ size: boxSize })
-  for (let w = 0; w < width; w++)
-    for (let h = 0; h < height; h++)
-      for (let d = 0; d < depth; d++) {
-        const mesh = box.clone()
-
-        mesh.position.x = (w - width / 2 + 0.5) * boxSize + x
-        mesh.position.y = (h - height / 2 + 0.5) * boxSize
-        mesh.position.z = (d - depth / 2 + 0.5) * boxSize + z
-
-        mesh.position.y += height / 2 * boxSize
-        mesh.position.z += 6
-
-        world.add(mesh, 10)
-      }
 }
 
 /* LOOP */
