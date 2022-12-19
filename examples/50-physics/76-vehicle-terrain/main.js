@@ -13,11 +13,11 @@ camera.position.z = 10
 scene.add(createSun())
 
 const speedometer = document.getElementById('speedometer')
-const cameraControls = new VehicleCamera({ camera })
+
 const world = new PhysicsWorld()
+const cameraControls = new VehicleCamera({ camera })
 
 const { data, width, depth } = await getHeightData('/assets/heightmaps/wiki.png', 3)
-
 const terrain = createTerrain({ data, width, depth })
 world.add(terrain)
 
@@ -27,9 +27,7 @@ world.add(tremplin)
 
 const ball = createBall()
 ball.position.set(5, 0, -20)
-world.add(ball, 30)
-ball.userData.body.setFriction(0.9)
-ball.userData.body.setRestitution(0.95)
+world.add(ball, 3000)
 
 /* VEHICLE */
 

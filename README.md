@@ -117,13 +117,16 @@ geometry.computeVertexNormals()
 
 All libraries in `/libs` folder are updated manually to support ES6 export.
 
+### OrbitControls
+
 Prevent OrbitControls bellow ground:
 
 ```
 controls.maxPolarAngle = Math.PI / 2 - 0.1
 ```
 
-updateMatrix:
+### updateMatrix
+
 https://stackoverflow.com/questions/27022160/three-js-can-i-apply-position-rotation-and-scale-to-the-geometry
 
 Default order of transform: scale, rotate, translate (Three.js ignores order in code?)
@@ -133,6 +136,15 @@ If we want to apply multiple transform:
 ```
 gameObj.matrix = new THREE.Matrix4(....) // with params
 gameObj.matrixAutoUpdate = false // don't use internal transform system
+```
+
+### Ammo Physics
+
+Some methods:
+
+```
+body.setFriction(.9)
+body.setRestitution(.95)
 ```
 
 ## Sources

@@ -15,8 +15,7 @@ scene.add(createSun())
 const cameraControls = new VehicleCamera({ camera })
 const world = new PhysicsWorld()
 
-const terrain = createTerrain()
-world.add(terrain)
+world.add(createTerrain())
 
 const tremplin = createTremplin()
 tremplin.position.set(-10, -tremplin.geometry.parameters.height / 2 + 1.5, 20)
