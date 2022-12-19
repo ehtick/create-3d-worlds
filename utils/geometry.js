@@ -16,9 +16,11 @@ export function createBox({ size = 1, width = size, height = size, depth = size,
   }
   const material = new THREE.MeshPhongMaterial(options)
   const mesh = new THREE.Mesh(geometry, material)
+
   mesh.translateY(height / 2)
-  mesh.updateMatrix()
-  mesh.geometry.applyMatrix4(mesh.matrix)
+  // mesh.updateMatrix()
+  // mesh.geometry.applyMatrix4(mesh.matrix)
+
   mesh.castShadow = castShadow
   mesh.receiveShadow = receiveShadow
   return mesh

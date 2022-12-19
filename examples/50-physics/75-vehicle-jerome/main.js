@@ -17,7 +17,8 @@ const world = new PhysicsWorld()
 
 world.add(createTerrain())
 
-const tremplin = createTremplin()
+const tremplin = createBox({ width: 8, height: 4, depth: 15, color: 0xfffacd })
+tremplin.rotateX(-Math.PI / 15)
 tremplin.position.set(-10, -tremplin.geometry.parameters.height / 2 + 1.5, 20)
 world.add(tremplin)
 
@@ -48,15 +49,6 @@ for (let i = 0; i < 4; i++) {
 }
 
 /* FUNCTIONS */
-
-function createTremplin() {
-  const geometry = new THREE.BoxGeometry(8, 4, 15)
-  const material = new THREE.MeshPhongMaterial({ color: 0xfffacd })
-  const mesh = new THREE.Mesh(geometry, material)
-  mesh.rotateX(-Math.PI / 15)
-  mesh.receiveShadow = true
-  return mesh
-}
 
 function buildCrates({ width = 8, height = 6, depth = 2, boxSize = .75, x = 0, z = 0 } = {}) {
   const box = createBox({ size: boxSize })

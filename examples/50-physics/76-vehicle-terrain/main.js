@@ -6,7 +6,7 @@ import { getHeightData } from '/utils/terrain/heightmap.js'
 import { createTerrain } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
-import { createSphere } from '/utils/geometry.js'
+import { createSphere, createBox } from '/utils/geometry.js'
 
 import AmmoVehicle from '../75-vehicle-jerome/AmmoVehicle.js'
 
@@ -22,7 +22,8 @@ const { data, width, depth } = await getHeightData('/assets/heightmaps/wiki.png'
 const terrain = createTerrain({ data, width, depth })
 world.add(terrain)
 
-const tremplin = createTremplin()
+const tremplin = createBox({ width: 8, height: 4, depth: 15, color: 0xfffacd })
+tremplin.rotateX(-Math.PI / 15)
 tremplin.position.set(-10, -7.5, 20)
 world.add(tremplin)
 
@@ -46,17 +47,6 @@ for (let i = 0; i < 4; i++) {
   const wheelmesh = tireMesh.clone()
   if (i == 0 || i == 3) wheelmesh.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
   ammoVehicle.mesh.getObjectByName('wheel_' + i).add(wheelmesh)
-}
-
-/* FUNCTIONS */
-
-function createTremplin() {
-  const geometry = new THREE.BoxGeometry(8, 4, 15)
-  const material = new THREE.MeshPhongMaterial({ color: 0xfffacd })
-  const mesh = new THREE.Mesh(geometry, material)
-  mesh.rotateX(-Math.PI / 15)
-  mesh.receiveShadow = true
-  return mesh
 }
 
 /* LOOP */
