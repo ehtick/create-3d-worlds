@@ -4,7 +4,6 @@ import keyboard from '/utils/classes/Keyboard.js'
 
 const defaultRotation = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
 
-// build wheels physics
 const FRONT_LEFT = 0
 const FRONT_RIGHT = 1
 const BACK_LEFT = 2
@@ -18,35 +17,44 @@ const massVehicle = 800
 
 let vehicleSteering = 0
 
+function createChassisBody(position, quaternion) {
+  const chassisWidth = 1.8
+  const chassisHeight = .6
+  const chassisLength = 4
+  const size = new Ammo.btVector3(chassisWidth * .5, chassisHeight * .5, chassisLength * .5)
+  const shape = new Ammo.btBoxShape(size)
+  const transform = new Ammo.btTransform()
+  transform.setIdentity()
+  transform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z))
+  transform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w))
+  const motionState = new Ammo.btDefaultMotionState(transform)
+  const localInertia = new Ammo.btVector3(0, 0, 0)
+  shape.calculateLocalInertia(massVehicle, localInertia)
+  const chassisBody = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(massVehicle, motionState, shape, localInertia))
+
+  chassisBody.setActivationState(4) // DISABLE_DEACTIVATION
+  return chassisBody
+}
+
 export default class AmmoVehicle {
   constructor(physicsWorld, position, quaternion = defaultRotation) {
     this.mesh = new THREE.Group
 
-    const chassisWidth = 1.8
-    const chassisHeight = .6
-    const chassisLength = 4
-
-    const wheelAxisPositionBack = -1.8
-    const wheelHalfTrackBack = 1.15
-    const wheelAxisHeightBack = .3
+    const wheelBackZ = -1.8
+    const wheelBackX = 1.15
+    const wheelBackY = .3
     const wheelRadiusBack = .45
 
-    const wheelAxisPositionFront = 1.55
-    const wheelHalfTrackFront = 1.15
-    const wheelAxisHeightFront = .3
+    const wheelFrontZ = 1.55
+    const wheelFrontX = 1.15
+    const wheelFrontY = .3
     const wheelRadiusFront = .45
-
-    const friction = 1000
-    const suspensionStiffness = 20.0
-    const suspensionDamping = 2.3
-    const suspensionCompression = 4.4
-    const suspensionRestLength = 0.6
-    const rollInfluence = 0.2
 
     // TODO should that be outside, built before this constructor
     this.chassisMesh = new THREE.Group()
     this.chassisMesh.name = 'chassis'
     this.mesh.add(this.chassisMesh)
+
     this.wheelMeshes = []
     for (let i = 0; i < 4; i++) {
       this.wheelMeshes[i] = new THREE.Group()
@@ -54,54 +62,45 @@ export default class AmmoVehicle {
       this.mesh.add(this.wheelMeshes[i])
     }
 
-    // build chassis
-    const size = new Ammo.btVector3(chassisWidth * .5, chassisHeight * .5, chassisLength * .5)
-    const shape = new Ammo.btBoxShape(size)
-    const transform = new Ammo.btTransform()
-    transform.setIdentity()
-    transform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z))
-    transform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w))
-    const motionState = new Ammo.btDefaultMotionState(transform)
-    const localInertia = new Ammo.btVector3(0, 0, 0)
-    shape.calculateLocalInertia(massVehicle, localInertia)
-    const chassisBody = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(massVehicle, motionState, shape, localInertia))
-    this.chassisBody = chassisBody
+    this.chassisBody = createChassisBody(position, quaternion)
+    physicsWorld.addRigidBody(this.chassisBody)
 
-    const DISABLE_DEACTIVATION = 4
-    chassisBody.setActivationState(DISABLE_DEACTIVATION)
-    this.chassisBody = chassisBody
-    physicsWorld.addRigidBody(chassisBody)
-
-    // Raycast Vehicle
     const tuning = new Ammo.btVehicleTuning()
     const rayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
-    const vehicle = new Ammo.btRaycastVehicle(tuning, chassisBody, rayCaster)
+    const vehicle = new Ammo.btRaycastVehicle(tuning, this.chassisBody, rayCaster)
     vehicle.setCoordinateSystem(0, 1, 2)
     physicsWorld.addAction(vehicle)
 
     this.vehicle = vehicle
 
-    createWheel(true, new Ammo.btVector3(wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisPositionFront), wheelRadiusFront)
-    createWheel(true, new Ammo.btVector3(-wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisPositionFront), wheelRadiusFront)
-    createWheel(false, new Ammo.btVector3(-wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack)
-    createWheel(false, new Ammo.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack)
+    this.createWheel(true, new Ammo.btVector3(wheelFrontX, wheelFrontY, wheelFrontZ), wheelRadiusFront, tuning)
+    this.createWheel(true, new Ammo.btVector3(-wheelFrontX, wheelFrontY, wheelFrontZ), wheelRadiusFront, tuning)
+    this.createWheel(false, new Ammo.btVector3(-wheelBackX, wheelBackY, wheelBackZ), wheelRadiusBack, tuning)
+    this.createWheel(false, new Ammo.btVector3(wheelBackX, wheelBackY, wheelBackZ), wheelRadiusBack, tuning)
+  }
 
-    function createWheel(isFront, position, radius) {
-      const wheelDirectionCS0 = new Ammo.btVector3(0, -1, 0)
-      const wheelAxleCS = new Ammo.btVector3(-1, 0, 0)
+  createWheel(isFront, position, radius, tuning) {
+    const friction = 1000
+    const suspensionStiffness = 20.0
+    const suspensionDamping = 2.3
+    const suspensionCompression = 4.4
+    const suspensionRestLength = 0.6
+    const rollInfluence = 0.2
 
-      const wheelInfo = vehicle.addWheel(
-        position, wheelDirectionCS0, wheelAxleCS, suspensionRestLength,
-        radius, tuning, isFront
-      )
+    const wheelDirectionCS0 = new Ammo.btVector3(0, -1, 0)
+    const wheelAxleCS = new Ammo.btVector3(-1, 0, 0)
 
-      wheelInfo.set_m_suspensionStiffness(suspensionStiffness)
-      wheelInfo.set_m_wheelsDampingRelaxation(suspensionDamping)
-      wheelInfo.set_m_wheelsDampingCompression(suspensionCompression)
+    const wheelInfo = this.vehicle.addWheel(
+      position, wheelDirectionCS0, wheelAxleCS, suspensionRestLength,
+      radius, tuning, isFront
+    )
 
-      wheelInfo.set_m_frictionSlip(friction)
-      wheelInfo.set_m_rollInfluence(rollInfluence)
-    }
+    wheelInfo.set_m_suspensionStiffness(suspensionStiffness)
+    wheelInfo.set_m_wheelsDampingRelaxation(suspensionDamping)
+    wheelInfo.set_m_wheelsDampingCompression(suspensionCompression)
+
+    wheelInfo.set_m_frictionSlip(friction)
+    wheelInfo.set_m_rollInfluence(rollInfluence)
   }
 
   updatePhysics() {
