@@ -18,7 +18,7 @@ export default class VehicleCamera {
   }
 
   update(ammoVehicle) {
-    const object3dVehicle = ammoVehicle.mesh.getObjectByName('chassis')
+    const object3dVehicle = ammoVehicle.chassisMesh
 
     const offsetCamera = this.offsetCamera.clone()
     object3dVehicle.localToWorld(offsetCamera)

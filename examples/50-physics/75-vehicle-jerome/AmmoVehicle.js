@@ -44,29 +44,20 @@ export default class AmmoVehicle {
     position = new THREE.Vector3(0, 0, 0),
     quaternion = defaultRotation
   }) {
+    chassisModel.position.y = .25
     this.mesh = new THREE.Group
-
-    this.chassisMesh = new THREE.Group()
-    this.chassisMesh.name = 'chassis'
+    this.chassisMesh = chassisModel
     this.mesh.add(this.chassisMesh)
-
-    this.wheelMeshes = []
-    for (let i = 0; i < 4; i++) {
-      this.wheelMeshes[i] = new THREE.Group()
-      this.wheelMeshes[i].name = 'wheel_' + i
-      this.mesh.add(this.wheelMeshes[i])
-    }
 
     this.chassisBody = createChassisBody(position, quaternion)
     physicsWorld.addRigidBody(this.chassisBody)
 
-    chassisModel.position.y = 0.25
-    this.mesh.getObjectByName('chassis').add(chassisModel)
-
+    this.wheelMeshes = []
     for (let i = 0; i < 4; i++) {
-      const clone = wheelModel.clone()
-      if (i == 0 || i == 3) clone.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
-      this.mesh.getObjectByName('wheel_' + i).add(clone)
+      const model = wheelModel.clone()
+      if (i == 0 || i == 3) model.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
+      this.wheelMeshes[i] = model
+      this.mesh.add(this.wheelMeshes[i])
     }
 
     const tuning = new Ammo.btVehicleTuning()
