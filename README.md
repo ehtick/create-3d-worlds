@@ -142,9 +142,15 @@ gameObj.matrixAutoUpdate = false // don't use internal transform system
 
 Some methods:
 
-```
+```js
 body.setFriction(.9)
 body.setRestitution(.95)
+```
+
+Jump:
+```js
+const impulse = new Ammo.btVector3(0, mass * .5, 0)
+this.chassisBody.applyCentralImpulse(impulse)
 ```
 
 ## Sources
