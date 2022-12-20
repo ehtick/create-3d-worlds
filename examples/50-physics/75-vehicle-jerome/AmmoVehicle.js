@@ -37,26 +37,18 @@ function createChassisBody({ position, quaternion, width = 1.8, height = .6, len
 export default class AmmoVehicle {
   constructor({
     physicsWorld,
-    chassisModel,
-    wheelModel,
+    chassisMesh,
+    wheelMesh,
     position = new THREE.Vector3(0, 0, 0),
     quaternion = defaultRotation
   }) {
-    chassisModel.position.y = .25
+    chassisMesh.position.y = .25
     this.mesh = new THREE.Group
-    this.mesh.add(chassisModel)
-    this.chassisMesh = chassisModel
+    this.mesh.add(chassisMesh)
+    this.chassisMesh = chassisMesh
 
     this.chassisBody = createChassisBody({ position, quaternion })
     physicsWorld.addRigidBody(this.chassisBody)
-
-    this.wheelMeshes = []
-    for (let i = 0; i < 4; i++) {
-      const model = wheelModel.clone()
-      if (i == 0 || i == 3) model.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
-      this.wheelMeshes[i] = model
-      this.mesh.add(this.wheelMeshes[i])
-    }
 
     const tuning = new Ammo.btVehicleTuning()
     const rayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
@@ -64,7 +56,18 @@ export default class AmmoVehicle {
     this.vehicle.setCoordinateSystem(0, 1, 2)
     physicsWorld.addAction(this.vehicle)
 
+    this.addWheelMeshes(wheelMesh)
     this.createWheels(tuning)
+  }
+
+  addWheelMeshes(wheelMesh) {
+    this.wheelMeshes = []
+    for (let i = 0; i < 4; i++) {
+      const mesh = wheelMesh.clone()
+      if (i == 0 || i == 3) mesh.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
+      this.wheelMeshes.push(mesh)
+      this.mesh.add(mesh)
+    }
   }
 
   createWheels(tuning) {

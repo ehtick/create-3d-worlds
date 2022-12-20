@@ -32,10 +32,10 @@ createCrates({ z: -10 }).forEach(mesh => world.add(mesh, 10))
 
 /* VEHICLE */
 
-const { mesh: chassisModel } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl' })
-const { mesh: wheelModel } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl' })
+const { mesh: chassisMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl' })
+const { mesh: wheelMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl' })
 
-const ammoVehicle = new AmmoVehicle({ physicsWorld: world.physicsWorld, chassisModel, wheelModel, position: new THREE.Vector3(0, 5, 0) })
+const ammoVehicle = new AmmoVehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelMesh, position: new THREE.Vector3(0, 5, 0) })
 scene.add(ammoVehicle.mesh)
 
 /* LOOP */

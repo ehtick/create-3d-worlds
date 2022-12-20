@@ -33,10 +33,10 @@ world.add(ball, 3000)
 
 /* VEHICLE */
 
-const { mesh: chassisModel } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl' })
-const { mesh: wheelModel } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl' })
+const { mesh: chassisMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl' })
+const { mesh: wheelMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl' })
 
-const ammoVehicle = new AmmoVehicle({ physicsWorld: world.physicsWorld, chassisModel, wheelModel })
+const ammoVehicle = new AmmoVehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelMesh })
 scene.add(ammoVehicle.mesh)
 
 /* LOOP */
