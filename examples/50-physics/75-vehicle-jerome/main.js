@@ -43,7 +43,7 @@ scene.add(ammoVehicle.mesh)
 void function animate() {
   requestAnimationFrame(animate)
   ammoVehicle.updateKeyboard()
-  cameraControls.update(ammoVehicle)
+  cameraControls.update(ammoVehicle.chassisMesh)
   world.update()
   renderer.render(scene, camera)
 }()

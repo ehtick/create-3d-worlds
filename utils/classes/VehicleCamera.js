@@ -17,11 +17,9 @@ export default class VehicleCamera {
     this._currentLookat = null
   }
 
-  update(ammoVehicle) {
-    const object3dVehicle = ammoVehicle.chassisMesh
-
+  update(mesh) {
     const offsetCamera = this.offsetCamera.clone()
-    object3dVehicle.localToWorld(offsetCamera)
+    mesh.localToWorld(offsetCamera)
 
     if (this._currentOffset === null)
       this._currentOffset = offsetCamera.clone()
@@ -32,7 +30,7 @@ export default class VehicleCamera {
     this.camera.position.copy(this._currentOffset)
 
     const lookatCamera = this.lookatCamera.clone()
-    object3dVehicle.localToWorld(lookatCamera)
+    mesh.localToWorld(lookatCamera)
 
     if (this._currentLookat === null)
       this._currentLookat = lookatCamera.clone()

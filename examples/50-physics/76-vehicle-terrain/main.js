@@ -44,7 +44,7 @@ scene.add(ammoVehicle.mesh)
 void function animate() {
   requestAnimationFrame(animate)
   ammoVehicle.updateKeyboard()
-  cameraControls.update(ammoVehicle)
+  cameraControls.update(ammoVehicle.chassisMesh)
   world.update()
   const speed = ammoVehicle.vehicle.getCurrentSpeedKmHour()
   speedometer.innerHTML = speed.toFixed(1) + ' km/h'
