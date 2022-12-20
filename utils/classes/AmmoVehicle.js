@@ -18,13 +18,7 @@ const boxShape = ({ width = 1.8, height = .6, length = 4 } = {}) => {
 }
 
 export default class AmmoVehicle {
-  constructor({
-    physicsWorld,
-    chassisMesh,
-    wheelMesh,
-    position,
-    quaternion
-  }) {
+  constructor({ physicsWorld, chassisMesh, wheelMesh, position, quaternion }) {
     this.mesh = new THREE.Group
 
     if (position) chassisMesh.position.copy(position)
