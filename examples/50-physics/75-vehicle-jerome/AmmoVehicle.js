@@ -4,6 +4,20 @@ import keyboard from '/utils/classes/Keyboard.js'
 
 const defaultRotation = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
 
+// build wheels physics
+const FRONT_LEFT = 0
+const FRONT_RIGHT = 1
+const BACK_LEFT = 2
+const BACK_RIGHT = 3
+
+const steeringIncrement = .04
+const steeringClamp = .5
+const maxEngineForce = 2000
+const maxBreakingForce = 100
+const massVehicle = 800
+
+let vehicleSteering = 0
+
 export default class AmmoVehicle {
   constructor(physicsWorld, position, quaternion = defaultRotation) {
     this.mesh = new THREE.Group
@@ -11,7 +25,6 @@ export default class AmmoVehicle {
     const chassisWidth = 1.8
     const chassisHeight = .6
     const chassisLength = 4
-    const massVehicle = 800
 
     const wheelAxisPositionBack = -1.8
     const wheelHalfTrackBack = 1.15
@@ -30,20 +43,15 @@ export default class AmmoVehicle {
     const suspensionRestLength = 0.6
     const rollInfluence = 0.2
 
-    const steeringIncrement = .04
-    const steeringClamp = .5
-    const maxEngineForce = 2000
-    const maxBreakingForce = 100
-
     // TODO should that be outside, built before this constructor
-    const chassisMesh = new THREE.Group()
-    chassisMesh.name = 'chassis'
-    this.mesh.add(chassisMesh)
-    const wheelMeshes = []
+    this.chassisMesh = new THREE.Group()
+    this.chassisMesh.name = 'chassis'
+    this.mesh.add(this.chassisMesh)
+    this.wheelMeshes = []
     for (let i = 0; i < 4; i++) {
-      wheelMeshes[i] = new THREE.Group()
-      wheelMeshes[i].name = 'wheel_' + i
-      this.mesh.add(wheelMeshes[i])
+      this.wheelMeshes[i] = new THREE.Group()
+      this.wheelMeshes[i].name = 'wheel_' + i
+      this.mesh.add(this.wheelMeshes[i])
     }
 
     // build chassis
@@ -57,6 +65,7 @@ export default class AmmoVehicle {
     const localInertia = new Ammo.btVector3(0, 0, 0)
     shape.calculateLocalInertia(massVehicle, localInertia)
     const chassisBody = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(massVehicle, motionState, shape, localInertia))
+    this.chassisBody = chassisBody
 
     const DISABLE_DEACTIVATION = 4
     chassisBody.setActivationState(DISABLE_DEACTIVATION)
@@ -72,85 +81,10 @@ export default class AmmoVehicle {
 
     this.vehicle = vehicle
 
-    // build wheels physics
-    const FRONT_LEFT = 0
-    const FRONT_RIGHT = 1
-    const BACK_LEFT = 2
-    const BACK_RIGHT = 3
     createWheel(true, new Ammo.btVector3(wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisPositionFront), wheelRadiusFront)
     createWheel(true, new Ammo.btVector3(-wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisPositionFront), wheelRadiusFront)
     createWheel(false, new Ammo.btVector3(-wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack)
     createWheel(false, new Ammo.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack)
-
-    let vehicleSteering = 0
-
-    this.updateKeyboard = function() {
-      const speed = vehicle.getCurrentSpeedKmHour()
-      let breakingForce = 0
-      let engineForce = 0
-
-      if (keyboard.up)
-        if (speed < -1)
-          breakingForce = maxBreakingForce
-        else engineForce = maxEngineForce
-
-      if (keyboard.down)
-        if (speed > 1)
-          breakingForce = maxBreakingForce
-        else engineForce = -maxEngineForce / 2
-
-      if (keyboard.left) {
-        if (vehicleSteering < steeringClamp)
-          vehicleSteering += steeringIncrement
-      } else
-      if (keyboard.right) {
-        if (vehicleSteering > -steeringClamp)
-          vehicleSteering -= steeringIncrement
-      } else
-      if (vehicleSteering < -steeringIncrement)
-        vehicleSteering += steeringIncrement
-      else
-      if (vehicleSteering > steeringIncrement)
-        vehicleSteering -= steeringIncrement
-      else
-        vehicleSteering = 0
-
-      if (keyboard.space) {
-        const impulse = new Ammo.btVector3(0, massVehicle * .5, 0)
-        chassisBody.applyCentralImpulse(impulse)
-      }
-
-      vehicle.applyEngineForce(engineForce, BACK_LEFT)
-      vehicle.applyEngineForce(engineForce, BACK_RIGHT)
-
-      vehicle.setBrake(breakingForce / 2, FRONT_LEFT)
-      vehicle.setBrake(breakingForce / 2, FRONT_RIGHT)
-      vehicle.setBrake(breakingForce, BACK_LEFT)
-      vehicle.setBrake(breakingForce, BACK_RIGHT)
-
-      vehicle.setSteeringValue(vehicleSteering, FRONT_LEFT)
-      vehicle.setSteeringValue(vehicleSteering, FRONT_RIGHT)
-
-      updatePhysics()
-    }
-
-    function updatePhysics() {
-      const nWheels = vehicle.getNumWheels()
-      for (let i = 0; i < nWheels; i++) {
-        vehicle.updateWheelTransform(i, true)
-        const transform = vehicle.getWheelTransformWS(i)
-        const position = transform.getOrigin()
-        const quaternion = transform.getRotation()
-        wheelMeshes[i].position.set(position.x(), position.y(), position.z())
-        wheelMeshes[i].quaternion.set(quaternion.x(), quaternion.y(), quaternion.z(), quaternion.w())
-      }
-
-      const transform = vehicle.getChassisWorldTransform()
-      const position = transform.getOrigin()
-      const quaternion = transform.getRotation()
-      chassisMesh.position.set(position.x(), position.y(), position.z())
-      chassisMesh.quaternion.set(quaternion.x(), quaternion.y(), quaternion.z(), quaternion.w())
-    }
 
     function createWheel(isFront, position, radius) {
       const wheelDirectionCS0 = new Ammo.btVector3(0, -1, 0)
@@ -168,5 +102,76 @@ export default class AmmoVehicle {
       wheelInfo.set_m_frictionSlip(friction)
       wheelInfo.set_m_rollInfluence(rollInfluence)
     }
+  }
+
+  updatePhysics() {
+    const { vehicle, wheelMeshes } = this
+
+    const nWheels = vehicle.getNumWheels()
+    for (let i = 0; i < nWheels; i++) {
+      vehicle.updateWheelTransform(i, true)
+      const transform = vehicle.getWheelTransformWS(i)
+      const position = transform.getOrigin()
+      const quaternion = transform.getRotation()
+      wheelMeshes[i].position.set(position.x(), position.y(), position.z())
+      wheelMeshes[i].quaternion.set(quaternion.x(), quaternion.y(), quaternion.z(), quaternion.w())
+    }
+
+    const transform = vehicle.getChassisWorldTransform()
+    const position = transform.getOrigin()
+    const quaternion = transform.getRotation()
+    this.chassisMesh.position.set(position.x(), position.y(), position.z())
+    this.chassisMesh.quaternion.set(quaternion.x(), quaternion.y(), quaternion.z(), quaternion.w())
+  }
+
+  updateKeyboard() {
+    const { vehicle } = this
+    const speed = vehicle.getCurrentSpeedKmHour()
+    let breakingForce = 0
+    let engineForce = 0
+
+    if (keyboard.up)
+      if (speed < -1)
+        breakingForce = maxBreakingForce
+      else engineForce = maxEngineForce
+
+    if (keyboard.down)
+      if (speed > 1)
+        breakingForce = maxBreakingForce
+      else engineForce = -maxEngineForce / 2
+
+    if (keyboard.left) {
+      if (vehicleSteering < steeringClamp)
+        vehicleSteering += steeringIncrement
+    } else
+    if (keyboard.right) {
+      if (vehicleSteering > -steeringClamp)
+        vehicleSteering -= steeringIncrement
+    } else
+    if (vehicleSteering < -steeringIncrement)
+      vehicleSteering += steeringIncrement
+    else
+    if (vehicleSteering > steeringIncrement)
+      vehicleSteering -= steeringIncrement
+    else
+      vehicleSteering = 0
+
+    if (keyboard.space) {
+      const impulse = new Ammo.btVector3(0, massVehicle * .5, 0)
+      this.chassisBody.applyCentralImpulse(impulse)
+    }
+
+    vehicle.applyEngineForce(engineForce, BACK_LEFT)
+    vehicle.applyEngineForce(engineForce, BACK_RIGHT)
+
+    vehicle.setBrake(breakingForce / 2, FRONT_LEFT)
+    vehicle.setBrake(breakingForce / 2, FRONT_RIGHT)
+    vehicle.setBrake(breakingForce, BACK_LEFT)
+    vehicle.setBrake(breakingForce, BACK_RIGHT)
+
+    vehicle.setSteeringValue(vehicleSteering, FRONT_LEFT)
+    vehicle.setSteeringValue(vehicleSteering, FRONT_RIGHT)
+
+    this.updatePhysics()
   }
 }
