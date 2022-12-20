@@ -37,20 +37,15 @@ function createChassisBody(position, quaternion) {
 }
 
 export default class AmmoVehicle {
-  constructor(physicsWorld, position, quaternion = defaultRotation) {
+  constructor({
+    physicsWorld,
+    chassisModel,
+    wheelModel,
+    position = new THREE.Vector3(0, 0, 0),
+    quaternion = defaultRotation
+  }) {
     this.mesh = new THREE.Group
 
-    const wheelBackZ = -1.8
-    const wheelBackX = 1.15
-    const wheelBackY = .3
-    const wheelRadiusBack = .45
-
-    const wheelFrontZ = 1.55
-    const wheelFrontX = 1.15
-    const wheelFrontY = .3
-    const wheelRadiusFront = .45
-
-    // TODO should that be outside, built before this constructor
     this.chassisMesh = new THREE.Group()
     this.chassisMesh.name = 'chassis'
     this.mesh.add(this.chassisMesh)
@@ -65,18 +60,34 @@ export default class AmmoVehicle {
     this.chassisBody = createChassisBody(position, quaternion)
     physicsWorld.addRigidBody(this.chassisBody)
 
+    chassisModel.position.y = 0.25
+    this.mesh.getObjectByName('chassis').add(chassisModel)
+
+    for (let i = 0; i < 4; i++) {
+      const clone = wheelModel.clone()
+      if (i == 0 || i == 3) clone.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
+      this.mesh.getObjectByName('wheel_' + i).add(clone)
+    }
+
     const tuning = new Ammo.btVehicleTuning()
     const rayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
-    const vehicle = new Ammo.btRaycastVehicle(tuning, this.chassisBody, rayCaster)
-    vehicle.setCoordinateSystem(0, 1, 2)
-    physicsWorld.addAction(vehicle)
+    this.vehicle = new Ammo.btRaycastVehicle(tuning, this.chassisBody, rayCaster)
+    this.vehicle.setCoordinateSystem(0, 1, 2)
+    physicsWorld.addAction(this.vehicle)
 
-    this.vehicle = vehicle
+    this.createWheels(tuning)
+  }
 
-    this.createWheel(true, new Ammo.btVector3(wheelFrontX, wheelFrontY, wheelFrontZ), wheelRadiusFront, tuning)
-    this.createWheel(true, new Ammo.btVector3(-wheelFrontX, wheelFrontY, wheelFrontZ), wheelRadiusFront, tuning)
-    this.createWheel(false, new Ammo.btVector3(-wheelBackX, wheelBackY, wheelBackZ), wheelRadiusBack, tuning)
-    this.createWheel(false, new Ammo.btVector3(wheelBackX, wheelBackY, wheelBackZ), wheelRadiusBack, tuning)
+  createWheels(tuning) {
+    const wheelFront = { x: 1.15, y: .3, z: 1.55 }
+    const wheelBack = { x: 1.15, y: .3, z: -1.8 }
+    const wheelRadiusFront = .45
+    const wheelRadiusBack = .45
+
+    this.createWheel(true, new Ammo.btVector3(wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
+    this.createWheel(true, new Ammo.btVector3(-wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
+    this.createWheel(false, new Ammo.btVector3(-wheelBack.x, wheelBack.y, wheelBack.z), wheelRadiusBack, tuning)
+    this.createWheel(false, new Ammo.btVector3(wheelBack.x, wheelBack.y, wheelBack.z), wheelRadiusBack, tuning)
   }
 
   createWheel(isFront, position, radius, tuning) {

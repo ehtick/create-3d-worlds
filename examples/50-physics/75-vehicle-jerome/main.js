@@ -32,21 +32,11 @@ createCrates({ z: -10 }).forEach(mesh => world.add(mesh, 10))
 
 /* VEHICLE */
 
-const position = new THREE.Vector3(0, 5, 0)
-const ammoVehicle = new AmmoVehicle(world.physicsWorld, position)
+const { mesh: chassisModel } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl' })
+const { mesh: wheelModel } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl' })
+
+const ammoVehicle = new AmmoVehicle({ physicsWorld: world.physicsWorld, chassisModel, wheelModel, position: new THREE.Vector3(0, 5, 0) })
 scene.add(ammoVehicle.mesh)
-
-const { mesh: bodyMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 'racing/hummer.mtl' })
-const { mesh: tireMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl' })
-
-bodyMesh.position.y = 0.25
-ammoVehicle.mesh.getObjectByName('chassis').add(bodyMesh)
-
-for (let i = 0; i < 4; i++) {
-  const wheelmesh = tireMesh.clone()
-  if (i == 0 || i == 3) wheelmesh.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
-  ammoVehicle.mesh.getObjectByName('wheel_' + i).add(wheelmesh)
-}
 
 /* LOOP */
 
