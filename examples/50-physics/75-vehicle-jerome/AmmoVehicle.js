@@ -2,8 +2,6 @@ import * as THREE from 'three'
 import { Ammo, createRigidBody } from '/utils/physics.js'
 import keyboard from '/utils/classes/Keyboard.js'
 
-const defaultRotation = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
-
 const FRONT_LEFT = 0
 const FRONT_RIGHT = 1
 const BACK_LEFT = 2
@@ -21,8 +19,8 @@ export default class AmmoVehicle {
     physicsWorld,
     chassisMesh,
     wheelMesh,
-    position = new THREE.Vector3(0, 0, 0),
-    quaternion = defaultRotation
+    position,
+    quaternion
   }) {
     chassisMesh.position.y = .25
     this.mesh = new THREE.Group
