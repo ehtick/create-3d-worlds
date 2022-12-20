@@ -12,7 +12,10 @@ const steeringClamp = .5
 const maxEngineForce = 2000
 const maxBreakingForce = 100
 
-let vehicleSteering = 0
+const boxShape = ({ width = 1.8, height = .6, length = 4 } = {}) => {
+  const size = new Ammo.btVector3(width * .5, height * .5, length * .5)
+  return new Ammo.btBoxShape(size)
+}
 
 export default class AmmoVehicle {
   constructor({
@@ -22,18 +25,15 @@ export default class AmmoVehicle {
     position,
     quaternion
   }) {
-    chassisMesh.position.y = .25
     this.mesh = new THREE.Group
+
+    if (position) chassisMesh.position.copy(position)
+    if (quaternion) chassisMesh.quaternion.copy(quaternion)
+
     this.mesh.add(chassisMesh)
     this.chassisMesh = chassisMesh
 
-    if (position) this.chassisMesh.position.copy(position)
-    if (quaternion) this.chassisMesh.quaternion.copy(quaternion)
-
-    const width = 1.8, height = .6, length = 4
-    const size = new Ammo.btVector3(width * .5, height * .5, length * .5)
-    const shape = new Ammo.btBoxShape(size)
-    this.chassisBody = createRigidBody({ mesh: chassisMesh, mass: 800, shape })
+    this.chassisBody = createRigidBody({ mesh: chassisMesh, mass: 800, shape: boxShape() })
     physicsWorld.addRigidBody(this.chassisBody)
 
     const tuning = new Ammo.btVehicleTuning()
@@ -42,8 +42,10 @@ export default class AmmoVehicle {
     this.vehicle.setCoordinateSystem(0, 1, 2)
     physicsWorld.addAction(this.vehicle)
 
-    this.addWheelMeshes(wheelMesh)
     this.createWheels(tuning)
+    this.addWheelMeshes(wheelMesh)
+
+    this.vehicleSteering = 0
   }
 
   addWheelMeshes(wheelMesh) {
@@ -129,20 +131,20 @@ export default class AmmoVehicle {
       else engineForce = -maxEngineForce / 2
 
     if (keyboard.left) {
-      if (vehicleSteering < steeringClamp)
-        vehicleSteering += steeringIncrement
+      if (this.vehicleSteering < steeringClamp)
+        this.vehicleSteering += steeringIncrement
     } else
     if (keyboard.right) {
-      if (vehicleSteering > -steeringClamp)
-        vehicleSteering -= steeringIncrement
+      if (this.vehicleSteering > -steeringClamp)
+        this.vehicleSteering -= steeringIncrement
     } else
-    if (vehicleSteering < -steeringIncrement)
-      vehicleSteering += steeringIncrement
+    if (this.vehicleSteering < -steeringIncrement)
+      this.vehicleSteering += steeringIncrement
     else
-    if (vehicleSteering > steeringIncrement)
-      vehicleSteering -= steeringIncrement
+    if (this.vehicleSteering > steeringIncrement)
+      this.vehicleSteering -= steeringIncrement
     else
-      vehicleSteering = 0
+      this.vehicleSteering = 0
 
     vehicle.applyEngineForce(engineForce, BACK_LEFT)
     vehicle.applyEngineForce(engineForce, BACK_RIGHT)
@@ -152,8 +154,8 @@ export default class AmmoVehicle {
     vehicle.setBrake(breakingForce, BACK_LEFT)
     vehicle.setBrake(breakingForce, BACK_RIGHT)
 
-    vehicle.setSteeringValue(vehicleSteering, FRONT_LEFT)
-    vehicle.setSteeringValue(vehicleSteering, FRONT_RIGHT)
+    vehicle.setSteeringValue(this.vehicleSteering, FRONT_LEFT)
+    vehicle.setSteeringValue(this.vehicleSteering, FRONT_RIGHT)
 
     this.updatePhysics()
   }
