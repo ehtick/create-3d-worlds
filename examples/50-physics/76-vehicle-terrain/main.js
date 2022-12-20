@@ -6,8 +6,7 @@ import { createTerrain } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import { createSphere, createBox } from '/utils/geometry.js'
-
-import AmmoVehicle from '../75-vehicle-jerome/AmmoVehicle.js'
+import AmmoVehicle from '/utils/classes/AmmoVehicle.js'
 
 camera.position.z = 10
 scene.add(createSun())
