@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { Ammo } from '/utils/physics.js'
+import { Ammo, createRigidBody } from '/utils/physics.js'
 import keyboard from '/utils/classes/Keyboard.js'
 
 const defaultRotation = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
@@ -13,26 +13,8 @@ const steeringIncrement = .04
 const steeringClamp = .5
 const maxEngineForce = 2000
 const maxBreakingForce = 100
-const mass = 800
 
 let vehicleSteering = 0
-
-function createChassisBody({ position, quaternion, width = 1.8, height = .6, length = 4 } = {}) {
-  const size = new Ammo.btVector3(width * .5, height * .5, length * .5)
-  const shape = new Ammo.btBoxShape(size)
-
-  const transform = new Ammo.btTransform()
-  transform.setIdentity()
-  transform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z))
-  transform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w))
-  const motionState = new Ammo.btDefaultMotionState(transform)
-  const inertia = new Ammo.btVector3(0, 0, 0)
-  shape.calculateLocalInertia(mass, inertia)
-  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia))
-
-  body.setActivationState(4) // DISABLE_DEACTIVATION
-  return body
-}
 
 export default class AmmoVehicle {
   constructor({
@@ -47,7 +29,13 @@ export default class AmmoVehicle {
     this.mesh.add(chassisMesh)
     this.chassisMesh = chassisMesh
 
-    this.chassisBody = createChassisBody({ position, quaternion })
+    if (position) this.chassisMesh.position.copy(position)
+    if (quaternion) this.chassisMesh.quaternion.copy(quaternion)
+
+    const width = 1.8, height = .6, length = 4
+    const size = new Ammo.btVector3(width * .5, height * .5, length * .5)
+    const shape = new Ammo.btBoxShape(size)
+    this.chassisBody = createRigidBody({ mesh: chassisMesh, mass: 800, shape })
     physicsWorld.addRigidBody(this.chassisBody)
 
     const tuning = new Ammo.btVehicleTuning()
