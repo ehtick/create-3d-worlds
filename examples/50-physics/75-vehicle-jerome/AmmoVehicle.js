@@ -17,12 +17,10 @@ const massVehicle = 800
 
 let vehicleSteering = 0
 
-function createChassisBody(position, quaternion) {
-  const chassisWidth = 1.8
-  const chassisHeight = .6
-  const chassisLength = 4
-  const size = new Ammo.btVector3(chassisWidth * .5, chassisHeight * .5, chassisLength * .5)
+function createChassisBody({ position, quaternion, width = 1.8, height = .6, length = 4 } = {}) {
+  const size = new Ammo.btVector3(width * .5, height * .5, length * .5)
   const shape = new Ammo.btBoxShape(size)
+
   const transform = new Ammo.btTransform()
   transform.setIdentity()
   transform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z))
@@ -30,10 +28,10 @@ function createChassisBody(position, quaternion) {
   const motionState = new Ammo.btDefaultMotionState(transform)
   const localInertia = new Ammo.btVector3(0, 0, 0)
   shape.calculateLocalInertia(massVehicle, localInertia)
-  const chassisBody = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(massVehicle, motionState, shape, localInertia))
+  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(massVehicle, motionState, shape, localInertia))
 
-  chassisBody.setActivationState(4) // DISABLE_DEACTIVATION
-  return chassisBody
+  body.setActivationState(4) // DISABLE_DEACTIVATION
+  return body
 }
 
 export default class AmmoVehicle {
@@ -46,10 +44,10 @@ export default class AmmoVehicle {
   }) {
     chassisModel.position.y = .25
     this.mesh = new THREE.Group
+    this.mesh.add(chassisModel)
     this.chassisMesh = chassisModel
-    this.mesh.add(this.chassisMesh)
 
-    this.chassisBody = createChassisBody(position, quaternion)
+    this.chassisBody = createChassisBody({ position, quaternion })
     physicsWorld.addRigidBody(this.chassisBody)
 
     this.wheelMeshes = []
