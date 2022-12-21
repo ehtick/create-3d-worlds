@@ -7,10 +7,9 @@ import keyboard from '/utils/classes/Keyboard.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import { createGround } from '/utils/ground.js'
 import { createSphere, createBox } from '/utils/geometry.js'
+import { normalizeMouse } from '/utils/helpers.js'
 
 const world = new PhysicsWorld()
-
-const mouseCoords = new THREE.Vector2(), raycaster = new THREE.Raycaster()
 
 camera.position.set(0, 30, 70)
 scene.add(createSun({ transparent: true }))
@@ -72,32 +71,20 @@ void function renderFrame() {
 
 /* EVENTS */
 
-function onMouseDown(event) {
-  mouseCoords.set(
-    (event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1
-  )
+const raycaster = new THREE.Raycaster()
 
-  raycaster.setFromCamera(mouseCoords, camera)
+window.addEventListener('mousedown', e => {
+  const mouse = normalizeMouse(e)
+  raycaster.setFromCamera(mouse, camera)
 
-  const tmpPos = new THREE.Vector3()
-  tmpPos.copy(raycaster.ray.direction)
-  tmpPos.add(raycaster.ray.origin)
+  const mesh = createSphere()
+  mesh.position.copy(raycaster.ray.origin)
 
-  const pos = { x: tmpPos.x, y: tmpPos.y, z: tmpPos.z }
-  const radius = 1
-  const mass = 1
-
-  const mesh = new THREE.Mesh(new THREE.SphereGeometry(radius), new THREE.MeshPhongMaterial({ color: 0x6b246e }))
-  mesh.position.set(pos.x, pos.y, pos.z)
-  mesh.castShadow = mesh.receiveShadow = true
-
-  const body = createRigidBody({ mesh, mass })
-  mesh.userData.body = body
+  mesh.userData.body = createRigidBody({ mesh, mass: 1 })
   world.add(mesh)
 
-  tmpPos.copy(raycaster.ray.direction)
-  tmpPos.multiplyScalar(100)
-  body.setLinearVelocity(new Ammo.btVector3(tmpPos.x, tmpPos.y, tmpPos.z))
-}
-
-window.addEventListener('mousedown', onMouseDown, false)
+  const target = new THREE.Vector3()
+  target.copy(raycaster.ray.direction)
+  target.multiplyScalar(100)
+  mesh.userData.body.setLinearVelocity(new Ammo.btVector3(target.x, target.y, target.z))
+})
