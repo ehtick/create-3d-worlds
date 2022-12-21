@@ -91,7 +91,7 @@ export const createShapeFromMesh = mesh => {
 
 /* BODIES */
 
-export function createRigidBody({ mesh, mass = guessMassFromMesh(mesh), shape = createShapeFromMesh(mesh), friction }) {
+export function createRigidBody({ mesh, mass = guessMassFromMesh(mesh), shape = createShapeFromMesh(mesh), friction, kinematic = false }) {
   const { position, quaternion } = mesh
 
   const transform = new Ammo.btTransform()
@@ -105,7 +105,8 @@ export function createRigidBody({ mesh, mass = guessMassFromMesh(mesh), shape = 
   const body = new Ammo.btRigidBody(rbInfo)
 
   if (friction) body.setFriction(friction)
-  if (mass > 0) body.setActivationState(4) // Disable deactivation
+  if (mass > 0) body.setActivationState(4) // disable deactivation
+  if (kinematic) body.setCollisionFlags(2) // kinematic object
 
   return body
 }
@@ -372,7 +373,6 @@ export function findGround(body, physicsWorld) {
 export function updateMesh(mesh) {
   const { body } = mesh.userData
   const motionState = body.getMotionState()
-  console.log(body)
   if (!motionState || body.isStaticOrKinematicObject()) return
   const transform = new Ammo.btTransform()
   motionState.getWorldTransform(transform)
