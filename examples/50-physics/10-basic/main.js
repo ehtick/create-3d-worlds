@@ -1,7 +1,9 @@
-
 import * as THREE from 'three'
 import { Ammo } from '/utils/physics.js'
+
 import { scene, camera, renderer, clock } from '/utils/scene.js'
+import { createSun } from '/utils/light.js'
+import keyboard from '/utils/classes/Keyboard.js'
 
 let physicsWorld, rigidBodies = [], tmpTrans = null
 let ballObject = null, moveDirection = { left: 0, right: 0, forward: 0, back: 0 }
@@ -19,7 +21,10 @@ ammoTmpQuat = new Ammo.btQuaternion()
 
 setupPhysicsWorld()
 
-setupGraphics()
+camera.position.set(0, 30, 70)
+camera.lookAt(new THREE.Vector3(0, 0, 0))
+scene.add(createSun({ transparent: true }))
+
 createBlock()
 createBall()
 createKinematicBox()
@@ -39,41 +44,7 @@ function setupPhysicsWorld() {
 
 }
 
-function setupGraphics() {
-  camera.position.set(0, 30, 70)
-  camera.lookAt(new THREE.Vector3(0, 0, 0))
-
-  // Add hemisphere light
-  const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.1)
-  hemiLight.color.setHSL(0.6, 0.6, 0.6)
-  hemiLight.groundColor.setHSL(0.1, 1, 0.4)
-  hemiLight.position.set(0, 50, 0)
-  scene.add(hemiLight)
-
-  // Add directional light
-  const dirLight = new THREE.DirectionalLight(0xffffff, 1)
-  dirLight.color.setHSL(0.1, 1, 0.95)
-  dirLight.position.set(-1, 1.75, 1)
-  dirLight.position.multiplyScalar(100)
-  scene.add(dirLight)
-
-  dirLight.castShadow = true
-
-  dirLight.shadow.mapSize.width = 2048
-  dirLight.shadow.mapSize.height = 2048
-
-  const d = 50
-
-  dirLight.shadow.camera.left = -d
-  dirLight.shadow.camera.right = d
-  dirLight.shadow.camera.top = d
-  dirLight.shadow.camera.bottom = -d
-
-  dirLight.shadow.camera.far = 13500
-}
-
 function renderFrame() {
-
   const deltaTime = clock.getDelta()
 
   moveBall()
@@ -362,11 +333,10 @@ function createKinematicBox() {
 }
 
 function moveBall() {
-
   const scalingFactor = 20
 
-  const moveX = moveDirection.right - moveDirection.left
-  const moveZ = moveDirection.back - moveDirection.forward
+  const moveX = +Boolean(keyboard.pressed.KeyD) - +Boolean(keyboard.pressed.KeyA)
+  const moveZ = +Boolean(keyboard.pressed.KeyS) - +Boolean(keyboard.pressed.KeyW)
   const moveY = 0
 
   if (moveX == 0 && moveY == 0 && moveZ == 0) return
@@ -376,15 +346,13 @@ function moveBall() {
 
   const { physicsBody } = ballObject.userData
   physicsBody.setLinearVelocity(resultantImpulse)
-
 }
 
 function moveKinematic() {
-
   const scalingFactor = 0.3
 
-  const moveX = kMoveDirection.right - kMoveDirection.left
-  const moveZ = kMoveDirection.back - kMoveDirection.forward
+  const moveX = +Boolean(keyboard.pressed.ArrowRight) - +Boolean(keyboard.pressed.ArrowLeft)
+  const moveZ = +Boolean(keyboard.pressed.ArrowDown) - +Boolean(keyboard.pressed.ArrowUp)
   const moveY = 0
 
   const translateFactor = tmpPos.set(moveX, moveY, moveZ)
