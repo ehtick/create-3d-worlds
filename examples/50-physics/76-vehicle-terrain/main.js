@@ -1,4 +1,4 @@
-import { scene, camera, renderer } from '/utils/scene.js'
+import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { getHeightData } from '/utils/terrain/heightmap.js'
@@ -43,7 +43,8 @@ void function animate() {
   requestAnimationFrame(animate)
   ammoVehicle.updateKeyboard()
   cameraControls.update(ammoVehicle.chassisMesh)
-  world.update()
+  const dt = clock.getDelta()
+  world.update(dt)
   const speed = ammoVehicle.vehicle.getCurrentSpeedKmHour()
   speedometer.innerHTML = speed.toFixed(1) + ' km/h'
   renderer.render(scene, camera)

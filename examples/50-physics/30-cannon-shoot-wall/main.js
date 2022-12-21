@@ -1,9 +1,12 @@
 import * as THREE from 'three'
-import { Ammo, createBox, createBall, createWall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
+import { Ammo, createGround, createBall, createWall } from '/utils/physics.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
+import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
+
+const world = new PhysicsWorld()
 
 const minMagnitude = 15
 const maxMagnitude = 30
@@ -13,21 +16,15 @@ magnitude.value = minMagnitude
 camera.position.set(-2, 1.25, 0)
 camera.lookAt(10, 1, 0)
 
-const rigidBodies = []
-
 const sun = createSun({ position: [-5, 10, 5] })
 scene.add(sun)
 
-const physicsWorld = createPhysicsWorld()
-
-const ground = createBox({ width: 40, height: 1, depth: 40, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0x509f53 })
-addRigidBody(ground)
+const ground = createGround({ size: 40, color: 0x509f53 })
+world.add(ground)
 
 const wall = createWall({ brickMass: 3, friction: 5 })
 wall.forEach(mesh => {
-  scene.add(mesh)
-  rigidBodies.push(mesh)
-  physicsWorld.addRigidBody(mesh.userData.body)
+  world.add(mesh, 3)
 })
 
 const { mesh: cannon } = await loadModel({ file: 'weapon/cannon/mortar/mortar.obj', mtl: 'weapon/cannon/mortar/mortar.mtl', size: 1, angle: Math.PI, shouldAdjustHeight: true })
@@ -37,12 +34,6 @@ scene.add(cannon)
 cannon.add(camera)
 
 /* FUNCTIONS */
-
-function addRigidBody(mesh) {
-  scene.add(mesh)
-  rigidBodies.push(mesh)
-  physicsWorld.addRigidBody(mesh.userData.body)
-}
 
 function shoot() {
   const pos = cannon.position.clone()
@@ -56,7 +47,7 @@ function shoot() {
   const b = new THREE.Vector3(ballDistance * Math.sin(angle), 0, ballDistance * Math.cos(angle))
   pos.add(b)
   const ball = createBall({ radius: .22, mass: 4, pos })
-  addRigidBody(ball)
+  world.add(ball, 4)
   ball.userData.body.setLinearVelocity(new Ammo.btVector3(x, magnitude.value * .2, z))
   magnitude.value = minMagnitude
   cannon.translateX(-.1)
@@ -77,8 +68,7 @@ void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
   handleInput(cannon, dt)
-  physicsWorld.stepSimulation(dt, 10)
-  rigidBodies.forEach(updateMesh)
+  world.update(dt)
   renderer.render(scene, camera)
 }()
 

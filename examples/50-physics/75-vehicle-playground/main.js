@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { scene, camera, renderer } from '/utils/scene.js'
+import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { createBox, createSphere, createCrates } from '/utils/geometry.js'
@@ -44,6 +44,7 @@ void function animate() {
   requestAnimationFrame(animate)
   ammoVehicle.updateKeyboard()
   cameraControls.update(ammoVehicle.chassisMesh)
-  world.update()
+  const dt = clock.getDelta()
+  world.update(dt)
   renderer.render(scene, camera)
 }()

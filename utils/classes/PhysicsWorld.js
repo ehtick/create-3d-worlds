@@ -1,4 +1,4 @@
-import { scene as defaultScene, clock } from '/utils/scene.js'
+import { scene as defaultScene } from '/utils/scene.js'
 import { createPhysicsWorld, createRigidBody, updateMesh } from '/utils/physics.js'
 
 export default class PhysicsWorld {
@@ -23,8 +23,8 @@ export default class PhysicsWorld {
     if (this.scene) this.scene.remove(mesh)
   }
 
-  update() {
-    this.physicsWorld.stepSimulation(clock.getDelta(), this.maxSteps)
+  update(dt) {
+    this.physicsWorld.stepSimulation(dt, this.maxSteps)
     this.rigidBodies.forEach(updateMesh)
   }
 }
