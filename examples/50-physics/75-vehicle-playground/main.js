@@ -6,7 +6,7 @@ import { createBox, createSphere, createCrates } from '/utils/geometry.js'
 import { createTerrain } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
-import AmmoVehicle from '/utils/classes/AmmoVehicle.js'
+import Vehicle from '/utils/classes/Vehicle.js'
 
 camera.position.z = 10
 scene.add(createSun())
@@ -35,7 +35,7 @@ const { mesh: chassisMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 
 const { mesh: wheelMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl' })
 
 const quaternion = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
-const ammoVehicle = new AmmoVehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelMesh, position: new THREE.Vector3(0, 5, 0), quaternion })
+const ammoVehicle = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelMesh, position: new THREE.Vector3(0, 5, 0), quaternion })
 scene.add(ammoVehicle.mesh)
 
 /* LOOP */
