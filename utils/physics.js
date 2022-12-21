@@ -338,7 +338,7 @@ export function findGround(body, physicsWorld) {
 export function updateMesh(mesh) {
   const { body } = mesh.userData
   const motionState = body.getMotionState()
-  if (!motionState || !body.getInvMass()) return
+  if (!motionState || body.isStaticObject()) return
   const transform = new Ammo.btTransform()
   motionState.getWorldTransform(transform)
   const p = transform.getOrigin()
