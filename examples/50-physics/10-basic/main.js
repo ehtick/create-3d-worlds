@@ -107,15 +107,13 @@ function moveBall() {
 
   const moveX = +Boolean(keyboard.pressed.KeyD) - +Boolean(keyboard.pressed.KeyA)
   const moveZ = +Boolean(keyboard.pressed.KeyS) - +Boolean(keyboard.pressed.KeyW)
-  const moveY = 0
 
-  if (moveX == 0 && moveY == 0 && moveZ == 0) return
+  if (moveX == 0 && moveZ == 0) return
 
-  const resultantImpulse = new Ammo.btVector3(moveX, moveY, moveZ)
+  const resultantImpulse = new Ammo.btVector3(moveX, 0, moveZ)
   resultantImpulse.op_mul(scalingFactor)
 
-  const { body } = bigBall.userData
-  body.setLinearVelocity(resultantImpulse)
+  bigBall.userData.body.setLinearVelocity(resultantImpulse)
 }
 
 function moveKinematicBox() {
@@ -123,20 +121,12 @@ function moveKinematicBox() {
 
   const moveX = +Boolean(keyboard.pressed.ArrowRight) - +Boolean(keyboard.pressed.ArrowLeft)
   const moveZ = +Boolean(keyboard.pressed.ArrowDown) - +Boolean(keyboard.pressed.ArrowUp)
-  const moveY = 0
 
-  const translateFactor = tmpPos.set(moveX, moveY, moveZ)
+  tmpPos.set(moveX, 0, moveZ)
+  tmpPos.multiplyScalar(scalingFactor)
 
-  translateFactor.multiplyScalar(scalingFactor)
-
-  bigBox.translateX(translateFactor.x)
-  bigBox.translateY(translateFactor.y)
-  bigBox.translateZ(translateFactor.z)
-
-  bigBox.getWorldPosition(tmpPos)
-  bigBox.getWorldQuaternion(tmpQuat)
-
-  updateMesh(bigBox)
+  bigBox.translateX(tmpPos.x)
+  bigBox.translateZ(tmpPos.z)
 }
 
 /* LOOP */
