@@ -6,8 +6,8 @@ import { createSun } from '/utils/light.js'
 import keyboard from '/utils/classes/Keyboard.js'
 
 let physicsWorld, rigidBodies = [], tmpTrans = null
-let ballObject = null, moveDirection = { left: 0, right: 0, forward: 0, back: 0 }
-let kObject = null, kMoveDirection = { left: 0, right: 0, forward: 0, back: 0 }, tmpPos = new THREE.Vector3(), tmpQuat = new THREE.Quaternion()
+let ballObject = null
+let kObject = null, tmpPos = new THREE.Vector3(), tmpQuat = new THREE.Quaternion()
 let ammoTmpPos = null, ammoTmpQuat = null
 const mouseCoords = new THREE.Vector2(), raycaster = new THREE.Raycaster()
 
@@ -22,7 +22,6 @@ ammoTmpQuat = new Ammo.btQuaternion()
 setupPhysicsWorld()
 
 camera.position.set(0, 30, 70)
-camera.lookAt(new THREE.Vector3(0, 0, 0))
 scene.add(createSun({ transparent: true }))
 
 createBlock()
@@ -33,7 +32,6 @@ setupEventHandlers()
 renderFrame()
 
 function setupPhysicsWorld() {
-
   const collisionConfiguration = new Ammo.btDefaultCollisionConfiguration(),
     dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration),
     overlappingPairCache = new Ammo.btDbvtBroadphase(),
@@ -41,109 +39,10 @@ function setupPhysicsWorld() {
 
   physicsWorld = new Ammo.btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration)
   physicsWorld.setGravity(new Ammo.btVector3(0, -10, 0))
-
-}
-
-function renderFrame() {
-  const deltaTime = clock.getDelta()
-
-  moveBall()
-  moveKinematic()
-
-  updatePhysics(deltaTime)
-
-  renderer.render(scene, camera)
-
-  requestAnimationFrame(renderFrame)
-
 }
 
 function setupEventHandlers() {
-
-  window.addEventListener('keydown', handleKeyDown, false)
-  window.addEventListener('keyup', handleKeyUp, false)
   window.addEventListener('mousedown', onMouseDown, false)
-
-}
-
-function handleKeyDown(event) {
-
-  const { keyCode } = event
-
-  switch (keyCode) {
-
-    case 87: // W: FORWARD
-      moveDirection.forward = 1
-      break
-
-    case 83: // S: BACK
-      moveDirection.back = 1
-      break
-
-    case 65: // A: LEFT
-      moveDirection.left = 1
-      break
-
-    case 68: // D: RIGHT
-      moveDirection.right = 1
-      break
-
-    case 38: // ↑: FORWARD
-      kMoveDirection.forward = 1
-      break
-
-    case 40: // ↓: BACK
-      kMoveDirection.back = 1
-      break
-
-    case 37: // ←: LEFT
-      kMoveDirection.left = 1
-      break
-
-    case 39: // →: RIGHT
-      kMoveDirection.right = 1
-      break
-
-  }
-}
-
-function handleKeyUp(event) {
-  const { keyCode } = event
-
-  switch (keyCode) {
-    case 87: // FORWARD
-      moveDirection.forward = 0
-      break
-
-    case 83: // BACK
-      moveDirection.back = 0
-      break
-
-    case 65: // LEFT
-      moveDirection.left = 0
-      break
-
-    case 68: // RIGHT
-      moveDirection.right = 0
-      break
-
-    case 38: // ↑: FORWARD
-      kMoveDirection.forward = 0
-      break
-
-    case 40: // ↓: BACK
-      kMoveDirection.back = 0
-      break
-
-    case 37: // ←: LEFT
-      kMoveDirection.left = 0
-      break
-
-    case 39: // →: RIGHT
-      kMoveDirection.right = 0
-      break
-  }
-
 }
 
 function onMouseDown(event) {
@@ -383,22 +282,31 @@ function moveKinematic() {
 }
 
 function updatePhysics(deltaTime) {
-  // Step world
   physicsWorld.stepSimulation(deltaTime, 10)
 
-  // Update rigid bodies
   for (let i = 0; i < rigidBodies.length; i++) {
     const objThree = rigidBodies[i]
     const objAmmo = objThree.userData.physicsBody
     const ms = objAmmo.getMotionState()
     if (ms) {
-
       ms.getWorldTransform(tmpTrans)
       const p = tmpTrans.getOrigin()
       const q = tmpTrans.getRotation()
       objThree.position.set(p.x(), p.y(), p.z())
       objThree.quaternion.set(q.x(), q.y(), q.z(), q.w())
-
     }
   }
+}
+
+function renderFrame() {
+  const deltaTime = clock.getDelta()
+
+  moveBall()
+  moveKinematic()
+
+  updatePhysics(deltaTime)
+
+  renderer.render(scene, camera)
+
+  requestAnimationFrame(renderFrame)
 }
