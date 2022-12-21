@@ -51,7 +51,6 @@ const guessMassFromMesh = obj => {
     const { x, y, z } = getSize(mesh)
     mass = x * s.x * y * s.y * z * s.z
   }
-  console.log(mass)
   return mass
 }
 
@@ -373,7 +372,8 @@ export function findGround(body, physicsWorld) {
 export function updateMesh(mesh) {
   const { body } = mesh.userData
   const motionState = body.getMotionState()
-  if (!motionState || body.isStaticObject()) return
+  console.log(body)
+  if (!motionState || body.isStaticOrKinematicObject()) return
   const transform = new Ammo.btTransform()
   motionState.getWorldTransform(transform)
   const p = transform.getOrigin()
