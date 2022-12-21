@@ -21,7 +21,42 @@ export function createPhysicsWorld({ gravity = 9.82, softBody = false } = {}) {
   return physicsWorld
 }
 
-export const createShapeOnly = mesh => {
+/* SHAPE */
+
+const getMesh = obj => {
+  if (obj.isMesh) return obj
+  let mesh
+  obj.traverse(child => {
+    if (child.isMesh) mesh = child
+    return
+  })
+  return mesh
+}
+
+const guessMassFromMesh = obj => {
+  const mesh = getMesh(obj)
+  const { geometry, scale: s } = mesh
+  const p = geometry.parameters
+  let mass
+  if (geometry.type === 'BoxGeometry')
+    mass = p.width * s.x * p.height * s.y * p.depth * s.z
+  else if (geometry.type === 'SphereGeometry')
+    mass = 4 / 3 * Math.PI * Math.pow(p.radius * s.x, 3)
+  else if (geometry.type === 'CylinderGeometry')
+  // from http://jwilson.coe.uga.edu/emt725/Frustum/Frustum.cone.html
+    mass = Math.PI * p.height / 3 * (p.radiusBottom * p.radiusBottom * s.x * s.x
+                  + p.radiusBottom * p.radiusTop * s.y * s.y
+                  + p.radiusTop * p.radiusTop * s.x * s.x)
+  else {
+    const { x, y, z } = getSize(mesh)
+    mass = x * s.x * y * s.y * z * s.z
+  }
+  console.log(mass)
+  return mass
+}
+
+export const createShape = obj => {
+  const mesh = getMesh(obj)
   const { scale } = mesh
   const { parameters, type } = mesh.geometry
   const btVector3 = new Ammo.btVector3()
@@ -50,14 +85,14 @@ export const createShapeOnly = mesh => {
 }
 
 export const createShapeFromMesh = mesh => {
-  const shape = createShapeOnly(mesh)
+  const shape = createShape(mesh)
   shape.setMargin(.05)
   return shape
 }
 
 /* BODIES */
 
-export function createRigidBody({ mesh, mass, shape = createShapeFromMesh(mesh), friction }) {
+export function createRigidBody({ mesh, mass = guessMassFromMesh(mesh), shape = createShapeFromMesh(mesh), friction }) {
   const { position, quaternion } = mesh
 
   const transform = new Ammo.btTransform()

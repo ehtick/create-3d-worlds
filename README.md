@@ -145,6 +145,10 @@ Some methods:
 ```js
 body.setFriction(.9)
 body.setRestitution(.95)
+body.setAngularVelocity( btVector3 )
+body.setLinearVelocity( btVector3 )
+body.applyForce()
+body.applyImpulse()
 ```
 
 Jump:
