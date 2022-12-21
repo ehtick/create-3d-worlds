@@ -12,7 +12,6 @@ let ammoTmpPos = null, ammoTmpQuat = null
 const mouseCoords = new THREE.Vector2(), raycaster = new THREE.Raycaster()
 
 const STATE = { DISABLE_DEACTIVATION: 4 }
-
 const FLAGS = { CF_KINEMATIC_OBJECT: 2 }
 
 tmpTrans = new Ammo.btTransform()
@@ -143,7 +142,6 @@ function createBlock() {
 }
 
 function createBall() {
-
   const pos = { x: 0, y: 4, z: 0 }
   const radius = 2
   const quat = { x: 0, y: 0, z: 0, w: 1 }
@@ -187,13 +185,11 @@ function createBall() {
 }
 
 function createKinematicBox() {
-
   const pos = { x: 40, y: 6, z: 5 }
   const scale = { x: 10, y: 10, z: 10 }
   const quat = { x: 0, y: 0, z: 0, w: 1 }
   const mass = 1
 
-  // threeJS Section
   kObject = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshPhongMaterial({ color: 0x30ab78 }))
 
   kObject.position.set(pos.x, pos.y, pos.z)
@@ -204,7 +200,6 @@ function createKinematicBox() {
 
   scene.add(kObject)
 
-  // Ammojs Section
   const transform = new Ammo.btTransform()
   transform.setIdentity()
   transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z))
@@ -228,7 +223,6 @@ function createKinematicBox() {
 
   physicsWorld.addRigidBody(body)
   kObject.userData.physicsBody = body
-
 }
 
 function moveBall() {
