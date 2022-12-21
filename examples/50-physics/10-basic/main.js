@@ -4,6 +4,9 @@ import { Ammo } from '/utils/physics.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import keyboard from '/utils/classes/Keyboard.js'
+import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
+
+const world = new PhysicsWorld()
 
 let physicsWorld, rigidBodies = [], tmpTrans = null
 let ballObject = null
@@ -45,15 +48,12 @@ function setupEventHandlers() {
 }
 
 function onMouseDown(event) {
-
   mouseCoords.set(
     (event.clientX / window.innerWidth) * 2 - 1,
     - (event.clientY / window.innerHeight) * 2 + 1
   )
 
   raycaster.setFromCamera(mouseCoords, camera)
-
-  // Creates a ball and throws it
 
   tmpPos.copy(raycaster.ray.direction)
   tmpPos.add(raycaster.ray.origin)
@@ -63,17 +63,12 @@ function onMouseDown(event) {
   const quat = { x: 0, y: 0, z: 0, w: 1 }
   const mass = 1
 
-  // threeJS Section
   const ball = new THREE.Mesh(new THREE.SphereGeometry(radius), new THREE.MeshPhongMaterial({ color: 0x6b246e }))
-
   ball.position.set(pos.x, pos.y, pos.z)
-
-  ball.castShadow = true
-  ball.receiveShadow = true
+  ball.castShadow = ball.receiveShadow = true
 
   scene.add(ball)
 
-  // Ammojs Section
   const transform = new Ammo.btTransform()
   transform.setIdentity()
   transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z))
@@ -98,28 +93,21 @@ function onMouseDown(event) {
 
   ball.userData.physicsBody = body
   rigidBodies.push(ball)
-
 }
 
 function createBlock() {
-
   const pos = { x: 0, y: 0, z: 0 }
   const scale = { x: 100, y: 2, z: 100 }
   const quat = { x: 0, y: 0, z: 0, w: 1 }
   const mass = 0
 
-  // threeJS Section
   const blockPlane = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshPhongMaterial({ color: 0xa0afa4 }))
-
   blockPlane.position.set(pos.x, pos.y, pos.z)
   blockPlane.scale.set(scale.x, scale.y, scale.z)
-
-  blockPlane.castShadow = true
-  blockPlane.receiveShadow = true
+  blockPlane.castShadow = blockPlane.receiveShadow = true
 
   scene.add(blockPlane)
 
-  // Ammojs Section
   const transform = new Ammo.btTransform()
   transform.setIdentity()
   transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z))
@@ -147,7 +135,6 @@ function createBall() {
   const quat = { x: 0, y: 0, z: 0, w: 1 }
   const mass = 1
 
-  // threeJS Section
   const ball = ballObject = new THREE.Mesh(new THREE.SphereGeometry(radius), new THREE.MeshPhongMaterial({ color: 0xff0505 }))
 
   ball.position.set(pos.x, pos.y, pos.z)
@@ -157,7 +144,6 @@ function createBall() {
 
   scene.add(ball)
 
-  // Ammojs Section
   const transform = new Ammo.btTransform()
   transform.setIdentity()
   transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z))
