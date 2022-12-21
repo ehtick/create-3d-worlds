@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-import { Ammo, createRigidBody, updateMesh } from '/utils/physics.js'
+import { Ammo, createRigidBody } from '/utils/physics.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import keyboard from '/utils/classes/Keyboard.js'
@@ -8,98 +8,58 @@ import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 
 const world = new PhysicsWorld()
 
-let bigBall = null
-let bigBox = null, tmpPos = new THREE.Vector3(), tmpQuat = new THREE.Quaternion()
+const tmpPos = new THREE.Vector3()
 const mouseCoords = new THREE.Vector2(), raycaster = new THREE.Raycaster()
 
-const FLAGS = { CF_KINEMATIC_OBJECT: 2 }
+const CF_KINEMATIC_OBJECT = 2
 
 camera.position.set(0, 30, 70)
 scene.add(createSun({ transparent: true }))
 
-createBlock()
-createBall()
-createKinematicBox()
+createGround()
 
-renderFrame()
+const bigBox = createKinematicBox()
+world.add(bigBox)
 
-function onMouseDown(event) {
-  mouseCoords.set(
-    (event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1
-  )
+const bigBall = createBall()
+world.add(bigBall)
 
-  raycaster.setFromCamera(mouseCoords, camera)
+/* FUNCTIONS */
 
-  tmpPos.copy(raycaster.ray.direction)
-  tmpPos.add(raycaster.ray.origin)
-
-  const pos = { x: tmpPos.x, y: tmpPos.y, z: tmpPos.z }
-  const radius = 1
-  const mass = 1
-
-  const mesh = new THREE.Mesh(new THREE.SphereGeometry(radius), new THREE.MeshPhongMaterial({ color: 0x6b246e }))
-  mesh.position.set(pos.x, pos.y, pos.z)
-  mesh.castShadow = mesh.receiveShadow = true
-
-  const body = createRigidBody({ mesh, mass })
-  mesh.userData.body = body
-  world.add(mesh)
-
-  tmpPos.copy(raycaster.ray.direction)
-  tmpPos.multiplyScalar(100)
-  body.setLinearVelocity(new Ammo.btVector3(tmpPos.x, tmpPos.y, tmpPos.z))
-}
-
-function createBlock() {
-  const mass = 0
-  const scale = { x: 100, y: 2, z: 100 }
-
+function createGround() {
   const mesh = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshPhongMaterial({ color: 0xa0afa4 }))
-  mesh.scale.set(scale.x, scale.y, scale.z)
+  mesh.scale.set(100, 2, 100)
   mesh.castShadow = mesh.receiveShadow = true
 
-  const body = createRigidBody({ mesh, mass })
-  body.setFriction(4)
-  body.setRollingFriction(10)
-  mesh.userData.body = body
-
-  world.add(mesh)
+  world.add(mesh, 0)
 }
 
 function createBall() {
-  const pos = { x: 0, y: 4, z: 0 }
-  const radius = 2
-  const mass = 1
-
-  const mesh = bigBall = new THREE.Mesh(new THREE.SphereGeometry(radius), new THREE.MeshPhongMaterial({ color: 0xff0505 }))
-  mesh.position.set(pos.x, pos.y, pos.z)
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(2), new THREE.MeshPhongMaterial({ color: 0xff0505 }))
   mesh.castShadow = mesh.receiveShadow = true
+  mesh.position.set(0, 4, 0)
 
-  const body = createRigidBody({ mesh, mass })
+  const body = createRigidBody({ mesh, mass: 1 })
   body.setFriction(4)
   body.setRollingFriction(10)
   mesh.userData.body = body
 
-  world.add(mesh)
+  return mesh
 }
 
 function createKinematicBox() {
-  const pos = { x: 40, y: 6, z: 5 }
-  const scale = { x: 10, y: 10, z: 10 }
-  const mass = 1
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshPhongMaterial({ color: 0x30ab78 }))
+  mesh.position.set(40, 6, 5)
+  mesh.scale.set(10, 10, 10)
+  mesh.castShadow = mesh.receiveShadow = true
 
-  bigBox = new THREE.Mesh(new THREE.BoxGeometry(), new THREE.MeshPhongMaterial({ color: 0x30ab78 }))
-  bigBox.position.set(pos.x, pos.y, pos.z)
-  bigBox.scale.set(scale.x, scale.y, scale.z)
-  bigBox.castShadow = bigBox.receiveShadow = true
-
-  const body = createRigidBody({ mesh: bigBox, mass })
+  const body = createRigidBody({ mesh, mass: 1 })
   body.setFriction(4)
   body.setRollingFriction(10)
-  body.setCollisionFlags(FLAGS.CF_KINEMATIC_OBJECT)
+  body.setCollisionFlags(CF_KINEMATIC_OBJECT)
 
-  bigBox.userData.body = body
-  world.add(bigBox)
+  mesh.userData.body = body
+  return mesh
 }
 
 function moveBall() {
@@ -131,13 +91,42 @@ function moveKinematicBox() {
 
 /* LOOP */
 
-function renderFrame() {
+void function renderFrame() {
   const deltaTime = clock.getDelta()
   moveBall()
   moveKinematicBox()
   world.update(deltaTime)
   renderer.render(scene, camera)
   requestAnimationFrame(renderFrame)
+}()
+
+/* EVENTS */
+
+function onMouseDown(event) {
+  mouseCoords.set(
+    (event.clientX / window.innerWidth) * 2 - 1, -(event.clientY / window.innerHeight) * 2 + 1
+  )
+
+  raycaster.setFromCamera(mouseCoords, camera)
+
+  tmpPos.copy(raycaster.ray.direction)
+  tmpPos.add(raycaster.ray.origin)
+
+  const pos = { x: tmpPos.x, y: tmpPos.y, z: tmpPos.z }
+  const radius = 1
+  const mass = 1
+
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(radius), new THREE.MeshPhongMaterial({ color: 0x6b246e }))
+  mesh.position.set(pos.x, pos.y, pos.z)
+  mesh.castShadow = mesh.receiveShadow = true
+
+  const body = createRigidBody({ mesh, mass })
+  mesh.userData.body = body
+  world.add(mesh)
+
+  tmpPos.copy(raycaster.ray.direction)
+  tmpPos.multiplyScalar(100)
+  body.setLinearVelocity(new Ammo.btVector3(tmpPos.x, tmpPos.y, tmpPos.z))
 }
 
 window.addEventListener('mousedown', onMouseDown, false)
