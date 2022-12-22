@@ -22,22 +22,17 @@ function updateMesh(mesh, transform) {
 }
 
 export default class Vehicle {
-  constructor({ physicsWorld, chassisMesh, wheelMesh, position, quaternion }) {
+  constructor({ physicsWorld, chassisMesh, wheelMesh, position, quaternion, mass = 800 }) {
     this.mesh = new THREE.Group
+    this.mesh.add(chassisMesh)
+    this.chassisMesh = chassisMesh
 
     if (position) chassisMesh.position.copy(position)
     if (quaternion) chassisMesh.quaternion.copy(quaternion)
 
-    this.mesh.add(chassisMesh)
-    this.chassisMesh = chassisMesh
-
-    // const { x: width, y: height, z: length } = getSize(chassisMesh)
-    const width = 2.75, height = 1.2, length = 4.75
-
-    const size = new Ammo.btVector3(width * .5, height * .5, length * .5)
-    const shape = new Ammo.btBoxShape(size)
-
-    this.body = createRigidBody({ mesh: chassisMesh, mass: 800, shape })
+    const { x: width, y: height, z: length } = getSize(chassisMesh)
+    const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .25, length * .5))
+    this.body = createRigidBody({ mesh: chassisMesh, mass, shape })
     physicsWorld.addRigidBody(this.body)
 
     const tuning = new Ammo.btVehicleTuning()
