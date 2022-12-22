@@ -10,9 +10,10 @@ import { createSphere, createBox } from '/utils/geometry.js'
 import { normalizeMouse } from '/utils/helpers.js'
 
 const world = new PhysicsWorld()
+const raycaster = new THREE.Raycaster()
 
-camera.position.set(0, 30, 70)
-scene.add(createSun({ transparent: true }))
+camera.position.set(0, 20, 50)
+scene.add(createSun({ position: [10, 50, 20] }))
 
 const ground = createGround()
 world.add(ground, 0)
@@ -70,8 +71,6 @@ void function renderFrame() {
 }()
 
 /* EVENTS */
-
-const raycaster = new THREE.Raycaster()
 
 window.addEventListener('mousedown', e => {
   const mouse = normalizeMouse(e)
