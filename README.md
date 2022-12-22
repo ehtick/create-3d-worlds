@@ -10,6 +10,7 @@ npx live-server
 ```
 
 ### Physics
+- da kamera ne gleda ispod terena
 vozilo:
   - reuse AmmoWorld i ostalo, delete dupes
   - dodati fiziku na steam tenk ili lokomotivu
