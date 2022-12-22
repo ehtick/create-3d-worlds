@@ -3,25 +3,18 @@ import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { createBox, createSphere, createCrates } from '/utils/geometry.js'
-import { createTerrain } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import Vehicle from '/utils/classes/Vehicle.js'
-import { generateSimplePlayground } from '/utils/terrain/utils.js'
-
-/* TODO
-- isprobati ravno tlo
-*/
+import { createGround } from '/utils/ground.js'
 
 scene.add(createSun())
 
 const cameraControls = new VehicleCamera({ camera })
 const world = new PhysicsWorld()
 
-const width = 90, depth = 150, minHeight = 0, maxHeight = 24
-const data = generateSimplePlayground(width, depth, minHeight, maxHeight)
-const ground = createTerrain({ data, width, depth, minHeight, maxHeight })
-world.add(ground)
+const ground = createGround()
+world.add(ground, 0)
 
 const tremplin = createBox({ width: 8, height: 4, depth: 15, color: 0xfffacd })
 tremplin.rotateX(-Math.PI / 15)
