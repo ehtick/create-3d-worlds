@@ -254,9 +254,7 @@ export function createTerrainShape({ data, width, depth, mapWidth, mapDepth, min
   return shape
 }
 
-export function createTerrain({
-  maxHeight = 24, minHeight = 0, width = 90, depth = 150, data = generateSimplePlayground(width, depth, (maxHeight + minHeight) / 2)
-} = {}) {
+export function createTerrain({ data, width, depth, minHeight = 0, maxHeight = 24 } = {}) {
   const averageHeight = (maxHeight + minHeight) / 2
 
   const geometry = geometryFromData({ data, width, depth })

@@ -1,8 +1,9 @@
-export function generateSimplePlayground(width, depth, averageHeight) {
+export function generateSimplePlayground(width, depth, minHeight, maxHeight) {
   const data = new Float32Array(width * depth)
   const radiusX = 24 * 2
   const radiusZ = 24 * 2
   const radiusY = radiusX / 4
+  const averageHeight = (maxHeight + minHeight) / 2
 
   for (let index = 0, z = 0; z < depth; z++)
     for (let x = 0; x < width; x++) {

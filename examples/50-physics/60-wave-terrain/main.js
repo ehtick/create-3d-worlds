@@ -11,7 +11,6 @@ createOrbitControls()
 camera.position.set(0, 50, 50)
 scene.add(dirLight({ position: [100, 100, 50] }))
 
-// heightfield parameters
 const mapWidth = 100
 const mapDepth = 100
 const width = 128

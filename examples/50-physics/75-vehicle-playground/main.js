@@ -7,6 +7,7 @@ import { createTerrain } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import Vehicle from '/utils/classes/Vehicle.js'
+import { generateSimplePlayground } from '/utils/terrain/utils.js'
 
 camera.position.z = 10
 scene.add(createSun())
@@ -14,12 +15,15 @@ scene.add(createSun())
 const cameraControls = new VehicleCamera({ camera })
 const world = new PhysicsWorld()
 
-world.add(createTerrain())
+const width = 90, depth = 150, minHeight = 0, maxHeight = 24
+const data = generateSimplePlayground(width, depth, minHeight, maxHeight)
+const ground = createTerrain({ data, width, depth, minHeight, maxHeight })
+world.add(ground)
 
 const tremplin = createBox({ width: 8, height: 4, depth: 15, color: 0xfffacd })
 tremplin.rotateX(-Math.PI / 15)
 tremplin.position.set(-10, -tremplin.geometry.parameters.height / 2 + 1.5, 20)
-world.add(tremplin)
+world.add(tremplin, 0)
 
 const ball = createSphere({ color: 0x333333 })
 ball.position.set(5, 10, -10)
