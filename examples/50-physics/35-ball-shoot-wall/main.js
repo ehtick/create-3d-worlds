@@ -9,6 +9,7 @@ import { createGround } from '/utils/ground.js'
 import { createSphere } from '/utils/geometry.js'
 
 const world = new PhysicsWorld()
+const raycaster = new THREE.Raycaster()
 
 const impulse = document.getElementById('impulse')
 const minImpulse = impulse.value = 15
@@ -44,16 +45,16 @@ void function loop() {
 
 /* EVENTS */
 
-const raycaster = new THREE.Raycaster()
-
 window.addEventListener('pointerup', e => {
   const mouse = normalizeMouse(e)
   raycaster.setFromCamera(mouse, camera)
-  const pos = new THREE.Vector3().copy(raycaster.ray.direction).add(raycaster.ray.origin)
+
   const ball = createSphere({ r: .4, color: 0x202020 })
+  const pos = new THREE.Vector3().copy(raycaster.ray.direction).add(raycaster.ray.origin)
   ball.position.copy(pos)
   world.add(ball, 5)
-  pos.copy(raycaster.ray.direction).multiplyScalar(impulse.value)
-  ball.userData.body.setLinearVelocity(new Ammo.btVector3(pos.x, pos.y, pos.z))
+
+  const force = new THREE.Vector3().copy(raycaster.ray.direction).multiplyScalar(impulse.value)
+  ball.userData.body.setLinearVelocity(new Ammo.btVector3(force.x, force.y, force.z))
   impulse.value = minImpulse
 })

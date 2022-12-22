@@ -78,12 +78,9 @@ window.addEventListener('mousedown', e => {
 
   const mesh = createSphere({ color: 0x666666 })
   mesh.position.copy(raycaster.ray.origin)
-
-  mesh.userData.body = createRigidBody({ mesh, mass: 1 })
-  world.add(mesh)
+  world.add(mesh, 1)
 
   const target = new THREE.Vector3()
-  target.copy(raycaster.ray.direction)
-  target.multiplyScalar(100)
+  target.copy(raycaster.ray.direction).multiplyScalar(100)
   mesh.userData.body.setLinearVelocity(new Ammo.btVector3(target.x, target.y, target.z))
 })
