@@ -159,8 +159,8 @@ export function handleInput({ vehicle }) {
   vehicle.applyEngineForce(gEngineForce, 5)
 }
 
-export function updateTires(tires, vehicle) {
-  tires.forEach((tire, i) => {
+export function updateTires(wheelMeshes, vehicle) {
+  wheelMeshes.forEach((tire, i) => {
     vehicle.updateWheelTransform(i, true)
     const wheelTrans = vehicle.getWheelInfo(i).get_m_worldTransform()
     const p = wheelTrans.getOrigin()

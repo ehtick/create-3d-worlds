@@ -11,7 +11,7 @@ export class Car {
       mesh.userData.body = body
       this.mesh = mesh
       this.vehicle = vehicle
-      this.tires = [...Array(4)].map(() => tireMesh.clone())
+      this.wheelMeshes = [...Array(4)].map(() => tireMesh.clone())
 
       return this
     })()

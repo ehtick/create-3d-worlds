@@ -23,7 +23,7 @@ const cars = [
   await new Car({ objFile: 'ladavaz', tireFile: 'ladavazTire', physicsWorld }),
 ]
 
-cars.forEach(car => scene.add(car.mesh, ...car.tires))
+cars.forEach(car => scene.add(car.mesh, ...car.wheelMeshes))
 scene.add(worldModel)
 
 /* FUNCTION */
@@ -64,10 +64,10 @@ function addWorldBody(model, scale) {
 /* LOOP */
 
 function updateCars() {
-  cars.forEach(({ mesh, tires, vehicle }) => {
+  cars.forEach(({ mesh, wheelMeshes, vehicle }) => {
     findGround(mesh.userData.body, physicsWorld)
     updateMesh(mesh)
-    updateTires(tires, vehicle)
+    updateTires(wheelMeshes, vehicle)
   })
 }
 
