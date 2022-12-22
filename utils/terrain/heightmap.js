@@ -17,6 +17,14 @@ export async function terrainFromHeightmap({
   return mesh
 }
 
+export function meshFromData({ data, width, depth }) {
+  const geometry = geometryFromData({ data, width, depth })
+  const material = new THREE.MeshLambertMaterial({ color: 0xfffacd })
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.receiveShadow = true
+  return mesh
+}
+
 export function geometryFromData({ data, width, depth }) {
   const geometry = new THREE.PlaneGeometry(width, depth, width - 1, depth - 1)
   geometry.rotateX(-Math.PI * .5)

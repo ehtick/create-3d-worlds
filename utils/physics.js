@@ -1,10 +1,8 @@
 import * as THREE from 'three'
 import { getSize } from '/utils/helpers.js'
-import { geometryFromData } from '/utils/terrain/heightmap.js'
+import { meshFromData } from '/utils/terrain/heightmap.js'
 
 export const Ammo = typeof window.Ammo == 'function' ? await window.Ammo() : window.Ammo
-
-const margin = 0.05
 
 /* WORLD */
 
@@ -146,21 +144,13 @@ function createTerrainShape({ data, width, depth, mapWidth, mapDepth, minHeight,
 export function createTerrain({ data, width, depth, minHeight = 0, maxHeight = 24 } = {}) {
   const averageHeight = (maxHeight + minHeight) / 2
 
-  const geometry = geometryFromData({ data, width, depth })
-  const material = new THREE.MeshLambertMaterial({ color: 0xfffacd })
-  const mesh = new THREE.Mesh(geometry, material)
+  const mesh = meshFromData({ data, width, depth })
   mesh.translateY(-averageHeight)
-  mesh.receiveShadow = true
 
   const shape = createTerrainShape({ data, width, depth, mapWidth: width, mapDepth: depth, minHeight, maxHeight })
 
-  const transform = new Ammo.btTransform()
-  transform.setIdentity()
-  transform.setOrigin(new Ammo.btVector3(mesh.position.x, mesh.position.y + averageHeight, mesh.position.z))
-  const mass = 0
-  const inertia = new Ammo.btVector3(0, 0, 0)
-  const motionState = new Ammo.btDefaultMotionState(transform)
-  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia))
+  const position = new THREE.Vector3(0, mesh.position.y + averageHeight, 0)
+  const body = createRigidBody({ mesh: { position }, mass: 0, shape })
   body.setRestitution(0.9)
 
   mesh.userData.body = body

@@ -33,18 +33,18 @@ world.add(ball, 3000)
 const { mesh: chassisMesh } = await loadModel({ file: 'vehicle/ready/humvee/hummer.obj', mtl: 'vehicle/ready/humvee/hummer.mtl' })
 const { mesh: wheelMesh } = await loadModel({ file: 'vehicle/ready/humvee/hummerTire.obj', mtl: 'vehicle/ready/humvee/hummerTire.mtl' })
 
-const ammoVehicle = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelMesh })
-scene.add(ammoVehicle.mesh)
+const tank = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelMesh })
+scene.add(tank.mesh)
 
 /* LOOP */
 
 void function animate() {
   requestAnimationFrame(animate)
-  ammoVehicle.update()
-  cameraControls.update(ammoVehicle.chassisMesh)
+  tank.update()
+  cameraControls.update(tank.chassisMesh)
   const dt = clock.getDelta()
   world.update(dt)
-  const speed = ammoVehicle.vehicle.getCurrentSpeedKmHour()
+  const speed = tank.vehicle.getCurrentSpeedKmHour()
   speedometer.innerHTML = speed.toFixed(1) + ' km/h'
   renderer.render(scene, camera)
 }()
