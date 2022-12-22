@@ -1,12 +1,12 @@
 import * as THREE from 'three'
-import { Ammo, createWall } from '/utils/physics.js'
+import { Ammo } from '/utils/physics.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import { createGround } from '/utils/ground.js'
-import { createSphere } from '/utils/geometry.js'
+import { createSphere, createWall } from '/utils/geometry.js'
 
 const world = new PhysicsWorld()
 
@@ -23,8 +23,7 @@ scene.add(sun)
 const ground = createGround({ size: 40, color: 0x509f53 })
 world.add(ground, 0)
 
-const wall = createWall({ brickMass: 3, friction: 5 })
-wall.forEach(mesh => world.add(mesh))
+createWall({ brickMass: 3, friction: 5 }).forEach(mesh => world.add(mesh))
 
 const { mesh: cannon } = await loadModel({ file: 'weapon/cannon/mortar/mortar.obj', mtl: 'weapon/cannon/mortar/mortar.mtl', size: 1, angle: Math.PI, shouldAdjustHeight: true })
 cannon.translateX(-5)

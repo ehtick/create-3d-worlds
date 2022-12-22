@@ -7,7 +7,7 @@ const textureLoader = new THREE.TextureLoader()
 
 /* BOXES */
 
-export function createBox({ size = 1, width = size, height = size, depth = size, file, bumpFile, color = randomGray(), castShadow = true, receiveShadow = false } = {}) {
+export function createBox({ size = 1, width = size, height = size, depth = size, file, bumpFile, color = randomGray(), castShadow = true, receiveShadow = false, pos, quat } = {}) {
   const geometry = new THREE.BoxGeometry(width, height, depth)
   const options = {
     map: file ? textureLoader.load(`/assets/textures/${file}`) : null,
@@ -16,10 +16,12 @@ export function createBox({ size = 1, width = size, height = size, depth = size,
   }
   const material = new THREE.MeshPhongMaterial(options)
   const mesh = new THREE.Mesh(geometry, material)
-
   mesh.translateY(height / 2)
   // mesh.updateMatrix()
   // mesh.geometry.applyMatrix4(mesh.matrix)
+
+  if (pos) mesh.position.copy(pos)
+  if (quat) mesh.quaternion.copy(quat)
 
   mesh.castShadow = castShadow
   mesh.receiveShadow = receiveShadow
@@ -177,7 +179,7 @@ export function createWoodBarrel({ r = .4, R = .5, h = 1 } = {}) {
   return new THREE.Mesh(geometry, materials)
 }
 
-/* FACTORIES */
+/* STRUCTURES */
 
 export function createRandomBoxes({ n = 100, size = 5, mapSize = 50 } = {}) {
   const group = new THREE.Group()
@@ -209,4 +211,66 @@ export function createCrates({ width = 8, height = 6, depth = 2, boxSize = .75, 
         boxes.push(mesh)
       }
   return boxes
+}
+
+export function createWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns = 6, brickMass = 2, friction, startX = 0 } = {}) {
+  const bricks = []
+  const brickHeight = brickDepth * 0.5
+  const z = -columns * brickDepth * 0.5
+  const pos = new THREE.Vector3()
+  pos.set(startX, brickHeight * 0.5, z)
+
+  for (let j = 0; j < rows; j++) {
+    const oddRow = (j % 2) == 1
+    const nRow = oddRow ? columns + 1 : columns
+
+    pos.z = oddRow ? z - brickDepth * .25 : z
+
+    for (let i = 0; i < nRow; i++) {
+      const firstOrLast = oddRow && (i == 0 || i == nRow - 1)
+      const depth = firstOrLast ? brickDepth * .5 : brickDepth
+      const mass = firstOrLast ? brickMass * .5 : brickMass
+      const brick = createBox({ width: brickWidth, height: brickHeight, depth, mass, pos, friction })
+
+      bricks.push(brick)
+
+      pos.z = oddRow && (i == 0 || i == nRow - 2)
+        ? pos.z + brickDepth * .75
+        : pos.z + brickDepth
+    }
+
+    pos.y += brickHeight
+  }
+  return bricks
+}
+
+export function createSideWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns = 6, brickMass = 2, friction, startZ = 0 } = {}) {
+  const bricks = []
+  const brickHeight = brickDepth * 0.5
+  const x = -columns * brickDepth * 0.5
+  const pos = new THREE.Vector3()
+  pos.set(x, brickHeight * 0.5, startZ)
+
+  for (let j = 0; j < rows; j++) {
+    const oddRow = (j % 2) == 1
+    const nRow = oddRow ? columns + 1 : columns
+
+    pos.x = oddRow ? x - brickDepth * .25 : x
+
+    for (let i = 0; i < nRow; i++) {
+      const firstOrLast = oddRow && (i == 0 || i == nRow - 1)
+      const depth = firstOrLast ? brickDepth * .5 : brickDepth
+      const mass = firstOrLast ? brickMass * .5 : brickMass
+      const brick = createBox({ width: depth, height: brickHeight, depth: brickWidth, mass, pos, friction })
+
+      bricks.push(brick)
+
+      pos.x = oddRow && (i == 0 || i == nRow - 2)
+        ? pos.x + brickDepth * .75
+        : pos.x + brickDepth
+    }
+
+    pos.y += brickHeight
+  }
+  return bricks
 }

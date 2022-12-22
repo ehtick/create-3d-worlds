@@ -1,12 +1,12 @@
 import * as THREE from 'three'
-import { Ammo, createWall, createSideWall } from '/utils/physics.js'
+import { Ammo, } from '/utils/physics.js'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import { createGround } from '/utils/ground.js'
-import { createSphere } from '/utils/geometry.js'
+import { createSphere, createWall, createSideWall } from '/utils/geometry.js'
 
 const world = new PhysicsWorld()
 const raycaster = new THREE.Raycaster()

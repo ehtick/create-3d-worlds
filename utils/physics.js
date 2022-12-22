@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { randomGray, getSize } from '/utils/helpers.js'
+import { getSize } from '/utils/helpers.js'
 import { geometryFromData } from '/utils/terrain/heightmap.js'
 
 export const Ammo = typeof window.Ammo == 'function' ? await window.Ammo() : window.Ammo
@@ -109,84 +109,6 @@ export function createRigidBody({ mesh, mass = guessMassFromMesh(mesh), shape = 
   if (kinematic) body.setCollisionFlags(2) // kinematic object
 
   return body
-}
-
-export function createBox({ width, height, depth, mass = 0, pos, quat, color = randomGray(), friction }) {
-  const geometry = new THREE.BoxGeometry(width, height, depth, 1, 1, 1)
-  const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
-  if (pos) mesh.position.copy(pos)
-  if (quat) mesh.quaternion.copy(quat)
-  mesh.castShadow = mesh.receiveShadow = true
-
-  const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * 0.5, height * 0.5, depth * 0.5))
-  shape.setMargin(margin)
-
-  mesh.userData.body = createRigidBody({ mesh, mass, shape, friction })
-  return mesh
-}
-
-/* STRUCTURES */
-
-export function createWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns = 6, brickMass = 2, friction, startX = 0 } = {}) {
-  const bricks = []
-  const brickHeight = brickDepth * 0.5
-  const z = -columns * brickDepth * 0.5
-  const pos = new THREE.Vector3()
-  pos.set(startX, brickHeight * 0.5, z)
-
-  for (let j = 0; j < rows; j++) {
-    const oddRow = (j % 2) == 1
-    const nRow = oddRow ? columns + 1 : columns
-
-    pos.z = oddRow ? z - brickDepth * .25 : z
-
-    for (let i = 0; i < nRow; i++) {
-      const firstOrLast = oddRow && (i == 0 || i == nRow - 1)
-      const depth = firstOrLast ? brickDepth * .5 : brickDepth
-      const mass = firstOrLast ? brickMass * .5 : brickMass
-      const brick = createBox({ width: brickWidth, height: brickHeight, depth, mass, pos, friction })
-
-      bricks.push(brick)
-
-      pos.z = oddRow && (i == 0 || i == nRow - 2)
-        ? pos.z + brickDepth * .75
-        : pos.z + brickDepth
-    }
-
-    pos.y += brickHeight
-  }
-  return bricks
-}
-
-export function createSideWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns = 6, brickMass = 2, friction, startZ = 0 } = {}) {
-  const bricks = []
-  const brickHeight = brickDepth * 0.5
-  const x = -columns * brickDepth * 0.5
-  const pos = new THREE.Vector3()
-  pos.set(x, brickHeight * 0.5, startZ)
-
-  for (let j = 0; j < rows; j++) {
-    const oddRow = (j % 2) == 1
-    const nRow = oddRow ? columns + 1 : columns
-
-    pos.x = oddRow ? x - brickDepth * .25 : x
-
-    for (let i = 0; i < nRow; i++) {
-      const firstOrLast = oddRow && (i == 0 || i == nRow - 1)
-      const depth = firstOrLast ? brickDepth * .5 : brickDepth
-      const mass = firstOrLast ? brickMass * .5 : brickMass
-      const brick = createBox({ width: depth, height: brickHeight, depth: brickWidth, mass, pos, friction })
-
-      bricks.push(brick)
-
-      pos.x = oddRow && (i == 0 || i == nRow - 2)
-        ? pos.x + brickDepth * .75
-        : pos.x + brickDepth
-    }
-
-    pos.y += brickHeight
-  }
-  return bricks
 }
 
 /* TERRAIN */

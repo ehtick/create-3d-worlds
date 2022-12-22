@@ -10,7 +10,6 @@ npx live-server
 ```
 
 ### Physics
-- ukloniti geometriju iz fizike
 - da kamera ne gleda ispod terena
 
 vozilo:
