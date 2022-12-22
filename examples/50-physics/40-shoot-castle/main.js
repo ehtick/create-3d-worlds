@@ -1,38 +1,25 @@
 import * as THREE from 'three'
-import { Ammo, createBox, createBall, createPhysicsWorld, updateMesh } from '/utils/physics.js'
+import { Ammo, createBox, createBall } from '/utils/physics.js'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
-import keyboard from '/utils/classes/Keyboard.js'
+import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 
-const magnitude = document.getElementById('magnitude')
-const minMagnitude = 15
-const maxMagnitude = 30
-magnitude.value = minMagnitude
+const world = new PhysicsWorld()
 
 createOrbitControls()
 camera.position.set(0, 50, 300)
 camera.lookAt(0, 50, 0)
 
-const rigidBodies = []
-
 const sun = createSun({ position: [-50, 150, 50] })
 scene.add(sun)
 
-const physicsWorld = createPhysicsWorld()
-
 const ground = createBox({ width: 1500, depth: 1500, height: 1, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0x509f53 })
-addRigidBody(ground)
+world.add(ground, 0)
 
 buildCastle()
 
 /* FUNCTIONS */
-
-function addRigidBody(mesh) {
-  scene.add(mesh)
-  rigidBodies.push(mesh)
-  physicsWorld.addRigidBody(mesh.userData.body)
-}
 
 export function buildCastle({ rows = 8, brickInWall = 20, rowSize = 8 } = {}) {
   const spacing = 0.2
@@ -43,7 +30,7 @@ export function buildCastle({ rows = 8, brickInWall = 20, rowSize = 8 } = {}) {
 
   function addBlock(x, y, z) {
     const box = createBox({ width: rowSize, depth: rowSize, height: rowSize, mass: 2, pos: { x, y, z } })
-    addRigidBody(box)
+    world.add(box, 2)
   }
 
   function addFourBlocks(x, y) {
@@ -75,12 +62,8 @@ export function buildCastle({ rows = 8, brickInWall = 20, rowSize = 8 } = {}) {
 
 void function loop() {
   requestAnimationFrame(loop)
-  if (keyboard.pressed.mouse && magnitude.value < maxMagnitude)
-    magnitude.value = parseFloat(magnitude.value) + .2
-
   const dt = clock.getDelta()
-  physicsWorld.stepSimulation(dt, 10)
-  rigidBodies.forEach(updateMesh)
+  world.update(dt)
   renderer.render(scene, camera)
 }()
 
@@ -93,8 +76,7 @@ window.addEventListener('pointerup', e => {
   raycaster.setFromCamera(mouse, camera)
   const pos = new THREE.Vector3().copy(raycaster.ray.direction).add(raycaster.ray.origin)
   const ball = createBall({ radius: 3, mass: 5, pos })
-  addRigidBody(ball)
-  pos.copy(raycaster.ray.direction).multiplyScalar(100) // magnitude.value
+  world.add(ball, 5)
+  pos.copy(raycaster.ray.direction).multiplyScalar(100)
   ball.userData.body.setLinearVelocity(new Ammo.btVector3(pos.x, pos.y, pos.z))
-  magnitude.value = minMagnitude
 })
