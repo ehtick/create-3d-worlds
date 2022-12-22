@@ -157,7 +157,7 @@ body.applyImpulse()
 Jump:
 ```js
 const impulse = new Ammo.btVector3(0, mass * .5, 0)
-this.chassisBody.applyCentralImpulse(impulse)
+this.body.applyCentralImpulse(impulse)
 ```
 
 ## Sources

@@ -6,7 +6,7 @@ import { createBox, createSphere, createCrates } from '/utils/geometry.js'
 import { createTerrain } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
-import Vehicle from '/utils/classes/Vehicle.js'
+import Vehicle, { leaveDecals } from '/utils/classes/Vehicle.js'
 import { generateSimplePlayground } from '/utils/terrain/utils.js'
 
 scene.add(createSun())
@@ -38,16 +38,17 @@ const { mesh: chassisMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 
 const { mesh: wheelMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl' })
 
 const quaternion = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
-const ammoVehicle = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelMesh, position: new THREE.Vector3(0, 5, 0), quaternion })
-scene.add(ammoVehicle.mesh)
+const jeep = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelMesh, position: new THREE.Vector3(0, 5, 0), quaternion })
+scene.add(jeep.mesh)
 
 /* LOOP */
 
 void function animate() {
   requestAnimationFrame(animate)
-  ammoVehicle.updateKeyboard()
-  cameraControls.update(ammoVehicle.chassisMesh)
+  jeep.updateKeyboard()
+  cameraControls.update(jeep.chassisMesh)
   const dt = clock.getDelta()
   world.update(dt)
+  leaveDecals(ground, jeep.body, jeep.wheelMeshes, scene)
   renderer.render(scene, camera)
 }()
