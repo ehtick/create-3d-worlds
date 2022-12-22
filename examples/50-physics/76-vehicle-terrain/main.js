@@ -8,7 +8,6 @@ import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import { createSphere, createBox } from '/utils/geometry.js'
 import Vehicle from '/utils/classes/Vehicle.js'
 
-camera.position.z = 10
 scene.add(createSun())
 
 const speedometer = document.getElementById('speedometer')
@@ -23,7 +22,7 @@ world.add(terrain)
 const tremplin = createBox({ width: 8, height: 4, depth: 15, color: 0xfffacd })
 tremplin.rotateX(-Math.PI / 15)
 tremplin.position.set(-10, -7.5, 20)
-world.add(tremplin)
+world.add(tremplin, 0)
 
 const ball = createSphere({ color: 0x333333 })
 ball.position.set(5, 0, -20)

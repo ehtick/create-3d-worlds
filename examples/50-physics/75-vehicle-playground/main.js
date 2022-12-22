@@ -9,7 +9,6 @@ import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import Vehicle from '/utils/classes/Vehicle.js'
 import { generateSimplePlayground } from '/utils/terrain/utils.js'
 
-camera.position.z = 10
 scene.add(createSun())
 
 const cameraControls = new VehicleCamera({ camera })
