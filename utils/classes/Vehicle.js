@@ -233,6 +233,14 @@ export default class Vehicle {
     vehicle.setSteeringValue(this.vehicleSteering, FRONT_RIGHT)
   }
 
+  leaveDecals(ground, scene) {
+    const accelerating = keyboard.up || keyboard.down
+    const kmh = this.vehicle.getCurrentSpeedKmHour()
+
+    if (this.vehicle.getWheelInfo(2).get_m_skidInfo() < .9 || (accelerating && Math.abs(kmh) < 10))
+      leaveDecals(ground, this.body, this.wheelMeshes, scene)
+  }
+
   update() {
     const { vehicle } = this
     const speed = vehicle.getCurrentSpeedKmHour()

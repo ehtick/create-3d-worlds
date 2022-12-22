@@ -38,17 +38,17 @@ const { mesh: chassisMesh } = await loadModel({ file: 'racing/hummer.obj', mtl: 
 const { mesh: wheelMesh } = await loadModel({ file: 'racing/hummerTire.obj', mtl: 'racing/hummerTire.mtl' })
 
 const quaternion = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
-const jeep = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelMesh, position: new THREE.Vector3(0, 5, 0), quaternion })
-scene.add(jeep.mesh)
+const tank = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelMesh, position: new THREE.Vector3(0, 5, 0), quaternion })
+scene.add(tank.mesh)
 
 /* LOOP */
 
 void function animate() {
   requestAnimationFrame(animate)
-  jeep.update()
-  cameraControls.update(jeep.chassisMesh)
+  tank.update()
+  tank.leaveDecals(ground, scene)
+  cameraControls.update(tank.chassisMesh)
   const dt = clock.getDelta()
   world.update(dt)
-  leaveDecals(ground, jeep.body, jeep.wheelMeshes, scene)
   renderer.render(scene, camera)
 }()
