@@ -77,7 +77,7 @@ window.addEventListener('mousedown', e => {
   const mouse = normalizeMouse(e)
   raycaster.setFromCamera(mouse, camera)
 
-  const mesh = createSphere()
+  const mesh = createSphere({ color: 0x666666 })
   mesh.position.copy(raycaster.ray.origin)
 
   mesh.userData.body = createRigidBody({ mesh, mass: 1 })
