@@ -92,11 +92,12 @@ export const createShapeFromMesh = mesh => {
 /* BODIES */
 
 export function createRigidBody({ mesh, mass = guessMassFromMesh(mesh), shape = createShapeFromMesh(mesh), friction, kinematic = false }) {
-  const { position, quaternion } = mesh
+  const { position, quaternion: quat } = mesh
 
   const transform = new Ammo.btTransform()
+  transform.setIdentity()
   transform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z))
-  transform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w))
+  if (quat) transform.setRotation(new Ammo.btQuaternion(quat.x, quat.y, quat.z, quat.w))
   const motionState = new Ammo.btDefaultMotionState(transform)
   const inertia = new Ammo.btVector3(0, 0, 0)
   shape.calculateLocalInertia(mass, inertia)
@@ -306,23 +307,13 @@ export function createTerrain({
 
 /* TERRAIN ALT */
 
-export function createTerrainBody(shape, minHeight, maxHeight) {
-  const transform = new Ammo.btTransform()
-  transform.setIdentity()
-  // shifts the terrain, since bullet centers it on its bounding box.
-  transform.setOrigin(new Ammo.btVector3(0, (maxHeight + minHeight) / 2, 0))
-  const mass = 0
-  const inertia = new Ammo.btVector3(0, 0, 0)
-  const motionState = new Ammo.btDefaultMotionState(transform)
-  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia))
-  return body
-}
-
 export function createTerrainBodyFromData({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight }) {
   const shape = createTerrainShapeAlt({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight })
-  const body = createTerrainBody(shape, minHeight, maxHeight)
-  return body
+  const position = new THREE.Vector3(0, (maxHeight + minHeight) / 2, 0)
+  return createRigidBody({ mesh: { position }, mass: 0, shape })
 }
+
+/* HELPERS */
 
 export function chaseCam({ body, camHeight = 4, distance = 8, camera } = {}) {
   const row = n => body.getWorldTransform().getBasis().getRow(n)
