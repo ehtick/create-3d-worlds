@@ -2,7 +2,10 @@ import * as THREE from 'three'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { dirLight } from '/utils/light.js'
 import { generateSineWaveData, createTerrainFromData } from '/utils/ground.js'
-import { Ammo, createPhysicsWorld, createTerrainBodyFromData, updateMesh } from '/utils/physics.js'
+import { Ammo, createTerrainBodyFromData } from '/utils/physics.js'
+import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
+
+const world = new PhysicsWorld()
 
 createOrbitControls()
 camera.position.set(0, 50, 50)
@@ -16,16 +19,11 @@ const depth = 128
 const maxHeight = 8
 const minHeight = - 2
 
-const rigidBodies = []
-const physicsWorld = createPhysicsWorld({ gravity: 6 })
-
 const data = generateSineWaveData(width, depth, minHeight, maxHeight)
 
 const terrain = createTerrainFromData({ data, width: mapWidth, height: mapDepth, widthSegments: width - 1, heightSegments: depth - 1 })
-scene.add(terrain)
-
-const groundBody = createTerrainBodyFromData({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight })
-physicsWorld.addRigidBody(groundBody)
+terrain.userData.body = createTerrainBodyFromData({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight })
+world.add(terrain, 0)
 
 /* FUNCTIONS */
 
@@ -78,9 +76,7 @@ function generateObject() {
   mesh.userData.body = body
   mesh.receiveShadow = mesh.castShadow = true
 
-  scene.add(mesh)
-  rigidBodies.push(mesh)
-  physicsWorld.addRigidBody(body)
+  world.add(mesh)
 }
 
 /* LOOP */
@@ -88,8 +84,7 @@ function generateObject() {
 void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
-  physicsWorld.stepSimulation(dt, 10)
-  rigidBodies.forEach(updateMesh)
+  world.update(dt)
   renderer.render(scene, camera)
 }()
 
