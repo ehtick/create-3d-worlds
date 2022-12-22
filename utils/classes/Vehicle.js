@@ -2,6 +2,7 @@ import * as THREE from 'three'
 
 import { Ammo, createRigidBody } from '/utils/physics.js'
 import keyboard from '/utils/classes/Keyboard.js'
+import { getSize } from '/utils/helpers.js'
 
 const FRONT_LEFT = 0
 const FRONT_RIGHT = 1
@@ -12,11 +13,6 @@ const steeringIncrement = .04
 const steeringClamp = .5
 const maxEngineForce = 2000
 const maxBreakingForce = 100
-
-const boxShape = ({ width = 1.8, height = .6, length = 4 } = {}) => {
-  const size = new Ammo.btVector3(width * .5, height * .5, length * .5)
-  return new Ammo.btBoxShape(size)
-}
 
 function updateMesh(mesh, transform) {
   const position = transform.getOrigin()
@@ -35,7 +31,13 @@ export default class Vehicle {
     this.mesh.add(chassisMesh)
     this.chassisMesh = chassisMesh
 
-    this.body = createRigidBody({ mesh: chassisMesh, mass: 800, shape: boxShape() })
+    // const { x: width, y: height, z: length } = getSize(chassisMesh)
+    const width = 2.75, height = 1.2, length = 4.75
+
+    const size = new Ammo.btVector3(width * .5, height * .5, length * .5)
+    const shape = new Ammo.btBoxShape(size)
+
+    this.body = createRigidBody({ mesh: chassisMesh, mass: 800, shape })
     physicsWorld.addRigidBody(this.body)
 
     const tuning = new Ammo.btVehicleTuning()
