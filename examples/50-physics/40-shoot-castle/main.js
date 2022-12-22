@@ -1,13 +1,14 @@
 import * as THREE from 'three'
-import { Ammo, createBox } from '/utils/physics.js'
+import { Ammo } from '/utils/physics.js'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import { createGround } from '/utils/ground.js'
-import { createSphere } from '/utils/geometry.js'
+import { createSphere, createBox } from '/utils/geometry.js'
 
 const world = new PhysicsWorld()
+const raycaster = new THREE.Raycaster()
 
 createOrbitControls()
 camera.position.set(0, 50, 300)
@@ -19,11 +20,11 @@ scene.add(sun)
 const ground = createGround({ size: 1000, color: 0x509f53 })
 world.add(ground, 0)
 
-buildCastle()
+buildSimpleCastle()
 
 /* FUNCTIONS */
 
-export function buildCastle({ rows = 8, brickInWall = 20, rowSize = 8 } = {}) {
+export function buildSimpleCastle({ rows = 8, brickInWall = 20, rowSize = 8 } = {}) {
   const spacing = 0.2
   const brickSize = rowSize + spacing
   const wallWidth = brickSize * brickInWall
@@ -31,7 +32,8 @@ export function buildCastle({ rows = 8, brickInWall = 20, rowSize = 8 } = {}) {
   const isEven = y => Math.floor(y / brickSize) % 2 == 0
 
   function addBlock(x, y, z) {
-    const box = createBox({ width: rowSize, depth: rowSize, height: rowSize, mass: 2, pos: { x, y, z } })
+    const box = createBox({ width: rowSize, depth: rowSize, height: rowSize })
+    box.position.set(x, y, z)
     world.add(box, 2)
   }
 
@@ -71,15 +73,15 @@ void function loop() {
 
 /* EVENTS */
 
-const raycaster = new THREE.Raycaster()
-
 window.addEventListener('pointerup', e => {
   const mouse = normalizeMouse(e)
   raycaster.setFromCamera(mouse, camera)
+
   const pos = new THREE.Vector3().copy(raycaster.ray.direction).add(raycaster.ray.origin)
   const ball = createSphere({ radius: 3, color: 0x202020 })
   ball.position.copy(pos)
   world.add(ball, 5)
-  pos.copy(raycaster.ray.direction).multiplyScalar(100)
-  ball.userData.body.setLinearVelocity(new Ammo.btVector3(pos.x, pos.y, pos.z))
+
+  const force = new THREE.Vector3().copy(raycaster.ray.direction).multiplyScalar(100)
+  ball.userData.body.setLinearVelocity(new Ammo.btVector3(force.x, force.y, force.z))
 })
