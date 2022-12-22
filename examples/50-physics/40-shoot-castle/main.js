@@ -1,9 +1,11 @@
 import * as THREE from 'three'
-import { Ammo, createBox, createBall } from '/utils/physics.js'
+import { Ammo, createBox } from '/utils/physics.js'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
+import { createGround } from '/utils/ground.js'
+import { createSphere } from '/utils/geometry.js'
 
 const world = new PhysicsWorld()
 
@@ -14,7 +16,7 @@ camera.lookAt(0, 50, 0)
 const sun = createSun({ position: [-50, 150, 50] })
 scene.add(sun)
 
-const ground = createBox({ width: 1500, depth: 1500, height: 1, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0x509f53 })
+const ground = createGround({ size: 1000, color: 0x509f53 })
 world.add(ground, 0)
 
 buildCastle()
@@ -75,7 +77,8 @@ window.addEventListener('pointerup', e => {
   const mouse = normalizeMouse(e)
   raycaster.setFromCamera(mouse, camera)
   const pos = new THREE.Vector3().copy(raycaster.ray.direction).add(raycaster.ray.origin)
-  const ball = createBall({ radius: 3, mass: 5, pos })
+  const ball = createSphere({ radius: 3, color: 0x202020 })
+  ball.position.copy(pos)
   world.add(ball, 5)
   pos.copy(raycaster.ray.direction).multiplyScalar(100)
   ball.userData.body.setLinearVelocity(new Ammo.btVector3(pos.x, pos.y, pos.z))
