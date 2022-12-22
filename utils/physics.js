@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import { randomGray, getSize } from '/utils/helpers.js'
 import { geometryFromData } from '/utils/terrain/heightmap.js'
-import { generateSimplePlayground } from '/utils/terrain/utils.js'
 
 export const Ammo = typeof window.Ammo == 'function' ? await window.Ammo() : window.Ammo
 
@@ -112,21 +111,6 @@ export function createRigidBody({ mesh, mass = guessMassFromMesh(mesh), shape = 
   return body
 }
 
-export function createBall({ radius = 0.6, mass = 1.2, pos, quat, color = 0x202020 }) {
-  const mesh = new THREE.Mesh(
-    new THREE.SphereGeometry(radius, 20, 20), new THREE.MeshPhongMaterial({ color })
-  )
-  if (pos) mesh.position.copy(pos)
-  if (quat) mesh.quaternion.copy(quat)
-  mesh.castShadow = mesh.receiveShadow = true
-
-  const shape = new Ammo.btSphereShape(radius)
-  shape.setMargin(margin)
-
-  mesh.userData.body = createRigidBody({ mesh, mass, shape, friction: .5 })
-  return mesh
-}
-
 export function createBox({ width, height, depth, mass = 0, pos, quat, color = randomGray(), friction }) {
   const geometry = new THREE.BoxGeometry(width, height, depth, 1, 1, 1)
   const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
@@ -141,24 +125,7 @@ export function createBox({ width, height, depth, mass = 0, pos, quat, color = r
   return mesh
 }
 
-export const createGround = ({ size = 100, color = 0xFFFFFF } = {}) =>
-  createBox({ width: size, height: 1, depth: size, mass: 0, pos: new THREE.Vector3(0, -0.5, 0), color })
-
 /* STRUCTURES */
-
-export function createCrates({ size = .75, columns = 18, rows = 6, z = -10 } = {}) {
-  const crates = []
-  for (let j = 0; j < columns; j++)
-    for (let i = 0; i < rows; i++) {
-      const x = size * j - (size * (columns - 1)) / 2
-      const crate = createBox({
-        pos: new THREE.Vector3(x, size * i, z),
-        width: size, height: size, depth: size, mass: 10, color: 0xfca400, friction: 1
-      })
-      crates.push(crate)
-    }
-  return crates
-}
 
 export function createWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns = 6, brickMass = 2, friction, startX = 0 } = {}) {
   const bricks = []
@@ -224,7 +191,7 @@ export function createSideWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, col
 
 /* TERRAIN */
 
-export function createTerrainShape({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight }) {
+function createTerrainShape({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight }) {
   const heightScale = 1
   const upAxis = 1 // 0: X, 1: Y, 2: Z. normally Y is used.
   const hdt = 'PHY_FLOAT' // height data type
@@ -284,52 +251,6 @@ export function createTerrainBodyFromData({ data, width, depth, mapWidth, mapDep
   const shape = createTerrainShape({ data, width, depth, mapWidth, mapDepth, minHeight, maxHeight })
   const position = new THREE.Vector3(0, (maxHeight + minHeight) / 2, 0)
   return createRigidBody({ mesh: { position }, mass: 0, shape })
-}
-
-/* HELPERS */
-
-export function chaseCam({ body, camHeight = 4, distance = 8, camera } = {}) {
-  const row = n => body.getWorldTransform().getBasis().getRow(n)
-  const dist = new Ammo.btVector3(0, camHeight, -distance)
-  const camPointer = new Ammo.btVector3(
-    row(0).x() * dist.x() + row(0).y() * dist.y() + row(0).z() * dist.z(),
-    row(1).x() * dist.x() + row(1).y() * dist.y() + row(1).z() * dist.z(),
-    row(2).x() * dist.x() + row(2).y() * dist.y() + row(2).z() * dist.z()
-  )
-
-  const target = body.getWorldTransform().getOrigin()
-  camera.position.set(
-    camPointer.x() + target.x(),
-    camPointer.y() + target.y(),
-    camPointer.z() + target.z()
-  )
-  camera.lookAt(new THREE.Vector3(target.x(), target.y(), target.z()))
-}
-
-export function findGround(body, physicsWorld) {
-  const transform = new Ammo.btTransform()
-  body.getMotionState().getWorldTransform(transform)
-  const pos = transform.getOrigin()
-  const downRayDir = new Ammo.btVector3(pos.x(), pos.y() - 2000, pos.z())
-  let downRay = new Ammo.ClosestRayResultCallback(pos, downRayDir)
-  physicsWorld.rayTest(pos, downRayDir, downRay)
-
-  if (downRay.hasHit())
-    body.setDamping(0, 0)
-  else {
-    const cp = new Ammo.btVector3(pos.x(), pos.y() + 1, pos.z())
-    downRayDir.setY(pos.y() + 400)
-    downRay = new Ammo.ClosestRayResultCallback(cp, downRayDir)
-    physicsWorld.rayTest(cp, downRayDir, downRay)
-    if (downRay.hasHit()) {
-      const pointAbove = downRay.get_m_hitPointWorld()
-      body.setDamping(.99, .99)
-      body.getMotionState().getWorldTransform(transform)
-      pointAbove.setY(pointAbove.y() + 1.5)
-      transform.setOrigin(pointAbove)
-      body.setWorldTransform(transform)
-    }
-  }
 }
 
 /* UPDATE */
