@@ -40,7 +40,7 @@ scene.add(ammoVehicle.mesh)
 
 void function animate() {
   requestAnimationFrame(animate)
-  ammoVehicle.updateKeyboard()
+  ammoVehicle.update()
   cameraControls.update(ammoVehicle.chassisMesh)
   const dt = clock.getDelta()
   world.update(dt)

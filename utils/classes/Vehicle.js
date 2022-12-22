@@ -129,6 +129,13 @@ export function leaveDecals(ground, body, tires, scene) {
   scene.add(md)
 }
 
+function updateMesh(mesh, transform) {
+  const position = transform.getOrigin()
+  const quaternion = transform.getRotation()
+  mesh.position.set(position.x(), position.y(), position.z())
+  mesh.quaternion.set(quaternion.x(), quaternion.y(), quaternion.z(), quaternion.w())
+}
+
 export default class Vehicle {
   constructor({ physicsWorld, chassisMesh, wheelMesh, position, quaternion }) {
     this.mesh = new THREE.Group
@@ -200,27 +207,33 @@ export default class Vehicle {
     wheelInfo.set_m_rollInfluence(rollInfluence)
   }
 
-  updatePhysics() {
+  updateMeshes() {
     const { vehicle, wheelMeshes } = this
 
-    const nWheels = vehicle.getNumWheels()
-    for (let i = 0; i < nWheels; i++) {
+    const numWheels = vehicle.getNumWheels()
+    for (let i = 0; i < numWheels; i++) {
       vehicle.updateWheelTransform(i, true)
-      const transform = vehicle.getWheelTransformWS(i)
-      const position = transform.getOrigin()
-      const quaternion = transform.getRotation()
-      wheelMeshes[i].position.set(position.x(), position.y(), position.z())
-      wheelMeshes[i].quaternion.set(quaternion.x(), quaternion.y(), quaternion.z(), quaternion.w())
+      updateMesh(wheelMeshes[i], vehicle.getWheelTransformWS(i))
     }
 
-    const transform = vehicle.getChassisWorldTransform()
-    const position = transform.getOrigin()
-    const quaternion = transform.getRotation()
-    this.chassisMesh.position.set(position.x(), position.y(), position.z())
-    this.chassisMesh.quaternion.set(quaternion.x(), quaternion.y(), quaternion.z(), quaternion.w())
+    updateMesh(this.chassisMesh, vehicle.getChassisWorldTransform())
   }
 
-  updateKeyboard() {
+  updatePhysics(engineForce, breakingForce) {
+    const { vehicle } = this
+    vehicle.applyEngineForce(engineForce, BACK_LEFT)
+    vehicle.applyEngineForce(engineForce, BACK_RIGHT)
+
+    vehicle.setBrake(breakingForce / 2, FRONT_LEFT)
+    vehicle.setBrake(breakingForce / 2, FRONT_RIGHT)
+    vehicle.setBrake(breakingForce, BACK_LEFT)
+    vehicle.setBrake(breakingForce, BACK_RIGHT)
+
+    vehicle.setSteeringValue(this.vehicleSteering, FRONT_LEFT)
+    vehicle.setSteeringValue(this.vehicleSteering, FRONT_RIGHT)
+  }
+
+  update() {
     const { vehicle } = this
     const speed = vehicle.getCurrentSpeedKmHour()
     let breakingForce = 0
@@ -239,30 +252,17 @@ export default class Vehicle {
     if (keyboard.left) {
       if (this.vehicleSteering < steeringClamp)
         this.vehicleSteering += steeringIncrement
-    } else
-    if (keyboard.right) {
+    } else if (keyboard.right) {
       if (this.vehicleSteering > -steeringClamp)
         this.vehicleSteering -= steeringIncrement
-    } else
-    if (this.vehicleSteering < -steeringIncrement)
+    } else if (this.vehicleSteering < -steeringIncrement)
       this.vehicleSteering += steeringIncrement
-    else
-    if (this.vehicleSteering > steeringIncrement)
+    else if (this.vehicleSteering > steeringIncrement)
       this.vehicleSteering -= steeringIncrement
     else
       this.vehicleSteering = 0
 
-    vehicle.applyEngineForce(engineForce, BACK_LEFT)
-    vehicle.applyEngineForce(engineForce, BACK_RIGHT)
-
-    vehicle.setBrake(breakingForce / 2, FRONT_LEFT)
-    vehicle.setBrake(breakingForce / 2, FRONT_RIGHT)
-    vehicle.setBrake(breakingForce, BACK_LEFT)
-    vehicle.setBrake(breakingForce, BACK_RIGHT)
-
-    vehicle.setSteeringValue(this.vehicleSteering, FRONT_LEFT)
-    vehicle.setSteeringValue(this.vehicleSteering, FRONT_RIGHT)
-
-    this.updatePhysics()
+    this.updatePhysics(engineForce, breakingForce)
+    this.updateMeshes()
   }
 }

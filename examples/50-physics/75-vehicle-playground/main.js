@@ -45,7 +45,7 @@ scene.add(jeep.mesh)
 
 void function animate() {
   requestAnimationFrame(animate)
-  jeep.updateKeyboard()
+  jeep.update()
   cameraControls.update(jeep.chassisMesh)
   const dt = clock.getDelta()
   world.update(dt)
