@@ -3,8 +3,8 @@ import * as THREE from 'three'
 export default class VehicleCamera {
   constructor({
     camera,
-    offsetCamera = new THREE.Vector3(0, 2, -6).setLength(10),
-    lookatCamera = new THREE.Vector3(0, 0, 4),
+    offsetCamera = new THREE.Vector3(0, 3, -9),
+    lookatCamera = new THREE.Vector3(0, 2, 4),
     tweenOffset = 0.1,
     tweenLookAt = 0.1
   } = {}) {
@@ -13,6 +13,7 @@ export default class VehicleCamera {
     this.lookatCamera = lookatCamera
     this.tweenOffset = tweenOffset
     this.tweenLookAt = tweenLookAt
+
     this._currentOffset = null
     this._currentLookat = null
   }

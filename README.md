@@ -13,11 +13,9 @@ npx live-server
 - da kamera ne gleda ispod terena
 
 vozilo:
-  - reuse AmmoWorld i ostalo, delete dupes
   - dodati fiziku na steam tenk ili lokomotivu
   - da gazi i gura prepreke
 - isprobati dodavanje sile na kuglu: applyForce, applyImpulse or setLinearVelocity
-  https://medium.com/@bluemagnificent/moving-objects-in-javascript-3d-physics-using-ammo-js-and-three-js-6e39eff6d9e5
 - napraviti sletanje na mesec 3d
 - dodati fiziku u vučenje kocki
 
@@ -129,13 +127,13 @@ controls.maxPolarAngle = Math.PI / 2 - 0.1
 
 ### updateMatrix
 
-https://stackoverflow.com/questions/27022160/three-js-can-i-apply-position-rotation-and-scale-to-the-geometry
+https://stackoverflow.com/questions/27022160/
 
 Default order of transform: scale, rotate, translate (Three.js ignores order in code?)
 
 If we want to apply multiple transform:
 
-```
+```js
 gameObj.matrix = new THREE.Matrix4(....) // with params
 gameObj.matrixAutoUpdate = false // don't use internal transform system
 ```
@@ -155,8 +153,7 @@ body.applyImpulse()
 
 Jump:
 ```js
-const impulse = new Ammo.btVector3(0, mass * .5, 0)
-this.body.applyCentralImpulse(impulse)
+body.applyCentralImpulse(new Ammo.btVector3(0, mass * .5, 0))
 ```
 
 ## Sources
