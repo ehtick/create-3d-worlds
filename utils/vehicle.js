@@ -58,12 +58,12 @@ export function createVehicle({
   const startTransform = new Ammo.btTransform()
 
   startTransform.setIdentity()
-  const chassisShape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .5, length * .5))
+  const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .5, length * .5))
   const compound = new Ammo.btCompoundShape()
   const transform = new Ammo.btTransform()
   transform.setIdentity()
   transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z))
-  compound.addChildShape(transform, chassisShape)
+  compound.addChildShape(transform, shape)
 
   const inertia = new Ammo.btVector3(1, 1, 1)
   compound.calculateLocalInertia(mass, inertia)

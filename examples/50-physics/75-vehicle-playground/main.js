@@ -6,8 +6,9 @@ import { createBox, createSphere, createCrates } from '/utils/geometry.js'
 import { createTerrain } from '/utils/physics.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
-import Vehicle, { leaveDecals } from '/utils/classes/Vehicle.js'
+import Vehicle from '/utils/classes/Vehicle.js'
 import { generateSimplePlayground } from '/utils/terrain/utils.js'
+import { leaveDecals } from '/utils/decals.js'
 
 scene.add(createSun())
 
@@ -46,7 +47,7 @@ scene.add(tank.mesh)
 void function animate() {
   requestAnimationFrame(animate)
   tank.update()
-  tank.leaveDecals(ground, scene)
+  leaveDecals({ ground, scene, vehicle: tank.vehicle, body: tank.body, wheelMeshes: tank.wheelMeshes })
   cameraControls.update(tank.chassisMesh)
   const dt = clock.getDelta()
   world.update(dt)
