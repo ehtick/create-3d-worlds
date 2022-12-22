@@ -1,10 +1,12 @@
 import * as THREE from 'three'
-import { Ammo, createBox, createBall, createWall, createSideWall } from '/utils/physics.js'
+import { Ammo, createWall, createSideWall } from '/utils/physics.js'
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
+import { createGround } from '/utils/ground.js'
+import { createSphere } from '/utils/geometry.js'
 
 const world = new PhysicsWorld()
 
@@ -19,7 +21,7 @@ camera.lookAt(10, 0, 0)
 const sun = createSun({ position: [-5, 10, 5] })
 scene.add(sun)
 
-const ground = createBox({ width: 40, height: 1, depth: 40, mass: 0, pos: { x: 0, y: -0.5, z: 0 }, color: 0xFFFFFF })
+const ground = createGround({ size: 40, color: 0xFFFFFF })
 world.add(ground, 0)
 
 const frontWall = createWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, startX: -3.2 })
@@ -27,9 +29,7 @@ const backWall = createWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, s
 const leftWall = createSideWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, startZ: -3.8 })
 const rightWall = createSideWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, startZ: 2.8 })
 
-;[...frontWall, ...backWall, ...leftWall, ...rightWall].forEach(mesh => {
-  world.add(mesh)
-})
+;[...frontWall, ...backWall, ...leftWall, ...rightWall].forEach(mesh => world.add(mesh))
 
 /* LOOP */
 
@@ -50,8 +50,9 @@ window.addEventListener('pointerup', e => {
   const mouse = normalizeMouse(e)
   raycaster.setFromCamera(mouse, camera)
   const pos = new THREE.Vector3().copy(raycaster.ray.direction).add(raycaster.ray.origin)
-  const ball = createBall({ radius: .4, mass: 5, pos })
-  world.add(ball)
+  const ball = createSphere({ r: .4, color: 0x202020 })
+  ball.position.copy(pos)
+  world.add(ball, 5)
   pos.copy(raycaster.ray.direction).multiplyScalar(impulse.value)
   ball.userData.body.setLinearVelocity(new Ammo.btVector3(pos.x, pos.y, pos.z))
   impulse.value = minImpulse
