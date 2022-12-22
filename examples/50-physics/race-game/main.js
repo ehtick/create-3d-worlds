@@ -3,7 +3,7 @@ import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSun, hemLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { Car } from './Car.js'
-import { handleInput, updateTires, fadeDecals } from '/utils/vehicle.js'
+import { handleInput, updateTires } from '/utils/vehicle.js'
 import { createPhysicsWorld, updateMesh, chaseCam, findGround } from '/utils/physics.js'
 
 hemLight({ groundColor: 0xf0d7bb })
@@ -77,7 +77,6 @@ void function animate() {
   const dt = clock.getDelta()
   physicsWorld.stepSimulation(dt, 10) // physicsWorld.stepSimulation(1 / 60)
   updateCars()
-  fadeDecals(scene)
   chaseCam({ camera, body: cars[0].mesh.userData.body })
   renderer.render(scene, camera)
 }()

@@ -4,7 +4,7 @@ import { createSun } from '/utils/light.js'
 import { getSize } from '/utils/helpers.js'
 import { createPhysicsWorld, updateMesh, chaseCam, createGround, findGround } from '/utils/physics.js'
 import { loadModel } from '/utils/loaders.js'
-import { createVehicle, handleInput, updateTires, fadeDecals } from '/utils/vehicle.js'
+import { createVehicle, handleInput, updateTires } from '/utils/vehicle.js'
 
 scene.add(createSun({ position: [10, 50, 0] }))
 
@@ -39,7 +39,6 @@ void function animate() {
   const dt = clock.getDelta()
   physicsWorld.stepSimulation(dt, 10)
   updateCar()
-  fadeDecals(scene)
   chaseCam({ camera, body })
   renderer.render(scene, camera)
 }()

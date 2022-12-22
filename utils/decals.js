@@ -35,7 +35,9 @@ export function leaveDecals({ ground, vehicle, body, wheelMeshes, scene }) {
   const accelerating = keyboard.up || keyboard.down
   const kmh = vehicle.getCurrentSpeedKmHour()
 
-  if (vehicle.getWheelInfo(2).get_m_skidInfo() > .9 || (accelerating && Math.abs(kmh) > 20)) return
+  // accelerating && Math.abs(kmh) > 20
+  // vehicle.getWheelInfo(2).get_m_skidInfo() > 0
+  if (!keyboard.left && !keyboard.right) return
 
   const groundMesh = ground?.children?.length ? ground.children[0] : ground
   const velocity = new THREE.Vector3(0, 0, 0)
