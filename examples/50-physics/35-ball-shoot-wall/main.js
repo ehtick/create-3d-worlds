@@ -5,10 +5,9 @@ import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
 import keyboard from '/utils/classes/Keyboard.js'
 
-const magnitude = document.getElementById('magnitude')
-const minMagnitude = 15
-const maxMagnitude = 30
-magnitude.value = minMagnitude
+const impulse = document.getElementById('impulse')
+const minImpulse = impulse.value = 15
+const maxImpulse = 30
 
 createOrbitControls()
 camera.position.set(-10, 1.5, 0)
@@ -47,8 +46,8 @@ function addRigidBody(mesh) {
 
 void function loop() {
   requestAnimationFrame(loop)
-  if (keyboard.pressed.mouse && magnitude.value < maxMagnitude)
-    magnitude.value = parseFloat(magnitude.value) + .2
+  if (keyboard.pressed.mouse && impulse.value < maxImpulse)
+    impulse.value = parseFloat(impulse.value) + .2
 
   const dt = clock.getDelta()
   physicsWorld.stepSimulation(dt, 10)
@@ -66,7 +65,7 @@ window.addEventListener('pointerup', e => {
   const pos = new THREE.Vector3().copy(raycaster.ray.direction).add(raycaster.ray.origin)
   const ball = createBall({ radius: .4, mass: 5, pos })
   addRigidBody(ball)
-  pos.copy(raycaster.ray.direction).multiplyScalar(magnitude.value)
+  pos.copy(raycaster.ray.direction).multiplyScalar(impulse.value)
   ball.userData.body.setLinearVelocity(new Ammo.btVector3(pos.x, pos.y, pos.z))
-  magnitude.value = minMagnitude
+  impulse.value = minImpulse
 })
