@@ -7,11 +7,11 @@ import { material as lavaMaterial } from '/utils/shaders/lava.js'
 const { randFloat } = THREE.MathUtils
 const simplex = new SimplexNoise()
 
-const groundColors = [0xA62A2A, 0x7a8a46, 0x228b22, 0xfffacd]
-const sandColors = [0xc2b280, 0xF2D16B, 0xf0e68c, 0xfffacd]
-const cratersColors = [0x5C4033, 0xA62A2A, 0xc2b280]
-const camoColors = [0x7a8a46, 0xc2b280, 0x228b22, 0x509f53]
-// const desertPlanetColors = [0xB0E0E6, 0xCD853F, 0xEEE8AA, 0xbf8040, 0x666666]
+export const groundColors = [0xA62A2A, 0x7a8a46, 0x228b22, 0xfffacd]
+export const sandColors = [0xc2b280, 0xF2D16B, 0xf0e68c, 0xfffacd]
+export const cratersColors = [0x5C4033, 0xA62A2A, 0xc2b280]
+export const camoColors = [0x7a8a46, 0xc2b280, 0x228b22, 0x509f53]
+export const desertPlanetColors = [0xB0E0E6, 0xCD853F, 0xEEE8AA, 0xbf8040, 0x666666]
 
 /* HILL */
 
@@ -123,7 +123,7 @@ function randomShades(geometry, colorParam, range) { // h = .25, s = 0.5, l = 0.
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 }
 
-function heightColors({ geometry, maxY, minY = 0, domainColors = groundColors } = {}) {
+export function heightColors({ geometry, maxY, minY = 0, domainColors = groundColors } = {}) {
   const { position } = geometry.attributes
   const f = chroma.scale(domainColors).domain([minY, maxY])
   const colors = []

@@ -10,7 +10,7 @@ npx live-server
 ```
 
 ### Physics
-- da kamera ne gleda ispod terena
+- da kamera ne gleda ispod terena (mozda zeza side: THREE.FrontSide)
 
 vozilo:
   - dodati fiziku na steam tenk ili lokomotivu

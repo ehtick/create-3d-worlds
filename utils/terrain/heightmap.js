@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { material } from '/utils/shaders/heightmap-shader.js'
+import { heightColors, desertPlanetColors } from '/utils/ground.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -17,11 +18,12 @@ export async function terrainFromHeightmap({
   return mesh
 }
 
-export function meshFromData({ data, width, depth }) {
+export function meshFromData({ data, width, depth, minHeight, maxHeight }) {
   const geometry = geometryFromData({ data, width, depth })
-  const material = new THREE.MeshLambertMaterial({ color: 0xfffacd })
+  const material = new THREE.MeshLambertMaterial({ vertexColors: true })
   const mesh = new THREE.Mesh(geometry, material)
   mesh.receiveShadow = true
+  heightColors({ geometry, minY: minHeight, maxY: maxHeight, domainColors: desertPlanetColors })
   return mesh
 }
 
