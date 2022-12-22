@@ -9,8 +9,8 @@ const textureLoader = new THREE.TextureLoader()
 const oldCarPos = new THREE.Vector3(0, 0, 0)
 const oldCarPos2 = new THREE.Vector3(0, 0, 0)
 
+let decals = []
 let decRot = 0
-const decals = []
 
 const decalMaterial = new THREE.MeshPhongMaterial({
   specular: 0x444444,
@@ -117,4 +117,12 @@ export function leaveDecals({ ground, vehicle, body, wheelMeshes, scene }) {
   md = new THREE.Mesh(new DecalGeometry(groundMesh, p_d, r_d, s_d), material_d)
   decals.push(md)
   scene.add(md)
+}
+
+export function fadeDecals(scene) {
+  decals.forEach(decal => {
+    decal.material.opacity -= .001
+    if (decal.material.opacity <= 0) scene.remove(decal)
+  })
+  decals = decals.filter(decal => decal.material.opacity > 0)
 }
