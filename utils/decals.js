@@ -41,9 +41,9 @@ export function leaveDecals({ ground, vehicle, body, wheelMeshes, scene }) {
   const dec2 = new Ammo.btVector3(0, 0, 0)
   const dec3 = new Ammo.btVector3(0, 0, 0)
 
-  const p_d = new THREE.Vector3(0, 0, 0)
-  const r_d = new THREE.Euler(0, 0, 0, 'XYZ')
-  const s_d = new THREE.Vector3(90, 90, 90)
+  const position = new THREE.Vector3(0, 0, 0)
+  const orientation = new THREE.Euler(0, 0, 0, 'XYZ')
+  const size = new THREE.Vector3(90, 90, 90)
 
   const wheelRot = body.getWorldTransform().getBasis()
 
@@ -60,30 +60,31 @@ export function leaveDecals({ ground, vehicle, body, wheelMeshes, scene }) {
     dec2.z() + wheelMeshes[3].position.z
   )
 
-  p_d.set(dec3.x(), dec3.y(), dec3.z())
+  position.set(dec3.x(), dec3.y(), dec3.z())
 
-  velocity.x = p_d.x - oldCarPos.x
-  velocity.y = p_d.y - oldCarPos.y
-  velocity.z = p_d.z - oldCarPos.z
+  velocity.x = position.x - oldCarPos.x
+  velocity.y = position.y - oldCarPos.y
+  velocity.z = position.z - oldCarPos.z
 
-  oldCarPos.x = p_d.x
-  oldCarPos.y = p_d.y
-  oldCarPos.z = p_d.z
+  oldCarPos.x = position.x
+  oldCarPos.y = position.y
+  oldCarPos.z = position.z
   // angle from velocity
   decRot = -fixAngleRad(Math.atan2(velocity.z, velocity.x) + Math.PI / 2)
 
-  r_d.set(0, decRot, 0)
+  orientation.set(0, decRot, 0)
   if (velocity.length() > 2) {
     velocity.x = 0
     velocity.y = 0
     velocity.z = 0
   }
-  s_d.set(1, 1, velocity.length())
-  const material_d = decalMaterial.clone()
+  size.set(1, 1, velocity.length())
+  const material = decalMaterial.clone()
 
-  let md = new THREE.Mesh(new DecalGeometry(groundMesh, p_d, r_d, s_d), material_d)
-  decals.push(md)
-  scene.add(md)
+  console.log(position, orientation, size)
+  let track = new THREE.Mesh(new DecalGeometry(groundMesh, position, orientation, size), material)
+  decals.push(track)
+  scene.add(track)
 
   // right track
   dec.setValue(.2, 0, .2)
@@ -97,27 +98,27 @@ export function leaveDecals({ ground, vehicle, body, wheelMeshes, scene }) {
     dec2.y() + wheelMeshes[2].position.y,
     dec2.z() + wheelMeshes[2].position.z
   )
-  p_d.set(dec3.x(), dec3.y(), dec3.z())
+  position.set(dec3.x(), dec3.y(), dec3.z())
 
-  velocity.x = p_d.x - oldCarPos2.x
-  velocity.y = p_d.y - oldCarPos2.y
-  velocity.z = p_d.z - oldCarPos2.z
+  velocity.x = position.x - oldCarPos2.x
+  velocity.y = position.y - oldCarPos2.y
+  velocity.z = position.z - oldCarPos2.z
 
-  oldCarPos2.x = p_d.x
-  oldCarPos2.y = p_d.y
-  oldCarPos2.z = p_d.z
+  oldCarPos2.x = position.x
+  oldCarPos2.y = position.y
+  oldCarPos2.z = position.z
 
   decRot = -fixAngleRad(Math.atan2(velocity.z, velocity.x) + Math.PI / 2)
-  r_d.set(0, decRot, 0)
+  orientation.set(0, decRot, 0)
 
   if (velocity.length() > 2) {
     velocity.x = 0; velocity.y = 0; velocity.z = 0
   }
-  s_d.set(1, 1, velocity.length())
+  size.set(1, 1, velocity.length())
 
-  md = new THREE.Mesh(new DecalGeometry(groundMesh, p_d, r_d, s_d), material_d)
-  decals.push(md)
-  scene.add(md)
+  track = new THREE.Mesh(new DecalGeometry(groundMesh, position, orientation, size), material)
+  decals.push(track)
+  scene.add(track)
 }
 
 export function fadeDecals(scene) {
