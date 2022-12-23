@@ -60,10 +60,10 @@ export default class Vehicle {
 
   createWheels(tuning) {
     const { y } = getSize(this.wheelMesh)
-    const wheelFront = { x: 1.15, y: y * .25, z: 1.55 }
-    const wheelBack = { x: 1.15, y: y * .25, z: -1.8 }
-    const wheelRadiusFront = y * .5
-    const wheelRadiusBack = y * .5
+    const wheelFront = { x: 1.15, y: y * .2, z: 1.55 }
+    const wheelBack = { x: 1.15, y: y * .2, z: -1.8 }
+    const wheelRadiusFront = y * .4
+    const wheelRadiusBack = y * .4
 
     this.createWheel(true, new Ammo.btVector3(wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
     this.createWheel(true, new Ammo.btVector3(-wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)

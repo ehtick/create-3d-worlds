@@ -1,3 +1,4 @@
+import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
@@ -8,7 +9,19 @@ import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import { createSphere, createBox } from '/utils/geometry.js'
 import Vehicle from '/utils/classes/Vehicle.js'
 
-scene.add(createSun())
+scene.add(createSun({ sunColor: 0xB0E0E6 }))
+
+// {
+//   const color = 0xA62A2A
+//   const near = 10
+//   const far = 100
+//   scene.fog = new THREE.Fog(color, near, far)
+// }
+// {
+//   const color = 0xB0E0E6
+//   const density = 0.018
+//   scene.fog = new THREE.FogExp2(color, density)
+// }
 
 const speedometer = document.getElementById('speedometer')
 
