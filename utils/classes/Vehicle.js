@@ -63,7 +63,6 @@ export default class Vehicle {
     const wheelFront = { x: 1.15, y: y * .1, z: 1.55 }
     const wheelBack = { x: 1.15, y: y * .1, z: -1.8 }
 
-    // BUG: ostavlja tragove samo ako je premali radius, ne ostavlja ako je normalan
     const wheelRadiusFront = y * .3
     const wheelRadiusBack = y * .3
 
