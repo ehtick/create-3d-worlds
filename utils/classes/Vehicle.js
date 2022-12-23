@@ -150,6 +150,11 @@ export default class Vehicle {
     else
       this.vehicleSteering = 0
 
+    if (keyboard.space) {
+      breakingForce = maxBreakingForce * 2
+      engineForce = 0.0
+    }
+
     this.updatePhysics(engineForce, breakingForce)
     this.updateMeshes()
   }
