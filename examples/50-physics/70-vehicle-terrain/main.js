@@ -24,7 +24,7 @@ tremplin.rotateX(-Math.PI / 15)
 tremplin.position.set(-10, -7.5, 20)
 world.add(tremplin, 0)
 
-for (let index = 0; index < 5; index++) {
+for (let i = 0; i < 3; i++) {
   const ball = createSphere({ color: 0x333333 })
   ball.position.set(5 * Math.random(), 0, -20 * Math.random())
   world.add(ball, 3000)

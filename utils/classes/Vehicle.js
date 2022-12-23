@@ -26,6 +26,7 @@ export default class Vehicle {
     this.mesh = new THREE.Group
     this.mesh.add(chassisMesh)
     this.chassisMesh = chassisMesh
+    this.wheelMesh = wheelMesh
 
     if (position) chassisMesh.position.copy(position)
     if (quaternion) chassisMesh.quaternion.copy(quaternion)
@@ -58,10 +59,11 @@ export default class Vehicle {
   }
 
   createWheels(tuning) {
-    const wheelFront = { x: 1.15, y: .3, z: 1.55 }
-    const wheelBack = { x: 1.15, y: .3, z: -1.8 }
-    const wheelRadiusFront = .45
-    const wheelRadiusBack = .45
+    const { y } = getSize(this.wheelMesh)
+    const wheelFront = { x: 1.15, y: y * .25, z: 1.55 }
+    const wheelBack = { x: 1.15, y: y * .25, z: -1.8 }
+    const wheelRadiusFront = y * .5
+    const wheelRadiusBack = y * .5
 
     this.createWheel(true, new Ammo.btVector3(wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
     this.createWheel(true, new Ammo.btVector3(-wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
