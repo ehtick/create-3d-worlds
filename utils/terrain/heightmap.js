@@ -20,7 +20,7 @@ export async function terrainFromHeightmap({
 
 export function meshFromData({ data, width, depth, minHeight, maxHeight }) {
   const geometry = geometryFromData({ data, width, depth })
-  const material = new THREE.MeshLambertMaterial({ vertexColors: true })
+  const material = new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide })
   const mesh = new THREE.Mesh(geometry, material)
   mesh.receiveShadow = true
   heightColors({ geometry, minY: minHeight, maxY: maxHeight, domainColors: desertPlanetColors })

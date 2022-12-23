@@ -139,7 +139,7 @@ export function createTerrain({ data, width, depth, minHeight = 0, maxHeight = 2
 
   const shape = createTerrainShape({ data, width, depth, mapWidth: width, mapDepth: depth, minHeight, maxHeight })
 
-  const position = new THREE.Vector3(0, mesh.position.y + averageHeight + .1, 0)
+  const position = new THREE.Vector3(0, mesh.position.y + averageHeight, 0)
   const body = createRigidBody({ mesh: { position }, mass: 0, shape })
   body.setRestitution(0.9)
 
