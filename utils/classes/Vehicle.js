@@ -64,8 +64,8 @@ export default class Vehicle {
     const wheelBack = { x: 1.15, y: y * .1, z: -1.8 }
 
     // BUG: ostavlja tragove samo ako je premali radius, ne ostavlja ako je normalan
-    const wheelRadiusFront = y * .2
-    const wheelRadiusBack = y * .2
+    const wheelRadiusFront = y * .3
+    const wheelRadiusBack = y * .3
 
     this.createWheel(true, new Ammo.btVector3(wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
     this.createWheel(true, new Ammo.btVector3(-wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)

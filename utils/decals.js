@@ -60,7 +60,7 @@ export function leaveDecals({ ground, vehicle, body, wheelMeshes, scene }) {
     dec2.z() + wheelMeshes[3].position.z
   )
 
-  position.set(dec3.x(), dec3.y(), dec3.z())
+  position.set(dec3.x(), Math.floor(dec3.y()), dec3.z()) // bugfix: Math.floor
 
   velocity.x = position.x - oldCarPos.x
   velocity.y = position.y - oldCarPos.y
@@ -81,7 +81,6 @@ export function leaveDecals({ ground, vehicle, body, wheelMeshes, scene }) {
   size.set(1, 1, velocity.length())
   const material = decalMaterial.clone()
 
-  console.log(position, orientation, size)
   let track = new THREE.Mesh(new DecalGeometry(groundMesh, position, orientation, size), material)
   decals.push(track)
   scene.add(track)
@@ -98,7 +97,7 @@ export function leaveDecals({ ground, vehicle, body, wheelMeshes, scene }) {
     dec2.y() + wheelMeshes[2].position.y,
     dec2.z() + wheelMeshes[2].position.z
   )
-  position.set(dec3.x(), dec3.y(), dec3.z())
+  position.set(dec3.x(), Math.floor(dec3.y()), dec3.z()) // bugfix: Math.floor
 
   velocity.x = position.x - oldCarPos2.x
   velocity.y = position.y - oldCarPos2.y
@@ -119,6 +118,8 @@ export function leaveDecals({ ground, vehicle, body, wheelMeshes, scene }) {
   track = new THREE.Mesh(new DecalGeometry(groundMesh, position, orientation, size), material)
   decals.push(track)
   scene.add(track)
+
+  fadeDecals(scene)
 }
 
 export function fadeDecals(scene) {

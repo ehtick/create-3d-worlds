@@ -45,7 +45,6 @@ void function animate() {
   requestAnimationFrame(animate)
   tank.update()
   leaveDecals({ ground, scene, vehicle: tank.vehicle, body: tank.body, wheelMeshes: tank.wheelMeshes })
-  fadeDecals(scene)
   cameraControls.update(tank.chassisMesh)
   const dt = clock.getDelta()
   world.update(dt)
