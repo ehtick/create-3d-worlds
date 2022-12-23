@@ -3,6 +3,7 @@ import { DecalGeometry } from '/node_modules/three/examples/jsm/geometries/Decal
 
 import { Ammo } from '/utils/physics.js'
 import keyboard from '/utils/classes/Keyboard.js'
+import { getMesh } from '/utils/helpers.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -34,7 +35,7 @@ function fixAngleRad(a) {
 export function leaveDecals({ ground, vehicle, body, wheelMeshes, scene }) {
   if (!keyboard.left && !keyboard.right || vehicle.getCurrentSpeedKmHour() < 30) return
 
-  const groundMesh = ground?.children?.length ? ground.children[0] : ground
+  const groundMesh = getMesh(ground)
   const velocity = new THREE.Vector3(0, 0, 0)
   const dec = new Ammo.btVector3(0, 0, 0)
   const dec2 = new Ammo.btVector3(0, 0, 0)
@@ -45,6 +46,8 @@ export function leaveDecals({ ground, vehicle, body, wheelMeshes, scene }) {
   const s_d = new THREE.Vector3(90, 90, 90)
 
   const wheelRot = body.getWorldTransform().getBasis()
+
+  // left track
   dec.setValue(-.2, 0, .2)
   dec2.setValue(
     wheelRot.getRow(0).x() * dec.x() + wheelRot.getRow(0).y() * dec.y() + wheelRot.getRow(0).z() * dec.z(),
@@ -82,6 +85,7 @@ export function leaveDecals({ ground, vehicle, body, wheelMeshes, scene }) {
   decals.push(md)
   scene.add(md)
 
+  // right track
   dec.setValue(.2, 0, .2)
   dec2.setValue(
     wheelRot.getRow(0).x() * dec.x() + wheelRot.getRow(0).y() * dec.y() + wheelRot.getRow(0).z() * dec.z(),

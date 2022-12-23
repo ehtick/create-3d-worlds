@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { getSize } from '/utils/helpers.js'
+import { getSize, getMesh } from '/utils/helpers.js'
 import { meshFromData } from '/utils/terrain/heightmap.js'
 
 export const Ammo = typeof window.Ammo == 'function' ? await window.Ammo() : window.Ammo
@@ -19,16 +19,6 @@ export function createPhysicsWorld({ gravity = 9.82, softBody = false } = {}) {
 }
 
 /* SHAPE */
-
-const getMesh = obj => {
-  if (obj.isMesh) return obj
-  let mesh
-  obj.traverse(child => {
-    if (child.isMesh) mesh = child
-    return
-  })
-  return mesh
-}
 
 const guessMassFromMesh = obj => {
   const mesh = getMesh(obj)

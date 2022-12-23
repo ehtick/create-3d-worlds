@@ -61,6 +61,16 @@ export const mouseToWorld = (e, camera = defaultCamera, z = .9) => {
 
 /* MESHES */
 
+export const getMesh = obj => {
+  if (obj.isMesh) return obj
+  let mesh
+  obj.traverse(child => {
+    if (child.isMesh) mesh = child
+    return
+  })
+  return mesh
+}
+
 export const isCollide = (bounds1, bounds2) =>
   bounds1.xMin <= bounds2.xMax && bounds1.xMax >= bounds2.xMin &&
   bounds1.yMin <= bounds2.yMax && bounds1.yMax >= bounds2.yMin &&
