@@ -4,6 +4,9 @@ import { dirLight } from '/utils/light.js'
 import { generateSineWaveData, createTerrainFromData } from '/utils/ground.js'
 import { createTerrainBodyFromData } from '/utils/physics.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
+import { randomColor } from '/utils/helpers.js'
+
+const { randFloatSpread } = THREE.MathUtils
 
 const world = new PhysicsWorld()
 
@@ -26,31 +29,24 @@ world.add(terrain, 0)
 
 /* FUNCTIONS */
 
-function generateObject() {
-  const randNum = Math.ceil(Math.random() * 3)
-  const objectSize = 3
-
-  const rand1 = 1 + Math.random() * objectSize
-  const rand2 = 1 + Math.random() * objectSize
-  const rand3 = 1 + Math.random() * objectSize
-
-  const color = Math.floor(Math.random() * (1 << 24))
-  const material = new THREE.MeshPhongMaterial({ color })
-
-  let mesh = null
-  switch (randNum) {
-    case 1:
-      mesh = new THREE.Mesh(new THREE.SphereGeometry(rand1, 20, 20), material)
-      break
-    case 2:
-      mesh = new THREE.Mesh(new THREE.BoxGeometry(rand1, rand2, rand3, 1, 1, 1), material)
-      break
-    case 3:
-      mesh = new THREE.Mesh(new THREE.CylinderGeometry(rand1, rand1, rand2, 20, 1), material)
-      break
+const getGeometry = (num, size) => {
+  switch (num) {
+    case 1: return new THREE.SphereGeometry(size.x, 20, 20)
+    case 2: return new THREE.BoxGeometry(size.x, size.y, size.z, 1, 1, 1)
+    case 3: return new THREE.CylinderGeometry(size.x, size.x, size.y, 20, 1)
   }
+}
 
-  mesh.position.set((Math.random() - 0.5) * width * 0.6, maxHeight + objectSize + 2, (Math.random() - 0.5) * depth * 0.6)
+function generateObject() {
+  const total = 3
+  const randNum = Math.ceil(Math.random() * total)
+  const size = new THREE.Vector3(1 + Math.random() * total, 1 + Math.random() * total, 1 + Math.random() * total)
+
+  const geometry = getGeometry(randNum, size)
+  const material = new THREE.MeshPhongMaterial({ color: randomColor() })
+  const mesh = new THREE.Mesh(geometry, material)
+
+  mesh.position.set(randFloatSpread(mapWidth), maxHeight * 1.2, randFloatSpread(mapDepth))
   world.add(mesh)
 }
 
