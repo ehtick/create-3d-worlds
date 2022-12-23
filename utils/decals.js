@@ -32,7 +32,7 @@ function fixAngleRad(a) {
 }
 
 export function leaveDecals({ ground, vehicle, body, wheelMeshes, scene }) {
-  // if (!keyboard.left && !keyboard.right || vehicle.getCurrentSpeedKmHour() < 30) return
+  if (!keyboard.left && !keyboard.right || vehicle.getCurrentSpeedKmHour() < 30) return
 
   const groundMesh = ground?.children?.length ? ground.children[0] : ground
   const velocity = new THREE.Vector3(0, 0, 0)
