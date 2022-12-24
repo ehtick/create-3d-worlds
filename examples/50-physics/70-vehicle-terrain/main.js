@@ -3,9 +3,9 @@ import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { getHeightData } from '/utils/terrain/heightmap.js'
 import { createTerrain } from '/utils/physics.js'
+import { createSphere, createBox } from '/utils/geometry.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
-import { createSphere, createBox } from '/utils/geometry.js'
 import Vehicle from '/utils/classes/Vehicle.js'
 
 scene.add(createSun({ sunColor: 0xB0E0E6 }))
