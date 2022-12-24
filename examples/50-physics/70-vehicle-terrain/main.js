@@ -10,8 +10,6 @@ import Vehicle from '/utils/classes/Vehicle.js'
 
 scene.add(createSun({ sunColor: 0xB0E0E6 }))
 
-const speedometer = document.getElementById('speedometer')
-
 const world = new PhysicsWorld()
 const cameraControls = new VehicleCamera({ camera })
 
@@ -46,7 +44,5 @@ void function animate() {
   cameraControls.update(tank.chassisMesh)
   const dt = clock.getDelta()
   world.update(dt)
-  const speed = tank.vehicle.getCurrentSpeedKmHour()
-  speedometer.innerHTML = speed.toFixed(1) + ' km/h'
   renderer.render(scene, camera)
 }()

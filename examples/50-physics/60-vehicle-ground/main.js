@@ -7,7 +7,7 @@ import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import Vehicle from '/utils/classes/Vehicle.js'
 import { createGround } from '/utils/ground.js'
-import { leaveDecals, fadeDecals } from '/utils/decals.js'
+import { leaveDecals } from '/utils/decals.js'
 
 scene.add(createSun())
 
