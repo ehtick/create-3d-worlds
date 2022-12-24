@@ -14,7 +14,6 @@ npx live-server
 vozilo:
   - dodati fiziku na steam tenk ili lokomotivu
   - dodati zanimljive objekte i prepreke
-  - probati fizika lavirint sa vozilom, cilj da što manje sruši
 - isprobati dodavanje sile na kuglu: applyForce, applyImpulse or setLinearVelocity
 - napraviti sletanje na mesec 3d
 - dodati fiziku u vučenje kocki

@@ -96,6 +96,8 @@ export default class Vehicle {
     wheelInfo.set_m_rollInfluence(rollInfluence)
   }
 
+  /* UPDATE */
+
   updateMeshes() {
     const { vehicle, wheelMeshes } = this
 
