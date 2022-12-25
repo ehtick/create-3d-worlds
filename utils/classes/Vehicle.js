@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-import { Ammo, createRigidBody } from '/utils/physics.js'
+import { Ammo, createRigidBody, updateMeshTransform } from '/utils/physics.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { getSize } from '/utils/helpers.js'
 
@@ -13,13 +13,6 @@ const steeringIncrement = .04
 const steeringClamp = .5
 const maxEngineForce = 2000
 const maxBreakingForce = 100
-
-function updateMeshTransform(mesh, transform) {
-  const position = transform.getOrigin()
-  const quaternion = transform.getRotation()
-  mesh.position.set(position.x(), position.y(), position.z())
-  mesh.quaternion.set(quaternion.x(), quaternion.y(), quaternion.z(), quaternion.w())
-}
 
 export default class Vehicle {
   constructor({ physicsWorld, chassisMesh, wheelMesh, position, quaternion, mass = 800 }) {
