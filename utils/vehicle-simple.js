@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { Ammo } from '/utils/physics.js'
+import { Ammo, createRigidBody } from '/utils/physics.js'
 
 import keyboard from '/utils/classes/Keyboard.js'
 
@@ -44,15 +44,7 @@ export function createSimpleVehicle({
 
   // body
   const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .5, length * .5))
-  const transform = new Ammo.btTransform()
-  transform.setIdentity()
-  transform.setOrigin(new Ammo.btVector3(pos.x, pos.y, pos.z))
-  const motionState = new Ammo.btDefaultMotionState(transform)
-  const inertia = new Ammo.btVector3(0, 0, 0)
-  shape.calculateLocalInertia(mass, inertia)
-  const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia))
-  body.setActivationState(4)
-
+  const body = createRigidBody({ mesh: { position: pos }, mass, shape })
   physicsWorld.addRigidBody(body)
 
   // Raycast Vehicle
