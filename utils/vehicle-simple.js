@@ -20,7 +20,7 @@ function createWheel(radius, width) {
 }
 
 export function createSimpleVehicle({
-  physicsWorld, pos, width = 1.8, height = .6, length = 4, mass = 800,
+  physicsWorld, position, width = 1.8, height = .6, length = 4, mass = 800,
 
   wheelAxisPositionBack = -1,
   wheelRadiusBack = .4,
@@ -44,7 +44,7 @@ export function createSimpleVehicle({
 
   // body
   const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .5, length * .5))
-  const body = createRigidBody({ mesh: { position: pos }, mass, shape })
+  const body = createRigidBody({ mesh: { position }, mass, shape })
   physicsWorld.addRigidBody(body)
 
   // Raycast Vehicle
@@ -59,9 +59,9 @@ export function createSimpleVehicle({
   const wheelDirection = new Ammo.btVector3(0, -1, 0)
   const wheelAxle = new Ammo.btVector3(-1, 0, 0)
 
-  function addWheel(isFront, pos, radius, width, index) {
+  function addWheel(isFront, position, radius, width, index) {
     const wheelInfo = vehicle.addWheel(
-      pos,
+      position,
       wheelDirection,
       wheelAxle,
       suspensionRestLength,

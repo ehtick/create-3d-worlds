@@ -6,18 +6,14 @@ import { loadModel } from '/utils/loaders.js'
 import { createGround } from '/utils/ground.js'
 import { createBox, createCrates } from '/utils/geometry.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
+import { createSun } from '/utils/light.js'
 
 const world = new PhysicsWorld()
 const cameraControls = new VehicleCamera({ camera })
 
 const { Vector3 } = THREE
 
-const ambientLight = new THREE.AmbientLight(0x404040)
-scene.add(ambientLight)
-
-const dirLight = new THREE.DirectionalLight(0xffffff, 1)
-dirLight.position.set(10, 10, 5)
-scene.add(dirLight)
+scene.add(createSun())
 
 const ground = createGround({ color: 0x509f53 })
 world.add(ground, 0)
@@ -33,8 +29,8 @@ createCrates({ z: 10 }).forEach(mesh => world.add(mesh))
 const width = 1.8, height = .6, length = 4
 const { mesh: carMesh } = await loadModel({ file: 'tank/steampunk/model.fbx', angle: Math.PI })
 
-const { vehicle, wheels, body } = createSimpleVehicle({
-  physicsWorld: world.physicsWorld, width, height, length, pos: new Vector3(0, 4, -20),
+const { vehicle, wheels } = createSimpleVehicle({
+  physicsWorld: world.physicsWorld, width, height, length, position: new Vector3(0, 4, -20),
 })
 
 scene.add(carMesh) // , ...wheels
@@ -45,7 +41,7 @@ void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
   updateVehicle({ vehicle, mesh: carMesh, wheels })
-  cameraControls.update(carMesh)
   world.update(dt)
+  cameraControls.update(carMesh)
   renderer.render(scene, camera)
 }()
