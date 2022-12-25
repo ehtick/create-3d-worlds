@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { Ammo, createRigidBody } from '/utils/physics.js'
-
+import { getSize } from '/utils/helpers.js'
 import keyboard from '/utils/classes/Keyboard.js'
 
 const FRONT_LEFT = 0
@@ -43,7 +43,7 @@ export function createSimpleVehicle({
   const rollInfluence = 0.2
 
   // body
-  const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .5, length * .5))
+  const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .25, length * .5))
   const body = createRigidBody({ mesh: { position }, mass, shape })
   physicsWorld.addRigidBody(body)
 
@@ -148,7 +148,8 @@ export function updateVehicle({ vehicle, wheelMeshes, mesh }) {
 }
 
 export default class Vehicle {
-  constructor({ physicsWorld, chassisMesh, width, height, length, position }) {
+  constructor({ physicsWorld, chassisMesh, position }) {
+    const { x: width, y: height, z: length } = getSize(chassisMesh)
     const { vehicle, wheelMeshes } = createSimpleVehicle({ physicsWorld, width, height, length, position })
     this.vehicle = vehicle
     this.wheelMeshes = wheelMeshes
