@@ -156,6 +156,6 @@ export default class Vehicle {
   }
 
   update() {
-    updateVehicle({ vehicle: this, mesh: this.chassisMesh, wheelMeshes: this.wheelMeshes })
+    updateVehicle({ vehicle: this.vehicle, mesh: this.chassisMesh, wheelMeshes: this.wheelMeshes })
   }
 }
