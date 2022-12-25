@@ -1,31 +1,14 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { Ammo } from '/utils/physics.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import { createSimpleVehicle, updateVehicle } from '/utils/vehicle-simple.js'
 import { loadModel } from '/utils/loaders.js'
 import { createGround } from '/utils/ground.js'
 import { createBox, createCrates } from '/utils/geometry.js'
+import VehicleCamera from '/utils/classes/VehicleCamera.js'
 
 const world = new PhysicsWorld()
-
-function chaseCam({ body, camHeight = 4, distance = 8, camera } = {}) {
-  const row = n => body.getWorldTransform().getBasis().getRow(n)
-  const dist = new Ammo.btVector3(0, camHeight, -distance)
-  const camPointer = new Ammo.btVector3(
-    row(0).x() * dist.x() + row(0).y() * dist.y() + row(0).z() * dist.z(),
-    row(1).x() * dist.x() + row(1).y() * dist.y() + row(1).z() * dist.z(),
-    row(2).x() * dist.x() + row(2).y() * dist.y() + row(2).z() * dist.z()
-  )
-
-  const target = body.getWorldTransform().getOrigin()
-  camera.position.set(
-    camPointer.x() + target.x(),
-    camPointer.y() + target.y(),
-    camPointer.z() + target.z()
-  )
-  camera.lookAt(new THREE.Vector3(target.x(), target.y(), target.z()))
-}
+const cameraControls = new VehicleCamera({ camera })
 
 const { Vector3 } = THREE
 
@@ -56,18 +39,13 @@ const { vehicle, wheels, body } = createSimpleVehicle({
 
 scene.add(carMesh) // , ...wheels
 
-camera.position.set(0, 5, -4)
-
-const lookAt = new Vector3(carMesh.position.x, carMesh.position.y, carMesh.position.z + 4)
-camera.lookAt(lookAt)
-
 /* LOOP */
 
 void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
   updateVehicle({ vehicle, mesh: carMesh, wheels })
-  chaseCam({ camera, body })
+  cameraControls.update(carMesh)
   world.update(dt)
   renderer.render(scene, camera)
 }()
