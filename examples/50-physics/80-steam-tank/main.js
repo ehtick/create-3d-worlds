@@ -29,18 +29,18 @@ createCrates({ z: 10 }).forEach(mesh => world.add(mesh))
 const width = 1.8, height = .6, length = 4
 const { mesh: carMesh } = await loadModel({ file: 'tank/steampunk/model.fbx', angle: Math.PI })
 
-const { vehicle, wheels } = createSimpleVehicle({
+const { vehicle, wheelMeshes } = createSimpleVehicle({
   physicsWorld: world.physicsWorld, width, height, length, position: new Vector3(0, 4, -20),
 })
 
-scene.add(carMesh) // , ...wheels
+scene.add(carMesh) // , ...wheelMeshes
 
 /* LOOP */
 
 void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
-  updateVehicle({ vehicle, mesh: carMesh, wheels })
+  updateVehicle({ vehicle, mesh: carMesh, wheelMeshes })
   world.update(dt)
   cameraControls.update(carMesh)
   renderer.render(scene, camera)

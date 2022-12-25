@@ -55,7 +55,7 @@ export function createSimpleVehicle({
   physicsWorld.addAction(vehicle)
 
   // Wheels
-  const wheels = []
+  const wheelMeshes = []
   const wheelDirection = new Ammo.btVector3(0, -1, 0)
   const wheelAxle = new Ammo.btVector3(-1, 0, 0)
 
@@ -74,7 +74,7 @@ export function createSimpleVehicle({
     wheelInfo.set_m_wheelsDampingCompression(suspensionCompression)
     wheelInfo.set_m_frictionSlip(friction)
     wheelInfo.set_m_rollInfluence(rollInfluence)
-    wheels[index] = createWheel(radius, width)
+    wheelMeshes[index] = createWheel(radius, width)
   }
 
   addWheel(true, new Ammo.btVector3(wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisFrontPosition), wheelRadiusFront, wheelWidthFront, FRONT_LEFT)
@@ -82,10 +82,10 @@ export function createSimpleVehicle({
   addWheel(false, new Ammo.btVector3(-wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_LEFT)
   addWheel(false, new Ammo.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_RIGHT)
 
-  return { vehicle, wheels }
+  return { vehicle, wheelMeshes }
 }
 
-export function updateVehicle({ vehicle, wheels, mesh }) {
+export function updateVehicle({ vehicle, wheelMeshes, mesh }) {
   const steeringIncrement = .04
   const steeringClamp = .5
   const maxEngineForce = 2000
@@ -137,8 +137,8 @@ export function updateVehicle({ vehicle, wheels, mesh }) {
     tm = vehicle.getWheelTransformWS(i)
     p = tm.getOrigin()
     q = tm.getRotation()
-    wheels[i].position.set(p.x(), p.y(), p.z())
-    wheels[i].quaternion.set(q.x(), q.y(), q.z(), q.w())
+    wheelMeshes[i].position.set(p.x(), p.y(), p.z())
+    wheelMeshes[i].quaternion.set(q.x(), q.y(), q.z(), q.w())
   }
   tm = vehicle.getChassisWorldTransform()
   p = tm.getOrigin()
@@ -149,13 +149,13 @@ export function updateVehicle({ vehicle, wheels, mesh }) {
 
 export default class Vehicle {
   constructor({ physicsWorld, chassisMesh, width, height, length, position }) {
-    const { vehicle, wheels } = createSimpleVehicle({ physicsWorld, width, height, length, position })
+    const { vehicle, wheelMeshes } = createSimpleVehicle({ physicsWorld, width, height, length, position })
     this.vehicle = vehicle
-    this.wheels = wheels
+    this.wheelMeshes = wheelMeshes
     this.chassisMesh = chassisMesh
   }
 
   update() {
-    updateVehicle({ vehicle: this, mesh: this.chassisMesh, wheels: this.wheels })
+    updateVehicle({ vehicle: this, mesh: this.chassisMesh, wheelMeshes: this.wheelMeshes })
   }
 }
