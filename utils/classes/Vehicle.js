@@ -14,7 +14,7 @@ const steeringClamp = .5
 const maxEngineForce = 2000
 const maxBreakingForce = 100
 
-function updateMesh(mesh, transform) {
+function updateMeshTransform(mesh, transform) {
   const position = transform.getOrigin()
   const quaternion = transform.getRotation()
   mesh.position.set(position.x(), position.y(), position.z())
@@ -101,13 +101,13 @@ export default class Vehicle {
   updateMeshes() {
     const { vehicle, wheelMeshes } = this
 
-    const numWheels = vehicle.getNumWheels()
-    for (let i = 0; i < numWheels; i++) {
+    const n = vehicle.getNumWheels()
+    for (let i = 0; i < n; i++) {
       vehicle.updateWheelTransform(i, true)
-      updateMesh(wheelMeshes[i], vehicle.getWheelTransformWS(i))
+      updateMeshTransform(wheelMeshes[i], vehicle.getWheelTransformWS(i))
     }
 
-    updateMesh(this.chassisMesh, vehicle.getChassisWorldTransform())
+    updateMeshTransform(this.chassisMesh, vehicle.getChassisWorldTransform())
   }
 
   updatePhysics(engineForce, breakingForce) {

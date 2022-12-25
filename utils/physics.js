@@ -157,14 +157,18 @@ export function createTerrainBodyFromData({ data, width, depth, mapWidth, mapDep
 
 /* UPDATE */
 
+export function updateMeshTransform(mesh, transform) {
+  const position = transform.getOrigin()
+  const quaternion = transform.getRotation()
+  mesh.position.set(position.x(), position.y(), position.z())
+  mesh.quaternion.set(quaternion.x(), quaternion.y(), quaternion.z(), quaternion.w())
+}
+
 export function updateMesh(mesh) {
   const { body } = mesh.userData
   const motionState = body.getMotionState()
   if (!motionState || body.isStaticOrKinematicObject()) return
   const transform = new Ammo.btTransform()
   motionState.getWorldTransform(transform)
-  const p = transform.getOrigin()
-  const q = transform.getRotation()
-  mesh.position.set(p.x(), p.y(), p.z())
-  mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
+  updateMeshTransform(mesh, transform)
 }

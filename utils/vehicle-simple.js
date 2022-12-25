@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { Ammo, createRigidBody } from '/utils/physics.js'
+import { Ammo, createRigidBody, updateMeshTransform } from '/utils/physics.js'
 import { getSize } from '/utils/helpers.js'
 import keyboard from '/utils/classes/Keyboard.js'
 
@@ -8,9 +8,10 @@ const FRONT_RIGHT = 1
 const BACK_LEFT = 2
 const BACK_RIGHT = 3
 
-let engineForce = 0
-let vehicleSteering = 0
-let breakingForce = 0
+const steeringIncrement = .04
+const steeringClamp = .5
+const maxEngineForce = 2000
+const maxBreakingForce = 100
 
 function createWheel(radius, width) {
   const geometry = new THREE.CylinderGeometry(radius, radius, width, 24, 1)
@@ -85,68 +86,6 @@ export function createSimpleVehicle({
   return { vehicle, wheelMeshes }
 }
 
-export function updateVehicle({ vehicle, wheelMeshes, mesh }) {
-  const steeringIncrement = .04
-  const steeringClamp = .5
-  const maxEngineForce = 2000
-  const maxBreakingForce = 100
-
-  const speed = vehicle.getCurrentSpeedKmHour()
-  breakingForce = 0
-  engineForce = 0
-
-  if (keyboard.up)
-    if (speed < 0) breakingForce = maxBreakingForce
-    else engineForce = maxEngineForce
-
-  if (keyboard.down)
-    if (speed > 0) breakingForce = maxBreakingForce
-    else engineForce = -maxEngineForce / 2
-
-  if (keyboard.left)
-    if (vehicleSteering < steeringClamp)
-      vehicleSteering += steeringIncrement
-
-  if (keyboard.right)
-    if (vehicleSteering > -steeringClamp)
-      vehicleSteering -= steeringIncrement
-
-  if (!keyboard.left && !keyboard.right)
-    if (vehicleSteering < -steeringIncrement)
-      vehicleSteering += steeringIncrement
-    else if (vehicleSteering > steeringIncrement)
-      vehicleSteering -= steeringIncrement
-    else
-      vehicleSteering = 0
-
-  vehicle.applyEngineForce(engineForce, BACK_LEFT)
-  vehicle.applyEngineForce(engineForce, BACK_RIGHT)
-
-  vehicle.setBrake(breakingForce / 2, FRONT_LEFT)
-  vehicle.setBrake(breakingForce / 2, FRONT_RIGHT)
-  vehicle.setBrake(breakingForce, BACK_LEFT)
-  vehicle.setBrake(breakingForce, BACK_RIGHT)
-
-  vehicle.setSteeringValue(vehicleSteering, FRONT_LEFT)
-  vehicle.setSteeringValue(vehicleSteering, FRONT_RIGHT)
-
-  let tm, p, q, i
-  const n = vehicle.getNumWheels()
-  for (i = 0; i < n; i++) {
-    vehicle.updateWheelTransform(i, true)
-    tm = vehicle.getWheelTransformWS(i)
-    p = tm.getOrigin()
-    q = tm.getRotation()
-    wheelMeshes[i].position.set(p.x(), p.y(), p.z())
-    wheelMeshes[i].quaternion.set(q.x(), q.y(), q.z(), q.w())
-  }
-  tm = vehicle.getChassisWorldTransform()
-  p = tm.getOrigin()
-  q = tm.getRotation()
-  mesh.position.set(p.x(), p.y(), p.z())
-  mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
-}
-
 export default class Vehicle {
   constructor({ physicsWorld, chassisMesh }) {
     const { x: width, y: height, z: length } = getSize(chassisMesh)
@@ -154,9 +93,64 @@ export default class Vehicle {
     this.vehicle = vehicle
     this.wheelMeshes = wheelMeshes
     this.chassisMesh = chassisMesh
+
+    this.vehicleSteering = 0
+  }
+
+  updateMeshes() {
+    const { vehicle, wheelMeshes } = this
+
+    const numWheels = vehicle.getNumWheels()
+    for (let i = 0; i < numWheels; i++) {
+      vehicle.updateWheelTransform(i, true)
+      updateMeshTransform(wheelMeshes[i], vehicle.getWheelTransformWS(i))
+    }
+
+    updateMeshTransform(this.chassisMesh, vehicle.getChassisWorldTransform())
   }
 
   update() {
-    updateVehicle({ vehicle: this.vehicle, mesh: this.chassisMesh, wheelMeshes: this.wheelMeshes })
+    const { vehicle } = this
+
+    const speed = vehicle.getCurrentSpeedKmHour()
+    let engineForce = 0
+    let breakingForce = 0
+
+    if (keyboard.up)
+      if (speed < 0) breakingForce = maxBreakingForce
+      else engineForce = maxEngineForce
+
+    if (keyboard.down)
+      if (speed > 0) breakingForce = maxBreakingForce
+      else engineForce = -maxEngineForce / 2
+
+    if (keyboard.left)
+      if (this.vehicleSteering < steeringClamp)
+        this.vehicleSteering += steeringIncrement
+
+    if (keyboard.right)
+      if (this.vehicleSteering > -steeringClamp)
+        this.vehicleSteering -= steeringIncrement
+
+    if (!keyboard.left && !keyboard.right)
+      if (this.vehicleSteering < -steeringIncrement)
+        this.vehicleSteering += steeringIncrement
+      else if (this.vehicleSteering > steeringIncrement)
+        this.vehicleSteering -= steeringIncrement
+      else
+        this.vehicleSteering = 0
+
+    vehicle.applyEngineForce(engineForce, BACK_LEFT)
+    vehicle.applyEngineForce(engineForce, BACK_RIGHT)
+
+    vehicle.setBrake(breakingForce / 2, FRONT_LEFT)
+    vehicle.setBrake(breakingForce / 2, FRONT_RIGHT)
+    vehicle.setBrake(breakingForce, BACK_LEFT)
+    vehicle.setBrake(breakingForce, BACK_RIGHT)
+
+    vehicle.setSteeringValue(this.vehicleSteering, FRONT_LEFT)
+    vehicle.setSteeringValue(this.vehicleSteering, FRONT_RIGHT)
+
+    this.updateMeshes()
   }
 }
