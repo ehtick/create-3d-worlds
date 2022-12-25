@@ -42,7 +42,7 @@ export function createSimpleVehicle({
   const suspensionRestLength = 0.6
   const rollInfluence = 0.2
 
-  // Chassis
+  // body
   const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .5, length * .5))
   const transform = new Ammo.btTransform()
   transform.setIdentity()
@@ -52,6 +52,7 @@ export function createSimpleVehicle({
   shape.calculateLocalInertia(mass, inertia)
   const body = new Ammo.btRigidBody(new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, inertia))
   body.setActivationState(4)
+
   physicsWorld.addRigidBody(body)
 
   // Raycast Vehicle
@@ -89,7 +90,7 @@ export function createSimpleVehicle({
   addWheel(false, new Ammo.btVector3(-wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_LEFT)
   addWheel(false, new Ammo.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_RIGHT)
 
-  return { vehicle, wheels, body }
+  return { vehicle, wheels }
 }
 
 export function updateVehicle({ vehicle, wheels, mesh }) {
