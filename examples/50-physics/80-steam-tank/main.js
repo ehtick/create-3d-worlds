@@ -8,8 +8,6 @@ import { createBox, createCrates } from '/utils/geometry.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import { createSun } from '/utils/light.js'
 
-const { Vector3 } = THREE
-
 const world = new PhysicsWorld()
 const cameraControls = new VehicleCamera({ camera })
 
@@ -18,20 +16,18 @@ scene.add(createSun())
 const ground = createGround({ color: 0x509f53 })
 world.add(ground, 0)
 
-const quat = new THREE.Quaternion(0, 0, 0, 1)
-quat.setFromAxisAngle(new Vector3(1, 0, 0), -Math.PI / 18)
-const jumpBoard = createBox({ width: 8, height: 4, depth: 10, pos: new Vector3(0, -1.5, 0), quat })
+const jumpBoard = createBox({ width: 8, height: 4, depth: 10, pos: new THREE.Vector3(0, -1.5, 0) })
+jumpBoard.rotateX(-Math.PI / 18)
 world.add(jumpBoard, 0)
 
 createCrates({ z: 10 }).forEach(mesh => world.add(mesh))
 
 /* VEHICLE */
 
-const position = new Vector3(0, 4, -20)
-
 const { mesh: chassisMesh } = await loadModel({ file: 'tank/steampunk/model.fbx', angle: Math.PI })
+chassisMesh.position.set(0, 4, -20)
 
-const tank = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, position })
+const tank = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh })
 
 scene.add(chassisMesh) // , ...wheelMeshes
 

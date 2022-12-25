@@ -148,9 +148,9 @@ export function updateVehicle({ vehicle, wheelMeshes, mesh }) {
 }
 
 export default class Vehicle {
-  constructor({ physicsWorld, chassisMesh, position }) {
+  constructor({ physicsWorld, chassisMesh }) {
     const { x: width, y: height, z: length } = getSize(chassisMesh)
-    const { vehicle, wheelMeshes } = createSimpleVehicle({ physicsWorld, width, height, length, position })
+    const { vehicle, wheelMeshes } = createSimpleVehicle({ physicsWorld, width, height, length, position: chassisMesh.position })
     this.vehicle = vehicle
     this.wheelMeshes = wheelMeshes
     this.chassisMesh = chassisMesh
