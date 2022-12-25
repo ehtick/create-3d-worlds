@@ -54,7 +54,7 @@ const { vehicle, wheels, body } = createSimpleVehicle({
   physicsWorld: world.physicsWorld, width, height, length, pos: new Vector3(0, 4, -20),
 })
 
-scene.add(carMesh, ...wheels)
+scene.add(carMesh) // , ...wheels
 
 camera.position.set(0, 5, -4)
 
