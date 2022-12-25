@@ -20,11 +20,12 @@ world.add(ground, 0)
 
 const quat = new THREE.Quaternion(0, 0, 0, 1)
 quat.setFromAxisAngle(new Vector3(1, 0, 0), -Math.PI / 18)
-
 const jumpBoard = createBox({ width: 8, height: 4, depth: 10, pos: new Vector3(0, -1.5, 0), quat })
 world.add(jumpBoard, 0)
 
 createCrates({ z: 10 }).forEach(mesh => world.add(mesh))
+
+/* VEHICLE */
 
 const width = 1.8, height = .6, length = 4
 const { mesh: carMesh } = await loadModel({ file: 'tank/steampunk/model.fbx', angle: Math.PI })
