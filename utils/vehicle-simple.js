@@ -146,3 +146,16 @@ export function updateVehicle({ vehicle, wheels, mesh }) {
   mesh.position.set(p.x(), p.y(), p.z())
   mesh.quaternion.set(q.x(), q.y(), q.z(), q.w())
 }
+
+export default class Vehicle {
+  constructor({ physicsWorld, chassisMesh, width, height, length, position }) {
+    const { vehicle, wheels } = createSimpleVehicle({ physicsWorld, width, height, length, position })
+    this.vehicle = vehicle
+    this.wheels = wheels
+    this.chassisMesh = chassisMesh
+  }
+
+  update() {
+    updateVehicle({ vehicle: this, mesh: this.chassisMesh, wheels: this.wheels })
+  }
+}
