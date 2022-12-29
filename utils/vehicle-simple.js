@@ -13,6 +13,10 @@ const steeringClamp = .5
 const maxEngineForce = 2000
 const maxBreakingForce = 100
 
+const radius = .4
+const wheelRadiusFront = radius
+const wheelRadiusBack = radius
+
 function createWheelMesh(radius, width) {
   const geometry = new THREE.CylinderGeometry(radius, radius, width, 24, 1)
   geometry.rotateZ(Math.PI / 2)
@@ -21,18 +25,15 @@ function createWheelMesh(radius, width) {
 }
 
 export default class Vehicle {
-  constructor({ physicsWorld, chassisMesh, mass = 800 }) {
-    const { x: width, y: height, z: length } = getSize(chassisMesh)
-
+  constructor({ physicsWorld, chassisMesh, wheelMesh = createWheelMesh(radius, radius * .5), mass = 800 }) {
     this.chassisMesh = chassisMesh
-    this.vehicleSteering = 0
+    this.wheelMesh = wheelMesh
 
-    // body
+    const { x: width, y: height, z: length } = getSize(chassisMesh)
     const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .25, length * .5))
     const body = createRigidBody({ mesh: chassisMesh, mass, shape })
     physicsWorld.addRigidBody(body)
 
-    // vehicle
     const tuning = new Ammo.btVehicleTuning()
     const rayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
     this.vehicle = new Ammo.btRaycastVehicle(tuning, body, rayCaster)
@@ -41,9 +42,20 @@ export default class Vehicle {
 
     this.wheelMeshes = []
     this.createWheels(tuning)
+    this.addWheelMeshes(wheelMesh)
+    this.vehicleSteering = 0
   }
 
-  createWheel(isFront, position, radius, width, tuning) {
+  addWheelMeshes(wheelMesh) {
+    this.wheelMeshes = []
+    for (let i = 0; i < 4; i++) {
+      const mesh = wheelMesh.clone()
+      if (i == 0 || i == 3) mesh.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
+      this.wheelMeshes.push(mesh)
+    }
+  }
+
+  createWheel(isFront, position, radius, tuning) {
     const friction = 1000
     const suspensionStiffness = 20.0
     const suspensionDamping = 2.3
@@ -64,27 +76,17 @@ export default class Vehicle {
     wheelInfo.set_m_wheelsDampingCompression(suspensionCompression)
     wheelInfo.set_m_frictionSlip(friction)
     wheelInfo.set_m_rollInfluence(rollInfluence)
-
-    this.wheelMeshes.push(createWheelMesh(radius, width))
   }
 
   createWheels(tuning) {
-    const wheelAxisFrontPosition = 1.7,
-      wheelHalfTrackFront = 1,
-      wheelAxisHeightFront = .3,
-      wheelRadiusFront = .35,
-      wheelWidthFront = .2,
+    const { y } = getSize(this.wheelMesh)
+    const wheelFront = { x: 1, y: y * .6, z: 1.7 }
+    const wheelBack = { x: 1, y: y * .6, z: -1 }
 
-      wheelAxisPositionBack = -1,
-      wheelRadiusBack = .4,
-      wheelWidthBack = .3,
-      wheelHalfTrackBack = 1,
-      wheelAxisHeightBack = .3
-
-    this.createWheel(true, new Ammo.btVector3(wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisFrontPosition), wheelRadiusFront, wheelWidthFront, tuning)
-    this.createWheel(true, new Ammo.btVector3(-wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisFrontPosition), wheelRadiusFront, wheelWidthFront, tuning)
-    this.createWheel(false, new Ammo.btVector3(-wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, tuning)
-    this.createWheel(false, new Ammo.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, tuning)
+    this.createWheel(true, new Ammo.btVector3(wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
+    this.createWheel(true, new Ammo.btVector3(-wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
+    this.createWheel(false, new Ammo.btVector3(-wheelBack.x, wheelBack.y, wheelBack.z), wheelRadiusBack, tuning)
+    this.createWheel(false, new Ammo.btVector3(wheelBack.x, wheelBack.y, wheelBack.z), wheelRadiusBack, tuning)
   }
 
   updateMeshes() {
