@@ -29,7 +29,7 @@ chassisMesh.position.set(0, 4, -20)
 
 const tank = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh })
 
-scene.add(chassisMesh) // , ...wheelMeshes
+scene.add(chassisMesh, ...tank.wheelMeshes) // , ...wheelMeshes
 
 /* LOOP */
 

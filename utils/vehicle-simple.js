@@ -21,21 +21,7 @@ function createWheel(radius, width) {
 }
 
 export function createSimpleVehicle({
-  physicsWorld, position, width, height, length, mass,
-
-  wheelAxisFrontPosition = 1.7,
-  wheelHalfTrackFront = 1,
-  wheelAxisHeightFront = .3,
-  wheelWidthFront = .2,
-  radius = .35,
-
-  wheelAxisPositionBack = -1,
-  wheelWidthBack = .3,
-  wheelHalfTrackBack = 1,
-  wheelAxisHeightBack = .3,
-  radiusBack = radius,
-
-  wheelMesh = createWheel(radius, width),
+  physicsWorld, position, width = 1.8, height = .6, length = 4, mass = 800,
 } = {}
 ) {
   const friction = 1000
@@ -77,21 +63,33 @@ export function createSimpleVehicle({
     wheelInfo.set_m_wheelsDampingCompression(suspensionCompression)
     wheelInfo.set_m_frictionSlip(friction)
     wheelInfo.set_m_rollInfluence(rollInfluence)
-    wheelMeshes[index] = wheelMesh.clone()
+    wheelMeshes[index] = createWheel(radius, width)
   }
 
-  addWheel(true, new Ammo.btVector3(wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisFrontPosition), radius, wheelWidthFront, FRONT_LEFT)
-  addWheel(true, new Ammo.btVector3(-wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisFrontPosition), radius, wheelWidthFront, FRONT_RIGHT)
-  addWheel(false, new Ammo.btVector3(-wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), radiusBack, wheelWidthBack, BACK_LEFT)
-  addWheel(false, new Ammo.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), radiusBack, wheelWidthBack, BACK_RIGHT)
+  const wheelAxisFrontPosition = 1.7,
+    wheelHalfTrackFront = 1,
+    wheelAxisHeightFront = .3,
+    wheelRadiusFront = .35,
+    wheelWidthFront = .2,
+
+    wheelAxisPositionBack = -1,
+    wheelRadiusBack = .4,
+    wheelWidthBack = .3,
+    wheelHalfTrackBack = 1,
+    wheelAxisHeightBack = .3
+
+  addWheel(true, new Ammo.btVector3(wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisFrontPosition), wheelRadiusFront, wheelWidthFront, FRONT_LEFT)
+  addWheel(true, new Ammo.btVector3(-wheelHalfTrackFront, wheelAxisHeightFront, wheelAxisFrontPosition), wheelRadiusFront, wheelWidthFront, FRONT_RIGHT)
+  addWheel(false, new Ammo.btVector3(-wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_LEFT)
+  addWheel(false, new Ammo.btVector3(wheelHalfTrackBack, wheelAxisHeightBack, wheelAxisPositionBack), wheelRadiusBack, wheelWidthBack, BACK_RIGHT)
 
   return { vehicle, wheelMeshes }
 }
 
 export default class Vehicle {
-  constructor({ physicsWorld, chassisMesh, mass = 800 }) {
+  constructor({ physicsWorld, chassisMesh }) {
     const { x: width, y: height, z: length } = getSize(chassisMesh)
-    const { vehicle, wheelMeshes } = createSimpleVehicle({ physicsWorld, width, height, length, mass, position: chassisMesh.position })
+    const { vehicle, wheelMeshes } = createSimpleVehicle({ physicsWorld, width, height, length, position: chassisMesh.position })
     this.vehicle = vehicle
     this.wheelMeshes = wheelMeshes
     this.chassisMesh = chassisMesh
