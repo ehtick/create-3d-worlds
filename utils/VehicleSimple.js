@@ -23,9 +23,11 @@ function createWheelMesh(radius, width) {
 }
 
 export default class Vehicle {
-  constructor({ physicsWorld, chassisMesh, wheelMesh = createWheelMesh(defaultRadius, defaultRadius * .5), position, quaternion, mass = 800 }) {
+  constructor({ physicsWorld, chassisMesh, wheelMesh = createWheelMesh(defaultRadius, defaultRadius * .5), position, quaternion, mass = 800, wheelFront, wheelBack }) {
     this.chassisMesh = chassisMesh
     this.wheelMesh = wheelMesh
+    this.wheelFront = wheelFront
+    this.wheelBack = wheelBack
 
     if (position) chassisMesh.position.copy(position)
     if (quaternion) chassisMesh.quaternion.copy(quaternion)
@@ -81,8 +83,7 @@ export default class Vehicle {
 
   createWheels(tuning) {
     const { y } = getSize(this.wheelMesh)
-    const wheelFront = { x: 1, y: y * .6, z: 1.7 }
-    const wheelBack = { x: 1, y: y * .6, z: -1 }
+    const { wheelFront, wheelBack } = this
     const wheelRadiusFront = y * .5, wheelRadiusBack = y * .5
 
     this.createWheel(true, new Ammo.btVector3(wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
@@ -90,6 +91,8 @@ export default class Vehicle {
     this.createWheel(false, new Ammo.btVector3(-wheelBack.x, wheelBack.y, wheelBack.z), wheelRadiusBack, tuning)
     this.createWheel(false, new Ammo.btVector3(wheelBack.x, wheelBack.y, wheelBack.z), wheelRadiusBack, tuning)
   }
+
+  /* UPDATE */
 
   updateMeshes() {
     const { vehicle, wheelMeshes } = this

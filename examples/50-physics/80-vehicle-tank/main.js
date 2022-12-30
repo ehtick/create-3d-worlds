@@ -27,7 +27,10 @@ createCrates({ z: 10 }).forEach(mesh => world.add(mesh))
 const { mesh: chassisMesh } = await loadModel({ file: 'tank/steampunk/model.fbx', angle: Math.PI })
 chassisMesh.position.set(0, 4, -20)
 
-const tank = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh })
+const wheelFront = { x: 1, y: .4, z: 1.7 }
+const wheelBack = { x: 1, y: .4, z: -1 }
+
+const tank = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelFront, wheelBack })
 
 scene.add(chassisMesh, ...tank.wheelMeshes) // , ...wheelMeshes
 

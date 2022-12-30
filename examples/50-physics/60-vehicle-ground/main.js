@@ -35,8 +35,10 @@ createCrates({ z: -20 }).forEach(mesh => world.add(mesh, 10))
 const { mesh: chassisMesh } = await loadModel({ file: 'vehicle/ready/lada/lada.obj', mtl: 'vehicle/ready/lada/lada.mtl' })
 const { mesh: wheelMesh } = await loadModel({ file: 'vehicle/ready/lada/ladaTire.obj', mtl: 'vehicle/ready/lada/ladaTire.mtl' })
 
+const wheelFront = { x: 1.15, y: .15, z: 1.55 }
+const wheelBack = { x: 1.15, y: .15, z: -1.8 }
 const quaternion = new THREE.Quaternion(0, 0, 0, 1).setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI)
-const tank = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelMesh, position: new THREE.Vector3(0, 5, 0), quaternion })
+const tank = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelMesh, wheelFront, wheelBack, position: new THREE.Vector3(0, 5, 0), quaternion })
 scene.add(tank.mesh)
 
 /* LOOP */
