@@ -25,8 +25,6 @@ function createWheelMesh(radius, width) {
 
 export default class Vehicle {
   constructor({ physicsWorld, chassisMesh, wheelMesh = createWheelMesh(defaultRadius, defaultRadius * .5), position, quaternion, mass = 800, wheelFront, wheelBack }) {
-    this.mesh = new THREE.Group
-    this.mesh.add(chassisMesh)
     this.chassisMesh = chassisMesh
     this.wheelMesh = wheelMesh
     this.wheelFront = wheelFront

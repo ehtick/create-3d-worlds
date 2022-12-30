@@ -34,12 +34,12 @@ export default class Vehicle {
 
     const { x: width, y: height, z: length } = getSize(chassisMesh)
     const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .25, length * .5))
-    const body = createRigidBody({ mesh: chassisMesh, mass, shape })
-    physicsWorld.addRigidBody(body)
+    this.body = createRigidBody({ mesh: chassisMesh, mass, shape })
+    physicsWorld.addRigidBody(this.body)
 
     const tuning = new Ammo.btVehicleTuning()
     const rayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
-    this.vehicle = new Ammo.btRaycastVehicle(tuning, body, rayCaster)
+    this.vehicle = new Ammo.btRaycastVehicle(tuning, this.body, rayCaster)
     this.vehicle.setCoordinateSystem(0, 1, 2)
     physicsWorld.addAction(this.vehicle)
 
