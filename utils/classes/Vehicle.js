@@ -51,20 +51,6 @@ export default class Vehicle {
     }
   }
 
-  createWheels(tuning) {
-    const { y } = getSize(this.wheelMesh)
-    const wheelFront = { x: 1.15, y: y * .15, z: 1.55 }
-    const wheelBack = { x: 1.15, y: y * .15, z: -1.8 }
-
-    const wheelRadiusFront = y * .38
-    const wheelRadiusBack = y * .38
-
-    this.createWheel(true, new Ammo.btVector3(wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
-    this.createWheel(true, new Ammo.btVector3(-wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
-    this.createWheel(false, new Ammo.btVector3(-wheelBack.x, wheelBack.y, wheelBack.z), wheelRadiusBack, tuning)
-    this.createWheel(false, new Ammo.btVector3(wheelBack.x, wheelBack.y, wheelBack.z), wheelRadiusBack, tuning)
-  }
-
   createWheel(isFront, position, radius, tuning) {
     const friction = 1000
     const suspensionStiffness = 20.0
@@ -84,9 +70,22 @@ export default class Vehicle {
     wheelInfo.set_m_suspensionStiffness(suspensionStiffness)
     wheelInfo.set_m_wheelsDampingRelaxation(suspensionDamping)
     wheelInfo.set_m_wheelsDampingCompression(suspensionCompression)
-
     wheelInfo.set_m_frictionSlip(friction)
     wheelInfo.set_m_rollInfluence(rollInfluence)
+  }
+
+  createWheels(tuning) {
+    const { y } = getSize(this.wheelMesh)
+    const wheelFront = { x: 1.15, y: y * .15, z: 1.55 }
+    const wheelBack = { x: 1.15, y: y * .15, z: -1.8 }
+
+    const wheelRadiusFront = y * .38
+    const wheelRadiusBack = y * .38
+
+    this.createWheel(true, new Ammo.btVector3(wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
+    this.createWheel(true, new Ammo.btVector3(-wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
+    this.createWheel(false, new Ammo.btVector3(-wheelBack.x, wheelBack.y, wheelBack.z), wheelRadiusBack, tuning)
+    this.createWheel(false, new Ammo.btVector3(wheelBack.x, wheelBack.y, wheelBack.z), wheelRadiusBack, tuning)
   }
 
   /* UPDATE */

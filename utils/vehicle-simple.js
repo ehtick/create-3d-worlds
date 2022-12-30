@@ -14,8 +14,7 @@ const maxEngineForce = 2000
 const maxBreakingForce = 100
 
 const radius = .4
-const wheelRadiusFront = radius
-const wheelRadiusBack = radius
+const wheelRadiusFront = radius, wheelRadiusBack = radius
 
 function createWheelMesh(radius, width) {
   const geometry = new THREE.CylinderGeometry(radius, radius, width, 24, 1)
@@ -40,9 +39,9 @@ export default class Vehicle {
     this.vehicle.setCoordinateSystem(0, 1, 2)
     physicsWorld.addAction(this.vehicle)
 
-    this.wheelMeshes = []
     this.createWheels(tuning)
     this.addWheelMeshes(wheelMesh)
+
     this.vehicleSteering = 0
   }
 
