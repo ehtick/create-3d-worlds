@@ -58,7 +58,6 @@ export default class Vehicle {
       const mesh = wheelMesh.clone()
       if (i == 0 || i == 3) mesh.quaternion.setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI)
       this.wheelMeshes.push(mesh)
-      this.mesh.add(mesh)
     }
   }
 
