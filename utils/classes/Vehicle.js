@@ -14,8 +14,17 @@ const steeringClamp = .5
 const maxEngineForce = 2000
 const maxBreakingForce = 100
 
+const defaultRadius = .4
+
+function createWheelMesh(radius, width) {
+  const geometry = new THREE.CylinderGeometry(radius, radius, width, 24, 1)
+  geometry.rotateZ(Math.PI / 2)
+  const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: 0x333333 }))
+  return mesh
+}
+
 export default class Vehicle {
-  constructor({ physicsWorld, chassisMesh, wheelMesh, position, quaternion, mass = 800 }) {
+  constructor({ physicsWorld, chassisMesh, wheelMesh = createWheelMesh(defaultRadius, defaultRadius * .5), position, quaternion, mass = 800 }) {
     this.mesh = new THREE.Group
     this.mesh.add(chassisMesh)
     this.chassisMesh = chassisMesh
@@ -78,9 +87,7 @@ export default class Vehicle {
     const { y } = getSize(this.wheelMesh)
     const wheelFront = { x: 1.15, y: y * .15, z: 1.55 }
     const wheelBack = { x: 1.15, y: y * .15, z: -1.8 }
-
-    const wheelRadiusFront = y * .38
-    const wheelRadiusBack = y * .38
+    const wheelRadiusFront = y * .5, wheelRadiusBack = y * .5
 
     this.createWheel(true, new Ammo.btVector3(wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
     this.createWheel(true, new Ammo.btVector3(-wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
