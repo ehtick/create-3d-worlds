@@ -11,7 +11,6 @@ const BACK_RIGHT = 3
 
 const steeringIncrement = .04
 const steeringClamp = .5
-const maxEngineForce = 2000
 const maxBreakingForce = 100
 
 const defaultRadius = .4
@@ -24,11 +23,22 @@ function createWheelMesh(radius, width) {
 }
 
 export default class Vehicle {
-  constructor({ physicsWorld, chassisMesh, wheelMesh = createWheelMesh(defaultRadius, defaultRadius * .5), position, quaternion, mass = 800, wheelFront, wheelBack }) {
+  constructor({
+    physicsWorld,
+    chassisMesh,
+    wheelMesh = createWheelMesh(defaultRadius, defaultRadius * .5),
+    wheelFront = { x: 1.1, y: .4, z: 1.55 },
+    wheelBack = { x: 1.1, y: .4, z: -1.8 },
+    position,
+    quaternion,
+    mass = 800,
+    maxEngineForce = 2000
+  }) {
     this.chassisMesh = chassisMesh
     this.wheelMesh = wheelMesh
     this.wheelFront = wheelFront
     this.wheelBack = wheelBack
+    this.maxEngineForce = maxEngineForce
 
     if (position) chassisMesh.position.copy(position)
     if (quaternion) chassisMesh.quaternion.copy(quaternion)
@@ -130,12 +140,12 @@ export default class Vehicle {
     if (keyboard.up)
       if (speed < -1)
         breakingForce = maxBreakingForce
-      else engineForce = maxEngineForce
+      else engineForce = this.maxEngineForce
 
     if (keyboard.down)
       if (speed > 1)
         breakingForce = maxBreakingForce
-      else engineForce = -maxEngineForce / 2
+      else engineForce = -this.maxEngineForce / 2
 
     if (keyboard.left) {
       if (this.vehicleSteering < steeringClamp)
