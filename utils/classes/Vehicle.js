@@ -70,11 +70,11 @@ export default class Vehicle {
     const suspensionRestLength = 0.6
     const rollInfluence = 0.2
 
-    const wheelDirectionCS0 = new Ammo.btVector3(0, -1, 0)
-    const wheelAxleCS = new Ammo.btVector3(-1, 0, 0)
+    const wheelDirection = new Ammo.btVector3(0, -1, 0)
+    const wheelAxle = new Ammo.btVector3(-1, 0, 0)
 
     const wheelInfo = this.vehicle.addWheel(
-      position, wheelDirectionCS0, wheelAxleCS, suspensionRestLength,
+      position, wheelDirection, wheelAxle, suspensionRestLength,
       radius, tuning, isFront
     )
 
