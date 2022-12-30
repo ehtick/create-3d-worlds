@@ -23,9 +23,12 @@ function createWheelMesh(radius, width) {
 }
 
 export default class Vehicle {
-  constructor({ physicsWorld, chassisMesh, wheelMesh = createWheelMesh(defaultRadius, defaultRadius * .5), mass = 800 }) {
+  constructor({ physicsWorld, chassisMesh, wheelMesh = createWheelMesh(defaultRadius, defaultRadius * .5), position, quaternion, mass = 800 }) {
     this.chassisMesh = chassisMesh
     this.wheelMesh = wheelMesh
+
+    if (position) chassisMesh.position.copy(position)
+    if (quaternion) chassisMesh.quaternion.copy(quaternion)
 
     const { x: width, y: height, z: length } = getSize(chassisMesh)
     const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .25, length * .5))
