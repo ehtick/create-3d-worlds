@@ -9,7 +9,11 @@ import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import { createSun } from '/utils/light.js'
 
 const world = new PhysicsWorld()
-const cameraControls = new VehicleCamera({ camera })
+const cameraControls = new VehicleCamera({
+  camera,
+  offsetCamera: new THREE.Vector3(0, 2, -6),
+  lookatCamera: new THREE.Vector3(0, 2, 4),
+})
 
 scene.add(createSun())
 
@@ -24,7 +28,7 @@ createCrates({ z: 10 }).forEach(mesh => world.add(mesh))
 
 /* VEHICLE */
 
-const { mesh: chassisMesh } = await loadModel({ file: 'tank/a7v/model.fbx', angle: Math.PI })
+const { mesh: chassisMesh } = await loadModel({ file: 'tank/a7v/model.fbx' })
 // const { mesh: chassisMesh } = await loadModel({ file: 'tank/mark-1/model.fbx' })
 chassisMesh.position.set(0, 4, -20)
 
