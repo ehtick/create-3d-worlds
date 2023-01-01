@@ -31,7 +31,14 @@ createCrates({ z: 10 }).forEach(mesh => world.add(mesh))
 // const { mesh: chassisMesh } = await loadModel({ file: 'tank/a7v/model.fbx', angle: Math.PI })
 // const { mesh: chassisMesh } = await loadModel({ file: 'tank/mark-1/model.fbx' })
 // const { mesh: chassisMesh } = await loadModel({ file: 'tank/renault-ft/model.fbx' })
-const { mesh: chassisMesh } = await loadModel({ file: 'tank/su-122/model.fbx', angle: Math.PI })
+// const { mesh: chassisMesh } = await loadModel({ file: 'tank/su-122/model.fbx', angle: Math.PI })
+// const { mesh: chassisMesh } = await loadModel({ file: 'tank/t-18-mc-1/model.fbx' })
+// const { mesh: chassisMesh } = await loadModel({ file: 'tank/t-34/model.fbx' })
+// const { mesh: chassisMesh } = await loadModel({ file: 'tank/t-50/model.fbx' })
+// const { mesh: chassisMesh } = await loadModel({ file: 'tank/tiger-1/model.fbx' })
+// const { mesh: chassisMesh } = await loadModel({ file: 'tank/warhammer/model.fbx', angle: Math.PI })
+const { mesh: chassisMesh } = await loadModel({ file: 'tank/warhammer/model.fbx', angle: Math.PI })
+
 chassisMesh.position.set(0, 4, -20)
 
 const wheelFront = { x: 1, y: .4, z: 1.7 }
