@@ -26,7 +26,7 @@ moon.position.set(-1.2, .5, 0)
 scene.add(moon)
 
 const crate = createCrate()
-crate.position.set(0, 0, 0)
+crate.position.set(0, .5, 0)
 scene.add(crate)
 
 const rustBarrel = createBarrel()
