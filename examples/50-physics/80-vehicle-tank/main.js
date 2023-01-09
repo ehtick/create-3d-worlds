@@ -4,7 +4,7 @@ import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import Vehicle from '/utils/classes/Vehicle.js'
 import { loadModel } from '/utils/loaders.js'
 import { createGround } from '/utils/ground.js'
-import { createBox, createCrates } from '/utils/geometry.js'
+import { createBox, createCrates, createWall } from '/utils/geometry.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import { createSun } from '/utils/light.js'
 import { addTexture } from '/utils/helpers.js'
@@ -27,6 +27,8 @@ world.add(jumpBoard, 0)
 
 createCrates({ z: 10 }).forEach(mesh => world.add(mesh))
 
+createWall({ rows: 10, columns: 20, startX: 16 }).forEach(mesh => world.add(mesh))
+
 /* VEHICLE */
 
 // const wheelFront = { x: 1, y: .45, z: 1.7 }
@@ -41,7 +43,7 @@ addTexture({ mesh: chassisMesh, file: 'metal/metal01.jpg' })
 chassisMesh.position.set(0, 2, -20)
 const tank = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelFront, wheelBack, maxEngineForce: 1000 })
 
-scene.add(chassisMesh) // , ...wheelMeshes
+scene.add(chassisMesh)
 
 /* LOOP */
 
