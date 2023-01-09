@@ -12,7 +12,6 @@ npx live-server
 ### Physics
 
 vozilo:
-  - dodati zanimljive objekte i prepreke
 - isprobati dodavanje sile na kuglu: applyForce, applyImpulse or setLinearVelocity
 - napraviti sletanje na mesec 3d
 - dodati fiziku u vučenje kocki

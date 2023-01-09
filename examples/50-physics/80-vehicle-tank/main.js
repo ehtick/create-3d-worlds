@@ -2,10 +2,10 @@ import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import Vehicle from '/utils/classes/Vehicle.js'
+import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import { loadModel } from '/utils/loaders.js'
 import { createGround } from '/utils/ground.js'
 import { createJumpBoard, createCrates, buildSimpleCastle, createCrate, createBarrel } from '/utils/geometry.js'
-import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import { createSun } from '/utils/light.js'
 import { addTexture, sample } from '/utils/helpers.js'
 import { createMoon } from '/utils/geometry/planets.js'
@@ -47,8 +47,8 @@ for (let i = 0; i < 20; i++) {
 
 /* VEHICLE */
 
-const wheelFront = { x: 1, y: .1, z: 1.7 }
-const wheelBack = { x: 1, y: .1, z: -1 }
+const wheelFront = { x: .75, y: .1, z: .25 }
+const wheelBack = { x: .75, y: .1, z: -.25 }
 const { mesh: chassisMesh } = await loadModel({ file: 'tank/t-50/model.fbx' })
 addTexture({ mesh: chassisMesh, file: 'metal/metal01.jpg' })
 

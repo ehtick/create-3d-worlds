@@ -13,8 +13,6 @@ const steeringIncrement = .04
 const steeringClamp = .5
 const maxBreakingForce = 100
 
-const defaultRadius = .4
-
 function createWheelMesh(radius, width) {
   const geometry = new THREE.CylinderGeometry(radius, radius, width, 24, 1)
   geometry.rotateZ(Math.PI / 2)
@@ -26,13 +24,15 @@ export default class Vehicle {
   constructor({
     physicsWorld,
     chassisMesh,
+    defaultRadius = .4,
     wheelMesh = createWheelMesh(defaultRadius, defaultRadius * .5),
     wheelFront = { x: 1.1, y: .4, z: 1.55 },
     wheelBack = { x: 1.1, y: .4, z: -1.8 },
     position,
     quaternion,
     mass = 800,
-    maxEngineForce = 2000
+    maxEngineForce = 2000,
+    chassisHeight,
   }) {
     this.chassisMesh = chassisMesh
     this.wheelMesh = wheelMesh
@@ -44,7 +44,7 @@ export default class Vehicle {
     if (quaternion) chassisMesh.quaternion.copy(quaternion)
 
     const { x: width, y: height, z: length } = getSize(chassisMesh)
-    const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .25, length * .5))
+    const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, chassisHeight || height * .25, length * .5))
     this.body = createRigidBody({ mesh: chassisMesh, mass, shape })
     physicsWorld.addRigidBody(this.body)
 
@@ -95,7 +95,7 @@ export default class Vehicle {
   createWheels(tuning) {
     const { y } = getSize(this.wheelMesh)
     const { wheelFront, wheelBack } = this
-    const wheelRadiusFront = y * .5, wheelRadiusBack = y * .5
+    const wheelRadiusFront = y * .5, wheelRadiusBack = y * .5 // y * .5 = defaultRadius
 
     this.createWheel(true, new Ammo.btVector3(wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
     this.createWheel(true, new Ammo.btVector3(-wheelFront.x, wheelFront.y, wheelFront.z), wheelRadiusFront, tuning)
