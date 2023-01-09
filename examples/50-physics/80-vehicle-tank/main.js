@@ -4,10 +4,11 @@ import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import Vehicle from '/utils/classes/Vehicle.js'
 import { loadModel } from '/utils/loaders.js'
 import { createGround } from '/utils/ground.js'
-import { createJumpBoard, createCrates, buildSimpleCastle } from '/utils/geometry.js'
+import { createJumpBoard, createCrates, buildSimpleCastle, createCrate, createBarrel } from '/utils/geometry.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import { createSun } from '/utils/light.js'
 import { addTexture } from '/utils/helpers.js'
+import { createMoon } from '/utils/geometry/planets.js'
 
 const tankX = -20
 
@@ -25,7 +26,25 @@ world.add(jumpBoard, 0)
 
 createCrates({ x: tankX, z: 10 }).forEach(mesh => world.add(mesh))
 
-buildSimpleCastle().forEach(block => world.add(block, 5))
+// buildSimpleCastle().forEach(block => world.add(block, 5))
+
+/* GEOMETRIES */
+
+const moon = createMoon({ r: .5 })
+moon.position.set(-1.2, .5, 0)
+world.add(moon, 10)
+
+const crate = createCrate()
+crate.position.set(0, .5, 0)
+world.add(crate, 10, 1000)
+
+const rustBarrel = createBarrel()
+rustBarrel.position.set(1.2, .5, 0)
+world.add(rustBarrel, 10, 1000)
+
+const metalBarrel = createBarrel({ file: 'barrel/metal-barrel-side.jpg', topFile: 'metal/metal01.jpg' })
+metalBarrel.position.set(2.4, .5, 0)
+world.add(metalBarrel, 10, 1000)
 
 /* VEHICLE */
 

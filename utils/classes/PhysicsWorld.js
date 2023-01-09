@@ -9,8 +9,8 @@ export default class PhysicsWorld {
     this.physicsWorld = createPhysicsWorld()
   }
 
-  add(mesh, mass) {
-    if (!mesh.userData.body) mesh.userData.body = createRigidBody({ mesh, mass })
+  add(mesh, mass, friction) {
+    if (!mesh.userData.body) mesh.userData.body = createRigidBody({ mesh, mass, friction })
     this.physicsWorld.addRigidBody(mesh.userData.body)
     this.rigidBodies.push(mesh)
     if (this.scene) this.scene.add(mesh)

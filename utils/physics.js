@@ -58,7 +58,7 @@ export const createShape = obj => {
       return new Ammo.btSphereShape(radius)
     case 'CylinderGeometry':
       const size = new Ammo.btVector3(parameters.radiusTop * scale.x,
-        parameters.height * 0.5 * scale.y,
+        parameters.height * .5 * scale.y,
         parameters.radiusBottom * scale.x)
       return new Ammo.btCylinderShape(size)
     default:
