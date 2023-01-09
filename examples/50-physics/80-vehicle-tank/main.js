@@ -15,7 +15,7 @@ const { randFloat } = THREE.MathUtils
 const tankX = -20
 
 const world = new PhysicsWorld()
-const cameraControls = new VehicleCamera({ camera, offsetCamera: new THREE.Vector3(0, 2, -6), lookatCamera: new THREE.Vector3(0, 2, 4) })
+const cameraControls = new VehicleCamera({ camera, offsetCamera: [0, 2, -6], lookatCamera: [0, 2, 4] })
 
 scene.add(createSun())
 
