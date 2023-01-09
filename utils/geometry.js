@@ -213,12 +213,12 @@ export function createCrates({ width = 8, height = 6, depth = 2, boxSize = .75, 
   return boxes
 }
 
-export function createWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns = 6, brickMass = 2, friction, startX = 0 } = {}) {
+export function createWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns = 6, brickMass = 2, friction, x = 0 } = {}) {
   const bricks = []
   const brickHeight = brickDepth * 0.5
   const z = -columns * brickDepth * 0.5
   const pos = new THREE.Vector3()
-  pos.set(startX, brickHeight * 0.5, z)
+  pos.set(x, brickHeight * 0.5, z)
 
   for (let j = 0; j < rows; j++) {
     const oddRow = (j % 2) == 1
@@ -244,12 +244,12 @@ export function createWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns
   return bricks
 }
 
-export function createSideWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns = 6, brickMass = 2, friction, startZ = 0 } = {}) {
+export function createSideWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, columns = 6, brickMass = 2, friction, z = 0 } = {}) {
   const bricks = []
   const brickHeight = brickDepth * 0.5
   const x = -columns * brickDepth * 0.5
   const pos = new THREE.Vector3()
-  pos.set(x, brickHeight * 0.5, startZ)
+  pos.set(x, brickHeight * 0.5, z)
 
   for (let j = 0; j < rows; j++) {
     const oddRow = (j % 2) == 1
@@ -306,8 +306,8 @@ export function buildSimpleCastle({ rows = 8, brickInWall = 20, blockSize = 1 } 
 
   function buildWalls(y) {
     if (y > brickSize * rows) return
-    const startX = isEven(y) ? 0 : brickSize / 2
-    buildRow(y, startX)
+    const x = isEven(y) ? 0 : brickSize / 2
+    buildRow(y, x)
     buildWalls(y + brickSize)
   }
 

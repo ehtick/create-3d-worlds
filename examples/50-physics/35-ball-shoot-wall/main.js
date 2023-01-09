@@ -25,10 +25,10 @@ scene.add(sun)
 const ground = createGround({ size: 40, color: 0xFFFFFF })
 world.add(ground, 0)
 
-const frontWall = createWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, startX: -3.2 })
-const backWall = createWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, startX: 2.2 })
-const leftWall = createSideWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, startZ: -3.8 })
-const rightWall = createSideWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, startZ: 2.8 })
+const frontWall = createWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, x: -3.2 })
+const backWall = createWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, x: 2.2 })
+const leftWall = createSideWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, z: -3.8 })
+const rightWall = createSideWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, z: 2.8 })
 
 ;[...frontWall, ...backWall, ...leftWall, ...rightWall].forEach(mesh => world.add(mesh))
 

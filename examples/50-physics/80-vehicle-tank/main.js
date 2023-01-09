@@ -27,7 +27,7 @@ world.add(jumpBoard, 0)
 
 createCrates({ z: 10 }).forEach(mesh => world.add(mesh))
 
-createWall({ rows: 10, columns: 20, startX: 16 }).forEach(mesh => world.add(mesh))
+// createWall({ rows: 10, columns: 20, x: 16 }).forEach(mesh => world.add(mesh))
 
 buildSimpleCastle().forEach(block => world.add(block, 2))
 
