@@ -30,8 +30,8 @@ const { mesh: chassisMesh } = await loadModel({ file: 'weapon/cannon/mortar/mort
 
 const wheelFront = { x: .3, y: .15, z: .35 }
 const wheelBack = { x: .3, y: .15, z: -.55 }
-const tank = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, defaultRadius: .18, wheelFront, wheelBack, maxEngineForce: 20, mass: 100 })
-scene.add(chassisMesh, ...tank.wheelMeshes)
+const cannon = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, defaultRadius: .18, wheelFront, wheelBack, maxEngineForce: 20, mass: 100 })
+scene.add(chassisMesh, ...cannon.wheelMeshes)
 
 /* FUNCTIONS */
 
@@ -52,8 +52,8 @@ function shoot() {
   world.add(ball, 4)
 
   ball.userData.body.setLinearVelocity(new Ammo.btVector3(x, impulse.value * .2, z))
-  tank.backward()
-  setTimeout(() => tank.break(), 300)
+  cannon.backward()
+  setTimeout(() => cannon.break(), 300)
   impulse.value = minImpulse
 }
 
@@ -68,7 +68,8 @@ void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
   handleInput()
-  tank.update()
+  cannon.update()
+  cannon.break(.5)
   cameraControls.update(chassisMesh)
   world.update(dt)
   renderer.render(scene, camera)
