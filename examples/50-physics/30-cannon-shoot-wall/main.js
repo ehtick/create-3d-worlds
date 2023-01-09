@@ -30,7 +30,7 @@ const { mesh: chassisMesh } = await loadModel({ file: 'weapon/cannon/mortar/mort
 
 const wheelFront = { x: .3, y: .15, z: .35 }
 const wheelBack = { x: .3, y: .15, z: -.55 }
-const tank = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, defaultRadius: .18, wheelFront, wheelBack, maxEngineForce: 100 })
+const tank = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, defaultRadius: .18, wheelFront, wheelBack, maxEngineForce: 100, mass: 100 })
 scene.add(chassisMesh, ...tank.wheelMeshes)
 
 /* FUNCTIONS */

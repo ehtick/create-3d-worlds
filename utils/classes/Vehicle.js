@@ -11,12 +11,11 @@ const BACK_RIGHT = 3
 
 const steeringIncrement = .04
 const steeringClamp = .5
-const maxBreakingForce = 100
 
 function createWheelMesh(radius, width) {
   const geometry = new THREE.CylinderGeometry(radius, radius, width, 24, 1)
   geometry.rotateZ(Math.PI / 2)
-  const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: 0x333333 }))
+  const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: 0x111111 }))
   return mesh
 }
 
@@ -32,19 +31,20 @@ export default class Vehicle {
     quaternion,
     mass = 800,
     maxEngineForce = 2000,
-    chassisHeight,
+    maxBreakingForce = maxEngineForce * .01,
   }) {
     this.chassisMesh = chassisMesh
     this.wheelMesh = wheelMesh
     this.wheelFront = wheelFront
     this.wheelBack = wheelBack
     this.maxEngineForce = maxEngineForce
+    this.maxBreakingForce = maxBreakingForce
 
     if (position) chassisMesh.position.copy(position)
     if (quaternion) chassisMesh.quaternion.copy(quaternion)
 
     const { x: width, y: height, z: length } = getSize(chassisMesh)
-    const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, chassisHeight || height * .25, length * .5))
+    const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .25, length * .5))
     this.body = createRigidBody({ mesh: chassisMesh, mass, shape })
     physicsWorld.addRigidBody(this.body)
 
@@ -139,12 +139,12 @@ export default class Vehicle {
 
     if (keyboard.up)
       if (speed < -1)
-        breakingForce = maxBreakingForce
+        breakingForce = this.maxBreakingForce
       else engineForce = this.maxEngineForce
 
     if (keyboard.down)
       if (speed > 1)
-        breakingForce = maxBreakingForce
+        breakingForce = this.maxBreakingForce
       else engineForce = -this.maxEngineForce / 2
 
     if (keyboard.left) {
@@ -161,7 +161,7 @@ export default class Vehicle {
       this.vehicleSteering = 0
 
     if (keyboard.space) {
-      breakingForce = maxBreakingForce * 2
+      breakingForce = this.maxBreakingForce * 2
       engineForce = 0.0
     }
 
