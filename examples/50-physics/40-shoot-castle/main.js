@@ -5,7 +5,7 @@ import { createSun } from '/utils/light.js'
 import { normalizeMouse } from '/utils/helpers.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import { createGround } from '/utils/ground.js'
-import { createSphere, createBox } from '/utils/geometry.js'
+import { createSphere, buildSimpleCastle } from '/utils/geometry.js'
 
 const world = new PhysicsWorld()
 const raycaster = new THREE.Raycaster()
@@ -20,47 +20,7 @@ scene.add(sun)
 const ground = createGround({ size: 1000, color: 0x509f53 })
 world.add(ground, 0)
 
-buildSimpleCastle()
-
-/* FUNCTIONS */
-
-export function buildSimpleCastle({ rows = 8, brickInWall = 20, rowSize = 8 } = {}) {
-  const spacing = 0.2
-  const brickSize = rowSize + spacing
-  const wallWidth = brickSize * brickInWall
-
-  const isEven = y => Math.floor(y / brickSize) % 2 == 0
-
-  function addBlock(x, y, z) {
-    const box = createBox({ width: rowSize, depth: rowSize, height: rowSize })
-    box.position.set(x, y, z)
-    world.add(box, 2)
-  }
-
-  function addFourBlocks(x, y) {
-    addBlock(x, y, 0)
-    addBlock(x, y, wallWidth)
-    addBlock(0, y, x)
-    addBlock(wallWidth, y, x)
-  }
-
-  function buildRow(y, x) {
-    if (x > wallWidth + 1) return
-    if (y < brickSize * (rows - 1))
-      addFourBlocks(x, y)
-    else if (isEven(x)) addFourBlocks(x, y)
-    buildRow(y, x + brickSize)
-  }
-
-  function buildWalls(y) {
-    if (y > brickSize * rows) return
-    const startX = isEven(y) ? 0 : brickSize / 2
-    buildRow(y, startX)
-    buildWalls(y + brickSize)
-  }
-
-  buildWalls(0)
-}
+buildSimpleCastle().forEach(block => world.add(block, 2))
 
 /* LOOP */
 
