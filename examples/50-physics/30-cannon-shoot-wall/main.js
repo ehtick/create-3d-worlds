@@ -57,7 +57,7 @@ function shoot() {
 }
 
 function handleInput() {
-  if ((keyboard.space || keyboard.pressed.mouse) && impulse.value < maxImpulse)
+  if ((keyboard.pressed.mouse) && impulse.value < maxImpulse)
     impulse.value = parseFloat(impulse.value) + .2
 }
 
@@ -74,9 +74,5 @@ void function loop() {
 }()
 
 /* EVENTS */
-
-document.addEventListener('keyup', e => {
-  if (e.code == 'Space') shoot()
-})
 
 document.addEventListener('mouseup', shoot)
