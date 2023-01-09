@@ -52,7 +52,8 @@ function shoot() {
   world.add(ball, 4)
 
   ball.userData.body.setLinearVelocity(new Ammo.btVector3(x, impulse.value * .2, z))
-  // chassisMesh.userData.body.applyImpulse(new Ammo.btVector3(-1, 0, 0))
+  tank.backward()
+  setTimeout(() => tank.break(), 300)
   impulse.value = minImpulse
 }
 

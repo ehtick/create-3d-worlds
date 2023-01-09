@@ -39,6 +39,8 @@ export default class Vehicle {
     this.wheelBack = wheelBack
     this.maxEngineForce = maxEngineForce
     this.maxBreakingForce = maxBreakingForce
+    this.engineForce = 0
+    this.breakingForce = 0
 
     if (position) chassisMesh.position.copy(position)
     if (quaternion) chassisMesh.quaternion.copy(quaternion)
@@ -109,45 +111,52 @@ export default class Vehicle {
 
   updateMeshes() {
     const { vehicle, wheelMeshes } = this
-
     const n = vehicle.getNumWheels()
     for (let i = 0; i < n; i++) {
       vehicle.updateWheelTransform(i, true)
       updateMeshTransform(wheelMeshes[i], vehicle.getWheelTransformWS(i))
     }
-
     updateMeshTransform(this.chassisMesh, vehicle.getChassisWorldTransform())
   }
 
-  updatePhysics(engineForce, breakingForce) {
+  updatePhysics() {
     const { vehicle } = this
-    vehicle.applyEngineForce(engineForce, BACK_LEFT)
-    vehicle.applyEngineForce(engineForce, BACK_RIGHT)
+    vehicle.applyEngineForce(this.engineForce, BACK_LEFT)
+    vehicle.applyEngineForce(this.engineForce, BACK_RIGHT)
 
-    vehicle.setBrake(breakingForce / 2, FRONT_LEFT)
-    vehicle.setBrake(breakingForce / 2, FRONT_RIGHT)
-    vehicle.setBrake(breakingForce, BACK_LEFT)
-    vehicle.setBrake(breakingForce, BACK_RIGHT)
+    vehicle.setBrake(this.breakingForce / 2, FRONT_LEFT)
+    vehicle.setBrake(this.breakingForce / 2, FRONT_RIGHT)
+    vehicle.setBrake(this.breakingForce, BACK_LEFT)
+    vehicle.setBrake(this.breakingForce, BACK_RIGHT)
 
     vehicle.setSteeringValue(this.vehicleSteering, FRONT_LEFT)
     vehicle.setSteeringValue(this.vehicleSteering, FRONT_RIGHT)
   }
 
+  forward() {
+    this.engineForce = this.breakingForce = 0
+    const speed = this.vehicle.getCurrentSpeedKmHour()
+    if (speed < -1)
+      this.breakingForce = this.maxBreakingForce
+    else this.engineForce = this.maxEngineForce
+  }
+
+  backward() {
+    this.engineForce = this.breakingForce = 0
+    const speed = this.vehicle.getCurrentSpeedKmHour()
+    if (speed > 1)
+      this.breakingForce = this.maxBreakingForce
+    else this.engineForce = -this.maxEngineForce / 2
+  }
+
+  break(multiplier = 1) {
+    this.breakingForce = this.maxBreakingForce * multiplier
+    this.engineForce = 0.0
+  }
+
   update() {
-    const { vehicle } = this
-    const speed = vehicle.getCurrentSpeedKmHour()
-    let breakingForce = 0
-    let engineForce = 0
-
-    if (keyboard.up)
-      if (speed < -1)
-        breakingForce = this.maxBreakingForce
-      else engineForce = this.maxEngineForce
-
-    if (keyboard.down)
-      if (speed > 1)
-        breakingForce = this.maxBreakingForce
-      else engineForce = -this.maxEngineForce / 2
+    if (keyboard.up) this.forward()
+    if (keyboard.down) this.backward()
 
     if (keyboard.left) {
       if (this.vehicleSteering < steeringClamp)
@@ -162,12 +171,9 @@ export default class Vehicle {
     else
       this.vehicleSteering = 0
 
-    if (keyboard.space) {
-      breakingForce = this.maxBreakingForce * 2
-      engineForce = 0.0
-    }
+    if (keyboard.space) this.break(1.5)
 
-    this.updatePhysics(engineForce, breakingForce)
+    this.updatePhysics()
     this.updateMeshes()
   }
 }
