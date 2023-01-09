@@ -7,6 +7,7 @@ import { createGround } from '/utils/ground.js'
 import { createBox, createCrates } from '/utils/geometry.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import { createSun } from '/utils/light.js'
+import { addTexture } from '/utils/helpers.js'
 
 const world = new PhysicsWorld()
 const cameraControls = new VehicleCamera({
@@ -35,6 +36,7 @@ createCrates({ z: 10 }).forEach(mesh => world.add(mesh))
 const wheelFront = { x: 1, y: .1, z: 1.7 }
 const wheelBack = { x: 1, y: .1, z: -1 }
 const { mesh: chassisMesh } = await loadModel({ file: 'tank/t-50/model.fbx' })
+addTexture({ mesh: chassisMesh, file: 'metal/metal01.jpg' })
 
 chassisMesh.position.set(0, 2, -20)
 const tank = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelFront, wheelBack, maxEngineForce: 1000 })

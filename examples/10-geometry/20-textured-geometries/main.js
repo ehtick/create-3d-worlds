@@ -33,7 +33,7 @@ const rustBarrel = createBarrel()
 rustBarrel.position.set(1.2, .5, 0)
 scene.add(rustBarrel)
 
-const metalBarrel = createBarrel({ file: 'barrel/metal-barrel-side.jpg', topFile: 'rusty.jpg' })
+const metalBarrel = createBarrel({ file: 'barrel/metal-barrel-side.jpg', topFile: 'metal/metal01.jpg' })
 metalBarrel.position.set(2.4, .5, 0)
 scene.add(metalBarrel)
 

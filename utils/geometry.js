@@ -125,7 +125,7 @@ export function createSkySphere({ r = 4000, color1 = 0x0077ff, color2 = 0xffffff
 
 /* BARRELS */
 
-export function createBarrel({ r = .4, height = 1, segments = 32, file = 'rust.jpg', topFile = 'barrel/rust-top.jpg' } = {}) {
+export function createBarrel({ r = .4, height = 1, segments = 32, file = 'metal/rust.jpg', topFile = 'barrel/rust-top.jpg' } = {}) {
   const geometry = new THREE.CylinderGeometry(r, r, height, segments)
   const sideMaterial = new THREE.MeshPhongMaterial({
     map: textureLoader.load(`/assets/textures/${file}`),
