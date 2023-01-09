@@ -25,7 +25,7 @@ world.add(jumpBoard, 0)
 
 createCrates({ x: tankX, z: 10 }).forEach(mesh => world.add(mesh))
 
-buildSimpleCastle().forEach(block => world.add(block, 2))
+buildSimpleCastle().forEach(block => world.add(block, 5))
 
 /* VEHICLE */
 

@@ -200,19 +200,19 @@ export function createRandomBoxes({ n = 100, size = 5, mapSize = 50 } = {}) {
   return group
 }
 
-export function createCrates({ width = 8, height = 6, depth = 2, boxSize = .75, x = 0, z = 0 } = {}) {
-  const box = createBox({ size: boxSize })
+export function createCrates({ width = 8, height = 6, depth = 2, size = 1, x = 0, z = 0 } = {}) {
+  const box = createCrate({ size })
   const boxes = []
   for (let w = 0; w < width; w++)
     for (let h = 0; h < height; h++)
       for (let d = 0; d < depth; d++) {
         const mesh = box.clone()
 
-        mesh.position.x = (w - width / 2 + 0.5) * boxSize + x
-        mesh.position.y = (h - height / 2 + 0.5) * boxSize
-        mesh.position.z = (d - depth / 2 + 0.5) * boxSize + z
+        mesh.position.x = (w - width / 2 + 0.5) * size + x
+        mesh.position.y = (h - height / 2 + 0.5) * size
+        mesh.position.z = (d - depth / 2 + 0.5) * size + z
 
-        mesh.position.y += height / 2 * boxSize
+        mesh.position.y += height / 2 * size
         mesh.position.z += 6
 
         boxes.push(mesh)
