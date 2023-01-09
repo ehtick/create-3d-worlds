@@ -37,7 +37,7 @@ const createDarkBarrel = () => createBarrel({ file: 'barrel/metal-barrel-side.jp
 
 const factories = [createBall, createCrate, createBarrel, createDarkBarrel]
 
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 10; i++) {
   const mesh = sample(factories)()
   const x = randFloat(-10, -50)
   const z = randFloat(-20, 20)

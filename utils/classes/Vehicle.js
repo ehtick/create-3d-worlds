@@ -43,11 +43,13 @@ export default class Vehicle {
     if (position) chassisMesh.position.copy(position)
     if (quaternion) chassisMesh.quaternion.copy(quaternion)
 
+    // body
     const { x: width, y: height, z: length } = getSize(chassisMesh)
     const shape = new Ammo.btBoxShape(new Ammo.btVector3(width * .5, height * .25, length * .5))
     this.body = createRigidBody({ mesh: chassisMesh, mass, shape })
     physicsWorld.addRigidBody(this.body)
 
+    // vehicle
     const tuning = new Ammo.btVehicleTuning()
     const rayCaster = new Ammo.btDefaultVehicleRaycaster(physicsWorld)
     this.vehicle = new Ammo.btRaycastVehicle(tuning, this.body, rayCaster)
