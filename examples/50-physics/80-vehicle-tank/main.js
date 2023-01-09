@@ -4,7 +4,7 @@ import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import Vehicle from '/utils/classes/Vehicle.js'
 import { loadModel } from '/utils/loaders.js'
 import { createGround } from '/utils/ground.js'
-import { createBox, createCrates, createWall, buildSimpleCastle } from '/utils/geometry.js'
+import { createJumpBoard, createCrates, createWall, buildSimpleCastle } from '/utils/geometry.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import { createSun } from '/utils/light.js'
 import { addTexture } from '/utils/helpers.js'
@@ -21,15 +21,14 @@ scene.add(createSun())
 const ground = createGround({ color: 0x509f53 })
 world.add(ground, 0)
 
-const jumpBoard = createBox({ width: 8, height: 4, depth: 10, pos: new THREE.Vector3(0, -1.5, 0) })
-jumpBoard.rotateX(-Math.PI / 18)
+const jumpBoard = createJumpBoard()
 world.add(jumpBoard, 0)
 
 createCrates({ z: 10 }).forEach(mesh => world.add(mesh))
 
 // createWall({ rows: 10, columns: 20, x: 16 }).forEach(mesh => world.add(mesh))
 
-buildSimpleCastle().forEach(block => world.add(block, 2))
+// buildSimpleCastle().forEach(block => world.add(block, 2))
 
 /* VEHICLE */
 

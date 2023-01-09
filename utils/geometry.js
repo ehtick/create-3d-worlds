@@ -58,6 +58,13 @@ export function createBuilding({ width = 2, height = 1, depth = 1, color = 0x999
   return mesh
 }
 
+export function createJumpBoard({ width = 8, height = 4, depth = 10, y = -1.5 } = {}) {
+  const jumpBoard = createBox({ width, height, depth })
+  jumpBoard.position.y = y
+  jumpBoard.rotateX(-Math.PI / 18)
+  return jumpBoard
+}
+
 /* SPHERES */
 
 export function createSphere({
