@@ -47,14 +47,10 @@ for (let i = 0; i < 20; i++) {
 
 /* VEHICLE */
 
-const wheelFront = { x: 1, y: .45, z: 1.7 }
-const wheelBack = { x: 1, y: .45, z: -1 }
-const { mesh: chassisMesh } = await loadModel({ file: 'tank/a7v/model.fbx', angle: Math.PI })
-
-// const wheelFront = { x: 1, y: .1, z: 1.7 }
-// const wheelBack = { x: 1, y: .1, z: -1 }
-// const { mesh: chassisMesh } = await loadModel({ file: 'tank/t-50/model.fbx' })
-// addTexture({ mesh: chassisMesh, file: 'metal/metal01.jpg' })
+const wheelFront = { x: 1, y: .1, z: 1.7 }
+const wheelBack = { x: 1, y: .1, z: -1 }
+const { mesh: chassisMesh } = await loadModel({ file: 'tank/t-50/model.fbx' })
+addTexture({ mesh: chassisMesh, file: 'metal/metal01.jpg' })
 
 chassisMesh.position.set(tankX, 2, -20)
 const tank = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, wheelFront, wheelBack, maxEngineForce: 1000 })
