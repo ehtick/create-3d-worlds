@@ -11,8 +11,8 @@ const world = new PhysicsWorld()
 const raycaster = new THREE.Raycaster()
 
 createOrbitControls()
-camera.position.set(0, 50, 300)
-camera.lookAt(0, 50, 0)
+camera.position.set(10, 5, 35)
+camera.lookAt(10, 2, 0)
 
 const sun = createSun({ position: [-50, 150, 50] })
 scene.add(sun)
@@ -38,10 +38,10 @@ window.addEventListener('pointerup', e => {
   raycaster.setFromCamera(mouse, camera)
 
   const pos = new THREE.Vector3().copy(raycaster.ray.direction).add(raycaster.ray.origin)
-  const ball = createSphere({ radius: 3, color: 0x202020 })
+  const ball = createSphere({ radius: 2, color: 0x202020 })
   ball.position.copy(pos)
   world.add(ball, 5)
 
-  const force = new THREE.Vector3().copy(raycaster.ray.direction).multiplyScalar(100)
+  const force = new THREE.Vector3().copy(raycaster.ray.direction).multiplyScalar(50)
   ball.userData.body.setLinearVelocity(new Ammo.btVector3(force.x, force.y, force.z))
 })

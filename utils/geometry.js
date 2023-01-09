@@ -275,16 +275,16 @@ export function createSideWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, col
   return bricks
 }
 
-export function buildSimpleCastle({ rows = 8, brickInWall = 20, rowSize = 8 } = {}) {
-  const spacing = 0.2
-  const brickSize = rowSize + spacing
+export function buildSimpleCastle({ rows = 8, brickInWall = 20, blockSize = 1 } = {}) {
+  const spacing = .02
+  const brickSize = blockSize + spacing
   const wallWidth = brickSize * brickInWall
   const blocks = []
 
   const isEven = y => Math.floor(y / brickSize) % 2 == 0
 
   function addBlock(x, y, z) {
-    const block = createBox({ width: rowSize, depth: rowSize, height: rowSize })
+    const block = createBox({ width: blockSize, depth: blockSize, height: blockSize })
     block.position.set(x, y, z)
     blocks.push(block)
   }
