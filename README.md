@@ -12,9 +12,9 @@ npx live-server
 ### Physics
 
 vozilo:
+- dodati fiziku u vučenje kocki
 - napraviti sletanje na mesec 3d
   - prikačiti SimpleGame.js na Three.js render
-- dodati fiziku u vučenje kocki
 
 ### Scenes & examples
 - mojsije otvara more
