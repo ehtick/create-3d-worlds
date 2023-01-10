@@ -6,7 +6,6 @@
    includes support for mobile browsers
 
    Main code and design: Andy Harris - 2011/2012
-   Animation and tile elements by Tyler Mitchell
 */
 
 // Boundary action constants
@@ -19,7 +18,6 @@ export function Sprite(scene, imageFile, width, height) {
   this.context = this.canvas.getContext('2d')
   this.image = new Image()
   this.image.src = imageFile
-  this.animation = false // becomes Animation Class
   this.width = width
   this.height = height
   this.cHeight = parseInt(this.canvas.height)
@@ -86,28 +84,19 @@ export function Sprite(scene, imageFile, width, height) {
     // intended only to be called from update, should never
     // need to be deliberately called by user
     const ctx = this.context
-
     ctx.save()
-    // The following lines are for Tyler's code. Removed for now
-    // if( this.camera ){ ctx.translate(this.x - this.camera.cameraOffsetX, this.y - this.camera.cameraOffsetY); }
-    // else{ ctx.translate(this.x, this.y); }
 
     // transform element
     ctx.translate(this.x, this.y)
     ctx.rotate(this.imgAngle)
 
-    // draw image with center on origin
-    if (this.animation != false)
-      this.animation.drawFrame(ctx)
-	 else
 	  ctx.drawImage(this.image,
-        0 - (this.width / 2),
-        0 - (this.height / 2),
-        this.width, this.height)
+      0 - (this.width / 2),
+      0 - (this.height / 2),
+      this.width, this.height)
 
     ctx.restore()
-
-  } // end draw function
+  }
 
   this.update = function() {
     this.x += this.dx
@@ -196,67 +185,6 @@ export function Sprite(scene, imageFile, width, height) {
       // keep on going forever
     }
   } // end checkbounds
-
-  this.loadAnimation = function(imgWidth, imgHeight, cellWidth, cellHeight) {
-    this.animation = new Animation(this.image, imgWidth, imgHeight, cellWidth, cellHeight)
-    this.animation.setup()
-  }
-
-  // animation methods
-  this.generateAnimationCycles = function(slicingFlag, framesArray) {
-    // Default: assume each row is a cycle and give them names Cycle1, Cycle2, ... , CycleN
-    // SINGLE_ROW: all the sprites are in one row on the sheet, the second parameter is either a number saying each cycle is that many frames or a list of how many frames each cycle is
-    // SINGLE_COLUMN: all the sprites are in one column on the sheet, the second parameter is either a number saying each cycle is that many frames or a list of how many frames each cycle is
-    // VARIABLE_LENGTH: How many frames are in each cycle. framesArray must be defined.
-    cWidth = this.animation.cellWidth
-    cHeight = this.animation.cellHeight
-    iWidth = this.animation.imgWidth
-    iHeight = this.animation.imgHeight
-    numCycles = 0
-    nextStartingFrame = 0
-	  if (typeof framesArray == 'number' || typeof slicingFlag == 'undefined') {
-	    if (slicingFlag == SINGLE_COLUMN) numCycles = (iHeight / cHeight) / framesArray; else if (typeof slicingFlag == 'undefined') {
-        numCycles = (iHeight / cHeight); framesArray = iWidth / cWidth
-      } else numCycles = (iWidth / cWidth) / framesArray
-      for (i = 0; i < numCycles; i++) {
-		  cycleName = 'cycle' + (i + 1)
-		  this.specifyCycle(cycleName, i * framesArray, framesArray)
-      }
-	  } else {
-	    numCycles = framesArray.length
-      for (i = 0; i < numCycles; i++) {
-		  cycleName = 'cycle' + (i + 1)
-		  this.specifyCycle(cycleName, nextStartingFrame, framesArray[i])
-		  nextStartingFrame += framesArray[i]
-      }
-	  }
-    this.setCurrentCycle('cycle1')
-  }
-
-  this.renameCycles = function(cycleNames) {
-    this.animation.renameCycles(cycleNames)
-  }
-  this.specifyCycle = function(cycleName, startingCell, frames) {
-    this.animation.addCycle(cycleName, startingCell, frames)
-  }
-  this.specifyState = function(stateName, cellName) {
-    this.animation.addCycle(stateName, cellName, 1)
-  }
-  this.setCurrentCycle = function(cycleName) {
-    this.animation.setCycle(cycleName)
-  }
-  this.pauseAnimation = function() {
-    this.animation.pause()
-  }
-  this.playAnimation = function() {
-    this.animation.play()
-  }
-  this.resetAnimation = function() {
-    this.animation.reset()
-  }
-  this.setAnimationSpeed = function(speed) {
-    this.animation.setAnimationSpeed(speed)
-  }
 
   this.calcVector = function() {
     // used throughout speed / angle calculations to
