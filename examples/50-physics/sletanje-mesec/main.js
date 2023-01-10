@@ -1,4 +1,4 @@
-import { Sprite, Scene } from './simpleGame.js'
+import { Sprite, Renderer } from './simpleGame.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { clock } from '/utils/scene.js'
 
@@ -13,27 +13,24 @@ function showStats() {
 }
 
 class Lander extends Sprite {
-  constructor(scene) {
-    super(scene, 'lander.png', 50, 50)
+  constructor() {
+    super('lander.png', 50, 50)
     this.setSpeed(0)
     this.falling = true
-    this.imgDefault = 'lander.png'
-    this.imgUp = 'landerUp.png'
-    this.imgLeft = 'landerLeft.png'
-    this.imgRight = 'landerRight.png'
   }
 
-  checkGravity(dt) {
+  applyGravity(dt) {
     if (this.falling)
       this.addVector(180, .2 * dt)
   }
 
   handleInput(dt) {
-    this.setImage(this.imgDefault)
+    this.setImage('lander.png')
+
     if (fuel < 1) return
 
     if (keyboard.down) {
-      this.setImage(this.imgUp)
+      this.setImage('landerUp.png')
       this.addVector(0, .9 * dt)
       this.falling = true
       fuel--
@@ -42,13 +39,13 @@ class Lander extends Sprite {
     if (fuel < .5) return
 
     if (keyboard.left) {
-      this.setImage(this.imgLeft)
+      this.setImage('landerLeft.png')
       this.addVector(90, 1 * dt)
       fuel -= 0.5
     }
 
     if (keyboard.right) {
-      this.setImage(this.imgRight)
+      this.setImage('landerRight.png')
       this.addVector(270, 1 * dt)
       fuel -= 0.5
     }
@@ -67,8 +64,8 @@ class Lander extends Sprite {
 }
 
 class Platform extends Sprite {
-  constructor(scene) {
-    super(scene, 'platform.png', 50, 10)
+  constructor() {
+    super('platform.png', 50, 10)
     this.setSpeed(0)
     this.setPosition(Math.random() * 600 + 100, 550)
   }
@@ -76,22 +73,26 @@ class Platform extends Sprite {
 
 /* INIT */
 
-const scene = new Scene()
-const lander = new Lander(scene)
-const platform = new Platform(scene)
+const scene = new Renderer()
+const lander = new Lander()
+const platform = new Platform()
 
 /* LOOP */
 
 void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
-  scene.clear()
 
-  lander.checkGravity(dt)
-  if (fuel > 0) lander.handleInput(dt)
+  lander.applyGravity(dt)
+  lander.handleInput(dt)
   lander.checkLanding(platform)
-  lander.update()
+  lander.update(dt)
 
   platform.update()
+
+  scene.clear()
+  scene.draw(lander)
+  scene.draw(platform)
+
   showStats()
 }()

@@ -1,15 +1,8 @@
 /* simpleGame.js
-   a very basic game library for the canvas tag
-   loosely based on Python gameEngine
-   and Scratch
-   expects an HTML5-compliant browser
-   includes support for mobile browsers
-
    Main code and design: Andy Harris - 2011/2012
 */
 
-export function Sprite(scene, imageFile, width, height) {
-  this.context = scene.canvas.getContext('2d')
+export function Sprite(imageFile, width, height) {
   this.image = new Image()
   this.image.src = imageFile
   this.width = width
@@ -31,24 +24,9 @@ export function Sprite(scene, imageFile, width, height) {
     this.y = y
   }
 
-  this.draw = function() {
-    const ctx = this.context
-    ctx.save()
-
-    ctx.translate(this.x, this.y)
-
-	  ctx.drawImage(this.image,
-      0 - (this.width / 2),
-      0 - (this.height / 2),
-      this.width, this.height)
-
-    ctx.restore()
-  }
-
   this.update = function() {
     this.x += this.dx
     this.y += this.dy
-    this.draw()
   }
 
   this.calcVector = function() {
@@ -84,7 +62,7 @@ export function Sprite(scene, imageFile, width, height) {
   }
 }
 
-export function Scene() {
+export function Renderer() {
   const canvas = this.canvas = document.createElement('canvas')
   canvas.width = 800
   canvas.height = 600
@@ -94,5 +72,19 @@ export function Scene() {
 
   this.clear = function() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+  }
+
+  this.draw = function(sprite) {
+    const { context } = this
+    context.save()
+
+    context.translate(sprite.x, sprite.y)
+
+	  context.drawImage(sprite.image,
+      0 - (sprite.width / 2),
+      0 - (sprite.height / 2),
+      sprite.width, sprite.height)
+
+    context.restore()
   }
 }
