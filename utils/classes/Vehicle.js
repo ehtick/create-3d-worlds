@@ -141,15 +141,15 @@ export default class Vehicle {
     else this.engineForce = this.maxEngineForce
   }
 
-  backward() {
+  backward(multiplier = .5) {
     this.engineForce = this.breakingForce = 0
     const speed = this.vehicle.getCurrentSpeedKmHour()
     if (speed > 1)
       this.breakingForce = this.maxBreakingForce
-    else this.engineForce = -this.maxEngineForce / 2
+    else this.engineForce = -this.maxEngineForce * multiplier
   }
 
-  break(multiplier = 1) {
+  break(multiplier = 1.5) {
     this.breakingForce = this.maxBreakingForce * multiplier
     this.engineForce = 0.0
   }
@@ -171,7 +171,7 @@ export default class Vehicle {
     else
       this.vehicleSteering = 0
 
-    if (keyboard.space) this.break(1.5)
+    if (keyboard.space) this.break()
 
     this.updatePhysics()
     this.updateMeshes()

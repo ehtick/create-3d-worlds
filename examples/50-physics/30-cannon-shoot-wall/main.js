@@ -14,7 +14,7 @@ const world = new PhysicsWorld()
 
 const impulse = document.getElementById('impulse')
 const minImpulse = impulse.value = 15
-const maxImpulse = 30
+const maxImpulse = 25
 
 const cameraControls = new VehicleCamera({ camera, offsetCamera: [0, 1, -3], lookatCamera: [0, 2, 4] })
 
@@ -52,8 +52,7 @@ function shoot() {
   world.add(ball, 4)
 
   ball.userData.body.setLinearVelocity(new Ammo.btVector3(x, impulse.value * .2, z))
-  cannon.backward()
-  setTimeout(() => cannon.break(), 300)
+  cannon.backward(impulse.value)
   impulse.value = minImpulse
 }
 
