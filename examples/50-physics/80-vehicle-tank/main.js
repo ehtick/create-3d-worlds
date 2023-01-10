@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
+import { createRigidBody } from '/utils/physics.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import Vehicle from '/utils/classes/Vehicle.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
@@ -9,6 +10,7 @@ import { createJumpBoard, createCrates, createSimpleCastle, createCrate, createB
 import { createSun } from '/utils/light.js'
 import { addTexture, sample } from '/utils/helpers.js'
 import { createMoon } from '/utils/geometry/planets.js'
+import { createFirTrees } from '/utils/geometry/trees.js'
 
 const { randFloat } = THREE.MathUtils
 
@@ -28,7 +30,7 @@ world.add(jumpBoard, 0)
 
 createCrates({ x: tankX, z: 10 }).forEach(mesh => world.add(mesh))
 
-createSimpleCastle({rows: 6, brickInWall: 15}).forEach(block => world.add(block, 5))
+createSimpleCastle({ rows: 6, brickInWall: 15 }).forEach(block => world.add(block, 5))
 
 /* GEOMETRIES */
 
@@ -44,6 +46,8 @@ for (let i = 0; i < 10; i++) {
   mesh.position.set(x, .5, z)
   world.add(mesh, 10)
 }
+
+createFirTrees({ n: 20, mapSize: 200 }).children.forEach(t => world.add(t, 0))
 
 /* VEHICLE */
 
