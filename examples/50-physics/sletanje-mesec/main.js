@@ -2,13 +2,11 @@
 /* eslint-disable curly */
 
 let message = ''
-let fuel = 200
+let fuel = 2000
+const stats = document.getElementById('stats')
 
 const scene = new Scene()
 scene.setBG('black')
-const lander = new Lander()
-const platform = new Platform()
-const stats = document.getElementById('stats')
 scene.start()
 
 function Lander() {
@@ -83,9 +81,18 @@ function Platform() {
   return platform
 }
 
+const lander = new Lander()
+const platform = new Platform()
+
+/* LOOP */
+
 // eslint-disable-next-line no-unused-vars
-function update() {
+function update() {}
+
+void function loop() {
+  requestAnimationFrame(loop)
   scene.clear()
+
   lander.checkGravity()
   if (fuel > 0)
     lander.proveriTipke()
@@ -98,4 +105,4 @@ function update() {
 
   lander.update()
   platform.update()
-}
+}()
