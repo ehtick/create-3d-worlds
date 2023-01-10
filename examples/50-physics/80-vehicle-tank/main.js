@@ -30,20 +30,17 @@ world.add(jumpBoard, 0)
 
 createCrates({ x: tankX, z: 10 }).forEach(mesh => world.add(mesh))
 
-createSimpleCastle({ rows: 6, brickInWall: 15 }).forEach(block => world.add(block, 5))
+createSimpleCastle({ rows: 6, brickInWall: 14 }).forEach(block => world.add(block, 5))
 
 /* GEOMETRIES */
 
-const createBall = () => createMoon({ r: .5 })
 const createDarkBarrel = () => createBarrel({ file: 'barrel/metal-barrel-side.jpg', topFile: 'metal/metal01.jpg' })
 
-const factories = [createBall, createCrate, createBarrel, createDarkBarrel]
+const methods = [() => createMoon({ r: .5 }), createCrate, createBarrel, createDarkBarrel]
 
 for (let i = 0; i < 10; i++) {
-  const mesh = sample(factories)()
-  const x = randFloat(-10, -50)
-  const z = randFloat(-20, 20)
-  mesh.position.set(x, .5, z)
+  const mesh = sample(methods)()
+  mesh.position.set(randFloat(-10, -50), .5, randFloat(-20, 20))
   world.add(mesh, 10)
 }
 
