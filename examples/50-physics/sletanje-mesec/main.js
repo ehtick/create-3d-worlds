@@ -70,17 +70,13 @@ class Platform extends Sprite {
   constructor(scene) {
     super(scene, 'platform.png', 50, 10)
     this.setSpeed(0)
-    const x = Math.random() * scene.width
-    this.setPosition(x, 550)
+    this.setPosition(Math.random() * 600 + 100, 550)
   }
 }
 
 /* INIT */
 
 const scene = new Scene()
-scene.setBG('black')
-scene.start()
-
 const lander = new Lander(scene)
 const platform = new Platform(scene)
 

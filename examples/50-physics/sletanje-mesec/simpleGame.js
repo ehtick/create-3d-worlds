@@ -33,20 +33,15 @@ export function Sprite(scene, imageFile, width, height) {
   this.visible = true
   this.boundAction = WRAP
 
-  this.changeImage = function(imgFile) {
-    this.image.src = imgFile
-  } // end this.changeImage
-
   this.setImage = function(imgFile) {
-    // set and change image are the same thing.
     this.image.src = imgFile
-  } // end this.setImage
+  }
 
   this.setPosition = function(x, y) {
     // position is position of center
     this.x = x
     this.y = y
-  } // end setPosition function
+  }
 
   this.setX = function(nx) {
     this.x = nx
@@ -104,12 +99,11 @@ export function Sprite(scene, imageFile, width, height) {
     this.checkBounds()
     if (this.visible)
       this.draw()
-    // end if
-  } // end update
+  }
 
   this.setBoundAction = function(action) {
     this.boundAction = action
-  } // end setBoundAction
+  }
 
   this.checkBounds = function() {
     // behavior changes based on
@@ -145,15 +139,12 @@ export function Sprite(scene, imageFile, width, height) {
     if (this.boundAction == WRAP) {
       if (offRight)
         this.x = leftBorder
-      // end if
 
       if (offBottom)
         this.y = topBorder
-      // end if
 
       if (offLeft)
         this.x = rightBorder
-      // end if
 
       if (offTop)
         this.y = bottomBorder
@@ -184,14 +175,14 @@ export function Sprite(scene, imageFile, width, height) {
     } else {
       // keep on going forever
     }
-  } // end checkbounds
+  }
 
   this.calcVector = function() {
     // used throughout speed / angle calculations to
     // recalculate dx and dy based on speed and angle
     this.dx = this.speed * Math.cos(this.moveAngle)
     this.dy = this.speed * Math.sin(this.moveAngle)
-  } // end calcVector
+  }
 
   this.calcSpeedAngle = function() {
     // opposite of calcVector:
@@ -203,25 +194,25 @@ export function Sprite(scene, imageFile, width, height) {
   this.setSpeed = function(speed) {
     this.speed = speed
     this.calcVector()
-  } // end setSpeed
+  }
 
   this.getSpeed = function() {
     // calculate speed based on current dx and dy
     const speed = Math.sqrt((this.dx * this.dx) + (this.dy * this.dy))
     return speed
-  } // end getSpeed
+  }
 
   this.changeSpeedBy = function(diff) {
     this.speed += diff
     this.calcVector()
-  } // end changeSpeedBy
+  }
 
   this.setImgAngle = function(degrees) {
     // offset degrees by 90
     degrees -= 90
     // convert degrees to radians
     this.imgAngle = degrees * Math.PI / 180
-  } // end setImgAngle
+  }
 
   this.getImgAngle = function() {
     // imgAngle is stored in radians.
@@ -229,11 +220,6 @@ export function Sprite(scene, imageFile, width, height) {
     // don't forget we offset the angle by 90 degrees
     return (this.imgAngle * 180 / Math.PI) + 90
   }
-
-  this.changeImgAngleBy = function(degrees) {
-    rad = degrees * Math.PI / 180
-    this.imgAngle += rad
-  } // end changeImgAngle
 
   this.setMoveAngle = function(degrees) {
     // take movement angle in degrees
@@ -243,14 +229,6 @@ export function Sprite(scene, imageFile, width, height) {
     this.moveAngle = degrees * Math.PI / 180
     this.calcVector()
   } // end setMoveAngle
-
-  this.changeMoveAngleBy = function(degrees) {
-    // convert diff to radians
-    const diffRad = degrees * Math.PI / 180
-    // add radian diff to moveAngle
-    this.moveAngle += diffRad
-    this.calcVector()
-  } // end changeMoveAngleBy
 
   this.getMoveAngle = function() {
     // moveAngle is stored in radians.
@@ -264,11 +242,6 @@ export function Sprite(scene, imageFile, width, height) {
     this.setMoveAngle(degrees)
     this.setImgAngle(degrees)
   } // end setAngle
-
-  this.changeAngleBy = function(degrees) {
-    this.changeMoveAngleBy(degrees)
-    this.changeImgAngleBy(degrees)
-  } // end changeAngleBy
 
   this.turnBy = function(degrees) {
     // same as changeAngleBy
@@ -291,146 +264,19 @@ export function Sprite(scene, imageFile, width, height) {
 
     // ensure speed and angle are updated
     this.calcSpeedAngle()
-  } // end addVector
-
-  this.collidesWith = function(sprite) {
-    // check for collision with another sprite
-
-    // collisions only activated when both sprites are visible
-    collision = false
-    if (this.visible)
-
-      if (sprite.visible) {
-        // define borders
-        myLeft = this.x - (this.width / 2)
-        myRight = this.x + (this.width / 2)
-        myTop = this.y - (this.height / 2)
-        myBottom = this.y + (this.height / 2)
-        otherLeft = sprite.x - (sprite.width / 2)
-        otherRight = sprite.x + (sprite.width / 2)
-        otherTop = sprite.y - (sprite.height / 2)
-        otherBottom = sprite.y + (sprite.height / 2)
-
-        // assume collision
-        collision = true
-
-        // determine non-colliding states
-        if ((myBottom < otherTop) ||
-	    (myTop > otherBottom) ||
-	    (myRight < otherLeft) ||
-	    (myLeft > otherRight))
-	      collision = false
-	 // end if
-
-      } // end 'other visible' if
-    // end 'I'm visible' if
-
-    return collision
-  } // end collidesWith
-
-  this.distanceTo = function(sprite) {
-    diffX = this.x - sprite.x
-    diffY = this.y - sprite.y
-    dist = Math.sqrt((diffX * diffX) + (diffY * diffY))
-    return dist
-  } // end distanceTo
-
-  this.angleTo = function(sprite) {
-    // get centers of sprites
-    myX = this.x + (this.width / 2)
-    myY = this.y + (this.height / 2)
-    otherX = sprite.x + (sprite.width / 2)
-    otherY = sprite.y + (sprite.height / 2)
-
-    // calculate difference
-    diffX = myX - otherX
-    diffY = myY - otherY
-    radians = Math.atan2(diffY, diffX)
-    degrees = radians * 180 / Math.PI
-    // degrees are offset
-    degrees += 90
-    return degrees
-  } // end angleTo
-
-  this.setCameraRelative = function(cam) {
-    this.camera = cam
   }
-
-  this.report = function() {
-    // used only for debugging. Requires browser with JS console
-    console.log ('x: ' + this.x + ', y: ' + this.y + ', dx: '
-		   + this.dx + ', dy: ' + this.dy
-		   + ', speed: ' + this.speed
-		   + ', angle: ' + this.moveAngle)
-  } // end report
-} // end Sprite class def
-
-export function Scene() {
-  // dynamically create a canvas element
-  this.canvas = document.createElement('canvas')
-  this.canvas.style.backgroundColor = 'yellow'
-  document.body.appendChild(this.canvas)
-  this.context = this.canvas.getContext('2d')
-
-  this.clear = function() {
-    this.context.clearRect(0, 0, this.width, this.height)
-  }
-
-  this.start = function() {
-    // set up keyboard reader if not a touch screen.
-    // removed this test as it was breaking on machines with both
-    // touch and keyboard input
-    this.intID = setInterval(localUpdate, 50)
-    // document.mouseClicked = false
-    // document.onmousedown = function() {
-    //   this.mouseDown = true
-    //   this.mouseClicked = true
-    // }
-    // document.onmouseup = function() {
-    //   this.mouseDown = false
-    //   this.mouseClicked = false
-    // }
-  }
-
-  this.stop = function() {
-    clearInterval(this.intID)
-  }
-
-  this.setSize = function(width, height) {
-    // set the width and height of the canvas in pixels
-    this.width = width
-    this.height = height
-    this.canvas.width = this.width
-    this.canvas.height = this.height
-  } // end setSize
-
-  this.setPos = function(left, top) {
-    // set the left and top position of the canvas
-    // offset from the page
-    this.left = left
-    this.top = top
-  }
-
-  this.setBG = function(color) {
-    this.canvas.style.backgroundColor = color
-  }
-
-  this.hide = function() {
-    this.canvas.style.display = 'none'
-  }
-
-  this.show = function() {
-    this.canvas.style.display = 'block'
-  }
-
-  this.setSize(800, 600)
-  this.setPos(10, 10)
-  this.setBG('lightgray')
 }
 
-function localUpdate() {
-  // will be called once per frame
-  // calls the update function defined by
-  // the user
-  window.update()
-} // end localUpdate
+export function Scene() {
+  const canvas = this.canvas = document.createElement('canvas')
+  canvas.style.backgroundColor = 'yellow'
+  canvas.width = 800
+  canvas.height = 600
+  canvas.style.backgroundColor = 'black'
+  document.body.appendChild(canvas)
+  this.context = canvas.getContext('2d')
+
+  this.clear = function() {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+  }
+}
