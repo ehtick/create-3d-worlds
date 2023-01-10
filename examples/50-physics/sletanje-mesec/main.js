@@ -1,108 +1,101 @@
-/* global Sprite, Scene, keysDown */
-/* eslint-disable curly */
+/* global Sprite, Scene */
+import keyboard from '/utils/classes/Keyboard.js'
 
 let message = ''
 let fuel = 2000
 const stats = document.getElementById('stats')
 
-const scene = new Scene()
-scene.setBG('black')
-scene.start()
+function showStats() {
+  let output = 'MSG: ' + message + '<br />'
+  output += 'Fuel: ' + fuel
+  stats.innerHTML = output
+}
 
-function Lander() {
-  const lander = new Sprite(scene, 'lander.png', 50, 50)
-  lander.setSpeed(0)
-  lander.falling = true
-  lander.imgDefault = 'lander.png'
-  lander.imgUp = 'landerUp.png'
-  lander.imgLeft = 'landerLeft.png'
-  lander.imgRight = 'landerRight.png'
+class Lander extends Sprite {
+  constructor(scene) {
+    super(scene, 'lander.png', 50, 50)
+    this.setSpeed(0)
+    this.falling = true
+    this.imgDefault = 'lander.png'
+    this.imgUp = 'landerUp.png'
+    this.imgLeft = 'landerLeft.png'
+    this.imgRight = 'landerRight.png'
+  }
 
-  lander.checkGravity = function() {
+  checkGravity() {
     if (this.falling)
       this.addVector(180, .1)
   }
 
-  lander.proveriTipke = function() {
+  handleInput() {
     this.setImage(this.imgDefault)
-    if (keysDown[K_S]) {
+    if (fuel < 1) return
+
+    if (keyboard.down) {
       this.setImage(this.imgUp)
       this.addVector(0, .3)
       this.falling = true
       fuel--
     }
 
-    if (keysDown[K_A]) {
+    if (fuel < .5) return
+
+    if (keyboard.left) {
       this.setImage(this.imgLeft)
       this.addVector(90, .1)
       fuel -= 0.5
     }
 
-    if (keysDown[K_D]) {
+    if (keyboard.right) {
       this.setImage(this.imgRight)
       this.addVector(270, .1)
       fuel -= 0.5
     }
   }
 
-  lander.showStats = function() {
-    let output = 'MSG: ' + message + '<br />'
-    output += 'Fuel: ' + fuel
-    stats.innerHTML = output
+  checkLanding(platform) {
+    if (this.falling && this.y > 525
+      && this.x < platform.x + 10 && this.x > platform.x - 10
+      && this.dx < .2 && this.dx > -.2 && this.dy < 2
+    ) {
+      this.setSpeed(0)
+      this.falling = false
+      message = 'Nice Landing!'
+    }
   }
-
-  lander.checkLanding = function() {
-    if (this.falling) {
-      if (this.y > 525) {
-        if (this.x < platform.x + 10) {
-          if (this.x > platform.x - 10) {
-            if (this.dx < .2) {
-              if (this.dx > -.2) {
-                if (this.dy < 2) {
-                  this.setSpeed(0)
-                  this.falling = false
-                  message = 'Nice Landing!'
-                }
-              }
-            }
-          } // end 'x too big' if
-        } // end 'x too small' if
-      } // end 'y not big enough' if
-    } // end 'are we falling?' if
-  }
-  return lander
 }
 
-function Platform() {
-  const platform = new Sprite(scene, 'platform.png', 50, 10)
-  platform.setSpeed(0)
-  const x = Math.random() * scene.width
-  platform.setPosition(x, 550)
-  return platform
+class Platform extends Sprite {
+  constructor(scene) {
+    super(scene, 'platform.png', 50, 10)
+    this.setSpeed(0)
+    const x = Math.random() * scene.width
+    this.setPosition(x, 550)
+  }
 }
 
-const lander = new Lander()
-const platform = new Platform()
+/* INIT */
+
+const scene = new Scene()
+scene.setBG('black')
+scene.start()
+
+const lander = new Lander(scene)
+const platform = new Platform(scene)
 
 /* LOOP */
-
-// eslint-disable-next-line no-unused-vars
-function update() {}
 
 void function loop() {
   requestAnimationFrame(loop)
   scene.clear()
 
   lander.checkGravity()
-  if (fuel > 0)
-    lander.proveriTipke()
-  else {
-    fuel = 0
-    lander.setImage(lander.imgDefault)
-  }
-  lander.showStats()
-  lander.checkLanding()
-
+  if (fuel > 0) lander.handleInput()
+  lander.checkLanding(platform)
   lander.update()
+
   platform.update()
+  showStats()
 }()
+
+window.update = () => {}
