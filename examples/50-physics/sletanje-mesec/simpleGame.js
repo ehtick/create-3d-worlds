@@ -9,27 +9,8 @@
    Animation and tile elements by Tyler Mitchell
 */
 
-// variable holding key being pressed
-let currentKey = null
-const keysDown = new Array(256)
-const virtKeys = false
-
-// keyboard constants
-// K_A = 65; K_B = 66; K_C = 67; K_D = 68; K_E = 69; K_F = 70; K_G = 71
-// K_H = 72; K_I = 73; K_J = 74; K_K = 75; K_L = 76; K_M = 77; K_N = 78
-// K_O = 79; K_P = 80; K_Q = 81; K_R = 82; K_S = 83; K_T = 84; K_U = 85
-// K_V = 86; K_W = 87; K_X = 88; K_Y = 89; K_Z = 90
-// K_LEFT = 37; K_RIGHT = 39; K_UP = 38; K_DOWN = 40; K_SPACE = 32
-// K_ESC = 27; K_PGUP = 33; K_PGDOWN = 34; K_HOME = 36; K_END = 35
-// K_0 = 48; K_1 = 49; K_2 = 50; K_3 = 51; K_4 = 52; K_5 = 53
-// K_6 = 54; K_7 = 55; K_8 = 56; K_9 = 57
-
-// // Animation Constants
-// SINGLE_ROW = 1; SINGLE_COLUMN = 2; VARIABLE_LENGTH = 3
-// PLAY_ONCE = 1; PLAY_LOOP = 2
-
-// // Boundary action constants
-const WRAP = 0, BOUNCE = 1, STOP = 3, DIE = 4, CONTINUE = 5
+// Boundary action constants
+const WRAP = 0, BOUNCE = 1, STOP = 3, DIE = 4
 
 export function Sprite(scene, imageFile, width, height) {
   // core class for game engine
@@ -443,48 +424,6 @@ export function Sprite(scene, imageFile, width, height) {
     return degrees
   } // end angleTo
 
-  this.isMouseDown = function() {
-    // determines if mouse is clicked on this element
-    mx = this.scene.getMouseX()
-    my = this.scene.getMouseY()
-    sLeft = this.x - (this.width / 2)
-    sRight = this.x + (this.width / 2)
-    sTop = this.y - (this.height / 2)
-    sBottom = this.y + (this.height / 2)
-    hit = false
-
-    if (mx > sLeft)
-      if (mx < sRight)
-        if (my > sTop)
-	  if (my < sBottom)
-	    if (this.scene.touchable)
-	      // if it's a touchable interface,
-	      // this is a hit
-	      hit = true
-	     else
-	      // for a normal mouse, check for clicked, too
-	      if (this.scene.getMouseClicked())
-              hit = true
-
-    return hit
-  } // end isMouseDown
-
-  this.isClicked = function() {
-    // eventually return true only when mouse is released;
-    // for now, simply another name for isMouseDown
-    return this.isMouseDown()
-
-    /*
-    hit = false;
-    if (this.isMouseDown()){
-      if (this.released){
-	hit = true;
-      } // end if
-    } // end if
-    return hit;
-    */
-  } // end isClicked
-
   this.setCameraRelative = function(cam) {
     this.camera = cam
   }
@@ -499,11 +438,6 @@ export function Sprite(scene, imageFile, width, height) {
 } // end Sprite class def
 
 export function Scene() {
-  // Scene that encapsulates the animation background
-
-  // determine if it's a touchscreen device
-  this.touchable = 'createTouch' in document
-
   // dynamically create a canvas element
   this.canvas = document.createElement('canvas')
   this.canvas.style.backgroundColor = 'yellow'
@@ -518,52 +452,21 @@ export function Scene() {
     // set up keyboard reader if not a touch screen.
     // removed this test as it was breaking on machines with both
     // touch and keyboard input
-    // if (!this.touchable){
-    this.initKeys()
-    document.onkeydown = this.updateKeys
-    document.onkeyup = this.clearKeys
-    // } // end if
     this.intID = setInterval(localUpdate, 50)
-    document.onmousemove = this.updateMousePos
-    document.mouseClicked = false
-    document.onmousedown = function() {
-      this.mouseDown = true
-      this.mouseClicked = true
-    }
-    document.onmouseup = function() {
-      this.mouseDown = false
-      this.mouseClicked = false
-    }
+    // document.mouseClicked = false
+    // document.onmousedown = function() {
+    //   this.mouseDown = true
+    //   this.mouseClicked = true
+    // }
+    // document.onmouseup = function() {
+    //   this.mouseDown = false
+    //   this.mouseClicked = false
+    // }
   }
 
   this.stop = function() {
     clearInterval(this.intID)
   }
-
-  this.updateKeys = function(e) {
-    // set current key
-    currentKey = e.keyCode
-    // console.log(e.keyCode);
-    keysDown[e.keyCode] = true
-  } // end updateKeys
-
-  this.clearKeys = function(e) {
-    currentKey = null
-    keysDown[e.keyCode] = false
-  } // end clearKeys
-
-  this.initKeys = function() {
-    // initialize keys array to all false
-    for (let keyNum = 0; keyNum < 256; keyNum++)
-	      keysDown[keyNum] = false
-    // end for
-  } // end initKeys
-
-  this.setSizePos = function(height, width, top, left) {
-    // convenience function.  Cals setSize and setPos
-    this.setSize(height, width)
-    this.setPos(top, left)
-  } // end setSizePos
 
   this.setSize = function(width, height) {
     // set the width and height of the canvas in pixels
@@ -578,44 +481,10 @@ export function Scene() {
     // offset from the page
     this.left = left
     this.top = top
-
-    // CSS3 transform to move elements.
-    // Cross-browser compatibility would be awesome, guys...
-    this.canvas.style.MozTransform = 'translate(' + left + 'px, ' + top + 'px)'
-    this.canvas.style.WebkitTransform = 'translate(' + left + 'px, ' + top + 'px)'
-    this.canvas.style.OTransform = 'translate(' + left + 'px, ' + top + 'px)'
-
-  } // end setPos
+  }
 
   this.setBG = function(color) {
     this.canvas.style.backgroundColor = color
-  } // end this.setBG
-
-  this.updateMousePos = function(e) {
-    this.mouseX = e.pageX
-    this.mouseY = e.pageY
-  } // end function
-
-  this.hideCursor = function() {
-    this.canvas.style.cursor = 'none'
-  }
-
-  this.showCursor = function() {
-    this.canvas.style.cursor = 'default'
-  }
-
-  this.getMouseX = function() {
-    // incorporate offset for canvas position
-    return document.mouseX - this.left
-  }
-
-  this.getMouseY = function() {
-    // incorporate offset for canvas position
-    return document.mouseY - this.top
-  }
-
-  this.getMouseClicked = function() {
-    return document.mouseClicked
   }
 
   this.hide = function() {
@@ -629,118 +498,6 @@ export function Scene() {
   this.setSize(800, 600)
   this.setPos(10, 10)
   this.setBG('lightgray')
-
-} // end Scene class def
-
-function Accel() {
-  // virtual accelerometer
-
-  // properties
-  let ax
-  let ay
-  let az
-
-  let rotX
-  let rotY
-  let rotZ
-
-  if (window.DeviceMotionEvent == undefined)
-    console.log('This program requires an accelerometer')
-  else
-    window.ondevicemotion = function(event) {
-      this.ax = event.accelerationIncludingGravity.x
-      this.ay = event.accelerationIncludingGravity.y
-      this.az = event.accelerationIncludingGravity.z
-
-      const rotation = event.rotationRate
-      if (rotation != null) {
-        this.rotX = Math.round(rotation.alpha)
-        this.rotY = Math.round(rotation.beta)
-        this.rotZ = Math.round(rotation.gamma)
-      } // end if
-    } // end event handler
-  // end if
-
-  // return values with utility methods
-
-  this.getAX = function() {
-    if (window.ax == null)
-      window.ax = 0
-
-    return window.ax
-  } // end getAx
-
-  this.getAY = function() {
-    if (window.ay == null)
-      window.ay = 0
-
-    return window.ay
-  } // end getAx
-
-  this.getAZ = function() {
-    if (window.az == null)
-      window.az = 0
-
-    return window.az
-  } // end getAx
-
-  this.getRotX = function() {
-    return rotX
-  }
-  this.getRotY = function() {
-    return rotY
-  }
-  this.getRotZ = function() {
-    return rotZ
-  }
-
-} // end class def
-
-function Timer() {
-  // simple timer
-
-  this.reset = function() {
-    this.date = new Date()
-    this.startTime = this.date.getTime()
-    this.elapsedTime = 0
-  } // end reset
-
-  this.getCurrentTime = function() {
-    this.date = new Date()
-    return this.date.getTime()
-  } // end getCurrentTime
-
-  this.getElapsedTime = function() {
-    const current = this.getCurrentTime()
-    return (current - this.startTime) / 1000
-  } // end getElapsedTime
-
-  // make alias functions for animations...
-  this.start = this.reset
-  this.getTimeElapsed = this.getElapsedTime
-
-  this.reset()
-} // end Timer def
-
-const AnimTimer = function() {
-  // special timer for animations
-  this.date = new Date()
-  this.lastTime = 0
-  this.currentTime = 0
-
-  this.start = function() {
-	 this.currentTime = Date.now()
-  }
-
-  this.reset = function() {
-	 this.currentTime = Date.now()
-  }
-
-  this.getTimeElapsed = function() {
-    this.lastTime = this.currentTime
-	 this.currentTime = Date.now()
-	 return (this.currentTime - this.lastTime)
-  }
 }
 
 function localUpdate() {
