@@ -28,8 +28,8 @@ createSideWall({ brickMass: 3, friction: 5, z: 7 }).forEach(mesh => world.add(me
 
 const { mesh: chassisMesh } = await loadModel({ file: 'weapon/cannon/mortar/mortar.obj', mtl: 'weapon/cannon/mortar/mortar.mtl', size: 1, angle: Math.PI * .5 })
 
-const wheelFront = { x: .3, y: .15, z: .35 }
-const wheelBack = { x: .3, y: .15, z: -.55 }
+const wheelFront = { x: .3, y: .12, z: .32 }
+const wheelBack = { x: .3, y: .18, z: -.56 }
 const cannon = new Vehicle({ physicsWorld: world.physicsWorld, chassisMesh, defaultRadius: .18, wheelFront, wheelBack, maxEngineForce: 20, mass: 100 })
 scene.add(chassisMesh, ...cannon.wheelMeshes)
 
