@@ -14,7 +14,24 @@ let currentKey = null
 const keysDown = new Array(256)
 const virtKeys = false
 
-function Sprite(scene, imageFile, width, height) {
+// keyboard constants
+// K_A = 65; K_B = 66; K_C = 67; K_D = 68; K_E = 69; K_F = 70; K_G = 71
+// K_H = 72; K_I = 73; K_J = 74; K_K = 75; K_L = 76; K_M = 77; K_N = 78
+// K_O = 79; K_P = 80; K_Q = 81; K_R = 82; K_S = 83; K_T = 84; K_U = 85
+// K_V = 86; K_W = 87; K_X = 88; K_Y = 89; K_Z = 90
+// K_LEFT = 37; K_RIGHT = 39; K_UP = 38; K_DOWN = 40; K_SPACE = 32
+// K_ESC = 27; K_PGUP = 33; K_PGDOWN = 34; K_HOME = 36; K_END = 35
+// K_0 = 48; K_1 = 49; K_2 = 50; K_3 = 51; K_4 = 52; K_5 = 53
+// K_6 = 54; K_7 = 55; K_8 = 56; K_9 = 57
+
+// // Animation Constants
+// SINGLE_ROW = 1; SINGLE_COLUMN = 2; VARIABLE_LENGTH = 3
+// PLAY_ONCE = 1; PLAY_LOOP = 2
+
+// // Boundary action constants
+const WRAP = 0, BOUNCE = 1, STOP = 3, DIE = 4, CONTINUE = 5
+
+export function Sprite(scene, imageFile, width, height) {
   // core class for game engine
   this.scene = scene
   this.canvas = scene.canvas
@@ -87,7 +104,7 @@ function Sprite(scene, imageFile, width, height) {
     // draw self on canvas;
     // intended only to be called from update, should never
     // need to be deliberately called by user
-    ctx = this.context
+    const ctx = this.context
 
     ctx.save()
     // The following lines are for Tyler's code. Removed for now
@@ -128,20 +145,20 @@ function Sprite(scene, imageFile, width, height) {
     // behavior changes based on
     // boundAction property
 
-    camX = 0
-    camY = 0
+    let camX = 0
+    let camY = 0
     if (this.camera) {
       camX = this.camera.cameraOffsetX; camY = this.camera.cameraOffsetY
     }
-    rightBorder = this.cWidth + camX
-    leftBorder = camX
-    topBorder = camY
-    bottomBorder = this.cHeight + camY
+    const rightBorder = this.cWidth + camX
+    const leftBorder = camX
+    const topBorder = camY
+    const bottomBorder = this.cHeight + camY
 
-    offRight = false
-    offLeft = false
-    offTop = false
-    offBottom = false
+    let offRight = false
+    let offLeft = false
+    let offTop = false
+    let offBottom = false
 
     if (this.x > rightBorder)
       offRight = true
@@ -281,7 +298,7 @@ function Sprite(scene, imageFile, width, height) {
 
   this.getSpeed = function() {
     // calculate speed based on current dx and dy
-    speed = Math.sqrt((this.dx * this.dx) + (this.dy * this.dy))
+    const speed = Math.sqrt((this.dx * this.dx) + (this.dy * this.dy))
     return speed
   } // end getSpeed
 
@@ -320,7 +337,7 @@ function Sprite(scene, imageFile, width, height) {
 
   this.changeMoveAngleBy = function(degrees) {
     // convert diff to radians
-    diffRad = degrees * Math.PI / 180
+    const diffRad = degrees * Math.PI / 180
     // add radian diff to moveAngle
     this.moveAngle += diffRad
     this.calcVector()
@@ -355,11 +372,11 @@ function Sprite(scene, imageFile, width, height) {
     // offset angle by 90 degrees
     degrees -= 90
     // input angle is in degrees - convert to radians
-    angle = degrees * Math.PI / 180
+    const angle = degrees * Math.PI / 180
 
     // calculate dx and dy
-    newDX = thrust * Math.cos(angle)
-    newDY = thrust * Math.sin(angle)
+    const newDX = thrust * Math.cos(angle)
+    const newDY = thrust * Math.sin(angle)
     this.dx += newDX
     this.dy += newDY
 
@@ -481,7 +498,7 @@ function Sprite(scene, imageFile, width, height) {
   } // end report
 } // end Sprite class def
 
-function Scene() {
+export function Scene() {
   // Scene that encapsulates the animation background
 
   // determine if it's a touchscreen device
@@ -537,7 +554,7 @@ function Scene() {
 
   this.initKeys = function() {
     // initialize keys array to all false
-    for (keyNum = 0; keyNum < 256; keyNum++)
+    for (let keyNum = 0; keyNum < 256; keyNum++)
 	      keysDown[keyNum] = false
     // end for
   } // end initKeys
@@ -615,153 +632,6 @@ function Scene() {
 
 } // end Scene class def
 
-function Sound(src) {
-  // sound effect class
-  // builds a sound effect based on a url
-  // may need both ogg and mp3.
-  this.snd = document.createElement('audio')
-  this.snd.src = src
-  // preload sounds if possible (won't work on IOS)
-  this.snd.setAttribute('preload', 'auto')
-  // hide controls for now
-  this.snd.setAttribute('controls', 'none')
-  this.snd.style.display = 'none'
-  // attach to document so controls will show when needed
-  document.body.appendChild(this.snd)
-
-  this.play = function() {
-    this.snd.play()
-  } // end play function
-
-  this.showControls = function() {
-    // generally not needed.
-    // crude hack for IOS
-    this.snd.setAttribute('controls', 'controls')
-    this.snd.style.display = 'block'
-  } // end showControls
-
-} // end sound class def
-
-function Joy() {
-  // virtual joystick for ipad
-  // console.log("joystick created");
-  // when activated, document will have the following properties
-  // mouseX, mouseY: touch read as mouse input
-  // diffX, diffY: touch motion read as a joystick input
-  // if virtKeys is set true
-  // joystick inputs will be read as arrow keys
-
-  // properties
-  SENSITIVITY = 50
-  diffX = 0
-  diffY = 0
-  let touches = []
-  let startX
-  let startY
-
-  // define event handlers
-  this.onTouchStart = function(event) {
-    result = 'touch: '
-    touches = event.touches
-    startX = touches[0].screenX
-    startY = touches[0].screenY
-    result += 'x: ' + startX + ', y: ' + startY
-    // define mouse position based on touch position
-    this.mouseX = startX
-    this.mouseY = startY
-    // console.log(result);
-  } // end onTouchStart
-
-  this.onTouchMove = function(event) {
-    result = 'move: '
-    event.preventDefault()
-    touches = event.touches
-    // map touch position to mouse position
-    this.mouseX = touches[0].screenX
-    this.mouseY = touches[0].screenY
-    this.diffX = touches[0].screenX - startX
-    this.diffY = touches[0].screenY - startY
-    result += 'dx: ' + this.diffX + ', dy: ' + this.diffY
-
-    // manage virtual keys if enabled
-    if (virtKeys) {
-      THRESHHOLD = 10
-      if (this.diffX > THRESHHOLD)
-        keysDown[K_RIGHT] = true
-      else
-        keysDown[K_RIGHT] = false
-      // end if
-
-      if (this.diffX < -THRESHHOLD)
-        keysDown[K_LEFT] = true
-      else
-        keysDown[K_LEFT] = false
-      // end if
-
-      if (this.diffY > THRESHHOLD)
-        keysDown[K_DOWN] = true
-      else
-        keysDown[K_DOWN] = false
-      // end if
-
-      if (this.diffY < -THRESHHOLD)
-        keysDown[K_UP] = true
-      else
-        keysDown[K_UP] = false
-      // end if
-
-    } // end if
-
-  } // end onTouchMove
-
-  this.onTouchEnd = function(event) {
-    result = 'no touch'
-    touches = event.touches
-    this.diffX = 0
-    this.diffY = 0
-
-    // turn off all virtual keys
-    if (virtKeys) {
-      keysDown[K_LEFT] = false
-      keysDown[K_RIGHT] = false
-      keysDown[K_UP] = false
-      keysDown[K_DOWN] = false
-    }
-  } // end onTouchEnd
-
-  // add utility methods to retrieve various attributes
-  this.getDiffX = function() {
-    // compensate for possible null
-    if (document.diffX == null)
-      document.diffX = 0
-    // end if
-    return document.diffX
-  }
-  this.getDiffY = function() {
-    // compensate for possible null
-    if (document.diffY == null)
-      document.diffY = 0
-    // end if
-    return document.diffY
-  }
-
-  this.getMouseX = function() {
-    return document.mouseX
-  }
-  this.getMouseY = function() {
-    return document.mouseY
-  }
-
-  // add event handlers if appropriate
-  touchable = 'createTouch' in document
-  if (touchable) {
-    document.addEventListener('touchstart', this.onTouchStart, false)
-    document.addEventListener('touchmove', this.onTouchMove, false)
-    document.addEventListener('touchend', this.onTouchEnd, false)
-  } // end if
-
-} // end joy class def
-
 function Accel() {
   // virtual accelerometer
 
@@ -782,7 +652,7 @@ function Accel() {
       this.ay = event.accelerationIncludingGravity.y
       this.az = event.accelerationIncludingGravity.z
 
-      rotation = event.rotationRate
+      const rotation = event.rotationRate
       if (rotation != null) {
         this.rotX = Math.round(rotation.alpha)
         this.rotY = Math.round(rotation.beta)
@@ -841,7 +711,7 @@ function Timer() {
   } // end getCurrentTime
 
   this.getElapsedTime = function() {
-    current = this.getCurrentTime()
+    const current = this.getCurrentTime()
     return (current - this.startTime) / 1000
   } // end getElapsedTime
 
@@ -877,176 +747,5 @@ function localUpdate() {
   // will be called once per frame
   // calls the update function defined by
   // the user
-  update()
+  window.update()
 } // end localUpdate
-
-/* tile and event stuff added by Tyler */
-
-function GameButton(label) {
-  /*
-	This object creates a button that can be sized
-	and positioned wherever you wish. The label will
-	be displayed, but can be complete HTML (including
-	an image tag if you wish.)  Use isClicked() to
-	get the current status of the button (true or false.)
-	Responds to touch events on mobile devices.
-    */
-
-  this.clicked = false
-  this.button = document.createElement('button')
-  this.button.setAttribute('type', 'button')
-  this.button.innerHTML = label
-  this.button.style.position = 'absolute'
-  this.button.style.left = '0px'
-  this.button.style.top = '0px'
-
-  this.button.onmousedown = function() {
-    this.clicked = true
-  } // end mousedown
-
-  this.button.ontouchstart = function() {
-    this.clicked = true
-  } // end touchstart
-
-  this.button.onmouseup = function() {
-    this.clicked = false
-  } // end onmouseup
-
-  this.isClicked = function() {
-    return this.button.clicked
-  } // end isClicked
-
-  this.setPos = function(left, top) {
-    this.button.style.left = left + 'px'
-    this.button.style.top = top + 'px'
-  } // end setPos
-
-  this.setPosition = function(left, top) {
-    // utility alias for setPos
-    this.setPos(left, top)
-  }
-
-  this.setSize = function(width, height) {
-    this.button.style.width = width + 'px'
-    this.button.style.height = height + 'px'
-  } // end setSize
-
-  document.body.appendChild(this.button)
-} // end gameButton class def
-
-function Animation(spriteSheet, imgWidth, imgHeight, cellWidth, cellHeight) {
-  // Animation class by Tyler Mitchell
-  // for simplicity, all cells must be the same width and height combination
-  this.sheet = spriteSheet
-  this.imgWidth = imgWidth
-  this.imgHeight = imgHeight
-  this.cellWidth = cellWidth
-  this.cellHeight = cellHeight
-  this.animationLength = 1000
-  this.changeLength = false
-  this.cycles = new Array()
-  this.currentCycleName = ''
-  this.currentCycle = null
-  this.cyclePlaySettings = new Array(PLAY_LOOP, PLAY_LOOP, PLAY_LOOP, PLAY_LOOP)
-  this.changeAnimation = false
-  this.timer = new AnimTimer()
-  this.framesPerRow = 0
-  this.framesPerColumn = 0
-  this.totalCycleTime = 0
-  this.fps = 0
-  this.isPaused = false
-
-  this.setup = function() {
-    this.timer.start()
-    this.framesPerRow = this.imgWidth / this.cellWidth
-    this.framesPerColumn = this.imgHeight / this.cellHeight
-  }
-
-  this.addCycle = function(cycleName, startingCell, frames) {
-    cycle = new Array(cycleName, startingCell, frames)
-    this.cycles.push(cycle)
-  }
-
-  this.drawFrame = function(ctx) {// most of the math in this function could be done only once if we want to make it faster
-    this.fps += 1
-    if (!this.isPaused) this.totalCycleTime += this.timer.getTimeElapsed()
-    if (this.changeAnimation == true) // find the correct animation in
-	  for (i = 0; i < this.cycles.length; i++)
-	    if (this.cycles[i][0] == this.currentCycleName)
-		  this.currentCycle = this.cycles[i]
-
-    if (this.changeAnimation || this.changeLength) {
-	  this.frameDelta = this.animationLength / this.currentCycle[2] // this will be how much time should pass at a minimum before switching to the next frame
-	  this.changeAnimation = false
-	  this.changeLength = false
-	  this.fps = 0
-    }
-    // console.log("Cycletime: " + this.totalCycleTime);
-    // console.log("Frame Delta: " + this.frameDelta);
-    // I think the following line is the trouble spot
-    // currentFrame = Math.floor( (this.totalCycleTime % this.animationLength) / this.frameDelta );
-    elTime = this.totalCycleTime % this.animationLength
-    currentFrame = Math.floor(elTime / this.frameDelta)
-    // console.log(elTime);
-
-    // document.getElementById("FPS").innerHTML = this.animationLength;//for debugging
-    row = Math.floor((this.currentCycle[1] + currentFrame) / this.framesPerRow)
-    col = (this.currentCycle[1] + currentFrame) - (row * Math.floor(this.imgWidth / this.cellWidth))
-    frameY = row * this.cellHeight
-    frameX = col * this.cellWidth
-
-    ctx.drawImage(this.sheet, frameX, frameY, this.cellWidth, this.cellHeight, 0 - (this.cellWidth / 2), 0 - (this.cellHeight / 2), this.cellWidth, this.cellHeight)
-  }
-
-  this.setCycle = function(cycleName) {
-    this.currentCycleName = cycleName
-    this.changeAnimation = true
-    this.totalCycleTime = 0
-  }
-
-  this.renameCycles = function(cycleNames) {
-    for (i = 0; i < cycleNames.length; i++) {
-	  number = parseInt(this.cycles[i][0].slice(5))
-	  if (this.currentCycleName == this.cycles[i][0]) this.currentCycleName = cycleNames[number - 1]
-	  this.cycles[i][0] = cycleNames[number - 1]
-    }
-  }
-
-  this.play = function() {
-    this.isPaused = false
-    this.timer.reset()
-  }
-
-  this.pause = function() {
-    this.isPaused = true
-  }
-
-  this.reset = function() {
-    this.totalCycleTime = 0
-    this.timer.reset()
-  }
-
-  this.setAnimationSpeed = function(animLength) {// animLength is in milliseconds
-    if (animLength <= 50) animLength = 50
-    this.animationLength = animLength
-    this.changeLength = true
-  }
-
-}// end of Animation class
-
-// keyboard constants
-K_A = 65; K_B = 66; K_C = 67; K_D = 68; K_E = 69; K_F = 70; K_G = 71
-K_H = 72; K_I = 73; K_J = 74; K_K = 75; K_L = 76; K_M = 77; K_N = 78
-K_O = 79; K_P = 80; K_Q = 81; K_R = 82; K_S = 83; K_T = 84; K_U = 85
-K_V = 86; K_W = 87; K_X = 88; K_Y = 89; K_Z = 90
-K_LEFT = 37; K_RIGHT = 39; K_UP = 38; K_DOWN = 40; K_SPACE = 32
-K_ESC = 27; K_PGUP = 33; K_PGDOWN = 34; K_HOME = 36; K_END = 35
-K_0 = 48; K_1 = 49; K_2 = 50; K_3 = 51; K_4 = 52; K_5 = 53
-K_6 = 54; K_7 = 55; K_8 = 56; K_9 = 57
-
-// Animation Constants
-SINGLE_ROW = 1; SINGLE_COLUMN = 2; VARIABLE_LENGTH = 3
-PLAY_ONCE = 1; PLAY_LOOP = 2
-
-// Boundary action constants
-WRAP = 0; BOUNCE = 1; STOP = 3; DIE = 4; CONTINUE = 5

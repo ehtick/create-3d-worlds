@@ -1,4 +1,4 @@
-/* global Sprite, Scene */
+import { Sprite, Scene } from './simpleGame.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { clock } from '/utils/scene.js'
 
