@@ -9,6 +9,8 @@ import { createGround } from '/utils/ground.js'
 import { createSphere, createBox } from '/utils/geometry.js'
 import { normalizeMouse } from '/utils/helpers.js'
 
+const { pressed } = keyboard
+
 const world = new PhysicsWorld()
 const raycaster = new THREE.Raycaster()
 
@@ -34,26 +36,23 @@ world.add(bigBall)
 function moveBall() {
   const scalingFactor = 10
 
-  const moveX = +Boolean(keyboard.pressed.KeyD) - +Boolean(keyboard.pressed.KeyA)
-  const moveZ = +Boolean(keyboard.pressed.KeyS) - +Boolean(keyboard.pressed.KeyW)
+  const moveX = +Boolean(pressed.KeyD) - +Boolean(pressed.KeyA)
+  const moveZ = +Boolean(pressed.KeyS) - +Boolean(pressed.KeyW)
 
   if (moveX == 0 && moveZ == 0) return
 
-  const resultantImpulse = new Ammo.btVector3(moveX, 0, moveZ)
-  resultantImpulse.op_mul(scalingFactor)
+  const impulse = new Ammo.btVector3(moveX, 0, moveZ).op_mul(scalingFactor)
 
-  bigBall.userData.body.setLinearVelocity(resultantImpulse)
+  bigBall.userData.body.setLinearVelocity(impulse)
 }
 
 function moveBox() {
   const scalingFactor = 0.3
 
-  const moveX = +Boolean(keyboard.pressed.ArrowRight) - +Boolean(keyboard.pressed.ArrowLeft)
-  const moveZ = +Boolean(keyboard.pressed.ArrowDown) - +Boolean(keyboard.pressed.ArrowUp)
+  const moveX = +Boolean(pressed.ArrowRight) - +Boolean(pressed.ArrowLeft)
+  const moveZ = +Boolean(pressed.ArrowDown) - +Boolean(pressed.ArrowUp)
 
-  const target = new THREE.Vector3()
-  target.set(moveX, 0, moveZ)
-  target.multiplyScalar(scalingFactor)
+  const target = new THREE.Vector3().set(moveX, 0, moveZ).multiplyScalar(scalingFactor)
 
   box.translateX(target.x)
   box.translateZ(target.z)
@@ -80,7 +79,6 @@ window.addEventListener('mousedown', e => {
   mesh.position.copy(raycaster.ray.origin)
   world.add(mesh, 1)
 
-  const target = new THREE.Vector3()
-  target.copy(raycaster.ray.direction).multiplyScalar(100)
+  const target = new THREE.Vector3().copy(raycaster.ray.direction).multiplyScalar(100)
   mesh.userData.body.setLinearVelocity(new Ammo.btVector3(target.x, target.y, target.z))
 })

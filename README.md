@@ -12,7 +12,6 @@ npx live-server
 ### Physics
 
 vozilo:
-- isprobati dodavanje sile na kuglu: applyForce, applyImpulse or setLinearVelocity
 - napraviti sletanje na mesec 3d
 - dodati fiziku u vučenje kocki
 
@@ -141,9 +140,10 @@ Some methods:
 
 ```js
 body.setFriction(.9)
+body.setRollingFriction(10)
 body.setRestitution(.95)
-body.setAngularVelocity( btVector3 )
-body.setLinearVelocity( btVector3 )
+body.setAngularVelocity(btVector3)
+body.setLinearVelocity(btVector3)
 
 // apply a force to the x-axis of the rigid body
 const force = new Ammo.btVector3(10, 0, 0);
