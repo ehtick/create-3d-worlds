@@ -12,8 +12,8 @@ const world = new PhysicsWorld()
 const raycaster = new THREE.Raycaster()
 
 const impulse = document.getElementById('impulse')
-const minImpulse = impulse.value = 15
-const maxImpulse = 30
+const minImpulse = impulse.min = impulse.value = 75
+const maxImpulse = impulse.max = 150
 
 createOrbitControls()
 camera.position.set(-10, 1.5, 0)
@@ -32,7 +32,7 @@ create4Walls().forEach(mesh => world.add(mesh))
 void function loop() {
   requestAnimationFrame(loop)
   if (keyboard.pressed.mouse && impulse.value < maxImpulse)
-    impulse.value = parseFloat(impulse.value) + .2
+    impulse.value = parseFloat(impulse.value) + 1
   const dt = clock.getDelta()
   world.update(dt)
   renderer.render(scene, camera)
@@ -50,6 +50,6 @@ window.addEventListener('pointerup', e => {
   world.add(ball, 5)
 
   const force = new THREE.Vector3().copy(raycaster.ray.direction).multiplyScalar(impulse.value)
-  ball.userData.body.setLinearVelocity(new Ammo.btVector3(force.x, force.y, force.z))
+  ball.userData.body.applyImpulse(new Ammo.btVector3(force.x, force.y, force.z))
   impulse.value = minImpulse
 })
