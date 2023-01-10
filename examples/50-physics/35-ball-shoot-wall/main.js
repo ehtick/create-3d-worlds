@@ -45,8 +45,7 @@ window.addEventListener('pointerup', e => {
   raycaster.setFromCamera(mouse, camera)
 
   const ball = createSphere({ r: .4, color: 0x202020 })
-  const pos = new THREE.Vector3().copy(raycaster.ray.direction).add(raycaster.ray.origin)
-  ball.position.copy(pos)
+  ball.position.copy(raycaster.ray.origin)
   world.add(ball, 5)
 
   const force = new THREE.Vector3().copy(raycaster.ray.direction).multiplyScalar(impulse.value)
