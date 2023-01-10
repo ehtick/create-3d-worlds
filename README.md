@@ -144,12 +144,15 @@ body.setFriction(.9)
 body.setRestitution(.95)
 body.setAngularVelocity( btVector3 )
 body.setLinearVelocity( btVector3 )
-body.applyForce()
-body.applyImpulse()
-```
 
-Jump:
-```js
+// apply a force to the x-axis of the rigid body
+const force = new Ammo.btVector3(10, 0, 0);
+body.applyForce(force, new Ammo.btVector3(0, 0, 0));
+
+// apply an impulse (very short duration force, like a punch or a kick) to the x-axis
+body.applyImpulse(new Ammo.btVector3(10, 0, 0))
+
+// jump
 body.applyCentralImpulse(new Ammo.btVector3(0, mass * .5, 0))
 ```
 
