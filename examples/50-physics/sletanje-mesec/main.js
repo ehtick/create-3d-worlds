@@ -1,5 +1,6 @@
 /* global Sprite, Scene */
 import keyboard from '/utils/classes/Keyboard.js'
+import { clock } from '/utils/scene.js'
 
 let message = ''
 let fuel = 2000
@@ -22,18 +23,18 @@ class Lander extends Sprite {
     this.imgRight = 'landerRight.png'
   }
 
-  checkGravity() {
+  checkGravity(dt) {
     if (this.falling)
-      this.addVector(180, .1)
+      this.addVector(180, .2 * dt)
   }
 
-  handleInput() {
+  handleInput(dt) {
     this.setImage(this.imgDefault)
     if (fuel < 1) return
 
     if (keyboard.down) {
       this.setImage(this.imgUp)
-      this.addVector(0, .3)
+      this.addVector(0, .9 * dt)
       this.falling = true
       fuel--
     }
@@ -42,13 +43,13 @@ class Lander extends Sprite {
 
     if (keyboard.left) {
       this.setImage(this.imgLeft)
-      this.addVector(90, .1)
+      this.addVector(90, 1 * dt)
       fuel -= 0.5
     }
 
     if (keyboard.right) {
       this.setImage(this.imgRight)
-      this.addVector(270, .1)
+      this.addVector(270, 1 * dt)
       fuel -= 0.5
     }
   }
@@ -87,10 +88,11 @@ const platform = new Platform(scene)
 
 void function loop() {
   requestAnimationFrame(loop)
+  const dt = clock.getDelta()
   scene.clear()
 
-  lander.checkGravity()
-  if (fuel > 0) lander.handleInput()
+  lander.checkGravity(dt)
+  if (fuel > 0) lander.handleInput(dt)
   lander.checkLanding(platform)
   lander.update()
 

@@ -6,12 +6,12 @@
   <title>lander</title>
   <style>
     #stats {
-      position: absolute;
+      position: sticky;
       font-family: monospace;
-      left: 50px;
-      top: 50px;
-      z-index: 999;
-      color: white;
+      margin-left: 20px;
+      top: 20px;
+      z-index: 9;
+      color: green;
     }
   </style>
 </head>
@@ -20,6 +20,13 @@
   <div id="stats">DX: 0, DY: 0, Alt: 550</div>
 
   <script src="simpleGame.js"></script>
+  <script type="importmap">
+    {
+        "imports": {
+            "three": "/node_modules/three/build/three.module.js"
+        }
+    }
+  </script>
   <script src="main.js" type="module"></script>
 </body>
 
