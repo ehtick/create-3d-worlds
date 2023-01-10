@@ -13,6 +13,7 @@ npx live-server
 
 vozilo:
 - napraviti sletanje na mesec 3d
+  - prikačiti SimpleGame.js na Three.js render
 - dodati fiziku u vučenje kocki
 
 ### Scenes & examples
@@ -63,6 +64,7 @@ Tenk (Vozilo)
 - tenk da se trese kada ide
 - vozilo da se okreću točkovi kada ide
 - ispitati modele, jel moguće upravljati točkovima, kupolom ili nečim
+- ide kroz ratnu scenu (spaljene zgrade) i ruši stvari
 
 - Endless runner
   - probati konja ili dabra

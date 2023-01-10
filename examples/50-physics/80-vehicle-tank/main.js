@@ -47,8 +47,8 @@ for (let i = 0; i < 10; i++) {
 
 /* VEHICLE */
 
-const wheelFront = { x: .75, y: .1, z: .25 }
-const wheelBack = { x: .75, y: .1, z: -.25 }
+const wheelFront = { x: .75, y: .1, z: 1.25 }
+const wheelBack = { x: .75, y: .1, z: -1.25 }
 const { mesh: chassisMesh } = await loadModel({ file: 'tank/t-50/model.fbx' })
 addTexture({ mesh: chassisMesh, file: 'metal/metal01.jpg' })
 
