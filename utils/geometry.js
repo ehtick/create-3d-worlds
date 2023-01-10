@@ -282,7 +282,16 @@ export function createSideWall({ brickWidth = 0.6, brickDepth = 1, rows = 8, col
   return bricks
 }
 
-export function buildSimpleCastle({ rows = 8, brickInWall = 20, blockSize = 1 } = {}) {
+export function create4Walls({ rows = 10, columns = 6, brickMass = 5, friction = 5 } = {}) {
+  const frontWall = createWall({ rows, columns, brickMass, friction, x: -3.2 })
+  const backWall = createWall({ rows, columns, brickMass, friction, x: 2.2 })
+  const leftWall = createSideWall({ rows, columns, brickMass, friction, z: -3.8 })
+  const rightWall = createSideWall({ rows, columns, brickMass, friction, z: 2.8 })
+
+  return [...frontWall, ...backWall, ...leftWall, ...rightWall]
+}
+
+export function createSimpleCastle({ rows = 8, brickInWall = 20, blockSize = 1 } = {}) {
   const spacing = .02
   const brickSize = blockSize + spacing
   const wallWidth = brickSize * brickInWall

@@ -6,7 +6,7 @@ import { normalizeMouse } from '/utils/helpers.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import { createGround } from '/utils/ground.js'
-import { createSphere, createWall, createSideWall } from '/utils/geometry.js'
+import { createSphere, create4Walls } from '/utils/geometry.js'
 
 const world = new PhysicsWorld()
 const raycaster = new THREE.Raycaster()
@@ -25,12 +25,7 @@ scene.add(sun)
 const ground = createGround({ size: 40, color: 0xFFFFFF })
 world.add(ground, 0)
 
-const frontWall = createWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, x: -3.2 })
-const backWall = createWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, x: 2.2 })
-const leftWall = createSideWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, z: -3.8 })
-const rightWall = createSideWall({ rows: 10, columns: 6, brickMass: 5, friction: 5, z: 2.8 })
-
-;[...frontWall, ...backWall, ...leftWall, ...rightWall].forEach(mesh => world.add(mesh))
+create4Walls().forEach(mesh => world.add(mesh))
 
 /* LOOP */
 
