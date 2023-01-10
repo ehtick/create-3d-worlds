@@ -95,5 +95,3 @@ void function loop() {
   platform.update()
   showStats()
 }()
-
-window.update = () => {}
