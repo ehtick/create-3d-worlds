@@ -68,8 +68,6 @@ class Lander extends Sprite {
 
 /* INIT */
 
-const lander = new Lander()
-
 const sun = createSun()
 sun.position.set(30, 0, 30)
 scene.add(sun)
@@ -84,6 +82,8 @@ const platforma = createBox({ width: 5, height: 1, depth: 2.5 })
 platforma.position.y = -10
 platforma.position.x = randFloat(-30, 30)
 scene.add(platforma)
+
+const lander = new Lander()
 
 /* LOOP */
 

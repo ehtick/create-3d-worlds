@@ -6,9 +6,9 @@
   <title>lander</title>
   <style>
     #stats {
-      position: sticky;
+      position: absolute;
       font-family: monospace;
-      margin-left: 20px;
+      left: 20px;
       top: 20px;
       z-index: 9;
       color: green;
@@ -17,9 +17,8 @@
 </head>
 
 <body>
-  <div id="stats">DX: 0, DY: 0, Alt: 550</div>
+  <div id="stats"></div>
 
-  <!-- <script src="simpleGame.js"></script> -->
   <script type="importmap">
     {
         "imports": {
