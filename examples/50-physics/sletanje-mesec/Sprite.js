@@ -6,19 +6,18 @@ export default function Sprite(imageFile, width, height) {
   this.image.src = imageFile
   this.width = width
   this.height = height
-  this.x = 200
-  this.y = 200
-  this.dx = 10
+  this.x = 0
+  this.y = 5
+  this.dx = 1
   this.dy = 0
   this.moveAngle = 0
-  this.speed = 10
+  this.speed = 1
 
   this.setImage = function(imgFile) {
     this.image.src = imgFile
   }
 
   this.setPosition = function(x, y) {
-    // position is position of center
     this.x = x
     this.y = y
   }

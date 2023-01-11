@@ -36,7 +36,6 @@ class Lander extends Sprite {
 
   handleInput(dt) {
     this.setImage('lander.png')
-    console.log(this)
 
     if (fuel < 1) return
 
@@ -51,13 +50,13 @@ class Lander extends Sprite {
 
     if (keyboard.left) {
       this.setImage('landerLeft.png')
-      this.addVector(90, 1 * dt)
+      this.addVector(90, .1 * dt)
       fuel -= 0.5
     }
 
     if (keyboard.right) {
       this.setImage('landerRight.png')
-      this.addVector(270, 1 * dt)
+      this.addVector(270, .1 * dt)
       fuel -= 0.5
     }
   }
@@ -124,6 +123,7 @@ void function loop() {
   showStats()
 
   // 3D
-  landerMesh.position.y = -lander.y * .05 + 20
+  landerMesh.position.y = -lander.y * .05
+  landerMesh.position.x = lander.x
   renderer.render(scene, camera)
 }()
