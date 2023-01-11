@@ -29,8 +29,7 @@ class Lander extends Sprite {
   }
 
   applyGravity(dt) {
-    if (this.falling)
-      this.addVector(180, .2 * dt)
+    if (this.falling) this.addVector(180, .2 * dt)
   }
 
   handleInput(dt) {
@@ -67,20 +66,9 @@ class Lander extends Sprite {
   }
 }
 
-class Platform extends Sprite {
-  constructor() {
-    super(50, 10)
-    this.setSpeed(0)
-    this.setPosition(Math.random() * 600 + 100, 550)
-  }
-}
-
 /* INIT */
 
 const lander = new Lander()
-const platform = new Platform()
-
-/* 3D INIT */
 
 const sun = createSun()
 sun.position.set(30, 0, 30)
@@ -105,14 +93,11 @@ void function loop() {
 
   lander.applyGravity(dt)
   lander.handleInput(dt)
-  lander.checkLanding(platform)
+  // lander.checkLanding(platform)
   lander.update(dt)
 
-  platform.update()
   showStats()
 
-  // 3D
-  landerMesh.position.y = -lander.y * .05
-  landerMesh.position.x = lander.x
+  landerMesh.position.set(lander.x, -lander.y * .05, 0)
   renderer.render(scene, camera)
 }()
