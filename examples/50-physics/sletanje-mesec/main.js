@@ -5,7 +5,6 @@ import { loadModel } from '/utils/loaders.js'
 import { createBox } from '/utils/geometry.js'
 
 import Sprite from './Sprite.js'
-import Renderer from './Renderer.js'
 import keyboard from '/utils/classes/Keyboard.js'
 
 const { randFloat } = THREE.MathUtils
@@ -24,7 +23,7 @@ function showStats() {
 
 class Lander extends Sprite {
   constructor() {
-    super('lander.png', 50, 50)
+    super(50, 50)
     this.setSpeed(0)
     this.falling = true
   }
@@ -35,12 +34,9 @@ class Lander extends Sprite {
   }
 
   handleInput(dt) {
-    this.setImage('lander.png')
-
     if (fuel < 1) return
 
     if (keyboard.down) {
-      this.setImage('landerUp.png')
       this.addVector(0, .9 * dt)
       this.falling = true
       fuel--
@@ -49,13 +45,11 @@ class Lander extends Sprite {
     if (fuel < .5) return
 
     if (keyboard.left) {
-      this.setImage('landerLeft.png')
       this.addVector(90, .1 * dt)
       fuel -= 0.5
     }
 
     if (keyboard.right) {
-      this.setImage('landerRight.png')
       this.addVector(270, .1 * dt)
       fuel -= 0.5
     }
@@ -75,7 +69,7 @@ class Lander extends Sprite {
 
 class Platform extends Sprite {
   constructor() {
-    super('platform.png', 50, 10)
+    super(50, 10)
     this.setSpeed(0)
     this.setPosition(Math.random() * 600 + 100, 550)
   }
@@ -83,7 +77,6 @@ class Platform extends Sprite {
 
 /* INIT */
 
-const drawer = new Renderer()
 const lander = new Lander()
 const platform = new Platform()
 
@@ -116,10 +109,6 @@ void function loop() {
   lander.update(dt)
 
   platform.update()
-
-  drawer.clear()
-  drawer.draw(lander)
-  drawer.draw(platform)
   showStats()
 
   // 3D

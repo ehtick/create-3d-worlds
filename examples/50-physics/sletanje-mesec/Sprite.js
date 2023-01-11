@@ -1,9 +1,7 @@
 /* source: simpleGame.js
    Main code and design: Andy Harris - 2011/2012
 */
-export default function Sprite(imageFile, width, height) {
-  this.image = new Image()
-  this.image.src = imageFile
+export default function Sprite(width, height) {
   this.width = width
   this.height = height
   this.x = 0
@@ -12,10 +10,6 @@ export default function Sprite(imageFile, width, height) {
   this.dy = 0
   this.moveAngle = 0
   this.speed = 1
-
-  this.setImage = function(imgFile) {
-    this.image.src = imgFile
-  }
 
   this.setPosition = function(x, y) {
     this.x = x
