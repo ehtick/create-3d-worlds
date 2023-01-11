@@ -1,15 +1,11 @@
-/* source: simpleGame.js
-   Main code and design: Andy Harris - 2011/2012
-*/
-export default function Sprite(width, height) {
-  this.width = width
-  this.height = height
+/* source: simpleGame.js, by Andy Harris - 2011/2012 */
+export default function Sprite() {
   this.x = 0
   this.y = 5
   this.dx = 1
   this.dy = 0
   this.moveAngle = 0
-  this.speed = 1
+  this.speed = 0
 
   this.setPosition = function(x, y) {
     this.x = x
@@ -39,11 +35,7 @@ export default function Sprite(width, height) {
   }
 
   // Modify the current motion vector by adding a new vector to it.
-  this.addVector = function(degrees, thrust) {
-    // offset angle by 90 degrees
-    degrees -= 90
-    const angle = degrees * Math.PI / 180
-    // calculate dx and dy
+  this.addVector = function(angle, thrust) {
     const newDX = thrust * Math.cos(angle)
     const newDY = thrust * Math.sin(angle)
     this.dx += newDX

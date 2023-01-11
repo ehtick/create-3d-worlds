@@ -23,20 +23,20 @@ function showStats() {
 
 class Lander extends Sprite {
   constructor() {
-    super(50, 50)
+    super()
     this.setSpeed(0)
     this.falling = true
   }
 
   applyGravity(dt) {
-    if (this.falling) this.addVector(180, .2 * dt)
+    if (this.falling) this.addVector(Math.PI / 2, .2 * dt)
   }
 
   handleInput(dt) {
     if (fuel < 1) return
 
     if (keyboard.down) {
-      this.addVector(0, .9 * dt)
+      this.addVector(-Math.PI / 2, .9 * dt)
       this.falling = true
       fuel--
     }
@@ -44,12 +44,12 @@ class Lander extends Sprite {
     if (fuel < .5) return
 
     if (keyboard.left) {
-      this.addVector(90, .1 * dt)
+      this.addVector(0, .1 * dt)
       fuel -= 0.5
     }
 
     if (keyboard.right) {
-      this.addVector(270, .1 * dt)
+      this.addVector(Math.PI, .1 * dt)
       fuel -= 0.5
     }
   }
