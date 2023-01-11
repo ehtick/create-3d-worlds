@@ -1,6 +1,7 @@
 import { scene, camera, renderer, clock, setBackground } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
+import { createBox } from '/utils/geometry.js'
 
 import Sprite from './Sprite.js'
 import Renderer from './Renderer.js'
@@ -94,6 +95,10 @@ camera.position.z = 20
 const { mesh } = await loadModel({ file: 'space/lunar-module/model.fbx' })
 scene.add(mesh)
 mesh.position.y = 5
+
+const box = createBox({ width: 5, height: 1, depth: 2.5 })
+box.position.y = -10
+scene.add(box)
 
 /* LOOP */
 
