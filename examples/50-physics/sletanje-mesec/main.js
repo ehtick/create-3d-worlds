@@ -1,7 +1,10 @@
+import { scene, camera, renderer, clock, setBackground } from '/utils/scene.js'
+import { createSun } from '/utils/light.js'
+import { loadModel } from '/utils/loaders.js'
+
 import Sprite from './Sprite.js'
 import Renderer from './Renderer.js'
 import keyboard from '/utils/classes/Keyboard.js'
-import { clock } from '/utils/scene.js'
 
 let message = ''
 let fuel = 2000
@@ -12,6 +15,8 @@ function showStats() {
   output += 'Fuel: ' + fuel
   stats.innerHTML = output
 }
+
+/* CLASSES */
 
 class Lander extends Sprite {
   constructor() {
@@ -74,9 +79,21 @@ class Platform extends Sprite {
 
 /* INIT */
 
-const scene = new Renderer()
+const drawer = new Renderer()
 const lander = new Lander()
 const platform = new Platform()
+
+/* 3D INIT */
+
+const sun = createSun()
+sun.position.set(30, 0, 30)
+scene.add(sun)
+setBackground(0x000000)
+camera.position.z = 20
+
+const { mesh } = await loadModel({ file: 'space/lunar-module/model.fbx' })
+scene.add(mesh)
+mesh.position.y = 5
 
 /* LOOP */
 
@@ -91,9 +108,10 @@ void function loop() {
 
   platform.update()
 
-  scene.clear()
-  scene.draw(lander)
-  scene.draw(platform)
-
+  drawer.clear()
+  drawer.draw(lander)
+  drawer.draw(platform)
   showStats()
+
+  renderer.render(scene, camera)
 }()

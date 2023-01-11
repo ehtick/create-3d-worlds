@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import { createRigidBody } from '/utils/physics.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import Vehicle from '/utils/classes/Vehicle.js'
 import VehicleCamera from '/utils/classes/VehicleCamera.js'
