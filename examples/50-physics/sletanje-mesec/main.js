@@ -22,8 +22,8 @@ function showStats() {
 /* CLASSES */
 
 class Lander extends Sprite {
-  constructor() {
-    super()
+  constructor(mesh) {
+    super(mesh)
     this.setSpeed(0)
     this.falling = true
   }
@@ -83,7 +83,7 @@ platforma.position.y = -10
 platforma.position.x = randFloat(-30, 30)
 scene.add(platforma)
 
-const lander = new Lander()
+const lander = new Lander(landerMesh)
 
 /* LOOP */
 
@@ -98,6 +98,5 @@ void function loop() {
 
   showStats()
 
-  landerMesh.position.set(lander.x, lander.y, 0)
   renderer.render(scene, camera)
 }()

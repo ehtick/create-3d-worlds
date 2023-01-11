@@ -1,21 +1,21 @@
 /* source: simpleGame.js, by Andy Harris - 2011/2012 */
 export default class Sprite {
-  constructor() {
+  constructor(mesh) {
+    this.mesh = mesh
     this.dx = 1
     this.dy = 0
     this.moveAngle = 0
     this.speed = 0
-    this.setPosition(0, 0)
   }
 
   setPosition(x, y) {
-    this.x = x
-    this.y = y
+    this.mesh.position.x = x
+    this.mesh.position.y = y
   }
 
   update() {
-    this.x += this.dx
-    this.y += this.dy
+    this.mesh.position.x += this.dx
+    this.mesh.position.y += this.dy
   }
 
   calcVector() {
