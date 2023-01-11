@@ -1,4 +1,5 @@
-import { Sprite, Renderer } from './simpleGame.js'
+import Sprite from './Sprite.js'
+import Renderer from './Renderer.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { clock } from '/utils/scene.js'
 
