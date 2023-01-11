@@ -36,6 +36,7 @@ class Lander extends Sprite {
 
   handleInput(dt) {
     this.setImage('lander.png')
+    console.log(this)
 
     if (fuel < 1) return
 
@@ -95,9 +96,9 @@ scene.add(sun)
 setBackground(0x000000)
 camera.position.z = 20
 
-const { mesh } = await loadModel({ file: 'space/lunar-module/model.fbx' })
-scene.add(mesh)
-mesh.position.y = 5
+const { mesh: landerMesh } = await loadModel({ file: 'space/lunar-module/model.fbx' })
+scene.add(landerMesh)
+landerMesh.position.y = 5
 
 const platforma = createBox({ width: 5, height: 1, depth: 2.5 })
 platforma.position.y = -10
@@ -122,5 +123,7 @@ void function loop() {
   drawer.draw(platform)
   showStats()
 
+  // 3D
+  landerMesh.position.y = -lander.y * .05 + 20
   renderer.render(scene, camera)
 }()
