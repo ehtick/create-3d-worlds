@@ -14,6 +14,7 @@ npx live-server
 vozilo:
 - napraviti sletanje na mesec 3d
   - prikačiti SimpleGame.js na Three.js render
+  - THREE.OrthographicCamera
 
 ### Scenes & examples
 - mojsije otvara more
