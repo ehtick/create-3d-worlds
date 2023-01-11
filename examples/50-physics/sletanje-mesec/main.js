@@ -29,14 +29,14 @@ class Lander extends Sprite {
   }
 
   applyGravity(dt) {
-    if (this.falling) this.addVector(Math.PI / 2, .2 * dt)
+    if (this.falling) this.addVector(-Math.PI / 2, .02 * dt)
   }
 
   handleInput(dt) {
     if (fuel < 1) return
 
     if (keyboard.down) {
-      this.addVector(-Math.PI / 2, .9 * dt)
+      this.addVector(Math.PI / 2, .09 * dt)
       this.falling = true
       fuel--
     }
@@ -98,6 +98,6 @@ void function loop() {
 
   showStats()
 
-  landerMesh.position.set(lander.x, -lander.y * .05, 0)
+  landerMesh.position.set(lander.x, lander.y, 0)
   renderer.render(scene, camera)
 }()
