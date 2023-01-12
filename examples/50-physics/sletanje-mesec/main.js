@@ -104,11 +104,12 @@ const platformRange = 30
 
 let step = 2
 
-function move(platform, dt) {
+function move(dt, platform, lander) {
   if (platform.position.x >= platformRange) step = -step
   if (platform.position.x <= -platformRange) step = step
   if (Math.random() > .997) step = -step
   platform.position.x += step * dt
+  if (!lander.falling) lander.mesh.position.x += step * dt
 }
 
 /* INIT */
@@ -136,7 +137,7 @@ void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
 
-  if (lander.falling) move(platform, dt)
+  move(dt, platform, lander)
 
   lander.handleInput(dt)
   lander.checkLanding(platform)

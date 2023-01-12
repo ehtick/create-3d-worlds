@@ -12,7 +12,6 @@ npx live-server
 ### Physics
 
 - sletanje na mesec
-  - platforma se pomera
   - ako nije dovoljno sporo, neuspešno sletanje
   - pozadinu sa svezdama
   - THREE.OrthographicCamera
