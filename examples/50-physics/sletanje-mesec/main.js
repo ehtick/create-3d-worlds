@@ -33,14 +33,16 @@ class Lander extends Sprite {
   }
 
   handleInput(dt) {
-    if (!keyboard.keyPressed) this.thrustCleared = false
+    if (!this.falling) return
+
+    if (!keyboard.keyPressed)
+      this.thrustCleared = false
 
     if (fuel < 1) return
 
     if (keyboard.down) {
       this.addThrust(dt, 0, [0, -1, 0])
       this.addVector(Math.PI / 2, .09 * dt)
-      this.falling = true
       fuel--
     }
 
