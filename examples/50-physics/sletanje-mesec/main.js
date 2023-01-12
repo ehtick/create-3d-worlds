@@ -1,112 +1,12 @@
-import * as THREE from 'three'
 import { scene, camera, renderer, clock, setBackground } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { createBox } from '/utils/geometry.js'
+import Lander from './Lander.js'
 
-import Sprite from './Sprite.js'
-import keyboard from '/utils/classes/Keyboard.js'
-import Thrust from '/utils/classes/Thrust.js'
-
-const { randInt, randFloat } = THREE.MathUtils
-
-let message = ''
-let fuel = 2000
 const stats = document.getElementById('stats')
 
-const platformWidth = 5, platformHeight = 1
-
 /* CLASSES */
-
-class Lander extends Sprite {
-  constructor(mesh) {
-    super(mesh)
-    this.thrust = new Thrust()
-    this.mesh.add(this.thrust.mesh)
-    this.thrustCleared = false
-    this.failure = false
-  }
-
-  handleInput(dt) {
-    if (!this.falling) return
-
-    if (!keyboard.keyPressed)
-      this.thrustCleared = false
-
-    if (fuel < 1) return
-
-    if (keyboard.down) {
-      this.addThrust(dt, 0, [0, -1, 0])
-      this.addVector(Math.PI / 2, .09 * dt)
-      fuel--
-    }
-
-    if (fuel < .5) return
-
-    if (keyboard.left) {
-      this.addThrust(dt, -Math.PI * .5, [-1, 1, 0])
-      this.addVector(0, .1 * dt)
-      fuel -= 0.5
-    }
-
-    if (keyboard.right) {
-      this.addThrust(dt, Math.PI * .5, [1, 1, 0])
-      this.addVector(Math.PI, .1 * dt)
-      fuel -= 0.5
-    }
-  }
-
-  addThrust(dt, angle, pos) {
-    this.clearThrust()
-    this.thrust.mesh.rotation.z = angle
-    this.thrust.mesh.position.set(...pos)
-    this.thrust.addParticles(dt)
-  }
-
-  clearThrust() {
-    if (this.thrustCleared) return
-    this.thrust.clear()
-    this.thrustCleared = true
-  }
-
-  isSameHeight(platform) {
-    return this.mesh.position.y <= platform.position.y + platformHeight // -9
-        && this.mesh.position.y > platform.position.y // -10
-  }
-
-  isSameWidth(platform) {
-    return this.mesh.position.x > platform.position.x - platformWidth * .45
-        && this.mesh.position.x < platform.position.x + platformWidth * .45
-  }
-
-  checkLanding(platform, dt) {
-    if (
-      this.isSameHeight(platform)
-      && this.isSameWidth(platform)
-    ) {
-      message = 'Nice landing!'
-      this.falling = false
-      if (this.dy < -0.04) {
-        message = 'Critical failure!'
-        this.mesh.rotation.z = Math.PI * .5
-        this.failure = true
-      }
-      this.setSpeed(0)
-      if (this.failure) this.addThrust(dt, Math.PI * .5, [0, -1, 0])
-    }
-  }
-
-  update(dt) {
-    super.update(dt)
-    this.thrust.updateParticles(dt)
-  }
-}
-
-function showStats() {
-  let output = 'Fuel: ' + fuel + '<br />'
-  output += message
-  stats.innerHTML = output
-}
 
 const platformRange = 30
 
@@ -132,9 +32,8 @@ const { mesh: landerMesh } = await loadModel({ file: 'space/lunar-module/model.f
 scene.add(landerMesh)
 landerMesh.position.y = 5
 
-const platform = createBox({ width: platformWidth, height: platformHeight, depth: 2.5 })
+const platform = createBox({ width: 5, height: 1, depth: 2.5 })
 platform.position.y = -10
-platform.position.x = randFloat(-platformRange, platformRange)
 scene.add(platform)
 
 const lander = new Lander(landerMesh)
@@ -151,7 +50,7 @@ void function loop() {
   lander.checkLanding(platform, dt)
   lander.update(dt)
 
-  showStats()
+  lander.showStats(stats)
 
   renderer.render(scene, camera)
 }()
