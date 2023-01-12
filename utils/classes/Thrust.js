@@ -99,4 +99,10 @@ export default class Thrust {
       p.position.add(p.velocity.clone().multiplyScalar(deltaTime))
     }
   }
+
+  update(dt) {
+    this.addParticles(dt)
+    this.updateParticles(dt)
+    this.updateGeometry()
+  }
 }

@@ -12,10 +12,6 @@ scene.add(thrust.mesh)
 void function loop() {
   requestAnimationFrame(loop)
   const delta = clock.getDelta()
-
-  thrust.addParticles(delta)
-  thrust.updateParticles(delta)
-  thrust.updateGeometry()
-
+  thrust.update(delta)
   renderer.render(scene, camera)
 }()
