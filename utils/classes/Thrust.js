@@ -58,7 +58,7 @@ export default class Thrust {
           (Math.random() * 1.5 - .75) * 1.0),
         size: (Math.random() * 0.5 + 0.5) * 3.0,
         colour: new THREE.Color(),
-        alpha: 1.0,
+        alpha: .25,
         life,
         maxLife: life,
         rotation: Math.random() * 2 * Math.PI,

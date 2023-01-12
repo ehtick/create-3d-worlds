@@ -85,13 +85,13 @@ class Lander extends Sprite {
       && this.isSameWidth(platform)
     ) {
       message = 'Nice landing!'
+      this.falling = false
       if (this.dy < -0.04) {
         message = 'Critical failure!'
         this.mesh.rotation.z = Math.PI * .5
         this.failure = true
       }
       this.setSpeed(0)
-      this.falling = false
       if (this.failure) this.addThrust(dt, Math.PI * .5, [0, -1, 0])
     }
   }
