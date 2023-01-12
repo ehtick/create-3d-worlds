@@ -15,8 +15,8 @@ let fuel = 2000
 const stats = document.getElementById('stats')
 
 function showStats() {
-  let output = 'MSG: ' + message + '<br />'
-  output += 'Fuel: ' + fuel
+  let output = 'Fuel: ' + fuel + '<br />'
+  output += message
   stats.innerHTML = output
 }
 
