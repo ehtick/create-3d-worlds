@@ -22,16 +22,6 @@ function showStats() {
 /* CLASSES */
 
 class Lander extends Sprite {
-  constructor(mesh) {
-    super(mesh)
-    this.setSpeed(0)
-    this.falling = true
-  }
-
-  applyGravity(dt) {
-    if (this.falling) this.addVector(-Math.PI / 2, .01625 * dt)
-  }
-
   handleInput(dt) {
     if (fuel < 1) return
 
@@ -91,7 +81,6 @@ void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
 
-  lander.applyGravity(dt)
   lander.handleInput(dt)
   // lander.checkLanding(platform)
   lander.update(dt)
