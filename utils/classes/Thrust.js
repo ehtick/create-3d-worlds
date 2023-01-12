@@ -94,6 +94,10 @@ export default class Thrust {
     this.geometry.setAttribute('colour', new THREE.Float32BufferAttribute(colours, 4))
   }
 
+  clear() {
+    this.particles = []
+  }
+
   update(dt) {
     this.addParticles(dt)
     this.updateParticles(dt)

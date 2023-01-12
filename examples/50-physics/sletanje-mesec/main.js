@@ -27,13 +27,19 @@ class Lander extends Sprite {
     super(mesh)
     this.thrust = new Thrust()
     this.mesh.add(this.thrust.mesh)
+    this.thrustCleared = false
   }
 
   handleInput(dt) {
+    if (!keyboard.keyPressed) this.thrustCleared = false
+
     if (fuel < 1) return
 
     if (keyboard.down) {
+      this.clearThrust()
+      this.thrust.mesh.rotation.z = 0
       this.thrust.addParticles(dt)
+
       this.addVector(Math.PI / 2, .09 * dt)
       this.falling = true
       fuel--
@@ -42,14 +48,28 @@ class Lander extends Sprite {
     if (fuel < .5) return
 
     if (keyboard.left) {
+      this.clearThrust()
+      this.thrust.mesh.rotation.z = -Math.PI * .5
+      this.thrust.addParticles(dt)
+
       this.addVector(0, .1 * dt)
       fuel -= 0.5
     }
 
     if (keyboard.right) {
+      this.clearThrust()
+      this.thrust.mesh.rotation.z = Math.PI * .5
+      this.thrust.addParticles(dt)
+
       this.addVector(Math.PI, .1 * dt)
       fuel -= 0.5
     }
+  }
+
+  clearThrust() {
+    if (this.thrustCleared) return
+    this.thrust.clear()
+    this.thrustCleared = true
   }
 
   checkLanding(platform) {
