@@ -6,6 +6,7 @@ import { createBox } from '/utils/geometry.js'
 
 import Sprite from './Sprite.js'
 import keyboard from '/utils/classes/Keyboard.js'
+import Thrust from '/utils/classes/Thrust.js'
 
 const { randFloat } = THREE.MathUtils
 
@@ -22,10 +23,17 @@ function showStats() {
 /* CLASSES */
 
 class Lander extends Sprite {
+  constructor(mesh) {
+    super(mesh)
+    this.thrust = new Thrust()
+    this.mesh.add(this.thrust.mesh)
+  }
+
   handleInput(dt) {
     if (fuel < 1) return
 
     if (keyboard.down) {
+      this.thrust.addParticles(dt)
       this.addVector(Math.PI / 2, .09 * dt)
       this.falling = true
       fuel--
@@ -53,6 +61,11 @@ class Lander extends Sprite {
       this.falling = false
       message = 'Nice Landing!'
     }
+  }
+
+  update(dt) {
+    super.update(dt)
+    this.thrust.updateParticles(dt)
   }
 }
 
