@@ -14,6 +14,8 @@ let message = ''
 let fuel = 2000
 const stats = document.getElementById('stats')
 
+const platformWidth = 5, platformHeight = 1
+
 function showStats() {
   let output = 'Fuel: ' + fuel + '<br />'
   output += message
@@ -38,6 +40,7 @@ class Lander extends Sprite {
     if (keyboard.down) {
       this.clearThrust()
       this.thrust.mesh.rotation.z = 0
+      this.thrust.mesh.position.set(0, -1, 0)
       this.thrust.addParticles(dt)
 
       this.addVector(Math.PI / 2, .09 * dt)
@@ -50,6 +53,7 @@ class Lander extends Sprite {
     if (keyboard.left) {
       this.clearThrust()
       this.thrust.mesh.rotation.z = -Math.PI * .5
+      this.thrust.mesh.position.set(-1, 1, 0)
       this.thrust.addParticles(dt)
 
       this.addVector(0, .1 * dt)
@@ -59,6 +63,7 @@ class Lander extends Sprite {
     if (keyboard.right) {
       this.clearThrust()
       this.thrust.mesh.rotation.z = Math.PI * .5
+      this.thrust.mesh.position.set(1, 1, 0)
       this.thrust.addParticles(dt)
 
       this.addVector(Math.PI, .1 * dt)
@@ -72,10 +77,19 @@ class Lander extends Sprite {
     this.thrustCleared = true
   }
 
+  isSameHeight(platform) {
+    return this.mesh.position.y < platform.position.y + platformHeight + platformHeight * .5 && this.mesh.position.y > platform.position.y + platformHeight - platformHeight * .5
+  }
+
+  isSameWidth(platform) {
+    return this.mesh.position.x > platform.position.x - platformWidth * .5 && this.mesh.position.x < platform.position.x + platformWidth * .5
+  }
+
   checkLanding(platform) {
-    if (this.falling && this.y > 525
-      && this.x < platform.x + 10 && this.x > platform.x - 10
-      && this.dx < .2 && this.dx > -.2 && this.dy < 2
+    if (
+      this.isSameHeight(platform)
+      && this.isSameWidth(platform)
+      && this.dy < 2
     ) {
       this.setSpeed(0)
       this.falling = false
@@ -101,10 +115,10 @@ const { mesh: landerMesh } = await loadModel({ file: 'space/lunar-module/model.f
 scene.add(landerMesh)
 landerMesh.position.y = 5
 
-const platforma = createBox({ width: 5, height: 1, depth: 2.5 })
-platforma.position.y = -10
-platforma.position.x = randFloat(-30, 30)
-scene.add(platforma)
+const platform = createBox({ width: platformWidth, height: platformHeight, depth: 2.5 })
+platform.position.y = -10
+platform.position.x = randFloat(-30, 30)
+scene.add(platform)
 
 const lander = new Lander(landerMesh)
 
@@ -115,7 +129,7 @@ void function loop() {
   const dt = clock.getDelta()
 
   lander.handleInput(dt)
-  // lander.checkLanding(platform)
+  lander.checkLanding(platform)
   lander.update(dt)
 
   showStats()

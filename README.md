@@ -13,7 +13,6 @@ npx live-server
 
 vozilo:
 - napraviti sletanje na mesec 3d
-  - dodati potisak
   - THREE.OrthographicCamera
   - dodati kamenje koje pada
 
