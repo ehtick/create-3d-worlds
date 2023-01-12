@@ -24,6 +24,7 @@ class Lander extends Sprite {
     this.thrust = new Thrust()
     this.mesh.add(this.thrust.mesh)
     this.thrustCleared = false
+    this.failure = false
   }
 
   handleInput(dt) {
@@ -69,22 +70,29 @@ class Lander extends Sprite {
   }
 
   isSameHeight(platform) {
-    return this.mesh.position.y <= platform.position.y + platformHeight
+    return this.mesh.position.y <= platform.position.y + platformHeight // -9
+        && this.mesh.position.y > platform.position.y // -10
   }
 
   isSameWidth(platform) {
-    return this.mesh.position.x > platform.position.x - platformWidth * .5 && this.mesh.position.x < platform.position.x + platformWidth * .5
+    return this.mesh.position.x > platform.position.x - platformWidth * .45
+        && this.mesh.position.x < platform.position.x + platformWidth * .45
   }
 
-  checkLanding(platform) {
+  checkLanding(platform, dt) {
     if (
       this.isSameHeight(platform)
       && this.isSameWidth(platform)
     ) {
-      // TODO: ako nije dovoljno sporo (this.dy > -.05), neuspešno sletanje
+      message = 'Nice landing!'
+      if (this.dy < -0.04) {
+        message = 'Critical failure!'
+        this.mesh.rotation.z = Math.PI * .5
+        this.failure = true
+      }
       this.setSpeed(0)
       this.falling = false
-      message = 'Nice Landing!'
+      if (this.failure) this.addThrust(dt, Math.PI * .5, [0, -1, 0])
     }
   }
 
@@ -140,7 +148,7 @@ void function loop() {
   move(dt, platform, lander)
 
   lander.handleInput(dt)
-  lander.checkLanding(platform)
+  lander.checkLanding(platform, dt)
   lander.update(dt)
 
   showStats()
