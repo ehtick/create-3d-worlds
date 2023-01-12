@@ -16,12 +16,6 @@ const stats = document.getElementById('stats')
 
 const platformWidth = 5, platformHeight = 1
 
-function showStats() {
-  let output = 'Fuel: ' + fuel + '<br />'
-  output += message
-  stats.innerHTML = output
-}
-
 /* CLASSES */
 
 class Lander extends Sprite {
@@ -89,6 +83,7 @@ class Lander extends Sprite {
     ) {
       // TODO: ako nije dovoljno sporo (this.dy > -.05), neuspešno sletanje
       this.setSpeed(0)
+      this.mesh.position.x = platform.position.x
       this.falling = false
       message = 'Nice Landing!'
     }
@@ -98,6 +93,22 @@ class Lander extends Sprite {
     super.update(dt)
     this.thrust.updateParticles(dt)
   }
+}
+
+function showStats() {
+  let output = 'Fuel: ' + fuel + '<br />'
+  output += message
+  stats.innerHTML = output
+}
+
+const platformRange = 30
+
+let step = 1
+
+function move(platform, dt) {
+  if (platform.position.x >= platformRange) step = -1
+  if (platform.position.x <= -platformRange) step = 1
+  platform.position.x += step * dt
 }
 
 /* INIT */
@@ -114,7 +125,7 @@ landerMesh.position.y = 5
 
 const platform = createBox({ width: platformWidth, height: platformHeight, depth: 2.5 })
 platform.position.y = -10
-platform.position.x = randFloat(-30, 30)
+platform.position.x = randFloat(-platformRange, platformRange)
 scene.add(platform)
 
 const lander = new Lander(landerMesh)
@@ -124,6 +135,8 @@ const lander = new Lander(landerMesh)
 void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
+
+  move(platform, dt)
 
   lander.handleInput(dt)
   lander.checkLanding(platform)

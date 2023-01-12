@@ -11,8 +11,9 @@ npx live-server
 
 ### Physics
 
-vozilo:
-- napraviti sletanje na mesec 3d
+- sletanje na mesec
+  - platforma se pomera
+  - ako nije dovoljno sporo, neuspešno sletanje
   - THREE.OrthographicCamera
   - dodati kamenje koje pada
 
