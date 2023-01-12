@@ -38,11 +38,7 @@ class Lander extends Sprite {
     if (fuel < 1) return
 
     if (keyboard.down) {
-      this.clearThrust()
-      this.thrust.mesh.rotation.z = 0
-      this.thrust.mesh.position.set(0, -1, 0)
-      this.thrust.addParticles(dt)
-
+      this.addThrust(dt, 0, [0, -1, 0])
       this.addVector(Math.PI / 2, .09 * dt)
       this.falling = true
       fuel--
@@ -51,24 +47,23 @@ class Lander extends Sprite {
     if (fuel < .5) return
 
     if (keyboard.left) {
-      this.clearThrust()
-      this.thrust.mesh.rotation.z = -Math.PI * .5
-      this.thrust.mesh.position.set(-1, 1, 0)
-      this.thrust.addParticles(dt)
-
+      this.addThrust(dt, -Math.PI * .5, [-1, 1, 0])
       this.addVector(0, .1 * dt)
       fuel -= 0.5
     }
 
     if (keyboard.right) {
-      this.clearThrust()
-      this.thrust.mesh.rotation.z = Math.PI * .5
-      this.thrust.mesh.position.set(1, 1, 0)
-      this.thrust.addParticles(dt)
-
+      this.addThrust(dt, Math.PI * .5, [1, 1, 0])
       this.addVector(Math.PI, .1 * dt)
       fuel -= 0.5
     }
+  }
+
+  addThrust(dt, angle, pos) {
+    this.clearThrust()
+    this.thrust.mesh.rotation.z = angle
+    this.thrust.mesh.position.set(...pos)
+    this.thrust.addParticles(dt)
   }
 
   clearThrust() {
@@ -78,7 +73,7 @@ class Lander extends Sprite {
   }
 
   isSameHeight(platform) {
-    return this.mesh.position.y < platform.position.y + platformHeight + platformHeight * .5 && this.mesh.position.y > platform.position.y + platformHeight - platformHeight * .5
+    return this.mesh.position.y <= platform.position.y + platformHeight
   }
 
   isSameWidth(platform) {
@@ -89,8 +84,8 @@ class Lander extends Sprite {
     if (
       this.isSameHeight(platform)
       && this.isSameWidth(platform)
-      && this.dy < 2
     ) {
+      // TODO: ako nije dovoljno sporo (this.dy > -.05), neuspešno sletanje
       this.setSpeed(0)
       this.falling = false
       message = 'Nice Landing!'
