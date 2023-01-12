@@ -1,4 +1,5 @@
-/* source: simpleGame.js, by Andy Harris - 2011/2012 */
+/* source: simpleGame.js by Andy Harris, 2011/2012 */
+
 export default class Sprite {
   constructor(mesh) {
     this.mesh = mesh
@@ -11,11 +12,6 @@ export default class Sprite {
   setPosition(x, y) {
     this.mesh.position.x = x
     this.mesh.position.y = y
-  }
-
-  update() {
-    this.mesh.position.x += this.dx
-    this.mesh.position.y += this.dy
   }
 
   calcVector() {
@@ -35,7 +31,7 @@ export default class Sprite {
     this.calcVector()
   }
 
-  // Modify the current motion vector by adding a new vector to it.
+  // Modify the current motion vector by adding a new vector to it
   addVector(angle, thrust) {
     const newDX = thrust * Math.cos(angle)
     const newDY = thrust * Math.sin(angle)
@@ -44,5 +40,10 @@ export default class Sprite {
 
     // ensure speed and angle are updated
     this.calcSpeedAngle()
+  }
+
+  update() {
+    this.mesh.position.x += this.dx
+    this.mesh.position.y += this.dy
   }
 }

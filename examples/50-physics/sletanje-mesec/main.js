@@ -29,7 +29,7 @@ class Lander extends Sprite {
   }
 
   applyGravity(dt) {
-    if (this.falling) this.addVector(-Math.PI / 2, .02 * dt)
+    if (this.falling) this.addVector(-Math.PI / 2, .01625 * dt)
   }
 
   handleInput(dt) {

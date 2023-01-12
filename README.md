@@ -13,7 +13,7 @@ npx live-server
 
 vozilo:
 - napraviti sletanje na mesec 3d
-  - prikačiti SimpleGame.js na Three.js render
+  - dodati potisak
   - THREE.OrthographicCamera
   - dodati kamenje koje pada
 
