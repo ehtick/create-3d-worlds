@@ -14,6 +14,7 @@ npx live-server
 - sletanje na mesec
   - platforma se pomera
   - ako nije dovoljno sporo, neuspešno sletanje
+  - pozadinu sa svezdama
   - THREE.OrthographicCamera
   - dodati kamenje koje pada
 

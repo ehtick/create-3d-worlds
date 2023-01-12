@@ -8,7 +8,7 @@ import Sprite from './Sprite.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import Thrust from '/utils/classes/Thrust.js'
 
-const { randFloat } = THREE.MathUtils
+const { randInt, randFloat } = THREE.MathUtils
 
 let message = ''
 let fuel = 2000
@@ -83,7 +83,6 @@ class Lander extends Sprite {
     ) {
       // TODO: ako nije dovoljno sporo (this.dy > -.05), neuspešno sletanje
       this.setSpeed(0)
-      this.mesh.position.x = platform.position.x
       this.falling = false
       message = 'Nice Landing!'
     }
@@ -103,11 +102,12 @@ function showStats() {
 
 const platformRange = 30
 
-let step = 1
+let step = 2
 
 function move(platform, dt) {
-  if (platform.position.x >= platformRange) step = -1
-  if (platform.position.x <= -platformRange) step = 1
+  if (platform.position.x >= platformRange) step = -step
+  if (platform.position.x <= -platformRange) step = step
+  if (Math.random() > .997) step = -step
   platform.position.x += step * dt
 }
 
@@ -136,7 +136,7 @@ void function loop() {
   requestAnimationFrame(loop)
   const dt = clock.getDelta()
 
-  move(platform, dt)
+  if (lander.falling) move(platform, dt)
 
   lander.handleInput(dt)
   lander.checkLanding(platform)
