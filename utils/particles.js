@@ -10,7 +10,6 @@ const textureLoader = new THREE.TextureLoader()
 let t = 0
 
 export function createParticles({ num = 10000, file = 'ball.png', color, size = .5, opacity = 1, unitAngle = 1, minRange = 100, maxRange = 1000, blending = THREE.AdditiveBlending } = {}) {
-  console.log(size)
   const geometry = new THREE.BufferGeometry()
   const positions = []
   const colors = []
@@ -23,12 +22,14 @@ export function createParticles({ num = 10000, file = 'ball.png', color, size = 
     vertex.multiplyScalar(scalar)
     const { x, y, z } = vertex
     positions.push(x, y, z)
-    const color = similarColor(0xf2c5f3)
-    colors.push(color.r, color.g, color.b)
+    if (!color) {
+      const color = similarColor(0xf2c5f3)
+      colors.push(color.r, color.g, color.b)
+    }
   }
 
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
-  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+  if (!color) geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 
   const material = new THREE.PointsMaterial({
     size,
@@ -44,7 +45,7 @@ export function createParticles({ num = 10000, file = 'ball.png', color, size = 
   if (color)
     material.color = new THREE.Color(color)
   else
-    material.vertexColors = THREE.VertexColors
+    material.vertexColors = true
 
   return new THREE.Points(geometry, material)
 }
