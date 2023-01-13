@@ -2,23 +2,19 @@ import * as THREE from 'three'
 
 export function createPathVisual(curve) {
   const points = curve.getPoints(50)
-  const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
-  const lineMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 })
-  const splineObject = new THREE.Line(lineGeometry, lineMaterial)
-  splineObject.rotation.x = Math.PI * .5
-  splineObject.position.y = 0.05
-  return splineObject
+  const geometry = new THREE.BufferGeometry().setFromPoints(points)
+  const material = new THREE.LineBasicMaterial({ color: 0x333333 })
+  const mesh = new THREE.Line(geometry, material)
+  mesh.rotation.x = Math.PI * .5
+  mesh.position.y = 0.05
+  return mesh
 }
 
 export const simplePath = new THREE.SplineCurve([
-  new THREE.Vector2(-10, 0),
-  new THREE.Vector2(-5, 5),
-  new THREE.Vector2(0, 0),
-  new THREE.Vector2(5, -5),
-  new THREE.Vector2(10, 0),
-  new THREE.Vector2(5, 10),
-  new THREE.Vector2(-5, 10),
-  new THREE.Vector2(-10, -10),
-  new THREE.Vector2(-15, -8),
-  new THREE.Vector2(-10, 0),
+  new THREE.Vector2(-12, 0),
+  new THREE.Vector2(6, 12),
+  new THREE.Vector2(-6, 12),
+  new THREE.Vector2(-12, -12),
+  new THREE.Vector2(-18, -6),
+  new THREE.Vector2(-12, 0),
 ])
