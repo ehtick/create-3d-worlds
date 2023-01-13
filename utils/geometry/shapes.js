@@ -74,7 +74,12 @@ export function createLocomotive() {
   bigWheel.position.set(1.5, -0.1, 0)
 
   group.add(nose, cabin, chimney, smallWheelRear, smallWheelCenter, smallWheelFront, bigWheel)
-  return group
+  group.rotation.y = Math.PI * .5
+  group.position.y = .85
+
+  const locomotive = new THREE.Group()
+  locomotive.add(group)
+  return locomotive
 }
 
 /*  CLOUD */

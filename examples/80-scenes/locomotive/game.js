@@ -13,8 +13,8 @@ camera.lookAt(0, 0, 0)
 scene.add(createGround({ size: 50 }))
 scene.add(createPathVisual(simplePath))
 
-const avatar = createLocomotive()
-scene.add(avatar)
+const locomotive = createLocomotive()
+scene.add(locomotive)
 
 /* LOOP */
 
@@ -27,8 +27,8 @@ void function loop() {
 
   simplePath.getPointAt(speed % 1, currPosition)
   simplePath.getPointAt((speed + 0.01) % 1, nextPosition)
-  avatar.position.set(currPosition.x, 0, currPosition.y)
-  avatar.lookAt(nextPosition.x, 0, nextPosition.y)
+  locomotive.position.set(currPosition.x, 1, currPosition.y)
+  locomotive.lookAt(nextPosition.x, 1, nextPosition.y)
   // updateLocomotive()
 
   renderer.render(scene, camera)
