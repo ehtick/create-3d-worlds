@@ -244,15 +244,15 @@ function setInitialHeight(geometry) {
   geometry.setAttribute('initialHeight', new THREE.Float32BufferAttribute(initialHeight, 1))
 }
 
-export function wave({ geometry, time, amplitude = 1, frequency = 1, bounds }) {
+export function wave({ geometry, time, amplitude = 1, frequency = 1, passage }) {
   if (!geometry.attributes.initialHeight) setInitialHeight(geometry)
 
   const { position, initialHeight } = geometry.attributes
   const vertex = new THREE.Vector3()
 
   for (let i = 0, l = position.count; i < l; i++)
-    if (bounds && i >= bounds.start && i <= bounds.end)
-      position.setY(i, 0)
+    if (passage && i >= passage.start && i <= passage.end)
+      position.setY(i, -10)
     else {
       vertex.fromBufferAttribute(position, i)
       const { x, z } = vertex

@@ -12,8 +12,6 @@ npx live-server
 ### Physics
 
 ### Scenes & examples
-- mojsije otvara more
-
 - probati dim čestice na lokomotivu, voz da prati putanju
 
 - [ ] Savo / Nemesis / FPS
