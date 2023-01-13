@@ -244,27 +244,31 @@ function setInitialHeight(geometry) {
   geometry.setAttribute('initialHeight', new THREE.Float32BufferAttribute(initialHeight, 1))
 }
 
-export function wave(geometry, time, amplitude = 1, frequency = 1) {
+export function wave({ geometry, time, amplitude = 1, frequency = 1, bounds }) {
   if (!geometry.attributes.initialHeight) setInitialHeight(geometry)
 
   const { position, initialHeight } = geometry.attributes
   const vertex = new THREE.Vector3()
 
-  for (let i = 0, l = position.count; i < l; i++) {
-    vertex.fromBufferAttribute(position, i)
-    const { x, z } = vertex
+  for (let i = 0, l = position.count; i < l; i++)
+    if (bounds && i >= bounds.start && i <= bounds.end)
+      position.setY(i, 0)
+    else {
+      vertex.fromBufferAttribute(position, i)
+      const { x, z } = vertex
 
-    let change = 0
-    // change X
-    change += 0.32 * amplitude * Math.sin(x * 1.9 * frequency + time)
-    change += 3 * amplitude * Math.sin(x * 0.1 * frequency + time)
-    // change Z
-    change += .42 * amplitude * Math.sin(z * 2.1 * frequency + time)
-    change += 2.8 * amplitude * Math.sin(z * 0.2 * frequency + time)
-    change *= amplitude * 0.6
+      let change = 0
+      // change X
+      change += 0.32 * amplitude * Math.sin(x * 1.9 * frequency + time)
+      change += 3 * amplitude * Math.sin(x * 0.1 * frequency + time)
+      // change Z
+      change += .42 * amplitude * Math.sin(z * 2.1 * frequency + time)
+      change += 2.8 * amplitude * Math.sin(z * 0.2 * frequency + time)
+      change *= amplitude * 0.6
 
-    position.setY(i, change + initialHeight.array[i])
-  }
+      position.setY(i, change + initialHeight.array[i])
+    }
+
   position.needsUpdate = true
 }
 

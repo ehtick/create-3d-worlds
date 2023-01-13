@@ -37,8 +37,6 @@ function orbit(moon, t) {
   moon.position.z = 20 * Math.sin(t) - 35
 }
 
-const updateTerrain = Math.random() > .5 ? shake : wave
-
 /* LOOP */
 
 void function loop() {
@@ -46,7 +44,7 @@ void function loop() {
 
   planet.rotation.y += 0.002
   orbit(moon, t)
-  updateTerrain(terrain.geometry, t)
+  wave({ geometry: terrain.geometry, time: t }) // shake
   updateStars({ particles: stars })
 
   t += 0.015

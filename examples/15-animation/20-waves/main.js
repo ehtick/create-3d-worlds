@@ -15,7 +15,7 @@ void function render() {
   requestAnimationFrame(render)
 
   const time = clock.getElapsedTime()
-  wave(water.geometry, time)
+  wave({ geometry: water.geometry, time, bounds: { start: 4000, end: 6000 } })
 
   renderer.render(scene, camera)
 }()
