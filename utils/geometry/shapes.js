@@ -50,10 +50,10 @@ export function createLocomotive() {
   const redMaterial = new THREE.MeshStandardMaterial({ color: 0xff1111 })
   const blackMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 })
 
-  const noseGeo = new THREE.CylinderBufferGeometry(0.75, 0.75, 3, 12)
-  const cabinGeo = new THREE.BoxBufferGeometry(2, 2.25, 1.5)
-  const chimneyGeo = new THREE.CylinderBufferGeometry(0.3, 0.1, 0.5)
-  const wheelGeo = new THREE.CylinderBufferGeometry(0.4, 0.4, 1.75, 16)
+  const noseGeo = new THREE.CylinderGeometry(0.75, 0.75, 3, 12)
+  const cabinGeo = new THREE.BoxGeometry(2, 2.25, 1.5)
+  const chimneyGeo = new THREE.CylinderGeometry(0.3, 0.1, 0.5)
+  const wheelGeo = new THREE.CylinderGeometry(0.4, 0.4, 1.75, 16)
   wheelGeo.rotateX(RIGHT_ANGLE)
 
   const nose = new THREE.Mesh(noseGeo, redMaterial)
@@ -133,16 +133,16 @@ export function updateCloud(group, elapsedTime) {
 
 /* TANK */
 
-export function createTank({ tankWidth = 4, tankHeight = 1, tankLength = 8 } = {}) {
+export function createTank({ tankWidth = 4, tankHeight = 1.2, tankLength = 8 } = {}) {
   const tank = new THREE.Object3D()
 
-  const bodyGeometry = new THREE.BoxBufferGeometry(
+  const bodyGeometry = new THREE.BoxGeometry(
     tankWidth,
     tankHeight,
     tankLength
   )
 
-  const bodyMaterial = new THREE.MeshPhongMaterial({ color: 0x6688aa })
+  const bodyMaterial = new THREE.MeshPhongMaterial({ color: 0x615E3E })
   const bodyMesh = new THREE.Mesh(bodyGeometry, bodyMaterial)
   bodyMesh.position.y = 1.4
   bodyMesh.castShadow = true
@@ -150,14 +150,14 @@ export function createTank({ tankWidth = 4, tankHeight = 1, tankLength = 8 } = {
 
   const wheelRadius = 1
   const wheelThickness = 0.5
-  const wheelSegments = 6
-  const wheelGeometry = new THREE.CylinderBufferGeometry(
+  const wheelSegments = 8
+  const wheelGeometry = new THREE.CylinderGeometry(
     wheelRadius,
     wheelRadius,
     wheelThickness,
     wheelSegments
   )
-  const wheelMaterial = new THREE.MeshPhongMaterial({ color: 0x888888 })
+  const wheelMaterial = new THREE.MeshPhongMaterial({ color: 0x444444 })
   const wheelPositions = [
     [-tankWidth / 2 - wheelThickness / 2, -tankHeight / 2, tankLength / 3],
     [tankWidth / 2 + wheelThickness / 2, -tankHeight / 2, tankLength / 3],
@@ -177,14 +177,14 @@ export function createTank({ tankWidth = 4, tankHeight = 1, tankLength = 8 } = {
     return mesh
   })
 
-  const domeRadius = 2
+  const domeRadius = 1.75
   const domeWidthSubdivisions = 12
   const domeHeightSubdivisions = 12
   const domePhiStart = 0
   const domePhiEnd = Math.PI * 2
   const domeThetaStart = 0
   const domeThetaEnd = Math.PI * 0.5
-  const domeGeometry = new THREE.SphereBufferGeometry(
+  const domeGeometry = new THREE.SphereGeometry(
     domeRadius,
     domeWidthSubdivisions,
     domeHeightSubdivisions,
@@ -195,13 +195,13 @@ export function createTank({ tankWidth = 4, tankHeight = 1, tankLength = 8 } = {
   )
   const domeMesh = new THREE.Mesh(domeGeometry, bodyMaterial)
   domeMesh.castShadow = true
-  domeMesh.position.y = 0.5
+  domeMesh.position.set(0, 0.5, -0.5)
   bodyMesh.add(domeMesh)
 
   const turretWidth = 0.1
   const turretHeight = 0.1
   const turretLength = tankLength * 0.75 * 0.2
-  const turretGeometry = new THREE.BoxBufferGeometry(
+  const turretGeometry = new THREE.BoxGeometry(
     turretWidth,
     turretHeight,
     turretLength

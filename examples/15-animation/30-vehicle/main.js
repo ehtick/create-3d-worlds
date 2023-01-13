@@ -19,8 +19,8 @@ scene.add(tank)
 void function loop() {
   const time = clock.getElapsedTime()
 
-  sun.position.x = Math.sin(time) * 100
-  sun.position.y = Math.cos(time) * 100
+  sun.position.x = Math.sin(time * .2) * 100
+  sun.position.y = Math.cos(time * .2) * 100
 
   tankGun.lookAt(sun.position)
 
