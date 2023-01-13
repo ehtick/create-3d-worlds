@@ -1,9 +1,9 @@
-import * as THREE from 'three'
 import { scene, camera, renderer, clock, setBackground } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { createBox } from '/utils/geometry.js'
 import Lander from './Lander.js'
+import { createParticles } from '/utils/particles.js'
 
 const stats = document.getElementById('stats')
 
@@ -39,10 +39,8 @@ scene.add(platform)
 
 const lander = new Lander(landerMesh)
 
-const loader = new THREE.TextureLoader()
-loader.load('/assets/images/stars.jpg', texture => {
-  scene.background = texture
-})
+const stars = createParticles()
+scene.add(stars)
 
 /* LOOP */
 
