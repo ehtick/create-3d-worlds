@@ -12,9 +12,12 @@ npx live-server
 ### Physics
 
 ### Scenes & examples
-- probati dim čestice na lokomotivu, voz da prati putanju
 
-- [ ] Savo / Nemesis / FPS
+- Lokomotiva
+  - voz da prati putanju
+  - probati dim čestice na lokomotivu
+
+- Savo / Nemesis / FPS
   - srediti koliziju
   - dodati NPC karaktere (vidi nemesis i ai modele)
     - https://www.script-tutorials.com/demos/474/index3.html
