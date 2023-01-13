@@ -10,7 +10,7 @@ export function createPathVisual(curve) {
   return splineObject
 }
 
-export const path = new THREE.SplineCurve([
+export const simplePath = new THREE.SplineCurve([
   new THREE.Vector2(-10, 0),
   new THREE.Vector2(-5, 5),
   new THREE.Vector2(0, 0),

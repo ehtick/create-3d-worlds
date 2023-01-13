@@ -3,7 +3,7 @@ import { scene, renderer, camera, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { createAvatar, updateAvatar } from '/utils/geometry/avatar.js'
-import { path, createPathVisual } from './utils.js'
+import { simplePath, createPathVisual } from '/utils/path.js'
 
 scene.add(createSun())
 
@@ -11,7 +11,7 @@ camera.position.set(12, 6, 16)
 camera.lookAt(0, 0, 0)
 
 scene.add(createGround({ size: 50 }))
-scene.add(createPathVisual(path))
+scene.add(createPathVisual(simplePath))
 
 const avatar = createAvatar()
 scene.add(avatar)
@@ -25,8 +25,8 @@ void function loop() {
   const time = clock.getElapsedTime()
   const speed = time * 0.05
 
-  path.getPointAt(speed % 1, currPosition)
-  path.getPointAt((speed + 0.01) % 1, nextPosition)
+  simplePath.getPointAt(speed % 1, currPosition)
+  simplePath.getPointAt((speed + 0.01) % 1, nextPosition)
   avatar.position.set(currPosition.x, 0, currPosition.y)
   avatar.lookAt(nextPosition.x, 0, nextPosition.y)
   updateAvatar(avatar, time * 5)
