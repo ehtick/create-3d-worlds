@@ -29,7 +29,7 @@ scene.add(sun)
 setBackground(0x000000)
 camera.position.z = 20
 
-const { mesh: landerMesh } = await loadModel({ file: 'space/lunar-module/model.fbx' })
+const { mesh: landerMesh } = await loadModel({ file: 'space/lunar-module/model.fbx', size: 2.5 })
 scene.add(landerMesh)
 landerMesh.position.y = 5
 

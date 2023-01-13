@@ -11,10 +11,6 @@ npx live-server
 
 ### Physics
 
-- sletanje na mesec
-  - THREE.OrthographicCamera
-  - dodati kamenje koje pada
-
 ### Scenes & examples
 - mojsije otvara more
 
