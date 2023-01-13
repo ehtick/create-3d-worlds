@@ -12,7 +12,6 @@ npx live-server
 ### Physics
 
 - sletanje na mesec
-  - pozadinu sa svezdama
   - THREE.OrthographicCamera
   - dodati kamenje koje pada
 

@@ -1,3 +1,4 @@
+import * as THREE from 'three'
 import { scene, camera, renderer, clock, setBackground } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
@@ -37,6 +38,11 @@ platform.position.y = -10
 scene.add(platform)
 
 const lander = new Lander(landerMesh)
+
+const loader = new THREE.TextureLoader()
+loader.load('/assets/images/stars.jpg', texture => {
+  scene.background = texture
+})
 
 /* LOOP */
 

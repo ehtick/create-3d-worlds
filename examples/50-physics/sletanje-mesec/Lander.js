@@ -83,7 +83,7 @@ export default class Lander extends Sprite {
 
   showStats(element) {
     let html = 'Fuel: ' + this.fuel + '<br />'
-    if (!this.falling) html += (this.failure ? 'Critical failure!' : 'Nice landing!')
+    if (!this.falling) html += (this.failure ? 'Landing failure!' : 'Nice landing!')
     element.innerHTML = html
   }
 
