@@ -137,9 +137,7 @@ export function createTank({ tankWidth = 4, tankHeight = 1.2, tankLength = 8 } =
   const tank = new THREE.Object3D()
 
   const bodyGeometry = new THREE.BoxGeometry(
-    tankWidth,
-    tankHeight,
-    tankLength
+    tankWidth, tankHeight, tankLength
   )
 
   const bodyMaterial = new THREE.MeshPhongMaterial({ color: 0x615E3E })
@@ -152,10 +150,7 @@ export function createTank({ tankWidth = 4, tankHeight = 1.2, tankLength = 8 } =
   const wheelThickness = 0.5
   const wheelSegments = 8
   const wheelGeometry = new THREE.CylinderGeometry(
-    wheelRadius,
-    wheelRadius,
-    wheelThickness,
-    wheelSegments
+    wheelRadius, wheelRadius, wheelThickness, wheelSegments
   )
   const wheelMaterial = new THREE.MeshPhongMaterial({ color: 0x444444 })
   const wheelPositions = [
@@ -185,27 +180,19 @@ export function createTank({ tankWidth = 4, tankHeight = 1.2, tankLength = 8 } =
   const domeThetaStart = 0
   const domeThetaEnd = Math.PI * 0.5
   const domeGeometry = new THREE.SphereGeometry(
-    domeRadius,
-    domeWidthSubdivisions,
-    domeHeightSubdivisions,
-    domePhiStart,
-    domePhiEnd,
-    domeThetaStart,
-    domeThetaEnd
+    domeRadius, domeWidthSubdivisions, domeHeightSubdivisions,
+    domePhiStart, domePhiEnd, domeThetaStart, domeThetaEnd
   )
   const domeMesh = new THREE.Mesh(domeGeometry, bodyMaterial)
   domeMesh.castShadow = true
-  domeMesh.position.set(0, 0.5, -0.5)
+  domeMesh.position.set(0, 0.5, -0.75)
   bodyMesh.add(domeMesh)
 
-  const turretWidth = 0.1
-  const turretHeight = 0.1
-  const turretLength = tankLength * 0.75 * 0.2
-  const turretGeometry = new THREE.BoxGeometry(
-    turretWidth,
-    turretHeight,
-    turretLength
-  )
+  const turretWidth = 0.06
+  const turretHeight = 0.06
+  const turretLength = tankLength * 0.16
+  const turretGeometry = new THREE.CylinderGeometry(turretWidth, turretHeight, turretLength, 12)
+  turretGeometry.rotateX(Math.PI / 2)
   const turretMesh = new THREE.Mesh(turretGeometry, bodyMaterial)
   turretMesh.castShadow = true
   turretMesh.position.z = turretLength * .5
@@ -214,7 +201,7 @@ export function createTank({ tankWidth = 4, tankHeight = 1.2, tankLength = 8 } =
   tankGun.scale.set(5, 5, 5)
   tankGun.position.y = .5
   tankGun.add(turretMesh)
-  bodyMesh.add(tankGun)
+  domeMesh.add(tankGun)
 
   return { tank, wheels, tankGun }
 }
