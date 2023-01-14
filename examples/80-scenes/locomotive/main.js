@@ -29,6 +29,6 @@ void function loop() {
   const delta = clock.getDelta()
   const elapsedTime = clock.getElapsedTime()
   followPath({ path: outerLine.userData.path, mesh: locomotive, elapsedTime })
-  thrust.update(delta)
+  thrust.update(delta, { velocity: [0, -12, 5] })
   renderer.render(scene, camera)
 }()

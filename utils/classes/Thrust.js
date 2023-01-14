@@ -44,7 +44,7 @@ export default class Thrust {
     this.spline.addPoint(.5, .5)
   }
 
-  addParticles(deltaTime) {
+  addParticles(deltaTime, velocity = [0, -12, 0]) {
     this.t += deltaTime
     const n = Math.floor(this.t * 75.0)
     this.t -= n / 75.0
@@ -62,7 +62,7 @@ export default class Thrust {
         life,
         maxLife: life,
         rotation: Math.random() * 2 * Math.PI,
-        velocity: new THREE.Vector3(0, -12, 0),
+        velocity: new THREE.Vector3(...velocity),
       })
     }
   }
@@ -98,8 +98,8 @@ export default class Thrust {
     this.particles = []
   }
 
-  update(dt) {
-    this.addParticles(dt)
+  update(dt, { velocity }) {
+    this.addParticles(dt, velocity)
     this.updateParticles(dt)
   }
 }
