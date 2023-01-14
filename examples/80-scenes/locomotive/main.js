@@ -11,10 +11,8 @@ camera.position.z = 20
 scene.add(createSun())
 scene.add(createGround({ size: 50 }))
 
-// https://stackoverflow.com/questions/45816041/how-to-make-parallel-curves-in-three-js-for-road-marking
-
-const { mesh: outerCurve, path } = createEllipse({ xRadius: 30, yRadius: 15 })
-const { mesh: innerCurve } = createEllipse({ xRadius: 29, yRadius: 14 })
+const outerCurve = createEllipse({ xRadius: 30, yRadius: 15 })
+const innerCurve = createEllipse({ xRadius: 29, yRadius: 14 })
 scene.add(outerCurve, innerCurve)
 
 const locomotive = createLocomotive()
@@ -30,7 +28,7 @@ void function loop() {
   requestAnimationFrame(loop)
   const delta = clock.getDelta()
   const elapsedTime = clock.getElapsedTime()
-  followPath({ path, mesh: locomotive, elapsedTime })
+  followPath({ path: outerCurve.userData.path, mesh: locomotive, elapsedTime })
   thrust.update(delta)
   renderer.render(scene, camera)
 }()

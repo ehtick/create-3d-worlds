@@ -14,9 +14,9 @@ npx live-server
 ### Scenes & examples
 
 - Lokomotiva
-  - voz da prati putanju
   - probati dim čestice na lokomotivu
   - pruga dve crte
+  https://stackoverflow.com/questions/45816041/how-to-make-parallel-curves-in-three-js-for-road-marking
   - tockovi se okrecu
   https://weitingtw.github.io/three.js-train/
   https://github.com/weitingtw/three.js-train
