@@ -36,6 +36,7 @@ export function createEllipse({ xRadius, yRadius }) {
   const material = new THREE.LineBasicMaterial({ color: 0x333333 })
   const curve = new THREE.Line(geometry, material)
   curve.rotation.x = -Math.PI / 2
+  curve.position.y = .01
   curve.userData.path = path
   return curve
 }
