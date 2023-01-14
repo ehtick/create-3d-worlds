@@ -46,8 +46,6 @@ locomotive.add(thrust.mesh)
 
 /* LOOP */
 
-// TODO: create , reuse for Avatar
-
 void function loop() {
   requestAnimationFrame(loop)
   const delta = clock.getDelta()
