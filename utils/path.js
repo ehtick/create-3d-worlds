@@ -30,3 +30,12 @@ export function followPath({ path, mesh, elapsedTime, speedFactor = .05 }) {
   mesh.position.set(currPosition.x, 1, currPosition.y)
   mesh.lookAt(nextPosition.x, 1, nextPosition.y)
 }
+
+export function createEllipse({ xRadius, yRadius }) {
+  const path = new THREE.EllipseCurve(0, 0, xRadius, yRadius, 0, 2 * Math.PI, false)
+  const geometry = new THREE.BufferGeometry().setFromPoints(path.getPoints(256))
+  const material = new THREE.LineBasicMaterial({ color: 0x333333 })
+  const curve = new THREE.Line(geometry, material)
+  curve.rotation.x = -Math.PI / 2
+  return { mesh: curve, path }
+}
