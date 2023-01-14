@@ -1,5 +1,14 @@
 import * as THREE from 'three'
 
+export const simpleCurve = new THREE.SplineCurve([
+  new THREE.Vector2(-12, 0),
+  new THREE.Vector2(6, 12),
+  new THREE.Vector2(-6, 12),
+  new THREE.Vector2(-12, -12),
+  new THREE.Vector2(-18, -6),
+  new THREE.Vector2(-12, 0),
+])
+
 export function createPathVisual(curve) {
   const points = curve.getPoints(50)
   const geometry = new THREE.BufferGeometry().setFromPoints(points)
@@ -9,12 +18,3 @@ export function createPathVisual(curve) {
   mesh.position.y = 0.05
   return mesh
 }
-
-export const simplePath = new THREE.SplineCurve([
-  new THREE.Vector2(-12, 0),
-  new THREE.Vector2(6, 12),
-  new THREE.Vector2(-6, 12),
-  new THREE.Vector2(-12, -12),
-  new THREE.Vector2(-18, -6),
-  new THREE.Vector2(-12, 0),
-])

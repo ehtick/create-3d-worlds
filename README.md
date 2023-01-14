@@ -16,6 +16,9 @@ npx live-server
 - Lokomotiva
   - voz da prati putanju
   - probati dim čestice na lokomotivu
+  - pruga dve crte
+  https://weitingtw.github.io/three.js-train/
+  https://github.com/weitingtw/three.js-train
 
 - Savo / Nemesis / FPS
   - srediti koliziju
