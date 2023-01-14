@@ -20,12 +20,12 @@ const { mesh: locomotive, mixer } = await loadModel({ file: 'vehicle/train/toy-l
 
 const thrust = new Thrust(true)
 
-const group = new THREE.Group()
+const locomotiveGroup = new THREE.Group()
 locomotive.position.set(-.3, -.25, 0)
-thrust.mesh.translateY(-1.5).translateZ(-1.5)
-group.add(locomotive)
-group.add(thrust.mesh)
-scene.add(group)
+thrust.mesh.position.set(0, 1.5, 1.5)
+locomotiveGroup.add(locomotive)
+locomotiveGroup.add(thrust.mesh)
+scene.add(locomotiveGroup)
 
 /* LOOP */
 
@@ -33,7 +33,7 @@ void function loop() {
   requestAnimationFrame(loop)
   const delta = clock.getDelta()
   const elapsedTime = clock.getElapsedTime()
-  followPath({ path: outerLine.userData.path, mesh: group, elapsedTime, speed: .025 })
+  followPath({ path: outerLine.userData.path, mesh: locomotiveGroup, elapsedTime, speed: .025 })
   thrust.update(delta * .5, { velocity: [0, -14, 5] })
   mixer.update(delta * 15)
   renderer.render(scene, camera)
