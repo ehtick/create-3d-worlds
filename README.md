@@ -9,12 +9,7 @@ npm i
 npx live-server
 ```
 
-### Physics
-
 ### Scenes & examples
-
-- Lokomotiva
-  - dodati pragove
 
 - Savo / Nemesis / FPS
   - srediti koliziju
