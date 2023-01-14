@@ -18,11 +18,11 @@ scene.add(outerLine, innerLine)
 
 const { mesh: locomotive, mixer } = await loadModel({ file: 'vehicle/train/toy-locomotive/scene.gltf', angle: Math.PI, axis: [0, 1, 0] })
 
-const thrust = new Thrust()
+const thrust = new Thrust(true)
 
 const group = new THREE.Group()
 locomotive.position.set(-.3, -.25, 0)
-thrust.mesh.rotateX(Math.PI).translateY(-1.5).translateZ(-1.5)
+thrust.mesh.translateY(-1.5).translateZ(-1.5)
 group.add(locomotive)
 group.add(thrust.mesh)
 scene.add(group)

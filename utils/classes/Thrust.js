@@ -33,11 +33,13 @@ class LinearSpline {
 }
 
 export default class Thrust {
-  constructor() {
+  constructor(smokeUp = false) {
     this.t = 0.0
     this.particles = []
     this.geometry = new THREE.BufferGeometry()
     this.mesh = new THREE.Points(this.geometry, material)
+    if (smokeUp) this.mesh.rotateX(Math.PI)
+
     this.spline = new LinearSpline((t, a, b) => a + t * (b - a))
     this.spline.addPoint(0.0, .5)
     this.spline.addPoint(0.25, 2.5)
