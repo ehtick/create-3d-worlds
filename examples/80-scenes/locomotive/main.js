@@ -11,9 +11,9 @@ camera.position.z = 20
 scene.add(createSun())
 scene.add(createGround({ size: 50 }))
 
-const outerCurve = createEllipse({ xRadius: 30, yRadius: 15 })
-const innerCurve = createEllipse({ xRadius: 29, yRadius: 14 })
-scene.add(outerCurve, innerCurve)
+const outerLine = createEllipse({ xRadius: 30, yRadius: 15 })
+const innerLine = createEllipse({ xRadius: 29, yRadius: 14 })
+scene.add(outerLine, innerLine)
 
 const locomotive = createLocomotive()
 scene.add(locomotive)
@@ -28,7 +28,7 @@ void function loop() {
   requestAnimationFrame(loop)
   const delta = clock.getDelta()
   const elapsedTime = clock.getElapsedTime()
-  followPath({ path: outerCurve.userData.path, mesh: locomotive, elapsedTime })
+  followPath({ path: outerLine.userData.path, mesh: locomotive, elapsedTime })
   thrust.update(delta)
   renderer.render(scene, camera)
 }()
