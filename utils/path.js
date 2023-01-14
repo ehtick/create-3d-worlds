@@ -15,6 +15,18 @@ export function createPathVisual(curve) {
   const material = new THREE.LineBasicMaterial({ color: 0x333333 })
   const mesh = new THREE.Line(geometry, material)
   mesh.rotation.x = Math.PI * .5
-  mesh.position.y = 0.05
+  // mesh.position.y = 0.05
   return mesh
+}
+
+export function followPath({ path, mesh, elapsedTime, speedFactor = .05 }) {
+  const currPosition = new THREE.Vector2()
+  const nextPosition = new THREE.Vector2()
+
+  const speed = elapsedTime * speedFactor
+
+  path.getPointAt(speed % 1, currPosition)
+  path.getPointAt((speed + 0.01) % 1, nextPosition)
+  mesh.position.set(currPosition.x, 1, currPosition.y)
+  mesh.lookAt(nextPosition.x, 1, nextPosition.y)
 }

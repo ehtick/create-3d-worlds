@@ -17,6 +17,7 @@ npx live-server
   - voz da prati putanju
   - probati dim čestice na lokomotivu
   - pruga dve crte
+  - tockovi se okrecu
   https://weitingtw.github.io/three.js-train/
   https://github.com/weitingtw/three.js-train
 
