@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { DEGREE, RIGHT_ANGLE } from '/data/constants.js'
+import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
 
 /*  AIRPLANE */
 
@@ -77,9 +78,11 @@ export function createLocomotive() {
   group.rotation.y = Math.PI * .5
   group.position.y = .85
 
-  const locomotive = new THREE.Group()
-  locomotive.add(group)
-  return locomotive
+  centerMesh(group)
+  adjustHeight(group)
+  const wrapper = new THREE.Group()
+  wrapper.add(group)
+  return wrapper
 }
 
 /*  CLOUD */
