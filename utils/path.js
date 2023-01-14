@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { createBox } from '/utils/geometry.js'
 
 export const simpleCurve = new THREE.SplineCurve([
   new THREE.Vector2(-12, 0),
@@ -18,7 +19,7 @@ export function createPathVisual(curve) {
   return mesh
 }
 
-export function followPath({ path, mesh, elapsedTime, speed = .05 }) {
+export function followPath({ path, mesh, elapsedTime, speed = .05, y = 1 }) {
   const currPosition = new THREE.Vector2()
   const nextPosition = new THREE.Vector2()
 
@@ -26,8 +27,8 @@ export function followPath({ path, mesh, elapsedTime, speed = .05 }) {
 
   path.getPointAt(speedTime % 1, currPosition)
   path.getPointAt((speedTime + 0.01) % 1, nextPosition)
-  mesh.position.set(currPosition.x, 1, currPosition.y)
-  mesh.lookAt(nextPosition.x, 1, nextPosition.y)
+  mesh.position.set(currPosition.x, y, currPosition.y)
+  mesh.lookAt(nextPosition.x, y, nextPosition.y)
 }
 
 export function createEllipse({ xRadius, yRadius }) {
@@ -39,4 +40,23 @@ export function createEllipse({ xRadius, yRadius }) {
   curve.position.y = .01
   curve.userData.path = path
   return curve
+}
+
+export function createRailroadTracks(path, num) {
+  const currPosition = new THREE.Vector2()
+  const nextPosition = new THREE.Vector2()
+  const track = createBox({ width: 1, height: .2, depth: .2, file: 'crate.gif' })
+  const tracks = []
+
+  for (let i = 0; i < num; i++) {
+    const x = i * .005
+    path.getPointAt(x % 1, currPosition)
+    path.getPointAt((x + 0.01) % 1, nextPosition)
+
+    const mesh = track.clone()
+    mesh.position.set(currPosition.x, 0, currPosition.y)
+    mesh.lookAt(nextPosition.x, 0, nextPosition.y)
+    tracks.push(mesh)
+  }
+  return tracks
 }
