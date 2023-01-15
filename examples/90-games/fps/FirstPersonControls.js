@@ -4,11 +4,11 @@ import keyboard from '/utils/classes/Keyboard.js'
 const PI_2 = Math.PI / 2
 
 export default class FirstPersonControls {
-  constructor(camera, MouseMoveSensitivity = 0.002, speed = 800.0, jumpHeight = 350.0, height = 30.0) {
-    this.MouseMoveSensitivity = MouseMoveSensitivity
+  constructor(camera, mouseMoveSensitivity = .002, speed = 120, jumpHeight = 150, height = 1.7) {
+    this.mouseMoveSensitivity = mouseMoveSensitivity
     this.speed = speed
     this.height = height
-    this.jumpHeight = this.height + jumpHeight
+    this.jumpHeight = jumpHeight
 
     this.canJump = false
     this.velocity = new THREE.Vector3()
@@ -39,16 +39,17 @@ export default class FirstPersonControls {
     const time = performance.now()
     const delta = (time - this.prevTime) / 1000
 
-    velocity.y -= 9.8 * 100.0 * delta
-    velocity.x -= velocity.x * 10.0 * delta
-    velocity.z -= velocity.z * 10.0 * delta
+    velocity.y -= 9.8 * 100 * delta
+    velocity.x -= velocity.x * 10 * delta
+    velocity.z -= velocity.z * 10 * delta
 
     direction.z = (keyboard.up ? 1 : 0) - (keyboard.down ? 1 : 0)
     direction.x = (keyboard.right ? 1 : 0) - (keyboard.left ? 1 : 0)
     direction.normalize()
 
     let currentSpeed = this.speed
-    if (keyboard.run && (keyboard.up || keyboard.down || keyboard.left || keyboard.right)) currentSpeed += (currentSpeed * 1.1)
+    if (keyboard.run && (keyboard.up || keyboard.down || keyboard.left || keyboard.right))
+      currentSpeed += (currentSpeed * 1.1)
 
     if (keyboard.up || keyboard.down) velocity.z -= direction.z * currentSpeed * delta
     if (keyboard.left || keyboard.right) velocity.x -= direction.x * currentSpeed * delta
@@ -72,17 +73,17 @@ export default class FirstPersonControls {
     const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0
     const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0
 
-    this.yawObject.rotation.y -= movementX * this.MouseMoveSensitivity
-    this.pitchObject.rotation.x -= movementY * this.MouseMoveSensitivity
+    this.yawObject.rotation.y -= movementX * this.mouseMoveSensitivity
+    this.pitchObject.rotation.x -= movementY * this.mouseMoveSensitivity
 
     this.pitchObject.rotation.x = Math.max(- PI_2, Math.min(PI_2, this.pitchObject.rotation.x))
   }
 
   onKeyDown(event) {
     if (this.enabled === false) return
-    switch (event.keyCode) {
-      case 32: // space
-        if (this.canJump === true) this.velocity.y += (!keyboard.run) ? this.jumpHeight : this.jumpHeight + 50
+    switch (event.code) {
+      case 'Space':
+        if (this.canJump === true) this.velocity.y += (!keyboard.run) ? this.jumpHeight : this.jumpHeight + 5
         this.canJump = false
         break
     }

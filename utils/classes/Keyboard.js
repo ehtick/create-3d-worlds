@@ -6,6 +6,11 @@ let startX = null
 let startY = null
 const swipeThreshold = 5
 
+const preventSome = e => {
+  // prevent shake and random btn click on enter
+  if (e.code == 'Space' || e.code == 'Enter' || e.code.startsWith('Arrow')) e.preventDefault()
+}
+
 class Keyboard {
 
   constructor(listen = true) {
@@ -18,7 +23,7 @@ class Keyboard {
     if (!listen) return
 
     document.addEventListener('keydown', e => {
-      this.preventSome(e)
+      preventSome(e)
       this.pressed[e.code] = true
     })
     document.addEventListener('keyup', e => {
@@ -68,11 +73,6 @@ class Keyboard {
 
   reset() {
     for (const key in this.pressed) delete this.pressed[key]
-  }
-
-  preventSome(e) {
-    // prevent shake and random btn click on enter
-    if (e.code == 'Space' || e.code == 'Enter' || e.code.startsWith('Arrow')) e.preventDefault()
   }
 
   /* GETTERS */
