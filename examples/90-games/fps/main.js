@@ -5,6 +5,7 @@ import { createFloor } from '/utils/ground.js'
 import { createSun } from '/utils/light.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
 import { createCity } from '/utils/city.js'
+import { getMouseIntersects } from '/utils/helpers.js'
 
 const size = 2000
 
@@ -14,9 +15,6 @@ scene.add(ricochet)
 scene.fog = new THREE.FogExp2 (0x777788, 0.0055)
 scene.add(createSun())
 
-const raycaster = new THREE.Raycaster(
-  camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
-
 const controls = new FirstPersonControls(camera)
 scene.add(controls.getObject())
 
@@ -25,6 +23,14 @@ scene.add(floor)
 
 const city = createCity({ numBuildings: 1000, size: size * .5, addWindows: false, colorParams: { colorful: .035, max: 1 } })
 scene.add(city)
+
+/* FUNCTIONS */
+
+function shoot(e) {
+  const intersects = getMouseIntersects(e, camera, city)
+  if (intersects.length)
+    resetParticles({ particles: ricochet, pos: intersects[0].point, unitAngle: 0.2 })
+}
 
 /* LOOP */
 
@@ -42,7 +48,7 @@ void function loop() {
 
 const instructions = document.querySelector('#instructions')
 
-document.addEventListener('pointerlockchange', e => {
+document.addEventListener('pointerlockchange', () => {
   if (document.pointerLockElement === document.body) {
     controls.enabled = true
     instructions.style.display = 'none'
@@ -54,11 +60,4 @@ document.addEventListener('pointerlockchange', e => {
 
 instructions.addEventListener('click', () => document.body.requestPointerLock())
 
-document.body.addEventListener('click', e => {
-  raycaster.set(camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
-  const intersects = raycaster.intersectObject(city)
-  if (intersects.length) {
-    const intersect = intersects[0]
-    resetParticles({ particles: ricochet, pos: intersect.point, unitAngle: 0.2 })
-  }
-})
+document.body.addEventListener('click', shoot)
