@@ -9,6 +9,8 @@ import { createBox } from '/utils/geometry.js'
 const particles = createParticles({ num: 100, size: 0.25, unitAngle: 0.2 })
 scene.add(particles)
 
+// camera.position.y = 0
+
 scene.fog = new THREE.FogExp2 (0x777788, 0.0055)
 scene.add(createSun())
 
@@ -65,7 +67,7 @@ instructions.addEventListener('click', () => document.body.requestPointerLock())
 document.body.addEventListener('click', e => {
   raycaster.set(camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
   const intersects = raycaster.intersectObjects(city.children)
-  if (intersects.length > 0) {
+  if (intersects.length) {
     const intersect = intersects[0]
     makeParticles(intersect.point)
   }

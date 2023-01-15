@@ -1,71 +1,43 @@
 import * as THREE from 'three'
 import keyboard from '/utils/classes/Keyboard.js'
 
-const FirstPersonControls = function(camera, MouseMoveSensitivity = 0.002, speed = 800.0, jumpHeight = 350.0, height = 30.0) {
-  const self = this
+const PI_2 = Math.PI / 2
 
-  self.MouseMoveSensitivity = MouseMoveSensitivity
-  self.speed = speed
-  self.height = height
-  self.jumpHeight = self.height + jumpHeight
+export default class FirstPersonControls {
+  constructor(camera, MouseMoveSensitivity = 0.002, speed = 800.0, jumpHeight = 350.0, height = 30.0) {
+    this.MouseMoveSensitivity = MouseMoveSensitivity
+    this.speed = speed
+    this.height = height
+    this.jumpHeight = this.height + jumpHeight
 
-  let canJump = false
+    this.canJump = false
+    this.velocity = new THREE.Vector3()
+    this.direction = new THREE.Vector3()
+    this.prevTime = performance.now()
 
-  const velocity = new THREE.Vector3()
-  const direction = new THREE.Vector3()
+    camera.rotation.set(0, 0, 0)
 
-  let prevTime = performance.now()
+    this.pitchObject = new THREE.Object3D()
+    this.pitchObject.add(camera)
 
-  camera.rotation.set(0, 0, 0)
+    this.yawObject = new THREE.Object3D()
+    this.yawObject.position.y = 10
+    this.yawObject.add(this.pitchObject)
 
-  const pitchObject = new THREE.Object3D()
-  pitchObject.add(camera)
+    document.addEventListener('mousemove', e => this.onMouseMove(e))
+    document.addEventListener('keydown', e => this.onKeyDown(e))
 
-  const yawObject = new THREE.Object3D()
-  yawObject.position.y = 10
-  yawObject.add(pitchObject)
-
-  const PI_2 = Math.PI / 2
-
-  const onMouseMove = function(event) {
-    if (self.enabled === false) return
-
-    const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0
-    const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0
-
-    yawObject.rotation.y -= movementX * self.MouseMoveSensitivity
-    pitchObject.rotation.x -= movementY * self.MouseMoveSensitivity
-
-    pitchObject.rotation.x = Math.max(- PI_2, Math.min(PI_2, pitchObject.rotation.x))
+    this.enabled = false
   }
 
-  const onKeyDown = event => {
-    if (self.enabled === false) return
-    switch (event.keyCode) {
-      case 32: // space
-        if (canJump === true) velocity.y += (!keyboard.run) ? self.jumpHeight : self.jumpHeight + 50
-        canJump = false
-        break
-    }
+  getObject() {
+    return this.yawObject
   }
 
-  self.dispose = function() {
-    document.removeEventListener('mousemove', onMouseMove, false)
-    document.removeEventListener('keydown', onKeyDown, false)
-  }
-
-  document.addEventListener('mousemove', onMouseMove, false)
-  document.addEventListener('keydown', onKeyDown, false)
-
-  self.enabled = false
-
-  self.getObject = function() {
-    return yawObject
-  }
-
-  self.update = function() {
+  update() {
+    const { velocity, direction } = this
     const time = performance.now()
-    const delta = (time - prevTime) / 1000
+    const delta = (time - this.prevTime) / 1000
 
     velocity.y -= 9.8 * 100.0 * delta
     velocity.x -= velocity.x * 10.0 * delta
@@ -75,24 +47,49 @@ const FirstPersonControls = function(camera, MouseMoveSensitivity = 0.002, speed
     direction.x = (keyboard.right ? 1 : 0) - (keyboard.left ? 1 : 0)
     direction.normalize()
 
-    let currentSpeed = self.speed
+    let currentSpeed = this.speed
     if (keyboard.run && (keyboard.up || keyboard.down || keyboard.left || keyboard.right)) currentSpeed += (currentSpeed * 1.1)
 
     if (keyboard.up || keyboard.down) velocity.z -= direction.z * currentSpeed * delta
     if (keyboard.left || keyboard.right) velocity.x -= direction.x * currentSpeed * delta
 
-    self.getObject().translateX(-velocity.x * delta)
-    self.getObject().translateZ(velocity.z * delta)
+    this.getObject().translateX(-velocity.x * delta)
+    this.getObject().translateZ(velocity.z * delta)
 
-    self.getObject().position.y += (velocity.y * delta)
+    this.getObject().position.y += (velocity.y * delta)
 
-    if (self.getObject().position.y < self.height) {
+    if (this.getObject().position.y < this.height) {
       velocity.y = 0
-      self.getObject().position.y = self.height
-      canJump = true
+      this.getObject().position.y = this.height
+      this.canJump = true
     }
-    prevTime = time
+    this.prevTime = time
+  }
+
+  onMouseMove(event) {
+    if (this.enabled === false) return
+
+    const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0
+    const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0
+
+    this.yawObject.rotation.y -= movementX * this.MouseMoveSensitivity
+    this.pitchObject.rotation.x -= movementY * this.MouseMoveSensitivity
+
+    this.pitchObject.rotation.x = Math.max(- PI_2, Math.min(PI_2, this.pitchObject.rotation.x))
+  }
+
+  onKeyDown(event) {
+    if (this.enabled === false) return
+    switch (event.keyCode) {
+      case 32: // space
+        if (this.canJump === true) this.velocity.y += (!keyboard.run) ? this.jumpHeight : this.jumpHeight + 50
+        this.canJump = false
+        break
+    }
+  }
+
+  dispose() {
+    document.removeEventListener('mousemove', e => this.onMouseMove(e))
+    document.removeEventListener('keydown', e => this.onKeyDown(e))
   }
 }
-
-export default FirstPersonControls
