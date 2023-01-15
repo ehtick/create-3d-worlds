@@ -1,27 +1,25 @@
-import { createGround } from '/utils/ground.js'
-import { randomMatrix } from '/utils/mazes.js'
-import { scene, renderer, camera, clock } from '/utils/scene.js'
-import Savo from '/utils/fsm/Savo.js'
-import Tilemap from '/utils/classes/Tilemap.js'
-import { hemLight } from '/utils/light.js'
+import * as THREE from 'three'
+import { scene, renderer, camera, clock, createOrbitControls } from '/utils/scene.js'
+import THREEx from './threex.dynamictexture.js'
 
-hemLight()
-scene.add(createGround({ file: 'terrain/ground.jpg' }))
+createOrbitControls()
 
-const map = new Tilemap(randomMatrix(), 20)
-const walls = map.meshFromMatrix()
-scene.add(walls)
+const dynamicTexture	= new THREEx.DynamicTexture(512, 512)
+dynamicTexture.context.font	= 'bolder 90px Verdana'
 
-const player = new Savo()
-player.add(camera)
-player.addSolids(walls)
-scene.add(player.mesh)
-
-/* LOOP */
+const geometry	= new THREE.BoxGeometry(1, 1, 1)
+const material	= new THREE.MeshBasicMaterial({
+  map: dynamicTexture.texture
+})
+const mesh	= new THREE.Mesh(geometry, material)
+scene.add(mesh)
 
 void function animate() {
   requestAnimationFrame(animate)
-  const delta = clock.getDelta()
-  player.update(delta)
+
+  dynamicTexture
+    .clear('gray')
+    .drawText('Zdravo Svete!', undefined, 256, 'black')
+
   renderer.render(scene, camera)
 }()
