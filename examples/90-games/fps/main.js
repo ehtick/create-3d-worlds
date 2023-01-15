@@ -4,6 +4,7 @@ import { camera, scene, renderer } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { createSun } from '/utils/light.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
+import { createBox } from '/utils/geometry.js'
 
 const particles = createParticles({ num: 100, size: 0.25, unitAngle: 0.2 })
 scene.add(particles)
@@ -22,23 +23,9 @@ scene.add(floor)
 
 // city
 const city = new THREE.Group()
-const boxGeometry = new THREE.BoxGeometry(1, 1, 1)
-boxGeometry.translate(0, 0.5, 0)
-
 for (let i = 0; i < 500; i++) {
-  const boxMaterial = new THREE.MeshStandardMaterial({ color: Math.random() * 0xffffff, flatShading: false, vertexColors: false })
-
-  const mesh = new THREE.Mesh(boxGeometry, boxMaterial)
-  mesh.position.x = Math.random() * 1600 - 800
-  mesh.position.y = 0
-  mesh.position.z = Math.random() * 1600 - 800
-  mesh.scale.x = 20
-  mesh.scale.y = Math.random() * 80 + 10
-  mesh.scale.z = 20
-  mesh.castShadow = true
-  mesh.receiveShadow = true
-  mesh.updateMatrix()
-  mesh.matrixAutoUpdate = false
+  const mesh = createBox({ width: 20, height: Math.random() * 80 + 10, depth: 20 })
+  mesh.position.set(Math.random() * 1600 - 800, 0, Math.random() * 1600 - 800)
   city.add(mesh)
 }
 scene.add(city)
@@ -51,11 +38,10 @@ function makeParticles(position) {
 
 void function loop() {
   requestAnimationFrame(loop)
+  if (!controls.enabled) return
 
-  if (controls.enabled === true) {
-    controls.update()
-    expandParticles({ particles, scalar: 1.2, maxRounds: 20, gravity: .02 })
-  }
+  controls.update()
+  expandParticles({ particles, scalar: 1.2, maxRounds: 20, gravity: .02 })
 
   renderer.render(scene, camera)
 }()
