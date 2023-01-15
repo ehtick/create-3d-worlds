@@ -6,6 +6,7 @@ import { createSun } from '/utils/light.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
 import { createCity } from '/utils/city.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
+import { getFpsIntersects } from '/utils/helpers.js'
 
 const size = 2000
 
@@ -28,16 +29,10 @@ const fpsRenderer = new FPSRenderer({ targetY: 0.5 })
 
 /* FUNCTIONS */
 
-const raycaster = new THREE.Raycaster(
-  camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
-
-function shoot(e) {
-  raycaster.set(camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
-  const intersects = raycaster.intersectObject(city)
-  if (intersects.length) {
-    const intersect = intersects[0]
-    resetParticles({ particles: ricochet, pos: intersect.point, unitAngle: 0.2 })
-  }
+function shoot() {
+  const intersects = getFpsIntersects(camera, city)
+  if (intersects.length)
+    resetParticles({ particles: ricochet, pos: intersects[0].point, unitAngle: 0.2 })
 }
 
 /* LOOP */
@@ -57,6 +52,8 @@ void function loop() {
 
 const instructions = document.querySelector('#instructions')
 
+instructions.addEventListener('click', () => document.body.requestPointerLock())
+
 document.addEventListener('pointerlockchange', () => {
   if (document.pointerLockElement === document.body) {
     controls.enabled = true
@@ -66,7 +63,5 @@ document.addEventListener('pointerlockchange', () => {
     instructions.style.display = '-webkit-box'
   }
 })
-
-instructions.addEventListener('click', () => document.body.requestPointerLock())
 
 document.body.addEventListener('click', shoot)

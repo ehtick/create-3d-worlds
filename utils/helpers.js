@@ -174,14 +174,26 @@ export const directionBlocked = (mesh, solids, vector) => {
   return intersections.length > 0
 }
 
-export function getMouseIntersects(e, camera = defaultCamera, target = defaultScene) {
-  const mouse = normalizeMouse(e)
-  const raycaster = new THREE.Raycaster()
-  raycaster.setFromCamera(mouse, camera)
+function getIntersects(raycaster, target = defaultScene) {
   target = target.type === 'Scene' ? target.children : target // eslint-disable-line no-param-reassign
   const method = target.length ? 'intersectObjects' : 'intersectObject'
   const intersects = raycaster[method](target)
   return intersects
+}
+
+export function getMouseIntersects(e, camera = defaultCamera, target = defaultScene) {
+  const mouse = normalizeMouse(e)
+  const raycaster = new THREE.Raycaster()
+  raycaster.setFromCamera(mouse, camera)
+  return getIntersects(raycaster, target)
+}
+
+export function getFpsIntersects(camera, target) {
+  const raycaster = new THREE.Raycaster(
+    camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3())
+  )
+  raycaster.set(camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
+  return getIntersects(raycaster, target)
 }
 
 export function checkIntersect(terrain, origin) {
