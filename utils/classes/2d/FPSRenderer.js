@@ -40,9 +40,23 @@ export default class FPSRenderer extends Canvas {
     const shaking = keyboard.controlsPressed ? 6 : 1
     const shakeX = Math.cos(elapsedTime * 2) * shaking
     const shakeY = Math.sin(elapsedTime * 4) * shaking
+
+    this.draw(img, xAlign, yAlign, shakeX, shakeY)
+  }
+
+  draw(img, xAlign = 0.5, yAlign = 1, shakeX = 0, shakeY = 0) {
     const x = window.innerWidth * xAlign - img.width * 0.5 + shakeX
-    const y = window.innerHeight * yAlign - img.height + shakeY + 10 // zbog praznine na dnu
+    const y = window.innerHeight * yAlign - img.height + shakeY + 10 // korekcija
     this.ctx.drawImage(img, x, y)
+  }
+
+  drawFixedTarget() {
+    this.draw(this.targetImg, 0.5, this.targetY)
+  }
+
+  renderTarget() {
+    this.clear()
+    this.handleLoad(this.targetImg, targetSrc, 'drawFixedTarget')
   }
 
   render(elapsedTime) {

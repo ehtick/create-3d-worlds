@@ -5,7 +5,7 @@ import { createFloor } from '/utils/ground.js'
 import { createSun } from '/utils/light.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
 import { createCity } from '/utils/city.js'
-import { getMouseIntersects } from '/utils/helpers.js'
+import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 
 const size = 2000
 
@@ -24,12 +24,20 @@ scene.add(floor)
 const city = createCity({ numBuildings: 1000, size: size * .5, addWindows: false, colorParams: { colorful: .035, max: 1 } })
 scene.add(city)
 
+const fpsRenderer = new FPSRenderer({ targetY: 0.5 })
+
 /* FUNCTIONS */
 
+const raycaster = new THREE.Raycaster(
+  camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
+
 function shoot(e) {
-  const intersects = getMouseIntersects(e, camera, city)
-  if (intersects.length)
-    resetParticles({ particles: ricochet, pos: intersects[0].point, unitAngle: 0.2 })
+  raycaster.set(camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
+  const intersects = raycaster.intersectObject(city)
+  if (intersects.length) {
+    const intersect = intersects[0]
+    resetParticles({ particles: ricochet, pos: intersect.point, unitAngle: 0.2 })
+  }
 }
 
 /* LOOP */
@@ -39,6 +47,7 @@ void function loop() {
   if (!controls.enabled) return
 
   controls.update()
+  fpsRenderer.renderTarget()
   expandParticles({ particles: ricochet, scalar: 1.2, maxRounds: 20, gravity: .02 })
 
   renderer.render(scene, camera)
