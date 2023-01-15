@@ -11,7 +11,9 @@ npx live-server
 
 ### Scenes & examples
 
-- Savo / Nemesis / FPS
+- FPS
+  - spojiti Savo, fps i nemesis
+  - dodati grafite na zidove grada
   - srediti koliziju
   - dodati NPC karaktere (vidi nemesis i ai modele)
     - https://www.script-tutorials.com/demos/474/index3.html
@@ -19,7 +21,6 @@ npx live-server
   - dodati tenk kako prolazi
   - dodati munje https://threejs.org/examples/?q=light#webgl_lightningstrike
   - dodati pucanje
-  - integrisati fps i nemesis
   - kiša da prati igraca
 
 - Svemir 

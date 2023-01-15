@@ -27,7 +27,6 @@ const floor = createFloor({ size: size * 1.1, color: 0x606068 })
 const lampposts = createLampposts({ size, numLampposts, circle: false })
 scene.add(lampposts)
 
-// TODO: dodati grafite na zidove
 const city = createCity({ numBuildings, size, circle: false, colorParams: { colorful: .035, max: 1 } })
 scene.add(floor, city)
 
