@@ -15,7 +15,7 @@ const numLampposts = 8 // max lights is 16
 const ricochet = createParticles({ num: 100, size: 0.05, unitAngle: 0.2 })
 scene.add(ricochet)
 
-scene.fog = new THREE.FogExp2(0x777788, 0.0055)
+scene.fog = new THREE.FogExp2(0xF6F1D5, 0.0055)
 scene.add(createSun({ position: [50, 100, 50], sunColor: 0xF6F1D5, r: 4 }))
 scene.background = new THREE.Color(0x070b34)
 
@@ -27,6 +27,7 @@ const floor = createFloor({ size: size * 1.1, color: 0x606068 })
 const lampposts = createLampposts({ size, numLampposts, circle: false })
 scene.add(lampposts)
 
+// TODO: dodati grafite na zidove
 const city = createCity({ numBuildings, size, circle: false, colorParams: { colorful: .035, max: 1 } })
 scene.add(floor, city)
 
