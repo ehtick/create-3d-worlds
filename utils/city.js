@@ -116,7 +116,7 @@ const shouldEnlarge = (enlargeEvery, i) => enlargeEvery && i % enlargeEvery == 0
 
 export function createCity({
   numBuildings = 200, size = 200, circle = true, rotateEvery = 0, enlargeEvery = 0,
-  addWindows = true, colorParams = { min: 0, max: .1, colorful: .1 }, addTexture = false,
+  addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, addTexture = false,
   emptyCenter = 0,
 } = {}) {
   const buildings = []

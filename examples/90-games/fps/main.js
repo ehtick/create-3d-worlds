@@ -1,29 +1,35 @@
 import * as THREE from 'three'
-import FirstPersonControls from './FirstPersonControls.js'
-import { camera, scene, renderer } from '/utils/scene.js'
+import { camera, scene, renderer, setBackground } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
-import { createSun } from '/utils/light.js'
+import { hemLight, createSun } from '/utils/light.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
-import { createCity } from '/utils/city.js'
+import { createLampposts, createCity, createCityLights } from '/utils/city.js'
+import FirstPersonControls from './FirstPersonControls.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { getCameraIntersects } from '/utils/helpers.js'
 
-const size = 2000
+const size = 400
+const numBuildings = 200
+const numLampposts = 4
+const numCityLights = 16 - numLampposts // max num of lights is 16
 
 const ricochet = createParticles({ num: 100, size: 0.05, unitAngle: 0.2 })
 scene.add(ricochet)
 
 scene.fog = new THREE.FogExp2 (0x777788, 0.0055)
-scene.add(createSun())
+hemLight({ intensity: 2 })
+setBackground(0x070b34)
 
 const controls = new FirstPersonControls(camera)
 scene.add(controls.getObject())
 
-const floor = createFloor({ size })
-scene.add(floor)
+const floor = createFloor({ size: size * 1.1, color: 0x101018 })
+const lampposts = createLampposts({ size, numLampposts, circle: false })
+const streetLights = createCityLights({ size, numLights: numCityLights })
 
-const city = createCity({ numBuildings: 1000, size: size * .5, addWindows: false, colorParams: { colorful: .035, max: 1 } })
-scene.add(city)
+// const city = createCity({ numBuildings, size, colorParams: { colorful: .035, max: 1 } })
+const city = createCity({ numBuildings, size, circle: false, colorParams: null, rotateEvery: 9 })
+scene.add(floor, city, lampposts, streetLights)
 
 const fpsRenderer = new FPSRenderer({ targetY: 0.5 })
 
