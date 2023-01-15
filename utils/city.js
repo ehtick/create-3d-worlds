@@ -117,7 +117,7 @@ const shouldEnlarge = (enlargeEvery, i) => enlargeEvery && i % enlargeEvery == 0
 export function createCity({
   numBuildings = 200, size = 200, circle = true, rotateEvery = 0, enlargeEvery = 0,
   addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, addTexture = false,
-  emptyCenter = 0,
+  emptyCenter = 0, castShadow = true, receiveShadow = true,
 } = {}) {
   const buildings = []
   for (let i = 0; i < numBuildings; i++) {
@@ -144,6 +144,8 @@ export function createCity({
     : basicMaterial
 
   const city = new THREE.Mesh(merged, material)
+  city.castShadow = castShadow
+  city.receiveShadow = receiveShadow
   return city
 }
 
