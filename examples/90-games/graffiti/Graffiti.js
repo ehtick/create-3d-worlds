@@ -1,41 +1,23 @@
-// https://github.com/jeromeetienne/learningthreejs.com/blob/master/source/_posts/2014-05-02-easy-to-use-dynamic-texture-to-write-text-in-your-3d-object-with-threex-dot-dynamictexture-game-extensions-for-three-dot-js.markdown
 import * as THREE from 'three'
 
-class Graffiti {
-  constructor(width, height) {
-    const canvas = document.createElement('canvas')
-    canvas.width = width
-    canvas.height = height
-    this.canvas = canvas
+export function createGraffitiTexture({
+  width = 256, height = 256, background = 'gray', color = 'red', contextFont = 'bolder 16px Verdana', text = 'Punk is not dead!', x, y = height / 2
+} = {}) {
+  const canvas = document.createElement('canvas')
+  canvas.width = width
+  canvas.height = height
 
-    const context = canvas.getContext('2d')
-    this.context = context
+  const context = canvas.getContext('2d')
+  const texture = new THREE.Texture(canvas)
 
-    const texture = new THREE.Texture(canvas)
-    this.texture = texture
-  }
+  context.fillStyle = background
+  context.fillRect(0, 0, canvas.width, canvas.height)
 
-  clear(fillStyle = 'gray') {
-    this.context.fillStyle = fillStyle
-    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height)
+  context.font = contextFont
+  context.fillStyle = color
+  if (!x) x = (canvas.width - context.measureText(text).width) / 2
+  context.fillText(text, x, y)
 
-    this.texture.needsUpdate = true
-    return this
-  }
-
-  getCenter(text) {
-    return (this.canvas.width - this.context.measureText(text).width) / 2
-  }
-
-  drawText(text, x = this.getCenter(text), y, fillStyle, contextFont) {
-    if (contextFont) this.context.font = contextFont
-
-    this.context.fillStyle = fillStyle
-    this.context.fillText(text, x, y)
-
-    this.texture.needsUpdate = true
-    return this
-  }
+  texture.needsUpdate = true
+  return texture
 }
-
-export default Graffiti
