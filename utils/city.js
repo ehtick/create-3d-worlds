@@ -77,7 +77,7 @@ export function createBuildingGeometry({
   height = randInt(width, width * 4), x = 0, z = 0, y = height * .5, addWindows = true, rotY = 0,
 } = {}) {
 
-  const geometry = new THREE.BoxBufferGeometry(width, height, width)
+  const geometry = new THREE.BoxGeometry(width, height, width)
 
   const colors = []
   for (let i = 0, l = geometry.attributes.position.count; i < l; i ++)

@@ -21,7 +21,7 @@ export default class FirstPersonControls {
     this.pitchObject.add(camera)
 
     this.yawObject = new THREE.Object3D()
-    this.yawObject.position.y = 10
+    this.yawObject.position.y = height
     this.yawObject.add(this.pitchObject)
 
     document.addEventListener('mousemove', e => this.onMouseMove(e))

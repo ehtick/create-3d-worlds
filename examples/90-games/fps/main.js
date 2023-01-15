@@ -4,12 +4,12 @@ import { camera, scene, renderer } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { createSun } from '/utils/light.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
-import { createBox } from '/utils/geometry.js'
+import { createCity } from '/utils/city.js'
 
-const particles = createParticles({ num: 100, size: 0.25, unitAngle: 0.2 })
-scene.add(particles)
+const size = 2000
 
-// camera.position.y = 0
+const ricochet = createParticles({ num: 100, size: 0.05, unitAngle: 0.2 })
+scene.add(ricochet)
 
 scene.fog = new THREE.FogExp2 (0x777788, 0.0055)
 scene.add(createSun())
@@ -20,21 +20,11 @@ const raycaster = new THREE.Raycaster(
 const controls = new FirstPersonControls(camera)
 scene.add(controls.getObject())
 
-const floor = createFloor({ size: 2000 })
+const floor = createFloor({ size })
 scene.add(floor)
 
-// city
-const city = new THREE.Group()
-for (let i = 0; i < 500; i++) {
-  const mesh = createBox({ width: 20, height: Math.random() * 80 + 10, depth: 20 })
-  mesh.position.set(Math.random() * 1600 - 800, 0, Math.random() * 1600 - 800)
-  city.add(mesh)
-}
+const city = createCity({ numBuildings: 1000, size: size * .5, addWindows: false, colorParams: { colorful: .035, max: 1 } })
 scene.add(city)
-
-function makeParticles(position) {
-  resetParticles({ particles, pos: position, unitAngle: 0.2 })
-}
 
 /* LOOP */
 
@@ -43,7 +33,7 @@ void function loop() {
   if (!controls.enabled) return
 
   controls.update()
-  expandParticles({ particles, scalar: 1.2, maxRounds: 20, gravity: .02 })
+  expandParticles({ particles: ricochet, scalar: 1.2, maxRounds: 20, gravity: .02 })
 
   renderer.render(scene, camera)
 }()
@@ -66,9 +56,9 @@ instructions.addEventListener('click', () => document.body.requestPointerLock())
 
 document.body.addEventListener('click', e => {
   raycaster.set(camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
-  const intersects = raycaster.intersectObjects(city.children)
+  const intersects = raycaster.intersectObject(city)
   if (intersects.length) {
     const intersect = intersects[0]
-    makeParticles(intersect.point)
+    resetParticles({ particles: ricochet, pos: intersect.point, unitAngle: 0.2 })
   }
 })
