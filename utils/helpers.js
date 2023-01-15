@@ -3,15 +3,14 @@ import { scene as defaultScene, camera as defaultCamera } from '/utils/scene.js'
 import { dir } from '/data/constants.js'
 
 const { randFloat } = THREE.MathUtils
-
-export const isEmpty = obj => Object.keys(obj).length === 0
+const raycaster = new THREE.Raycaster()
 
 /* MATH */
 
 export const mapRange = (number, inMin, inMax, outMin, outMax) =>
   (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
 
-/* Get random int between two values, <= max (max inclusive) */
+/* random int between two values, <= max (max inclusive) */
 export const roll = (max, min = 0) => Math.floor(Math.random() * (max - min + 1) + min)
 
 /* return 2D vector { x, z } */
@@ -106,9 +105,7 @@ export const centerGeometry = geometry => {
   geometry.translate(_offset.x, 0, _offset.z)
 }
 
-export const adjustHeight = mesh => {
-  mesh.translateY(getHeight(mesh) / 2)
-}
+export const adjustHeight = mesh => mesh.translateY(getHeight(mesh) / 2)
 
 /* TEXTURES */
 
@@ -183,21 +180,16 @@ function getIntersects(raycaster, target = defaultScene) {
 
 export function getMouseIntersects(e, camera = defaultCamera, target = defaultScene) {
   const mouse = normalizeMouse(e)
-  const raycaster = new THREE.Raycaster()
   raycaster.setFromCamera(mouse, camera)
   return getIntersects(raycaster, target)
 }
 
-export function getFpsIntersects(camera, target) {
-  const raycaster = new THREE.Raycaster(
-    camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3())
-  )
+export function getCameraIntersects(camera, target) {
   raycaster.set(camera.getWorldPosition(new THREE.Vector3()), camera.getWorldDirection(new THREE.Vector3()))
   return getIntersects(raycaster, target)
 }
 
 export function checkIntersect(terrain, origin) {
-  const raycaster = new THREE.Raycaster()
   raycaster.set(origin, dir.down)
   const intersects = raycaster.intersectObject(terrain)
   return intersects.length
@@ -250,6 +242,8 @@ export const getCursorPosition = e => {
   return { x: clientX, y: clientY }
 }
 
-/* ARRAYS */
+/* JS HELPERS */
 
 export const sample = arr => arr[Math.floor(Math.random() * arr.length)]
+
+export const isEmpty = obj => Object.keys(obj).length === 0

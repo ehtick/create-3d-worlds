@@ -6,7 +6,7 @@ import { createSun } from '/utils/light.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
 import { createCity } from '/utils/city.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
-import { getFpsIntersects } from '/utils/helpers.js'
+import { getCameraIntersects } from '/utils/helpers.js'
 
 const size = 2000
 
@@ -30,7 +30,7 @@ const fpsRenderer = new FPSRenderer({ targetY: 0.5 })
 /* FUNCTIONS */
 
 function shoot() {
-  const intersects = getFpsIntersects(camera, city)
+  const intersects = getCameraIntersects(camera, city)
   if (intersects.length)
     resetParticles({ particles: ricochet, pos: intersects[0].point, unitAngle: 0.2 })
 }
