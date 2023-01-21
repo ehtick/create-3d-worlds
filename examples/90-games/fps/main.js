@@ -45,7 +45,7 @@ function shoot() {
 void function loop() {
   requestAnimationFrame(loop)
   renderer.render(scene, camera)
-  if (!controls.enabled) return
+  if (!document.pointerLockElement) return
 
   const delta = clock.getDelta()
   controls.update(delta)
@@ -57,16 +57,10 @@ void function loop() {
 
 const instructions = document.querySelector('#instructions')
 
-instructions.addEventListener('click', () => document.body.requestPointerLock())
+instructions.addEventListener('click', () => renderer.domElement.requestPointerLock())
 
 document.addEventListener('pointerlockchange', () => {
-  if (document.pointerLockElement === document.body) {
-    controls.enabled = true
-    instructions.style.display = 'none'
-  } else {
-    controls.enabled = false
-    instructions.style.display = '-webkit-box'
-  }
+  instructions.style.display = document.pointerLockElement ? 'none' : '-webkit-box'
 })
 
 document.body.addEventListener('click', shoot)

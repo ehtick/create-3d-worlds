@@ -26,8 +26,6 @@ export default class FirstPersonControls {
 
     document.addEventListener('mousemove', e => this.onMouseMove(e))
     document.addEventListener('keydown', e => this.onKeyDown(e))
-
-    this.enabled = false
   }
 
   getObject() {
@@ -65,7 +63,7 @@ export default class FirstPersonControls {
   }
 
   onMouseMove(e) {
-    if (this.enabled === false) return
+    if (!document.pointerLockElement) return
 
     this.yawObject.rotation.y -= e.movementX * this.mouseSensitivity
     this.pitchObject.rotation.x -= e.movementY * this.mouseSensitivity
@@ -74,7 +72,8 @@ export default class FirstPersonControls {
   }
 
   onKeyDown(event) {
-    if (this.enabled === false) return
+    if (!document.pointerLockElement) return
+
     switch (event.code) {
       case 'Space':
         if (this.canJump === true)
