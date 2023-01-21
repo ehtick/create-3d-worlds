@@ -14,8 +14,9 @@ npx live-server
 - FPS
   - spojiti Savo, fps i nemesis
   - dodati grafite na zidove grada 
-  - zakriviti grafite (pomoću transformacija kanvasa)
+  - malo rotirati grafite (pomoću transformacija kanvasa)
   - dodati betonsku teksturu
+  - ostaviti decals rupe od metaka
   - srediti koliziju
   - dodati NPC karaktere (vidi nemesis i ai modele)
     - https://www.script-tutorials.com/demos/474/index3.html

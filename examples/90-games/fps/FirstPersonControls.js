@@ -1,10 +1,11 @@
+// https://codepen.io/viniciusSouza/pen/gOPVmKV
 import * as THREE from 'three'
 import keyboard from '/utils/classes/Keyboard.js'
 
 const PI_2 = Math.PI / 2
 
 export default class FirstPersonControls {
-  constructor(camera, mouseMoveSensitivity = .002, speed = 120, jumpHeight = 150, height = 1.7) {
+  constructor(camera, mouseMoveSensitivity = .002, speed = 120, jumpHeight = 40, height = 1.7) {
     this.mouseMoveSensitivity = mouseMoveSensitivity
     this.speed = speed
     this.height = height
@@ -39,7 +40,7 @@ export default class FirstPersonControls {
     const time = performance.now()
     const delta = (time - this.prevTime) / 1000
 
-    velocity.y -= 9.8 * 100 * delta
+    velocity.y -= 9.8 * 10 * delta
     velocity.x -= velocity.x * 10 * delta
     velocity.z -= velocity.z * 10 * delta
 
@@ -83,7 +84,8 @@ export default class FirstPersonControls {
     if (this.enabled === false) return
     switch (event.code) {
       case 'Space':
-        if (this.canJump === true) this.velocity.y += (!keyboard.run) ? this.jumpHeight : this.jumpHeight + 5
+        if (this.canJump === true)
+          this.velocity.y += !keyboard.run ? this.jumpHeight : this.jumpHeight + 5
         this.canJump = false
         break
     }
