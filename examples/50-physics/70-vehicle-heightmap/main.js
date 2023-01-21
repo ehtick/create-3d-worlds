@@ -8,7 +8,7 @@ import VehicleCamera from '/utils/classes/VehicleCamera.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import Vehicle from '/utils/classes/Vehicle.js'
 
-scene.add(createSun({ sunColor: 0xB0E0E6 }))
+scene.add(createSun({ planetColor: 0xB0E0E6 }))
 
 const world = new PhysicsWorld()
 const cameraControls = new VehicleCamera({ camera })
