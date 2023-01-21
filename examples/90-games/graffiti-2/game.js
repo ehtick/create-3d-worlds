@@ -1,24 +1,15 @@
 import * as THREE from 'three'
 import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { createGraffitiTexture } from '/utils/city.js'
+import { createSun } from '/utils/light.js'
 
 createOrbitControls()
-
-camera.position.set(0, 3, 8)
-
-const light = new THREE.DirectionalLight(0xffffff, 1)
-light.position.setScalar(1)
-scene.add(light, new THREE.AmbientLight(0xffffff, 0.25))
-
-const texture = createGraffitiTexture({ stroke: 'red' })
+scene.add(createSun())
 
 const u = {
   y: { value: 0 },
-  graffiti: { value: texture }
+  graffiti: { value: createGraffitiTexture({ stroke: 'red' }) }
 }
-
-const g = new THREE.CylinderGeometry(2, 2, 4.5, 36, 1, true)
-g.rotateY(Math.PI)
 
 const material = new THREE.MeshLambertMaterial({
   color: 0x7f7f64,
@@ -45,7 +36,10 @@ const material = new THREE.MeshLambertMaterial({
   }
 })
 
-const mesh = new THREE.Mesh(g, material)
+const geometry = new THREE.CylinderGeometry(2, 2, 4.5, 36, 1, true)
+geometry.rotateY(Math.PI)
+
+const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
 renderer.setAnimationLoop(() => {

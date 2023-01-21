@@ -64,6 +64,7 @@ export function createGraffitiTexture({
   }
 
   const texture = new THREE.CanvasTexture(canvas)
+  // texture.needsUpdate = true
   return texture
 }
 
