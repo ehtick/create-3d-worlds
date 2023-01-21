@@ -57,7 +57,7 @@ void function loop() {
 
 const instructions = document.querySelector('#instructions')
 
-instructions.addEventListener('click', () => renderer.domElement.requestPointerLock())
+instructions.addEventListener('click', () => document.body.requestPointerLock())
 
 document.addEventListener('pointerlockchange', () => {
   instructions.style.display = document.pointerLockElement ? 'none' : '-webkit-box'

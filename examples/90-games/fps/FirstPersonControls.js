@@ -2,7 +2,7 @@
 import * as THREE from 'three'
 import keyboard from '/utils/classes/Keyboard.js'
 
-const PI_2 = Math.PI / 2
+const PI_HALF = Math.PI * .5
 
 export default class FirstPersonControls {
   constructor(camera, mouseSensitivity = .002, speed = 120, jumpHeight = 40, height = 1.7) {
@@ -68,7 +68,7 @@ export default class FirstPersonControls {
     this.yawObject.rotation.y -= e.movementX * this.mouseSensitivity
     this.pitchObject.rotation.x -= e.movementY * this.mouseSensitivity
 
-    this.pitchObject.rotation.x = Math.max(- PI_2, Math.min(PI_2, this.pitchObject.rotation.x))
+    this.pitchObject.rotation.x = Math.max(-PI_HALF, Math.min(PI_HALF, this.pitchObject.rotation.x))
   }
 
   onKeyDown(event) {
