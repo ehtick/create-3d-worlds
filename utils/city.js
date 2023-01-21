@@ -68,14 +68,14 @@ export function createGraffitiTexture({
   return texture
 }
 
-/* BUILDING */
+/* WINDOWS */
 
 function createWindow(windowWidth, windowHeight) {
   const lightColors = [0xffff00, 0xF5F5DC, 0xFFEA00, 0xFDDA0D, 0xFFFF8F, 0xFFFDD0]
   const lightColor = lightColors[Math.floor(Math.random() * lightColors.length)]
   const randColor = Math.random() > 0.5 ? 0x000000 : new THREE.Color(lightColor)
 
-  const geometry = new THREE.PlaneBufferGeometry(windowWidth, windowHeight)
+  const geometry = new THREE.PlaneGeometry(windowWidth, windowHeight)
 
   const colors = []
   for (let i = 0, l = geometry.attributes.position.count; i < l; i ++) {
@@ -131,9 +131,10 @@ function createWindows(bWidth, bHeight) {
   return windows
 }
 
+/* BUILDING */
+
 export function createBuildingGeometry({
-  color = new THREE.Color(0x000000), width = randInt(10, 20),
-  height = randInt(width, width * 4), x = 0, z = 0, y = height * .5, addWindows = true, rotY = 0,
+  color = randomGrayish({ min: .1, max: .5 }), width = randInt(10, 20), height = randInt(width, width * 4), x = 0, z = 0, y = height * .5, addWindows = true, rotY = 0,
 } = {}) {
 
   const geometry = new THREE.BoxGeometry(width, height, width)
@@ -155,7 +156,11 @@ export function createBuildingGeometry({
 
 export function createBuilding(params) {
   const geometry = createBuildingGeometry(params)
-  return new THREE.Mesh(geometry, basicMaterial)
+  const material = params?.addTexture
+    ? new THREE.MeshLambertMaterial({ map: createCityTexture(), vertexColors: true })
+    : basicMaterial
+
+  return new THREE.Mesh(geometry, material)
 }
 
 export function createSimpleBuilding({
