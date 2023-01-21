@@ -199,7 +199,7 @@ export function createCity({
 
   const merged = BufferGeometryUtils.mergeBufferGeometries(buildings)
   const material = addTexture
-    ? new THREE.MeshLambertMaterial({ map: createCityTexture(), vertexColors: THREE.FaceColors })
+    ? new THREE.MeshLambertMaterial({ map: createCityTexture(), vertexColors: true })
     : basicMaterial
 
   const city = new THREE.Mesh(merged, material)
