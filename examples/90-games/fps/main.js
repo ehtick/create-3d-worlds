@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { camera, scene, renderer, clock } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
-import { createSun } from '/utils/light.js'
+import { createMoon } from '/utils/light.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
 import { createLampposts, createCity } from '/utils/city.js'
 import FirstPersonControls from './FirstPersonControls.js'
@@ -16,7 +16,7 @@ const ricochet = createParticles({ num: 100, size: 0.05, unitAngle: 0.2 })
 scene.add(ricochet)
 
 scene.fog = new THREE.FogExp2(0xF6F1D5, 0.0055)
-scene.add(createSun({ position: [50, 100, 50], sunColor: 0xF6F1D5, r: 4 }))
+scene.add(createMoon())
 scene.background = new THREE.Color(0x070b34)
 
 const controls = new FirstPersonControls(camera)
