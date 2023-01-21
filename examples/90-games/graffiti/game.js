@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
-import { createGraffitiTexture } from './graffiti.js'
+import { createGraffitiTexture } from '/utils/city.js'
 
 createOrbitControls()
 

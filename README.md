@@ -13,7 +13,9 @@ npx live-server
 
 - FPS
   - spojiti Savo, fps i nemesis
-  - dodati grafite na zidove grada, možda betonsku teksturu
+  - dodati grafite na zidove grada 
+  - zakriviti grafite (pomoću transformacija kanvasa)
+  - dodati betonsku teksturu
   - srediti koliziju
   - dodati NPC karaktere (vidi nemesis i ai modele)
     - https://www.script-tutorials.com/demos/474/index3.html
@@ -65,6 +67,9 @@ Tenk (Vozilo)
 
 ### Polishing
 
+- toon-shader
+  https://www.maya-ndljk.com/blog/threejs-basic-toon-shader
+  https://summer-afternoon.vlucendo.com/
 - dodati UI komande redom
 - popraviti HTML margine
 - optimizacija 

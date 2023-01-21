@@ -9,6 +9,59 @@ const basicMaterial = new THREE.MeshStandardMaterial({
   vertexColors: true,
 })
 
+/* TEXTURES */
+
+function createCityTexture() {
+  const windowColor = () => {
+    const value = randInt(0, 84, true)
+    return `rgb(${value}, ${value}, ${value})`
+  }
+
+  const canvas = document.createElement('canvas')
+  canvas.width = 32
+  canvas.height = 64
+  const context = canvas.getContext('2d')
+  context.fillStyle = '#ffffff'
+  context.fillRect(0, 0, 32, 64)
+  for (let y = 2; y < 64; y += 2)
+    for (let x = 0; x < 32; x += 2) {
+      context.fillStyle = windowColor()
+      context.fillRect(x, y, 2, 1)
+    }
+
+  const canvas2 = document.createElement('canvas')
+  canvas2.width = 512
+  canvas2.height = 1024
+  const context2 = canvas2.getContext('2d')
+  context2.imageSmoothingEnabled = false
+  context2.drawImage(canvas, 0, 0, canvas2.width, canvas2.height)
+
+  const texture = new THREE.Texture(canvas2)
+  texture.needsUpdate = true
+  return texture
+}
+
+export function createGraffitiTexture({
+  width = 256, height = 256, background = 'gray', color = 'red', font = 'bolder 16px Verdana', text = 'Punk is not dead!', x, y = height / 2
+} = {}) {
+  const canvas = document.createElement('canvas')
+  canvas.width = width
+  canvas.height = height
+  const context = canvas.getContext('2d')
+  context.font = font
+  if (!x) x = (canvas.width - context.measureText(text).width) / 2
+
+  context.fillStyle = background
+  context.fillRect(0, 0, canvas.width, canvas.height)
+
+  context.fillStyle = color
+  context.fillText(text, x, y)
+
+  const texture = new THREE.Texture(canvas)
+  texture.needsUpdate = true
+  return texture
+}
+
 /* BUILDING */
 
 function createWindow(windowWidth, windowHeight) {
@@ -140,43 +193,13 @@ export function createCity({
 
   const merged = BufferGeometryUtils.mergeBufferGeometries(buildings)
   const material = addTexture
-    ? new THREE.MeshLambertMaterial({ map: generateCityTexture(), vertexColors: THREE.FaceColors })
+    ? new THREE.MeshLambertMaterial({ map: createCityTexture(), vertexColors: THREE.FaceColors })
     : basicMaterial
 
   const city = new THREE.Mesh(merged, material)
   city.castShadow = castShadow
   city.receiveShadow = receiveShadow
   return city
-}
-
-function generateCityTexture() {
-  const windowColor = () => {
-    const value = randInt(0, 84, true)
-    return `rgb(${value}, ${value}, ${value})`
-  }
-
-  const canvas = document.createElement('canvas')
-  canvas.width = 32
-  canvas.height = 64
-  const context = canvas.getContext('2d')
-  context.fillStyle = '#ffffff'
-  context.fillRect(0, 0, 32, 64)
-  for (let y = 2; y < 64; y += 2)
-    for (let x = 0; x < 32; x += 2) {
-      context.fillStyle = windowColor()
-      context.fillRect(x, y, 2, 1)
-    }
-
-  const canvas2 = document.createElement('canvas')
-  canvas2.width = 512
-  canvas2.height = 1024
-  const context2 = canvas2.getContext('2d')
-  context2.imageSmoothingEnabled = false
-  context2.drawImage(canvas, 0, 0, canvas2.width, canvas2.height)
-
-  const texture = new THREE.Texture(canvas2)
-  texture.needsUpdate = true
-  return texture
 }
 
 /* CITY LIGHTS */
