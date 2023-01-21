@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { camera, scene, renderer } from '/utils/scene.js'
+import { camera, scene, renderer, clock } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { createSun } from '/utils/light.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
@@ -47,7 +47,8 @@ void function loop() {
   renderer.render(scene, camera)
   if (!controls.enabled) return
 
-  controls.update()
+  const delta = clock.getDelta()
+  controls.update(delta)
   fpsRenderer.renderTarget()
   expandParticles({ particles: ricochet, scalar: 1.2, maxRounds: 20, gravity: .02 })
 }()

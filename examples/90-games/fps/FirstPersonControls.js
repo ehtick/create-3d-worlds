@@ -14,7 +14,6 @@ export default class FirstPersonControls {
     this.canJump = false
     this.velocity = new THREE.Vector3()
     this.direction = new THREE.Vector3()
-    this.prevTime = performance.now()
 
     camera.rotation.set(0, 0, 0)
 
@@ -35,10 +34,8 @@ export default class FirstPersonControls {
     return this.yawObject
   }
 
-  update() {
+  update(delta) {
     const { velocity, direction } = this
-    const time = performance.now()
-    const delta = (time - this.prevTime) / 1000
 
     velocity.y -= 9.8 * 10 * delta
     velocity.x -= velocity.x * 10 * delta
@@ -65,7 +62,6 @@ export default class FirstPersonControls {
       this.getObject().position.y = this.height
       this.canJump = true
     }
-    this.prevTime = time
   }
 
   onMouseMove(event) {
