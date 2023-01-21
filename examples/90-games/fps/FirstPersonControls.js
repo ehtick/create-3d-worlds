@@ -5,8 +5,8 @@ import keyboard from '/utils/classes/Keyboard.js'
 const PI_2 = Math.PI / 2
 
 export default class FirstPersonControls {
-  constructor(camera, mouseMoveSensitivity = .002, speed = 120, jumpHeight = 40, height = 1.7) {
-    this.mouseMoveSensitivity = mouseMoveSensitivity
+  constructor(camera, mouseSensitivity = .002, speed = 120, jumpHeight = 40, height = 1.7) {
+    this.mouseSensitivity = mouseSensitivity
     this.speed = speed
     this.height = height
     this.jumpHeight = jumpHeight
@@ -64,14 +64,11 @@ export default class FirstPersonControls {
     }
   }
 
-  onMouseMove(event) {
+  onMouseMove(e) {
     if (this.enabled === false) return
 
-    const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0
-    const movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0
-
-    this.yawObject.rotation.y -= movementX * this.mouseMoveSensitivity
-    this.pitchObject.rotation.x -= movementY * this.mouseMoveSensitivity
+    this.yawObject.rotation.y -= e.movementX * this.mouseSensitivity
+    this.pitchObject.rotation.x -= e.movementY * this.mouseSensitivity
 
     this.pitchObject.rotation.x = Math.max(- PI_2, Math.min(PI_2, this.pitchObject.rotation.x))
   }
@@ -85,10 +82,5 @@ export default class FirstPersonControls {
         this.canJump = false
         break
     }
-  }
-
-  dispose() {
-    document.removeEventListener('mousemove', e => this.onMouseMove(e))
-    document.removeEventListener('keydown', e => this.onKeyDown(e))
   }
 }
