@@ -1,6 +1,7 @@
 // http://jsfiddle.net/0couqp27/9/
 
 window.onload = function() {
+  console.log('load')
   const canvas = document.getElementById('c')
   const ctx = canvas.getContext('2d')
 
