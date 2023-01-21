@@ -6,7 +6,7 @@ createOrbitControls()
 
 const geometry	= new THREE.BoxGeometry(2, 2, 2)
 const material	= new THREE.MeshBasicMaterial({
-  map: createGraffitiTexture({ background: 'gray', color: 'red' })
+  map: createGraffitiTexture({ background: 'gray', font: 'bold 24px Verdana' })
 })
 const mesh	= new THREE.Mesh(geometry, material)
 scene.add(mesh)

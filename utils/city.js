@@ -42,23 +42,28 @@ function createCityTexture() {
 }
 
 export function createGraffitiTexture({
-  width = 256, height = 256, background = 'gray', color = 'red', font = 'bolder 16px Verdana', text = 'Punk is not dead!', x, y = height / 2
+  width = 256, height = 256, background = 'rgba(255, 255, 255, 0)', color = 'yellow', font = 'bold 30px Arial', text = 'Punk is not dead!', x = width * 0.5, y = height * 0.5, stroke
 } = {}) {
   const canvas = document.createElement('canvas')
   canvas.width = width
   canvas.height = height
-  const context = canvas.getContext('2d')
-  context.font = font
-  if (!x) x = (canvas.width - context.measureText(text).width) / 2
+  const ctx = canvas.getContext('2d')
 
-  context.fillStyle = background
-  context.fillRect(0, 0, canvas.width, canvas.height)
+  ctx.fillStyle = background
+  ctx.fillRect(0, 0, width, height)
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
 
-  context.fillStyle = color
-  context.fillText(text, x, y)
+  ctx.fillStyle = color
+  ctx.font = font
+  ctx.fillText(text, x, y)
 
-  const texture = new THREE.Texture(canvas)
-  texture.needsUpdate = true
+  if (stroke) {
+    ctx.strokeStyle = stroke
+    ctx.strokeText(text, x, y)
+  }
+
+  const texture = new THREE.CanvasTexture(canvas)
   return texture
 }
 
