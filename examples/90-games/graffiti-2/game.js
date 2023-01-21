@@ -6,21 +6,18 @@ import { createSun } from '/utils/light.js'
 createOrbitControls()
 scene.add(createSun())
 
-const u = {
+const uniforms = {
   y: { value: 0 },
   graffiti: { value: createGraffitiTexture({ stroke: 'red' }) }
 }
 
 const material = new THREE.MeshLambertMaterial({
-  color: 0x7f7f64,
   map: new THREE.TextureLoader().load('https://threejs.org/examples/textures/floors/FloorsCheckerboard_S_Diffuse.jpg', texture => {
-    texture.wrapS = THREE.RepeatWrapping
-    texture.wrapT = THREE.RepeatWrapping
+    texture.wrapS = texture.wrapT = THREE.RepeatWrapping
     texture.repeat.set(3, 1)
   }),
-  side: THREE.DoubleSide,
   onBeforeCompile: shader => {
-    shader.uniforms.graffiti = u.graffiti
+    shader.uniforms.graffiti = uniforms.graffiti
     shader.fragmentShader = `
         uniform float y;
         uniform sampler2D graffiti;
