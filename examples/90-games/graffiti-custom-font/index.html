@@ -4,14 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Graffiti</title>
-  <style>
-    /* latin-ext */
-    @font-face {
-      font-family: 'Lobster';
-      src: url(https://fonts.gstatic.com/s/lobster/v28/neILzCirqoswsqX9zoymM5Ez.woff2) format('woff2');
-    }
+  <link rel="preload" href="https://fonts.gstatic.com/s/lobster/v28/neILzCirqoswsqX9zoKmMw.woff2" as="font"
+    type="font/woff2" crossorigin>
 
-    /* latin */
+  <style>
     @font-face {
       font-family: 'Lobster';
       src: url(https://fonts.gstatic.com/s/lobster/v28/neILzCirqoswsqX9zoKmMw.woff2) format('woff2');
@@ -20,10 +16,6 @@
 </head>
 
 <body>
-
-  <span style="font-family: 'Lobster', cursive;">.</span>
-
-  <canvas id=c width=500 height=100></canvas>
 
   <script type="importmap">
     {
