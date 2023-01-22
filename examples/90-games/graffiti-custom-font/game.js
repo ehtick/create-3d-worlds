@@ -8,7 +8,7 @@ await new Promise(resolve => window.addEventListener('load', resolve)) // window
 
 const geometry	= new THREE.BoxGeometry(2, 2, 2)
 const material	= new THREE.MeshBasicMaterial({
-  map: createGraffitiTexture({ background: '#dddddd', font: '24px Lobster', color: 'teal' })
+  map: createGraffitiTexture({ background: '#dddddd', fontWeight: 'normal', fontSize: 24, fontFamily: 'Lobster', color: 'teal' })
 })
 const mesh	= new THREE.Mesh(geometry, material)
 scene.add(mesh)

@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { randomGrayish, randomInCircle, randomInSquare } from '/utils/helpers.js'
+import { randomGrayish, randomInCircle, randomInSquare, sample } from '/utils/helpers.js'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { material as winMaterial } from '/utils/shaders/windows.js'
 
@@ -45,9 +45,27 @@ export function createBuildingTexture({ night = false, wallColor = night ? '#151
   return texture
 }
 
+const slogans = [
+  'Be realistic \ndemand the impossible!',
+  'The barricade blocks the street\nbut opens the way',
+  'Read less, live more',
+  'No replastering,\nthe structure is rotten',
+  'We will claim nothing,\nwe will ask for nothing.\nWe will take, we will occupy!',
+  'Don\'t negotiate with the bosses. Abolish them',
+  'Neither god nor master!',
+  'Run, comrade, the old world is behind you!',
+  'Poetry is in the street',
+  'Art is dead, don\'t consume its corpse',
+  'Power to the imagination!',
+  'The economy is suffering,\nlet it die.',
+  'Abolish alienation',
+  'Never work!',
+]
+
 export function createGraffitiTexture({
-  width = 256, height = 256, background = 'gray', color = 'yellow', font = 'bold 30px Arial', text = 'Punk is not dead!', x = width * 0.5, y = height * 0.5, stroke
+  width = 256, height = 256, background = 'gray', color = 'yellow', fontWeight = 'bold', fontSize = 30, fontFamily = 'Arial', text = sample(slogans), x = width * 0.5, y = height * (text.length < 20 ? .85 : .6), stroke
 } = {}) {
+  console.log(text.length)
   const canvas = document.createElement('canvas')
   canvas.width = width
   canvas.height = height
@@ -59,8 +77,11 @@ export function createGraffitiTexture({
   ctx.textBaseline = 'middle'
 
   ctx.fillStyle = color
-  ctx.font = font
-  ctx.fillText(text, x, y)
+  ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`
+  // ctx.fillText(text, x, y)
+  const lines = text.split('\n')
+  for (let i = 0; i < lines.length; i++)
+    ctx.fillText(lines[i], x, y + (i * fontSize))
 
   if (stroke) {
     ctx.strokeStyle = stroke
