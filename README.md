@@ -12,6 +12,7 @@ npx live-server
 ### Scenes & examples
 
 - Grad
+  - adding the image into a canvas, and drawing the text over it
   - dodati betonsku teksturu
   - dodati park ili trg u centru
   - dodati drveće
