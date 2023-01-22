@@ -172,12 +172,21 @@ export function createGraffitiBuilding(params = {}) {
   const { color, ...rest } = params
   const geometry = createBuildingGeometry(rest)
 
-  const map = createGraffitiTexture({ color: 'teal', background: '#dddddd' })
+  const materials = []
+  for (let i = 0; i < 6; i++) {
 
-  const graffitiMat = new THREE.MeshLambertMaterial({ map, vertexColors: !color, color })
-  const material = new THREE.MeshLambertMaterial({ vertexColors: !color, color })
+    const materialParams = { vertexColors: !color }
+    if (color) materialParams.color = color
 
-  const materials = [graffitiMat, graffitiMat, material, material, graffitiMat, graffitiMat]
+    if (i !== 2 && i !== 3 && Math.random() > .66) // not top and bottom
+      materialParams.map = createGraffitiTexture({
+        color: 'teal', background: new THREE.Color(color).getStyle()
+      })
+
+    const material = new THREE.MeshLambertMaterial(materialParams)
+    materials.push(material)
+  }
+
   const building = new THREE.Mesh(geometry, materials)
   return building
 }
