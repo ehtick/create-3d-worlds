@@ -50,30 +50,30 @@ const slogans = [
   demand the impossible!`,
   `The barricade blocks the street
   but opens the way`,
-  'Read less, live more',
-  `No replastering,
+  'Read less - live more',
+  `NO REPLASTERING,
   the structure is rotten`,
   `We will claim nothing,
   we will ask for nothing.
   We will take, we will occupy!`,
   `Don\`t negotiate with bosses.
-  Abolish them!`,
+  ABOLISH THEM!`,
   `NEITHER GOD
   NOR MASTER!`,
   `Run comrade, 
   the old world is behind you!`,
-  'Poetry is in the street',
-  `Art is dead, 
+  'poetry is in the street',
+  `ART IS DEAD! 
   don\`t consume its corpse`,
-  `Power to the
-  imagination!`,
-  `The economy is suffering,
-  let it die.`,
-  'Abolish alienation',
+  `POWER TO THE
+  IMAGINATION!`,
+  `The economy is suffering
+  LET IT DIE`,
+  'Abolish alienation!',
   'NEVER WORK!',
 ]
 
-const webFonts = ['Arial', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Brush Script MT']
+const webFonts = ['Arial', 'Verdana', 'Trebuchet MS', 'Brush Script MT', 'Brush Script MT']
 const fontWeights = ['normal', 'bold', 'lighter']
 const fontColors = ['red', 'yellow', 'teal', 'black', '#222222', 'green', 'purple']
 
@@ -97,16 +97,18 @@ export function createGraffitiTexture({
   ctx.fillStyle = color
   ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`
 
-  ctx.rotate(Math.random() > .4 ? randFloat(-.05, .05) : 0)
-
   const lines = text.split('\n')
-  for (let i = 0; i < lines.length; i++)
+  for (let i = 0; i < lines.length; i++) {
+    ctx.rotate(Math.random() > .4 ? randFloat(-.05, .05) : 0)
     ctx.fillText(lines[i], x, y + (i * fontSize))
+  }
 
   if (stroke) {
     ctx.strokeStyle = stroke
-    for (let i = 0; i < lines.length; i++)
+    for (let i = 0; i < lines.length; i++) {
+      ctx.rotate(Math.random() > .4 ? randFloat(-.05, .05) : 0)
       ctx.strokeText(lines[i], x, y + (i * fontSize))
+    }
   }
 
   // reset transformation to the identity matrix
@@ -233,8 +235,10 @@ export function createGraffitiBuilding(params = {}) {
     materials.push(material)
   }
 
-  const building = new THREE.Mesh(geometry, materials)
-  return building
+  const mesh = new THREE.Mesh(geometry, materials)
+  mesh.castShadow = true
+  mesh.receiveShadow = false
+  return mesh
 }
 
 /* CITY */
