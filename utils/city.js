@@ -134,7 +134,7 @@ function createWindows(bWidth, bHeight) {
 /* BUILDING */
 
 export function createBuildingGeometry({
-  color = randomGrayish({ min: .1, max: .5 }), width = randInt(10, 20), height = randInt(width, width * 4), x = 0, z = 0, y = height * .5, addWindows = false, rotY = 0,
+  color = randomGrayish({ min: .3, max: .6 }), width = randInt(10, 20), height = randInt(width, width * 4), x = 0, z = 0, y = height * .5, addWindows = false, rotY = 0,
 } = {}) {
 
   const geometry = new THREE.BoxGeometry(width, height, width)
