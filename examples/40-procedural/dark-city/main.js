@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 import { scene, camera, renderer } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
-import { createSimpleBuilding } from '/utils/city.js'
+import { createBuilding } from '/utils/city.js'
 
 renderer.setClearColor(0x070b34)
 
@@ -20,7 +20,7 @@ const floor = createFloor({ size: 600 })
 scene.add(floor)
 
 for (let i = 0; i < 100; i++) {
-  const building = createSimpleBuilding({ width: 10, height: 10 })
+  const building = createBuilding({ width: 10, height: 10, night: true, addWindows: false, addTexture: true })
   buildings.push(building)
   scene.add(building)
 }

@@ -24,9 +24,9 @@ function createBuildingTexture({ night = false, wallColor = night ? '#151515' : 
   canvas.height = 64
   const context = canvas.getContext('2d')
   context.fillStyle = wallColor
-  context.fillRect(0, 0, 32, 64)
-  for (let y = 2; y < 64; y += 2)
-    for (let x = 0; x < 32; x += 2) {
+  context.fillRect(0, 0, canvas.width, canvas.height)
+  for (let y = 2; y < canvas.height; y += 2)
+    for (let x = 0; x < canvas.width; x += 2) {
       context.fillStyle = night
         ? getWindowColor({ chance: .25 }).getStyle()
         : randomGrayish({ min: 0, max: .5, colorful: 0 }).getStyle()
@@ -134,7 +134,7 @@ function createWindows(bWidth, bHeight) {
 /* BUILDING */
 
 export function createBuildingGeometry({
-  color = randomGrayish({ min: .1, max: .5 }), width = randInt(10, 20), height = randInt(width, width * 4), x = 0, z = 0, y = height * .5, addWindows = true, rotY = 0,
+  color = randomGrayish({ min: .1, max: .5 }), width = randInt(10, 20), height = randInt(width, width * 4), x = 0, z = 0, y = height * .5, addWindows = false, rotY = 0,
 } = {}) {
 
   const geometry = new THREE.BoxGeometry(width, height, width)
@@ -157,7 +157,7 @@ export function createBuildingGeometry({
 export function createBuilding(params) {
   const geometry = createBuildingGeometry(params)
   const material = params?.addTexture
-    ? new THREE.MeshLambertMaterial({ map: createBuildingTexture(), vertexColors: true })
+    ? new THREE.MeshLambertMaterial({ map: createBuildingTexture({ night: params.night }), vertexColors: true })
     : basicMaterial
 
   return new THREE.Mesh(geometry, material)

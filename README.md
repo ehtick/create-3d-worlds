@@ -11,12 +11,17 @@ npx live-server
 
 ### Scenes & examples
 
-- FPS
-  - spojiti Savo, fps i nemesis
-  - ukloniti teksturu sa vrhova (z)grada
+- Grad
   - dodati grafite na zidove grada 
   - malo rotirati grafite (pomoću transformacija kanvasa)
   - dodati betonsku teksturu
+  - dodati park ili trg u centru
+  - dodati drveće
+  - ubaciti prvo lice u scenu
+  - ukloniti teksturu sa vrhova zgrada ?
+
+- FPS
+  - spojiti Savo, fps i nemesis
   - ostaviti decals rupe od metaka
   - srediti koliziju
   - dodati NPC karaktere (vidi nemesis i ai modele)
@@ -36,12 +41,6 @@ npx live-server
     - sletanje na mesec (textured moon)
   - dodati proceduralnu planetu http://colordodge.com/ProceduralPlanet/?seed=Ridi%20Genow
   - mozda iskoristiti astronauta da luta po planeti https://codepen.io/b29/pen/LoaRKx
-
-- Grad
-  - dodati park ili trg u centru
-  - dodati drveće, za zeleni grad
-  - ubaciti prvo lice u scenu
-  - neki random primer https://thatfrenchgamedev.com/citydemo.html#
 
 - Fantasy scena
   - dodati modele (vidi rad-sa-modelima)
