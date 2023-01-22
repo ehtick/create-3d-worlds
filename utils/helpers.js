@@ -141,9 +141,9 @@ export function randomGray(min = 175, max = 250) { // range 0-255
 export function randomGrayish({ min = .3, max = .7, colorful = .02 } = {}) {
   const gray = randFloat(min, max)
   const color = new THREE.Color(
-    gray + randFloat(-colorful, colorful),
-    gray + randFloat(-colorful, colorful),
-    gray + randFloat(-colorful, colorful)
+    gray + (colorful ? randFloat(-colorful, colorful) : 0),
+    gray + (colorful ? randFloat(-colorful, colorful) : 0),
+    gray + (colorful ? randFloat(-colorful, colorful) : 0)
   )
   return color
 }

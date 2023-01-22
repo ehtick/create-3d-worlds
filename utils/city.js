@@ -11,12 +11,7 @@ const basicMaterial = new THREE.MeshStandardMaterial({
 
 /* TEXTURES */
 
-function createCityTexture() {
-  const windowColor = () => {
-    const value = randInt(0, 84, true)
-    return `rgb(${value}, ${value}, ${value})`
-  }
-
+function createBuildingTexture() {
   const canvas = document.createElement('canvas')
   canvas.width = 32
   canvas.height = 64
@@ -25,7 +20,7 @@ function createCityTexture() {
   context.fillRect(0, 0, 32, 64)
   for (let y = 2; y < 64; y += 2)
     for (let x = 0; x < 32; x += 2) {
-      context.fillStyle = windowColor()
+      context.fillStyle = randomGrayish({ min: 0, max: .35, colorful: 0 }).getStyle()
       context.fillRect(x, y, 2, 1)
     }
 
@@ -157,7 +152,7 @@ export function createBuildingGeometry({
 export function createBuilding(params) {
   const geometry = createBuildingGeometry(params)
   const material = params?.addTexture
-    ? new THREE.MeshLambertMaterial({ map: createCityTexture(), vertexColors: true })
+    ? new THREE.MeshLambertMaterial({ map: createBuildingTexture(), vertexColors: true })
     : basicMaterial
 
   return new THREE.Mesh(geometry, material)
@@ -204,7 +199,7 @@ export function createCity({
 
   const merged = BufferGeometryUtils.mergeBufferGeometries(buildings)
   const material = addTexture
-    ? new THREE.MeshLambertMaterial({ map: createCityTexture(), vertexColors: true })
+    ? new THREE.MeshLambertMaterial({ map: createBuildingTexture(), vertexColors: true })
     : basicMaterial
 
   const city = new THREE.Mesh(merged, material)
