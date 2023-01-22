@@ -12,11 +12,11 @@ const controls = createOrbitControls()
 camera.position.set(0, 100, 400)
 camera.lookAt(new THREE.Vector3(0, 100, 0))
 
-scene.fog = new THREE.FogExp2(0xd0e0f0, 0.0025)
-renderer.setClearColor(0x7ec0ee)
+scene.fog = new THREE.FogExp2(0x304050, 0.001)
+renderer.setClearColor(0x070b34)
 
-scene.add(createFloor({ size }))
-scene.add(createCity({ numBuildings, size, circle: false, rotateEvery: 2, enlargeEvery: 10, addTexture: true, colorParams: { colorful: .035, max: 1 } }))
+scene.add(createFloor({ size, color: 0x101018 }))
+scene.add(createCity({ numBuildings, size, circle: false, rotateEvery: 2, enlargeEvery: 10, addTexture: true, colorParams: { colorful: .035, max: 1 }, night: true }))
 
 /* INIT */
 
