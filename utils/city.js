@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { randomGrayish, randomInCircle, randomInSquare } from '/utils/helpers.js'
+import { randomGrayish, similarColor, randomInCircle, randomInSquare } from '/utils/helpers.js'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { material as winMaterial } from '/utils/shaders/windows.js'
 
@@ -11,12 +11,12 @@ const basicMaterial = new THREE.MeshStandardMaterial({
 
 /* TEXTURES */
 
-function createBuildingTexture() {
+function createBuildingTexture({ wallColor = '#FFFFFF' } = {}) {
   const canvas = document.createElement('canvas')
   canvas.width = 32
   canvas.height = 64
   const context = canvas.getContext('2d')
-  context.fillStyle = '#ffffff'
+  context.fillStyle = wallColor
   context.fillRect(0, 0, 32, 64)
   for (let y = 2; y < 64; y += 2)
     for (let x = 0; x < 32; x += 2) {
