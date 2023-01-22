@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { randomGrayish, randomInCircle, randomInSquare, sample } from '/utils/helpers.js'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
-import { material as winMaterial } from '/utils/shaders/windows.js'
+// import { material as winMaterial } from '/utils/shaders/windows.js'
 
 const { randInt, randFloat } = THREE.MathUtils
 
@@ -221,7 +221,7 @@ const shouldEnlarge = (enlargeEvery, i) => enlargeEvery && i % enlargeEvery == 0
 export function createCity({
   numBuildings = 200, size = 200, circle = true, rotateEvery = 0, enlargeEvery = 0,
   addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map,
-  emptyCenter = 0, castShadow = true, receiveShadow = false, night = false
+  emptyCenter = 0, castShadow = true, receiveShadow = false,
 } = {}) {
   const buildings = []
   for (let i = 0; i < numBuildings; i++) {

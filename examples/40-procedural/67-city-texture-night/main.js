@@ -16,7 +16,7 @@ scene.fog = new THREE.FogExp2(0x304050, 0.001)
 renderer.setClearColor(0x070b34)
 
 scene.add(createFloor({ size, color: 0x101018 }))
-scene.add(createCity({ numBuildings, size, circle: false, rotateEvery: 2, enlargeEvery: 10, map: createBuildingTexture({ night: true }), colorParams: { colorful: .035, max: 1 }, night: true }))
+scene.add(createCity({ numBuildings, size, circle: false, rotateEvery: 2, enlargeEvery: 10, map: createBuildingTexture({ night: true }), colorParams: { colorful: .035, max: 1 } }))
 
 /* INIT */
 

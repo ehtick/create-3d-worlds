@@ -20,7 +20,7 @@ const floor = createFloor({ size: 600, color: 0x303038 })
 scene.add(floor)
 
 for (let i = 0; i < 100; i++) {
-  const building = createBuilding({ width: 10, height: 10, night: true, addWindows: false, map: createBuildingTexture({ night: true }) })
+  const building = createBuilding({ width: 10, height: 10, map: createBuildingTexture({ night: true }) })
   buildings.push(building)
   scene.add(building)
 }
