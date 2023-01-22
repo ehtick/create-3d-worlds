@@ -96,17 +96,15 @@ export function createGraffitiTexture({
 
   ctx.fillStyle = color
   ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`
+  if (stroke) ctx.strokeStyle = stroke
 
   const lines = text.split('\n')
   for (let i = 0; i < lines.length; i++) {
     ctx.rotate(Math.random() > .4 ? randFloat(-.05, .05) : 0)
     ctx.fillText(lines[i], x, y + (i * fontSize))
-  }
 
-  if (stroke) {
-    ctx.strokeStyle = stroke
-    for (let i = 0; i < lines.length; i++) {
-      ctx.rotate(Math.random() > .4 ? randFloat(-.05, .05) : 0)
+    if (stroke) {
+      ctx.rotate(Math.random() > .4 ? randFloat(-.02, .02) : 0)
       ctx.strokeText(lines[i], x, y + (i * fontSize))
     }
   }
