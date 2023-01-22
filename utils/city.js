@@ -156,7 +156,6 @@ export function createBuildingGeometry({
   return mergedGeometry
 }
 
-// remove addTexture, default map = createBuildingTexture({ night })
 export function createBuilding(params = {}) {
   const { map, color, ...rest } = params
   const geometry = createBuildingGeometry(rest)
@@ -169,11 +168,16 @@ export function createBuilding(params = {}) {
   return new THREE.Mesh(geometry, material)
 }
 
-export function createSimpleBuilding({
-  width = randFloat(8, 20), height = randFloat(width * 2, width * 4), color,
-} = {}) {
-  const geometry = new THREE.BoxGeometry(width, height, width)
-  const materials = [winMaterial, winMaterial, basicMaterial, basicMaterial, winMaterial, winMaterial]
+export function createGraffitiBuilding(params = {}) {
+  const { color, ...rest } = params
+  const geometry = createBuildingGeometry(rest)
+
+  const map = createGraffitiTexture({ color: 'teal', background: '#dddddd' })
+
+  const graffitiMat = new THREE.MeshLambertMaterial({ map, vertexColors: !color, color })
+  const material = new THREE.MeshLambertMaterial({ vertexColors: !color, color })
+
+  const materials = [graffitiMat, graffitiMat, material, material, graffitiMat, graffitiMat]
   const building = new THREE.Mesh(geometry, materials)
   return building
 }
