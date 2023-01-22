@@ -137,13 +137,14 @@ export function createBuildingGeometry({
   color = randomGrayish({ min: .3, max: .6 }), width = randInt(10, 20), height = randInt(width, width * 4), x = 0, z = 0, y = height * .5, addWindows = false, rotY = 0,
 } = {}) {
 
-  color = new THREE.Color(color) // eslint-disable-line no-param-reassign
   const geometry = new THREE.BoxGeometry(width, height, width)
 
-  const colors = []
-  for (let i = 0, l = geometry.attributes.position.count; i < l; i ++)
-    colors.push(color.r, color.g, color.b)
-  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+  if (color?.isColor) { // is THREE.Color
+    const colors = []
+    for (let i = 0, l = geometry.attributes.position.count; i < l; i ++)
+      colors.push(color.r, color.g, color.b)
+    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+  }
 
   const mergedGeometry = addWindows
     ? BufferGeometryUtils.mergeBufferGeometries([geometry, ...createWindows(width, height)])
@@ -157,11 +158,13 @@ export function createBuildingGeometry({
 
 // remove addTexture, default map = createBuildingTexture({ night })
 export function createBuilding(params = {}) {
-  const { map } = params
-  const geometry = createBuildingGeometry(params)
-  const material = map
-    ? new THREE.MeshLambertMaterial({ map, vertexColors: true })
-    : basicMaterial
+  const { map, color, ...rest } = params
+  const geometry = createBuildingGeometry(rest)
+
+  const materialParams = { vertexColors: !color }
+  if (map) materialParams.map = map
+  if (color) materialParams.color = color
+  const material = new THREE.MeshLambertMaterial(materialParams)
 
   return new THREE.Mesh(geometry, material)
 }

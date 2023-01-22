@@ -6,10 +6,11 @@ import { createFloor } from '/utils/ground.js'
 const controls = createOrbitControls()
 camera.position.set(0, 25, 50)
 
-scene.add(createSun({ position: [50, 50, 50] }))
+scene.add(createSun({ position: [50, 100, 50] }))
 scene.add(createFloor())
 
-scene.add(createBuilding({ map: createGraffitiTexture(), color: 0xffffff }))
+const map = createGraffitiTexture({ color: 'teal', background: '#dddddd' })
+scene.add(createBuilding({ map, color: 0xffffff }))
 
 /* LOOP */
 
