@@ -12,13 +12,13 @@ const basicMaterial = new THREE.MeshStandardMaterial({
 /* TEXTURES */
 
 const getWindowColor = ({ chance = .5 } = {}) => {
-  const lightColors = [0xffff00, 0xF5F5DC, 0xFFEA00, 0xFDDA0D, 0xFFFF8F, 0xFFFDD0]
+  const lightColors = [0xffff00, 0xF5F5DC, 0xFFEA00, 0xF6F1D5, 0xFFFF8F, 0xFFFDD0, 0xFBFFFF]
   const lightColor = lightColors[Math.floor(Math.random() * lightColors.length)]
-  const randColor = Math.random() < chance ? 0x000000 : lightColor
+  const randColor = Math.random() > chance ? 0x000000 : lightColor
   return new THREE.Color(randColor)
 }
 
-function createBuildingTexture({ night = false, wallColor = night ? '#000000' : '#FFFFFF' } = {}) {
+function createBuildingTexture({ night = false, wallColor = night ? '#151515' : '#FFFFFF' } = {}) {
   const canvas = document.createElement('canvas')
   canvas.width = 32
   canvas.height = 64
@@ -28,7 +28,7 @@ function createBuildingTexture({ night = false, wallColor = night ? '#000000' : 
   for (let y = 2; y < 64; y += 2)
     for (let x = 0; x < 32; x += 2) {
       context.fillStyle = night
-        ? getWindowColor({chance: .75}).getStyle()
+        ? getWindowColor({ chance: .25 }).getStyle()
         : randomGrayish({ min: 0, max: .5, colorful: 0 }).getStyle()
       context.fillRect(x, y, 2, 1)
     }
