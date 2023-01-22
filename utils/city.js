@@ -56,8 +56,8 @@ const slogans = [
   `We will claim nothing,
   we will ask for nothing.
   We will take, we will occupy!`,
-  `Don\`t negotiate with the bosses.
-  Abolish them`,
+  `Don\`t negotiate with bosses.
+  Abolish them!`,
   `NEITHER GOD
   NOR MASTER!`,
   `Run comrade, 
@@ -65,7 +65,8 @@ const slogans = [
   'Poetry is in the street',
   `Art is dead, 
   don\`t consume its corpse`,
-  'Power to the imagination!',
+  `Power to the
+  imagination!`,
   `The economy is suffering,
   let it die.`,
   'Abolish alienation',
@@ -103,17 +104,20 @@ export function createGraffitiTexture({
   ctx.fillStyle = color
   ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`
 
+  ctx.rotate(Math.random() > .4 ? randFloat(-.05, .05) : 0)
+
   const lines = text.split('\n')
-  // ctx.fillText(text, x, y)
   for (let i = 0; i < lines.length; i++)
     ctx.fillText(lines[i], x, y + (i * fontSize))
 
   if (stroke) {
     ctx.strokeStyle = stroke
-    // ctx.strokeText(text, x, y)
     for (let i = 0; i < lines.length; i++)
       ctx.strokeText(lines[i], x, y + (i * fontSize))
   }
+
+  // reset transformation to the identity matrix
+  ctx.setTransform(1, 0, 0, 1, 0, 0)
 
   const texture = new THREE.CanvasTexture(canvas)
   return texture
@@ -225,10 +229,12 @@ export function createGraffitiBuilding(params = {}) {
     const materialParams = { vertexColors: !color }
     if (color) materialParams.color = color
 
-    if (i !== 2 && i !== 3 && Math.random() > .66) // not top and bottom
-      materialParams.map = createGraffitiTexture({
-        background: new THREE.Color(color).getStyle()
-      })
+    if (i !== 2 && i !== 3)  // not top and bottom
+      if (Math.random() > .66)
+        materialParams.map = createGraffitiTexture({
+          background: new THREE.Color(color).getStyle()
+        })
+      else materialParams.map = createBuildingTexture()
 
     const material = new THREE.MeshLambertMaterial(materialParams)
     materials.push(material)

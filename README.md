@@ -13,7 +13,6 @@ npx live-server
 
 - Grad
   - dodati grafite
-    - rotirati grafite (pomoću transformacija kanvasa)
     - custom font
   - dodati betonsku teksturu
   - dodati park ili trg u centru
