@@ -16,7 +16,7 @@ const light = new THREE.DirectionalLight(0xffffff)
 light.position.set(1, 1, 1)
 scene.add(light)
 
-const floor = createFloor({ size: 600 })
+const floor = createFloor({ size: 600, color: 0x303038 })
 scene.add(floor)
 
 for (let i = 0; i < 100; i++) {
