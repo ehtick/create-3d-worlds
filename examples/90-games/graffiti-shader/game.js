@@ -8,7 +8,7 @@ scene.add(createSun())
 
 const uniforms = {
   y: { value: 0.0 },
-  graffiti: { value: createGraffitiTexture({ stroke: 'red' }) }
+  graffiti: { value: createGraffitiTexture({ stroke: 'red', background: 'rgba(255, 255, 255, 0)' }) }
 }
 
 const getFragmentShader = defaultFragmentShader => /* glsl */`

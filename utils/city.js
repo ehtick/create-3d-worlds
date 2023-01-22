@@ -46,7 +46,7 @@ export function createBuildingTexture({ night = false, wallColor = night ? '#151
 }
 
 export function createGraffitiTexture({
-  width = 256, height = 256, background = 'rgba(255, 255, 255, 0)', color = 'yellow', font = 'bold 30px Arial', text = 'Punk is not dead!', x = width * 0.5, y = height * 0.5, stroke
+  width = 256, height = 256, background = 'gray', color = 'yellow', font = 'bold 30px Arial', text = 'Punk is not dead!', x = width * 0.5, y = height * 0.5, stroke
 } = {}) {
   const canvas = document.createElement('canvas')
   canvas.width = width
@@ -137,6 +137,7 @@ export function createBuildingGeometry({
   color = randomGrayish({ min: .3, max: .6 }), width = randInt(10, 20), height = randInt(width, width * 4), x = 0, z = 0, y = height * .5, addWindows = false, rotY = 0,
 } = {}) {
 
+  color = new THREE.Color(color) // eslint-disable-line no-param-reassign
   const geometry = new THREE.BoxGeometry(width, height, width)
 
   const colors = []

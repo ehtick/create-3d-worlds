@@ -9,7 +9,7 @@ camera.position.set(0, 25, 50)
 scene.add(createSun({ position: [50, 50, 50] }))
 scene.add(createFloor())
 
-scene.add(createBuilding({ map: createGraffitiTexture() }))
+scene.add(createBuilding({ map: createGraffitiTexture(), color: 0xffffff }))
 
 /* LOOP */
 
