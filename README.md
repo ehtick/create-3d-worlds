@@ -13,7 +13,7 @@ npx live-server
 
 - Grad
   - dodati grafite
-    - custom font
+    - možda neke murale
   - dodati betonsku teksturu
   - dodati park ili trg u centru
   - dodati drveće
