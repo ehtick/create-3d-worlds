@@ -1,4 +1,3 @@
-import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { createGraffitiBuilding } from '/utils/city.js'
@@ -27,6 +26,5 @@ for (let i = 0; i < 100; i++) {
 
 void function animate() {
   requestAnimationFrame(animate)
-  TWEEN.update()
   renderer.render(scene, camera)
 }()
