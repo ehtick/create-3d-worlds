@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { randomGrayish, similarColor, randomInCircle, randomInSquare } from '/utils/helpers.js'
+import { randomGrayish, randomInCircle, randomInSquare } from '/utils/helpers.js'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { material as winMaterial } from '/utils/shaders/windows.js'
 
@@ -11,7 +11,14 @@ const basicMaterial = new THREE.MeshStandardMaterial({
 
 /* TEXTURES */
 
-function createBuildingTexture({ wallColor = '#FFFFFF' } = {}) {
+const getWindowColor = ({ chance = .5 } = {}) => {
+  const lightColors = [0xffff00, 0xF5F5DC, 0xFFEA00, 0xFDDA0D, 0xFFFF8F, 0xFFFDD0]
+  const lightColor = lightColors[Math.floor(Math.random() * lightColors.length)]
+  const randColor = Math.random() < chance ? 0x000000 : lightColor
+  return new THREE.Color(randColor)
+}
+
+function createBuildingTexture({ night = false, wallColor = night ? '#000000' : '#FFFFFF' } = {}) {
   const canvas = document.createElement('canvas')
   canvas.width = 32
   canvas.height = 64
@@ -20,7 +27,9 @@ function createBuildingTexture({ wallColor = '#FFFFFF' } = {}) {
   context.fillRect(0, 0, 32, 64)
   for (let y = 2; y < 64; y += 2)
     for (let x = 0; x < 32; x += 2) {
-      context.fillStyle = randomGrayish({ min: 0, max: .35, colorful: 0 }).getStyle()
+      context.fillStyle = night
+        ? getWindowColor({chance: .75}).getStyle()
+        : randomGrayish({ min: 0, max: .5, colorful: 0 }).getStyle()
       context.fillRect(x, y, 2, 1)
     }
 
@@ -66,17 +75,13 @@ export function createGraffitiTexture({
 /* WINDOWS */
 
 function createWindow(windowWidth, windowHeight) {
-  const lightColors = [0xffff00, 0xF5F5DC, 0xFFEA00, 0xFDDA0D, 0xFFFF8F, 0xFFFDD0]
-  const lightColor = lightColors[Math.floor(Math.random() * lightColors.length)]
-  const randColor = Math.random() > 0.5 ? 0x000000 : new THREE.Color(lightColor)
-
   const geometry = new THREE.PlaneGeometry(windowWidth, windowHeight)
+  const color = getWindowColor()
 
   const colors = []
-  for (let i = 0, l = geometry.attributes.position.count; i < l; i ++) {
-    const color = new THREE.Color(randColor)
+  for (let i = 0, l = geometry.attributes.position.count; i < l; i ++)
     colors.push(color.r, color.g, color.b)
-  }
+
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 
   return geometry
@@ -176,7 +181,7 @@ const shouldEnlarge = (enlargeEvery, i) => enlargeEvery && i % enlargeEvery == 0
 export function createCity({
   numBuildings = 200, size = 200, circle = true, rotateEvery = 0, enlargeEvery = 0,
   addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, addTexture = false,
-  emptyCenter = 0, castShadow = true, receiveShadow = false,
+  emptyCenter = 0, castShadow = true, receiveShadow = false, night = false
 } = {}) {
   const buildings = []
   for (let i = 0; i < numBuildings; i++) {
@@ -199,7 +204,7 @@ export function createCity({
 
   const merged = BufferGeometryUtils.mergeBufferGeometries(buildings)
   const material = addTexture
-    ? new THREE.MeshLambertMaterial({ map: createBuildingTexture(), vertexColors: true })
+    ? new THREE.MeshLambertMaterial({ map: createBuildingTexture({ night }), vertexColors: true })
     : basicMaterial
 
   const city = new THREE.Mesh(merged, material)

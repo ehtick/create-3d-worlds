@@ -13,6 +13,7 @@ npx live-server
 
 - FPS
   - spojiti Savo, fps i nemesis
+  - ukloniti teksturu sa vrhova (z)grada
   - dodati grafite na zidove grada 
   - malo rotirati grafite (pomoću transformacija kanvasa)
   - dodati betonsku teksturu
