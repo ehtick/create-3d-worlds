@@ -62,8 +62,21 @@ const slogans = [
   'Never work!',
 ]
 
+const webFonts = [
+  'Arial',
+  'Verdana',
+  'Tahoma',
+  'Trebuchet MS',
+  'Georgia',
+  'Courier New',
+  'Brush Script MT',
+]
+
+const fontWeights = ['normal', 'bold', 'lighter']
+const fontColors = ['red', 'yellow', 'teal', 'black', '#222222', 'green', 'purple']
+
 export function createGraffitiTexture({
-  width = 256, height = 256, background = 'gray', color = 'yellow', fontWeight = 'bold', fontSize = 30, fontFamily = 'Arial', text = sample(slogans), x = width * 0.5, y = height * (text.length < 20 ? .85 : .6), stroke
+  width = 256, height = 256, background = 'gray', color = sample(fontColors), fontWeight = sample(fontWeights), fontSize = 30, fontFamily = sample(webFonts), text = sample(slogans), x = width * 0.5, y = height * (text.length < 20 ? .85 : .6), stroke
 } = {}) {
   console.log(text.length)
   const canvas = document.createElement('canvas')
@@ -201,7 +214,7 @@ export function createGraffitiBuilding(params = {}) {
 
     if (i !== 2 && i !== 3 && Math.random() > .66) // not top and bottom
       materialParams.map = createGraffitiTexture({
-        color: 'teal', background: new THREE.Color(color).getStyle()
+        background: new THREE.Color(color).getStyle()
       })
 
     const material = new THREE.MeshLambertMaterial(materialParams)
