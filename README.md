@@ -13,8 +13,6 @@ npx live-server
 
 - Grad
   - dodati grafite
-    - pozicionirati y proporcionalno dužini teksta
-    - veličina slova proporcionalno dužini teksta
     - rotirati grafite (pomoću transformacija kanvasa)
     - custom font
   - dodati betonsku teksturu

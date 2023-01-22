@@ -88,7 +88,7 @@ const minLength = Math.min(...sloganLengths),
   maxLength = Math.max(...sloganLengths)
 
 export function createGraffitiTexture({
-  width = 256, height = 256, background = 'gray', color = sample(fontColors), text = sample(slogans), fontWeight = sample(fontWeights), fontSize = mapRange(text.length, minLength, maxLength, 24, 12), fontFamily = sample(webFonts), x = width * 0.5, y = height * (text.length < 20 ? .85 : .6), stroke
+  width = 256, height = 256, background = 'gray', color = sample(fontColors), text = sample(slogans), fontWeight = sample(fontWeights), fontSize = mapRange(text.length, minLength, maxLength, 24, 12), fontFamily = sample(webFonts), x = width * 0.5, y = height * mapRange(text.length, minLength, maxLength, .9, .7), stroke = Math.random() > .5 && sample(fontColors)
 } = {}) {
   const canvas = document.createElement('canvas')
   canvas.width = width
@@ -102,14 +102,17 @@ export function createGraffitiTexture({
 
   ctx.fillStyle = color
   ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`
-  // ctx.fillText(text, x, y)
+
   const lines = text.split('\n')
+  // ctx.fillText(text, x, y)
   for (let i = 0; i < lines.length; i++)
     ctx.fillText(lines[i], x, y + (i * fontSize))
 
   if (stroke) {
     ctx.strokeStyle = stroke
-    ctx.strokeText(text, x, y)
+    // ctx.strokeText(text, x, y)
+    for (let i = 0; i < lines.length; i++)
+      ctx.strokeText(lines[i], x, y + (i * fontSize))
   }
 
   const texture = new THREE.CanvasTexture(canvas)
