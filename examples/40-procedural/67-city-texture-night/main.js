@@ -2,7 +2,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, createOrbitControls, hemLight } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
-import { createCity } from '/utils/city.js'
+import { createCity, createBuildingTexture } from '/utils/city.js'
 
 const size = 2000
 const numBuildings = 10000
@@ -16,7 +16,7 @@ scene.fog = new THREE.FogExp2(0x304050, 0.001)
 renderer.setClearColor(0x070b34)
 
 scene.add(createFloor({ size, color: 0x101018 }))
-scene.add(createCity({ numBuildings, size, circle: false, rotateEvery: 2, enlargeEvery: 10, addTexture: true, colorParams: { colorful: .035, max: 1 }, night: true }))
+scene.add(createCity({ numBuildings, size, circle: false, rotateEvery: 2, enlargeEvery: 10, map: createBuildingTexture({ night: true }), colorParams: { colorful: .035, max: 1 }, night: true }))
 
 /* INIT */
 

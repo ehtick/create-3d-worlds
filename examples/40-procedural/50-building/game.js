@@ -6,7 +6,7 @@ const controls = createOrbitControls()
 camera.position.set(0, 25, 50)
 renderer.setClearColor(0x070b34)
 
-scene.add(createBuilding({ addWindows: true })) // { addWindows: false, addTexture: true }
+scene.add(createBuilding({ addWindows: true }))
 scene.add(createMoon({ position: [50, 50, 50], r: 1 }))
 
 /* LOOP */

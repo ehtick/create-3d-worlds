@@ -18,7 +18,7 @@ const getWindowColor = ({ chance = .5 } = {}) => {
   return new THREE.Color(randColor)
 }
 
-function createBuildingTexture({ night = false, wallColor = night ? '#151515' : '#FFFFFF' } = {}) {
+export function createBuildingTexture({ night = false, wallColor = night ? '#151515' : '#FFFFFF' } = {}) {
   const canvas = document.createElement('canvas')
   canvas.width = 32
   canvas.height = 64
@@ -154,10 +154,12 @@ export function createBuildingGeometry({
   return mergedGeometry
 }
 
-export function createBuilding(params) {
+// remove addTexture, default map = createBuildingTexture({ night })
+export function createBuilding(params = {}) {
+  const { map } = params
   const geometry = createBuildingGeometry(params)
-  const material = params?.addTexture
-    ? new THREE.MeshLambertMaterial({ map: createBuildingTexture({ night: params.night }), vertexColors: true })
+  const material = map
+    ? new THREE.MeshLambertMaterial({ map, vertexColors: true })
     : basicMaterial
 
   return new THREE.Mesh(geometry, material)
@@ -180,7 +182,7 @@ const shouldEnlarge = (enlargeEvery, i) => enlargeEvery && i % enlargeEvery == 0
 
 export function createCity({
   numBuildings = 200, size = 200, circle = true, rotateEvery = 0, enlargeEvery = 0,
-  addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, addTexture = false,
+  addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map,
   emptyCenter = 0, castShadow = true, receiveShadow = false, night = false
 } = {}) {
   const buildings = []
@@ -203,8 +205,8 @@ export function createCity({
   }
 
   const merged = BufferGeometryUtils.mergeBufferGeometries(buildings)
-  const material = addTexture
-    ? new THREE.MeshLambertMaterial({ map: createBuildingTexture({ night }), vertexColors: true })
+  const material = map
+    ? new THREE.MeshLambertMaterial({ map, vertexColors: true })
     : basicMaterial
 
   const city = new THREE.Mesh(merged, material)
