@@ -73,14 +73,7 @@ const slogans = [
   'NEVER WORK!',
 ]
 
-const webFonts = [
-  'Arial',
-  'Verdana',
-  'Tahoma',
-  'Trebuchet MS',
-  'Brush Script MT',
-]
-
+const webFonts = ['Arial', 'Verdana', 'Tahoma', 'Trebuchet MS', 'Brush Script MT']
 const fontWeights = ['normal', 'bold', 'lighter']
 const fontColors = ['red', 'yellow', 'teal', 'black', '#222222', 'green', 'purple']
 

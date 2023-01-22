@@ -12,8 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Grad
-  - dodati grafite
-    - možda neke murale
   - dodati betonsku teksturu
   - dodati park ili trg u centru
   - dodati drveće
