@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { randomGrayish, randomInCircle, randomInSquare, sample } from '/utils/helpers.js'
+import { randomGrayish, randomInCircle, randomInSquare, sample, mapRange } from '/utils/helpers.js'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 // import { material as winMaterial } from '/utils/shaders/windows.js'
 
@@ -46,20 +46,30 @@ export function createBuildingTexture({ night = false, wallColor = night ? '#151
 }
 
 const slogans = [
-  'Be realistic \ndemand the impossible!',
-  'The barricade blocks the street\nbut opens the way',
+  `Be realistic
+  demand the impossible!`,
+  `The barricade blocks the street
+  but opens the way`,
   'Read less, live more',
-  'No replastering,\nthe structure is rotten',
-  'We will claim nothing,\nwe will ask for nothing.\nWe will take, we will occupy!',
-  'Don\'t negotiate with the bosses. Abolish them',
-  'Neither god nor master!',
-  'Run, comrade, the old world is behind you!',
+  `No replastering,
+  the structure is rotten`,
+  `We will claim nothing,
+  we will ask for nothing.
+  We will take, we will occupy!`,
+  `Don\`t negotiate with the bosses.
+  Abolish them`,
+  `NEITHER GOD
+  NOR MASTER!`,
+  `Run comrade, 
+  the old world is behind you!`,
   'Poetry is in the street',
-  'Art is dead, don\'t consume its corpse',
+  `Art is dead, 
+  don\`t consume its corpse`,
   'Power to the imagination!',
-  'The economy is suffering,\nlet it die.',
+  `The economy is suffering,
+  let it die.`,
   'Abolish alienation',
-  'Never work!',
+  'NEVER WORK!',
 ]
 
 const webFonts = [
@@ -67,18 +77,19 @@ const webFonts = [
   'Verdana',
   'Tahoma',
   'Trebuchet MS',
-  'Georgia',
-  'Courier New',
   'Brush Script MT',
 ]
 
 const fontWeights = ['normal', 'bold', 'lighter']
 const fontColors = ['red', 'yellow', 'teal', 'black', '#222222', 'green', 'purple']
 
+const sloganLengths = slogans.map(s => s.length)
+const minLength = Math.min(...sloganLengths),
+  maxLength = Math.max(...sloganLengths)
+
 export function createGraffitiTexture({
-  width = 256, height = 256, background = 'gray', color = sample(fontColors), fontWeight = sample(fontWeights), fontSize = 30, fontFamily = sample(webFonts), text = sample(slogans), x = width * 0.5, y = height * (text.length < 20 ? .85 : .6), stroke
+  width = 256, height = 256, background = 'gray', color = sample(fontColors), text = sample(slogans), fontWeight = sample(fontWeights), fontSize = mapRange(text.length, minLength, maxLength, 24, 12), fontFamily = sample(webFonts), x = width * 0.5, y = height * (text.length < 20 ? .85 : .6), stroke
 } = {}) {
-  console.log(text.length)
   const canvas = document.createElement('canvas')
   canvas.width = width
   canvas.height = height
@@ -102,7 +113,6 @@ export function createGraffitiTexture({
   }
 
   const texture = new THREE.CanvasTexture(canvas)
-  // texture.needsUpdate = true
   return texture
 }
 
