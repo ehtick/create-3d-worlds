@@ -37,11 +37,11 @@ export function randomInSquare(size, emptyCenter = 0) {
   return randomBool() ? { x, z } : { x: z, z: x }
 }
 
-function getRandomCoords(mapSize = 400, fieldSize = 20, emptyCenter = 50) {
+function getRandomCoords(mapSize = 400, fieldSize = 20, emptyCenter = 0) {
   const coords = []
   for (let i = -mapSize * .5; i < mapSize * .5; i += fieldSize)
     for (let j = -mapSize * .5; j < mapSize * .5; j += fieldSize)
-      if (!(i > -emptyCenter && i < emptyCenter && j > -emptyCenter && j < emptyCenter))
+      if ((i < -emptyCenter || i > emptyCenter || j < -emptyCenter || j > emptyCenter))
         coords.push([i, j])
 
   shuffle(coords)
@@ -51,7 +51,7 @@ function getRandomCoords(mapSize = 400, fieldSize = 20, emptyCenter = 50) {
 export function* yieldRandomCoord(mapSize = 400, fieldSize = 20, offset = fieldSize * .5, emptyCenter = 50) {
   const coords = getRandomCoords(mapSize, fieldSize, emptyCenter)
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < coords.length; i++) {
     const [x, z] = coords[i]
     const xOffset = randFloatSpread(offset), zOffset = randFloatSpread(offset)
     yield [x + xOffset, z + zOffset]
