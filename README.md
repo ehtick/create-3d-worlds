@@ -12,10 +12,10 @@ npx live-server
 ### Scenes & examples
 
 - Grad
-  - dodati betonsku teksturu
   - dodati park ili trg u centru
   - dodati drveće
   - ubaciti prvo lice u scenu
+  - dodati betonsku teksturu
 
 - FPS
   - spojiti Savo, fps i nemesis

@@ -244,6 +244,14 @@ export const getCursorPosition = e => {
 
 /* JS HELPERS */
 
+export const isEmpty = obj => Object.keys(obj).length === 0
+
 export const sample = arr => arr[Math.floor(Math.random() * arr.length)]
 
-export const isEmpty = obj => Object.keys(obj).length === 0
+export function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
