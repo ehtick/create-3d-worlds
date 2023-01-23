@@ -9,7 +9,8 @@ camera.position.set(0, 25, 50)
 scene.add(createSun({ position: [50, 100, 50] }))
 scene.add(createFloor())
 
-scene.add(createGraffitiBuilding({ color: 0xcccccc }))
+const building = await createGraffitiBuilding()
+scene.add(building)
 
 /* LOOP */
 
