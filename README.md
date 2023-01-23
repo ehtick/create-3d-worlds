@@ -12,6 +12,7 @@ npx live-server
 ### Scenes & examples
 
 - Grad
+  - implementirati emptyCenter na getRandomCoords
   - dodati park ili trg u centru
   - dodati drveće
   - ubaciti prvo lice u scenu
