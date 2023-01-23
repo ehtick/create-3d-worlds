@@ -138,7 +138,7 @@ export async function createGraffitiTexture({
     ctx.fillText(lines[i], x, y + (i * fontSize))
 
     if (stroke) {
-      ctx.rotate(Math.random() > .4 ? randFloat(-.02, .02) : 0)
+      ctx.rotate(Math.random() > .4 ? randFloat(-.01, .01) : 0)
       ctx.strokeText(lines[i], x, y + (i * fontSize))
     }
   }
@@ -247,7 +247,7 @@ export function createBuilding(params = {}) {
 }
 
 export async function createGraffitiBuilding(params = {}) {
-  const { color, ...rest } = params
+  const { color, chance = .33, ...rest } = params
   const geometry = createBuildingGeometry(rest)
   const { width, height } = geometry.parameters
 
@@ -258,7 +258,7 @@ export async function createGraffitiBuilding(params = {}) {
     if (color) materialParams.color = color
 
     if (i !== 2 && i !== 3)  // not top and bottom
-      if (Math.random() > .66)
+      if (Math.random() < chance)
         materialParams.map = await createGraffitiTexture({
           background: new THREE.Color(color).getStyle(), width: width * 12, height: height * 12
         })

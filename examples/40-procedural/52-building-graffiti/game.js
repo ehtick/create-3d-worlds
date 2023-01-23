@@ -9,7 +9,7 @@ camera.position.set(0, 25, 50)
 scene.add(createSun({ position: [50, 100, 50] }))
 scene.add(createFloor())
 
-const building = await createGraffitiBuilding()
+const building = await createGraffitiBuilding({ chance: .66 })
 scene.add(building)
 
 /* LOOP */
