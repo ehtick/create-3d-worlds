@@ -288,7 +288,6 @@ export function createCity({
 } = {}) {
   const buildings = []
   const coords = yieldRandomCoord({ mapSize: size, fieldSize: buildingWidth, emptyCenter })
-  console.log(coords.next().value)
 
   for (let i = 0; i < numBuildings; i++) {
     const color = colorParams ? randomGrayish(colorParams) : new THREE.Color(0x000000)

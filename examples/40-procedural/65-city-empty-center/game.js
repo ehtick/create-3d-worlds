@@ -8,7 +8,7 @@ const numLampposts = 12 // max num of spotlights is 16
 const numCityLights = 16 - numLampposts
 
 const size = 400
-const numBuildings = 400
+const numBuildings = 300
 
 camera.position.set(0, size * .3, size * .4)
 createOrbitControls()
