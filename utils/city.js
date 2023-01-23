@@ -40,8 +40,7 @@ export function createBuildingTexture({ night = false, wallColor = night ? '#151
   context2.imageSmoothingEnabled = false
   context2.drawImage(canvas, 0, 0, canvas2.width, canvas2.height)
 
-  const texture = new THREE.Texture(canvas2)
-  texture.needsUpdate = true
+  const texture = new THREE.CanvasTexture(canvas2)
   return texture
 }
 
@@ -73,6 +72,17 @@ const slogans = [
   'NEVER WORK!',
 ]
 
+const banksy = [
+  'anarchy.jpg',
+  'change.png',
+  'cleaning.jpg',
+  'cop.png',
+  'flower.jpg',
+  'heart.png',
+  'monaliza.png',
+  'rat.jpg',
+]
+
 const webFonts = ['Arial', 'Verdana', 'Trebuchet MS', 'Brush Script MT', 'Brush Script MT']
 const fontWeights = ['normal', 'bold', 'lighter']
 const fontColors = ['red', 'yellow', 'teal', 'black', '#222222', 'green', 'purple']
@@ -81,8 +91,25 @@ const sloganLengths = slogans.map(s => s.length)
 const minLength = Math.min(...sloganLengths),
   maxLength = Math.max(...sloganLengths)
 
-export function createGraffitiTexture({
-  width = 256, height = 256, background = 'gray', color = sample(fontColors), text = sample(slogans), fontWeight = sample(fontWeights), fontSize = mapRange(text.length, minLength, maxLength, 24, 12), fontFamily = sample(webFonts), x = width * 0.5, y = height * mapRange(text.length, minLength, maxLength, .9, .7), stroke = Math.random() > .5 && sample(fontColors)
+const getStroke = color => {
+  if (Math.random() < .5) return undefined
+  const colors = fontColors.filter(c => c !== color)
+  return sample(colors)
+}
+
+function drawImageScaled(img, ctx) {
+  const { canvas } = ctx
+  const hRatio = canvas.width / img.width
+  const vRatio = canvas.height / img.height
+  const ratio = Math.min (hRatio, vRatio)
+  const centerShift_x = (canvas.width - img.width * ratio) / 2
+  const centerShift_y = (canvas.height - img.height * ratio) / 2
+  ctx.drawImage(img, 0, 0, img.width, img.height,
+    centerShift_x, centerShift_y, img.width * ratio, img.height * ratio)
+}
+
+export async function createGraffitiTexture({
+  width = 128, height = 256, background = 'gray', color = sample(fontColors), text = sample(slogans), fontWeight = sample(fontWeights), fontSize = mapRange(text.length, minLength, maxLength, width * .1, width * .05), fontFamily = sample(webFonts), x = width * 0.5, y = height * mapRange(text.length, minLength, maxLength, .9, .7), stroke = getStroke(color)
 } = {}) {
   const canvas = document.createElement('canvas')
   canvas.width = width
@@ -91,9 +118,16 @@ export function createGraffitiTexture({
 
   ctx.fillStyle = background
   ctx.fillRect(0, 0, width, height)
+
+  if (Math.random() > .75) {
+    const img = new Image()
+    img.src = `/assets/images/banksy/${sample(banksy)}`
+    await new Promise(resolve => img.addEventListener('load', resolve))
+    drawImageScaled(img, ctx)
+  }
+
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
-
   ctx.fillStyle = color
   ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`
   if (stroke) ctx.strokeStyle = stroke
@@ -212,9 +246,10 @@ export function createBuilding(params = {}) {
   return new THREE.Mesh(geometry, material)
 }
 
-export function createGraffitiBuilding(params = {}) {
+export async function createGraffitiBuilding(params = {}) {
   const { color, ...rest } = params
   const geometry = createBuildingGeometry(rest)
+  const { width, height } = geometry.parameters
 
   const materials = []
   for (let i = 0; i < 6; i++) {
@@ -224,8 +259,8 @@ export function createGraffitiBuilding(params = {}) {
 
     if (i !== 2 && i !== 3)  // not top and bottom
       if (Math.random() > .66)
-        materialParams.map = createGraffitiTexture({
-          background: new THREE.Color(color).getStyle()
+        materialParams.map = await createGraffitiTexture({
+          background: new THREE.Color(color).getStyle(), width: width * 12, height: height * 12
         })
       else materialParams.map = createBuildingTexture()
 

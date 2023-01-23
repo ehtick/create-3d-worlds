@@ -18,7 +18,7 @@ scene.add(floor)
 
 for (let i = 0; i < 100; i++) {
   const { x, z } = randomInSquare(size)
-  const building = createGraffitiBuilding({ x, z })
+  const building = await createGraffitiBuilding({ x, z })
   scene.add(building)
 }
 
