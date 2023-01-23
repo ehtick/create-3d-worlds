@@ -16,10 +16,10 @@ camera.position.set(0, size * .3, size * .4)
 createOrbitControls()
 
 const floor = createFloor({ size: size * 1.1, color: 0x101018 })
-const lampposts = createLampposts({ size, numLampposts, circle: false })
+const lampposts = createLampposts({ size, numLampposts })
 const streetLights = createCityLights({ size, numLights: numCityLights })
 
-const city = createCity({ numBuildings, size, circle: false, addWindows: true, colorParams: null, rotateEvery: 9 })
+const city = createCity({ numBuildings, size, addWindows: true, colorParams: null, rotateEvery: 9 })
 
 scene.add(floor, lampposts, streetLights, city)
 

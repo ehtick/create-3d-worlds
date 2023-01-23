@@ -281,16 +281,14 @@ const shouldRotate = (rotateEvery, i) => rotateEvery && i % rotateEvery == 0
 const shouldEnlarge = (enlargeEvery, i) => enlargeEvery && i % enlargeEvery == 0
 
 export function createCity({
-  numBuildings = 200, size = 200, circle = true, rotateEvery = 0, enlargeEvery = 0,
+  numBuildings = 200, size = 200, rotateEvery = 0, enlargeEvery = 0,
   addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map,
   emptyCenter = 0, castShadow = true, receiveShadow = false,
 } = {}) {
   const buildings = []
   for (let i = 0; i < numBuildings; i++) {
     const color = colorParams ? randomGrayish(colorParams) : new THREE.Color(0x000000)
-    const { x, z } = circle
-      ? randomInCircle(size * .9, emptyCenter)
-      : randomInSquare(size, emptyCenter)
+    const { x, z } = randomInSquare(size, emptyCenter)
 
     const rotY = shouldRotate(rotateEvery, i) ? Math.random() * Math.PI : 0
     const bWidth = shouldEnlarge(enlargeEvery, i)
@@ -351,7 +349,7 @@ function createLamppost({ x = 0, z = 0, height = 40 } = {}) {
   return group
 }
 
-export function createLampposts({ size = 200, numLampposts = 10, height = 40, circle = true } = {}) {
+export function createLampposts({ size = 200, numLampposts = 10, height = 40, circle = false } = {}) {
   const group = new THREE.Group()
   for (let i = 0; i < numLampposts; i++) {
     const { x, z } = circle ? randomInCircle(size) : randomInSquare(size)

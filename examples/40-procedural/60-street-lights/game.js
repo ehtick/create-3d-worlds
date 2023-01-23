@@ -16,7 +16,7 @@ const ambient = new THREE.AmbientLight(0xffffff, 0.1)
 scene.add(ambient)
 
 scene.add(createGround({ size: size * 1.1 }))
-scene.add(createLampposts({ size, numLampposts }))
+scene.add(createLampposts({ size, numLampposts, circle: true }))
 
 /* LOOP */
 
