@@ -41,14 +41,16 @@ function getRandomCoords(mapSize = 400, fieldSize = 20, emptyCenter = 0) {
   const coords = []
   for (let i = -mapSize * .5; i < mapSize * .5; i += fieldSize)
     for (let j = -mapSize * .5; j < mapSize * .5; j += fieldSize)
-      if ((i < -emptyCenter || i > emptyCenter || j < -emptyCenter || j > emptyCenter))
+      if ((i <= -emptyCenter || i >= emptyCenter || j <= -emptyCenter || j >= emptyCenter))
         coords.push([i, j])
 
   shuffle(coords)
   return coords
 }
 
-export function* yieldRandomCoord(mapSize = 400, fieldSize = 20, offset = fieldSize * .5, emptyCenter = 50) {
+export function* yieldRandomCoord({
+  mapSize = 400, fieldSize = 20, offset = fieldSize * .5, emptyCenter = 0
+} = {}) {
   const coords = getRandomCoords(mapSize, fieldSize, emptyCenter)
 
   for (let i = 0; i < coords.length; i++) {
@@ -56,6 +58,7 @@ export function* yieldRandomCoord(mapSize = 400, fieldSize = 20, offset = fieldS
     const xOffset = randFloatSpread(offset), zOffset = randFloatSpread(offset)
     yield [x + xOffset, z + zOffset]
   }
+  console.log(`No more coords to yield (total ${coords.length}), set bigger map size.`)
 }
 
 /* MOUSE */

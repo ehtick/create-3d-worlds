@@ -6,20 +6,20 @@ import { yieldRandomCoord } from '/utils/helpers.js'
 
 createOrbitControls()
 
-const size = 400
+const size = 200
+const numBuildings = 50
 
 camera.position.set(0, size * .33, size * .9)
 camera.lookAt(scene.position)
 
 scene.add(createSun({ position: [50, 100, 50] }))
 
-const floor = createFloor({ size: size * 1.1 })
+const floor = createFloor({ size: size * 1.2 })
 scene.add(floor)
 
-const fieldSize = 20
-const coords = yieldRandomCoord(size, fieldSize)
+const coords = yieldRandomCoord({ mapSize: size })
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < numBuildings; i++) {
   const [x, z] = coords.next().value
   const building = await createGraffitiBuilding({ x, z })
   scene.add(building)

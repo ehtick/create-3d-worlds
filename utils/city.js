@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { randomGrayish, randomInCircle, randomInSquare, sample, mapRange } from '/utils/helpers.js'
+import { randomGrayish, randomInCircle, randomInSquare, yieldRandomCoord, sample, mapRange } from '/utils/helpers.js'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 // import { material as winMaterial } from '/utils/shaders/windows.js'
 
@@ -280,20 +280,24 @@ const shouldRotate = (rotateEvery, i) => rotateEvery && i % rotateEvery == 0
 
 const shouldEnlarge = (enlargeEvery, i) => enlargeEvery && i % enlargeEvery == 0
 
+const maxNumBuildings = (mapSize, buildingWidth = 20) => Math.pow(mapSize / buildingWidth, 2)
+
 export function createCity({
-  numBuildings = 200, size = 200, rotateEvery = 0, enlargeEvery = 0,
-  addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map,
-  emptyCenter = 0, castShadow = true, receiveShadow = false,
+  size = 400, buildingWidth = 20, numBuildings = maxNumBuildings(size, buildingWidth), rotateEvery = 0, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map,
+  emptyCenter = 0, castShadow = true, receiveShadow = false
 } = {}) {
   const buildings = []
+  const coords = yieldRandomCoord({ mapSize: size, fieldSize: buildingWidth, emptyCenter })
+  console.log(coords.next().value)
+
   for (let i = 0; i < numBuildings; i++) {
     const color = colorParams ? randomGrayish(colorParams) : new THREE.Color(0x000000)
-    const { x, z } = randomInSquare(size, emptyCenter)
+    const [x, z] = coords.next().value
 
     const rotY = shouldRotate(rotateEvery, i) ? Math.random() * Math.PI : 0
     const bWidth = shouldEnlarge(enlargeEvery, i)
-      ? randFloat(10, 25)
-      : randFloat(10, 20)
+      ? randFloat(buildingWidth * .5, buildingWidth + buildingWidth * .25)
+      : randFloat(buildingWidth * .5, buildingWidth)
     const bHeight = shouldEnlarge(enlargeEvery, i)
       ? randFloat(bWidth * 4, bWidth * 6)
       : randFloat(bWidth, bWidth * 4)

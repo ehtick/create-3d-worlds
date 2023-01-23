@@ -6,8 +6,8 @@ import { hemLight } from '/utils/light.js'
 hemLight({ intensity: 1.25 })
 setBackground(0x000000)
 
-const size = 200
-const numBuildings = 100
+const size = 400
+const numBuildings = 200
 
 const controls = createOrbitControls()
 camera.position.set(0, size * .6, size * 1.1)
