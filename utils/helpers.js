@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { scene as defaultScene, camera as defaultCamera } from '/utils/scene.js'
 import { dir } from '/data/constants.js'
 
-const { randFloat } = THREE.MathUtils
+const { randFloat, randFloatSpread } = THREE.MathUtils
 const raycaster = new THREE.Raycaster()
 
 /* MATH */
@@ -28,20 +28,36 @@ const randomBool = () => Math.random() < 0.5
 const randomInRangeExcluded = (min, max, minExclude, maxExclude) =>
   randomBool() ? randFloat(min, minExclude) : randFloat(maxExclude, max)
 
-// export function randomInSquare(size) {
-//   const x = randFloat(-size * .5, size * .5)
-//   const z = randFloat(-size * .5, size * .5)
-//   return { x, z }
-// }
-
 export function randomInSquare(size, emptyCenter = 0) {
   const halfSize = size * .5
-  const x = randFloat(-halfSize, halfSize)
+  const x = randFloatSpread(size)
   const z = x > -emptyCenter && x < emptyCenter
     ? randomInRangeExcluded(-halfSize, halfSize, -emptyCenter, emptyCenter)
-    : randFloat(-halfSize, halfSize)
+    : randFloatSpread(size)
   return randomBool() ? { x, z } : { x: z, z: x }
 }
+
+function getRandomCoords(mapSize = 400, fieldSize = 20) {
+  const coords = []
+  for (let i = -mapSize * .5; i < mapSize * .5; i += fieldSize)
+    for (let j = -mapSize * .5; j < mapSize * .5; j += fieldSize)
+      coords.push([i, j])
+
+  shuffle(coords)
+  return coords
+}
+
+export function* yieldRandomCoord(mapSize = 400, fieldSize = 20, offset = fieldSize * .5) {
+  const coords = getRandomCoords(mapSize, fieldSize)
+
+  for (let i = 0; i < 100; i++) {
+    const [x, z] = coords[i]
+    const xOffset = randFloatSpread(offset), zOffset = randFloatSpread(offset)
+    yield [x + xOffset, z + zOffset]
+  }
+}
+
+/* MOUSE */
 
 /* returns 2D normalized device coordinates of the mouse, between -1 and 1. */
 export function normalizeMouse(e) {
