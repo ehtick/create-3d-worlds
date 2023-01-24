@@ -46,35 +46,67 @@ export function createBuildingTexture({ night = false, wallColor = night ? '#151
 }
 
 const slogans = [
-  `Be realistic
-  demand the impossible!`,
-  `The barricade blocks the street
-  but opens the way`,
-  'Read less - live more',
+  `BE REALISTIC
+  DEMAND THE IMPOSSIBLE!`,
+  `THE BARRICADE BLOCKS THE
+  STREET BUT OPENS THE WAY`,
+  'READ LESS - LIVE MORE',
   `NO REPLASTERING,
-  the structure is rotten`,
-  `We will claim nothing,
-  we will ask for nothing.
-  We will take, we will occupy!`,
-  `Don\`t negotiate with bosses.
+  THE STRUCTURE IS ROTTEN`,
+  `WE WILL CLAIM NOTHING
+  WE WILL ASK FOR NOTHING
+  WE WILL TAKE, WE WILL OCCUPY!`,
+  `DON\`T NEGOTIATE WITH BOSSES
   ABOLISH THEM!`,
   `NEITHER GOD
   NOR MASTER!`,
-  `Run comrade, 
-  the old world is behind you!`,
-  'poetry is in the street',
+  `RUN COMRADE, 
+  THE OLD WORLD
+  IS BEHIND YOU!`,
+  'POETRY IS IN THE STREET',
   `ART IS DEAD! 
-  don\`t consume its corpse`,
+  DON\`T CONSUME ITS CORPSE`,
   `POWER TO THE
   IMAGINATION!`,
-  `The economy is suffering
+  `THE ECONOMY IS SUFFERING
   LET IT DIE`,
-  'Abolish alienation!',
+  'ABOLISH ALIENATION!',
   'NEVER WORK!',
+  `BELOW THE COBBLESTONES
+  IS THE BEACH!`,
+  `IT IS FORBIDDEN
+  TO FORBID!`,
+  `FREEDOM IS THE CRIME
+  THAT CONTAINS ALL CRIMES;
+  IT IS OUR ABSOLUTE WEAPON!`,
+  `CONSUME LESS
+  YOU'LL LIVE MORE`,
+  'LIVE WITHOUT DEAD TIME!',
+  `I TAKE MY DESIRES FOR REALITY
+  BECAUSE I BELIEVE
+  IN THE REALITY OF MY DESIRES`,
+  'ALREADY 10 DAYS OF HAPPINESS',
+  'DOWN WITH THE STATE!',
+  'POLITICS IS IN THE STREETS',
+  'LABOR UNIONS ARE WHOREHOUSES',
+  'CONCRETE BREEDS APATHY',
+  'YOU WILL END UP DYING OF COMFORT',
+  `THOSE WHO LACK IMAGINATION
+  CANNOT IMAGINE WHAT IS LACKING`,
+  `A COP SLEEPS INSIDE
+  EACH ONE OF US.
+  WE MUST KILL HIM.`,
+  `CAN YOU BELIEVE
+  THAT SOME PEOPLE
+  ARE STILL CHRISTIANS?`,
+  `COMMODITIES ARE 
+  THE OPIUM OF THE PEOPLE`,
+  `THE FUTURE WILL ONLY CONTAIN
+  WHAT WE PUT INTO IT NOW`
 ]
 
 const banksy = [
-  'anarchy.jpg', 'change.png', 'cleaning.jpg', 'cop.jpg', 'flower.jpg', 'heart.png', 'monaliza.png', 'rat.jpg', 'bomb.jpg', 'cops.jpg', 'peace.jpg', 'kids.jpg'
+  'anarchy.jpg', 'change.png', 'cleaning.jpg', 'cop.jpg', 'flower.jpg', 'heart.png', 'monaliza.png', 'bomb.jpg', 'cops.jpg', 'peace.jpg', 'kids.jpg'
 ]
 
 const webFonts = ['Arial', 'Verdana', 'Trebuchet MS', 'Brush Script MT', 'Brush Script MT']
@@ -102,8 +134,10 @@ function drawImageScaled(img, ctx) {
     centerShift_x, centerShift_y, img.width * ratio, img.height * ratio)
 }
 
+let banksyIndex = 0
+
 export async function createGraffitiTexture({
-  width = 128, height = 256, background = 'gray', color = sample(fontColors), text = sample(slogans), fontWeight = sample(fontWeights), fontSize = mapRange(text.length, minLength, maxLength, width * .1, width * .05), fontFamily = sample(webFonts), x = width * 0.5, y = height * mapRange(text.length, minLength, maxLength, .9, .7), stroke = getStroke(color)
+  width = 128, height = 256, background = 'gray', color = sample(fontColors), text = sample(slogans), fontWeight = sample(fontWeights), fontSize = mapRange(text.length, minLength, maxLength, width * .075, width * .025), fontFamily = sample(webFonts), x = width * 0.5, y = height * mapRange(text.length, minLength, maxLength, .9, .7), stroke = getStroke(color)
 } = {}) {
   const canvas = document.createElement('canvas')
   canvas.width = width
@@ -113,10 +147,10 @@ export async function createGraffitiTexture({
   ctx.fillStyle = background
   ctx.fillRect(0, 0, width, height)
 
-  if (Math.random() > .75) {
+  if (Math.random() > .66) {
     // graffiti image
     const img = new Image()
-    img.src = `/assets/images/banksy/${sample(banksy)}`
+    img.src = `/assets/images/banksy/${banksy[banksyIndex++ % banksy.length]}`
     await new Promise(resolve => img.addEventListener('load', resolve))
     drawImageScaled(img, ctx)
   }
@@ -136,7 +170,7 @@ export async function createGraffitiTexture({
 
       if (stroke) {
         ctx.rotate(Math.random() > .4 ? randFloat(-.01, .01) : 0)
-        ctx.translate(1, 1)
+        ctx.translate(Math.random(), Math.random())
         ctx.strokeText(lines[i], x, y + (i * fontSize))
       }
     }
