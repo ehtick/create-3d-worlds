@@ -1,7 +1,8 @@
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 import { createFloor, createGround } from '/utils/ground.js'
-import { createNightCity } from '/utils/city.js'
+import { createNightCity, createLampposts } from '/utils/city.js'
 import { createTrees } from '/utils/geometry/trees.js'
+import { yieldRandomCoord } from '/utils/helpers.js'
 
 const mapSize = 400
 const center = 50
@@ -14,14 +15,16 @@ renderer.setClearColor(0x070b34)
 const floor = createFloor({ size: mapSize * 1.1 })
 scene.add(floor)
 
-const city = createNightCity({ mapSize, numBuildings, emptyCenter: center })
+const city = createNightCity({ mapSize, numBuildings, emptyCenter: center, addLampposts: false })
 scene.add(city)
 
 const ground = createGround({ size: center * 1.5, circle: false })
 ground.translateY(.1)
 scene.add(ground)
 
-scene.add(createTrees({ mapSize: center * 1.25, n: 30 }))
+const coords = yieldRandomCoord({ mapSize: center * 1.25, fieldSize: 10 })
+scene.add(createTrees({ coords, n: 30 }))
+scene.add(createLampposts({ coords, numLampposts: 5, height: 15 }))
 
 /* LOOP */
 

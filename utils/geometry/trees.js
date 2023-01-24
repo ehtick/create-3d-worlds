@@ -1,6 +1,5 @@
 import * as THREE from 'three'
-import { similarColor, findGroundRecursive } from '../helpers.js'
-import { yieldRandomCoord, maxItems } from '/utils/helpers.js'
+import { similarColor, findGroundRecursive, yieldRandomCoord, maxItems } from '/utils/helpers.js'
 
 const { randFloat } = THREE.MathUtils
 
