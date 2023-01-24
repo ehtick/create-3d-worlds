@@ -329,7 +329,7 @@ export const createNightCity = ({ addWindows = true, colorParams = null, rotateE
 
 /* CITY LIGHTS */
 
-function createLamppost({ x = 0, z = 0, height = 30 } = {}) {
+function createLamppost({ x = 0, z = 0, height = 20 } = {}) {
   const group = new THREE.Group()
 
   const sphereGeometry = new THREE.SphereGeometry(1.5, 12, 16)

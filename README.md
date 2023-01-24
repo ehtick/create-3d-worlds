@@ -12,7 +12,7 @@ npx live-server
 ### Scenes & examples
 
 - Grad
-  - integrisati rasvetu i drveće u createCity
+  - integrisati drveće u createCity
   - ubaciti prvo lice u scenu
   - dodati betonsku teksturu
 

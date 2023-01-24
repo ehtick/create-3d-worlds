@@ -15,7 +15,7 @@ renderer.setClearColor(0x070b34)
 const floor = createFloor({ size: mapSize * 1.1 })
 scene.add(floor)
 
-const city = createNightCity({ mapSize, numBuildings, emptyCenter: center, numLampposts: 0 })
+const city = createNightCity({ mapSize, numBuildings, emptyCenter: center, numLampposts: 5 })
 scene.add(city)
 
 const ground = createGround({ size: center * 1.5, circle: false })
@@ -24,7 +24,7 @@ scene.add(ground)
 
 const coords = yieldRandomCoord({ mapSize: center * 1.25, fieldSize: 10 })
 scene.add(createTrees({ coords, n: 30 }))
-scene.add(createLampposts({ coords, numLampposts: 5, height: 15 }))
+scene.add(createLampposts({ coords, numLampposts: 5 }))
 
 /* LOOP */
 
