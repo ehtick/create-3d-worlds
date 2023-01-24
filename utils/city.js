@@ -74,12 +74,12 @@ const slogans = [
 ]
 
 const banksy = [
-  'anarchy.jpg', 'change.png', 'cleaning.jpg', 'cop.jpg', 'flower.jpg', 'heart.png', 'monaliza.png', 'rat.jpg', 'bomb.jpg', 'cops.jpg'
+  'anarchy.jpg', 'change.png', 'cleaning.jpg', 'cop.jpg', 'flower.jpg', 'heart.png', 'monaliza.png', 'rat.jpg', 'bomb.jpg', 'cops.jpg', 'peace.jpg', 'kids.jpg'
 ]
 
 const webFonts = ['Arial', 'Verdana', 'Trebuchet MS', 'Brush Script MT', 'Brush Script MT']
 const fontWeights = ['normal', 'bold', 'lighter']
-const fontColors = ['red', 'yellow', 'teal', 'black', '#222222', 'green', 'purple']
+const fontColors = ['red', 'pink', 'teal', 'black', '#222222', 'green', 'purple']
 
 const sloganLengths = slogans.map(s => s.length)
 const minLength = Math.min(...sloganLengths),
@@ -114,29 +114,33 @@ export async function createGraffitiTexture({
   ctx.fillRect(0, 0, width, height)
 
   if (Math.random() > .75) {
+    // graffiti image
     const img = new Image()
     img.src = `/assets/images/banksy/${sample(banksy)}`
     await new Promise(resolve => img.addEventListener('load', resolve))
     drawImageScaled(img, ctx)
   }
 
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  ctx.fillStyle = color
-  ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`
-  if (stroke) ctx.strokeStyle = stroke
+  if (Math.random() > .2) {
+    // graffiti text
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillStyle = color
+    ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`
+    if (stroke) ctx.strokeStyle = stroke
 
-  const lines = text.split('\n')
-  for (let i = 0; i < lines.length; i++) {
-    ctx.rotate(Math.random() > .4 ? randFloat(-.05, .05) : 0)
-    ctx.fillText(lines[i], x, y + (i * fontSize))
+    const lines = text.split('\n')
+    for (let i = 0; i < lines.length; i++) {
+      ctx.rotate(Math.random() > .4 ? randFloat(-.05, .05) : 0)
+      ctx.fillText(lines[i], x, y + (i * fontSize))
 
-    if (stroke) {
-      ctx.rotate(Math.random() > .4 ? randFloat(-.01, .01) : 0)
-      ctx.strokeText(lines[i], x, y + (i * fontSize))
+      if (stroke) {
+        ctx.rotate(Math.random() > .4 ? randFloat(-.01, .01) : 0)
+        ctx.translate(1, 1)
+        ctx.strokeText(lines[i], x, y + (i * fontSize))
+      }
     }
   }
-
   // reset transformation to the identity matrix
   ctx.setTransform(1, 0, 0, 1, 0, 0)
 

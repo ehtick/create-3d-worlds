@@ -7,17 +7,17 @@ import { createTrees, createFirTrees } from '/utils/geometry/trees.js'
 
 createOrbitControls()
 
-const size = 200
+const mapSize = 200
 
-camera.position.set(0, size * .33, size * .9)
+camera.position.set(0, mapSize * .33, mapSize * .9)
 camera.lookAt(scene.position)
 
 scene.add(createSun({ position: [50, 100, 50] }))
 
-const floor = createFloor({ size: size * 1.2 }) // color: 0x509f53
+const floor = createFloor({ size: mapSize * 1.2 }) // color: 0x509f53
 scene.add(floor)
 
-const coords = yieldRandomCoord({ mapSize: size })
+const coords = yieldRandomCoord({ mapSize })
 
 scene.add(createTrees({ coords, n: 40 }))
 scene.add(createFirTrees({ coords, n: 10 }))

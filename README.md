@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Grad
-  - dodati betonsku teksturu
   - ubaciti prvo lice u scenu
 
 - FPS
