@@ -155,7 +155,3 @@ export function createSkyBox({ folder = 'skybox2' } = {}) {
   // texture.format = THREE.RGBFormat
   return texture
 }
-
-/* SHORTCUTS */
-
-export { createGround, hemLight }
