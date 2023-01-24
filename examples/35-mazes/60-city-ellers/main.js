@@ -23,7 +23,7 @@ scene.add(maze)
 const numCityLights = 4 // max is 16
 const mapSize = buildingSize * matrixSize * 2
 
-const streetLights = createCityLights({ size: mapSize, numLights: numCityLights })
+const streetLights = createCityLights({ mapSize, numLights: numCityLights })
 const floor = createFloor({ size: mapSize * 1.1, color: 0x101018 })
 
 scene.add(floor, streetLights)

@@ -283,8 +283,7 @@ const shouldEnlarge = (enlargeEvery, i) => enlargeEvery && i % enlargeEvery == 0
 const maxNumBuildings = (mapSize, buildingWidth = 20) => Math.pow(mapSize / buildingWidth, 2)
 
 export function createCity({
-  size = 400, buildingWidth = 20, numBuildings = maxNumBuildings(size, buildingWidth), rotateEvery = 0, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map,
-  emptyCenter = 0, castShadow = true, receiveShadow = false
+  size = 400, buildingWidth = 20, numBuildings = maxNumBuildings(size, buildingWidth), rotateEvery = 0, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map, emptyCenter = 0, castShadow = true, receiveShadow = false, addLampposts = false, addStreetLights = false
 } = {}) {
   const buildings = []
   const coords = yieldRandomCoord({ mapSize: size, fieldSize: buildingWidth, emptyCenter })
@@ -313,15 +312,26 @@ export function createCity({
   const city = new THREE.Mesh(merged, material)
   city.castShadow = castShadow
   city.receiveShadow = receiveShadow
+
+  if (addLampposts) {
+    const lampposts = createLampposts({ coords, numLampposts: 10 })
+    city.add(lampposts)
+  }
+
+  if (addStreetLights) {
+    const streetLights = createCityLights({ coords, numLights: 4 })
+    city.add(streetLights)
+  }
+
   return city
 }
 
 /* CITY LIGHTS */
 
-function createLamppost({ x = 0, z = 0, height = 40 } = {}) {
+function createLamppost({ x = 0, z = 0, height = 30 } = {}) {
   const group = new THREE.Group()
 
-  const sphereGeometry = new THREE.SphereGeometry(2, 12, 16)
+  const sphereGeometry = new THREE.SphereGeometry(1.5, 12, 16)
   const colors = [0xF5F5DC, 0xdceff5, 0xFFFF8F, 0xFFFDD0]
   const color = colors[Math.floor(Math.random() * colors.length)]
   const sphereMaterial = new THREE.MeshBasicMaterial({ color })
@@ -329,11 +339,10 @@ function createLamppost({ x = 0, z = 0, height = 40 } = {}) {
   sphere.position.set(x, height, z)
   group.add(sphere)
 
-  const cylinderGeometry = new THREE.CylinderGeometry(.5, .5, height, 6)
+  const cylinderGeometry = new THREE.CylinderGeometry(.25, .25, height, 6)
   const cylinderMaterial = new THREE.MeshPhongMaterial({ color: 0x242731 })
   const cylinder = new THREE.Mesh(cylinderGeometry, cylinderMaterial)
   cylinder.position.set(x, height * .5, z)
-  // cylinder.receiveShadow = true
   group.add(cylinder)
 
   const lamppost = new THREE.SpotLight(color)
@@ -352,21 +361,23 @@ function createLamppost({ x = 0, z = 0, height = 40 } = {}) {
   return group
 }
 
-export function createLampposts({ size = 200, numLampposts = 10, height = 40, circle = false } = {}) {
+export function createLampposts({ coords, mapSize = 200, numLampposts = 10, height } = {}) {
+  coords = coords || yieldRandomCoord({ mapSize })
   const group = new THREE.Group()
   for (let i = 0; i < numLampposts; i++) {
-    const { x, z } = circle ? randomInCircle(size) : randomInSquare(size)
+    const [x, z] = coords.next().value
     const lamppost = createLamppost({ x, z, height })
     group.add(lamppost)
   }
   return group
 }
 
-export function createCityLights({ size, numLights = 10, height = 10, circle = true } = {}) {
+export function createCityLights({ coords, mapSize, numLights = 4, height = 10 } = {}) {
+  coords = coords || yieldRandomCoord({ mapSize })
   const group = new THREE.Group()
   for (let i = 0; i < numLights; i++) {
     const light = new THREE.SpotLight(0xF5F5DC)
-    const { x, z } = circle ? randomInCircle(size) : randomInSquare(size)
+    const [x, z] = coords.next().value
     light.position.set(x, height, z)
     light.castShadow = true
     group.add(light)

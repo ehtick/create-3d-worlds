@@ -13,7 +13,7 @@ const controls = createOrbitControls()
 camera.position.set(0, size * .6, size * 1.1)
 
 const floor = createFloor({ size: size * 1.2, color: 0x606060 })
-const streetLights = createCityLights({ size, numLights: 12 })
+const streetLights = createCityLights({ mapSize: size, numLights: 12 })
 
 const city = createCity({ numBuildings, size, rotateEvery: 2, addWindows: true })
 

@@ -17,7 +17,7 @@ createOrbitControls()
 
 const floor = createFloor({ size: size * 1.1, color: 0x101018 })
 const lampposts = createLampposts({ size, numLampposts })
-const streetLights = createCityLights({ size, numLights: numCityLights })
+const streetLights = createCityLights({ mapSize: size, numLights: numCityLights })
 
 const city = createCity({ numBuildings, size, addWindows: true, colorParams: null, rotateEvery: 9 })
 

@@ -6,8 +6,7 @@ import { createLampposts } from '/utils/city.js'
 hemLight({ intensity: .4 })
 renderer.setClearColor(0x000000)
 
-const numLampposts = 15
-const size = 200
+const mapSize = 200
 
 camera.position.set(160, 40, 10)
 createOrbitControls()
@@ -15,8 +14,8 @@ createOrbitControls()
 const ambient = new THREE.AmbientLight(0xffffff, 0.1)
 scene.add(ambient)
 
-scene.add(createGround({ size: size * 1.1 }))
-scene.add(createLampposts({ size, numLampposts, circle: true }))
+scene.add(createGround({ size: mapSize }))
+scene.add(createLampposts({ mapSize, numLampposts: 10 }))
 
 /* LOOP */
 

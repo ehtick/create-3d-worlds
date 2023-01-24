@@ -12,9 +12,9 @@ npx live-server
 ### Scenes & examples
 
 - Grad
-  - implementirati emptyCenter na getRandomCoords
   - dodati park ili trg u centru
   - dodati drveće
+  - integrisati rasvetu i drveće u createCity
   - ubaciti prvo lice u scenu
   - dodati betonsku teksturu
 
