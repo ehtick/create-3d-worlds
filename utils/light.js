@@ -66,8 +66,8 @@ export function createSun({ color = 0xffffff, intensity = 1, target, position = 
   return container
 }
 
-export const createMoon = ({ position = [50, 100, 50], planetColor = 0xF6F1D5, r = 4 } = {}) =>
-  createSun({ position, planetColor, r })
+export const createMoon = ({ position = [50, 100, 50], color = 0xFFF8DE, planetColor = 0xF6F1D5, r = 4 } = {}) =>
+  createSun({ position, color, planetColor, r })
 
 /* UPDATES */
 

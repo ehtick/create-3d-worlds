@@ -283,10 +283,10 @@ const shouldEnlarge = (enlargeEvery, i) => enlargeEvery && i % enlargeEvery == 0
 const maxNumBuildings = (mapSize, buildingWidth = 20) => Math.pow(mapSize / buildingWidth, 2)
 
 export function createCity({
-  size = 400, buildingWidth = 20, numBuildings = maxNumBuildings(size, buildingWidth), rotateEvery = 0, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map, emptyCenter = 0, castShadow = true, receiveShadow = false, addLampposts = false, addStreetLights = false
+  mapSize = 400, buildingWidth = 20, numBuildings = maxNumBuildings(mapSize, buildingWidth), rotateEvery = 0, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map, emptyCenter = 0, castShadow = true, receiveShadow = false, addLampposts = false, addCityLights = false
 } = {}) {
   const buildings = []
-  const coords = yieldRandomCoord({ mapSize: size, fieldSize: buildingWidth, emptyCenter })
+  const coords = yieldRandomCoord({ mapSize, fieldSize: buildingWidth, emptyCenter })
 
   for (let i = 0; i < numBuildings; i++) {
     const color = colorParams ? randomGrayish(colorParams) : new THREE.Color(0x000000)
@@ -318,9 +318,9 @@ export function createCity({
     city.add(lampposts)
   }
 
-  if (addStreetLights) {
-    const streetLights = createCityLights({ coords, numLights: 4 })
-    city.add(streetLights)
+  if (addCityLights) {
+    const cityLights = createCityLights({ coords, numLights: 5 })
+    city.add(cityLights)
   }
 
   return city

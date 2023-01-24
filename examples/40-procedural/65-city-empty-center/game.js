@@ -4,16 +4,16 @@ import { createCity } from '/utils/city.js'
 
 hemLight({ intensity: 1.25 })
 
-const size = 400
+const mapSize = 400
 const numBuildings = 300
 
-camera.position.set(0, size * .3, size * .4)
+camera.position.set(0, mapSize * .3, mapSize * .4)
 createOrbitControls()
 renderer.setClearColor(0x070b34)
 
-const floor = createFloor({ size: size * 1.1, color: 0x101018 })
+const floor = createFloor({ size: mapSize * 1.1, color: 0x101018 })
 
-const city = createCity({ numBuildings, size, addWindows: true, colorParams: null, rotateEvery: 9, emptyCenter: 50, addLampposts: true, addStreetLights: true })
+const city = createCity({ numBuildings, mapSize, addWindows: true, colorParams: null, rotateEvery: 9, emptyCenter: 50, addLampposts: true, addCityLights: true })
 
 scene.add(floor, city)
 
