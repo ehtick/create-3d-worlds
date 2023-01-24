@@ -38,9 +38,10 @@ export function randomInSquare(size, emptyCenter = 0) {
 }
 
 function getRandomCoords(mapSize = 400, fieldSize = 20, emptyCenter = 0) {
+  const halfSize = mapSize * .5
   const coords = []
-  for (let i = -mapSize * .5; i < mapSize * .5; i += fieldSize)
-    for (let j = -mapSize * .5; j < mapSize * .5; j += fieldSize)
+  for (let i = -halfSize; i < halfSize; i += fieldSize)
+    for (let j = -halfSize; j < halfSize; j += fieldSize)
       if ((i <= -emptyCenter || i >= emptyCenter || j <= -emptyCenter || j >= emptyCenter))
         coords.push([i, j])
 
