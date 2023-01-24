@@ -15,7 +15,7 @@ const randomNuance = ({ h = .25, s = 0.5, l = 0.2 } = {}) =>
 /* SIMPLE TREE */
 
 function createTrunk(size, color) {
-  const geometry = new THREE.CylinderGeometry(size / 3.5, size / 3, size, 8)
+  const geometry = new THREE.CylinderGeometry(size / 5, size / 4, size, 8)
   const material = new THREE.MeshToonMaterial({
     color: color || randomNuance({ h: 1.045, s: 0.5 })
   })
@@ -151,7 +151,7 @@ export function createSimpleFir({ size = 12, x = 0, y = 0, z = 0 } = {}) {
 
 /* FACTORIES */
 
-export function createTrees({ coords, mapSize = 100, size = 5, n = maxItems(mapSize, size) / 2, create = createTree } = {}) {
+export function createTrees({ coords, mapSize = 100, size, n = maxItems(mapSize, size) / 2, create = createTree } = {}) {
   coords = coords || yieldRandomCoord({ mapSize, fieldSize: size })
   const group = new THREE.Group()
   for (let i = 0; i < n; i++) {

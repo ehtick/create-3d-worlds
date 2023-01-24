@@ -23,7 +23,7 @@ ground.translateY(.1)
 scene.add(ground)
 
 const coords = yieldRandomCoord({ mapSize: center * 1.25, fieldSize: 10 })
-scene.add(createTrees({ coords, n: 30 }))
+scene.add(createTrees({ coords, n: 20 }))
 scene.add(createLampposts({ coords, numLampposts: 5 }))
 
 /* LOOP */
