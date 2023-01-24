@@ -15,7 +15,7 @@ const randomNuance = ({ h = .25, s = 0.5, l = 0.2 } = {}) =>
 /* SIMPLE TREE */
 
 function createTrunk(size, color) {
-  const geometry = new THREE.CylinderGeometry(size / 5, size / 4, size, 8)
+  const geometry = new THREE.CylinderGeometry(size / 5, size / 4, size * 2, 8)
   const material = new THREE.MeshToonMaterial({
     color: color || randomNuance({ h: 1.045, s: 0.5 })
   })
@@ -48,10 +48,10 @@ export function createTree({ x = 0, y = 0, z = 0, size = 5, trunkColor, crownCol
   size = size * randFloat(0.6, 1.4) // eslint-disable-line
   const trunk = createTrunk(size, trunkColor)
   trunk.position.set(x, y, z)
-  trunk.translateY(size / 2)
+  trunk.translateY(size)
 
   const crown = createCrown(size, crownColor)
-  crown.position.y = size + size / 4
+  crown.position.y = 2 * size - size / 4
   trunk.add(crown)
   return trunk
 }
