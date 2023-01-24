@@ -12,9 +12,8 @@ npx live-server
 ### Scenes & examples
 
 - Grad
-  - integrisati drveće u createCity
-  - ubaciti prvo lice u scenu
   - dodati betonsku teksturu
+  - ubaciti prvo lice u scenu
 
 - FPS
   - spojiti Savo, fps i nemesis

@@ -74,14 +74,7 @@ const slogans = [
 ]
 
 const banksy = [
-  'anarchy.jpg',
-  'change.png',
-  'cleaning.jpg',
-  'cop.png',
-  'flower.jpg',
-  'heart.png',
-  'monaliza.png',
-  'rat.jpg',
+  'anarchy.jpg', 'change.png', 'cleaning.jpg', 'cop.jpg', 'flower.jpg', 'heart.png', 'monaliza.png', 'rat.jpg', 'bomb.jpg', 'cops.jpg'
 ]
 
 const webFonts = ['Arial', 'Verdana', 'Trebuchet MS', 'Brush Script MT', 'Brush Script MT']
@@ -271,7 +264,7 @@ export async function createGraffitiBuilding(params = {}) {
 
   const mesh = new THREE.Mesh(geometry, materials)
   mesh.castShadow = true
-  mesh.receiveShadow = false
+  mesh.receiveShadow = true
   return mesh
 }
 
