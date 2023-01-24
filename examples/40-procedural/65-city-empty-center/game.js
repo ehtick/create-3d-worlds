@@ -15,7 +15,7 @@ renderer.setClearColor(0x070b34)
 const floor = createFloor({ size: mapSize * 1.1 })
 scene.add(floor)
 
-const city = createNightCity({ mapSize, numBuildings, emptyCenter: center, addLampposts: false })
+const city = createNightCity({ mapSize, numBuildings, emptyCenter: center, numLampposts: 0 })
 scene.add(city)
 
 const ground = createGround({ size: center * 1.5, circle: false })

@@ -281,7 +281,7 @@ const shouldRotate = (rotateEvery, i) => rotateEvery && i % rotateEvery == 0
 const shouldEnlarge = (enlargeEvery, i) => enlargeEvery && i % enlargeEvery == 0
 
 export function createCity({
-  mapSize = 400, buildingWidth = 20, numBuildings = maxItems(mapSize, buildingWidth), rotateEvery = 0, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map, emptyCenter = 0, castShadow = true, receiveShadow = false, addLampposts = false, addCityLights = false
+  mapSize = 400, buildingWidth = 20, numBuildings = maxItems(mapSize, buildingWidth), rotateEvery = 0, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map, emptyCenter = 0, castShadow = true, receiveShadow = false, numLampposts = 0, numLights = 0
 } = {}) {
   const buildings = []
   const coords = yieldRandomCoord({ mapSize, fieldSize: buildingWidth, emptyCenter })
@@ -311,21 +311,21 @@ export function createCity({
   city.castShadow = castShadow
   city.receiveShadow = receiveShadow
 
-  if (addLampposts) {
-    const lampposts = createLampposts({ coords, numLampposts: 10 })
+  if (numLampposts) {
+    const lampposts = createLampposts({ coords, numLampposts })
     city.add(lampposts)
   }
 
-  if (addCityLights) {
-    const cityLights = createCityLights({ coords, numLights: 5 })
+  if (numLights) {
+    const cityLights = createCityLights({ coords, numLights })
     city.add(cityLights)
   }
 
   return city
 }
 
-export const createNightCity = ({ addWindows = true, colorParams = null, rotateEvery = 9, addLampposts = true, addCityLights = true, ...rest } = {}) =>
-  createCity({ addWindows, colorParams, rotateEvery, addLampposts, addCityLights, ...rest })
+export const createNightCity = ({ addWindows = true, colorParams = null, rotateEvery = 9, numLampposts = 10, numLights = 5, ...rest } = {}) =>
+  createCity({ addWindows, colorParams, rotateEvery, numLampposts, numLights, ...rest })
 
 /* CITY LIGHTS */
 

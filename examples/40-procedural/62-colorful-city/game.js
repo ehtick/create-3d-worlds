@@ -15,7 +15,7 @@ camera.position.set(0, mapSize * .6, mapSize * 1.1)
 
 const floor = createFloor({ size: mapSize * 1.2, color: 0x606060 })
 
-const city = createCity({ numBuildings, mapSize, rotateEvery: 2, addWindows: true, addCityLights: true })
+const city = createCity({ numBuildings, mapSize, rotateEvery: 2, addWindows: true, numLights: 5 })
 
 scene.add(floor, city, moon)
 
