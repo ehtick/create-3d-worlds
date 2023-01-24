@@ -50,7 +50,7 @@ renderer.domElement.focus()
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
-renderer.setClearColor(0x87CEEB)
+renderer.setClearColor(0x87CEEB) // 0x7ec0ee
 
 window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight)
