@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { similarColor, findGroundRecursive } from '../helpers.js'
+import { yieldRandomCoord, maxItems } from '/utils/helpers.js'
 
 const { randFloat } = THREE.MathUtils
 
@@ -151,16 +152,18 @@ export function createSimpleFir({ size = 12, x = 0, y = 0, z = 0 } = {}) {
 
 /* FACTORIES */
 
-export function createTrees(n = 50, mapSize = 100, size = 5, create = createTree) {
-  const min = -mapSize, max = mapSize
+export function createTrees({ coords, mapSize = 100, size = 5, n = maxItems(mapSize, size) / 2, create = createTree } = {}) {
+  coords = coords || yieldRandomCoord({ mapSize, fieldSize: size })
   const group = new THREE.Group()
-  const coords = Array(n).fill().map(() => [randFloat(min, max), randFloat(min, max)])
-  coords.forEach(([x, z]) => group.add(create({ x, y: 0, z, size })))
+  for (let i = 0; i < n; i++) {
+    const [x, z] = coords.next().value
+    group.add(create({ x, y: 0, z, size }))
+  }
   return group
 }
 
 export const createFirTrees = ({ n, mapSize, size } = {}) =>
-  createTrees(n, mapSize, size, createFirTree)
+  createTrees({ n, mapSize, size, create: createFirTree })
 
 export const createTreesOnTerrain = ({ terrain, n = 100, mapSize = 400, size } = {}) => {
   const group = new THREE.Group()

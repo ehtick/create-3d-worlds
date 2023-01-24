@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { randomGrayish, randomInCircle, randomInSquare, yieldRandomCoord, sample, mapRange } from '/utils/helpers.js'
+import { randomGrayish, yieldRandomCoord, sample, mapRange, maxItems } from '/utils/helpers.js'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 // import { material as winMaterial } from '/utils/shaders/windows.js'
 
@@ -280,10 +280,8 @@ const shouldRotate = (rotateEvery, i) => rotateEvery && i % rotateEvery == 0
 
 const shouldEnlarge = (enlargeEvery, i) => enlargeEvery && i % enlargeEvery == 0
 
-const maxNumBuildings = (mapSize, buildingWidth = 20) => Math.pow(mapSize / buildingWidth, 2)
-
 export function createCity({
-  mapSize = 400, buildingWidth = 20, numBuildings = maxNumBuildings(mapSize, buildingWidth), rotateEvery = 0, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map, emptyCenter = 0, castShadow = true, receiveShadow = false, addLampposts = false, addCityLights = false
+  mapSize = 400, buildingWidth = 20, numBuildings = maxItems(mapSize, buildingWidth), rotateEvery = 0, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map, emptyCenter = 0, castShadow = true, receiveShadow = false, addLampposts = false, addCityLights = false
 } = {}) {
   const buildings = []
   const coords = yieldRandomCoord({ mapSize, fieldSize: buildingWidth, emptyCenter })

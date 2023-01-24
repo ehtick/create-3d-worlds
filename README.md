@@ -12,8 +12,7 @@ npx live-server
 ### Scenes & examples
 
 - Grad
-  - dodati park ili trg u centru
-  - dodati drveće
+  - dodati trg u centru
   - integrisati rasvetu i drveće u createCity
   - ubaciti prvo lice u scenu
   - dodati betonsku teksturu

@@ -1,8 +1,7 @@
-import { scene, camera, renderer, createOrbitControls, hemLight } from '/utils/scene.js'
+import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { createNightCity } from '/utils/city.js'
-
-hemLight({ intensity: 1.25 })
+import { createTrees } from '/utils/geometry/trees.js'
 
 const mapSize = 400
 const numBuildings = 300
@@ -16,6 +15,8 @@ const floor = createFloor({ size: mapSize * 1.1, color: 0x101018 })
 const city = createNightCity({ mapSize, numBuildings, emptyCenter: 50 })
 
 scene.add(floor, city)
+
+scene.add(createTrees({ mapSize: 60, n: 30 }))
 
 /* LOOP */
 

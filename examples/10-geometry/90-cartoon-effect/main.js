@@ -5,6 +5,8 @@ import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { createTrees } from '/utils/geometry/trees.js'
 import { createSun } from '/utils/light.js'
 
+const mapSize = 200
+
 const sun = createSun()
 scene.add(sun)
 
@@ -13,9 +15,9 @@ scene.background = new THREE.Color('skyblue')
 const controls = createOrbitControls()
 camera.position.set(0, 30, 40)
 
-scene.add(createTrees())
+scene.add(createTrees({ mapSize: mapSize * .5, n: 100 }))
 
-function createGround({ size = 200 } = {}) {
+function createGround({ size = mapSize } = {}) {
   const material = new THREE.MeshToonMaterial({ color: 0x509f53 })
   const geometry = new THREE.CircleGeometry(size, 32)
   geometry.rotateX(-Math.PI * 0.5)
@@ -33,7 +35,7 @@ const effect = new OutlineEffect(renderer, { defaultThickness: 0.003 })
 
 void function animate() {
   requestAnimationFrame(animate)
-  const timer = Date.now() * 0.0005
+  const timer = Date.now() * 0.0002
   controls.update()
 
   sun.position.x = Math.sin(timer) * 100

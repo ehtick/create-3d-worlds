@@ -61,6 +61,8 @@ export function* yieldRandomCoord({
   console.log(`No more coords to yield (total ${coords.length}), set bigger map size.`)
 }
 
+export const maxItems = (mapSize, fieldSize) => Math.pow(mapSize / fieldSize, 2)
+
 /* MOUSE */
 
 /* returns 2D normalized device coordinates of the mouse, between -1 and 1. */
