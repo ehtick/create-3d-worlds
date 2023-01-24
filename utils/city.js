@@ -251,10 +251,9 @@ export async function createGraffitiBuilding(params = {}) {
   const { color, chance = .33, ...rest } = params
   const geometry = createBuildingGeometry(rest)
   const { width, height } = geometry.parameters
-
   const materials = []
-  for (let i = 0; i < 6; i++) {
 
+  for (let i = 0; i < 6; i++) {
     const materialParams = { vertexColors: !color }
     if (color) materialParams.color = color
 
@@ -263,7 +262,8 @@ export async function createGraffitiBuilding(params = {}) {
         materialParams.map = await createGraffitiTexture({
           background: new THREE.Color(color).getStyle(), width: width * 12, height: height * 12
         })
-      else materialParams.map = createBuildingTexture()
+      else
+        materialParams.map = createBuildingTexture()
 
     const material = new THREE.MeshLambertMaterial(materialParams)
     materials.push(material)
