@@ -326,6 +326,9 @@ export function createCity({
   return city
 }
 
+export const createNightCity = ({ addWindows = true, colorParams = null, rotateEvery = 9, addLampposts = true, addCityLights = true, ...rest } = {}) =>
+  createCity({ addWindows, colorParams, rotateEvery, addLampposts, addCityLights, ...rest })
+
 /* CITY LIGHTS */
 
 function createLamppost({ x = 0, z = 0, height = 30 } = {}) {
