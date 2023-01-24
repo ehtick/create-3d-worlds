@@ -1,6 +1,7 @@
 import * as THREE from 'three'
-import { randomGrayish, yieldRandomCoord, sample, mapRange, maxItems } from '/utils/helpers.js'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
+import { randomGrayish, yieldRandomCoord, sample, mapRange, maxItems } from '/utils/helpers.js'
+import { createTrees, createFirTrees } from '/utils/geometry/trees.js'
 // import { material as winMaterial } from '/utils/shaders/windows.js'
 
 const { randInt, randFloat } = THREE.MathUtils
@@ -281,7 +282,7 @@ const shouldRotate = (rotateEvery, i) => rotateEvery && i % rotateEvery == 0
 const shouldEnlarge = (enlargeEvery, i) => enlargeEvery && i % enlargeEvery == 0
 
 export function createCity({
-  mapSize = 400, buildingWidth = 20, numBuildings = maxItems(mapSize, buildingWidth), rotateEvery = 0, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map, emptyCenter = 0, castShadow = true, receiveShadow = false, numLampposts = 0, numLights = 0
+  mapSize = 400, buildingWidth = 20, numBuildings = maxItems(mapSize, buildingWidth), rotateEvery = 0, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map, emptyCenter = 0, castShadow = true, receiveShadow = false, numLampposts = 0, numLights = 0, numTrees = 0
 } = {}) {
   const buildings = []
   const coords = yieldRandomCoord({ mapSize, fieldSize: buildingWidth, emptyCenter })
@@ -311,15 +312,14 @@ export function createCity({
   city.castShadow = castShadow
   city.receiveShadow = receiveShadow
 
-  if (numLampposts) {
-    const lampposts = createLampposts({ coords, numLampposts })
-    city.add(lampposts)
-  }
+  if (numLampposts)
+    city.add(createLampposts({ coords, numLampposts }))
 
-  if (numLights) {
-    const cityLights = createCityLights({ coords, numLights })
-    city.add(cityLights)
-  }
+  if (numLights)
+    city.add(createCityLights({ coords, numLights }))
+
+  if (numTrees)
+    city.add(createTrees({ coords, n: numTrees }))
 
   return city
 }
@@ -362,8 +362,7 @@ function createLamppost({ x = 0, z = 0, height = 20 } = {}) {
   return group
 }
 
-export function createLampposts({ coords, mapSize = 200, numLampposts = 10, height } = {}) {
-  coords = coords || yieldRandomCoord({ mapSize })
+export function createLampposts({ mapSize = 200, coords = yieldRandomCoord({ mapSize }), numLampposts = 10, height } = {}) {
   const group = new THREE.Group()
   for (let i = 0; i < numLampposts; i++) {
     const [x, z] = coords.next().value
@@ -373,8 +372,7 @@ export function createLampposts({ coords, mapSize = 200, numLampposts = 10, heig
   return group
 }
 
-export function createCityLights({ coords, mapSize, numLights = 4, height = 10 } = {}) {
-  coords = coords || yieldRandomCoord({ mapSize })
+export function createCityLights({ mapSize, coords = yieldRandomCoord({ mapSize }), numLights = 4, height = 10 } = {}) {
   const group = new THREE.Group()
   for (let i = 0; i < numLights; i++) {
     const light = new THREE.SpotLight(0xF5F5DC)

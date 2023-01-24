@@ -14,7 +14,7 @@ createOrbitControls()
 
 const floor = createFloor({ size: mapSize * 1.1, color: 0x101018 })
 
-const city = createNightCity({ numBuildings, mapSize })
+const city = createNightCity({ numBuildings, mapSize, numTrees: 50 })
 
 scene.add(floor, city)
 

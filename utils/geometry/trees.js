@@ -151,8 +151,7 @@ export function createSimpleFir({ size = 12, x = 0, y = 0, z = 0 } = {}) {
 
 /* FACTORIES */
 
-export function createTrees({ coords, mapSize = 100, size, n = maxItems(mapSize, size) / 2, create = createTree } = {}) {
-  coords = coords || yieldRandomCoord({ mapSize, fieldSize: size })
+export function createTrees({ mapSize = 100, size = 5, n = maxItems(mapSize, size) / 4, coords = yieldRandomCoord({ mapSize, fieldSize: size }), create = createTree } = {}) {
   const group = new THREE.Group()
   for (let i = 0; i < n; i++) {
     const [x, z] = coords.next().value
@@ -161,8 +160,8 @@ export function createTrees({ coords, mapSize = 100, size, n = maxItems(mapSize,
   return group
 }
 
-export const createFirTrees = ({ n, mapSize, size } = {}) =>
-  createTrees({ n, mapSize, size, create: createFirTree })
+export const createFirTrees = (params = {}) =>
+  createTrees({ ...params, create: createFirTree })
 
 export const createTreesOnTerrain = ({ terrain, n = 100, mapSize = 400, size } = {}) => {
   const group = new THREE.Group()

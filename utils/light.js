@@ -53,7 +53,7 @@ export function ambLight({ scene = defaultScene, color = 0xffffff, intensity = 1
 
 /* SUN */
 
-export function createSun({ color = 0xffffff, intensity = 1, target, position = [5, 10, 5], mapSize = 1024, r = 1, transparent = false, planetColor = 0xFCE570 } = {}) {
+export function createSun({ color = 0xffffff, intensity = 1, target, position = [15, 50, 50], mapSize = 1024, r = 1, transparent = false, planetColor = 0xFCE570 } = {}) {
   const light = pointLight({ color, intensity, target, mapSize })
   const ambientLight = new THREE.AmbientLight(0xfffee1, .5)
 
