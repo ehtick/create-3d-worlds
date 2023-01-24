@@ -282,7 +282,7 @@ const shouldRotate = (rotateEvery, i) => rotateEvery && i % rotateEvery == 0
 const shouldEnlarge = (enlargeEvery, i) => enlargeEvery && i % enlargeEvery == 0
 
 export function createCity({
-  mapSize = 400, buildingWidth = 20, numBuildings = maxItems(mapSize, buildingWidth) / 2, rotateEvery = 0, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map, emptyCenter = 0, castShadow = true, receiveShadow = false, numLampposts = 0, numTrees = 0
+  mapSize = 400, buildingWidth = 20, numBuildings = maxItems(mapSize, buildingWidth) / 2, rotateEvery = 9, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map, emptyCenter = 0, castShadow = true, receiveShadow = false, numLampposts = 0, numTrees = 0
 } = {}) {
   const buildings = []
   const coords = yieldRandomCoord({ mapSize, fieldSize: buildingWidth, emptyCenter })
@@ -321,8 +321,8 @@ export function createCity({
   return city
 }
 
-export const createNightCity = ({ addWindows = true, colorParams = null, rotateEvery = 9, numLampposts = 15, ...rest } = {}) =>
-  createCity({ addWindows, colorParams, rotateEvery, numLampposts, ...rest })
+export const createNightCity = ({ addWindows = true, colorParams = null, numLampposts = 15, ...rest } = {}) =>
+  createCity({ addWindows, colorParams, numLampposts, ...rest })
 
 /* CITY LIGHTS */
 
