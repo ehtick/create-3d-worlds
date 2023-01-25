@@ -151,17 +151,20 @@ export function createSimpleFir({ size = 12, x = 0, y = 0, z = 0 } = {}) {
 
 /* FACTORIES */
 
-export function createTrees({ mapSize = 100, size = 5, n = maxItems(mapSize, size) / 4, coords = yieldRandomCoord({ mapSize, fieldSize: size }), create = createTree } = {}) {
+export function createTrees({ mapSize = 100, size = 5, n = maxItems(mapSize, size) / 4, nFirTrees = 0, coords = yieldRandomCoord({ mapSize, fieldSize: size }) } = {}) {
   const group = new THREE.Group()
   for (let i = 0; i < n; i++) {
     const [x, z] = coords.next().value
-    group.add(create({ x, y: 0, z, size }))
+    group.add(createTree({ x, y: 0, z, size }))
+  }
+  for (let i = 0; i < nFirTrees; i++) {
+    const [x, z] = coords.next().value
+    group.add(createFirTree({ x, y: 0, z, size }))
   }
   return group
 }
 
-export const createFirTrees = (params = {}) =>
-  createTrees({ ...params, create: createFirTree })
+export const createFirTrees = ({ mapSize = 100, size = 5, n = maxItems(mapSize, size) / 4, ...params } = {}) => createTrees({ mapSize, size, nFirTrees: n, n: 0, ...params })
 
 export const createTreesOnTerrain = ({ terrain, n = 100, mapSize = 400, size } = {}) => {
   const group = new THREE.Group()

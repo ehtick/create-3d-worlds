@@ -19,8 +19,7 @@ scene.add(floor)
 
 const coords = yieldRandomCoord({ mapSize })
 
-scene.add(createTrees({ coords, n: 40 }))
-scene.add(createFirTrees({ coords, n: 10 }))
+scene.add(createTrees({ coords, n: 40, nFirTrees: 10 }))
 
 /* LOOP */
 
