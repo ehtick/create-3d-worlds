@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
 import { randomGrayish, yieldRandomCoord, sample, mapRange, maxItems } from '/utils/helpers.js'
-import { createTrees, createFirTrees } from '/utils/geometry/trees.js'
-// import { material as winMaterial } from '/utils/shaders/windows.js'
+import { createTrees } from '/utils/geometry/trees.js'
+import { createFloor } from '/utils/ground.js'
 
 const { randInt, randFloat } = THREE.MathUtils
 
@@ -353,6 +353,19 @@ export function createCity({
 
 export const createNightCity = ({ addWindows = true, colorParams = null, numLampposts = 15, ...rest } = {}) =>
   createCity({ addWindows, colorParams, numLampposts, ...rest })
+
+export async function addGraffitiCity({ scene, mapSize, coords = yieldRandomCoord({ mapSize }), nTrees = 40, nFirTrees = 10 } = {}) {
+  const floor = createFloor({ size: mapSize * 1.2 }) // color: 0x509f53
+  scene.add(floor)
+
+  scene.add(createTrees({ coords, n: nTrees, nFirTrees }))
+
+  for (let i = 0; i < 50; i++) {
+    const [x, z] = coords.next().value
+    const building = await createGraffitiBuilding({ x, z })
+    scene.add(building)
+  }
+}
 
 /* CITY LIGHTS */
 
