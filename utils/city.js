@@ -155,7 +155,7 @@ export async function createGraffitiTexture({
     drawImageScaled(img, ctx)
   }
 
-  if (Math.random() > .2) {
+  if (Math.random() > .1) {
     // graffiti text
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
@@ -279,7 +279,7 @@ export function createBuilding(params = {}) {
 }
 
 export async function createGraffitiBuilding(params = {}) {
-  const { color, chance = .33, ...rest } = params
+  const { color, chance = .25, ...rest } = params
   const geometry = createBuildingGeometry(rest)
   const { width, height } = geometry.parameters
   const materials = []
