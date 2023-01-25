@@ -3,14 +3,12 @@ import { camera, scene, renderer, clock } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { createMoon } from '/utils/light.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
-import { createLampposts, createCity } from '/utils/city.js'
+import { createCity } from '/utils/city.js'
 import FirstPersonControls from './FirstPersonControls.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { getCameraIntersects } from '/utils/helpers.js'
 
 const mapSize = 500
-const numBuildings = 200
-const numLampposts = 8 // max lights is 16
 
 const ricochet = createParticles({ num: 100, mapSize: 0.05, unitAngle: 0.2 })
 scene.add(ricochet)
@@ -24,10 +22,7 @@ scene.add(controls.getObject())
 
 const floor = createFloor({ size: mapSize * 1.1, color: 0x606068 })
 
-const lampposts = createLampposts({ mapSize, numLampposts, circle: false })
-scene.add(lampposts)
-
-const city = createCity({ numBuildings, mapSize, circle: false, colorParams: { colorful: .035, max: 1 } })
+const city = createCity({ mapSize, numBuildings: 200, numLampposts: 8, colorParams: { colorful: .035, max: 1 } })
 scene.add(floor, city)
 
 const fpsRenderer = new FPSRenderer({ targetY: 0.5 })

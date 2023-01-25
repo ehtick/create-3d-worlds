@@ -313,10 +313,9 @@ const shouldRotate = (rotateEvery, i) => rotateEvery && i % rotateEvery == 0
 const shouldEnlarge = (enlargeEvery, i) => enlargeEvery && i % enlargeEvery == 0
 
 export function createCity({
-  mapSize = 400, buildingWidth = 20, numBuildings = maxItems(mapSize, buildingWidth) / 2, rotateEvery = 9, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map, emptyCenter = 0, castShadow = true, receiveShadow = false, numLampposts = 0, numTrees = 0
+  mapSize = 400, fieldSize = 20, numBuildings = maxItems(mapSize, fieldSize) / 2, emptyCenter = 0, coords = yieldRandomCoord({ mapSize, fieldSize, emptyCenter }), rotateEvery = 9, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map, castShadow = true, receiveShadow = true, numLampposts = 0, numTrees = 0
 } = {}) {
   const buildings = []
-  const coords = yieldRandomCoord({ mapSize, fieldSize: buildingWidth, emptyCenter })
 
   for (let i = 0; i < numBuildings; i++) {
     const color = colorParams ? randomGrayish(colorParams) : new THREE.Color(0x000000)
@@ -324,8 +323,8 @@ export function createCity({
 
     const rotY = shouldRotate(rotateEvery, i) ? Math.random() * Math.PI : 0
     const bWidth = shouldEnlarge(enlargeEvery, i)
-      ? randFloat(buildingWidth * .5, buildingWidth + buildingWidth * .25)
-      : randFloat(buildingWidth * .5, buildingWidth)
+      ? randFloat(fieldSize * .5, fieldSize * 1.25)
+      : randFloat(fieldSize * .5, fieldSize)
     const bHeight = shouldEnlarge(enlargeEvery, i)
       ? randFloat(bWidth * 4, bWidth * 6)
       : randFloat(bWidth, bWidth * 4)
