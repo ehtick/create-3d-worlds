@@ -1,16 +1,15 @@
 import * as THREE from 'three'
 import { camera, scene, renderer, clock } from '/utils/scene.js'
-import { createFloor } from '/utils/ground.js'
 import { createMoon } from '/utils/light.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
-import { createCity } from '/utils/city.js'
+import { addGraffitiCity } from '/utils/city.js'
 import FirstPersonControls from './FirstPersonControls.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { getCameraIntersects } from '/utils/helpers.js'
 
-const mapSize = 500
+const mapSize = 200
 
-const ricochet = createParticles({ num: 100, mapSize: 0.05, unitAngle: 0.2 })
+const ricochet = createParticles({ num: 100, size: .05, unitAngle: 0.2 })
 scene.add(ricochet)
 
 scene.fog = new THREE.FogExp2(0xF6F1D5, 0.0055)
@@ -18,21 +17,19 @@ scene.add(createMoon())
 scene.background = new THREE.Color(0x070b34)
 
 const controls = new FirstPersonControls(camera)
-scene.add(controls.getObject())
-
-const floor = createFloor({ size: mapSize * 1.1, color: 0x606068 })
-
-const city = createCity({ mapSize, numBuildings: 200, numLampposts: 8, colorParams: { colorful: .035, max: 1 } })
-scene.add(floor, city)
+scene.add(controls.yawObject)
 
 const fpsRenderer = new FPSRenderer({ targetY: 0.5 })
 
 /* FUNCTIONS */
 
 function shoot() {
-  const intersects = getCameraIntersects(camera, city)
-  if (intersects.length)
+  const intersects = getCameraIntersects(camera)
+  if (intersects.length) // TODO: ako je preblizu (intersects[0].point) da ne puca
+  {
+    // console.log(controls.yawObject.position.distanceTo (intersects[0].point))
     resetParticles({ particles: ricochet, pos: intersects[0].point, unitAngle: 0.2 })
+  }
 }
 
 /* LOOP */
@@ -43,10 +40,16 @@ void function loop() {
   if (!document.pointerLockElement) return
 
   const delta = clock.getDelta()
+  const time = clock.getElapsedTime()
+
   controls.update(delta)
   fpsRenderer.renderTarget()
-  expandParticles({ particles: ricochet, scalar: 1.2, maxRounds: 20, gravity: .02 })
+  fpsRenderer.drawWeapon(time)
+
+  expandParticles({ particles: ricochet, scalar: 1.2, maxRounds: 5, gravity: .02 })
 }()
+
+await addGraffitiCity({ scene, mapSize })
 
 /* EVENTS */
 

@@ -28,58 +28,51 @@ export default class FirstPersonControls {
     document.addEventListener('keydown', e => this.onKeyDown(e))
   }
 
-  getObject() {
-    return this.yawObject
-  }
-
-  update(delta) {
-    const { velocity, direction } = this
-
-    velocity.y -= 9.8 * 10 * delta
-    velocity.x -= velocity.x * 10 * delta
-    velocity.z -= velocity.z * 10 * delta
-
-    direction.z = (keyboard.up ? 1 : 0) - (keyboard.down ? 1 : 0)
-    direction.x = (keyboard.right ? 1 : 0) - (keyboard.left ? 1 : 0)
-    direction.normalize()
-
-    let currentSpeed = this.speed
-    if (keyboard.run && (keyboard.up || keyboard.down || keyboard.left || keyboard.right))
-      currentSpeed += (currentSpeed * 1.1)
-
-    if (keyboard.up || keyboard.down) velocity.z -= direction.z * currentSpeed * delta
-    if (keyboard.left || keyboard.right) velocity.x -= direction.x * currentSpeed * delta
-
-    this.getObject().translateX(-velocity.x * delta)
-    this.getObject().translateZ(velocity.z * delta)
-
-    this.getObject().position.y += (velocity.y * delta)
-
-    if (this.getObject().position.y < this.height) {
-      velocity.y = 0
-      this.getObject().position.y = this.height
-      this.canJump = true
-    }
-  }
-
   onMouseMove(e) {
     if (!document.pointerLockElement) return
 
     this.yawObject.rotation.y -= e.movementX * this.mouseSensitivity
-    this.pitchObject.rotation.x -= e.movementY * this.mouseSensitivity
 
+    this.pitchObject.rotation.x -= e.movementY * this.mouseSensitivity
     this.pitchObject.rotation.x = Math.max(-PI_HALF, Math.min(PI_HALF, this.pitchObject.rotation.x))
   }
 
   onKeyDown(event) {
     if (!document.pointerLockElement) return
 
-    switch (event.code) {
-      case 'Space':
-        if (this.canJump === true)
-          this.velocity.y += !keyboard.run ? this.jumpHeight : this.jumpHeight + 5
-        this.canJump = false
-        break
+    if (this.canJump && event.code == 'Space') {
+      this.velocity.y += !keyboard.run ? this.jumpHeight : this.jumpHeight + 5
+      this.canJump = false
+    }
+  }
+
+  update(delta) {
+    const { velocity, direction } = this
+    const deltaX = 10 * delta
+    velocity.add({ x: -velocity.x * deltaX, y: -9.8 * deltaX, z: -velocity.z * deltaX })
+
+    direction.z = (keyboard.up ? 1 : 0) - (keyboard.down ? 1 : 0)
+    direction.x = (keyboard.right ? 1 : 0) - (keyboard.left ? 1 : 0)
+    direction.normalize()
+
+    const currentSpeed = keyboard.run && (keyboard.up || keyboard.down || keyboard.left || keyboard.right)
+      ? this.speed * 2.1
+      : this.speed
+
+    if (keyboard.up || keyboard.down)
+      velocity.z -= direction.z * currentSpeed * delta
+
+    if (keyboard.left || keyboard.right)
+      velocity.x -= direction.x * currentSpeed * delta
+
+    this.yawObject.translateX(-velocity.x * delta)
+    this.yawObject.translateY(velocity.y * delta)
+    this.yawObject.translateZ(velocity.z * delta)
+
+    if (this.yawObject.position.y < this.height) {
+      velocity.y = 0
+      this.yawObject.position.y = this.height
+      this.canJump = true
     }
   }
 }

@@ -355,6 +355,7 @@ export const createNightCity = ({ addWindows = true, colorParams = null, numLamp
   createCity({ addWindows, colorParams, numLampposts, ...rest })
 
 export async function addGraffitiCity({ scene, mapSize, coords = yieldRandomCoord({ mapSize }), nTrees = 40, nFirTrees = 10 } = {}) {
+  const group = new THREE.Group()
   const floor = createFloor({ size: mapSize * 1.2 }) // color: 0x509f53
   scene.add(floor)
 
@@ -363,8 +364,10 @@ export async function addGraffitiCity({ scene, mapSize, coords = yieldRandomCoor
   for (let i = 0; i < 50; i++) {
     const [x, z] = coords.next().value
     const building = await createGraffitiBuilding({ x, z })
+    group.add(building)
     scene.add(building)
   }
+  return group
 }
 
 /* CITY LIGHTS */
