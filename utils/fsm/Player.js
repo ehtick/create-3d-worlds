@@ -29,7 +29,7 @@ const jumpStyles = {
   FLY_JUMP: 'FLY_JUMP',
 }
 
-export default class PlayerFSM {
+export default class Player {
   constructor({
     mesh, animations, dict, camera, keyboard = defaultKeyboard, useJoystick,
     speed = 2, jumpStyle = jumpStyles.FLY_JUMP, solids

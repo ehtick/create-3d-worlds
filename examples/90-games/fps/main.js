@@ -27,7 +27,7 @@ function shoot() {
   const intersects = getCameraIntersects(camera)
   if (intersects.length) // TODO: ako je preblizu (intersects[0].point) da ne puca
   {
-    // console.log(controls.yawObject.position.distanceTo (intersects[0].point))
+    console.log(controls.yawObject.position.distanceTo (intersects[0].point))
     resetParticles({ particles: ricochet, pos: intersects[0].point, unitAngle: 0.2 })
   }
 }

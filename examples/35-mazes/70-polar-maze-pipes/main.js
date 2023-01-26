@@ -4,7 +4,7 @@ import { recursiveBacktracker } from '/utils/mazes/algorithms.js'
 import { scene, renderer, camera } from '/utils/scene.js'
 import { createSun, hemLight } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import Avatar from '/utils/fsm/AvatarFSM.js'
+import Avatar from '/utils/fsm/Avatar.js'
 
 hemLight({ intensity: .6 })
 const sun = createSun()

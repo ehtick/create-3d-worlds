@@ -1,7 +1,7 @@
 import { createWorldScene, camera, renderer, clock } from '/utils/scene.js'
 import { createSpiralStairs } from '/utils/geometry/towers.js'
 import { createTerrain } from '/utils/ground.js'
-import Avatar from '/utils/fsm/AvatarFSM.js'
+import Avatar from '/utils/fsm/Avatar.js'
 
 const scene = createWorldScene()
 

@@ -1,4 +1,4 @@
-import PlayerFSM from '/utils/fsm/PlayerFSM.js'
+import Player from '/utils/fsm/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadLowPoly({ animNames: druidAnimation, prefix: 'character/druid/' })
-const player = new PlayerFSM({ mesh, animations, dict: druidAnimation })
+const player = new Player({ mesh, animations, dict: druidAnimation })
 
 scene.add(mesh)
 

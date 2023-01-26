@@ -1,4 +1,4 @@
-import PlayerFSM from '/utils/fsm/PlayerFSM.js'
+import Player from '/utils/fsm/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
@@ -11,7 +11,7 @@ camera.position.set(0, 4, 8)
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/iron-giant/', animNames: ironGiantAnimations, angle: Math.PI, size: 5, fixColors: true })
-const player = new PlayerFSM({ mesh, animations, dict: ironGiantAnimations })
+const player = new Player({ mesh, animations, dict: ironGiantAnimations })
 
 scene.add(mesh)
 

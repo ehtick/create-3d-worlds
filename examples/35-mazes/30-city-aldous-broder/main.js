@@ -2,7 +2,7 @@ import { scene, renderer, camera } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { meshFromMatrix, putInMaze } from '/utils/mazes.js'
 import { aldousBroderMatrix } from '/utils/mazes/algorithms.js'
-import Avatar from '/utils/fsm/AvatarFSM.js'
+import Avatar from '/utils/fsm/Avatar.js'
 import { material } from '/utils/shaders/windows.js'
 import { hemLight } from '/utils/light.js'
 

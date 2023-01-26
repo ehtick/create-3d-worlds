@@ -1,8 +1,8 @@
-import PlayerFSM from './PlayerFSM.js'
+import Player from './Player.js'
 import { clock } from '/utils/scene.js'
 import { createAvatar, updateAvatar, uniforms, skins } from '/utils/geometry/avatar.js'
 
-export default class AvatarFSM extends PlayerFSM {
+export default class Avatar extends Player {
   constructor({ skin = skins.STONE, size = 1, ...params } = {}) {
     super({ mesh: createAvatar({ skin, r: size }), speed: size * 6, jumpStyle: 'FLY', ...params })
     this.limbs = [

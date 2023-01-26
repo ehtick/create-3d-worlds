@@ -1,4 +1,4 @@
-import PlayerFSM from '/utils/fsm/PlayerFSM.js'
+import Player from '/utils/fsm/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadLowPoly({ animNames: thiefAnimation, prefix: 'character/thief/' })
-const player = new PlayerFSM({ mesh, animations, dict: thiefAnimation })
+const player = new Player({ mesh, animations, dict: thiefAnimation })
 
 scene.add(mesh)
 

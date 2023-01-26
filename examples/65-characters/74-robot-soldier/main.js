@@ -1,4 +1,4 @@
-import PlayerFSM from '/utils/fsm/PlayerFSM.js'
+import Player from '/utils/fsm/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/robot-soldier/', animNames: robotSoldierAnimations, angle: Math.PI, fixColors: true })
-const player = new PlayerFSM({ mesh, animations, dict: robotSoldierAnimations })
+const player = new Player({ mesh, animations, dict: robotSoldierAnimations })
 
 scene.add(mesh)
 

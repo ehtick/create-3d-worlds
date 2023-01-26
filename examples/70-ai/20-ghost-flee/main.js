@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { SteeringEntity } from '/libs/ThreeSteer.js'
 
-import PlayerFSM from '/utils/fsm/PlayerFSM.js'
+import Player from '/utils/fsm/Player.js'
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
@@ -19,7 +19,7 @@ const floor = createFloor({ size: 100 })
 scene.add(floor)
 
 const { mesh, animations } = await loadRobotko()
-const player = new PlayerFSM({ mesh, animations, dict: robotkoAnimations })
+const player = new Player({ mesh, animations, dict: robotkoAnimations })
 scene.add(mesh)
 
 const { mesh: ghostMesh, mixer: ghostMixer } = await loadModel({ file: 'character/ghost/scene.gltf' })

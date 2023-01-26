@@ -1,4 +1,4 @@
-import Player from '/utils/fsm/PlayerFSM.js'
+import Player from '/utils/fsm/Player.js'
 import { createBox } from '/utils/geometry.js'
 import { camera } from '/utils/scene.js'
 
