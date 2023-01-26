@@ -5,8 +5,8 @@ import { camera } from '/utils/scene.js'
 export default class Savo extends Player {
   constructor({ speed, size = 2, ...params } = {}) {
     const mesh = createBox({ size })
-    // mesh.material.opacity = 0
-    // mesh.material.transparent = true
+    mesh.material.opacity = 0
+    mesh.material.transparent = true
     super({ mesh, jumpStyle: 'FLY', ...params })
     this.speed = speed || this.size * 3
     this.maxVelocityY = .2
