@@ -47,15 +47,15 @@ export default class State {
     return directionBlocked(this.fsm.mesh, this.fsm.solids, vector)
   }
 
-  forward(delta, sign = -1) {
+  forward(delta) {
     if (!delta || !this.fsm.speed || !this.speed) return
 
-    const direction = sign === -1 ? dir.forward : dir.backward
+    const direction = this.speed > 0 ? dir.forward : dir.backward
     if (this.directionBlocked(direction)) return
-    const jumpDir = sign === -1 ? dir.upForward : dir.upBackward
+    const jumpDir = this.speed > 0 ? dir.upForward : dir.upBackward
     if (this.keyboard.space && this.directionBlocked(jumpDir)) return
 
-    velocity += this.speed * this.fsm.speed * (this.joystick?.forward || sign)
+    velocity += this.speed * this.fsm.speed * (this.joystick?.forward || -1)
     velocity *= INERTIA
 
     this.fsm.mesh.translateZ(velocity * delta)

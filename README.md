@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - FPS
-  - BUG: Savo se zalepi za zid i neće unazad
   - implementirati first person controls sa gledanjem na gore
     - možda rotateOnWorldAxis(axis: Vector3, angle: Float) ili lookAt()
     - https://threejs.org/docs/#examples/en/controls/FirstPersonControls
