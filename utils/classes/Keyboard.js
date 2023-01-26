@@ -22,6 +22,8 @@ class Keyboard {
 
     if (!listen) return
 
+    document.addEventListener('contextmenu', e => e.preventDefault())
+
     document.addEventListener('keydown', e => {
       preventSome(e)
       this.pressed[e.code] = true
