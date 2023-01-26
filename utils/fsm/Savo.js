@@ -15,8 +15,8 @@ export default class Savo extends Player {
 
   update(delta) {
     super.update(delta)
-    const target = this.mesh.position.clone()
-    target.y = this.mesh.position.y + this.size
-    camera.lookAt(target)
+    // const target = this.mesh.position.clone()
+    // target.y = this.mesh.position.y + this.size
+    // camera.lookAt(target)
   }
 }

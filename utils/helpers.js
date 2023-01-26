@@ -64,7 +64,7 @@ export function* yieldRandomCoord({
 
 export const maxItems = (mapSize, fieldSize) => Math.pow(mapSize / fieldSize, 2)
 
-/* MOUSE */
+/* MOUSE / CURSOR */
 
 /* returns 2D normalized device coordinates of the mouse, between -1 and 1. */
 export function normalizeMouse(e) {
@@ -79,6 +79,12 @@ export const mouseToWorld = (e, camera = defaultCamera, z = .9) => {
   const mouse3D = new THREE.Vector3(x, y, z) // initially .5
   mouse3D.unproject(camera)
   return mouse3D
+}
+
+export const getCursorPosition = e => {
+  const clientX = e.targetTouches ? e.targetTouches[0].pageX : e.clientX
+  const clientY = e.targetTouches ? e.targetTouches[0].pageY : e.clientY
+  return { x: clientX, y: clientY }
 }
 
 /* MESHES */
@@ -255,14 +261,6 @@ export function createChaseCamera(mesh, camera = defaultCamera) {
     if (v.y < 1) v.y = 1
     camera.position.lerpVectors(camera.position, v, 0.05)
   }
-}
-
-/* CURSOR */
-
-export const getCursorPosition = e => {
-  const clientX = e.targetTouches ? e.targetTouches[0].pageX : e.clientX
-  const clientY = e.targetTouches ? e.targetTouches[0].pageY : e.clientY
-  return { x: clientX, y: clientY }
 }
 
 /* JS HELPERS */

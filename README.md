@@ -13,12 +13,12 @@ npx live-server
 
 - FPS
   - implementirati first person controls sa gledanjem na gore
-    - možda rotateOnWorldAxis(axis: Vector3, angle: Float) ili lookAt()
     - https://threejs.org/docs/#examples/en/controls/FirstPersonControls
     - https://threejs.org/docs/#examples/en/controls/PointerLockControls
     - https://threejs.org/examples/misc_controls_pointerlock.html
     - https://stackoverflow.com/questions/69360109/how-can-i-create-first-person-controls-in-react-three-fiber
     - https://youtu.be/oqKzxPMLWxo
+    - možda rotateOnWorldAxis(axis: Vector3, angle: Float) ili lookAt()
   - spojiti Savo, fps i nemesis
   - ostaviti decals rupe od metaka
   - srediti koliziju
