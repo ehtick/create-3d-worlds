@@ -5,14 +5,13 @@ class FirstPersonControls {
 
   constructor(object, domElement) {
 
-    this.object = object
+    this.camera = object
     this.domElement = domElement
     this.mouse = { x: 0, y: 0 }
 
     // API
     this.movementSpeed = 5
     this.lookSpeed = 2
-    this.lookVertical = true
 
     // internals
 
@@ -23,16 +22,10 @@ class FirstPersonControls {
     this.viewHalfX = 0
     this.viewHalfY = 0
 
-    // private variables
+    this.lat = 0
+    this.lon = 0
 
-    let lat = 0
-    let lon = 0
-
-    this.onPointerMove = function(event) {
-      this.mouse = normalizeMouse(event)
-    }
-
-    this.onKeyDown = function(event) {
+    this.onKeyDown = event => {
       switch (event.code) {
         case 'ArrowUp':
         case 'KeyW': this.moveForward = true; break
@@ -51,7 +44,7 @@ class FirstPersonControls {
       }
     }
 
-    this.onKeyUp = function(event) {
+    this.onKeyUp = event => {
       switch (event.code) {
         case 'ArrowUp':
         case 'KeyW': this.moveForward = false; break
@@ -70,42 +63,35 @@ class FirstPersonControls {
       }
     }
 
-    this.update = function() {
-      const targetPosition = new Vector3()
+    this.domElement.addEventListener('pointermove', event => {
+      this.mouse = normalizeMouse(event)
+    })
+    window.addEventListener('keydown', this.onKeyDown)
+    window.addEventListener('keyup', this.onKeyUp)
+  }
 
-      return function update(delta) {
-        const actualMoveSpeed = delta * this.movementSpeed
+  update(delta) {
+    const targetPosition = new Vector3()
+    const actualMoveSpeed = delta * this.movementSpeed
 
-        if (this.moveForward) this.object.translateZ(-actualMoveSpeed)
-        if (this.moveBackward) this.object.translateZ(actualMoveSpeed)
+    if (this.moveForward) this.camera.translateZ(-actualMoveSpeed)
+    if (this.moveBackward) this.camera.translateZ(actualMoveSpeed)
 
-        if (this.moveLeft) this.object.translateX(- actualMoveSpeed)
-        if (this.moveRight) this.object.translateX(actualMoveSpeed)
+    if (this.moveLeft) this.camera.translateX(- actualMoveSpeed)
+    if (this.moveRight) this.camera.translateX(actualMoveSpeed)
 
-        if (this.moveUp) this.object.translateY(actualMoveSpeed)
-        if (this.moveDown) this.object.translateY(- actualMoveSpeed)
+    if (this.moveUp) this.camera.translateY(actualMoveSpeed)
+    if (this.moveDown) this.camera.translateY(- actualMoveSpeed)
 
-        const deltaSpeed = delta * this.lookSpeed
+    const deltaSpeed = delta * this.lookSpeed
 
-        lon -= this.mouse.x * deltaSpeed
-        if (this.lookVertical) lat += this.mouse.y * deltaSpeed
+    this.lon -= this.mouse.x * deltaSpeed
+    this.lat += this.mouse.y * deltaSpeed
+    this.lat = Math.max(-.1, Math.min(Math.PI / 4, this.lat)) // vertical min, max
 
-        lat = Math.max(-.1, Math.min(Math.PI / 4, lat)) // vertical min, max
-
-        const { position } = this.object
-        targetPosition.setFromSphericalCoords(1, Math.PI * .5 - lat, lon).add(position)
-        this.object.lookAt(targetPosition)
-      }
-    }()
-
-    const _onPointerMove = this.onPointerMove.bind(this)
-    const _onKeyDown = this.onKeyDown.bind(this)
-    const _onKeyUp = this.onKeyUp.bind(this)
-
-    this.domElement.addEventListener('pointermove', _onPointerMove)
-
-    window.addEventListener('keydown', _onKeyDown)
-    window.addEventListener('keyup', _onKeyUp)
+    const { position } = this.camera
+    targetPosition.setFromSphericalCoords(1, Math.PI / 2 - this.lat, this.lon).add(position)
+    this.camera.lookAt(targetPosition)
   }
 }
 
