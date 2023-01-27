@@ -1,8 +1,7 @@
 import Player from '/utils/fsm/Player.js'
 import { createBox } from '/utils/geometry.js'
 import { camera as defaultCamera } from '/utils/scene.js'
-
-const PI_HALF = Math.PI * .5
+import { normalizeMouse } from '/utils/helpers.js'
 
 export default class Savo extends Player {
   constructor({ speed, size = 2, camera = defaultCamera, ...params } = {}) {
@@ -14,7 +13,7 @@ export default class Savo extends Player {
     this.maxVelocityY = .2
     this.minVelocityY = -this.maxVelocityY
 
-    this.mouseSensitivity = .002
+    this.mouseSensitivity = .05
     this.camera = camera
     camera.rotation.set(0, 0, 0)
     mesh.add(camera)
@@ -23,16 +22,10 @@ export default class Savo extends Player {
   }
 
   onMouseMove(e) {
-    this.mesh.rotation.y -= e.movementX * this.mouseSensitivity
+    const { x, y } = normalizeMouse(e)
 
-    this.camera.rotation.x -= e.movementY * this.mouseSensitivity
-    this.camera.rotation.x = Math.max(-PI_HALF, Math.min(PI_HALF, this.camera.rotation.x))
-  }
-
-  update(delta) {
-    super.update(delta)
-    // const target = this.mesh.position.clone()
-    // target.y = this.mesh.position.y + this.size
-    // camera.lookAt(target)
+    this.mesh.rotateY(-x * this.mouseSensitivity)
+    this.camera.rotateX(y * this.mouseSensitivity)
+    this.camera.rotation.x = Math.max(-0.1, Math.min(Math.PI / 4, this.camera.rotation.x))
   }
 }

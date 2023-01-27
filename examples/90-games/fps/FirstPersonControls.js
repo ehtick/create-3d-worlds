@@ -27,8 +27,6 @@ export default class FirstPersonControls {
   }
 
   onMouseMove(e) {
-    if (!document.pointerLockElement) return
-
     this.mesh.rotation.y -= e.movementX * this.mouseSensitivity
 
     this.camera.rotation.x -= e.movementY * this.mouseSensitivity
@@ -36,8 +34,6 @@ export default class FirstPersonControls {
   }
 
   onKeyDown(event) {
-    if (!document.pointerLockElement) return
-
     if (this.canJump && event.code == 'Space') {
       this.velocity.y += !keyboard.run ? this.jumpHeight : this.jumpHeight + 5
       this.canJump = false

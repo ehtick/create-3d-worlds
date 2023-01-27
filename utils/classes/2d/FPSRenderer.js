@@ -4,7 +4,7 @@ import keyboard from '../Keyboard.js'
 const targetSrc = '/assets/images/crosshair.png'
 
 export default class FPSRenderer extends Canvas {
-  constructor({ weaponSrc = '/assets/images/savo.png', targetY = 0.55 } = {}) {
+  constructor({ weaponSrc = '/assets/images/savo.png', targetY = 0.5 } = {}) {
     super()
     this.weaponSrc = weaponSrc
     this.weaponImg = new Image()
