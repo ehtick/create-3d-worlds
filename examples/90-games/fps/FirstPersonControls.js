@@ -16,13 +16,11 @@ export default class FirstPersonControls {
     this.direction = new THREE.Vector3()
 
     camera.rotation.set(0, 0, 0)
+    this.camera = camera
 
-    this.pitchObject = new THREE.Object3D()
-    this.pitchObject.add(camera)
-
-    this.yawObject = new THREE.Object3D()
-    this.yawObject.position.y = height
-    this.yawObject.add(this.pitchObject)
+    this.mesh = new THREE.Object3D()
+    this.mesh.position.y = height
+    this.mesh.add(this.camera)
 
     document.addEventListener('mousemove', e => this.onMouseMove(e))
     document.addEventListener('keydown', e => this.onKeyDown(e))
@@ -31,10 +29,10 @@ export default class FirstPersonControls {
   onMouseMove(e) {
     if (!document.pointerLockElement) return
 
-    this.yawObject.rotation.y -= e.movementX * this.mouseSensitivity
+    this.mesh.rotation.y -= e.movementX * this.mouseSensitivity
 
-    this.pitchObject.rotation.x -= e.movementY * this.mouseSensitivity
-    this.pitchObject.rotation.x = Math.max(-PI_HALF, Math.min(PI_HALF, this.pitchObject.rotation.x))
+    this.camera.rotation.x -= e.movementY * this.mouseSensitivity
+    this.camera.rotation.x = Math.max(-PI_HALF, Math.min(PI_HALF, this.camera.rotation.x))
   }
 
   onKeyDown(event) {
@@ -65,13 +63,13 @@ export default class FirstPersonControls {
     if (keyboard.left || keyboard.right)
       velocity.x -= direction.x * currentSpeed * delta
 
-    this.yawObject.translateX(-velocity.x * delta)
-    this.yawObject.translateY(velocity.y * delta)
-    this.yawObject.translateZ(velocity.z * delta)
+    this.mesh.translateX(-velocity.x * delta)
+    this.mesh.translateY(velocity.y * delta)
+    this.mesh.translateZ(velocity.z * delta)
 
-    if (this.yawObject.position.y < this.height) {
+    if (this.mesh.position.y < this.height) {
       velocity.y = 0
-      this.yawObject.position.y = this.height
+      this.mesh.position.y = this.height
       this.canJump = true
     }
   }

@@ -17,7 +17,7 @@ scene.add(createMoon())
 scene.background = new THREE.Color(0x070b34)
 
 const controls = new FirstPersonControls(camera)
-scene.add(controls.yawObject)
+scene.add(controls.mesh)
 
 const fpsRenderer = new FPSRenderer({ targetY: 0.5 })
 
@@ -27,7 +27,7 @@ function shoot() {
   const intersects = getCameraIntersects(camera)
   if (intersects.length) // TODO: ako je preblizu (intersects[0].point) da ne puca
   {
-    console.log(controls.yawObject.position.distanceTo (intersects[0].point))
+    console.log(controls.mesh.position.distanceTo (intersects[0].point))
     resetParticles({ particles: ricochet, pos: intersects[0].point, unitAngle: 0.2 })
   }
 }
