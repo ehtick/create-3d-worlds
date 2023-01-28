@@ -37,7 +37,7 @@ export default class Tilemap {
     const [randFieldX, randFieldZ] = this.randomEmptyField
     const x = randFieldX * this.cellSize + this.origin.x
     const z = randFieldZ * this.cellSize + this.origin.z
-    return { x, z }
+    return { x: x + this.cellSize / 2, z: z + this.cellSize / 2 }
   }
 
   getFieldValue(x, y) {

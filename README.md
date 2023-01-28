@@ -12,11 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - FPS
-  - fix Tilemap.randomEmptyPos
-  - implementirati first person controls sa gledanjem na gore
-    - https://stackoverflow.com/questions/69360109/how-can-i-create-first-person-controls-in-react-three-fiber
-    - https://youtu.be/oqKzxPMLWxo
-    - možda rotateOnWorldAxis(axis: Vector3, angle: Float) ili lookAt()
   - spojiti Savo, fps i nemesis
   - ostaviti decals rupe od metaka
   - srediti koliziju
