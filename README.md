@@ -13,6 +13,7 @@ npx live-server
 
 - FPS
   - spojiti Savo, fps i nemesis
+  - fix Map2DRenderer u Savo
   - ostaviti decals rupe od metaka
   - srediti koliziju
   - dodati NPC karaktere (vidi nemesis i ai modele)

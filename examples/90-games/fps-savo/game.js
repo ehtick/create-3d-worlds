@@ -1,5 +1,4 @@
 import { createGround } from '/utils/ground.js'
-import { randomMatrix } from '/utils/mazes.js'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import Map2DRenderer from '/utils/classes/2d/Map2DRenderer.js'
@@ -7,6 +6,7 @@ import Savo from '/utils/fsm/Savo.js'
 import Tilemap from '/utils/classes/Tilemap.js'
 import { hemLight } from '/utils/light.js'
 import { createRain, updateRain } from '/utils/particles.js'
+import { nemesis } from '/data/maps.js'
 
 hemLight()
 
@@ -14,7 +14,7 @@ camera.position.y = 2
 camera.position.z = 1
 const fpsRenderer = new FPSRenderer()
 
-const matrix = randomMatrix()
+const matrix = nemesis
 const map = new Tilemap(matrix, 20)
 const smallMap = new Tilemap(matrix, 20)
 const smallMapRenderer = new Map2DRenderer(smallMap)
@@ -25,7 +25,7 @@ scene.add(walls)
 
 const player = new Savo()
 const { x, z } = map.randomEmptyPos
-console.log(x, z)
+
 player.mesh.position.set(x, 0, z)
 player.add(camera)
 player.addSolids(walls)

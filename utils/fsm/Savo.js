@@ -4,7 +4,7 @@ import { camera as defaultCamera } from '/utils/scene.js'
 import { normalizeMouse } from '/utils/helpers.js'
 
 export default class Savo extends Player {
-  constructor({ speed, size = 2, camera = defaultCamera, ...params } = {}) {
+  constructor({ speed, size = 2, mousemove = false, camera = defaultCamera, ...params } = {}) {
     const mesh = createBox({ size })
     mesh.material.opacity = 0
     mesh.material.transparent = true
@@ -18,7 +18,7 @@ export default class Savo extends Player {
     camera.rotation.set(0, 0, 0)
     mesh.add(camera)
 
-    document.addEventListener('mousemove', e => this.onMouseMove(e))
+    if (mousemove) document.addEventListener('mousemove', e => this.onMouseMove(e))
   }
 
   onMouseMove(e) {
