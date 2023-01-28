@@ -3,9 +3,6 @@ import keyboard from '../Keyboard.js'
 
 const CIRCLE = Math.PI * 2
 const colors = ['#fff', '#444', '#701206', '#000']
-let initiallyRendered = false
-
-const shouldRender = () => keyboard.controlsPressed || !initiallyRendered
 
 export default class Map2DRenderer extends Canvas {
   constructor(tilemap) {
@@ -15,7 +12,8 @@ export default class Map2DRenderer extends Canvas {
     this.cellSize = tilemap.cellSize
     this.mapSize = tilemap.mapSize
     this.width = this.height = this.matrix.length * this.cellSize
-    this.show()
+    this.initiallyRendered = false
+
     document.addEventListener('keypress', this.toggleMap.bind(this))
   }
 
@@ -69,10 +67,10 @@ export default class Map2DRenderer extends Canvas {
   }
 
   render(player, tilemap = this.tilemap) {
-    if (!shouldRender()) return
+    if (this.initiallyRendered && !keyboard.controlsPressed) return
     this.drawMap()
     this.drawPlayer(player, tilemap)
-    initiallyRendered = true
+    this.initiallyRendered = true
   }
 }
 

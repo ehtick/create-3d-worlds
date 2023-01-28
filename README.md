@@ -11,11 +11,9 @@ npx live-server
 
 ### Scenes & examples
 
-- FPS
-  - spojiti Savo i fps
-    - prebaciti rikošet
-  - fix Map2DRenderer u Savo
-  - ostaviti decals rupe od metaka
+- Savo
+  - dodati rikošet
+  - dodati decals rupe od metaka
   - srediti koliziju
   - dodati NPC karaktere, možda duhove (vidi ai modele)
     - https://www.script-tutorials.com/demos/474/index3.html
@@ -24,6 +22,7 @@ npx live-server
   - dodati munje https://threejs.org/examples/?q=light#webgl_lightningstrike
   - dodati pucanje
   - kiša da prati igraca
+  - odlučiti između fps i Savo kontrola
 
 - Svemir 
   - dodati model ring space-arcology
