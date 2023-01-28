@@ -1,3 +1,4 @@
+import * as THREE from 'three'
 import { createGround } from '/utils/ground.js'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
@@ -34,6 +35,45 @@ scene.add(player.mesh)
 const rain = createRain()
 scene.add(rain)
 
+const UNITSIZE = 15
+const MOVESPEED = 10
+
+const enemies = []
+
+const textureLoader = new THREE.TextureLoader()
+
+function createEnemy({ x, z, size = UNITSIZE * .2 }) {
+  const geometry = new THREE.BoxGeometry(size, size, size)
+  const material = new THREE.MeshBasicMaterial({ map: textureLoader.load('images/face.png') })
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.position.set(x, UNITSIZE * .1, z)
+  mesh.pathPos = 1
+  mesh.lastRandomX = Math.random()
+  mesh.lastRandomZ = Math.random()
+  mesh.lastShot = Date.now()
+  return mesh
+}
+
+for (let i = 0; i < 5; i++) {
+  const mesh = createEnemy(map.randomEmptyPos)
+  enemies.push(mesh)
+  scene.add(mesh)
+}
+
+const moveEnemy = (enemy, delta) => {
+  const speed = delta * MOVESPEED
+  if (Math.random() > 0.995) {
+    enemy.lastRandomX = Math.random() * 2 - 1
+    enemy.lastRandomZ = Math.random() * 2 - 1
+  }
+  enemy.translateX(speed * enemy.lastRandomX)
+  enemy.translateZ(speed * enemy.lastRandomZ)
+}
+
+function updateEnemies(delta) {
+  enemies.forEach(enemy => moveEnemy(enemy, delta))
+}
+
 /* LOOP */
 
 void function animate() {
@@ -43,6 +83,7 @@ void function animate() {
 
   player.update(delta)
   updateRain({ particles: rain, minY: 0, maxY: 200 })
+  updateEnemies(delta)
 
   smallMapRenderer.render(player, map)
   fpsRenderer.render(time)

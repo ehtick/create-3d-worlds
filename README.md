@@ -12,11 +12,11 @@ npx live-server
 ### Scenes & examples
 
 - FPS
-  - spojiti Savo, fps i nemesis
+  - spojiti Savo i fps
   - fix Map2DRenderer u Savo
   - ostaviti decals rupe od metaka
   - srediti koliziju
-  - dodati NPC karaktere (vidi nemesis i ai modele)
+  - dodati NPC karaktere, možda duhove (vidi ai modele)
     - https://www.script-tutorials.com/demos/474/index3.html
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
