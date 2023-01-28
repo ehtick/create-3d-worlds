@@ -25,6 +25,7 @@ scene.add(walls)
 
 const player = new Savo()
 const { x, z } = map.randomEmptyPos
+console.log(x, z)
 player.mesh.position.set(x, 0, z)
 player.add(camera)
 player.addSolids(walls)

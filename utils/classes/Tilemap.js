@@ -9,7 +9,7 @@ function getFieldValue(matrix, x, z) {
 }
 
 export default class Tilemap {
-  constructor(matrix = randomMatrix(), cellSize = 250, origin) {
+  constructor(matrix = randomMatrix(), cellSize = 20, origin) {
     const defaultOrigin = {
       x: -matrix[0].length * cellSize / 2,
       z: -matrix.length * cellSize / 2

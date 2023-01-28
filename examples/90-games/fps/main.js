@@ -3,7 +3,7 @@ import { camera, scene, renderer, clock } from '/utils/scene.js'
 import { createMoon } from '/utils/light.js'
 import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
 import { addGraffitiCity } from '/utils/city.js'
-import FirstPersonControls from './FirstPersonControls.js'
+import PointerLockControls from './PointerLockControls.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { getCameraIntersects } from '/utils/helpers.js'
 
@@ -16,7 +16,7 @@ scene.fog = new THREE.FogExp2(0xF6F1D5, 0.0055)
 scene.add(createMoon())
 scene.background = new THREE.Color(0x070b34)
 
-const controls = new FirstPersonControls(camera)
+const controls = new PointerLockControls(camera)
 scene.add(controls.mesh)
 
 const fpsRenderer = new FPSRenderer({ targetY: 0.5 })

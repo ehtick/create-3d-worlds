@@ -12,10 +12,8 @@ npx live-server
 ### Scenes & examples
 
 - FPS
+  - fix Tilemap.randomEmptyPos
   - implementirati first person controls sa gledanjem na gore
-    - https://threejs.org/docs/#examples/en/controls/FirstPersonControls
-    - https://threejs.org/docs/#examples/en/controls/PointerLockControls
-    - https://threejs.org/examples/misc_controls_pointerlock.html
     - https://stackoverflow.com/questions/69360109/how-can-i-create-first-person-controls-in-react-three-fiber
     - https://youtu.be/oqKzxPMLWxo
     - možda rotateOnWorldAxis(axis: Vector3, angle: Float) ili lookAt()
