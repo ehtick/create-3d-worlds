@@ -4,7 +4,7 @@ import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
-import { getHeight } from '/utils/helpers.js'
+import { getHeight, mapRange } from '/utils/helpers.js'
 
 import IdleState from './states/IdleState.js'
 import RunState from './states/RunState.js'
@@ -111,6 +111,11 @@ export default class Player {
 
   get inAir() {
     return this.mesh.position.y - this.groundY > this.size * .2
+  }
+
+  /* map to canvas angle (for Map2DRenderer) */
+  get angle() {
+    return mapRange(-this.mesh.rotation.y, -Math.PI, Math.PI, Math.PI / 2, 2 * Math.PI + Math.PI / 2)
   }
 
   /* OTHER */

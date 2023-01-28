@@ -8,11 +8,12 @@ let initiallyRendered = false
 const shouldRender = () => keyboard.controlsPressed || !initiallyRendered
 
 export default class Map2DRenderer extends Canvas {
-  constructor(smallMap) {
+  constructor(tilemap) {
     super()
-    this.matrix = smallMap.matrix
-    this.cellSize = smallMap.cellSize
-    this.mapSize = smallMap.mapSize
+    this.tilemap = tilemap
+    this.matrix = tilemap.matrix
+    this.cellSize = tilemap.cellSize
+    this.mapSize = tilemap.mapSize
     this.width = this.height = this.matrix.length * this.cellSize
     this.show()
     document.addEventListener('keypress', this.toggleMap.bind(this))
@@ -60,17 +61,17 @@ export default class Map2DRenderer extends Canvas {
     this.drawPlayerOnMap(x, y, player.angle)
   }
 
-  drawPlayer(player, map) {
-    const pos = map.getRelativePos(player)
+  drawPlayer(player, tilemap = this.tilemap) {
+    const pos = tilemap.getRelativePos(player)
     const x = pos.x * this.mapSize + this.cellSize * .5
     const y = pos.y * this.mapSize + this.cellSize * .5
     this.drawPlayerOnMap(x, y, player.angle)
   }
 
-  render(player, map) {
+  render(player, tilemap = this.tilemap) {
     if (!shouldRender()) return
     this.drawMap()
-    this.drawPlayer(player, map)
+    this.drawPlayer(player, tilemap)
     initiallyRendered = true
   }
 }

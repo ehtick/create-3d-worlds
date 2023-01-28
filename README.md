@@ -13,6 +13,7 @@ npx live-server
 
 - FPS
   - spojiti Savo i fps
+    - prebaciti rikošet
   - fix Map2DRenderer u Savo
   - ostaviti decals rupe od metaka
   - srediti koliziju

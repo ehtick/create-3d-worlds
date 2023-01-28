@@ -3,9 +3,9 @@ import Tilemap from '/utils/classes/Tilemap.js'
 import Player2D from '/utils/classes/2d/Player2D.js'
 import Map2DRenderer from '/utils/classes/2d/Map2DRenderer.js'
 
-const smallMap = new Tilemap(matrix, 30)
-const player = new Player2D(smallMap)
-const mapRenderer = new Map2DRenderer(smallMap)
+const tilemap = new Tilemap(matrix, 30)
+const player = new Player2D(tilemap)
+const mapRenderer = new Map2DRenderer(tilemap)
 
 /* LOOP */
 

@@ -16,16 +16,15 @@ camera.position.z = 1
 const fpsRenderer = new FPSRenderer()
 
 const matrix = nemesis
-const map = new Tilemap(matrix, 20)
-const smallMap = new Tilemap(matrix, 20)
-const smallMapRenderer = new Map2DRenderer(smallMap)
+const tilemap = new Tilemap(matrix, 20)
+const map2DRenderer = new Map2DRenderer(tilemap)
 
 scene.add(createGround({ file: 'terrain/ground.jpg' }))
-const walls = map.meshFromMatrix()
+const walls = tilemap.meshFromMatrix()
 scene.add(walls)
 
 const player = new Savo()
-const { x, z } = map.randomEmptyPos
+const { x, z } = tilemap.randomEmptyPos
 
 player.mesh.position.set(x, 0, z)
 player.add(camera)
@@ -42,7 +41,16 @@ const enemies = []
 
 const textureLoader = new THREE.TextureLoader()
 
+for (let i = 0; i < 5; i++) {
+  const mesh = createEnemy(tilemap.randomEmptyPos)
+  enemies.push(mesh)
+  scene.add(mesh)
+}
+
+/* FUNCTIONS */
+
 function createEnemy({ x, z, size = UNITSIZE * .2 }) {
+  // TODO: reuse box
   const geometry = new THREE.BoxGeometry(size, size, size)
   const material = new THREE.MeshBasicMaterial({ map: textureLoader.load('images/face.png') })
   const mesh = new THREE.Mesh(geometry, material)
@@ -52,12 +60,6 @@ function createEnemy({ x, z, size = UNITSIZE * .2 }) {
   mesh.lastRandomZ = Math.random()
   mesh.lastShot = Date.now()
   return mesh
-}
-
-for (let i = 0; i < 5; i++) {
-  const mesh = createEnemy(map.randomEmptyPos)
-  enemies.push(mesh)
-  scene.add(mesh)
 }
 
 const moveEnemy = (enemy, delta) => {
@@ -76,6 +78,8 @@ function updateEnemies(delta) {
 
 /* LOOP */
 
+player.mesh.rotation.order = 'YZX'
+
 void function animate() {
   requestAnimationFrame(animate)
   const delta = clock.getDelta()
@@ -85,7 +89,7 @@ void function animate() {
   updateRain({ particles: rain, minY: 0, maxY: 200 })
   updateEnemies(delta)
 
-  smallMapRenderer.render(player, map)
+  map2DRenderer.render({ ...player.position, angle: player.angle })
   fpsRenderer.render(time)
   renderer.render(scene, camera)
 }()
