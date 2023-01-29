@@ -59,38 +59,7 @@ function createParticles({ num = 10000, file = 'ball.png', color, size = .5, opa
   return new THREE.Points(geometry, material)
 }
 
-function update({ particles, min = -300, max = 300, axis = 1, pos } = {}) {
-  const { geometry } = particles
-  if (!geometry.attributes.velocity) addVelocity({ geometry, min: 0.5, max: 3 })
-  const { position, velocity } = geometry.attributes
-
-  velocity.array.forEach((vel, i) => {
-    const index = 3 * i + axis // x: 0, y: 1, z: 2
-    const value = position.array[index]
-    if (axis === 1) // move y
-      position.array[index] = value < min ? max : value - vel
-    if (axis === 2) // move z
-      position.array[index] = value > max ? min : value + vel
-  })
-
-  position.needsUpdate = true
-  if (pos) particles.position.set(pos.x, 0, pos.z) // follow player
-}
-
-function updateRain({ particles, min = -300, max = 300, axis = 1, ...rest } = {}) {
-  update({ particles, min, max, axis, ...rest })
-}
-
-function updateStars({ particles, min = -500, max = 500, axis = 2, ...rest } = {}) {
-  update({ particles, min, max, axis, ...rest })
-}
-
-function updateSnow({ particles, rotateY = .003, ...rest } = {}) {
-  updateRain({ particles, ...rest })
-  particles.rotateY(rotateY)
-}
-
-/* CLASS */
+/* BASE CLASS */
 
 export default class Particles {
   constructor(params) {
@@ -129,7 +98,42 @@ export default class Particles {
     particles.geometry.attributes.position.needsUpdate = true
   }
 
-  update(params) {
-    updateStars({ particles: this.particles, ...params })
+  update({ min = -500, max = 500, axis = 2, pos } = {}) {
+    const { geometry } = this.particles
+    if (!geometry.attributes.velocity) addVelocity({ geometry, min: 0.5, max: 3 })
+    const { position, velocity } = geometry.attributes
+
+    velocity.array.forEach((vel, i) => {
+      const index = 3 * i + axis // x: 0, y: 1, z: 2
+      const value = position.array[index]
+      if (axis === 1) // move y
+        position.array[index] = value < min ? max : value - vel
+      if (axis === 2) // move z
+        position.array[index] = value > max ? min : value + vel
+    })
+
+    position.needsUpdate = true
+    if (pos) this.particles.position.set(pos.x, 0, pos.z) // follow player
+  }
+}
+
+/* CHILD CLASSES */
+
+export class Stars extends Particles {
+  update({ min = -500, max = 500, axis = 2, ...rest } = {}) {
+    super.update({ min, max, axis, ...rest })
+  }
+}
+
+export class Rain extends Particles {
+  update({ min = -300, max = 300, axis = 1, ...rest } = {}) {
+    super.update({ min, max, axis, ...rest })
+  }
+}
+
+export class Snow extends Rain {
+  update({ rotateY = .003, ...rest } = {}) {
+    super.update({ ...rest })
+    this.particles.rotateY(rotateY)
   }
 }
