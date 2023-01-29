@@ -71,33 +71,33 @@ export default class Particles {
     const { particles } = this
     this.t = 0
     particles.visible = true
-
     setPosition(particles, pos)
 
-    const { array } = particles.geometry.attributes.position
-    for (let i = 0, l = array.length; i < l; i++)
-      array[i] = randFloat(-unitAngle, unitAngle)
+    const { position } = particles.geometry.attributes
+    for (let i = 0, l = position.array.length; i < l; i++)
+      position.array[i] = randFloat(-unitAngle, unitAngle)
 
-    particles.geometry.attributes.position.needsUpdate = true
+    position.needsUpdate = true
   }
 
-  expand({ scalar = 1.1, maxRounds = 50, gravity = 0 } = {}) { // scalar < 1 reverse direction
+  expand({ scalar = 1.1, maxRounds = 50, gravity = 0 } = {}) { // scalar < 1 reverses direction
     const { particles } = this
     if (++this.t > maxRounds) {
       particles.visible = false
       return
     }
+
     particles.material.opacity = 1 - this.t / maxRounds
     const { position } = particles.geometry.attributes
 
-    for (let i = 0, l = position.array.length; i < l; i += 3) {
-      const vertex = new THREE.Vector3(position.array[i], position.array[i + 1], position.array[i + 2])
+    const vertex = new THREE.Vector3()
+    for (let i = 0, l = position.count; i < l; i ++) {
+      vertex.fromBufferAttribute(position, i)
       vertex.multiplyScalar(scalar)
       vertex.y -= gravity
-      position.array[i] = vertex.x
-      position.array[i + 1] = vertex.y
-      position.array[i + 2] = vertex.z
+      position.setXYZ(i, vertex.x, vertex.y, vertex.z)
     }
+
     position.needsUpdate = true
   }
 

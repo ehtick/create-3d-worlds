@@ -100,7 +100,7 @@ export default class Thrust {
     this.particles = []
   }
 
-  update(dt, { velocity }) {
+  update(dt, { velocity } = {}) {
     this.addParticles(dt, velocity)
     this.updateParticles(dt)
   }
