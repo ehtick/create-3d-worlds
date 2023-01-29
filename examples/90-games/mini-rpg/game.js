@@ -23,7 +23,7 @@ res = await loadModel({ file: 'animal/flamingo.glb', size: 60, shouldCenter: tru
 for (let i = 0; i < BIRDS; i++)
   game.addEntity(new Bird(res))
 
-res = await loadModel({ file: 'castle/wizard-isle/scene.gltf', size: 200, shouldCenter: true, shouldAdjustHeight: true })
+res = await loadModel({ file: 'building/castle/magic-castle.fbx', size: 200, shouldCenter: true, shouldAdjustHeight: true })
 const castle = new Entity(res.mesh)
 castle.name = 'vilage'
 game.randomPlaceEntity(castle)
@@ -40,7 +40,7 @@ res = await loadModel({ file: 'building/mine/scene.gltf', size: 60 })
 for (let i = 0; i < MINES; i++)
   game.randomPlaceEntity(new Mine(res.mesh))
 
-res = await loadModel({ file: 'cloud/scene.gltf', size: 2 })
+res = await loadModel({ file: 'cloud/Cloud3.glb', size: 2 })
 for (let i = 0; i < CLOUDS; i++)
   game.addEntity(new Cloud(res.mesh))
 
