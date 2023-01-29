@@ -12,7 +12,7 @@ npx live-server
 ### Scenes & examples
 
 - Savo
-  - dodati rikošet
+  - dodati (i srediti) rikošet
   - dodati decals rupe od metaka
   - srediti koliziju
   - dodati NPC karaktere, možda duhove (vidi ai modele)
