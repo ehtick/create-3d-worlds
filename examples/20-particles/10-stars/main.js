@@ -1,11 +1,11 @@
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { createParticles } from '/utils/particles.js'
+import Particles from '/utils/classes/Particles.js'
 
 renderer.setClearColor(0x000000)
 createOrbitControls()
 
-const stars = createParticles()
-scene.add(stars)
+const stars = new Particles()
+scene.add(stars.particles)
 
 /* LOOP */
 

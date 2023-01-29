@@ -9,6 +9,9 @@ npm i
 npx live-server
 ```
 
+- refactorisati particles u klasu, zbog varijable t (prvo napraviti novi fajl, no breaking changes)
+- ažurirati svako pojavljivanje
+
 ### Scenes & examples
 
 - Savo
@@ -22,6 +25,7 @@ npx live-server
   - dodati tenk kako prolazi
   - dodati munje https://threejs.org/examples/?q=light#webgl_lightningstrike
   - odlučiti između pointer lock i Savo kontrola
+    - možda da se kursor pomera na ondrag
 
 - Svemir 
   - dodati model ring space-arcology

@@ -71,8 +71,10 @@ export function expandParticles({ particles, scalar, maxRounds = 50, gravity = 0
 export function resetParticles({ particles, pos = [0, 0, 0], unitAngle = 1 } = {}) {
   t = 0
   particles.visible = true
+
   if (Array.isArray(pos)) particles.position.set(...pos)
   else particles.position.copy(pos)
+
   const { array } = particles.geometry.attributes.position
   for (let i = 0, l = array.length; i < l; i++)
     array[i] = randFloat(-unitAngle, unitAngle)
@@ -139,8 +141,7 @@ export function updateRain({ particles, min = -300, max = 300, pos } = {}) {
 
   velocity.array.forEach((vel, i) => {
     const yIndex = 3 * i + 1
-    const newY = position.array[yIndex] - vel
-    position.array[yIndex] = (position.array[yIndex] < min) ? max : newY
+    position.array[yIndex] = (position.array[yIndex] < min) ? max : position.array[yIndex] - vel
   })
 
   position.needsUpdate = true
@@ -159,10 +160,9 @@ export function updateStars({ particles, min = -500, max = 500 } = {}) {
 
   velocity.array.forEach((vel, i) => {
     const zIndex = 3 * i + 2
-    position.array[zIndex] += vel
-    if (position.array[zIndex] > max)
-      position.array[zIndex] = min
+    position.array[zIndex] = (position.array[zIndex] > max) ? min : position.array[zIndex] + vel
   })
+
   position.needsUpdate = true
   particles.rotateZ(.001)
 }
