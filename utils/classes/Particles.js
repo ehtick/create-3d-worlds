@@ -104,11 +104,11 @@ export default class Particles {
     const { position, velocity } = geometry.attributes
 
     velocity.array.forEach((vel, i) => {
-      const index = 3 * i + axis // x: 0, y: 1, z: 2
+      const index = 3 * i + axis
       const value = position.array[index]
-      if (axis === 1) // move y
+      if (axis === 1) // move on y axis
         position.array[index] = value < min ? max : value - vel
-      if (axis === 2) // move z
+      if (axis === 2) // move on z axis
         position.array[index] = value > max ? min : value + vel
     })
 
@@ -120,20 +120,24 @@ export default class Particles {
 /* CHILD CLASSES */
 
 export class Stars extends Particles {
-  update({ min = -500, max = 500, axis = 2, ...rest } = {}) {
-    super.update({ min, max, axis, ...rest })
+  update({ min = -500, max = 500, ...rest } = {}) {
+    super.update({ min, max, axis: 2, ...rest })
   }
 }
 
 export class Rain extends Particles {
-  update({ min = -300, max = 300, axis = 1, ...rest } = {}) {
-    super.update({ min, max, axis, ...rest })
+  constructor({ file = 'raindrop.png', num = 10000, size = .7, opacity = 0.8, minRange = 50, maxRange = 500, color = 0x9999ff } = {}) {
+    super({ file, num, size, opacity, minRange, maxRange, color, blending: THREE.NormalBlending })
+  }
+
+  update({ min = -300, max = 300, ...rest } = {}) {
+    super.update({ min, max, axis: 1, ...rest })
   }
 }
 
 export class Snow extends Rain {
-  constructor({ file = 'snowflake.png', size = 5, color = 0xffffff } = {}) {
-    super({ file, size, color })
+  constructor({ file = 'snowflake.png', size = 5, color = 0xffffff, ...rest } = {}) {
+    super({ file, size, color, ...rest })
   }
 
   update({ rotateY = .003, ...rest } = {}) {

@@ -1,6 +1,5 @@
 import { scene, camera, renderer } from '/utils/scene.js'
 import { hemLight } from '/utils/light.js'
-// import { createSnow, updateSnow } from '/utils/particles.js'
 import { Snow } from '/utils/classes/Particles.js'
 
 hemLight()

@@ -1,17 +1,17 @@
 import { scene, camera, renderer } from '/utils/scene.js'
-import { createRain, updateRain } from '/utils/particles.js'
 import { hemLight } from '/utils/light.js'
+import { Rain } from '/utils/classes/Particles.js'
 
 hemLight()
 renderer.setClearColor(0x000000)
 
-const rain = createRain()
-scene.add(rain)
+const rain = new Rain()
+scene.add(rain.particles)
 
 /* LOOP */
 
 void function animate() {
-  updateRain({ particles: rain, minY: -300, maxY: 300 })
+  rain.update()
   renderer.render(scene, camera)
   requestAnimationFrame(animate)
 }()
