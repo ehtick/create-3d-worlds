@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 import { putOnTerrain, checkIntersect } from '/utils/helpers.js'
-import { hemLight, dirLight } from '/utils/light.js'
+import { createSun } from '/utils/light.js'
 import { createHillyTerrain, createWater } from '/utils/ground.js'
 import Tree from './Tree.js'
 
@@ -60,11 +60,6 @@ class GameEngine {
       self.renderer.render(self.scene, camera)
       self.elapsed = self.clock.getElapsedTime()
     }()
-  }
-
-  scene.add(createSun()) {
-    dirLight({ color: 0xffffcc })
-    hemLight({ color: 0xffffcc, intensity: .6 })
   }
 
   pause() {
