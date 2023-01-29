@@ -1,6 +1,5 @@
 import { createGround } from '/utils/ground.js'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
-import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import Map2DRenderer from '/utils/classes/2d/Map2DRenderer.js'
 import Savo from '/utils/fsm/Savo.js'
 import Tilemap from '/utils/classes/Tilemap.js'
@@ -10,8 +9,6 @@ import { nemesis } from '/data/maps.js'
 import Enemy from '/utils/classes/Enemy.js'
 
 hemLight()
-
-const fpsRenderer = new FPSRenderer()
 
 const tilemap = new Tilemap(nemesis, 20)
 const map2DRenderer = new Map2DRenderer(tilemap)
@@ -48,6 +45,5 @@ void function animate() {
   enemies.forEach(enemy => enemy.update(delta))
 
   map2DRenderer.render(player)
-  fpsRenderer.render()
   renderer.render(scene, camera)
 }()
