@@ -1,17 +1,18 @@
 import { scene, camera, renderer } from '/utils/scene.js'
-import { createSnow, updateSnow } from '/utils/particles.js'
 import { hemLight } from '/utils/light.js'
+// import { createSnow, updateSnow } from '/utils/particles.js'
+import { Snow } from '/utils/classes/Particles.js'
 
 hemLight()
 renderer.setClearColor(0x000000)
 
-const snow = createSnow()
-scene.add(snow)
+const snow = new Snow()
+scene.add(snow.particles)
 
 /* LOOP */
 
 void function animate() {
-  updateSnow({ particles: snow, minY: -300, maxY: 300 })
+  snow.update()
   renderer.render(scene, camera)
   requestAnimationFrame(animate)
 }()

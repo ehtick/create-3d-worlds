@@ -132,6 +132,10 @@ export class Rain extends Particles {
 }
 
 export class Snow extends Rain {
+  constructor({ file = 'snowflake.png', size = 5, color = 0xffffff } = {}) {
+    super({ file, size, color })
+  }
+
   update({ rotateY = .003, ...rest } = {}) {
     super.update({ ...rest })
     this.particles.rotateY(rotateY)
