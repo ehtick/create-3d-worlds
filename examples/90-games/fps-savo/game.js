@@ -39,7 +39,7 @@ void function animate() {
   const delta = clock.getDelta()
 
   player.update(delta)
-  updateRain({ particles: rain, minY: 0, maxY: 200 })
+  updateRain({ particles: rain, minY: 0, maxY: 200, pos: player.position })
   enemies.forEach(enemy => enemy.update(delta))
 
   smallMapRenderer.render(player)

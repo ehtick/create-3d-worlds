@@ -132,7 +132,7 @@ function addVelocity({ geometry, min = .5, max = 3 } = {}) {
   geometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 1))
 }
 
-export function updateRain({ particles, min = -300, max = 300 } = {}) {
+export function updateRain({ particles, min = -300, max = 300, pos } = {}) {
   const { geometry } = particles
   if (!geometry.attributes.velocity) addVelocity({ geometry, min: 0.5, max: 3 })
   const { position, velocity } = geometry.attributes
@@ -144,6 +144,7 @@ export function updateRain({ particles, min = -300, max = 300 } = {}) {
   })
 
   position.needsUpdate = true
+  if (pos) particles.position.set(pos.x, 0, pos.z) // follow player
 }
 
 export function updateSnow({ rotateY = .003, ...params } = {}) {

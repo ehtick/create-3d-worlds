@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo
-  - kiša da prati igraca
   - dodati (i srediti) rikošet
   - dodati decals rupe od metaka
   - dodati pucanje
