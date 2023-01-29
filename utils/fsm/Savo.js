@@ -11,9 +11,11 @@ export default class Savo extends Player {
     this.maxVelocityY = .2
     this.minVelocityY = -this.maxVelocityY
     this.mouseSensitivity = .05
+    this.mousemove = mousemove
 
     this.fpsRenderer = new FPSRenderer()
     this.camera = camera
+    camera.position.set(0, size, size / 2)
     camera.rotation.set(0, 0, 0)
     this.mesh.add(camera)
 
@@ -27,8 +29,15 @@ export default class Savo extends Player {
     this.camera.rotation.x = Math.max(-0.1, Math.min(Math.PI / 4, this.camera.rotation.x))
   }
 
+  lookAtFront() {
+    const target = this.mesh.position.clone()
+    target.y = this.mesh.position.y + this.size
+    this.camera.lookAt(target)
+  }
+
   update(delta) {
     super.update(delta)
     this.fpsRenderer.render()
+    if (!this.mousemove) this.lookAtFront()
   }
 }

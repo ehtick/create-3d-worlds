@@ -12,17 +12,17 @@ npx live-server
 ### Scenes & examples
 
 - Savo
+  - kiša da prati igraca
   - dodati (i srediti) rikošet
   - dodati decals rupe od metaka
+  - dodati pucanje
   - srediti koliziju
   - dodati NPC karaktere, možda duhove (vidi ai modele)
     - https://www.script-tutorials.com/demos/474/index3.html
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - dodati munje https://threejs.org/examples/?q=light#webgl_lightningstrike
-  - dodati pucanje
-  - kiša da prati igraca
-  - odlučiti između fps i Savo kontrola
+  - odlučiti između pointer lock i Savo kontrola
 
 - Svemir 
   - dodati model ring space-arcology
@@ -34,7 +34,7 @@ npx live-server
   - dodati proceduralnu planetu http://colordodge.com/ProceduralPlanet/?seed=Ridi%20Genow
   - mozda iskoristiti astronauta da luta po planeti https://codepen.io/b29/pen/LoaRKx
 
-- Fantasy scena
+- Fantasy world
   - dodati modele (vidi rad-sa-modelima)
   - cepelin u vazduhu (vinci aerial screw, santos dumont airship)
   - karakter dolazi do kuće i ulazi (vidi 50-rad-sa-modelima/35-kuca-unutrasnost)
@@ -45,22 +45,25 @@ npx live-server
   - dodati izbor aviona
   - dodati drveće
   - dodati objekte
+  - pucanje i eksplozije
 
 Tenk (Vozilo)
-- tenk da se trese kada ide
-- vozilo da se okreću točkovi kada ide
-- ispitati modele, jel moguće upravljati točkovima, kupolom ili nečim
-- ide kroz ratnu scenu (spaljene zgrade) i ruši stvari
+  - tenk da se trese kada ide
+  - vozilo da se okreću točkovi kada ide
+  - ispitati modele, jel moguće upravljati točkovima, kupolom ili nečim
+  - ide kroz ratnu scenu (spaljene zgrade) i ruši stvari
 
 - Endless runner
   - probati konja ili dabra
 
 - Partizani
   - napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
+  - junior general slike
+  - borba (vidi slike partizana animaciju staru)
 
 ### Polishing
 
-- toon-shader
+- dodati svuda toon-shader gde se slaže
   https://www.maya-ndljk.com/blog/threejs-basic-toon-shader
   https://summer-afternoon.vlucendo.com/
 - dodati UI komande redom
@@ -71,7 +74,11 @@ Tenk (Vozilo)
 - probati VR
   - https://threejs.org/docs/#manual/en/introduction/How-to-create-VR-content
   - https://ski-mountain-vr.herokuapp.com/
-- dodati preloader (ima u 3D-RPG-Game-With-THREE.js)
+- dodati preloader po potrebi
+
+### Publish
+- srediti root-relativne linkove da rade u podfolderu
+- možda build proces, minifikacija, i sl.
 
 ## Helpers
 
