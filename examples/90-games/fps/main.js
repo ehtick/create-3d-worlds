@@ -25,11 +25,9 @@ const fpsRenderer = new FPSRenderer({ targetY: 0.5 })
 
 function shoot() {
   const intersects = getCameraIntersects(camera)
-  if (intersects.length) // TODO: ako je preblizu (intersects[0].point) da ne puca
-  {
-    console.log(controls.mesh.position.distanceTo (intersects[0].point))
+  // BUG: intersects hvata ricochet!
+  if (intersects.length)
     ricochet.reset({ pos: intersects[0].point, unitAngle: 0.2 })
-  }
 }
 
 /* LOOP */
@@ -46,7 +44,7 @@ void function loop() {
   fpsRenderer.renderTarget()
   fpsRenderer.drawWeapon(time)
 
-  ricochet.expand({ particles: ricochet, scalar: 1.2, maxRounds: 5, gravity: .02 })
+  ricochet.expand({ scalar: 1.2, maxRounds: 5, gravity: .02 })
 }()
 
 await addGraffitiCity({ scene, mapSize })

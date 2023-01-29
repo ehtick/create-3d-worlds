@@ -9,13 +9,10 @@ npm i
 npx live-server
 ```
 
-- refactorisati particles u klasu, zbog varijable t (prvo napraviti novi fajl, no breaking changes)
-- ažurirati svako pojavljivanje
-
 ### Scenes & examples
 
 - Savo
-  - dodati (i srediti) rikošet
+  - srediti rikošet
   - dodati decals rupe od metaka
   - dodati pucanje
   - srediti koliziju
