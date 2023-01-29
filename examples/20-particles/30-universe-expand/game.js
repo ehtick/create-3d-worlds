@@ -15,13 +15,13 @@ const material = new THREE.SpriteMaterial({
 
 for (let i = 0; i < 1000; i++) {
   const particle = new THREE.Sprite(material)
-  tweenParticle(particle, i * 10)
+  setTween(particle, i * 10)
   scene.add(particle)
 }
 
 /* FUNCTIONS */
 
-function tweenParticle(particle, delay = 0) {
+function setTween(particle, delay, duration = 10000) {
   particle.scale.x = particle.scale.y = randFloat(16, 48)
 
   new TWEEN.Tween(particle.position)
@@ -30,7 +30,7 @@ function tweenParticle(particle, delay = 0) {
       x: randInt(-2000, 2000),
       y: randInt(-500, 500),
       z: randInt(-2000, 2000)
-    }, 10000)
+    }, duration)
     .start()
 }
 

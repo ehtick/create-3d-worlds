@@ -67,25 +67,8 @@ export default class Particles {
     this.particles = createParticles(params)
   }
 
-  expand({ particles, scalar, maxRounds = 50, gravity = 0 } = {}) {
-    if (++this.t > maxRounds) {
-      particles.visible = false
-      return
-    }
-    particles.material.opacity = 1 - this.t / maxRounds
-    const { array } = particles.geometry.attributes.position
-    for (let i = 0, l = array.length; i < l; i += 3) {
-      const vertex = new THREE.Vector3(array[i], array[i + 1], array[i + 2])
-      vertex.multiplyScalar(scalar)
-      vertex.y -= gravity
-      array[i] = vertex.x
-      array[i + 1] = vertex.y
-      array[i + 2] = vertex.z
-    }
-    particles.geometry.attributes.position.needsUpdate = true
-  }
-
-  reset({ particles, pos = [0, 0, 0], unitAngle = 1 } = {}) {
+  reset({ pos = [0, 0, 0], unitAngle = 1 } = {}) {
+    const { particles } = this
     this.t = 0
     particles.visible = true
 
@@ -96,6 +79,26 @@ export default class Particles {
       array[i] = randFloat(-unitAngle, unitAngle)
 
     particles.geometry.attributes.position.needsUpdate = true
+  }
+
+  expand({ scalar = 1.1, maxRounds = 50, gravity = 0 } = {}) { // scalar < 1 reverse direction
+    const { particles } = this
+    if (++this.t > maxRounds) {
+      particles.visible = false
+      return
+    }
+    particles.material.opacity = 1 - this.t / maxRounds
+    const { position } = particles.geometry.attributes
+
+    for (let i = 0, l = position.array.length; i < l; i += 3) {
+      const vertex = new THREE.Vector3(position.array[i], position.array[i + 1], position.array[i + 2])
+      vertex.multiplyScalar(scalar)
+      vertex.y -= gravity
+      position.array[i] = vertex.x
+      position.array[i + 1] = vertex.y
+      position.array[i + 2] = vertex.z
+    }
+    position.needsUpdate = true
   }
 
   update({ min = -500, max = 500, axis = 2, pos } = {}) {
@@ -143,5 +146,11 @@ export class Snow extends Rain {
   update({ rotateY = .003, ...rest } = {}) {
     super.update({ ...rest })
     this.particles.rotateY(rotateY)
+  }
+}
+
+export class Explosion extends Particles {
+  constructor({ num = 30, file = 'fireball.png', size = .4, unitAngle = 0.1, ...rest } = {}) {
+    super({ num, file, size, unitAngle, ...rest })
   }
 }

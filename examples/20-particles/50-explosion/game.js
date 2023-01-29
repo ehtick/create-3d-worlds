@@ -1,17 +1,17 @@
 import { scene, camera, renderer } from '/utils/scene.js'
-import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
 import { mouseToWorld } from '/utils/helpers.js'
+import { Explosion } from '/utils/classes/Particles.js'
 
 renderer.setClearColor(0x000000)
 
-const particles = createParticles({ num: 30, file: 'fireball.png', size: 0.4, unitAngle: 0.1 })
-scene.add(particles)
+const explosion = new Explosion()
+scene.add(explosion.particles)
 
 /* LOOP */
 
 void function render() {
   renderer.render(scene, camera)
-  expandParticles({ particles, scalar: 1.1 }) // scalar < 1 vraća unazad
+  explosion.expand({ scalar: 1.1 })
   requestAnimationFrame(render)
 }()
 
@@ -19,5 +19,5 @@ void function render() {
 
 document.addEventListener('click', e => {
   const { x, y, z } = mouseToWorld(e, camera)
-  resetParticles({ particles, pos: [x, y, z], unitAngle: 0.1 })
+  explosion.reset({ pos: [x, y, z], unitAngle: 0.1 })
 })
