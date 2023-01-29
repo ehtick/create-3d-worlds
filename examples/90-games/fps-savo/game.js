@@ -11,7 +11,7 @@ import Enemy from '/utils/classes/Enemy.js'
 hemLight()
 
 const tilemap = new Tilemap(nemesis, 20)
-const map2DRenderer = new Map2DRenderer(tilemap)
+const smallMapRenderer = new Map2DRenderer(tilemap)
 
 scene.add(createGround({ file: 'terrain/ground.jpg' }))
 const walls = tilemap.meshFromMatrix()
@@ -34,8 +34,6 @@ for (let i = 0; i < 5; i++) {
 
 /* LOOP */
 
-player.mesh.rotation.order = 'YZX'
-
 void function animate() {
   requestAnimationFrame(animate)
   const delta = clock.getDelta()
@@ -44,6 +42,6 @@ void function animate() {
   updateRain({ particles: rain, minY: 0, maxY: 200 })
   enemies.forEach(enemy => enemy.update(delta))
 
-  map2DRenderer.render(player)
+  smallMapRenderer.render(player)
   renderer.render(scene, camera)
 }()

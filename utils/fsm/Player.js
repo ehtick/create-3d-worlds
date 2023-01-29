@@ -115,7 +115,8 @@ export default class Player {
 
   /* map to canvas angle (for Map2DRenderer) */
   get angle() {
-    return mapRange(-this.mesh.rotation.y, -Math.PI, Math.PI, Math.PI / 2, 2 * Math.PI + Math.PI / 2)
+    this.mesh.rotation.order = 'YZX' // rotate y full circle
+    return mapRange(-this.mesh.rotation.y, -Math.PI, Math.PI, 0, 2 * Math.PI) + Math.PI / 2
   }
 
   /* OTHER */
