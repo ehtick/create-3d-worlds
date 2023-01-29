@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import { camera, scene, renderer } from '/utils/scene.js'
 import { createMoon, createJupiter } from '/utils/geometry/planets.js'
-import { createTerrain, wave, shake } from '/utils/ground.js'
-import { createStars, updateStars } from '/utils/particles.js'
+import { createTerrain, wave } from '/utils/ground.js'
+import { Stars } from '/utils/classes/Particles.js'
 
 scene.background = new THREE.Color(0x000000)
 camera.position.set(0, 9, 32)
@@ -25,8 +25,8 @@ const terrain = createTerrain() // { colorParam: 'purple' }
 terrain.material.wireframe = true
 scene.add(terrain)
 
-const stars = createStars({ num: 1000 })
-scene.add(stars)
+const stars = new Stars({ num: 1000 })
+scene.add(stars.particles)
 
 /* FUNCTIONS */
 
@@ -45,7 +45,7 @@ void function loop() {
   planet.rotation.y += 0.002
   orbit(moon, t)
   wave({ geometry: terrain.geometry, time: t }) // shake
-  updateStars({ particles: stars })
+  stars.update()
 
   t += 0.015
   renderer.render(scene, camera)

@@ -3,7 +3,7 @@ import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { createBox } from '/utils/geometry.js'
 import Lander from './Lander.js'
-import { createStars } from '/utils/particles.js'
+import { Stars } from '/utils/classes/Particles.js'
 
 const stats = document.getElementById('stats')
 
@@ -39,8 +39,8 @@ scene.add(platform)
 
 const lander = new Lander(landerMesh)
 
-const stars = createStars({ size: 5 })
-scene.add(stars)
+const stars = new Stars()
+scene.add(stars.particles)
 
 /* LOOP */
 

@@ -2,12 +2,11 @@ import * as THREE from 'three'
 import { camera, scene, renderer, clock, addScoreUI } from '/utils/scene.js'
 import { createBall, createWorldSphere } from '/utils/geometry.js'
 import { createFir } from '/utils/geometry/trees.js'
-import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
 import { hemLight } from '/utils/light.js'
 import keyboard from '/utils/classes/Keyboard.js'
-import { roll } from '/utils/helpers.js'
+import Particles from '/utils/classes/Particles.js'
 
-const { randFloat } = THREE.MathUtils
+const { randFloat, randInt } = THREE.MathUtils
 const { random } = Math
 
 const heroSpeed = 4
@@ -45,8 +44,8 @@ const earth = createWorldSphere({ r: worldRadius })
 earth.position.set(0, -24, 2)
 scene.add(earth)
 
-const particles = createParticles({ num: 50, size: 0.07, unitAngle: 0.1 })
-scene.add(particles)
+const explosion = new Particles({ num: 50, size: 0.07, unitAngle: 0.1 })
+scene.add(explosion.particles)
 
 for (let i = 0; i < treesInPool; i++)
   treesPool.push(createFir({ size: 1 }))
@@ -90,17 +89,17 @@ function addTree(tree, spherical) {
 
 function addTreeOrTwo() {
   const available = [0, 1, 2]
-  const lane = roll(2)
+  const lane = randInt(0, 2)
   addLaneTree(lane)
   available.splice(lane, 1)
   if (random() > 0.5) {
-    const anotherLane = roll(1)
+    const anotherLane = randInt(0, 1)
     addLaneTree(available[anotherLane])
   }
 }
 
 const hit = tree => {
-  resetParticles({ particles, pos: [player.position.x, 2, 4.8], unitAngle: 0.2 })
+  explosion.reset({ pos: [player.position.x, 2, 4.8], unitAngle: 0.2 })
   updateScore()
   tree.visible = false
   setTimeout(() => {
@@ -168,7 +167,7 @@ void function update() {
     addTreeOrTwo()
   }
   updateTrees()
-  expandParticles({ particles, scalar: 1.1 })
+  explosion.expand()
   renderer.render(scene, camera)
   requestAnimationFrame(update)
 }()

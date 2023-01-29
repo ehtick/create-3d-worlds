@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import Entity from './Entity.js'
-import { rndInt, roll } from '/utils/helpers.js'
+import { rndInt, roll } from '../utils/helpers.js'
 
 export default class Cloud extends Entity {
   constructor(model) {

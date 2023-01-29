@@ -1,16 +1,16 @@
 import * as THREE from 'three'
 import { camera, scene, renderer, clock } from '/utils/scene.js'
 import { createMoon } from '/utils/light.js'
-import { createParticles, resetParticles, expandParticles } from '/utils/particles.js'
 import { addGraffitiCity } from '/utils/city.js'
 import PointerLockControls from './PointerLockControls.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { getCameraIntersects } from '/utils/helpers.js'
+import Particles from '/utils/classes/Particles.js'
 
 const mapSize = 200
 
-const ricochet = createParticles({ num: 100, size: .05, unitAngle: 0.2 })
-scene.add(ricochet)
+const ricochet = new Particles({ num: 100, size: .05, unitAngle: 0.2 })
+scene.add(ricochet.particles)
 
 scene.fog = new THREE.FogExp2(0xF6F1D5, 0.0055)
 scene.add(createMoon())
@@ -28,7 +28,7 @@ function shoot() {
   if (intersects.length) // TODO: ako je preblizu (intersects[0].point) da ne puca
   {
     console.log(controls.mesh.position.distanceTo (intersects[0].point))
-    resetParticles({ particles: ricochet, pos: intersects[0].point, unitAngle: 0.2 })
+    ricochet.reset({ pos: intersects[0].point, unitAngle: 0.2 })
   }
 }
 
@@ -46,7 +46,7 @@ void function loop() {
   fpsRenderer.renderTarget()
   fpsRenderer.drawWeapon(time)
 
-  expandParticles({ particles: ricochet, scalar: 1.2, maxRounds: 5, gravity: .02 })
+  ricochet.expand({ particles: ricochet, scalar: 1.2, maxRounds: 5, gravity: .02 })
 }()
 
 await addGraffitiCity({ scene, mapSize })

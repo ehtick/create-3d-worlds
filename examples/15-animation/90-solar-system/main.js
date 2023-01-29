@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { scene, renderer, addUIControls, createOrbitControls } from '/utils/scene.js'
-import { createDistantStars } from '/utils/particles.js'
+import { createStarSphere } from '/utils/particles.js'
 import { createEarth, createMoon, createSun } from '/utils/geometry/planets.js'
 
 createOrbitControls()
@@ -33,7 +33,7 @@ moon.position.set(0, 100, 0)
 const moonGroup = createMoonGroup(moon, earthToMoonCamera)
 earth.add(moonGroup)
 
-scene.add(createDistantStars({ num: 10000, r: 1000, size: 3, file: null }))
+scene.add(createStarSphere({ num: 10000, r: 1000, size: 3, file: null }))
 
 /* FUNCTIONS */
 

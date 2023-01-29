@@ -10,9 +10,6 @@ const raycaster = new THREE.Raycaster()
 export const mapRange = (number, inMin, inMax, outMin, outMax) =>
   (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
 
-/* random int between two values, <= max (max inclusive) */
-export const roll = (max, min = 0) => Math.floor(Math.random() * (max - min + 1) + min)
-
 /* return 2D vector { x, z } */
 export function randomInCircle(radius, emptyCenter = 0) {
   const random = emptyCenter ? randFloat(emptyCenter, 1) : Math.random()

@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 import Entity from './Entity.js'
-import {rndInt, roll} from '/utils/helpers.js'
+import { rndInt, roll } from '../utils/helpers.js'
 
 export default class Arrow extends Entity {
   constructor(data) {
