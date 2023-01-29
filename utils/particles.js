@@ -146,9 +146,9 @@ export function updateRain({ particles, min = -300, max = 300 } = {}) {
   position.needsUpdate = true
 }
 
-export function updateSnow({ particles, min = -300, max = 300, rotateY = .003 } = {}) {
-  updateRain({ particles, min, max })
-  particles.rotateY(rotateY)
+export function updateSnow({ rotateY = .003, ...params } = {}) {
+  updateRain(params)
+  params.particles.rotateY(rotateY)
 }
 
 export function updateStars({ particles, min = -500, max = 500 } = {}) {

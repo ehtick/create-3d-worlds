@@ -1,5 +1,6 @@
-import { scene, camera, renderer, hemLight } from '/utils/scene.js'
+import { scene, camera, renderer } from '/utils/scene.js'
 import { createSnow, updateSnow } from '/utils/particles.js'
+import { hemLight } from '/utils/light.js'
 
 hemLight()
 renderer.setClearColor(0x000000)
