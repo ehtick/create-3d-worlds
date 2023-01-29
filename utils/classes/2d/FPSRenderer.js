@@ -3,6 +3,8 @@ import keyboard from '../Keyboard.js'
 
 const targetSrc = '/assets/images/crosshair.png'
 
+let time = 0
+
 export default class FPSRenderer extends Canvas {
   constructor({ weaponSrc = '/assets/images/savo.png', targetY = 0.5 } = {}) {
     super()
@@ -59,7 +61,7 @@ export default class FPSRenderer extends Canvas {
     this.handleLoad(this.targetImg, targetSrc, 'drawFixedTarget')
   }
 
-  render(elapsedTime) {
+  render(elapsedTime = time += .016) {
     this.clear()
     this.drawWeapon(elapsedTime)
     this.drawTarget(elapsedTime)

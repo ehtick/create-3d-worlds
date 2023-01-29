@@ -42,13 +42,12 @@ player.mesh.rotation.order = 'YZX'
 void function animate() {
   requestAnimationFrame(animate)
   const delta = clock.getDelta()
-  const elapsed = clock.getElapsedTime()
 
   player.update(delta)
   updateRain({ particles: rain, minY: 0, maxY: 200 })
   enemies.forEach(enemy => enemy.update(delta))
 
-  map2DRenderer.render({ ...player.position, angle: player.angle })
-  fpsRenderer.render(elapsed)
+  map2DRenderer.render(player)
+  fpsRenderer.render()
   renderer.render(scene, camera)
 }()

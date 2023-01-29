@@ -60,7 +60,7 @@ export default class Map2DRenderer extends Canvas {
   }
 
   drawPlayer(player, tilemap = this.tilemap) {
-    const pos = tilemap.getRelativePos(player)
+    const pos = tilemap.getRelativePos(player.position)
     const x = pos.x * this.mapSize + this.cellSize * .5
     const y = pos.y * this.mapSize + this.cellSize * .5
     this.drawPlayerOnMap(x, y, player.angle)
