@@ -46,7 +46,7 @@ function createParticles({ num = 10000, file = 'ball.png', color, size = .5, opa
     opacity,
   })
   if (file) {
-    material.map = textureLoader.load(`/assets/particles/${file}`)
+    material.map = textureLoader.load(`/assets/textures/particles/${file}`)
     material.blending = blending
     material.depthWrite = false // for explosion
   }

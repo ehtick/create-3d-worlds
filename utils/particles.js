@@ -32,7 +32,7 @@ export function createStarSphere({ num = 5000, r = 500, size = 10, file = 'star.
     vertexColors: true,
   })
   if (file) {
-    material.map = textureLoader.load(`/assets/particles/${file}`)
+    material.map = textureLoader.load(`/assets/textures/particles/${file}`)
     material.blending = THREE.AdditiveBlending
   }
   return new THREE.Points(geometry, material)

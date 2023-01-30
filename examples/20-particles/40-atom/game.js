@@ -10,7 +10,7 @@ const radiusRange = 50
 camera.position.set(0, 50, 150)
 scene.background = new THREE.Color(0x000000)
 
-const texture = textureLoader.load('/assets/particles/spark.png')
+const texture = textureLoader.load('/assets/textures/particles/spark.png')
 
 const particles = createParticles()
 scene.add(particles)

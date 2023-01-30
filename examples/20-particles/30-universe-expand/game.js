@@ -9,7 +9,7 @@ camera.position.z = 750
 scene.background = new THREE.Color(0x000040)
 
 const material = new THREE.SpriteMaterial({
-  map: textureLoader.load('/assets/particles/spark.png'),
+  map: textureLoader.load('/assets/textures/particles/spark.png'),
   blending: THREE.AdditiveBlending
 })
 
