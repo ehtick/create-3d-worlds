@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo
-  - srediti rikošet
   - dodati decals rupe od metaka
   - dodati pucanje
   - srediti koliziju

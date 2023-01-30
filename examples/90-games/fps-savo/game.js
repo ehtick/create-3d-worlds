@@ -1,3 +1,5 @@
+import * as THREE from 'three'
+import { DecalGeometry } from '/node_modules/three/examples/jsm/geometries/DecalGeometry.js'
 import { createGround } from '/utils/ground.js'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
 import Map2DRenderer from '/utils/classes/2d/Map2DRenderer.js'
@@ -10,6 +12,9 @@ import { getCameraIntersects } from '/utils/helpers.js'
 import Particles, { Rain } from '/utils/classes/Particles.js'
 
 hemLight()
+const mouseHelper = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 10), new THREE.MeshNormalMaterial())
+mouseHelper.visible = false
+scene.add(mouseHelper)
 
 const tilemap = new Tilemap(nemesis, 20)
 const smallMapRenderer = new Map2DRenderer(tilemap)
@@ -38,10 +43,43 @@ for (let i = 0; i < 5; i++) {
 
 const targets = [walls, ...enemies.map(e => e.mesh)]
 
+const textureLoader = new THREE.TextureLoader()
+
+const decalMaterial = new THREE.MeshPhongMaterial({
+  color: 0x000000,
+  map: textureLoader.load('/assets/textures/decal-diffuse.png'),
+  normalMap: textureLoader.load('/assets/textures/decal-normal.jpg'),
+  shininess: 900,
+  transparent: true,
+  depthTest: true,
+  polygonOffset: true,
+  polygonOffsetFactor: -4,
+  opacity: .8
+})
+
 function shoot() {
   const intersects = getCameraIntersects(camera, targets)
-  if (intersects.length)
-    ricochet.reset({ pos: intersects[0].point, unitAngle: 0.2 })
+  if (!intersects.length) return
+
+  const { point, object } = intersects[0]
+  mouseHelper.position.copy(point)
+
+  const n = intersects[0].face.normal.clone()
+  n.transformDirection(object.matrixWorld)
+  n.multiplyScalar(10)
+  n.add(point)
+
+  mouseHelper.lookAt(n)
+
+  ricochet.reset({ pos: point, unitAngle: 0.2 })
+  const orientation = new THREE.Euler()
+  const size = new THREE.Vector3(1, 1, 1)
+  orientation.copy(mouseHelper.rotation)
+
+  const geometry = new DecalGeometry(walls, point, orientation, size)
+
+  const mesh = new THREE.Mesh(geometry, decalMaterial)
+  scene.add(mesh)
 }
 
 /* LOOP */
