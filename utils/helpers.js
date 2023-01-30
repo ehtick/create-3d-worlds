@@ -198,9 +198,12 @@ export const directionBlocked = (mesh, solids, vector) => {
 }
 
 function getIntersects(raycaster, target = defaultScene) {
-  target = target.type === 'Scene' ? target.children : target // eslint-disable-line no-param-reassign
-  const method = target.length ? 'intersectObjects' : 'intersectObject'
-  const intersects = raycaster[method](target)
+  target = target.type === 'Scene' // || target.type === 'Group'
+    ? target.children
+    : target
+  const intersects = target.length
+    ? raycaster.intersectObjects(target)
+    : raycaster.intersectObject(target)
   return intersects
 }
 

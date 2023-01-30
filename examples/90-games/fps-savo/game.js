@@ -36,8 +36,10 @@ for (let i = 0; i < 5; i++) {
   scene.add(enemy.mesh)
 }
 
+const targets = [walls, ...enemies.map(e => e.mesh)]
+
 function shoot() {
-  const intersects = getCameraIntersects(camera)
+  const intersects = getCameraIntersects(camera, targets)
   if (intersects.length)
     ricochet.reset({ pos: intersects[0].point, unitAngle: 0.2 })
 }

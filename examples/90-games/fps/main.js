@@ -21,15 +21,6 @@ scene.add(controls.mesh)
 
 const fpsRenderer = new FPSRenderer({ targetY: 0.5 })
 
-/* FUNCTIONS */
-
-function shoot() {
-  const intersects = getCameraIntersects(camera)
-  // BUG: intersects hvata ricochet!
-  if (intersects.length)
-    ricochet.reset({ pos: intersects[0].point, unitAngle: 0.2 })
-}
-
 /* LOOP */
 
 void function loop() {
@@ -47,7 +38,16 @@ void function loop() {
   ricochet.expand({ scalar: 1.2, maxRounds: 5, gravity: .02 })
 }()
 
-await addGraffitiCity({ scene, mapSize })
+const city = await addGraffitiCity({ scene, mapSize })
+
+/* FUNCTIONS */
+
+function shoot() {
+  const intersects = getCameraIntersects(camera, city)
+  // BUG: intersects hvata ricochet!
+  if (intersects.length)
+    ricochet.reset({ pos: intersects[0].point, unitAngle: 0.2 })
+}
 
 /* EVENTS */
 
