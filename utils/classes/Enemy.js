@@ -7,6 +7,7 @@ export default class Enemy {
     this.lastRandomX = Math.random()
     this.lastRandomZ = Math.random()
     this.speed = 7
+    this.mesh.userData.tag = 'enemy'
   }
 
   update(delta) {

@@ -42,8 +42,9 @@ const targets = [walls, ...enemies.map(e => e.mesh)]
 function shoot() {
   const intersects = getCameraIntersects(camera, targets)
   if (!intersects.length) return
+  const { point, object } = intersects[0]
+  if (object.userData?.tag == 'enemy') return
 
-  const { point } = intersects[0]
   ricochet.reset({ pos: point, unitAngle: 0.2 })
   shootDecals(intersects[0])
 }

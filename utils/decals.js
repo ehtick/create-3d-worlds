@@ -5,6 +5,7 @@ import { Ammo } from '/utils/physics.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { getMesh } from '/utils/helpers.js'
 
+const { randFloat } = THREE.MathUtils
 const textureLoader = new THREE.TextureLoader()
 
 /* SHOOT */
@@ -22,21 +23,21 @@ const decalMaterial = new THREE.MeshPhongMaterial({
 })
 
 const mouseHelper = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 10), new THREE.MeshNormalMaterial())
+const orientation = new THREE.Euler()
 
 export function shootDecals(intersect) {
   const { point, object } = intersect
-
-  mouseHelper.position.copy(point)
 
   const normal = intersect.face.normal.clone()
   normal.transformDirection(object.matrixWorld)
   normal.multiplyScalar(10)
   normal.add(point)
 
+  mouseHelper.position.copy(point)
   mouseHelper.lookAt(normal)
 
-  const orientation = new THREE.Euler()
-  const size = new THREE.Vector3(.2, .2, .2)
+  const randSize = randFloat(.15, .3)
+  const size = new THREE.Vector3(randSize, randSize, randSize)
   orientation.copy(mouseHelper.rotation)
   orientation.z = Math.random() * 2 * Math.PI
 
