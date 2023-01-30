@@ -7,13 +7,53 @@ import { getMesh } from '/utils/helpers.js'
 
 const textureLoader = new THREE.TextureLoader()
 
+/* SHOOT */
+
+const decalMaterial = new THREE.MeshPhongMaterial({
+  color: 0x000000,
+  map: textureLoader.load('/assets/textures/decal-diffuse.png'),
+  // normalMap: textureLoader.load('/assets/textures/decal-normal.jpg'),
+  shininess: 900,
+  transparent: true,
+  depthTest: true,
+  polygonOffset: true,
+  polygonOffsetFactor: -4,
+  opacity: .8
+})
+
+const mouseHelper = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 10), new THREE.MeshNormalMaterial())
+
+export function shootDecals(intersect) {
+  const { point, object } = intersect
+
+  mouseHelper.position.copy(point)
+
+  const normal = intersect.face.normal.clone()
+  normal.transformDirection(object.matrixWorld)
+  normal.multiplyScalar(10)
+  normal.add(point)
+
+  mouseHelper.lookAt(normal)
+
+  const orientation = new THREE.Euler()
+  const size = new THREE.Vector3(.2, .2, .2)
+  orientation.copy(mouseHelper.rotation)
+  orientation.z = Math.random() * 2 * Math.PI
+
+  const geometry = new DecalGeometry(object, point, orientation, size)
+  const decal = new THREE.Mesh(geometry, decalMaterial)
+  object.add(decal)
+}
+
+/* CAR TRACKS */
+
 const oldCarPos = new THREE.Vector3(0, 0, 0)
 const oldCarPos2 = new THREE.Vector3(0, 0, 0)
 
 let decals = []
 let decRot = 0
 
-const decalMaterial = new THREE.MeshPhongMaterial({
+const trackMaterial = new THREE.MeshPhongMaterial({
   specular: 0x444444,
   map: textureLoader.load('/assets/images/car-track.png'),
   shininess: 900,
@@ -79,7 +119,7 @@ export function leaveDecals({ ground, vehicle, body, wheelMeshes, scene }) {
     velocity.z = 0
   }
   size.set(1, 1, velocity.length())
-  const material = decalMaterial.clone()
+  const material = trackMaterial.clone()
 
   let track = new THREE.Mesh(new DecalGeometry(groundMesh, position, orientation, size), material)
   decals.push(track)

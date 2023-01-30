@@ -1,12 +1,12 @@
 import { createBox } from '/utils/geometry.js'
 
 export default class Enemy {
-  constructor({ x, z, size = 2 }) {
-    this.mesh = createBox({ size, color: 0xff0000 })
-    this.mesh.position.set(x, size / 2, z)
+  constructor({ x, z, size = 1, height = 3 }) {
+    this.mesh = createBox({ size, height, color: 0xff0000 })
+    this.mesh.position.set(x, height / 2, z)
     this.lastRandomX = Math.random()
     this.lastRandomZ = Math.random()
-    this.speed = 10
+    this.speed = 7
   }
 
   update(delta) {
