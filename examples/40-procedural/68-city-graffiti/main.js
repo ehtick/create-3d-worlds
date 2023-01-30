@@ -1,5 +1,5 @@
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { addGraffitiCity } from '/utils/city.js'
+import { createGraffitiCity } from '/utils/city.js'
 import { createSun } from '/utils/light.js'
 
 createOrbitControls()
@@ -11,11 +11,12 @@ camera.lookAt(scene.position)
 
 scene.add(createSun({ position: [50, 100, 50] }))
 
+const city = await createGraffitiCity({ scene, mapSize })
+scene.add(city)
+
 /* LOOP */
 
 void function animate() {
   requestAnimationFrame(animate)
   renderer.render(scene, camera)
 }()
-
-await addGraffitiCity({ scene, mapSize })

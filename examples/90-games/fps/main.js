@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { camera, scene, renderer, clock } from '/utils/scene.js'
 import { createMoon } from '/utils/light.js'
-import { addGraffitiCity } from '/utils/city.js'
+import { createGraffitiCity } from '/utils/city.js'
 import PointerLockControls from './PointerLockControls.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { getCameraIntersects } from '/utils/helpers.js'
@@ -38,13 +38,13 @@ void function loop() {
   ricochet.expand({ scalar: 1.2, maxRounds: 5, gravity: .02 })
 }()
 
-const city = await addGraffitiCity({ scene, mapSize })
+const city = await createGraffitiCity({ scene, mapSize })
+scene.add(city)
 
 /* FUNCTIONS */
 
 function shoot() {
   const intersects = getCameraIntersects(camera, city)
-  // BUG: intersects hvata ricochet!
   if (intersects.length)
     ricochet.reset({ pos: intersects[0].point, unitAngle: 0.2 })
 }

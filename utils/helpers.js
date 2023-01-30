@@ -198,9 +198,6 @@ export const directionBlocked = (mesh, solids, vector) => {
 }
 
 function getIntersects(raycaster, target = defaultScene) {
-  target = target.type === 'Scene' // || target.type === 'Group'
-    ? target.children
-    : target
   const intersects = target.length
     ? raycaster.intersectObjects(target)
     : raycaster.intersectObject(target)
