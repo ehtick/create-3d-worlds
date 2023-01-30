@@ -48,7 +48,7 @@ const textureLoader = new THREE.TextureLoader()
 const decalMaterial = new THREE.MeshPhongMaterial({
   color: 0x000000,
   map: textureLoader.load('/assets/textures/decal-diffuse.png'),
-  normalMap: textureLoader.load('/assets/textures/decal-normal.jpg'),
+  // normalMap: textureLoader.load('/assets/textures/decal-normal.jpg'),
   shininess: 900,
   transparent: true,
   depthTest: true,
@@ -57,29 +57,35 @@ const decalMaterial = new THREE.MeshPhongMaterial({
   opacity: .8
 })
 
+function shootDecals(intersect) {
+  const { point, object } = intersect
+
+  mouseHelper.position.copy(point)
+
+  const normal = intersect.face.normal.clone()
+  normal.transformDirection(object.matrixWorld)
+  normal.multiplyScalar(10)
+  normal.add(point)
+
+  mouseHelper.lookAt(normal)
+
+  const orientation = new THREE.Euler()
+  const size = new THREE.Vector3(.2, .2, .2)
+  orientation.copy(mouseHelper.rotation)
+  orientation.z = Math.random() * 2 * Math.PI
+
+  const geometry = new DecalGeometry(walls, point, orientation, size)
+  const mesh = new THREE.Mesh(geometry, decalMaterial)
+  scene.add(mesh)
+}
+
 function shoot() {
   const intersects = getCameraIntersects(camera, targets)
   if (!intersects.length) return
 
-  const { point, object } = intersects[0]
-  mouseHelper.position.copy(point)
-
-  const n = intersects[0].face.normal.clone()
-  n.transformDirection(object.matrixWorld)
-  n.multiplyScalar(10)
-  n.add(point)
-
-  mouseHelper.lookAt(n)
-
+  const { point } = intersects[0]
   ricochet.reset({ pos: point, unitAngle: 0.2 })
-  const orientation = new THREE.Euler()
-  const size = new THREE.Vector3(1, 1, 1)
-  orientation.copy(mouseHelper.rotation)
-
-  const geometry = new DecalGeometry(walls, point, orientation, size)
-
-  const mesh = new THREE.Mesh(geometry, decalMaterial)
-  scene.add(mesh)
+  shootDecals(intersects[0])
 }
 
 /* LOOP */
