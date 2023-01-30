@@ -44,7 +44,7 @@ export default class Tilemap {
     return getFieldValue(this.matrix, x, y)
   }
 
-  meshFromMatrix() {
-    return meshFromMatrix({ matrix: this.matrix, size: this.cellSize, origin: this.origin })
+  meshFromMatrix(params = {}) {
+    return meshFromMatrix({ matrix: this.matrix, size: this.cellSize, origin: this.origin, ...params })
   }
 }

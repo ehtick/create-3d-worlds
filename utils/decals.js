@@ -13,7 +13,7 @@ const textureLoader = new THREE.TextureLoader()
 const decalMaterial = new THREE.MeshPhongMaterial({
   color: 0x000000,
   map: textureLoader.load('/assets/textures/decal-diffuse.png'),
-  // normalMap: textureLoader.load('/assets/textures/decal-normal.jpg'),
+  normalMap: textureLoader.load('/assets/textures/decal-normal.jpg'),
   shininess: 900,
   transparent: true,
   depthTest: true,

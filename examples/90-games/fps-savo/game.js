@@ -16,7 +16,7 @@ const tilemap = new Tilemap(nemesis, 20)
 const smallMapRenderer = new Map2DRenderer(tilemap)
 
 scene.add(createGround({ file: 'terrain/ground.jpg' }))
-const walls = tilemap.meshFromMatrix()
+const walls = tilemap.meshFromMatrix({ texture: 'terrain/concrete.jpg' })
 scene.add(walls)
 
 const player = new Savo({ camera })

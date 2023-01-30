@@ -12,16 +12,16 @@ npx live-server
 ### Scenes & examples
 
 - Savo
-  - dodati decals rupe od metaka
-  - dodati pucanje
-  - srediti koliziju
-  - dodati NPC karaktere, možda duhove (vidi ai modele)
+  - prebaciti zvuk, kišu i munje iz Savo Mitraljezac
+  - dodati NPC karaktere, Nemce, duhove (vidi ai modele)
     - https://www.script-tutorials.com/demos/474/index3.html
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - dodati munje https://threejs.org/examples/?q=light#webgl_lightningstrike
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
+  - srediti koliziju sa kim treba
+  - srediti ubijanje protivnika
 
 - Svemir 
   - dodati model ring space-arcology
