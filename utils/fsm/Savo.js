@@ -1,5 +1,5 @@
 import Player from '/utils/fsm/Player.js'
-import { createInvisibleBox } from '/utils/geometry.js'
+import { createBox } from '/utils/geometry.js'
 import { camera as defaultCamera } from '/utils/scene.js'
 import { normalizeMouse, getCameraIntersects, getScene } from '/utils/helpers.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
@@ -7,17 +7,21 @@ import { shootDecals } from '/utils/decals.js'
 import Particles from '/utils/classes/Particles.js'
 import config from '/config.js'
 
-const gunshoot = new Audio('/assets/sounds/rafal.mp3')
-gunshoot.volume = config.volume
-
 export default class Savo extends Player {
-  constructor({ speed, size = 2, mousemove = false, camera = defaultCamera, ...params } = {}) {
-    super({ mesh: createInvisibleBox({ size }), jumpStyle: 'FLY', camera: null, ...params })
+  constructor({
+    speed, size = 2, mousemove = false, camera = defaultCamera, rifleBurst = true, ...params
+  } = {}) {
+    super({
+      mesh: createBox({ size }), jumpStyle: 'FLY', maxVelocityY: .2, camera: null, ...params
+    })
     this.speed = speed || this.size * 3
-    this.maxVelocityY = .2
-    this.minVelocityY = -this.maxVelocityY
     this.mouseSensitivity = .05
     this.mousemove = mousemove
+    this.rifleBurst = rifleBurst
+
+    const file = rifleBurst ? 'rifle-burst' : 'rifle'
+    this.audio = new Audio(`/assets/sounds/${file}.mp3`)
+    this.audio.volume = config.volume
 
     this.fpsRenderer = new FPSRenderer()
     this.camera = camera
@@ -45,9 +49,10 @@ export default class Savo extends Player {
   }
 
   shoot() {
-    gunshoot.play()
+    this.audio.play()
+    const shoots = this.rifleBurst ? 5 : 1
 
-    for (let i = 0; i < 5; i++) setTimeout(() => {
+    for (let i = 0; i < shoots; i++) setTimeout(() => {
       const intersects = getCameraIntersects(this.camera, this.solids)
       if (!intersects.length) return
       const { point, object } = intersects.find(x => x.object.name != 'decal')

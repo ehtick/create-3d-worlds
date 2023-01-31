@@ -28,13 +28,6 @@ export function createBox({ size = 1, width = size, height = size, depth = size,
   return mesh
 }
 
-export const createInvisibleBox = params => {
-  const mesh = createBox(params)
-  mesh.material.opacity = 0
-  mesh.material.transparent = true
-  return mesh
-}
-
 export const createCrate = ({ size, file = 'crate.gif' } = {}) => createBox({ size, file })
 
 export const createBumpBox = ({ size, file = 'walls/bricks.jpg', bumpFile = 'walls/bricks-gray.jpg' } = {}) =>

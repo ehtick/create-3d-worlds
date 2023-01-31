@@ -27,7 +27,6 @@ for (let i = 0; i < 10; i++) {
 const solids = [walls, ...enemies.map(e => e.mesh)]
 const player = new Savo({ camera, solids })
 player.position.copy(tilemap.randomEmptyPos)
-scene.add(player.mesh)
 
 const rain = new Rain()
 scene.add(rain.particles)

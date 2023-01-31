@@ -63,6 +63,7 @@ Tenk (Vozilo)
 
 ### Polishing
 
+- obrisati sve što nije modularno
 - dodati svuda toon-shader gde se slaže
   https://www.maya-ndljk.com/blog/threejs-basic-toon-shader
   https://summer-afternoon.vlucendo.com/

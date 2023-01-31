@@ -32,7 +32,7 @@ const jumpStyles = {
 export default class Player {
   constructor({
     mesh, animations, dict, camera, keyboard = defaultKeyboard, useJoystick,
-    speed = 2, jumpStyle = jumpStyles.FLY_JUMP, solids
+    speed = 2, jumpStyle = jumpStyles.FLY_JUMP, maxVelocityY = speed / 30, solids
   }) {
     this.mesh = mesh
     this.speed = speed
@@ -40,7 +40,7 @@ export default class Player {
     this.solids = []
     this.groundY = 0
     this.velocityY = 0
-    this.maxVelocityY = speed / 30
+    this.maxVelocityY = maxVelocityY
     this.minVelocityY = -this.maxVelocityY
 
     this.jumpStyle = jumpStyle
