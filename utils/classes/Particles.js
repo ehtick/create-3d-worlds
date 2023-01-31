@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { similarColor } from '/utils/helpers.js'
+import config from '/config.js'
 
 const { randFloat } = THREE.MathUtils
 const textureLoader = new THREE.TextureLoader()
@@ -134,6 +135,10 @@ export class Stars extends Particles {
 export class Rain extends Particles {
   constructor({ file = 'raindrop.png', num = 10000, size = .2, opacity = .7, minRange = 10, maxRange = 100, color = 0xDEF4FC } = {}) {
     super({ file, num, size, opacity, minRange, maxRange, color, blending: THREE.NormalBlending })
+    this.audio = new Audio('/assets/sounds/rain.mp3')
+    this.audio.volume = config.volume
+    this.audio.loop = true
+    this.audio.play()
   }
 
   update({ min = 0, max = 200, minVelocity = 2, maxVelocity = 4, ...rest } = {}) {

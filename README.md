@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo
-  - dodati zvuke: grom, kisha
   - birati pojedinačnu i rafalnu paljbu
   - da trza pušku
   - srediti nebo (skybox ili neke oblake)

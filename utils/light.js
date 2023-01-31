@@ -1,7 +1,11 @@
 import * as THREE from 'three'
+import config from '/config.js'
 import { scene as defaultScene } from '/utils/scene.js'
+import { mapRange } from './helpers.js'
 
-/* BASIC LIGHTS */
+const { randInt } = THREE.MathUtils
+
+/* LIGHTS */
 
 export function dirLight({
   scene = defaultScene,
@@ -73,10 +77,19 @@ export const createMoon = ({
 } = {}) => createSun({ position, color, planetColor, r })
 
 export function lightningStrike(light) {
-  light.intensity = 2
+  const audio = new Audio('/assets/sounds/thunder.mp3')
+
+  const distance = randInt(100, 3000)
+  audio.volume = mapRange(distance, 3000, 100, config.volume / 4, config.volume)
+  light.intensity = mapRange(distance, 3000, 100, 1.2, 2)
+
   setTimeout(() => {
     light.intensity = 1
   }, 500)
+
+  setTimeout(() => {
+    audio.play()
+  }, distance * 3)
 }
 
 /* UPDATES */

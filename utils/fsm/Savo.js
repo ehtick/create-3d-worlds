@@ -4,10 +4,11 @@ import { camera as defaultCamera } from '/utils/scene.js'
 import { normalizeMouse, getCameraIntersects, getScene } from '/utils/helpers.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { shootDecals } from '/utils/decals.js'
-import Particles, { Rain } from '/utils/classes/Particles.js'
+import Particles from '/utils/classes/Particles.js'
+import config from '/config.js'
 
 const gunshoot = new Audio('/assets/sounds/rafal.mp3')
-// gunshoot.volume = 0
+gunshoot.volume = config.volume
 
 export default class Savo extends Player {
   constructor({ speed, size = 2, mousemove = false, camera = defaultCamera, ...params } = {}) {
@@ -20,7 +21,7 @@ export default class Savo extends Player {
 
     this.fpsRenderer = new FPSRenderer()
     this.camera = camera
-    camera.position.set(0, size, size / 2)
+    camera.position.set(0, size, size / 4)
     camera.rotation.set(0, 0, 0)
     this.mesh.add(camera)
 

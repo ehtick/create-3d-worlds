@@ -27,6 +27,7 @@ for (let i = 0; i < 10; i++) {
 const solids = [walls, ...enemies.map(e => e.mesh)]
 const player = new Savo({ camera, solids })
 player.position.copy(tilemap.randomEmptyPos)
+scene.add(player.mesh)
 
 const rain = new Rain()
 scene.add(rain.particles)
@@ -41,7 +42,7 @@ void function animate() {
   enemies.forEach(enemy => enemy.update(delta))
   rain.update({ pos: player.position })
 
-  if (Math.random() > .99) lightningStrike(light)
+  if (Math.random() > .997) lightningStrike(light)
 
   smallMapRenderer.render(player)
   renderer.render(scene, camera)
