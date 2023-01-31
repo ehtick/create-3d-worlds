@@ -108,11 +108,11 @@ export default class Particles {
 
     velocity.array.forEach((vel, i) => {
       const index = 3 * i + axis
-      const value = position.array[index]
+      const currentPos = position.array[index]
       if (axis === 1) // move on y axis
-        position.array[index] = value < min ? max : value - vel
+        position.array[index] = currentPos < min ? max : currentPos - vel
       if (axis === 2) // move on z axis
-        position.array[index] = value > max ? min : value + vel
+        position.array[index] = currentPos > max ? min : currentPos + vel
     })
 
     position.needsUpdate = true
@@ -133,7 +133,7 @@ export class Rain extends Particles {
     super({ file, num, size, opacity, minRange, maxRange, color, blending: THREE.NormalBlending })
   }
 
-  update({ min = -10, max = 200, minVelocity = 2, maxVelocity = 4, ...rest } = {}) {
+  update({ min = 0, max = 200, minVelocity = 2, maxVelocity = 4, ...rest } = {}) {
     super.update({ min, max, axis: 1, minVelocity, maxVelocity, ...rest })
   }
 }

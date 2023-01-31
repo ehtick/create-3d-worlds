@@ -57,7 +57,7 @@ void function animate() {
 
   player.update(delta)
   enemies.forEach(enemy => enemy.update(delta))
-  rain.update({ minY: 0, maxY: 200, pos: player.position })
+  rain.update({ pos: player.position })
   ricochet.expand({ scalar: 1.2, maxRounds: 5, gravity: .02 })
 
   smallMapRenderer.render(player)
