@@ -9,7 +9,7 @@ import config from '/config.js'
 
 export default class Savo extends Player {
   constructor({
-    speed, size = 2, mousemove = false, camera = defaultCamera, rifleBurst = true, ...params
+    speed, size = 2, mousemove = false, camera = defaultCamera, rifleBurst = false, ...params
   } = {}) {
     super({
       mesh: createBox({ size }), jumpStyle: 'FLY', maxVelocityY: .2, camera: null, ...params
@@ -49,6 +49,7 @@ export default class Savo extends Player {
   }
 
   shoot() {
+    this.audio.currentTime = 0
     this.audio.play()
     const shoots = this.rifleBurst ? 5 : 1
 
