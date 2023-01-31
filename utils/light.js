@@ -44,11 +44,13 @@ export function spotLight({ scene = defaultScene, color = 0xffffff, intensity = 
 export function hemLight({ scene = defaultScene, skyColor = 0xfffff0, groundColor = 0x101020, intensity = 1 } = {}) {
   const light = new THREE.HemisphereLight(skyColor, groundColor, intensity)
   if (scene) scene.add(light)
+  return light
 }
 
 export function ambLight({ scene = defaultScene, color = 0xffffff, intensity = 1 } = {}) { // 0x343434
   const light = new THREE.AmbientLight(color, intensity)
   if (scene) scene.add(light)
+  return light
 }
 
 /* SUN */
@@ -66,8 +68,16 @@ export function createSun({ color = 0xffffff, intensity = 1, target, position = 
   return container
 }
 
-export const createMoon = ({ position = [50, 100, 50], color = 0xFFF8DE, planetColor = 0xF6F1D5, r = 4 } = {}) =>
-  createSun({ position, color, planetColor, r })
+export const createMoon = ({
+  position = [50, 100, 50], color = 0xFFF8DE, planetColor = 0xF6F1D5, r = 4
+} = {}) => createSun({ position, color, planetColor, r })
+
+export function lightningStrike(light) {
+  light.intensity = 2
+  setTimeout(() => {
+    light.intensity = 1
+  }, 500)
+}
 
 /* UPDATES */
 
