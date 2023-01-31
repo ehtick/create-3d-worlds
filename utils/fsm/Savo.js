@@ -6,8 +6,16 @@ import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { shootDecals } from '/utils/decals.js'
 import Particles, { Rain } from '/utils/classes/Particles.js'
 
+const gunshoot = new Audio('/assets/sounds/rafal.mp3')
+gunshoot.volume = 0
+
+const getScene = object => {
+  if (object.parent.type === 'Scene') return object.parent
+  return getScene(object.parent)
+}
+
 export default class Savo extends Player {
-  constructor({ speed, size = 2, mousemove = false, camera = defaultCamera, scene, ...params } = {}) {
+  constructor({ speed, size = 2, mousemove = false, camera = defaultCamera, ...params } = {}) {
     super({ mesh: createInvisibleBox({ size }), jumpStyle: 'FLY', camera: null, ...params })
     this.speed = speed || this.size * 3
     this.maxVelocityY = .2
@@ -41,18 +49,24 @@ export default class Savo extends Player {
   }
 
   shoot() {
-    const intersects = getCameraIntersects(this.camera, this.solids)
-    if (!intersects.length) return
+    gunshoot.play()
 
-    const { point, object } = intersects[0]
-    if (object.userData?.tag == 'enemy') {
-      console.log('shoot enemy')
-      return
-    }
+    for (let i = 0; i < 5; i++)
+      setTimeout(() => {
+        const intersects = getCameraIntersects(this.camera, this.solids)
+        if (!intersects.length) return
 
-    this.ricochet.reset({ pos: point, unitAngle: 0.2 })
-    object.parent.add(this.ricochet.particles)
-    shootDecals(intersects[0])
+        const { point, object } = intersects[0]
+        if (object.userData?.tag == 'enemy') {
+          console.log('shoot enemy')
+          return
+        }
+
+        const scene = getScene(object)
+        this.ricochet.reset({ pos: point, unitAngle: 0.2 })
+        scene.add(this.ricochet.particles)
+        shootDecals(intersects[0])
+      }, i * 100)
   }
 
   update(delta) {

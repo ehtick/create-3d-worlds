@@ -12,7 +12,7 @@ npx live-server
 ### Scenes & examples
 
 - Savo
-  - dodati zvuke: grom, kisha, rafal
+  - dodati zvuke: grom, kisha
   - srediti nebo (skybox ili neke oblake)
   - dodati NPC karaktere, Nemce, duhove (vidi ai modele)
     - https://www.script-tutorials.com/demos/474/index3.html
