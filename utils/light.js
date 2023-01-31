@@ -88,6 +88,7 @@ export function lightningStrike(light) {
   }, 500)
 
   setTimeout(() => {
+    audio.currentTime = 0
     audio.play()
   }, distance * 3)
 }
