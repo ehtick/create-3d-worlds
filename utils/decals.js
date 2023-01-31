@@ -40,7 +40,7 @@ export function shootDecals(intersect) {
 
   const geometry = new DecalGeometry(object, point, helper.rotation, size)
   const decal = new THREE.Mesh(geometry, decalMaterial)
-  decal.position.y -= object.position.y
+  decal.position.sub(object.position)
   object.add(decal)
 }
 
