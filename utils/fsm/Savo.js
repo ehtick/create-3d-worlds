@@ -51,22 +51,21 @@ export default class Savo extends Player {
   shoot() {
     gunshoot.play()
 
-    for (let i = 0; i < 5; i++)
-      setTimeout(() => {
-        const intersects = getCameraIntersects(this.camera, this.solids)
-        if (!intersects.length) return
+    for (let i = 0; i < 5; i++) setTimeout(() => {
+      const intersects = getCameraIntersects(this.camera, this.solids)
+      if (!intersects.length) return
 
-        const { point, object } = intersects[0]
-        if (object.userData?.tag == 'enemy') {
-          console.log('shoot enemy')
-          return
-        }
+      const { point, object } = intersects[0]
+      if (object.userData?.tag == 'enemy') {
+        console.log('shoot enemy')
+        return
+      }
 
-        const scene = getScene(object)
-        this.ricochet.reset({ pos: point, unitAngle: 0.2 })
-        scene.add(this.ricochet.particles)
-        shootDecals(intersects[0])
-      }, i * 100)
+      const scene = getScene(object)
+      this.ricochet.reset({ pos: point, unitAngle: 0.2 })
+      scene.add(this.ricochet.particles)
+      shootDecals(intersects[0])
+    }, i * 100)
   }
 
   update(delta) {
