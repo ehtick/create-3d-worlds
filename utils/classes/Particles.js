@@ -101,9 +101,9 @@ export default class Particles {
     position.needsUpdate = true
   }
 
-  update({ min = -500, max = 500, axis = 2, pos } = {}) {
+  update({ min = -500, max = 500, axis = 2, minVelocity = .5, maxVelocity = 3, pos } = {}) {
     const { geometry } = this.particles
-    if (!geometry.attributes.velocity) addVelocity({ geometry, min: 0.5, max: 3 })
+    if (!geometry.attributes.velocity) addVelocity({ geometry, min: minVelocity, max: maxVelocity })
     const { position, velocity } = geometry.attributes
 
     velocity.array.forEach((vel, i) => {
@@ -129,12 +129,12 @@ export class Stars extends Particles {
 }
 
 export class Rain extends Particles {
-  constructor({ file = 'raindrop.png', num = 10000, size = .7, opacity = 0.8, minRange = 50, maxRange = 500, color = 0x9999ff } = {}) {
+  constructor({ file = 'raindrop.png', num = 10000, size = .2, opacity = .7, minRange = 10, maxRange = 100, color = 0xDEF4FC } = {}) {
     super({ file, num, size, opacity, minRange, maxRange, color, blending: THREE.NormalBlending })
   }
 
-  update({ min = -300, max = 300, ...rest } = {}) {
-    super.update({ min, max, axis: 1, ...rest })
+  update({ min = -10, max = 200, minVelocity = 2, maxVelocity = 4, ...rest } = {}) {
+    super.update({ min, max, axis: 1, minVelocity, maxVelocity, ...rest })
   }
 }
 

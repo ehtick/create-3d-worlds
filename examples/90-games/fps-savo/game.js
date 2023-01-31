@@ -24,7 +24,7 @@ player.position.copy(tilemap.randomEmptyPos)
 player.addSolids(walls)
 scene.add(player.mesh)
 
-const rain = new Rain({ num: 10000 })
+const rain = new Rain()
 scene.add(rain.particles)
 
 const ricochet = new Particles({ num: 100, size: .05, unitAngle: 0.2 })

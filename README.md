@@ -12,7 +12,10 @@ npx live-server
 ### Scenes & examples
 
 - Savo
-  - prebaciti zvuk, kišu i munje iz Savo Mitraljezac
+  https://tympanus.net/codrops/2021/03/17/tropical-particles-rain-animation-with-three-js/
+  - dodati munje
+  - dodati zvuke: grom, kisha, rafal
+  - srediti nebo (skybox ili neke oblake)
   - dodati NPC karaktere, Nemce, duhove (vidi ai modele)
     - https://www.script-tutorials.com/demos/474/index3.html
   - dodati neke modele vozila i kuca
