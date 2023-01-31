@@ -1,11 +1,13 @@
 import Player from '/utils/fsm/Player.js'
 import { createInvisibleBox } from '/utils/geometry.js'
 import { camera as defaultCamera } from '/utils/scene.js'
-import { normalizeMouse } from '/utils/helpers.js'
+import { normalizeMouse, getCameraIntersects } from '/utils/helpers.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
+import { shootDecals } from '/utils/decals.js'
+import Particles, { Rain } from '/utils/classes/Particles.js'
 
 export default class Savo extends Player {
-  constructor({ speed, size = 2, mousemove = false, camera = defaultCamera, ...params } = {}) {
+  constructor({ speed, size = 2, mousemove = false, camera = defaultCamera, scene, ...params } = {}) {
     super({ mesh: createInvisibleBox({ size }), jumpStyle: 'FLY', camera: null, ...params })
     this.speed = speed || this.size * 3
     this.maxVelocityY = .2
@@ -19,6 +21,9 @@ export default class Savo extends Player {
     camera.rotation.set(0, 0, 0)
     this.mesh.add(camera)
 
+    this.ricochet = new Particles({ num: 100, size: .05, unitAngle: 0.2 })
+
+    document.body.addEventListener('click', () => this.shoot())
     if (mousemove) document.addEventListener('mousemove', e => this.onMouseMove(e))
   }
 
@@ -35,9 +40,25 @@ export default class Savo extends Player {
     this.camera.lookAt(target)
   }
 
+  shoot() {
+    const intersects = getCameraIntersects(this.camera, this.solids)
+    if (!intersects.length) return
+
+    const { point, object } = intersects[0]
+    if (object.userData?.tag == 'enemy') {
+      console.log('shoot enemy')
+      return
+    }
+
+    this.ricochet.reset({ pos: point, unitAngle: 0.2 })
+    object.parent.add(this.ricochet.particles)
+    shootDecals(intersects[0])
+  }
+
   update(delta) {
     super.update(delta)
     this.fpsRenderer.render()
+    this.ricochet.expand({ scalar: 1.2, maxRounds: 5, gravity: .02 })
     if (!this.mousemove) this.lookAtFront()
   }
 }

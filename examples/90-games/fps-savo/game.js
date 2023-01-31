@@ -6,9 +6,7 @@ import Tilemap from '/utils/classes/Tilemap.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
 import { nemesis } from '/data/maps.js'
 import Enemy from '/utils/classes/Enemy.js'
-import { getCameraIntersects } from '/utils/helpers.js'
-import Particles, { Rain } from '/utils/classes/Particles.js'
-import { shootDecals } from '/utils/decals.js'
+import { Rain } from '/utils/classes/Particles.js'
 
 const light = hemLight()
 
@@ -19,17 +17,6 @@ scene.add(createGround({ file: 'terrain/ground.jpg' }))
 const walls = tilemap.meshFromMatrix({ texture: 'terrain/concrete.jpg' })
 scene.add(walls)
 
-const player = new Savo({ camera })
-player.position.copy(tilemap.randomEmptyPos)
-player.addSolids(walls)
-scene.add(player.mesh)
-
-const rain = new Rain()
-scene.add(rain.particles)
-
-const ricochet = new Particles({ num: 100, size: .05, unitAngle: 0.2 })
-scene.add(ricochet.particles)
-
 const enemies = []
 for (let i = 0; i < 10; i++) {
   const enemy = new Enemy(tilemap.randomEmptyPos)
@@ -37,17 +24,12 @@ for (let i = 0; i < 10; i++) {
   scene.add(enemy.mesh)
 }
 
-const targets = [walls, ...enemies.map(e => e.mesh)]
+const solids = [walls, ...enemies.map(e => e.mesh)]
+const player = new Savo({ camera, solids })
+player.position.copy(tilemap.randomEmptyPos)
 
-function shoot() {
-  const intersects = getCameraIntersects(camera, targets)
-  if (!intersects.length) return
-  const { point, object } = intersects[0]
-  if (object.userData?.tag == 'enemy') return
-
-  ricochet.reset({ pos: point, unitAngle: 0.2 })
-  shootDecals(intersects[0])
-}
+const rain = new Rain()
+scene.add(rain.particles)
 
 /* LOOP */
 
@@ -58,7 +40,6 @@ void function animate() {
   player.update(delta)
   enemies.forEach(enemy => enemy.update(delta))
   rain.update({ pos: player.position })
-  ricochet.expand({ scalar: 1.2, maxRounds: 5, gravity: .02 })
 
   if (Math.random() > .99) lightningStrike(light)
 
@@ -68,4 +49,3 @@ void function animate() {
 
 /* EVENTS */
 
-document.body.addEventListener('click', shoot)
