@@ -22,27 +22,23 @@ const decalMaterial = new THREE.MeshPhongMaterial({
   opacity: .8
 })
 
-const mouseHelper = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 10), new THREE.MeshNormalMaterial())
-// scene.add(mouseHelper)
-const orientation = new THREE.Euler()
+const helper = new THREE.Object3D()
 
 export function shootDecals(intersect) {
-  const { point, object } = intersect
+  const { face, point, object } = intersect
 
-  const normal = intersect.face.normal.clone()
+  const normal = face.normal.clone()
   normal.transformDirection(object.matrixWorld)
-  normal.multiplyScalar(10)
   normal.add(point)
 
-  mouseHelper.position.copy(point)
-  mouseHelper.lookAt(normal)
+  helper.position.copy(point)
+  helper.lookAt(normal)
+  helper.rotation.z = Math.random() * 2 * Math.PI
 
   const randSize = randFloat(.15, .3)
   const size = new THREE.Vector3(randSize, randSize, randSize)
-  orientation.copy(mouseHelper.rotation)
-  orientation.z = Math.random() * 2 * Math.PI
 
-  const geometry = new DecalGeometry(object, point, orientation, size)
+  const geometry = new DecalGeometry(object, point, helper.rotation, size)
   const decal = new THREE.Mesh(geometry, decalMaterial)
   object.add(decal)
 }

@@ -13,8 +13,6 @@ scene.add(mesh)
 
 // decal related stuff
 
-const helper = new THREE.Object3D()
-
 const decalMaterial = new THREE.MeshBasicMaterial({
   color: 0x000000,
   depthWrite: false,
@@ -22,25 +20,27 @@ const decalMaterial = new THREE.MeshBasicMaterial({
   polygonOffsetFactor: - 4,
 })
 
+const helper = new THREE.Object3D()
+
 function shoot(e) {
-  const intersects = getMouseIntersects(e, camera, mesh)
+  const intersects = getMouseIntersects(e, camera)
+  if (!intersects.length) return
 
-  if (intersects.length > 0) {
-    const n = intersects[0].face.normal.clone()
-    n.transformDirection(mesh.matrixWorld)
-    n.add(intersects[0].point)
+  const { face, point, object } = intersects[0]
 
-    helper.position.copy(intersects[0].point)
-    helper.lookAt(n)
+  const normal = face.normal.clone()
+  normal.transformDirection(object.matrixWorld)
+  normal.add(point)
 
-    const position = intersects[0].point
-    const size = new THREE.Vector3(.2, .2, .2)
+  helper.position.copy(point)
+  helper.lookAt(normal)
+  helper.rotation.z = Math.random() * 2 * Math.PI
 
-    const decalGeometry = new DecalGeometry(mesh, position, helper.rotation, size)
+  const size = new THREE.Vector3(.2, .2, .2)
 
-    const decal = new THREE.Mesh(decalGeometry, decalMaterial)
-    scene.add(decal)
-  }
+  const geometry = new DecalGeometry(object, point, helper.rotation, size)
+  const decal = new THREE.Mesh(geometry, decalMaterial)
+  scene.add(decal)
 }
 
 /* LOOP */
