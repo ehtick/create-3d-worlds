@@ -23,6 +23,7 @@ const decalMaterial = new THREE.MeshPhongMaterial({
 })
 
 const mouseHelper = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 10), new THREE.MeshNormalMaterial())
+// scene.add(mouseHelper)
 const orientation = new THREE.Euler()
 
 export function shootDecals(intersect) {

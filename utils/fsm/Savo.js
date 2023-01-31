@@ -31,7 +31,7 @@ export default class Savo extends Player {
 
     this.ricochet = new Particles({ num: 100, size: .05, unitAngle: 0.2 })
 
-    document.body.addEventListener('click', () => this.shoot())
+    // document.body.addEventListener('click', () => this.shoot())
     if (mousemove) document.addEventListener('mousemove', e => this.onMouseMove(e))
   }
 
