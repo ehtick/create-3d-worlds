@@ -51,10 +51,10 @@ export default class Savo extends Player {
       if (!intersects.length) return
       const { point, object } = intersects.find(x => x.object.name != 'decal')
 
-      const decalColor = object.name == 'enemy' ? 0xff0000 : 0x000000
+      const decalColor = object.name == 'enemy' ? 0x8a0303 : 0x000000
       shootDecals(intersects[0], { color: decalColor })
 
-      const ricochetColor = object.name == 'enemy' ? 0xff0000 : 0xcccccc
+      const ricochetColor = object.name == 'enemy' ? 0x8a0303 : 0xcccccc
       this.ricochet.reset({ pos: point, unitAngle: 0.2, color: ricochetColor })
       const scene = getScene(object)
       scene.add(this.ricochet.particles)
