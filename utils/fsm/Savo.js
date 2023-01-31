@@ -49,9 +49,8 @@ export default class Savo extends Player {
     for (let i = 0; i < 5; i++) setTimeout(() => {
       const intersects = getCameraIntersects(this.camera, this.solids)
       if (!intersects.length) return
+      const { point, object } = intersects.find(x => x.object.name != 'decal')
 
-      const { point, object } = intersects[0]
-      console.log(object.name)
       const decalColor = object.name == 'enemy' ? 0xff0000 : 0x000000
       shootDecals(intersects[0], { color: decalColor })
 

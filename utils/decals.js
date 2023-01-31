@@ -41,6 +41,7 @@ export function shootDecals(intersect, { scene, color } = {}) {
   const material = decalMaterial.clone()
   if (color !== undefined) material.color = new THREE.Color(color)
   const decal = new THREE.Mesh(geometry, material)
+  decal.name = 'decal'
 
   if (scene) scene.add(decal)
   else {

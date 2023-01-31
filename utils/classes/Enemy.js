@@ -6,7 +6,7 @@ export default class Enemy {
     this.mesh.position.set(x, height / 2, z)
     this.lastRandomX = Math.random()
     this.lastRandomZ = Math.random()
-    this.speed = 2
+    this.speed = 5
     this.mesh.name = 'enemy'
   }
 
