@@ -2,11 +2,11 @@ import { createBox } from '/utils/geometry.js'
 
 export default class Enemy {
   constructor({ x, z, size = 1, height = 3 }) {
-    this.mesh = createBox({ size, height, color: 0xff0000 })
+    this.mesh = createBox({ size, height, color: 0x009900 })
     this.mesh.position.set(x, height / 2, z)
     this.lastRandomX = Math.random()
     this.lastRandomZ = Math.random()
-    this.speed = 7
+    this.speed = 5
     this.mesh.userData.tag = 'enemy'
   }
 

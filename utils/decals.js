@@ -13,8 +13,7 @@ const textureLoader = new THREE.TextureLoader()
 const decalMaterial = new THREE.MeshPhongMaterial({
   color: 0x000000,
   map: textureLoader.load('/assets/textures/decal-diffuse.png'),
-  normalMap: textureLoader.load('/assets/textures/decal-normal.jpg'),
-  shininess: 900,
+  // normalMap: textureLoader.load('/assets/textures/decal-normal.jpg'),
   transparent: true,
   depthTest: true,
   polygonOffset: true,
@@ -24,7 +23,7 @@ const decalMaterial = new THREE.MeshPhongMaterial({
 
 const helper = new THREE.Object3D()
 
-export function shootDecals(intersect) {
+export function shootDecals(intersect, { scene, color } = {}) {
   const { face, point, object } = intersect
 
   const normal = face.normal.clone()
@@ -39,9 +38,15 @@ export function shootDecals(intersect) {
   const size = new THREE.Vector3(randSize, randSize, randSize)
 
   const geometry = new DecalGeometry(object, point, helper.rotation, size)
-  const decal = new THREE.Mesh(geometry, decalMaterial)
-  decal.position.sub(object.position)
-  object.add(decal)
+  const material = decalMaterial.clone()
+  if (color !== undefined) material.color = new THREE.Color(color)
+  const decal = new THREE.Mesh(geometry, material)
+
+  if (scene) scene.add(decal)
+  else {
+    decal.position.sub(object.position)
+    object.add(decal)
+  }
 }
 
 /* CAR TRACKS */

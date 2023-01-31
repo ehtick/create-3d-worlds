@@ -238,6 +238,11 @@ export function putOnTerrain({ terrain, size, total, callBack }) {
   }
 }
 
+export const getScene = object => {
+  if (object.parent.type === 'Scene') return object.parent
+  return getScene(object.parent)
+}
+
 /* CAMERA */
 
 export function createChaseCamera(mesh, camera = defaultCamera) {

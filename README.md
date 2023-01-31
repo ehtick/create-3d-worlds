@@ -12,8 +12,9 @@ npx live-server
 ### Scenes & examples
 
 - Savo
-  - srediti decal, otvoriti poseban fajl, probati modele i kocke
   - dodati zvuke: grom, kisha
+  - birati pojedinačnu i rafalnu paljbu
+  - da trza pušku
   - srediti nebo (skybox ili neke oblake)
   - dodati NPC karaktere, Nemce, duhove (vidi ai modele)
     - https://www.script-tutorials.com/demos/474/index3.html
