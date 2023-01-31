@@ -7,7 +7,7 @@ import { shootDecals } from '/utils/decals.js'
 import Particles, { Rain } from '/utils/classes/Particles.js'
 
 const gunshoot = new Audio('/assets/sounds/rafal.mp3')
-gunshoot.volume = 0
+// gunshoot.volume = 0
 
 export default class Savo extends Player {
   constructor({ speed, size = 2, mousemove = false, camera = defaultCamera, ...params } = {}) {
@@ -51,16 +51,14 @@ export default class Savo extends Player {
       if (!intersects.length) return
 
       const { point, object } = intersects[0]
-      const tag = object.userData?.tag
+      console.log(object.name)
+      const decalColor = object.name == 'enemy' ? 0xff0000 : 0x000000
+      shootDecals(intersects[0], { color: decalColor })
 
-      shootDecals(intersects[0], { color: tag == 'enemy' ? 0xff0000 : 0x000000 })
-
-      if (tag != 'enemy') {
-        this.ricochet.reset({ pos: point, unitAngle: 0.2 })
-        const scene = getScene(object)
-        scene.add(this.ricochet.particles)
-      }
-
+      const ricochetColor = object.name == 'enemy' ? 0xff0000 : 0xcccccc
+      this.ricochet.reset({ pos: point, unitAngle: 0.2, color: ricochetColor })
+      const scene = getScene(object)
+      scene.add(this.ricochet.particles)
     }, i * 100)
   }
 

@@ -67,7 +67,7 @@ export default class Particles {
     this.particles = createParticles(params)
   }
 
-  reset({ pos = [0, 0, 0], unitAngle = 1 } = {}) {
+  reset({ pos = [0, 0, 0], unitAngle = 1, color } = {}) {
     const { particles } = this
     this.t = 0
     particles.visible = true
@@ -76,8 +76,11 @@ export default class Particles {
     const { position } = particles.geometry.attributes
     for (let i = 0, l = position.array.length; i < l; i++)
       position.array[i] = randFloat(-unitAngle, unitAngle)
-
     position.needsUpdate = true
+
+    if (color)
+      particles.material.color = new THREE.Color(color)
+
   }
 
   expand({ scalar = 1.1, maxRounds = 50, gravity = 0 } = {}) { // scalar < 1 reverses direction
