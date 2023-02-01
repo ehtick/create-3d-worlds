@@ -2,6 +2,8 @@ import * as THREE from 'three'
 import { directionBlocked } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE } from '/data/constants.js'
 
+const { lerp } = THREE.MathUtils
+
 const INERTIA = .18
 export const GRAVITY = .9
 
@@ -45,6 +47,26 @@ export default class State {
 
   directionBlocked(vector) {
     return directionBlocked(this.fsm.mesh, this.fsm.solids, vector)
+  }
+
+  move(delta, speed = 1) {
+    if (this.keyboard.up) this.speed = lerp(this.oldSpeed, this.fsm.speed * speed, this.t)
+    if (this.keyboard.down) this.speed = lerp(this.oldSpeed, -this.fsm.speed * speed * .5, this.t)
+
+    const jumpStep = Math.abs(this.speed) * delta * 1.5
+    this.fsm.normalizeGround(jumpStep)
+
+    this.turn(delta)
+    this.forward(delta)
+    this.strafe(delta)
+
+    /* TRANSIT */
+
+    if (this.keyboard.space)
+      this.fsm.setState('jump')
+
+    if (this.fsm.inAir)
+      this.fsm.setState('fall')
   }
 
   forward(delta) {
