@@ -13,7 +13,6 @@ npx live-server
 
 - Savo
   - dodati NPC karaktere, Nemce, duhove (vidi ai modele)
-    - https://www.script-tutorials.com/demos/474/index3.html
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola
