@@ -4,14 +4,11 @@
 */
 import * as THREE from 'three'
 
-class Entity extends THREE.Group {
+class Entity extends THREE.Object3D {
   constructor(mesh) {
     super()
-    this.mesh = mesh
     this.mass = 1
     this.maxSpeed = 10
-
-    this.position.set(0, 0, 0)
     this.velocity = new THREE.Vector3(0, 0, 0)
 
     this.box = new THREE.Box3().setFromObject(mesh)
@@ -20,7 +17,7 @@ class Entity extends THREE.Group {
     this.velocitySamples = []
     this.numSamplesForSmoothing = 20
 
-    this.add(this.mesh)
+    this.add(mesh)
     this.radius = 200 // temp
   }
 
@@ -61,21 +58,21 @@ class Entity extends THREE.Group {
   bounce(box) {
     if (this.position.x > box.max.x) {
       this.position.setX(box.max.x)
-      this.velocity.angle = this.velocity.angle + .1
+      this.velocity.angle += .1
     }
 
     if (this.position.x < box.min.x) {
       this.position.setX(box.min.x)
-      this.velocity.angle = this.velocity.angle + .1
+      this.velocity.angle += .1
     }
 
     if (this.position.z > box.max.z) {
       this.position.setZ(box.max.z)
-      this.velocity.angle = this.velocity.angle + .1
+      this.velocity.angle += .1
     }
     if (this.position.z < box.min.z) {
       this.position.setZ(box.min.z)
-      this.velocity.angle = this.velocity.angle + .1
+      this.velocity.angle += .1
     }
 
     if (this.position.y > box.max.y)
@@ -236,7 +233,7 @@ export class SteeringEntity extends Entity {
   }
 
   followLeader(leader, entities, distance = 400, separationRadius = 300, maxSeparation = 100, leaderSightRadius = 1600, arrivalThreshold = 200) {
-    const tv = leader.velocity.clone()
+    const tv = leader.velocity ? leader.velocity.clone() : new THREE.Vector3()
     tv.normalize().multiplyScalar(distance)
     const ahead = leader.position.clone().add(tv)
     tv.negate()

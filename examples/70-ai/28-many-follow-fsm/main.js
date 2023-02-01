@@ -3,7 +3,6 @@ import { SteeringEntity } from '/libs/ThreeSteer.js'
 import Player from '/utils/player/Player.js'
 import NPC from '/utils/player/NPC.js'
 import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
-import { Keyboard } from '/utils/classes/Keyboard.js'
 
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
@@ -31,7 +30,6 @@ const boundaries = new Box3(new Vector3(-halfMap, 0, -halfMap), new Vector3(half
 
 const { mesh: playerMesh, animations } = await loadSorceress()
 const player = new Player({ mesh: playerMesh, animations, dict: sorceressAnimations, speed: 4 })
-playerMesh.velocity = new Vector3() // required by ThreeSteer
 
 scene.add(playerMesh)
 
@@ -39,8 +37,7 @@ const { mesh: followerMesh, animations: followerAnims } = await loadGolem({ angl
 
 for (let i = 0; i < 5; i++) {
   const mesh = SkeletonUtils.clone(followerMesh)
-  const npc = new NPC({ mesh, animations: followerAnims, dict: golemAnimation, keyboard: new Keyboard(false) })
-  npc.speed = 0
+  const npc = new NPC({ mesh, animations: followerAnims, dict: golemAnimation })
   const entity = new SteeringEntity(mesh)
   entity.position.set(randFloatSpread(25), 0, randFloatSpread(25))
   entity.maxSpeed = .02
