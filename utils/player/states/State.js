@@ -67,10 +67,10 @@ export default class State {
 
   strafe(delta) {
     if (this.keyboard.sideLeft && !this.directionBlocked(dir.left))
-      this.fsm.mesh.translateX(-this.fsm.speed * .5 * delta)
+      this.fsm.mesh.translateX(-this.fsm.speed * delta)
 
     if (this.keyboard.sideRight && !this.directionBlocked(dir.right))
-      this.fsm.mesh.translateX(this.fsm.speed * .5 * delta)
+      this.fsm.mesh.translateX(this.fsm.speed * delta)
   }
 
   turn(delta) {

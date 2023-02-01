@@ -14,7 +14,8 @@ npx live-server
 - Savo
   - BUG: run ne radi unazad
   - dodati NPC karaktere, Nemce, duhove (vidi ai modele)
-  - opciono AI kolizija (da ne idu kroz zidove i sl)
+    - vraćati klonirani meš i mixer?
+    - opciono AI kolizija (da ne idu kroz zidove i sl)
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola
