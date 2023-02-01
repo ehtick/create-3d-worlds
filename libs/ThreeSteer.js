@@ -169,16 +169,19 @@ export class SteeringEntity extends Entity {
     this.steeringForce.add(desiredVelocity)
   }
 
-  pursue(target) {
+  getPredicted(target) {
+    const velocity = target.velocity ? target.velocity.clone() : new THREE.Vector3()
     const lookAheadTime = this.position.distanceTo(target.position) / this.maxSpeed
-    const predictedTarget = target.position.clone().add(target.velocity.clone().setLength(lookAheadTime))
-    this.seek(predictedTarget)
+    const predictedTarget = target.position.clone().add(velocity.setLength(lookAheadTime))
+    return predictedTarget
+  }
+
+  pursue(target) {
+    this.seek(this.getPredicted(target))
   }
 
   evade(target) {
-    const lookAheadTime = this.position.distanceTo(target.position) / this.maxSpeed
-    const predictedTarget = target.position.clone().sub(target.velocity.clone().setLength(lookAheadTime))
-    this.flee(predictedTarget)
+    this.flee(this.getPredicted(target))
   }
 
   idle() {
@@ -265,7 +268,6 @@ export class SteeringEntity extends Entity {
   }
 
   queue(entities, maxQueueRadius = 500) {
-
     const neighbor = this.getNeighborAhead(entities)
     let brake = new THREE.Vector3(0, 0, 0)
     const v = this.velocity.clone()
@@ -357,29 +359,6 @@ export class SteeringEntity extends Entity {
     this.steeringForce.set(0, 0, 0)
     Entity.prototype.update.call(this)
   }
-}
-
-/**
- * Returns a random number between min (inclusive) and max (exclusive)
- */
-Math.getRandomArbitrary = function(min, max) {
-  return Math.random() * (max - min) + min
-}
-
-/**
- * Returns a random integer between min (inclusive) and max (inclusive)
- * Using Math.round() will give you a non-uniform distribution!
- */
-Math.getRandomInt = function(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
-
-THREE.Vector3.prototype.perp = function() {
-  return new THREE.Vector3(-this.z, 0, this.x)
-}
-
-THREE.Vector3.prototype.sign = function(vector) {
-  return this.perp().dot(vector) < 0 ? -1 : 1
 }
 
 Object.defineProperty(THREE.Vector3.prototype, 'angle', {

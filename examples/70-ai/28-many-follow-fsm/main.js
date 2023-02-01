@@ -1,6 +1,7 @@
 import { Box3, Vector3, MathUtils } from 'three'
 import { SteeringEntity } from '/libs/ThreeSteer.js'
 import Player from '/utils/player/Player.js'
+import NPC from '/utils/player/NPC.js'
 import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 import { Keyboard } from '/utils/classes/Keyboard.js'
 
@@ -15,7 +16,7 @@ import { sorceressAnimations, golemAnimation } from '/data/animations.js'
 const { randFloatSpread } = MathUtils
 
 const followers = []
-const ais = []
+const npcs = []
 
 ambLight()
 
@@ -38,13 +39,13 @@ const { mesh: followerMesh, animations: followerAnims } = await loadGolem({ angl
 
 for (let i = 0; i < 5; i++) {
   const mesh = SkeletonUtils.clone(followerMesh)
-  const ai = new Player({ mesh, animations: followerAnims, dict: golemAnimation, keyboard: new Keyboard(false) })
-  ai.speed = 0
+  const npc = new NPC({ mesh, animations: followerAnims, dict: golemAnimation, keyboard: new Keyboard(false) })
+  npc.speed = 0
   const entity = new SteeringEntity(mesh)
   entity.position.set(randFloatSpread(25), 0, randFloatSpread(25))
   entity.maxSpeed = .02
   followers.push(entity)
-  ais.push(ai)
+  npcs.push(npc)
   scene.add(entity)
 }
 
@@ -57,13 +58,13 @@ void function animate() {
   const delta = clock.getDelta()
 
   followers.forEach((follower, i) => {
-    const ai = ais[i]
+    const npc = npcs[i]
     follower.followLeader(playerMesh, followers, params.distance, params.separationRadius, params.maxSeparation, params.leaderSightRadius, params.arrivalThreshold)
     follower.lookWhereGoing(true)
     follower.update()
     follower.bounce(boundaries)
-    ai.keyboard.pressed.KeyW = true
-    ai.update(delta)
+    npc.keyboard.pressed.KeyW = true
+    npc.update(delta)
   })
 
   controls.update()
