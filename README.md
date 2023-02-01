@@ -12,8 +12,7 @@ npx live-server
 ### Scenes & examples
 
 - Savo
-  - birati pojedinačnu i rafalnu paljbu
-  - da trza pušku
+  - probati 3d pušku
   - srediti nebo (skybox ili neke oblake)
   - dodati NPC karaktere, Nemce, duhove (vidi ai modele)
     - https://www.script-tutorials.com/demos/474/index3.html

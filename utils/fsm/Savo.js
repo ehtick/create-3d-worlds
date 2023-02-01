@@ -18,6 +18,7 @@ export default class Savo extends Player {
     this.mouseSensitivity = .05
     this.mousemove = mousemove
     this.rifleBurst = rifleBurst
+    this.time = 0
 
     const file = rifleBurst ? 'rifle-burst' : 'rifle'
     this.audio = new Audio(`/assets/sounds/${file}.mp3`)
@@ -65,12 +66,15 @@ export default class Savo extends Player {
       this.ricochet.reset({ pos: point, unitAngle: 0.2, color: ricochetColor })
       const scene = getScene(object)
       scene.add(this.ricochet.particles)
+
+      this.time -= .5
     }, i * 100)
   }
 
   update(delta) {
     super.update(delta)
-    this.fpsRenderer.render()
+    this.time += delta
+    this.fpsRenderer.render(this.time)
     this.ricochet.expand({ scalar: 1.2, maxRounds: 5, gravity: .02 })
     if (!this.mousemove) this.lookAtFront()
   }
