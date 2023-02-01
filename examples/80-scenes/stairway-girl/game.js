@@ -2,7 +2,7 @@ import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSpiralStairs } from '/utils/geometry/towers.js'
 import { createGround } from '/utils/ground.js'
 import { loadSorceress } from '/utils/loaders.js'
-import Player from '/utils/fsm/Player.js'
+import Player from '/utils/player/Player.js'
 import { dirLight, hemLight } from '/utils/light.js'
 import { sorceressAnimations } from '/data/animations.js'
 

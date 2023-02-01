@@ -3,7 +3,7 @@ import { scene, renderer, clock, camera, hemLight, addUIControls } from '/utils/
 import { createGround } from '/utils/ground.js'
 import { createFirTrees } from '/utils/geometry/trees.js'
 import keyboard from '/utils/classes/Keyboard.js'
-import Avatar from '/utils/fsm/Avatar.js'
+import Avatar from '/utils/player/Avatar.js'
 
 hemLight({ intensity: 1.25 })
 

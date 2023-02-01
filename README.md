@@ -14,11 +14,11 @@ npx live-server
 - Savo
   - BUG: run ne radi unazad
   - dodati NPC karaktere, Nemce, duhove (vidi ai modele)
+  - opciono AI kolizija (da ne idu kroz zidove i sl)
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
-  - srediti koliziju sa kim treba
   - srediti ubijanje protivnika
   - probati 3D karakter
 
@@ -66,6 +66,7 @@ Tenk (Vozilo)
   https://www.maya-ndljk.com/blog/threejs-basic-toon-shader
   https://summer-afternoon.vlucendo.com/
 - dodati UI komande redom
+- automatsko puštanje zvuka
 - popraviti HTML margine
 - optimizacija 
   - https://twitter.com/mrdoob/status/966609115140128768

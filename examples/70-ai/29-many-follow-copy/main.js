@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { SteeringEntity } from '/libs/ThreeSteer.js'
-import Player from '/utils/fsm/Player.js'
+import Player from '/utils/player/Player.js'
 import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 import { Keyboard } from '/utils/classes/Keyboard.js'
 

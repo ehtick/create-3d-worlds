@@ -1,7 +1,7 @@
 import { scene, renderer, camera } from '/utils/scene.js'
 import { pyramidFromMatrix, putInMaze } from '/utils/mazes.js'
 import { wilsonsMatrix } from '/utils/mazes/algorithms.js'
-import Avatar from '/utils/fsm/Avatar.js'
+import Avatar from '/utils/player/Avatar.js'
 import { hemLight } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 

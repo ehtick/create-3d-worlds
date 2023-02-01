@@ -1,7 +1,7 @@
 import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { dirLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
-import Player from '/utils/fsm/Player.js'
+import Player from '/utils/player/Player.js'
 import { createGround } from '/utils/ground.js'
 import { robotkoAnimations } from '/data/animations.js'
 

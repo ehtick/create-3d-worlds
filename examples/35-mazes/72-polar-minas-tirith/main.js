@@ -4,7 +4,7 @@ import { recursiveBacktracker } from '/utils/mazes/algorithms.js'
 import { scene, createToonRenderer, camera } from '/utils/scene.js'
 import { createSun, hemLight, ambLight } from '/utils/light.js'
 import { createHill } from '/utils/ground.js'
-import Avatar from '/utils/fsm/Avatar.js'
+import Avatar from '/utils/player/Avatar.js'
 
 const gridSize = 20
 const cellSize = 10

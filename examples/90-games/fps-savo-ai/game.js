@@ -4,7 +4,7 @@ import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonU
 import { scene, renderer, camera, clock, createSkyBox } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 import Map2DRenderer from '/utils/classes/2d/Map2DRenderer.js'
-import Savo from '/utils/fsm/Savo.js'
+import Savo from '/utils/player/Savo.js'
 import Tilemap from '/utils/classes/Tilemap.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
 import { nemesis } from '/data/maps.js'

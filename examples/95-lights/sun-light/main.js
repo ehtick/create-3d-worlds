@@ -1,7 +1,7 @@
 import { scene, renderer, camera, clock, createOrbitControls } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 
-import Player from '/utils/fsm/Player.js'
+import Player from '/utils/player/Player.js'
 import { loadSorceress } from '/utils/loaders.js'
 import { sorceressAnimations } from '/data/animations.js'
 import { createStoneCircles } from '/utils/geometry/towers.js'

@@ -1,7 +1,7 @@
 import { createGround } from '/utils/ground.js'
 import { meshFromMatrix } from '/utils/mazes.js'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
-import Avatar from '/utils/fsm/Avatar.js'
+import Avatar from '/utils/player/Avatar.js'
 import matrix from '/data/small-map.js'
 import { hemLight } from '/utils/light.js'
 

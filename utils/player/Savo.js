@@ -1,4 +1,4 @@
-import Player from '/utils/fsm/Player.js'
+import Player from '/utils/player/Player.js'
 import { createBox } from '/utils/geometry.js'
 import { camera as defaultCamera } from '/utils/scene.js'
 import { normalizeMouse, getCameraIntersects, getScene, belongsTo } from '/utils/helpers.js'
