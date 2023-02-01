@@ -12,8 +12,9 @@ npx live-server
 ### Scenes & examples
 
 - Savo
-  - dodati NPC karaktere, Nemce, duhove (vidi ai modele)
+  - AI
     - vraćati klonirani meš i mixer?
+    - dodati NPC karaktere, Nemce, duhove (vidi ai modele)
     - opciono AI kolizija (da ne idu kroz zidove i sl)
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
