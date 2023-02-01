@@ -1,5 +1,5 @@
+import { scene, renderer, camera, clock, createSkyBox } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
-import { scene, renderer, camera, clock } from '/utils/scene.js'
 import Map2DRenderer from '/utils/classes/2d/Map2DRenderer.js'
 import Savo from '/utils/fsm/Savo.js'
 import Tilemap from '/utils/classes/Tilemap.js'
@@ -9,6 +9,7 @@ import Enemy from '/utils/classes/Enemy.js'
 import { Rain } from '/utils/classes/Particles.js'
 
 const light = hemLight()
+scene.background = createSkyBox({ folder: 'skybox4' })
 
 const tilemap = new Tilemap(nemesis, 20)
 const smallMapRenderer = new Map2DRenderer(tilemap)

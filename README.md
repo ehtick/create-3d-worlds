@@ -12,8 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo
-  - probati 3d pušku
-  - srediti nebo (skybox ili neke oblake)
   - dodati NPC karaktere, Nemce, duhove (vidi ai modele)
     - https://www.script-tutorials.com/demos/474/index3.html
   - dodati neke modele vozila i kuca
@@ -22,6 +20,7 @@ npx live-server
     - možda da se kursor pomera na ondrag
   - srediti koliziju sa kim treba
   - srediti ubijanje protivnika
+  - probati 3D karakter
 
 - Svemir 
   - dodati model ring space-arcology
