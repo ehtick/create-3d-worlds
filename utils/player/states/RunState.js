@@ -34,14 +34,20 @@ export default class RunState extends State {
 
   update(delta) {
     super.update(delta)
-    if (this.keyboard.up) this.speed = lerp(this.oldSpeed, this.fsm.speed, this.t)
-    if (this.keyboard.down) this.speed = lerp(this.oldSpeed, -this.fsm.speed, this.t)
+    if (this.keyboard.up) this.speed = lerp(this.oldSpeed, this.fsm.speed * 2, this.t)
+    if (this.keyboard.down) this.speed = lerp(this.oldSpeed, -this.fsm.speed * 1.5, this.t)
 
     const jumpStep = this.speed * delta * 1.5
     this.fsm.normalizeGround(jumpStep)
 
     this.turn(delta)
-    this.forward(delta)
+
+    if (this.keyboard.up)
+      this.forward(delta)
+
+    if (this.keyboard.down)
+      this.backward(delta)
+
     this.strafe(delta)
 
     /* TRANSIT */

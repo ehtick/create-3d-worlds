@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo
-  - BUG: run ne radi unazad
   - dodati NPC karaktere, Nemce, duhove (vidi ai modele)
     - vraćati klonirani meš i mixer?
     - opciono AI kolizija (da ne idu kroz zidove i sl)
