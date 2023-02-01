@@ -11,11 +11,17 @@ npx live-server
 
 ### Scenes & examples
 
+- AI
+  - vraćati klonirani meš i mixer iz loadera
+  - napraviti AI klasu koja koristi ThreeSteer (class NPC extends Player)
+  - ažurirati ai primere da koriste novu klasu
+  - implementirati koliziju (da ne idu kroz zidove i sl)
+  - napisati osnovnu ai logiku za lavirinte: 
+    - ide pravo do prepreke, onda skreće levo i nastavlja pravo
+    - kad vidi igrača, kreće ka njemu i napada ga
+
 - Savo
-  - AI
-    - vraćati klonirani meš i mixer?
-    - dodati NPC karaktere, Nemce, duhove (vidi ai modele)
-    - opciono AI kolizija (da ne idu kroz zidove i sl)
+  - dodati NPC karaktere, Nemce, duhove
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola
