@@ -243,6 +243,12 @@ export const getScene = object => {
   return getScene(object.parent)
 }
 
+export const belongsTo = (object, name) => {
+  if (!object) return false
+  if (object.name === name) return true
+  return belongsTo(object.parent, name)
+}
+
 /* CAMERA */
 
 export function createChaseCamera(mesh, camera = defaultCamera) {

@@ -1,7 +1,7 @@
 import Player from '/utils/fsm/Player.js'
 import { createBox } from '/utils/geometry.js'
 import { camera as defaultCamera } from '/utils/scene.js'
-import { normalizeMouse, getCameraIntersects, getScene } from '/utils/helpers.js'
+import { normalizeMouse, getCameraIntersects, getScene, belongsTo } from '/utils/helpers.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { shootDecals } from '/utils/decals.js'
 import Particles from '/utils/classes/Particles.js'
@@ -60,10 +60,11 @@ export default class Savo extends Player {
       if (!intersects.length) return
       const { point, object } = intersects.find(x => x.object.name != 'decal')
 
-      const decalColor = object.name == 'enemy' ? 0x8a0303 : 0x000000
+      const isEnemy = belongsTo(object, 'enemy')
+      const decalColor = isEnemy ? 0x8a0303 : 0x000000
       shootDecals(intersects[0], { color: decalColor })
 
-      const ricochetColor = object.name == 'enemy' ? 0x8a0303 : 0xcccccc
+      const ricochetColor = isEnemy ? 0x8a0303 : 0xcccccc
       this.ricochet.reset({ pos: point, unitAngle: 0.2, color: ricochetColor })
       const scene = getScene(object)
       scene.add(this.ricochet.particles)
