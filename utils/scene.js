@@ -149,5 +149,5 @@ export function addScoreUI({ score = 0, title = 'Score' } = {}) {
 // SKYBOX
 
 export const createSkyBox = ({ folder = 'skybox2' } = {}) => new THREE.CubeTextureLoader()
-  .setPath(`/assets/images/${folder}/`)
+  .setPath(`/assets/textures/skybox/${folder}/`)
   .load(['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg'])
