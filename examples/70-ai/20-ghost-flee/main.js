@@ -11,7 +11,6 @@ import { robotkoAnimations } from '/data/animations.js'
 const { randFloatSpread } = THREE.MathUtils
 
 ambLight()
-
 createOrbitControls()
 camera.position.set(0, 10, 15)
 

@@ -13,11 +13,9 @@ const { randFloatSpread } = THREE.MathUtils
 
 const mixers = []
 const entities = []
-const GHOST_NUM = 4
 
 ambLight()
-
-const controls = createOrbitControls()
+createOrbitControls()
 camera.position.set(0, 10, 15)
 
 scene.add(createFloor({ size: 100 }))
@@ -28,7 +26,7 @@ scene.add(mesh)
 
 const { mesh: ghostMesh, animations: ghostAnims } = await loadModel({ file: 'character/ghost/scene.gltf' })
 
-for (let i = 0; i < GHOST_NUM; i++) {
+for (let i = 0; i < 5; i++) {
   const clonedMesh = SkeletonUtils.clone(ghostMesh)
   const entity = new SteeringEntity(clonedMesh)
   entity.position.set(randFloatSpread(50), -.5, randFloatSpread(50))
@@ -53,15 +51,13 @@ void function loop() {
     if (entity.position.distanceTo(mesh.position) > 1) {
       entity.seek(mesh.position)
       entity.lookWhereGoing(true)
-    } else {
+    } else
       entity.idle()
-      entity.lookAt(mesh.position)
-    }
+
     entity.update()
   })
 
-  controls.update()
-  player.update(delta)
   mixers.forEach(mixer => mixer.update(delta))
+  player.update(delta)
   renderer.render(scene, camera)
 }()
