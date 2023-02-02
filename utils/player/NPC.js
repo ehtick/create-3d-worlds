@@ -1,4 +1,6 @@
 import { Box3, Vector3 } from 'three'
+import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
+
 import Player from './Player.js'
 import { Keyboard } from '/utils/classes/Keyboard.js'
 import { SteeringEntity } from '/libs/ThreeSteer.js'
@@ -9,8 +11,8 @@ import { SteeringEntity } from '/libs/ThreeSteer.js'
 */
 export default class NPC extends Player {
   constructor(params = {}) {
-    super({ keyboard: new Keyboard(false), speed: 0, ...params })
-    this.entity = new SteeringEntity(params.mesh)
+    super({ ...params, mesh: clone(params.mesh), keyboard: new Keyboard(false), speed: 0 })
+    this.entity = new SteeringEntity(this.mesh)
 
     if (params.mapSize) {
       const halfMap = params.mapSize / 2

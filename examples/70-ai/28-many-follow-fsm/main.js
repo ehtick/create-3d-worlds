@@ -1,7 +1,6 @@
 import { MathUtils } from 'three'
 import Player from '/utils/player/Player.js'
 import NPC from '/utils/player/NPC.js'
-import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
@@ -32,8 +31,7 @@ scene.add(playerMesh)
 const { mesh: followerMesh, animations: followerAnims } = await loadGolem({ angle: 0 })
 
 for (let i = 0; i < 5; i++) {
-  const mesh = SkeletonUtils.clone(followerMesh)
-  const npc = new NPC({ mesh, animations: followerAnims, dict: golemAnimation, mapSize })
+  const npc = new NPC({ mesh: followerMesh, animations: followerAnims, dict: golemAnimation, mapSize })
   npc.position.set(randFloatSpread(25), 0, randFloatSpread(25))
   npc.entity.maxSpeed = .02
   npcs.push(npc)
