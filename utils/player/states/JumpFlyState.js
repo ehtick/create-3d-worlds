@@ -1,8 +1,8 @@
 import FlyState from './FlyState.js'
 
 export default class JumpFlyState extends FlyState {
-  constructor(fsm, name) {
-    super(fsm, name)
+  constructor(player, name) {
+    super(player, name)
     this.maxJumpTime = 25
   }
 

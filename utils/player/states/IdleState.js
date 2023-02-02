@@ -15,7 +15,7 @@ export default class IdleState extends State {
     this.action?.setEffectiveTimeScale(1)
     const duration = chooseDuration(oldState?.name)
 
-    if (!oldAction) this.fsm.mixer?.stopAllAction()
+    if (!oldAction) this.player.mixer?.stopAllAction()
 
     if (this.action && oldAction) {
       if (this.prevState === 'walk' || this.prevState === 'run') this.syncTime()
@@ -37,24 +37,24 @@ export default class IdleState extends State {
 
     if (this.keyboard.up || this.keyboard.down || this.joystick?.forward < 0
       || this.keyboard.sideLeft || this.keyboard.sideRight)
-      this.fsm.setState('walk')
+      this.player.setState('walk')
 
-    if (this.fsm.inAir)
-      this.fsm.setState('fall')
+    if (this.player.inAir)
+      this.player.setState('fall')
 
     if (this.keyboard.space)
-      this.fsm.setState('jump')
+      this.player.setState('jump')
 
     if (this.keyboard.pressed.Enter)
-      this.fsm.setState('attack')
+      this.player.setState('attack')
 
     if (this.keyboard.control)
-      this.fsm.setState('special')
+      this.player.setState('special')
 
     if (this.keyboard.backspace)
-      this.fsm.setState('pain')
+      this.player.setState('pain')
 
     if (this.keyboard.pressed.Delete)
-      this.fsm.setState('death')
+      this.player.setState('death')
   }
 }

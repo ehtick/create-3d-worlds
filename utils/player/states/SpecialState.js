@@ -14,7 +14,7 @@ export default class SpecialState extends State {
   enter(oldState, oldAction) {
     this.prevState = oldState.name
     if (!this.action)
-      return this.fsm.setState(this.prevState || 'idle')
+      return this.player.setState(this.prevState || 'idle')
     const mixer = this.action?.getMixer()
     mixer.addEventListener('finished', this._FinishedCallback)
     this.action.reset()
@@ -31,7 +31,7 @@ export default class SpecialState extends State {
   _FinishedCallback() {
     this._Cleanup()
     if (this.name === 'death') return
-    this.fsm.setState(this.prevState || 'idle')
+    this.player.setState(this.prevState || 'idle')
   }
 
   exit() {

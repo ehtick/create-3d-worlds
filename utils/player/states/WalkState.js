@@ -36,13 +36,13 @@ export default class WalkState extends State {
     /* TRANSIT */
 
     if (this.keyboard.pressed.Enter)
-      this.fsm.setState('attack')
+      this.player.setState('attack')
 
     if (this.keyboard.capsLock || this.joystick?.forward < -.75)
-      this.fsm.setState('run')
+      this.player.setState('run')
 
     if (!this.keyboard.up && !this.keyboard.down && !this.joystick?.forward
       && !this.keyboard.sideLeft && !this.keyboard.sideRight)
-      this.fsm.setState('idle')
+      this.player.setState('idle')
   }
 }

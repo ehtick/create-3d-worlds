@@ -10,24 +10,24 @@ export const GRAVITY = .9
 let velocity = 0
 
 export default class State {
-  constructor(fsm, name) {
-    this.fsm = fsm
+  constructor(player, name) {
+    this.player = player
     this.name = name
-    this.action = fsm?.actions[name]
+    this.action = player?.actions[name]
     this.prevState = ''
     this.t = 0
   }
 
   get keyboard() {
-    return this.fsm.keyboard
+    return this.player.keyboard
   }
 
   get joystick() {
-    return this.fsm.joystick
+    return this.player.joystick
   }
 
   get actions() {
-    return this.fsm.actions
+    return this.player.actions
   }
 
   enter(oldState) {
@@ -46,15 +46,15 @@ export default class State {
   /* COMMON ACTIONS */
 
   directionBlocked(vector) {
-    return directionBlocked(this.fsm.mesh, this.fsm.solids, vector)
+    return directionBlocked(this.player.mesh, this.player.solids, vector)
   }
 
   move(delta, speed = 1) {
-    if (this.keyboard.up) this.speed = lerp(this.oldSpeed, this.fsm.speed * speed, this.t)
-    if (this.keyboard.down) this.speed = lerp(this.oldSpeed, -this.fsm.speed * speed * .5, this.t)
+    if (this.keyboard.up) this.speed = lerp(this.oldSpeed, this.player.speed * speed, this.t)
+    if (this.keyboard.down) this.speed = lerp(this.oldSpeed, -this.player.speed * speed * .5, this.t)
 
     const jumpStep = Math.abs(this.speed) * delta * 1.5
-    this.fsm.normalizeGround(jumpStep)
+    this.player.normalizeGround(jumpStep)
 
     this.turn(delta)
     this.forward(delta)
@@ -63,24 +63,24 @@ export default class State {
     /* TRANSIT */
 
     if (this.keyboard.space)
-      this.fsm.setState('jump')
+      this.player.setState('jump')
 
-    if (this.fsm.inAir)
-      this.fsm.setState('fall')
+    if (this.player.inAir)
+      this.player.setState('fall')
   }
 
   forward(delta) {
-    if (!delta || !this.fsm.speed || !this.speed) return
+    if (!delta || !this.player.speed || !this.speed) return
 
     const direction = this.speed > 0 ? dir.forward : dir.backward
     if (this.directionBlocked(direction)) return
     const jumpDir = this.speed > 0 ? dir.upForward : dir.upBackward
     if (this.keyboard.space && this.directionBlocked(jumpDir)) return
 
-    velocity += this.speed * this.fsm.speed * (this.joystick?.forward || -1)
+    velocity += this.speed * this.player.speed * (this.joystick?.forward || -1)
     velocity *= INERTIA
 
-    this.fsm.mesh.translateZ(velocity * delta)
+    this.player.mesh.translateZ(velocity * delta)
   }
 
   backward(delta) {
@@ -89,38 +89,38 @@ export default class State {
 
   strafe(delta) {
     if (this.keyboard.sideLeft && !this.directionBlocked(dir.left))
-      this.fsm.mesh.translateX(-this.fsm.speed * delta)
+      this.player.mesh.translateX(-this.player.speed * delta)
 
     if (this.keyboard.sideRight && !this.directionBlocked(dir.right))
-      this.fsm.mesh.translateX(this.fsm.speed * delta)
+      this.player.mesh.translateX(this.player.speed * delta)
   }
 
   turn(delta) {
-    if (!delta || !this.fsm.speed) return
+    if (!delta || !this.player.speed) return
     const angle = RIGHT_ANGLE * delta // 90 degrees per second
     if (this.joystick)
-      this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -this.joystick.turn)
+      this.player.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -this.joystick.turn)
 
     if (this.keyboard.left)
-      this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle)
+      this.player.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle)
     if (this.keyboard.right)
-      this.fsm.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -1)
+      this.player.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -1)
   }
 
   freeFly(delta) {
-    const { mesh } = this.fsm
+    const { mesh } = this.player
     const gravityStep = GRAVITY * delta
 
-    if (this.fsm.velocityY - gravityStep >= this.fsm.minVelocityY)
-      this.fsm.velocityY -= gravityStep
+    if (this.player.velocityY - gravityStep >= this.player.minVelocityY)
+      this.player.velocityY -= gravityStep
 
-    if (this.fsm.velocityY > 0 && this.directionBlocked(dir.up))
+    if (this.player.velocityY > 0 && this.directionBlocked(dir.up))
       return
 
-    mesh.translateY(this.fsm.velocityY)
+    mesh.translateY(this.player.velocityY)
 
-    if (!this.fsm.inAir && !this.keyboard.space)
-      mesh.position.y = this.fsm.groundY
+    if (!this.player.inAir && !this.keyboard.space)
+      mesh.position.y = this.player.groundY
   }
 
   syncTime() {

@@ -4,8 +4,8 @@ import State, { GRAVITY } from './State.js'
 const { lerp } = THREE.MathUtils
 
 export default class FlyState extends State {
-  constructor(fsm, name) {
-    super(fsm, name)
+  constructor(player, name) {
+    super(player, name)
     this.maxJumpTime = Infinity
   }
 
@@ -29,7 +29,7 @@ export default class FlyState extends State {
 
   update(delta) {
     super.update(delta)
-    const speed = this.keyboard.capsLock ? this.fsm.speed * 2 : this.fsm.speed
+    const speed = this.keyboard.capsLock ? this.player.speed * 2 : this.player.speed
 
     if (this.keyboard.up)
       this.speed = lerp(this.oldSpeed, speed, this.t)
@@ -45,14 +45,14 @@ export default class FlyState extends State {
     const flyStep = GRAVITY * delta * 10
 
     if (this.keyboard.space && this.jumpTime < this.maxJumpTime) {
-      this.fsm.velocityY += flyStep
+      this.player.velocityY += flyStep
       this.jumpTime++
 
-      if (this.fsm.velocityY > this.fsm.maxVelocityY)
-        this.fsm.velocityY = this.fsm.maxVelocityY
+      if (this.player.velocityY > this.player.maxVelocityY)
+        this.player.velocityY = this.player.maxVelocityY
     }
 
-    if (this.fsm.velocityY <= 0 && !this.fsm.inAir)
-      this.fsm.setState(this.prevState) // bez prevState brlja aktivne animacije
+    if (this.player.velocityY <= 0 && !this.player.inAir)
+      this.player.setState(this.prevState) // bez prevState brlja aktivne animacije
   }
 }

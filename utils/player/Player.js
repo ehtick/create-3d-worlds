@@ -4,7 +4,7 @@ import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
-import { getSize, getHeight, mapRange } from '/utils/helpers.js'
+import { getSize, mapRange } from '/utils/helpers.js'
 
 import IdleState from './states/IdleState.js'
 import RunState from './states/RunState.js'
@@ -27,6 +27,14 @@ const jumpStyles = {
   FLY: 'FLY',
   JUMP: 'JUMP',
   FLY_JUMP: 'FLY_JUMP',
+}
+
+const chooseJumpState = jumpStyle => {
+  switch (jumpStyle) {
+    case jumpStyles.FLY: return FlyState
+    case jumpStyles.JUMP: return JumpState
+    case jumpStyles.FLY_JUMP: return JumpFlyState
+  }
 }
 
 export default class Player {
@@ -71,12 +79,7 @@ export default class Player {
   /* STATE MACHINE */
 
   mapState(name) {
-    if (name === 'jump')
-      switch (this.jumpStyle) {
-        case jumpStyles.FLY: return FlyState
-        case jumpStyles.JUMP: return JumpState
-        case jumpStyles.FLY_JUMP: return JumpFlyState
-      }
+    if (name === 'jump') return chooseJumpState (this.jumpStyle)
     return states[name] || SpecialState
   }
 
