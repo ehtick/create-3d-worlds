@@ -8,30 +8,24 @@ import { ambLight } from '/utils/light.js'
 import { loadSorceress, loadGolem } from '/utils/loaders.js'
 import { sorceressAnimations, golemAnimation } from '/data/animations.js'
 
-/* this example uses Player for AI */
-
 const { randFloatSpread } = MathUtils
 
 const npcs = []
+const mapSize = 100
 
 ambLight()
-
-const controls = createOrbitControls()
+createOrbitControls()
 camera.position.set(0, 10, 15)
-
-const mapSize = 100
 
 scene.add(createFloor({ size: mapSize }))
 
-const { mesh: playerMesh, animations } = await loadSorceress()
-const player = new Player({ mesh: playerMesh, animations, dict: sorceressAnimations, speed: 4 })
+const player = new Player({ ...await loadSorceress(), dict: sorceressAnimations, speed: 4 })
+scene.add(player.mesh)
 
-scene.add(playerMesh)
-
-const { mesh: followerMesh, animations: followerAnims } = await loadGolem({ angle: 0 })
+const { mesh, animations } = await loadGolem({ angle: 0 })
 
 for (let i = 0; i < 5; i++) {
-  const npc = new NPC({ mesh: followerMesh, animations: followerAnims, dict: golemAnimation, mapSize })
+  const npc = new NPC({ mesh, animations, dict: golemAnimation, mapSize })
   npc.position.set(randFloatSpread(25), 0, randFloatSpread(25))
   npc.entity.maxSpeed = .02
   npcs.push(npc)
@@ -47,11 +41,10 @@ void function animate() {
   const delta = clock.getDelta()
 
   npcs.forEach(npc => {
-    npc.followLeader(playerMesh, entities)
+    npc.followLeader(player.mesh, entities)
     npc.update(delta)
   })
 
-  controls.update()
   player.update(delta)
   renderer.render(scene, camera)
 }()
