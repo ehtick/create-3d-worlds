@@ -12,15 +12,14 @@ const { randFloatSpread } = THREE.MathUtils
 
 ambLight()
 
-const controls = createOrbitControls()
+createOrbitControls()
 camera.position.set(0, 10, 15)
 
 const floor = createFloor({ size: 100 })
 scene.add(floor)
 
-const { mesh, animations } = await loadRobotko()
-const player = new Player({ mesh, animations, dict: robotkoAnimations })
-scene.add(mesh)
+const player = new Player({ ...await loadRobotko(), dict: robotkoAnimations })
+scene.add(player.mesh)
 
 const { mesh: ghostMesh, mixer: ghostMixer } = await loadModel({ file: 'character/ghost/scene.gltf' })
 const ghost = new SteeringEntity(ghostMesh)
@@ -36,20 +35,13 @@ void function animate() {
   requestAnimationFrame(animate)
   const delta = clock.getDelta()
 
-  const distance = mesh.position.distanceTo(ghost.position)
-  if (distance > .5) {
-    ghost.flee(mesh.position)
-    ghost.lookWhereGoing(true)
-  } else {
-    ghost.idle()
-    ghost.lookAt(mesh.position)
-  }
-
+  ghost.flee(player.position)
+  ghost.lookWhereGoing(true)
   ghost.bounce(boundaries)
   ghost.update()
+
   ghostMixer.update(delta)
   player.update(delta)
-  controls.update()
 
   renderer.render(scene, camera)
 }()
