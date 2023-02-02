@@ -1,9 +1,10 @@
 import * as THREE from 'three'
-import { scene, renderer, camera, createOrbitControls, hemLight } from '/utils/scene.js'
+import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { createHillyTerrain, createWater } from '/utils/ground.js'
 import { createTreesOnTerrain } from '/utils/geometry/trees.js'
 import { addTexture } from '/utils/helpers.js'
 import { loadModel } from '/utils/loaders.js'
+import { hemLight } from '/utils/light.js'
 
 hemLight({ intensity: 1.2 })
 
