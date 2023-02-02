@@ -10,9 +10,10 @@ import { SteeringEntity } from '/libs/ThreeSteer.js'
 * SteeringEntity controls move
 */
 export default class NPC extends Player {
-  constructor(params = {}) {
+  constructor(params) {
     super({ ...params, mesh: clone(params.mesh), keyboard: new Keyboard(false), speed: 0 })
     this.entity = new SteeringEntity(this.mesh)
+    this.randomizeAction()
 
     if (params.mapSize) {
       const halfMap = params.mapSize / 2
@@ -32,5 +33,4 @@ export default class NPC extends Player {
     if (this.boundaries) entity.bounce(this.boundaries)
     this.keyboard.pressed.KeyW = true
   }
-
 }

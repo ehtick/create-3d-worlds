@@ -12,10 +12,9 @@ npx live-server
 ### Scenes & examples
 
 - AI
-  - vraćati klonirani meš i mixer iz loadera
-  - probati avoid(solids)
   - ažurirati ai primere da koriste NPC klasu
-  - implementirati koliziju (da ne idu kroz zidove i sl)
+  - probati avoid(solids)
+    - možda ručno implementirati koliziju (da ne idu kroz zidove i sl)
   - napisati osnovnu ai logiku za lavirinte: 
     - ide pravo do prepreke, onda skreće levo i nastavlja pravo
     - kad vidi igrača, kreće ka njemu i napada ga

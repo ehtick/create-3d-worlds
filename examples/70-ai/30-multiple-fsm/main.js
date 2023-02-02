@@ -1,38 +1,33 @@
 import * as THREE from 'three'
-import Player from '/utils/player/Player.js'
-import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
-import { Keyboard } from '/utils/classes/Keyboard.js'
 
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
 import { loadSorceress, loadGolem } from '/utils/loaders.js'
 import { sorceressAnimations, golemAnimation } from '/data/animations.js'
+import Player from '/utils/player/Player.js'
+import NPC from '/utils/player/NPC.js'
 
 const { randFloatSpread } = THREE.MathUtils
 
-const followers = []
+const npcs = []
 
 ambLight()
-
-const controls = createOrbitControls()
 camera.position.set(0, 10, 15)
+createOrbitControls()
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh: playerMesh, animations } = await loadSorceress()
-const player = new Player({ mesh: playerMesh, animations, dict: sorceressAnimations })
-scene.add(playerMesh)
+const player = new Player({ ...await loadSorceress(), dict: sorceressAnimations })
+scene.add(player.mesh)
 
 const { mesh: followerMesh, animations: followerAnims } = await loadGolem()
 
 for (let i = 0; i < 10; i++) {
-  const mesh = SkeletonUtils.clone(followerMesh)
-  mesh.position.set(randFloatSpread(50), 0, randFloatSpread(50))
-  const ai = new Player({ mesh, animations: followerAnims, dict: golemAnimation, keyboard: new Keyboard(false) })
-  ai.randomizeAction()
-  followers.push(ai)
-  scene.add(mesh)
+  const npc = new NPC({ mesh: followerMesh, animations: followerAnims, dict: golemAnimation })
+  npc.position.set(randFloatSpread(50), 0, randFloatSpread(50))
+  npcs.push(npc)
+  scene.add(npc.entity)
 }
 
 /* LOOP */
@@ -41,12 +36,10 @@ void function animate() {
   requestAnimationFrame(animate)
   const delta = clock.getDelta()
 
-  followers.forEach(follower => {
-    // follower.keyboard.pressed.KeyW = true
-    follower.update(delta)
+  npcs.forEach(npc => {
+    npc.update(delta)
   })
 
-  controls.update()
   player.update(delta)
   renderer.render(scene, camera)
 }()
