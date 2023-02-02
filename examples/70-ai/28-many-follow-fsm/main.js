@@ -38,12 +38,11 @@ const { mesh: followerMesh, animations: followerAnims } = await loadGolem({ angl
 for (let i = 0; i < 5; i++) {
   const mesh = SkeletonUtils.clone(followerMesh)
   const npc = new NPC({ mesh, animations: followerAnims, dict: golemAnimation })
-  const entity = new SteeringEntity(mesh)
-  entity.position.set(randFloatSpread(25), 0, randFloatSpread(25))
-  entity.maxSpeed = .02
-  followers.push(entity)
+  npc.position.set(randFloatSpread(25), 0, randFloatSpread(25))
+  npc.entity.maxSpeed = .02
+  followers.push(npc.entity)
   npcs.push(npc)
-  scene.add(entity)
+  scene.add(npc.entity)
 }
 
 /* LOOP */

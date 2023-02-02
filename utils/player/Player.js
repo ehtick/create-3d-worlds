@@ -4,7 +4,7 @@ import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
-import { getHeight, mapRange } from '/utils/helpers.js'
+import { getSize, getHeight, mapRange } from '/utils/helpers.js'
 
 import IdleState from './states/IdleState.js'
 import RunState from './states/RunState.js'
@@ -36,7 +36,6 @@ export default class Player {
   }) {
     this.mesh = mesh
     this.speed = speed
-    this.size = getHeight(mesh)
     this.solids = []
     this.groundY = 0
     this.velocityY = 0
@@ -101,16 +100,32 @@ export default class Player {
 
   /* GETTERS */
 
-  get action() {
-    return this.currentState.action
+  get size() { // TODO: deprecate
+    return this.height
+  }
+
+  get width() {
+    return getSize(this.mesh, 'x')
+  }
+
+  get height() {
+    return getSize(this.mesh, 'y')
+  }
+
+  get depth() {
+    return getSize(this.mesh, 'z')
   }
 
   get position() {
     return this.mesh.position
   }
 
+  get action() {
+    return this.currentState.action
+  }
+
   get inAir() {
-    return this.mesh.position.y - this.groundY > this.size * .2
+    return this.mesh.position.y - this.groundY > this.height * .2
   }
 
   /* map to canvas angle (for Map2DRenderer) */
@@ -142,13 +157,13 @@ export default class Player {
 
   updateGround() {
     const { mesh, solids } = this
-    this.groundY = raycastGround({ mesh, solids }, { y: this.size })
+    this.groundY = raycastGround({ mesh, solids }, { y: this.height })
   }
 
   updateCamera(delta) {
     if (this.thirdPersonCamera)
       if (this.keyboard.pressed.mouse)
-        this.controls.target = this.mesh.position.clone().add(new THREE.Vector3(0, this.size, 0))
+        this.controls.target = this.mesh.position.clone().add(new THREE.Vector3(0, this.height, 0))
       else {
         this.thirdPersonCamera.updateCurrentPosition()
         this.thirdPersonCamera.update(delta)

@@ -2,17 +2,17 @@
   https://github.com/erosmarcon/three-steer
   updated to modern syntax by mudroljub
 */
-import * as THREE from 'three'
+import { Object3D, Vector3, Box3, Raycaster } from 'three'
 
-class Entity extends THREE.Object3D {
+class Entity extends Object3D {
   constructor(mesh) {
     super()
     this.mass = 1
     this.maxSpeed = 10
-    this.velocity = new THREE.Vector3(0, 0, 0)
+    this.velocity = new Vector3(0, 0, 0)
 
-    this.box = new THREE.Box3().setFromObject(mesh)
-    this.raycaster = new THREE.Raycaster()
+    this.box = new Box3().setFromObject(mesh)
+    this.raycaster = new Raycaster()
 
     this.velocitySamples = []
     this.numSamplesForSmoothing = 20
@@ -34,7 +34,7 @@ class Entity extends THREE.Object3D {
   }
 
   get forward() {
-    return new THREE.Vector3(0, 0, -1).applyQuaternion(this.quaternion).negate()
+    return new Vector3(0, 0, -1).applyQuaternion(this.quaternion).negate()
   }
 
   get backward() {
@@ -42,7 +42,7 @@ class Entity extends THREE.Object3D {
   }
 
   get left() {
-    return this.forward.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI * .5)
+    return this.forward.clone().applyAxisAngle(new Vector3(0, 1, 0), Math.PI * .5)
   }
 
   get right() {
@@ -139,7 +139,7 @@ export class SteeringEntity extends Entity {
 
     this.pathIndex = 0
 
-    this.steeringForce = new THREE.Vector3(0, 0, 0)
+    this.steeringForce = new Vector3(0, 0, 0)
   }
 
   seek(position) {
@@ -167,7 +167,7 @@ export class SteeringEntity extends Entity {
   }
 
   getPredicted(target) {
-    const velocity = target.velocity ? target.velocity.clone() : new THREE.Vector3()
+    const velocity = target.velocity ? target.velocity.clone() : new Vector3()
     const lookAheadTime = this.position.distanceTo(target.position) / this.maxSpeed
     const predictedTarget = target.position.clone().add(velocity.setLength(lookAheadTime))
     return predictedTarget
@@ -188,7 +188,7 @@ export class SteeringEntity extends Entity {
 
   wander() {
     const center = this.velocity.clone().normalize().setLength(this.wanderDistance)
-    const offset = new THREE.Vector3(1, 1, 1)
+    const offset = new Vector3(1, 1, 1)
     offset.setLength(this.wanderRadius)
     offset.x = Math.sin(this.wanderAngle) * offset.length()
     offset.z = Math.cos(this.wanderAngle) * offset.length()
@@ -210,7 +210,7 @@ export class SteeringEntity extends Entity {
   }
 
   separation(entities, separationRadius = 300, maxSeparation = 100) {
-    const force = new THREE.Vector3(0, 0, 0)
+    const force = new Vector3(0, 0, 0)
     let neighborCount = 0
 
     for (let i = 0; i < entities.length; i++)
@@ -233,7 +233,7 @@ export class SteeringEntity extends Entity {
   }
 
   followLeader(leader, entities, distance = 400, separationRadius = 300, maxSeparation = 100, leaderSightRadius = 1600, arrivalThreshold = 200) {
-    const tv = leader.velocity ? leader.velocity.clone() : new THREE.Vector3()
+    const tv = leader.velocity ? leader.velocity.clone() : new Vector3()
     tv.normalize().multiplyScalar(distance)
     const ahead = leader.position.clone().add(tv)
     tv.negate()
@@ -266,7 +266,7 @@ export class SteeringEntity extends Entity {
 
   queue(entities, maxQueueRadius = 500) {
     const neighbor = this.getNeighborAhead(entities)
-    let brake = new THREE.Vector3(0, 0, 0)
+    let brake = new Vector3(0, 0, 0)
     const v = this.velocity.clone()
     if (neighbor != null) {
       brake = this.steeringForce.clone().negate().multiplyScalar(0.8)
@@ -291,7 +291,7 @@ export class SteeringEntity extends Entity {
 
   flock(entities) {
     const averageVelocity = this.velocity.clone()
-    const averagePosition = new THREE.Vector3(0, 0, 0)
+    const averagePosition = new Vector3(0, 0, 0)
     let inSightCount = 0
     for (let i = 0; i < entities.length; i++)
       if (entities[i] != this && this.inSight(entities[i])) {
@@ -342,7 +342,7 @@ export class SteeringEntity extends Entity {
         mostThreatening = obstacles[i]
     }
     // end
-    let avoidance = new THREE.Vector3(0, 0, 0)
+    let avoidance = new Vector3(0, 0, 0)
     if (mostThreatening != null)
       avoidance = ahead.clone().sub(mostThreatening.position).normalize().multiplyScalar(100)
 
@@ -358,7 +358,7 @@ export class SteeringEntity extends Entity {
   }
 }
 
-Object.defineProperty(THREE.Vector3.prototype, 'angle', {
+Object.defineProperty(Vector3.prototype, 'angle', {
   enumerable: true,
   configurable: true,
   get() {
