@@ -13,8 +13,8 @@ npx live-server
 
 - AI
   - vraćati klonirani meš i mixer iz loadera
-  - napraviti AI klasu koja koristi ThreeSteer (class NPC extends Player)
-  - ažurirati ai primere da koriste novu klasu
+  - probati avoid(solids)
+  - ažurirati ai primere da koriste NPC klasu
   - implementirati koliziju (da ne idu kroz zidove i sl)
   - napisati osnovnu ai logiku za lavirinte: 
     - ide pravo do prepreke, onda skreće levo i nastavlja pravo

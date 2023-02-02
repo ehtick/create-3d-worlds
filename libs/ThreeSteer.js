@@ -2,7 +2,7 @@
   https://github.com/erosmarcon/three-steer
   updated to modern syntax by mudroljub
 */
-import { Object3D, Vector3, Box3, Raycaster } from 'three'
+import { Object3D, Vector3, Box3 } from 'three'
 
 class Entity extends Object3D {
   constructor(mesh) {
@@ -12,13 +12,10 @@ class Entity extends Object3D {
     this.velocity = new Vector3(0, 0, 0)
 
     this.box = new Box3().setFromObject(mesh)
-    this.raycaster = new Raycaster()
-
     this.velocitySamples = []
     this.numSamplesForSmoothing = 20
 
     this.add(mesh)
-    this.radius = 200 // temp
   }
 
   get width() {
@@ -328,20 +325,19 @@ export class SteeringEntity extends Entity {
       this.seek(wayPoint)
   }
 
-  avoid(obstacles) {
+  avoid(obstacles, radius = 200) {
     const dynamic_length = this.velocity.length() / this.maxSpeed
     const ahead = this.position.clone().add(this.velocity.clone().normalize().multiplyScalar(dynamic_length))
     const ahead2 = this.position.clone().add(this.velocity.clone().normalize().multiplyScalar(this.avoidDistance * .5))
-    // get most threatening
     let mostThreatening = null
-    for (let i = 0; i < obstacles.length; i++) {
-      if (obstacles[i] === this)
-        continue
-      const collision = obstacles[i].position.distanceTo(ahead) <= obstacles[i].radius || obstacles[i].position.distanceTo(ahead2) <= obstacles[i].radius
-      if (collision && (mostThreatening == null || this.position.distanceTo(obstacles[i].position) < this.position.distanceTo(mostThreatening.position)))
-        mostThreatening = obstacles[i]
-    }
-    // end
+
+    obstacles.forEach(obstacle => {
+      if (obstacle === this) return
+      const collision = obstacle.position.distanceTo(ahead) <= radius || obstacle.position.distanceTo(ahead2) <= radius
+      if (collision && (mostThreatening == null || this.position.distanceTo(obstacle.position) < this.position.distanceTo(mostThreatening.position)))
+        mostThreatening = obstacle
+    })
+
     let avoidance = new Vector3(0, 0, 0)
     if (mostThreatening != null)
       avoidance = ahead.clone().sub(mostThreatening.position).normalize().multiplyScalar(100)

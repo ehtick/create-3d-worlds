@@ -1,5 +1,4 @@
-import { Box3, Vector3, MathUtils } from 'three'
-import { SteeringEntity } from '/libs/ThreeSteer.js'
+import { MathUtils } from 'three'
 import Player from '/utils/player/Player.js'
 import NPC from '/utils/player/NPC.js'
 import * as SkeletonUtils from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
@@ -14,7 +13,6 @@ import { sorceressAnimations, golemAnimation } from '/data/animations.js'
 
 const { randFloatSpread } = MathUtils
 
-const followers = []
 const npcs = []
 
 ambLight()
@@ -23,10 +21,8 @@ const controls = createOrbitControls()
 camera.position.set(0, 10, 15)
 
 const mapSize = 100
-const halfMap = mapSize / 2
 
 scene.add(createFloor({ size: mapSize }))
-const boundaries = new Box3(new Vector3(-halfMap, 0, -halfMap), new Vector3(halfMap, 0, halfMap))
 
 const { mesh: playerMesh, animations } = await loadSorceress()
 const player = new Player({ mesh: playerMesh, animations, dict: sorceressAnimations, speed: 4 })
@@ -37,29 +33,23 @@ const { mesh: followerMesh, animations: followerAnims } = await loadGolem({ angl
 
 for (let i = 0; i < 5; i++) {
   const mesh = SkeletonUtils.clone(followerMesh)
-  const npc = new NPC({ mesh, animations: followerAnims, dict: golemAnimation })
+  const npc = new NPC({ mesh, animations: followerAnims, dict: golemAnimation, mapSize })
   npc.position.set(randFloatSpread(25), 0, randFloatSpread(25))
   npc.entity.maxSpeed = .02
-  followers.push(npc.entity)
   npcs.push(npc)
   scene.add(npc.entity)
 }
 
-/* LOOP */
+const entities = npcs.map(npc => npc.entity)
 
-const params = { distance: 2, separationRadius: 2, maxSeparation: 4, leaderSightRadius: 4, arrivalThreshold: 2 }
+/* LOOP */
 
 void function animate() {
   requestAnimationFrame(animate)
   const delta = clock.getDelta()
 
-  followers.forEach((follower, i) => {
-    const npc = npcs[i]
-    follower.followLeader(playerMesh, followers, params.distance, params.separationRadius, params.maxSeparation, params.leaderSightRadius, params.arrivalThreshold)
-    follower.lookWhereGoing(true)
-    follower.update()
-    follower.bounce(boundaries)
-    npc.keyboard.pressed.KeyW = true
+  npcs.forEach(npc => {
+    npc.followLeader(playerMesh, entities)
     npc.update(delta)
   })
 
