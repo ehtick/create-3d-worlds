@@ -7,26 +7,26 @@ import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 
-const { randInt } = THREE.MathUtils
+const { randFloatSpread } = THREE.MathUtils
+
+const mapSize = 100
 
 const mixers = []
 const entities = []
-const numEntities = 20
 
 ambLight()
-
-const controls = createOrbitControls()
+createOrbitControls()
 camera.position.set(0, 10, 15)
 
-scene.add(createFloor({ size: 100 }))
+scene.add(createFloor({ size: mapSize }))
 
 const { mesh: ghostMesh, animations: ghostAnims } = await loadModel({ file: 'character/ghost/scene.gltf' })
 
-for (let i = 0; i < numEntities; i++) {
+for (let i = 0; i < 20; i++) {
   const mesh = SkeletonUtils.clone(ghostMesh)
   const entity = new SteeringEntity(mesh)
-  entity.maxSpeed = .05
-  entity.position.set(randInt(-50, 50), -.5, randInt(-50, 50))
+  entity.maxSpeed = .03
+  entity.position.set(randFloatSpread(mapSize), -.5, randFloatSpread(mapSize))
   entities.push(entity)
   scene.add(entity)
 
@@ -52,7 +52,6 @@ void function loop() {
     entity.bounce(boundaries)
   })
 
-  controls.update()
   mixers.forEach(mixer => mixer.update(delta))
   renderer.render(scene, camera)
 }()
