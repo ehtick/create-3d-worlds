@@ -40,7 +40,7 @@ const chooseJumpState = jumpStyle => {
 
 export default class Player {
   constructor({
-    mesh, animations, dict, camera, keyboard = defaultKeyboard, useJoystick,
+    mesh, animations, dict, mixer, camera, keyboard = defaultKeyboard, useJoystick,
     speed = 2, jumpStyle = jumpStyles.FLY_JUMP, maxVelocityY = speed / 30, solids
   }) {
     this.mesh = mesh
@@ -57,8 +57,9 @@ export default class Player {
     if (useJoystick) this.joystick = new JoyStick()
 
     this.actions = {}
-    if (animations?.length)
-      this.setupMixer(animations, dict)
+    if (mixer) this.mixer = mixer
+    else if (animations?.length && !dict) this.mixer = getMixer(this.mesh, animations)
+    else if (animations?.length && dict) this.setupMixer(animations, dict)
 
     if (camera) {
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh })
@@ -70,11 +71,6 @@ export default class Player {
   }
 
   setupMixer(animations, dict) {
-    if (!dict) {
-      this.mixer = getMixer(this.mesh, animations)
-      return
-    }
-
     this.mixer = new THREE.AnimationMixer(this.mesh)
     for (const key in dict) {
       const clip = animations.find(anim => anim.name == dict[key])
