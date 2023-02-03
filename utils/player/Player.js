@@ -5,7 +5,6 @@ import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
 import { getSize, mapRange } from '/utils/helpers.js'
-import { getMixer } from '/utils/loaders.js'
 
 import IdleState from './states/IdleState.js'
 import RunState from './states/RunState.js'
@@ -40,7 +39,7 @@ const chooseJumpState = jumpStyle => {
 
 export default class Player {
   constructor({
-    mesh, animations, dict, mixer, camera, keyboard = defaultKeyboard, useJoystick,
+    mesh, animations, dict, camera, keyboard = defaultKeyboard, useJoystick,
     speed = 2, jumpStyle = jumpStyles.FLY_JUMP, maxVelocityY = speed / 30, solids
   }) {
     this.mesh = mesh
@@ -57,9 +56,8 @@ export default class Player {
     if (useJoystick) this.joystick = new JoyStick()
 
     this.actions = {}
-    if (mixer) this.mixer = mixer
-    else if (animations?.length && !dict) this.mixer = getMixer(this.mesh, animations)
-    else if (animations?.length && dict) this.setupMixer(animations, dict)
+    if (animations?.length && dict)
+      this.setupMixer(animations, dict)
 
     if (camera) {
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh })

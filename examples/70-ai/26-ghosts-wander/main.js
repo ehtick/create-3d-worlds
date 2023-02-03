@@ -17,7 +17,7 @@ camera.position.set(0, 10, 15)
 
 scene.add(createFloor({ size: mapSize }))
 
-const { mesh, animations, mixer } = await loadModel({ file: 'character/ghost/scene.gltf' })
+const { mesh, animations } = await loadModel({ file: 'character/ghost/scene.gltf' })
 
 for (let i = 0; i < 20; i++) {
   const npc = new NPC({ mesh, animations, mapSize, dict: { idle: 'Take 001' } })

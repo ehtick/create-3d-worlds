@@ -13,7 +13,7 @@ export default class NPC extends Player {
   constructor(params) {
     super({ ...params, mesh: clone(params.mesh), keyboard: new Keyboard(false), speed: 0 })
     this.entity = new SteeringEntity(this.mesh)
-    // this.randomizeAction()
+    this.randomizeAction()
 
     if (params.mapSize) {
       const halfMap = params.mapSize / 2
