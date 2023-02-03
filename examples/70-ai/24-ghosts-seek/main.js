@@ -18,16 +18,14 @@ camera.position.set(0, 10, 15)
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh, animations } = await loadRobotko()
-const player = new Player({ mesh, animations, dict: robotkoAnimations })
-scene.add(mesh)
+const player = new Player({ ...await loadRobotko(), dict: robotkoAnimations })
+scene.add(player.mesh)
 
 const { mesh: ghostMesh, animations: ghostAnims } = await loadModel({ file: 'character/ghost/scene.gltf' })
 
 for (let i = 0; i < 5; i++) {
   const npc = new NPC({ mesh: ghostMesh, animations: ghostAnims, dict: ghostAnimations })
   npc.position.set(randFloatSpread(50), -.5, randFloatSpread(50))
-  npc.maxSpeed = .05
   npcs.push(npc)
   scene.add(npc.entity)
 }
@@ -39,14 +37,7 @@ void function loop() {
   const delta = clock.getDelta()
 
   npcs.forEach(npc => {
-    const { entity } = npc
-    if (npc.position.distanceTo(mesh.position) > 1) {
-      entity.seek(mesh.position)
-      entity.lookWhereGoing(true)
-    } else
-      entity.idle()
-
-    entity.update()
+    npc.seek(player.mesh)
     npc.update()
   })
 

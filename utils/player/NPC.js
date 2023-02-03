@@ -14,6 +14,7 @@ export default class NPC extends Player {
     super({ ...params, mesh: clone(params.mesh), keyboard: new Keyboard(false), speed: 0 })
     this.entity = new SteeringEntity(this.mesh)
     this.randomizeAction()
+    this.maxSpeed = .03
 
     if (params.mapSize) {
       const halfMap = params.mapSize / 2
@@ -42,6 +43,17 @@ export default class NPC extends Player {
     this.entity.wander()
 
     this.entity.lookWhereGoing(true)
+    if (this.boundaries) this.entity.bounce(this.boundaries)
+    this.entity.update()
+  }
+
+  seek(mesh) {
+    if (this.position.distanceTo(mesh.position) > 1) {
+      this.entity.seek(mesh.position)
+      this.entity.lookWhereGoing(true)
+    } else
+      this.entity.idle()
+
     if (this.boundaries) this.entity.bounce(this.boundaries)
     this.entity.update()
   }

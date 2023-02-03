@@ -22,7 +22,6 @@ const { mesh, animations } = await loadModel({ file: 'character/ghost/scene.gltf
 
 for (let i = 0; i < 20; i++) {
   const npc = new NPC({ mesh, animations, mapSize, dict: ghostAnimations })
-  npc.maxSpeed = .03
   npc.position.set(randFloatSpread(mapSize), -.5, randFloatSpread(mapSize))
   npcs.push(npc)
   scene.add(npc.entity)
