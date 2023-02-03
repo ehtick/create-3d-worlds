@@ -1,5 +1,3 @@
-import * as THREE from 'three'
-
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
@@ -8,15 +6,14 @@ import { robotkoAnimations, ghostAnimations } from '/data/animations.js'
 import Player from '/utils/player/Player.js'
 import NPC from '/utils/player/NPC.js'
 
-const { randFloatSpread } = THREE.MathUtils
-
+const mapSize = 100
 const npcs = []
 
 ambLight()
 createOrbitControls()
 camera.position.set(0, 10, 15)
 
-scene.add(createFloor({ size: 100 }))
+scene.add(createFloor({ size: mapSize }))
 
 const player = new Player({ ...await loadRobotko(), dict: robotkoAnimations })
 scene.add(player.mesh)
@@ -24,8 +21,7 @@ scene.add(player.mesh)
 const { mesh: ghostMesh, animations: ghostAnims } = await loadModel({ file: 'character/ghost/scene.gltf' })
 
 for (let i = 0; i < 5; i++) {
-  const npc = new NPC({ mesh: ghostMesh, animations: ghostAnims, dict: ghostAnimations })
-  npc.position.set(randFloatSpread(50), -.5, randFloatSpread(50))
+  const npc = new NPC({ mesh: ghostMesh, animations: ghostAnims, dict: ghostAnimations, mapSize })
   npcs.push(npc)
   scene.add(npc.entity)
 }

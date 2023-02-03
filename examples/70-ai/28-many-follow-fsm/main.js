@@ -1,4 +1,3 @@
-import { MathUtils } from 'three'
 import Player from '/utils/player/Player.js'
 import NPC from '/utils/player/NPC.js'
 
@@ -7,8 +6,6 @@ import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
 import { loadSorceress, loadGolem } from '/utils/loaders.js'
 import { sorceressAnimations, golemAnimation } from '/data/animations.js'
-
-const { randFloatSpread } = MathUtils
 
 const npcs = []
 const mapSize = 100
@@ -26,7 +23,6 @@ const { mesh, animations } = await loadGolem({ angle: 0 })
 
 for (let i = 0; i < 5; i++) {
   const npc = new NPC({ mesh, animations, dict: golemAnimation, mapSize })
-  npc.position.set(randFloatSpread(25), 0, randFloatSpread(25))
   npc.maxSpeed = .02
   npcs.push(npc)
   scene.add(npc.entity)

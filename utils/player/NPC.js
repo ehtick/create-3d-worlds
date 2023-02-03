@@ -1,9 +1,11 @@
-import { Box3, Vector3 } from 'three'
+import { Box3, Vector3, MathUtils } from 'three'
 import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 
 import Player from './Player.js'
 import { Keyboard } from '/utils/classes/Keyboard.js'
 import { SteeringEntity } from '/libs/ThreeSteer.js'
+
+const { randFloatSpread } = MathUtils
 
 /* NPC, bridge between Player and SteeringEntity.
 * Player does not move, only play animation via keyboard input
@@ -16,8 +18,10 @@ export default class NPC extends Player {
     this.randomizeAction()
     this.maxSpeed = .03
 
-    if (params.mapSize) {
-      const halfMap = params.mapSize / 2
+    const { mapSize } = params
+    if (mapSize) {
+      this.position.set(randFloatSpread(mapSize), -.5, randFloatSpread(mapSize))
+      const halfMap = mapSize / 2
       this.boundaries = new Box3(new Vector3(-halfMap, 0, -halfMap), new Vector3(halfMap, 0, halfMap))
     }
   }
