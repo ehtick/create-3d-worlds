@@ -1,8 +1,14 @@
 import Canvas from './Canvas.js'
 import keyboard from '../Keyboard.js'
+import { mapRange } from '/utils/helpers.js'
 
 const CIRCLE = Math.PI * 2
 const colors = ['#fff', '#444', '#701206', '#000']
+
+function angleFrom(mesh) {
+  mesh.rotation.order = 'YZX' // rotate y full circle
+  return mapRange(-mesh.rotation.y, -Math.PI, Math.PI, 0, 2 * Math.PI) + Math.PI / 2
+}
 
 export default class Map2DRenderer extends Canvas {
   constructor(tilemap) {
@@ -48,7 +54,7 @@ export default class Map2DRenderer extends Canvas {
     this.ctx.fill()
   }
 
-  drawPlayerOnMap(x, y, angle) {
+  drawIndicator(x, y, angle) {
     this.drawCircle(x, y)
     this.drawLamp(x, y, angle)
   }
@@ -56,20 +62,21 @@ export default class Map2DRenderer extends Canvas {
   draw2DPlayer(player) {
     const x = player.x * player.map.cellSize
     const y = player.y * player.map.cellSize
-    this.drawPlayerOnMap(x, y, player.angle)
+    this.drawIndicator(x, y, player.angle)
   }
 
-  drawPlayer(player, tilemap = this.tilemap) {
-    const pos = tilemap.getRelativePos(player.position)
+  drawMesh(mesh, tilemap = this.tilemap) {
+    const pos = tilemap.getRelativePos(mesh.position)
     const x = pos.x * this.mapSize + this.cellSize * .5
     const y = pos.y * this.mapSize + this.cellSize * .5
-    this.drawPlayerOnMap(x, y, player.angle)
+    const angle = angleFrom(mesh)
+    this.drawIndicator(x, y, angle)
   }
 
-  render(player, tilemap = this.tilemap) {
+  render(mesh, tilemap = this.tilemap) {
     if (this.initiallyRendered && !keyboard.controlsPressed) return
     this.drawMap()
-    this.drawPlayer(player, tilemap)
+    this.drawMesh(mesh, tilemap)
     this.initiallyRendered = true
   }
 }

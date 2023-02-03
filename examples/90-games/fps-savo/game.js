@@ -44,6 +44,6 @@ void function animate() {
 
   if (Math.random() > .997) lightningStrike(light)
 
-  smallMapRenderer.render(player)
+  smallMapRenderer.render(player.mesh)
   renderer.render(scene, camera)
 }()

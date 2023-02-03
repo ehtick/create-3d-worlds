@@ -64,7 +64,7 @@ void function animate() {
 
   if (Math.random() > .997) lightningStrike(light)
 
-  smallMapRenderer.render(player)
+  smallMapRenderer.render(player.mesh)
   mixers.forEach(mixer => mixer.update(delta))
   renderer.render(scene, camera)
 }()

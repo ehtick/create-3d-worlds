@@ -68,13 +68,6 @@ export default class Player {
     return this.mesh.position.y - this.groundY > this.height * .2
   }
 
-  // TODO: move to helpers, Map2DRenderer, or elsewhere
-  /* map to canvas angle (for Map2DRenderer) */
-  get angle() {
-    this.mesh.rotation.order = 'YZX' // rotate y full circle
-    return mapRange(-this.mesh.rotation.y, -Math.PI, Math.PI, 0, 2 * Math.PI) + Math.PI / 2
-  }
-
   /* ANIMATIONS */
 
   setupMixer(animations, dict) {
