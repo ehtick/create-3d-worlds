@@ -16,11 +16,13 @@ scene.add(createFloor({ size: mapSize }))
 
 const { mesh, animations } = await loadModel({ file: 'character/ghost/scene.gltf' })
 
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 50; i++) {
   const npc = new NPC({ mesh, animations, dict: ghostAnimations, mapSize })
   npcs.push(npc)
   scene.add(npc.entity)
 }
+
+const entities = npcs.map(npc => npc.entity)
 
 /* LOOP */
 
@@ -30,6 +32,7 @@ void function loop() {
 
   npcs.forEach(npc => {
     npc.wander()
+    npc.entity.avoid(entities)
     npc.update(delta)
   })
 

@@ -325,7 +325,7 @@ export class SteeringEntity extends Entity {
       this.seek(wayPoint)
   }
 
-  avoid(obstacles, radius = 200) {
+  avoid(obstacles, radius = 2) {
     const dynamic_length = this.velocity.length() / this.maxSpeed
     const ahead = this.position.clone().add(this.velocity.clone().normalize().multiplyScalar(dynamic_length))
     const ahead2 = this.position.clone().add(this.velocity.clone().normalize().multiplyScalar(this.avoidDistance * .5))
