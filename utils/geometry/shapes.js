@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { DEGREE, RIGHT_ANGLE } from '/data/constants.js'
-import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
+import { centerMesh, adjustHeight, randomGray } from '/utils/helpers.js'
 
 /*  AIRPLANE */
 
@@ -213,3 +213,26 @@ export function createTank({ tankWidth = 4, tankHeight = 1.2, tankLength = 8 } =
 
   return { tank, wheels, tankGun }
 }
+
+/* TOMB */
+
+function createExtruded({ shape, x, y, z, color = randomGray(), scale = .1 }) {
+  const params = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 }
+  const geometry = new THREE.ExtrudeGeometry(shape, params)
+  const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
+  mesh.position.set(x, y, z)
+  mesh.scale.set(scale, scale, scale)
+  mesh.castShadow = mesh.receiveShadow = true
+  return mesh
+}
+
+const createTombShape = () => new THREE.Shape()
+  .moveTo(40, 40)
+  .lineTo(40, 100)
+  .absarc(60, 100, 20, Math.PI, 0, true)
+  .lineTo(80, 40)
+  .absarc(60, 40, 20, 2 * Math.PI, Math.PI, true)
+
+export const createTomb = ({
+  shape = createTombShape(), x = 0, y = -1, z = 0, scale = Math.random() * .01 + .02
+} = {}) => createExtruded({ shape, x, y, z, scale })

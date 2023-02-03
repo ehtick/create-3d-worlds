@@ -60,6 +60,7 @@ export function ambLight({ scene = defaultScene, color = 0xffffff, intensity = 1
 /* SUN */
 
 export function createSun({ color = 0xffffff, intensity = 1, target, position = [15, 50, 50], mapSize = 1024, r = 1, transparent = false, planetColor = 0xFCE570 } = {}) {
+  console.log(intensity)
   const light = pointLight({ color, intensity, target, mapSize })
   const ambientLight = new THREE.AmbientLight(0xfffee1, .5)
 
@@ -73,8 +74,8 @@ export function createSun({ color = 0xffffff, intensity = 1, target, position = 
 }
 
 export const createMoon = ({
-  position = [50, 100, 50], color = 0xFFF8DE, planetColor = 0xF6F1D5, r = 4
-} = {}) => createSun({ position, color, planetColor, r })
+  position = [50, 100, 50], color = 0xFFF8DE, planetColor = 0xF6F1D5, r = 4, ...rest
+} = {}) => createSun({ position, color, planetColor, r, ...rest })
 
 export function lightningStrike(light) {
   const audio = new Audio('/assets/sounds/thunder.mp3')
