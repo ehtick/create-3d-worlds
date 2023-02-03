@@ -21,7 +21,7 @@ camera.position.set(0, 10, 15)
 scene.add(createFloor({ size: mapSize }))
 
 const { mesh: ghostMesh, animations: ghostAnims } = await loadModel({ file: 'character/ghost/scene.gltf' })
-
+console.log(ghostAnims)
 for (let i = 0; i < 20; i++) {
   const mesh = SkeletonUtils.clone(ghostMesh)
   const entity = new SteeringEntity(mesh)

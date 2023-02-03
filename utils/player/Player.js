@@ -5,6 +5,7 @@ import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
 import { getSize, mapRange } from '/utils/helpers.js'
+import { getMixer } from '/utils/loaders.js'
 
 import IdleState from './states/IdleState.js'
 import RunState from './states/RunState.js'
@@ -69,7 +70,12 @@ export default class Player {
   }
 
   setupMixer(animations, dict) {
-    this.mixer = new THREE.AnimationMixer(this.mesh.isGroup ? this.mesh.children[0] : this.mesh)
+    if (!dict) {
+      this.mixer = getMixer(this.mesh, animations)
+      return
+    }
+
+    this.mixer = new THREE.AnimationMixer(this.mesh)
     for (const key in dict) {
       const clip = animations.find(anim => anim.name == dict[key])
       this.actions[key] = this.mixer.clipAction(clip)
