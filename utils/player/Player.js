@@ -5,37 +5,7 @@ import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
 import { getSize, mapRange } from '/utils/helpers.js'
-
-import IdleState from './states/IdleState.js'
-import RunState from './states/RunState.js'
-import WalkState from './states/WalkState.js'
-import SpecialState from './states/SpecialState.js'
-import JumpState from './states/JumpState.js'
-import JumpFlyState from './states/JumpFlyState.js'
-import FlyState from './states/FlyState.js'
-import FallState from './states/FallState.js'
-
-const states = {
-  idle: IdleState,
-  walk: WalkState,
-  run: RunState,
-  jump: FlyState,
-  fall: FallState,
-}
-
-const jumpStyles = {
-  FLY: 'FLY',
-  JUMP: 'JUMP',
-  FLY_JUMP: 'FLY_JUMP',
-}
-
-const chooseJumpState = jumpStyle => {
-  switch (jumpStyle) {
-    case jumpStyles.FLY: return FlyState
-    case jumpStyles.JUMP: return JumpState
-    case jumpStyles.FLY_JUMP: return JumpFlyState
-  }
-}
+import { states, jumpStyles, chooseJumpState } from './states/index.js'
 
 export default class Player {
   constructor({
@@ -68,39 +38,6 @@ export default class Player {
     this.setState('idle')
   }
 
-  setupMixer(animations, dict) {
-    this.mixer = new THREE.AnimationMixer(this.mesh)
-    for (const key in dict) {
-      const clip = animations.find(anim => anim.name == dict[key])
-      this.actions[key] = this.mixer.clipAction(clip)
-    }
-  }
-
-  /* STATE MACHINE */
-
-  mapState(name) {
-    if (name === 'jump') return chooseJumpState (this.jumpStyle)
-    return states[name] || SpecialState
-  }
-
-  setState(name) {
-    const oldState = this.currentState
-    if (oldState) {
-      if (oldState.name == name) return
-      oldState.exit()
-    }
-    const State = this.mapState(name)
-    this.currentState = new State(this, name)
-    this.currentState.enter(oldState, oldState?.action)
-  }
-
-  update(delta = 1 / 60) {
-    this.updateGround()
-    this.updateCamera(delta)
-    this.currentState.update(delta)
-    this.mixer?.update(delta)
-  }
-
   /* GETTERS */
 
   get size() { // TODO: deprecate
@@ -131,16 +68,49 @@ export default class Player {
     return this.mesh.position.y - this.groundY > this.height * .2
   }
 
+  // TODO: move to helpers, Map2DRenderer, or elsewhere
   /* map to canvas angle (for Map2DRenderer) */
   get angle() {
     this.mesh.rotation.order = 'YZX' // rotate y full circle
     return mapRange(-this.mesh.rotation.y, -Math.PI, Math.PI, 0, 2 * Math.PI) + Math.PI / 2
   }
 
+  /* ANIMATIONS */
+
+  setupMixer(animations, dict) {
+    this.mixer = new THREE.AnimationMixer(this.mesh)
+    for (const key in dict) {
+      const clip = animations.find(anim => anim.name == dict[key])
+      this.actions[key] = this.mixer.clipAction(clip)
+    }
+  }
+
+  /* STATE MACHINE */
+
+  getState(name) {
+    if (name === 'jump') return chooseJumpState (this.jumpStyle)
+    return states[name] || states.special
+  }
+
+  setState(name) {
+    const oldState = this.currentState
+    if (oldState) {
+      if (oldState.name == name) return
+      oldState.exit()
+    }
+    const State = this.getState(name)
+    this.currentState = new State(this, name)
+    this.currentState.enter(oldState, oldState?.action)
+  }
+
   /* OTHER */
 
   add(obj) {
     this.mesh.add(obj)
+  }
+
+  addSolids(...newSolids) {
+    addSolids(this.solids, ...newSolids)
   }
 
   normalizeGround(jumpStep) {
@@ -154,9 +124,7 @@ export default class Player {
     this.action.time = Math.random() * this.action.getClip().duration
   }
 
-  addSolids(...newSolids) {
-    addSolids(this.solids, ...newSolids)
-  }
+  /* UPDATES */
 
   updateGround() {
     const { mesh, solids } = this
@@ -164,12 +132,20 @@ export default class Player {
   }
 
   updateCamera(delta) {
-    if (this.thirdPersonCamera)
-      if (this.keyboard.pressed.mouse)
-        this.controls.target = this.mesh.position.clone().add(new THREE.Vector3(0, this.height, 0))
-      else {
-        this.thirdPersonCamera.updateCurrentPosition()
-        this.thirdPersonCamera.update(delta)
-      }
+    if (!this.thirdPersonCamera) return
+
+    if (this.keyboard.pressed.mouse)
+      this.controls.target = this.mesh.position.clone().add(new THREE.Vector3(0, this.height, 0))
+    else {
+      this.thirdPersonCamera.updateCurrentPosition()
+      this.thirdPersonCamera.update(delta)
+    }
+  }
+
+  update(delta = 1 / 60) {
+    this.updateGround()
+    this.updateCamera(delta)
+    this.currentState.update(delta)
+    this.mixer?.update(delta)
   }
 }

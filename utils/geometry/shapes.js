@@ -233,6 +233,6 @@ const createTombShape = () => new THREE.Shape()
   .lineTo(80, 40)
   .absarc(60, 40, 20, 2 * Math.PI, Math.PI, true)
 
-export const createTomb = ({
+export const createTombstone = ({
   shape = createTombShape(), x = 0, y = -1, z = 0, scale = Math.random() * .01 + .02
 } = {}) => createExtruded({ shape, x, y, z, scale })
