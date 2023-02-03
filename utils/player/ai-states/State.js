@@ -20,12 +20,7 @@ export default class State {
     return this.player.actions
   }
 
-  enter(oldState) {
-    // this.prevState = oldState?.name
-    // this.oldSpeed = oldState?.speed || 0
-    // this.speed = oldState?.speed
-    // if (this.action) this.action.enabled = true
-  }
+  enter(oldState) {}
 
   update(delta) {}
 

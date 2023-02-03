@@ -12,10 +12,9 @@ npx live-server
 ### Scenes & examples
 
 - AI / Player
-  - Implementirati class AI extends Player
   - srediti velocity (spojiti velocityY na Player i velocity na State)
-    - napraviti AI stanja
-    - kad vidi prepreku, gleda levo desno i ide gde je slobodno
+  - napraviti AI stanja
+  - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
   - srediti Player hodanje (manje inercije, kraće ubrzavanje)
 
 - Savo
