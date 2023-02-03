@@ -11,14 +11,14 @@ npx live-server
 
 ### Scenes & examples
 
+- srediti Player hodanje (manje inercije, kraće ubrzavanje)
+
 - AI
-  - Implementirati AI klasu iz početka
-    - Player i AI nasleđuju od base Entity klase
+  - Implementirati class AI extends Player
     - napraviti AI stanja
     - uglavnom bleji (Idle) ili patrolira (Patrol)
     - kad vidi igrača zrakom, kreće ka njemu (Pursue) i napada ga (Attack)
     - kad vidi prepreku, gleda levo desno i ide gde je slobodno
-  - srediti Player hodanje (manje inercije, kraće ubrzavanje)
 
 - Savo
   - dodati NPC karaktere, Nemce, duhove

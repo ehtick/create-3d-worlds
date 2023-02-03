@@ -40,17 +40,19 @@ export default class Player {
 
   /* GETTERS */
 
-  get width() {
-    return getSize(this.mesh, 'x')
-  }
-
   get height() {
     return getSize(this.mesh, 'y')
+  }
+
+  /*
+  get width() {
+    return getSize(this.mesh, 'x')
   }
 
   get depth() {
     return getSize(this.mesh, 'z')
   }
+  */
 
   get position() {
     return this.mesh.position
