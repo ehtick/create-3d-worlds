@@ -30,11 +30,19 @@ export default class NPC extends Player {
   }
 
   followLeader(leader, entities, { distance = 2, separationRadius = 2, maxSeparation = 4, leaderSightRadius = 4, arrivalThreshold = 2 } = {}) {
-    const { entity } = this
-    entity.followLeader(leader, entities, distance, separationRadius, maxSeparation, leaderSightRadius, arrivalThreshold)
-    entity.lookWhereGoing(true)
-    entity.update()
-    if (this.boundaries) entity.bounce(this.boundaries)
+    this. entity.followLeader(leader, entities, distance, separationRadius, maxSeparation, leaderSightRadius, arrivalThreshold)
     this.keyboard.pressed.KeyW = true
+
+    this.entity.lookWhereGoing(true)
+    if (this.boundaries) this.entity.bounce(this.boundaries)
+    this.entity.update()
+  }
+
+  wander() {
+    this.entity.wander()
+
+    this.entity.lookWhereGoing(true)
+    if (this.boundaries) this.entity.bounce(this.boundaries)
+    this.entity.update()
   }
 }

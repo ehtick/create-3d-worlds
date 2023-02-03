@@ -12,14 +12,16 @@ npx live-server
 ### Scenes & examples
 
 - AI
-  - Player da pušta prvu animaciju ako ima animacije a nema dict (vidi loader)
   - ažurirati ai primere da koriste NPC klasu
   - probati avoid(solids)
     - možda ručno implementirati koliziju (da ne idu kroz zidove i sl)
-  - napisati osnovnu ai logiku za lavirinte: 
-    - ide pravo do prepreke, onda skreće levo i nastavlja pravo
-    - kad vidi igrača, kreće ka njemu i napada ga
-  - srediti Player hodanje (manje inercije i kraće ubrzavanje) 
+  - Implementirati AI klasu iz početka
+    - Player i AI nasleđuju od base Entity klase
+    - napraviti AI stanja
+    - uglavnom bleji (Idle) ili patrolira (Patrol)
+    - kad vidi igrača zrakom, kreće ka njemu (Pursue) i napada ga (Attack)
+    - kad vidi prepreku, gleda levo desno i ide gde je slobodno
+  - srediti Player hodanje (manje inercije, kraće ubrzavanje) 
 
 - Savo
   - dodati NPC karaktere, Nemce, duhove

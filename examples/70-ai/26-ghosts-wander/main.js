@@ -31,14 +31,10 @@ for (let i = 0; i < 20; i++) {
 
 void function loop() {
   requestAnimationFrame(loop)
-  const delta = clock.getDelta()
 
   npcs.forEach(npc => {
-    npc.entity.wander()
-    npc.entity.lookWhereGoing(true)
-    npc.entity.update()
-    // entity.bounce(boundaries)
-    npc.update(delta)
+    npc.wander()
+    npc.update()
   })
 
   renderer.render(scene, camera)
