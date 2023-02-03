@@ -4,7 +4,7 @@ import { createMoon } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { ghostAnimations } from '/data/animations.js'
 import NPC from '/utils/player/NPC.js'
-// import { createBox } from '/utils/geometry.js'
+import { createBox } from '/utils/geometry.js'
 import { randomInSquare } from '/utils/helpers.js'
 import { createTomb } from '/utils/geometry/shapes.js'
 
@@ -24,25 +24,23 @@ const { mesh, animations } = await loadModel({ file: 'character/ghost/scene.gltf
 const obstacles = []
 
 for (let i = 0; i < 50; i++) {
-  const npc = new NPC({ mesh, animations, dict: ghostAnimations, mapSize })
-
   const { x, z } = randomInSquare(mapSize)
   const tomb = createTomb({ x, y: -1, z, scale: Math.random() * .01 + .02 })
+  obstacles.push(tomb)
   scene.add(tomb)
 
-  // const tombstone = createBox({ width: .75, height: 2, depth: .25, file: 'concrete/murocrep512.jpg' })
-  // const { x, z } = randomInSquare(mapSize)
-  // tombstone.position.set(x, .5, z)
-  // scene.add(tombstone)
-
-  // const tombstone2 = createBox({ width: 2, height: 3, depth: 2, file: 'tomb.jpg' });
-  // ({ x, z } = randomInSquare(mapSize))
-  // tombstone2.position.set(x, 1.5, z)
-  // scene.add(tombstone2)
-
+  const npc = new NPC({ mesh, animations, dict: ghostAnimations, mapSize })
   npcs.push(npc)
-  obstacles.push(tomb)
   scene.add(npc.entity)
+}
+
+for (let i = 0; i < 3; i++) {
+  const tombstone = createBox({ width: 2, height: 3, depth: 2, file: 'tomb.jpg' })
+  const { x, z } = randomInSquare(mapSize)
+  tombstone.position.set(x, tombstone.position.y, z)
+
+  obstacles.push(tombstone)
+  scene.add(tombstone)
 }
 
 /* LOOP */
