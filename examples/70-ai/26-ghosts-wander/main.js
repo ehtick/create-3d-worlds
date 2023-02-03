@@ -1,4 +1,4 @@
-import { camera, scene, renderer, createOrbitControls } from '/utils/scene.js'
+import { camera, scene, renderer, createOrbitControls, clock } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
@@ -26,10 +26,11 @@ for (let i = 0; i < 20; i++) {
 
 void function loop() {
   requestAnimationFrame(loop)
+  const delta = clock.getDelta()
 
   npcs.forEach(npc => {
     npc.wander()
-    npc.update()
+    npc.update(delta)
   })
 
   renderer.render(scene, camera)

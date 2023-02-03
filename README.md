@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - AI
-  - ažurirati ai primere da koriste NPC klasu
   - probati avoid(solids)
     - možda ručno implementirati koliziju (da ne idu kroz zidove i sl)
   - Implementirati AI klasu iz početka

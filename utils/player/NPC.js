@@ -7,9 +7,10 @@ import { SteeringEntity } from '/libs/ThreeSteer.js'
 
 const { randFloatSpread } = MathUtils
 
-/* NPC, bridge between Player and SteeringEntity.
-* Player does not move, only play animation via keyboard input
-* SteeringEntity controls move
+/*
+ * NPC class, bridge between Player and SteeringEntity.
+ * Player does not move, only play animation via keyboard input
+ * SteeringEntity controls move
 */
 export default class NPC extends Player {
   constructor(params) {
@@ -39,16 +40,11 @@ export default class NPC extends Player {
     this.keyboard.pressed.KeyW = true
 
     this.entity.lookWhereGoing(true)
-    if (this.boundaries) this.entity.bounce(this.boundaries)
-    this.entity.update()
   }
 
   wander() {
     this.entity.wander()
-
     this.entity.lookWhereGoing(true)
-    if (this.boundaries) this.entity.bounce(this.boundaries)
-    this.entity.update()
   }
 
   seek(mesh) {
@@ -57,8 +53,11 @@ export default class NPC extends Player {
       this.entity.lookWhereGoing(true)
     } else
       this.entity.idle()
+  }
 
+  update(delta) {
+    super.update(delta) // update animation
     if (this.boundaries) this.entity.bounce(this.boundaries)
-    this.entity.update()
+    this.entity.update() // update move
   }
 }

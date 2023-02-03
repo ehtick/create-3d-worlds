@@ -34,7 +34,7 @@ void function loop() {
 
   npcs.forEach(npc => {
     npc.seek(player.mesh)
-    npc.update()
+    npc.update(delta)
   })
 
   player.update(delta)
