@@ -25,7 +25,7 @@ const obstacles = []
 
 for (let i = 0; i < 50; i++) {
   const { x, z } = randomInSquare(mapSize)
-  const tomb = createTomb({ x, y: -1, z, scale: Math.random() * .01 + .02 })
+  const tomb = createTomb({ x, y: -1, z })
   obstacles.push(tomb)
   scene.add(tomb)
 

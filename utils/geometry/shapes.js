@@ -216,7 +216,7 @@ export function createTank({ tankWidth = 4, tankHeight = 1.2, tankLength = 8 } =
 
 /* TOMB */
 
-function createExtruded({ shape, x, y, z, color = randomGray(), scale = .1 }) {
+function createExtruded({ shape, x, y, z, color = randomGray(), scale = Math.random() * .01 + .02 }) {
   const params = { depth: 8, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 }
   const geometry = new THREE.ExtrudeGeometry(shape, params)
   const mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color }))
