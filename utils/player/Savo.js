@@ -15,7 +15,7 @@ export default class Savo extends Player {
     super({
       mesh: createBox({ size }), jumpStyle: 'FLY', maxVelocityY: .2, camera: null, ...params
     })
-    this.speed = speed || this.size * 3
+    this.speed = speed || size * 3
     this.mouseSensitivity = .05
     this.mousemove = mousemove
     this.rifleBurst = rifleBurst
@@ -27,7 +27,7 @@ export default class Savo extends Player {
 
     this.fpsRenderer = new FPSRenderer()
     this.camera = camera
-    camera.position.set(0, size, size / 4)
+    camera.position.set(0, this.height, this.height / 4)
     camera.rotation.set(0, 0, 0)
     this.mesh.add(camera)
 
@@ -46,7 +46,7 @@ export default class Savo extends Player {
 
   lookAtFront() {
     const target = this.mesh.position.clone()
-    target.y = this.mesh.position.y + this.size
+    target.y = this.mesh.position.y + this.height
     this.camera.lookAt(target)
   }
 

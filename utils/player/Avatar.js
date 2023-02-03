@@ -21,7 +21,7 @@ export default class Avatar extends Player {
   }
 
   walkAnim(running = false) {
-    const r = this.size * .5
+    const r = this.height * .5
     const speedFactor = running ? 9 : 6
     const elapsed = Math.sin(clock.getElapsedTime() * speedFactor) * r
     updateAvatar(this.mesh, elapsed)
@@ -29,7 +29,7 @@ export default class Avatar extends Player {
 
   jumpAnim() {
     this.limbs.forEach(limb => {
-      limb.position.z = this.size * .3
+      limb.position.z = this.height * .3
     })
   }
 

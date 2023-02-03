@@ -4,7 +4,7 @@ import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
-import { getSize, mapRange } from '/utils/helpers.js'
+import { getSize } from '/utils/helpers.js'
 import { states, jumpStyles, chooseJumpState } from './states/index.js'
 
 export default class Player {
@@ -40,10 +40,6 @@ export default class Player {
 
   /* GETTERS */
 
-  get size() { // TODO: deprecate
-    return this.height
-  }
-
   get width() {
     return getSize(this.mesh, 'x')
   }
@@ -60,15 +56,15 @@ export default class Player {
     return this.mesh.position
   }
 
-  get action() {
-    return this.currentState.action
-  }
-
   get inAir() {
     return this.mesh.position.y - this.groundY > this.height * .2
   }
 
-  /* ANIMATIONS */
+  get action() {
+    return this.currentState.action
+  }
+
+  /* ANIMATION ACTIONS */
 
   setupMixer(animations, dict) {
     this.mixer = new THREE.AnimationMixer(this.mesh)
@@ -96,7 +92,7 @@ export default class Player {
     this.currentState.enter(oldState, oldState?.action)
   }
 
-  /* OTHER */
+  /* UTILS */
 
   add(obj) {
     this.mesh.add(obj)
