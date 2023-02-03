@@ -7,7 +7,7 @@ import JumpFlyState from './JumpFlyState.js'
 import FlyState from './FlyState.js'
 import FallState from './FallState.js'
 
-export const states = {
+export const playerStates = {
   idle: IdleState,
   walk: WalkState,
   run: RunState,
@@ -22,10 +22,15 @@ export const jumpStyles = {
   FLY_JUMP: 'FLY_JUMP',
 }
 
-export const chooseJumpState = jumpStyle => {
+const chooseJumpState = jumpStyle => {
   switch (jumpStyle) {
     case jumpStyles.FLY: return FlyState
     case jumpStyles.JUMP: return JumpState
     case jumpStyles.FLY_JUMP: return JumpFlyState
   }
+}
+
+export function getState(name, jumpStyle) {
+  if (name === 'jump') return chooseJumpState (jumpStyle)
+  return playerStates[name] || playerStates.special
 }

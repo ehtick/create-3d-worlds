@@ -5,7 +5,7 @@ import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
 import { getSize } from '/utils/helpers.js'
-import { states, jumpStyles, chooseJumpState } from './states/index.js'
+import { jumpStyles, getState } from './states/index.js'
 
 export default class Player {
   constructor({
@@ -76,18 +76,13 @@ export default class Player {
 
   /* STATE MACHINE */
 
-  getState(name) {
-    if (name === 'jump') return chooseJumpState (this.jumpStyle)
-    return states[name] || states.special
-  }
-
   setState(name) {
     const oldState = this.currentState
     if (oldState) {
       if (oldState.name == name) return
       oldState.exit()
     }
-    const State = this.getState(name)
+    const State = getState(name, this.jumpStyle)
     this.currentState = new State(this, name)
     this.currentState.enter(oldState, oldState?.action)
   }
