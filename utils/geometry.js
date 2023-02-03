@@ -2,7 +2,8 @@ import * as THREE from 'three'
 import { randomGray } from './helpers.js'
 import { material as skyMaterial } from '/utils/shaders/gradient-sky.js'
 
-const { randFloat } = THREE.MathUtils
+const { randFloat, randFloatSpread } = THREE.MathUtils
+
 const textureLoader = new THREE.TextureLoader()
 
 /* BOXES */
@@ -188,11 +189,11 @@ export function createWoodBarrel({ r = .4, R = .5, h = 1 } = {}) {
 
 /* STRUCTURES */
 
-export function createRandomBoxes({ n = 100, size = 5, mapSize = 50 } = {}) {
+export function createRandomBoxes({ n = 100, size = 5, mapSize = 100 } = {}) {
   const group = new THREE.Group()
   for (let i = 0; i < n; i++) {
     const color = randomGray()
-    const x = randFloat(-mapSize, mapSize), y = randFloat(-5, mapSize * .5), z = randFloat(-mapSize, mapSize)
+    const x = randFloatSpread(mapSize), y = randFloat(-5, mapSize * .25), z = randFloatSpread(mapSize)
     const box = createBox({ size, color })
     box.position.set(x, y, z)
     group.add(box)

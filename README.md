@@ -12,8 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - AI
-  - probati avoid(solids)
-    - možda ručno implementirati koliziju (da ne idu kroz zidove i sl)
   - Implementirati AI klasu iz početka
     - Player i AI nasleđuju od base Entity klase
     - napraviti AI stanja
