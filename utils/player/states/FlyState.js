@@ -40,26 +40,27 @@ export default class FlyState extends State {
     else
       this.speed = lerp(this.oldSpeed, 0, this.t)
 
-    //
-    player.velocityY -= GRAVITY * delta
-
-    if (player.velocityY > 0 && this.directionBlocked(dir.up))
-      return
-
-    if (!player.inAir && !this.keyboard.space)
-      player.mesh.position.y = player.groundY
-
     this.turn(delta)
     this.forward(delta)
 
-    const accelerationY = GRAVITY * 2 * delta
+    // ovde:
+
+    player.velocityY -= GRAVITY * delta
 
     if (this.keyboard.space && this.jumpTime < this.maxJumpTime) {
-      player.velocityY += accelerationY
+      const accelerationY = GRAVITY * 2 * delta
+      if (!(player.velocityY > 0 && this.directionBlocked(dir.up))) player.velocityY += accelerationY
       this.jumpTime++
     }
 
+    if (!(player.velocityY > 0 && this.directionBlocked(dir.up))) {
+      
+    } else player.velocityY = -player.velocityY
+
     player.mesh.translateY(player.velocityY)
+
+    // if (!player.inAir && !this.keyboard.space)
+    //   player.position.y = player.groundY
 
     if (player.velocityY <= 0 && !player.inAir) {
       player.velocityY = 0
