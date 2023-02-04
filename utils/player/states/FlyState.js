@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import State, { GRAVITY } from './State.js'
+import { dir } from '/data/constants.js'
 
 const { lerp } = THREE.MathUtils
 
@@ -38,11 +39,24 @@ export default class FlyState extends State {
     else
       this.speed = lerp(this.oldSpeed, 0, this.t)
 
-    this.freeFly(delta)
+    const { mesh } = this.player
+    const gravityStep = GRAVITY * delta
+
+    if (this.player.velocityY - gravityStep >= this.player.minVelocityY)
+      this.player.velocityY -= gravityStep
+
+    if (this.player.velocityY > 0 && this.directionBlocked(dir.up))
+      return
+
+    mesh.translateY(this.player.velocityY)
+
+    if (!this.player.inAir && !this.keyboard.space)
+      mesh.position.y = this.player.groundY
+
     this.turn(delta)
     this.forward(delta)
 
-    const flyStep = GRAVITY * delta * 10
+    const flyStep = GRAVITY * 2 * delta
 
     if (this.keyboard.space && this.jumpTime < this.maxJumpTime) {
       this.player.velocityY += flyStep
