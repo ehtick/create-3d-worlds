@@ -30,6 +30,7 @@ export default class FlyState extends State {
 
   update(delta) {
     super.update(delta)
+    const { player } = this
     const speed = this.keyboard.capsLock ? this.player.speed * 2 : this.player.speed
 
     if (this.keyboard.up)
@@ -39,34 +40,30 @@ export default class FlyState extends State {
     else
       this.speed = lerp(this.oldSpeed, 0, this.t)
 
-    const { mesh } = this.player
-    const gravityStep = GRAVITY * delta
+    //
+    player.velocityY -= GRAVITY * delta
 
-    if (this.player.velocityY - gravityStep >= this.player.minVelocityY)
-      this.player.velocityY -= gravityStep
-
-    if (this.player.velocityY > 0 && this.directionBlocked(dir.up))
+    if (player.velocityY > 0 && this.directionBlocked(dir.up))
       return
 
-    mesh.translateY(this.player.velocityY)
-
-    if (!this.player.inAir && !this.keyboard.space)
-      mesh.position.y = this.player.groundY
+    if (!player.inAir && !this.keyboard.space)
+      player.mesh.position.y = player.groundY
 
     this.turn(delta)
     this.forward(delta)
 
-    const flyStep = GRAVITY * 2 * delta
+    const accelerationY = GRAVITY * 2 * delta
 
     if (this.keyboard.space && this.jumpTime < this.maxJumpTime) {
-      this.player.velocityY += flyStep
+      player.velocityY += accelerationY
       this.jumpTime++
-
-      if (this.player.velocityY > this.player.maxVelocityY)
-        this.player.velocityY = this.player.maxVelocityY
     }
 
-    if (this.player.velocityY <= 0 && !this.player.inAir)
-      this.player.setState(this.prevState) // bez prevState brlja aktivne animacije
+    player.mesh.translateY(player.velocityY)
+
+    if (player.velocityY <= 0 && !player.inAir) {
+      player.velocityY = 0
+      player.setState(this.prevState) // bez prevState brlja aktivne animacije
+    }
   }
 }
