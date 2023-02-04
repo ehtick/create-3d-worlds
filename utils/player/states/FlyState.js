@@ -48,14 +48,13 @@ export default class FlyState extends State {
     player.velocityY -= GRAVITY * delta
 
     if (this.keyboard.space && this.jumpTime < this.maxJumpTime) {
-      const accelerationY = GRAVITY * 2 * delta
-      if (!(player.velocityY > 0 && this.directionBlocked(dir.up))) player.velocityY += accelerationY
+      const force = GRAVITY * 2 * delta
+      player.velocityY += force
       this.jumpTime++
     }
 
-    if (!(player.velocityY > 0 && this.directionBlocked(dir.up))) {
-      
-    } else player.velocityY = -player.velocityY
+    if (player.velocityY > 0 && this.directionBlocked(dir.up))
+      player.velocityY = -player.velocityY
 
     player.mesh.translateY(player.velocityY)
 
