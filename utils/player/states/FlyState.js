@@ -45,17 +45,22 @@ export default class FlyState extends State {
 
     // ovde:
 
-    player.velocityY -= GRAVITY * delta
+    const gravityStep = GRAVITY * delta
+    const velocityLimit = gravityStep * 20
+
+    if (player.velocityY > -velocityLimit) player.velocityY -= gravityStep
 
     if (this.keyboard.space && this.jumpTime < this.maxJumpTime) {
-      const force = GRAVITY * 2 * delta
-      player.velocityY += force
+      const force = 2 * gravityStep
+      if (player.velocityY < velocityLimit) player.velocityY += force
       this.jumpTime++
     }
 
     if (player.velocityY > 0 && this.directionBlocked(dir.up))
       player.velocityY = -player.velocityY
 
+    // TODO: da pomera samo ako ne ide ispod tla
+    // console.log(player.mesh.position.y + player.velocityY)
     player.mesh.translateY(player.velocityY)
 
     // if (!player.inAir && !this.keyboard.space)

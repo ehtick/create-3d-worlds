@@ -107,12 +107,12 @@ export default class State {
       this.player.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -1)
   }
 
+  // TODO: update logic like FlyState
   freeFly(delta) {
     const { mesh } = this.player
     const gravityStep = GRAVITY * delta
 
-    if (this.player.velocityY - gravityStep >= this.player.minVelocityY)
-      this.player.velocityY -= gravityStep
+    this.player.velocityY -= gravityStep
 
     if (this.player.velocityY > 0 && this.directionBlocked(dir.up))
       return

@@ -13,7 +13,7 @@ export default class Savo extends Player {
     speed, size = 2, mousemove = false, camera = defaultCamera, rifleBurst = false, ...params
   } = {}) {
     super({
-      mesh: createBox({ size }), jumpStyle: 'FLY', maxVelocityY: .2, camera: null, ...params
+      mesh: createBox({ size }), jumpStyle: 'FLY', camera: null, ...params
     })
     this.speed = speed || size * 3
     this.mouseSensitivity = .05
