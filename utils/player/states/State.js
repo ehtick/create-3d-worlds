@@ -3,7 +3,7 @@ import { dir, RIGHT_ANGLE } from '/data/constants.js'
 
 const { lerp } = THREE.MathUtils
 
-const INERTIA = .18
+const DRAG = .18
 
 export default class State {
   constructor(player, name) {
@@ -67,12 +67,17 @@ export default class State {
 
     const direction = this.speed > 0 ? dir.forward : dir.backward
     if (player.directionBlocked(direction)) return
+
     const jumpDir = this.speed > 0 ? dir.upForward : dir.upBackward
     if (this.keyboard.space && player.directionBlocked(jumpDir)) return
 
-    player.velocity.z += this.speed * player.speed * (this.joystick?.forward || -1) * delta
-    player.velocity.z *= INERTIA
+    /*
+      acceleration = force / mass
+      velocity += acceleration * delta_time (change in velocity)
+     */
+    player.velocity.z += player.speed * this.speed * delta * (this.joystick?.forward || -1)
 
+    player.velocity.z *= DRAG
     player.mesh.translateZ(player.velocity.z)
   }
 

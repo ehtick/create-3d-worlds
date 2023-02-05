@@ -13,7 +13,6 @@ npx live-server
 
 - AI / Player
   - srediti speed na stanjima (to je vrv velocity.z)
-  - directionBlocked na Player
   - napraviti AI stanja
   - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
   - srediti Player hodanje (manje inercije, kraće ubrzavanje)
