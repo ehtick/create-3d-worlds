@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - AI / Player
-  - srediti normalizeGround na hrapavom terenu
   - napraviti AI stanja
   - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
   - srediti Player hodanje (manje inercije, kraće ubrzavanje)
