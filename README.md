@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - AI / Player
-  - update freeFly logic (see FlyState)
   - srediti velocity (spojiti velocityY na Player i velocity na State)
   - napraviti AI stanja
   - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno

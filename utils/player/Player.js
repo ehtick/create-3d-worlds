@@ -10,7 +10,7 @@ import { jumpStyles, getState } from './states/index.js'
 export default class Player {
   constructor({
     mesh, animations, dict, camera, keyboard = defaultKeyboard, solids, useJoystick, speed = 2,
-    jumpStyle = jumpStyles.FLY_JUMP, maxJumpTime = 17, gravity = .7, fallLimit = gravity * 20
+    jumpStyle = jumpStyles.FLY, maxJumpTime = 17, gravity = .7, fallLimit = gravity * 20
   }) {
     this.mesh = mesh
     this.speed = speed

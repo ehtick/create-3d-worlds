@@ -106,22 +106,6 @@ export default class State {
       this.player.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle * -1)
   }
 
-  // TODO: update freeFly logic like in FlyState
-  freeFly(delta) {
-    const { mesh } = this.player
-    const gravityStep = this.player.gravity * delta
-
-    this.player.velocityY -= gravityStep
-
-    if (this.player.velocityY > 0 && this.directionBlocked(dir.up))
-      return
-
-    mesh.translateY(this.player.velocityY)
-
-    if (!this.player.inAir && !this.keyboard.space)
-      mesh.position.y = this.player.groundY
-  }
-
   syncTime() {
     const oldAction = this.actions[this.prevState]
     if (!this.action || !oldAction) return
