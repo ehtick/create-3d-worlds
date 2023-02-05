@@ -50,10 +50,10 @@ export default class FlyState extends State {
       this.jumpTime++
     }
 
-    if (player.velocity.y > 0 && this.directionBlocked(dir.up))
+    if (player.velocity.y > 0 && player.directionBlocked(dir.up))
       player.velocity.y = -player.velocity.y
 
-    player.applyVelocity()
+    player.applyVelocityY()
 
     /* TRANSIT */
 

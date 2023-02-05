@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import { directionBlocked } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE } from '/data/constants.js'
 
 const { lerp } = THREE.MathUtils
@@ -42,10 +41,6 @@ export default class State {
 
   /* COMMON ACTIONS */
 
-  directionBlocked(vector) {
-    return directionBlocked(this.player.mesh, this.player.solids, vector)
-  }
-
   move(delta, speed = 1) {
     if (this.keyboard.up) this.speed = lerp(this.oldSpeed, this.player.speed * speed, this.t)
     if (this.keyboard.down) this.speed = lerp(this.oldSpeed, -this.player.speed * speed * .5, this.t)
@@ -71,9 +66,9 @@ export default class State {
     if (!delta || !player.speed || !this.speed) return
 
     const direction = this.speed > 0 ? dir.forward : dir.backward
-    if (this.directionBlocked(direction)) return
+    if (player.directionBlocked(direction)) return
     const jumpDir = this.speed > 0 ? dir.upForward : dir.upBackward
-    if (this.keyboard.space && this.directionBlocked(jumpDir)) return
+    if (this.keyboard.space && player.directionBlocked(jumpDir)) return
 
     player.velocity.z += this.speed * player.speed * (this.joystick?.forward || -1) * delta
     player.velocity.z *= INERTIA
@@ -86,10 +81,11 @@ export default class State {
   }
 
   strafe(delta) {
-    if (this.keyboard.sideLeft && !this.directionBlocked(dir.left))
+    const { player } = this
+    if (this.keyboard.sideLeft && !player.directionBlocked(dir.left))
       this.player.mesh.translateX(-this.player.speed * delta)
 
-    if (this.keyboard.sideRight && !this.directionBlocked(dir.right))
+    if (this.keyboard.sideRight && !player.directionBlocked(dir.right))
       this.player.mesh.translateX(this.player.speed * delta)
   }
 

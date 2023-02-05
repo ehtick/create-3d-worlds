@@ -4,7 +4,7 @@ import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
-import { getSize } from '/utils/helpers.js'
+import { getSize, directionBlocked } from '/utils/helpers.js'
 import { jumpStyles, getState } from './states/index.js'
 
 export default class Player {
@@ -111,6 +111,10 @@ export default class Player {
     this.action.time = Math.random() * this.action.getClip().duration
   }
 
+  directionBlocked(vector) {
+    return directionBlocked(this.mesh, this.solids, vector)
+  }
+
   /* UPDATES */
 
   updateGround() {
@@ -123,7 +127,7 @@ export default class Player {
       this.velocity.y -= this.gravity * delta
   }
 
-  applyVelocity() {
+  applyVelocityY() {
     if (this.mesh.position.y + this.velocity.y > this.groundY)
       this.mesh.translateY(this.velocity.y)
     else
