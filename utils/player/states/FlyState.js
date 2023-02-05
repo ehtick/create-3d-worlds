@@ -31,8 +31,8 @@ export default class FlyState extends State {
   update(delta) {
     super.update(delta)
     const { player } = this
-    const speed = this.keyboard.capsLock ? this.player.speed * 2 : this.player.speed
 
+    const speed = this.keyboard.capsLock ? this.player.speed * 2 : this.player.speed
     if (this.keyboard.up)
       this.speed = lerp(this.oldSpeed, speed, this.t)
     else if (this.keyboard.down)
@@ -43,28 +43,25 @@ export default class FlyState extends State {
     this.turn(delta)
     this.forward(delta)
 
-    // ovde:
+    const gravityDelta = GRAVITY * delta
+    const velocityLimit = gravityDelta * 20
 
-    const gravityStep = GRAVITY * delta
-    const velocityLimit = gravityStep * 20
-
-    if (player.velocityY > -velocityLimit) player.velocityY -= gravityStep
+    if (player.velocityY > -velocityLimit) player.velocityY -= gravityDelta
 
     if (this.keyboard.space && this.jumpTime < this.maxJumpTime) {
-      const force = 2 * gravityStep
-      if (player.velocityY < velocityLimit) player.velocityY += force
+      const force = 2 * gravityDelta
+      if (player.velocityY < velocityLimit)
+        player.velocityY += force
       this.jumpTime++
     }
 
     if (player.velocityY > 0 && this.directionBlocked(dir.up))
       player.velocityY = -player.velocityY
 
-    // TODO: da pomera samo ako ne ide ispod tla
-    // console.log(player.mesh.position.y + player.velocityY)
-    player.mesh.translateY(player.velocityY)
-
-    // if (!player.inAir && !this.keyboard.space)
-    //   player.position.y = player.groundY
+    if (player.mesh.position.y + player.velocityY > player.groundY)
+      player.mesh.translateY(player.velocityY)
+    else
+      player.position.y = player.groundY
 
     if (player.velocityY <= 0 && !player.inAir) {
       player.velocityY = 0
