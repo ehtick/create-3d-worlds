@@ -45,20 +45,20 @@ export default class FlyState extends State {
     player.applyGravity(delta)
 
     if (this.keyboard.space && this.jumpTime < this.maxJumpTime) {
-      if (player.velocityY < player.fallLimit * delta)
-        player.velocityY += player.jumpForce * delta
+      if (player.velocity.y < player.fallLimit * delta)
+        player.velocity.y += player.jumpForce * delta
       this.jumpTime++
     }
 
-    if (player.velocityY > 0 && this.directionBlocked(dir.up))
-      player.velocityY = -player.velocityY
+    if (player.velocity.y > 0 && this.directionBlocked(dir.up))
+      player.velocity.y = -player.velocity.y
 
     player.applyVelocity()
 
     /* TRANSIT */
 
-    if (player.velocityY <= 0 && !player.inAir) {
-      player.velocityY = 0
+    if (player.velocity.y <= 0 && !player.inAir) {
+      player.velocity.y = 0
       player.setState(this.prevState) // bez prevState brlja aktivne animacije
     }
   }

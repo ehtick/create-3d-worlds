@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import { Vector3, AnimationMixer } from 'three'
 import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import JoyStick from '/utils/classes/JoyStick.js'
@@ -10,14 +10,14 @@ import { jumpStyles, getState } from './states/index.js'
 export default class Player {
   constructor({
     mesh, animations, dict, camera, keyboard = defaultKeyboard, solids, useJoystick, speed = 2, gravity = .7,
-    jumpStyle = jumpStyles.FLY, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20
+    jumpStyle = jumpStyles.FLY_JUMP, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20
   }) {
     this.mesh = mesh
     this.speed = speed
     this.solids = []
     this.gravity = gravity
     this.groundY = 0
-    this.velocityY = 0
+    this.velocity = new Vector3()
     this.fallLimit = fallLimit
     this.jumpStyle = jumpStyle
     this.maxJumpTime = maxJumpTime
@@ -70,7 +70,7 @@ export default class Player {
   /* ANIMATION ACTIONS */
 
   setupMixer(animations, dict) {
-    this.mixer = new THREE.AnimationMixer(this.mesh)
+    this.mixer = new AnimationMixer(this.mesh)
     for (const key in dict) {
       const clip = animations.find(anim => anim.name == dict[key])
       this.actions[key] = this.mixer.clipAction(clip)
@@ -119,13 +119,13 @@ export default class Player {
   }
 
   applyGravity(delta) {
-    if (this.velocityY > -this.fallLimit * delta)
-      this.velocityY -= this.gravity * delta
+    if (this.velocity.y > -this.fallLimit * delta)
+      this.velocity.y -= this.gravity * delta
   }
 
   applyVelocity() {
-    if (this.mesh.position.y + this.velocityY > this.groundY)
-      this.mesh.translateY(this.velocityY)
+    if (this.mesh.position.y + this.velocity.y > this.groundY)
+      this.mesh.translateY(this.velocity.y)
     else
       this.mesh.position.y = this.groundY
   }
@@ -134,7 +134,7 @@ export default class Player {
     if (!this.thirdPersonCamera) return
 
     if (this.keyboard.pressed.mouse)
-      this.controls.target = this.mesh.position.clone().add(new THREE.Vector3(0, this.height, 0))
+      this.controls.target = this.mesh.position.clone().add(new Vector3(0, this.height, 0))
     else {
       this.thirdPersonCamera.updateCurrentPosition()
       this.thirdPersonCamera.update(delta)

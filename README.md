@@ -12,7 +12,7 @@ npx live-server
 ### Scenes & examples
 
 - AI / Player
-  - srediti velocity (spojiti velocityY na Player i velocity na State)
+  - srediti velocity (spojiti velocityY na Player i velocityZ na State)
   - srediti speed na stanjima (to je vrv velocity.z)
   - napraviti AI stanja
   - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
