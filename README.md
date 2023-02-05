@@ -12,9 +12,10 @@ npx live-server
 ### Scenes & examples
 
 - AI / Player
+  - srediti zaustavljanje walk animacije /examples/70-ai/26-follow/
+    - srediti prelaze animacije generalno
   - napraviti AI stanja
   - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
-  - srediti Player hodanje (manje inercije, kraće ubrzavanje)
 
 - Savo
   - dodati NPC karaktere, Nemce, duhove

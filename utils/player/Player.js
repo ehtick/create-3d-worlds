@@ -16,16 +16,16 @@ export default class Player {
     this.mesh = mesh
     this.speed = speed
     this.solids = []
-    this.gravity = gravity
     this.groundY = 0
+    this.gravity = gravity
     this.velocity = new Vector3()
     this.fallLimit = fallLimit
     this.jumpStyle = jumpStyle
     this.maxJumpTime = maxJumpTime
     this.jumpForce = jumpForce
     this.drag = drag
-
     this.keyboard = keyboard
+
     if (useJoystick) this.joystick = new JoyStick()
 
     this.actions = {}
@@ -38,6 +38,7 @@ export default class Player {
     }
 
     if (solids) this.addSolids(solids)
+
     this.setState('idle')
   }
 
@@ -46,16 +47,6 @@ export default class Player {
   get height() {
     return getSize(this.mesh, 'y')
   }
-
-  /*
-  get width() {
-    return getSize(this.mesh, 'x')
-  }
-
-  get depth() {
-    return getSize(this.mesh, 'z')
-  }
-  */
 
   get position() {
     return this.mesh.position
@@ -82,7 +73,7 @@ export default class Player {
     return 0
   }
 
-  /* ANIMATION ACTIONS */
+  /* ANIMATIONS */
 
   setupMixer(animations, dict) {
     this.mixer = new AnimationMixer(this.mesh)

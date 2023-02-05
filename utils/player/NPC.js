@@ -42,7 +42,7 @@ export default class NPC extends Player {
     this.entity.lookWhereGoing(true)
   }
 
-  speed() {
+  wander() {
     this.entity.wander()
     this.entity.lookWhereGoing(true)
   }

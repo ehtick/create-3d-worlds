@@ -101,7 +101,7 @@ export const isCollide = (bounds1, bounds2) =>
   bounds1.yMin <= bounds2.yMax && bounds1.yMax >= bounds2.yMin &&
   bounds1.zMin <= bounds2.zMax && bounds1.zMax >= bounds2.zMin
 
-// @param key: x, y or z
+/* @param key: x, y or z (represents width, height and depth) */
 export const getSize = (mesh, key) => {
   const box = new THREE.Box3().setFromObject(mesh)
 
