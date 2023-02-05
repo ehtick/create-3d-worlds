@@ -8,14 +8,6 @@ import { getSize, directionBlocked } from '/utils/helpers.js'
 import { jumpStyles, getState } from './states/index.js'
 import { dir, RIGHT_ANGLE } from '/data/constants.js'
 
-function chooseAcceleration(keyboard, baseSpeed) {
-  if (keyboard.run && keyboard.up) return baseSpeed * 2
-  if (keyboard.run && keyboard.down) return -baseSpeed * 1.5
-  if (keyboard.up) return baseSpeed
-  if (keyboard.down) return -baseSpeed
-  return 0
-}
-
 export default class Player {
   constructor({
     mesh, animations, dict, camera, keyboard = defaultKeyboard, solids, useJoystick, gravity = .7,
@@ -81,6 +73,15 @@ export default class Player {
     return this.currentState.action
   }
 
+  get acceleration() {
+    const { keyboard, speed } = this
+    if (keyboard.run && keyboard.up) return speed * 2
+    if (keyboard.run && keyboard.down) return -speed * 1.5
+    if (keyboard.up) return speed
+    if (keyboard.down) return -speed
+    return 0
+  }
+
   /* ANIMATION ACTIONS */
 
   setupMixer(animations, dict) {
@@ -141,8 +142,7 @@ export default class Player {
     const jumpDir = this.keyboard.up ? dir.upForward : dir.upBackward
     if (this.keyboard.space && this.directionBlocked(jumpDir)) return
 
-    const acceleration = chooseAcceleration(this.keyboard, this.speed)
-    this.velocity.z += acceleration * delta * (this.joystick?.forward || -1)
+    this.velocity.z += this.acceleration * delta * (this.joystick?.forward || -1)
     this.velocity.z *= (1 - this.drag)
     this.mesh.translateZ(this.velocity.z)
   }
