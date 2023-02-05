@@ -42,7 +42,7 @@ export default class FlyState extends State {
 
     this.turn(delta)
     this.forward(delta)
-    player.updateGravity(delta)
+    player.applyGravity(delta)
 
     if (this.keyboard.space && this.jumpTime < this.maxJumpTime) {
       if (player.velocityY < player.fallLimit * delta)

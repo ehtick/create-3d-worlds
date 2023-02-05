@@ -5,7 +5,7 @@ export default class FallState extends State {
     const { player } = this
 
     this.turn(delta)
-    player.updateGravity(delta)
+    player.applyGravity(delta)
     player.applyVelocity()
 
     /* TRANSIT */

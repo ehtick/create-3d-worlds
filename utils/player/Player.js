@@ -118,7 +118,7 @@ export default class Player {
     this.groundY = raycastGround({ mesh, solids }, { y: this.height })
   }
 
-  updateGravity(delta) {
+  applyGravity(delta) {
     if (this.velocityY > -this.fallLimit * delta)
       this.velocityY -= this.gravity * delta
   }
