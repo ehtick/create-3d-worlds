@@ -75,10 +75,10 @@ export default class State {
     const jumpDir = this.speed > 0 ? dir.upForward : dir.upBackward
     if (this.keyboard.space && this.directionBlocked(jumpDir)) return
 
-    player.velocity.z += this.speed * player.speed * (this.joystick?.forward || -1)
+    player.velocity.z += this.speed * player.speed * (this.joystick?.forward || -1) * delta
     player.velocity.z *= INERTIA
 
-    player.mesh.translateZ(player.velocity.z * delta)
+    player.mesh.translateZ(player.velocity.z)
   }
 
   backward(delta) {

@@ -12,7 +12,9 @@ npx live-server
 ### Scenes & examples
 
 - AI / Player
+  - objediniti mesh.translateY(this.velocity.y) i mesh.translateZ(player.velocity.z)
   - srediti speed na stanjima (to je vrv velocity.z)
+  - directionBlocked na Player
   - napraviti AI stanja
   - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
   - srediti Player hodanje (manje inercije, kraće ubrzavanje)
