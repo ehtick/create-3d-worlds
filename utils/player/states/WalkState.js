@@ -29,7 +29,7 @@ export default class WalkState extends State {
   update(delta) {
     const { player } = this
 
-    // const jumpStep = Math.abs(player.force) * delta * 1.5
+    // const jumpStep = Math.abs(player.speed) * delta * 1.5
     // this.player.normalizeGround(jumpStep)
 
     player.move(delta)

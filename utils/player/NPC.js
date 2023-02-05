@@ -14,7 +14,7 @@ const { randFloatSpread } = MathUtils
 */
 export default class NPC extends Player {
   constructor(params) {
-    super({ ...params, mesh: clone(params.mesh), keyboard: new Keyboard(false), force: 0 })
+    super({ ...params, mesh: clone(params.mesh), keyboard: new Keyboard(false), speed: 0 })
     this.entity = new SteeringEntity(this.mesh)
     this.randomizeAction()
     this.maxSpeed = .03
@@ -42,7 +42,7 @@ export default class NPC extends Player {
     this.entity.lookWhereGoing(true)
   }
 
-  force() {
+  speed() {
     this.entity.wander()
     this.entity.lookWhereGoing(true)
   }

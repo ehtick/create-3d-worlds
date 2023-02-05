@@ -8,21 +8,21 @@ import { getSize, directionBlocked } from '/utils/helpers.js'
 import { jumpStyles, getState } from './states/index.js'
 import { dir, RIGHT_ANGLE } from '/data/constants.js'
 
-function chooseForce(keyboard, force) {
-  if (keyboard.run && keyboard.up) return force * 2
-  if (keyboard.run && keyboard.down) return -force * 1.5
-  if (keyboard.up) return force
-  if (keyboard.down) return -force
+function chooseAcceleration(keyboard, baseSpeed) {
+  if (keyboard.run && keyboard.up) return baseSpeed * 2
+  if (keyboard.run && keyboard.down) return -baseSpeed * 1.5
+  if (keyboard.up) return baseSpeed
+  if (keyboard.down) return -baseSpeed
   return 0
 }
 
 export default class Player {
   constructor({
     mesh, animations, dict, camera, keyboard = defaultKeyboard, solids, useJoystick, gravity = .7,
-    jumpStyle = jumpStyles.FLY_JUMP, force = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5
+    jumpStyle = jumpStyles.FLY_JUMP, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5
   }) {
     this.mesh = mesh
-    this.force = force
+    this.speed = speed
     this.solids = []
     this.gravity = gravity
     this.groundY = 0
@@ -127,14 +127,15 @@ export default class Player {
 
   /* UPDATES */
 
-  move(delta, force = chooseForce(this.keyboard, this.force)) {
+  move(delta) {
     const direction = this.keyboard.up ? dir.forward : dir.backward
     if (this.directionBlocked(direction)) return
 
     const jumpDir = this.keyboard.up ? dir.upForward : dir.upBackward
     if (this.keyboard.space && this.directionBlocked(jumpDir)) return
 
-    this.velocity.z += force * delta * (this.joystick?.forward || -1)
+    const acceleration = chooseAcceleration(this.keyboard, this.speed)
+    this.velocity.z += acceleration * delta * (this.joystick?.forward || -1)
     this.velocity.z *= (1 - this.drag)
     this.mesh.translateZ(this.velocity.z)
   }
@@ -153,10 +154,10 @@ export default class Player {
 
   strafe(delta) {
     if (this.keyboard.sideLeft && !this.directionBlocked(dir.left))
-      this.mesh.translateX(-this.force * delta)
+      this.mesh.translateX(-this.speed * delta)
 
     if (this.keyboard.sideRight && !this.directionBlocked(dir.right))
-      this.mesh.translateX(this.force * delta)
+      this.mesh.translateX(this.speed * delta)
   }
 
   updateGround() {
