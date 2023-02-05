@@ -42,27 +42,20 @@ export default class FlyState extends State {
 
     this.turn(delta)
     this.forward(delta)
-
-    const gravityDelta = player.gravity * delta
-    const velocityLimit = player.fallLimit * delta
-
-    if (player.velocityY > -velocityLimit)
-      player.velocityY -= gravityDelta
+    player.updateGravity(delta)
 
     if (this.keyboard.space && this.jumpTime < this.maxJumpTime) {
-      const force = 2 * gravityDelta
-      if (player.velocityY < velocityLimit)
-        player.velocityY += force
+      if (player.velocityY < player.fallLimit * delta)
+        player.velocityY += player.jumpForce * delta
       this.jumpTime++
     }
 
     if (player.velocityY > 0 && this.directionBlocked(dir.up))
       player.velocityY = -player.velocityY
 
-    if (player.mesh.position.y + player.velocityY > player.groundY)
-      player.mesh.translateY(player.velocityY)
-    else
-      player.position.y = player.groundY
+    player.applyVelocity()
+
+    /* TRANSIT */
 
     if (player.velocityY <= 0 && !player.inAir) {
       player.velocityY = 0

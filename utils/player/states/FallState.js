@@ -4,18 +4,11 @@ export default class FallState extends State {
   update(delta) {
     const { player } = this
 
-    const gravityDelta = player.gravity * delta
-    const velocityLimit = player.fallLimit * delta
-
-    if (player.velocityY > -velocityLimit)
-      player.velocityY -= gravityDelta
-
-    if (player.mesh.position.y + player.velocityY > player.groundY)
-      player.mesh.translateY(player.velocityY)
-    else
-      player.position.y = player.groundY
-
     this.turn(delta)
+    player.updateGravity(delta)
+    player.applyVelocity()
+
+    /* TRANSIT */
 
     if (player.jumpStyle === 'FLY' && this.keyboard.up)
       this.forward(delta)

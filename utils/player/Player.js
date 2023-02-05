@@ -9,8 +9,8 @@ import { jumpStyles, getState } from './states/index.js'
 
 export default class Player {
   constructor({
-    mesh, animations, dict, camera, keyboard = defaultKeyboard, solids, useJoystick, speed = 2,
-    jumpStyle = jumpStyles.FLY, maxJumpTime = 17, gravity = .7, fallLimit = gravity * 20
+    mesh, animations, dict, camera, keyboard = defaultKeyboard, solids, useJoystick, speed = 2, gravity = .7,
+    jumpStyle = jumpStyles.FLY, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20
   }) {
     this.mesh = mesh
     this.speed = speed
@@ -21,8 +21,9 @@ export default class Player {
     this.fallLimit = fallLimit
     this.jumpStyle = jumpStyle
     this.maxJumpTime = maxJumpTime
-    this.keyboard = keyboard
+    this.jumpForce = jumpForce
 
+    this.keyboard = keyboard
     if (useJoystick) this.joystick = new JoyStick()
 
     this.actions = {}
@@ -115,6 +116,18 @@ export default class Player {
   updateGround() {
     const { mesh, solids } = this
     this.groundY = raycastGround({ mesh, solids }, { y: this.height })
+  }
+
+  updateGravity(delta) {
+    if (this.velocityY > -this.fallLimit * delta)
+      this.velocityY -= this.gravity * delta
+  }
+
+  applyVelocity() {
+    if (this.mesh.position.y + this.velocityY > this.groundY)
+      this.mesh.translateY(this.velocityY)
+    else
+      this.mesh.position.y = this.groundY
   }
 
   updateCamera(delta) {
