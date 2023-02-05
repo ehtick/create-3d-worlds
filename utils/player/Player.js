@@ -69,8 +69,12 @@ export default class Player {
     return this.mesh.position
   }
 
+  get heightDifference() {
+    return this.mesh.position.y - this.groundY
+  }
+
   get inAir() {
-    return this.mesh.position.y - this.groundY > this.height * .2
+    return this.heightDifference > this.height * .2
   }
 
   get action() {
@@ -111,14 +115,12 @@ export default class Player {
   }
 
   handleRoughTerrain(step) {
-    const difference = () => this.mesh.position.y - this.groundY // need current value, not cached
+    if (!this.heightDifference) return
 
-    if (!difference()) return
-
-    if (difference() < 0)
+    if (this.heightDifference < 0)
       this.mesh.translateY(step)
 
-    if (difference() > 0 && difference() <= step)
+    if (this.heightDifference > 0 && this.heightDifference <= step)
       this.mesh.position.y = this.groundY
   }
 
