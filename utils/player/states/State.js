@@ -6,8 +6,6 @@ const { lerp } = THREE.MathUtils
 
 const INERTIA = .18
 
-let velocityZ = 0
-
 export default class State {
   constructor(player, name) {
     this.player = player
@@ -69,17 +67,18 @@ export default class State {
   }
 
   forward(delta) {
-    if (!delta || !this.player.speed || !this.speed) return
+    const { player } = this
+    if (!delta || !player.speed || !this.speed) return
 
     const direction = this.speed > 0 ? dir.forward : dir.backward
     if (this.directionBlocked(direction)) return
     const jumpDir = this.speed > 0 ? dir.upForward : dir.upBackward
     if (this.keyboard.space && this.directionBlocked(jumpDir)) return
 
-    velocityZ += this.speed * this.player.speed * (this.joystick?.forward || -1)
-    velocityZ *= INERTIA
+    player.velocity.z += this.speed * player.speed * (this.joystick?.forward || -1)
+    player.velocity.z *= INERTIA
 
-    this.player.mesh.translateZ(velocityZ * delta)
+    player.mesh.translateZ(player.velocity.z * delta)
   }
 
   backward(delta) {
