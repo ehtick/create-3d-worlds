@@ -12,7 +12,8 @@ npx live-server
 ### Scenes & examples
 
 - AI / Player
-  - srediti speed na stanjima (to je vrv velocity.z)
+  - srediti speed na stanjima
+  - srediti normalizeGround na hrapavom terenu
   - napraviti AI stanja
   - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
   - srediti Player hodanje (manje inercije, kraće ubrzavanje)

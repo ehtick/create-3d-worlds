@@ -8,11 +8,10 @@ export default class JumpState extends SpecialState {
   }
 
   update(delta) {
-    this.forward(delta, this.keyboard.down ? 1 : -1)
+    this.player.move(delta)
   }
 
   exit() {
-    this.speed *= .75
     this.action?.setEffectiveTimeScale(1)
   }
 }

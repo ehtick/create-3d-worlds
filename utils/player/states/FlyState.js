@@ -29,19 +29,10 @@ export default class FlyState extends State {
   }
 
   update(delta) {
-    super.update(delta)
     const { player } = this
 
-    const speed = this.keyboard.capsLock ? this.player.speed * 2 : this.player.speed
-    if (this.keyboard.up)
-      this.speed = lerp(this.oldSpeed, speed, this.t)
-    else if (this.keyboard.down)
-      this.speed = lerp(this.oldSpeed, -speed, this.t)
-    else
-      this.speed = lerp(this.oldSpeed, 0, this.t)
-
-    this.turn(delta)
-    this.forward(delta)
+    player.turn(delta)
+    player.move(delta)
     player.applyGravity(delta)
 
     if (this.keyboard.space && this.jumpTime < this.maxJumpTime) {

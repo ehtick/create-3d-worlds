@@ -4,7 +4,7 @@ import Player from './Player.js'
 
 export default class AI extends Player {
   constructor(params) {
-    super({ ...params, mesh: clone(params.mesh), keyboard: new Keyboard(false), speed: 0 })
+    super({ ...params, mesh: clone(params.mesh), keyboard: new Keyboard(false), force: 0 })
     this.randomizeAction()
     this.maxSpeed = .03
   }

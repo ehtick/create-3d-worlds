@@ -1,7 +1,4 @@
-import * as THREE from 'three'
 import State from './State.js'
-
-const { lerp } = THREE.MathUtils
 
 const chooseDuration = prevState => {
   if (prevState === 'jump') return .25
@@ -29,11 +26,7 @@ export default class IdleState extends State {
   }
 
   update(delta) {
-    super.update(delta)
-    this.speed = lerp(this.oldSpeed, 0, this.t)
-
-    this.turn(delta)
-    this.forward(delta)
+    this.player.turn(delta)
 
     if (this.keyboard.up || this.keyboard.down || this.joystick?.forward < 0
       || this.keyboard.sideLeft || this.keyboard.sideRight)

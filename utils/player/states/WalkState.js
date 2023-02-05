@@ -1,8 +1,5 @@
-import * as THREE from 'three'
 import State from './State.js'
 import { mapRange } from '/utils/helpers.js'
-
-const { lerp } = THREE.MathUtils
 
 const chooseDuration = prevState => {
   if (prevState === 'jump') return .15
@@ -30,10 +27,22 @@ export default class WalkState extends State {
   }
 
   update(delta) {
-    super.update(delta)
-    super.move(delta)
+    const { player } = this
+
+    // const jumpStep = Math.abs(player.force) * delta * 1.5
+    // this.player.normalizeGround(jumpStep)
+
+    player.move(delta)
+    player.turn(delta)
+    player.strafe(delta)
 
     /* TRANSIT */
+
+    if (this.keyboard.space)
+      this.player.setState('jump')
+
+    if (this.player.inAir)
+      this.player.setState('fall')
 
     if (this.keyboard.pressed.Enter)
       this.player.setState('attack')

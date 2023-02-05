@@ -5,8 +5,4 @@ export default class JumpFlyState extends FlyState {
     super(player, name)
     this.maxJumpTime = player.maxJumpTime
   }
-
-  // exit() {
-  //   this.speed *= .75
-  // }
 }

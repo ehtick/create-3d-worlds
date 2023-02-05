@@ -7,7 +7,6 @@ export default class SpecialState extends State {
   constructor(...args) {
     super(...args)
     this.prevState = ''
-    this.speed = 0
     this._FinishedCallback = this._FinishedCallback.bind(this)
   }
 

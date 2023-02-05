@@ -33,17 +33,27 @@ export default class RunState extends State {
   }
 
   update(delta) {
-    super.update(delta)
-    super.move(delta, 2)
+    const { player } = this
+
+    // kada trči treba sila * 2 ili - sila * dva, osim kada radi strafe sa caplockom, onda sila 0
+    player.move(delta)
+    player.turn(delta)
+    player.strafe(delta)
 
     /* TRANSIT */
 
+    if (this.keyboard.space)
+      this.player.setState('jump')
+
+    if (this.player.inAir)
+      this.player.setState('fall')
+
     if (!this.keyboard.capsLock && !(this.joystick?.forward < -.75))
-      this.player.setState('walk')
+      player.setState('walk')
 
     if (!this.keyboard.up && !this.keyboard.down && !this.joystick?.forward
       && !this.keyboard.sideLeft && !this.keyboard.sideRight)
-      this.player.setState('idle')
+      player.setState('idle')
   }
 
   exit() {

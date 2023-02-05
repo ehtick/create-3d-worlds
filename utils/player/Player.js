@@ -6,14 +6,23 @@ import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
 import { getSize, directionBlocked } from '/utils/helpers.js'
 import { jumpStyles, getState } from './states/index.js'
+import { dir, RIGHT_ANGLE } from '/data/constants.js'
+
+function chooseForce(keyboard, force) {
+  if (keyboard.run && keyboard.up) return force * 2
+  if (keyboard.run && keyboard.down) return -force * 1.5
+  if (keyboard.up) return force
+  if (keyboard.down) return -force
+  return 0
+}
 
 export default class Player {
   constructor({
-    mesh, animations, dict, camera, keyboard = defaultKeyboard, solids, useJoystick, speed = 2, gravity = .7,
-    jumpStyle = jumpStyles.FLY_JUMP, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20
+    mesh, animations, dict, camera, keyboard = defaultKeyboard, solids, useJoystick, gravity = .7,
+    jumpStyle = jumpStyles.FLY_JUMP, force = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5
   }) {
     this.mesh = mesh
-    this.speed = speed
+    this.force = force
     this.solids = []
     this.gravity = gravity
     this.groundY = 0
@@ -22,6 +31,7 @@ export default class Player {
     this.jumpStyle = jumpStyle
     this.maxJumpTime = maxJumpTime
     this.jumpForce = jumpForce
+    this.drag = drag
 
     this.keyboard = keyboard
     if (useJoystick) this.joystick = new JoyStick()
@@ -116,6 +126,38 @@ export default class Player {
   }
 
   /* UPDATES */
+
+  move(delta, force = chooseForce(this.keyboard, this.force)) {
+    const direction = this.keyboard.up ? dir.forward : dir.backward
+    if (this.directionBlocked(direction)) return
+
+    const jumpDir = this.keyboard.up ? dir.upForward : dir.upBackward
+    if (this.keyboard.space && this.directionBlocked(jumpDir)) return
+
+    this.velocity.z += force * delta * (this.joystick?.forward || -1)
+    this.velocity.z *= (1 - this.drag)
+    this.mesh.translateZ(this.velocity.z)
+  }
+
+  turn(delta) {
+    if (!delta) return
+    const angle = RIGHT_ANGLE * delta // 90 degrees per second
+    if (this.joystick)
+      this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle * -this.joystick.turn)
+
+    if (this.keyboard.left)
+      this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle)
+    if (this.keyboard.right)
+      this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle * -1)
+  }
+
+  strafe(delta) {
+    if (this.keyboard.sideLeft && !this.directionBlocked(dir.left))
+      this.mesh.translateX(-this.force * delta)
+
+    if (this.keyboard.sideRight && !this.directionBlocked(dir.right))
+      this.mesh.translateX(this.force * delta)
+  }
 
   updateGround() {
     const { mesh, solids } = this
