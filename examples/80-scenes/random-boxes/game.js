@@ -11,7 +11,7 @@ scene.add(floor)
 const boxes = createRandomBoxes()
 scene.add(boxes)
 
-camera.position.z = 10
+camera.position.z = 9
 
 const player = new Avatar({ size: 1 })
 player.mesh.rotateY(Math.PI)
