@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - AI / Player
-  - parametrizovati velocityY limit i maxJumpTime
   - update freeFly logic (see FlyState)
   - srediti velocity (spojiti velocityY na Player i velocity na State)
   - napraviti AI stanja

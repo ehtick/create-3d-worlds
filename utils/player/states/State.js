@@ -5,7 +5,6 @@ import { dir, RIGHT_ANGLE } from '/data/constants.js'
 const { lerp } = THREE.MathUtils
 
 const INERTIA = .18
-export const GRAVITY = .7
 
 let velocity = 0
 
@@ -110,7 +109,7 @@ export default class State {
   // TODO: update freeFly logic like in FlyState
   freeFly(delta) {
     const { mesh } = this.player
-    const gravityStep = GRAVITY * delta
+    const gravityStep = this.player.gravity * delta
 
     this.player.velocityY -= gravityStep
 

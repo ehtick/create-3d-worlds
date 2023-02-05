@@ -4,7 +4,6 @@ import { directionBlocked } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE } from '/data/constants.js'
 
 const INERTIA = .18
-export const GRAVITY = .9
 
 let velocity = 0
 

@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import State, { GRAVITY } from './State.js'
+import State from './State.js'
 import { dir } from '/data/constants.js'
 
 const { lerp } = THREE.MathUtils
@@ -43,10 +43,11 @@ export default class FlyState extends State {
     this.turn(delta)
     this.forward(delta)
 
-    const gravityDelta = GRAVITY * delta
-    const velocityLimit = gravityDelta * 20
+    const gravityDelta = player.gravity * delta
+    const velocityLimit = player.fallLimit * delta
 
-    if (player.velocityY > -velocityLimit) player.velocityY -= gravityDelta
+    if (player.velocityY > -velocityLimit)
+      player.velocityY -= gravityDelta
 
     if (this.keyboard.space && this.jumpTime < this.maxJumpTime) {
       const force = 2 * gravityDelta
