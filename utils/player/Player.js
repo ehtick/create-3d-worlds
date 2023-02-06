@@ -73,16 +73,6 @@ export default class Player {
     return 0
   }
 
-  /* ANIMATIONS */
-
-  setupMixer(animations, dict) {
-    this.mixer = new AnimationMixer(this.mesh)
-    for (const key in dict) {
-      const clip = animations.find(anim => anim.name == dict[key])
-      this.actions[key] = this.mixer.clipAction(clip)
-    }
-  }
-
   /* STATE MACHINE */
 
   setState(name) {
@@ -94,6 +84,16 @@ export default class Player {
     const State = getState(name, this.jumpStyle)
     this.currentState = new State(this, name)
     this.currentState.enter(oldState, oldState?.action)
+  }
+
+  /* ANIMATIONS */
+
+  setupMixer(animations, dict) {
+    this.mixer = new AnimationMixer(this.mesh)
+    for (const key in dict) {
+      const clip = animations.find(anim => anim.name == dict[key])
+      this.actions[key] = this.mixer.clipAction(clip)
+    }
   }
 
   /* UTILS */

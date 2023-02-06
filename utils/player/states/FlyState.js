@@ -15,16 +15,13 @@ export default class FlyState extends State {
     this.jumpTime = 0
 
     if (this.action) {
-      this.action.setEffectiveTimeScale(1)
       this.action.reset()
       this.action.setLoop(THREE.LoopOnce, 1)
       this.action.clampWhenFinished = true
-      if (oldAction) this.action.crossFadeFrom(oldAction, .05)
-      this.action.play()
-      if (this.keyboard.down) this.reverseAction()
-    }
 
-    if (!this.action)
+      this.transitFrom(oldAction)
+      if (this.keyboard.down) this.reverseAction()
+    } else
       this.actions[this.prevState]?.setEffectiveTimeScale(this.keyboard.down ? -1 : 1)
   }
 

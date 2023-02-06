@@ -1,13 +1,10 @@
-import * as THREE from 'three'
 import { mapRange } from '/utils/helpers.js'
 import State from './State.js'
-
-const { lerp } = THREE.MathUtils
 
 export default class RunState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
-    const duration = oldState?.name === 'jump' ? .15 : .75
+    const duration = this.prevState === 'jump' ? .15 : .75
     const sign = this.keyboard.down ? -1 : 1
 
     if (this.actions.run) {
@@ -21,7 +18,7 @@ export default class RunState extends State {
 
     if (!this.actions.run) {
       this.action = this.actions.walk
-      if (this.action && oldAction && oldState?.name !== 'walk') this.action.crossFadeFrom(oldAction, duration)
+      if (this.action && oldAction && this.prevState !== 'walk') this.action.crossFadeFrom(oldAction, duration)
       const timeScale = this.joystick?.forward
         ? mapRange(-this.joystick.forward, .75, 1, 1.25, 1.75)
         : 1.5 * sign
@@ -35,7 +32,6 @@ export default class RunState extends State {
   update(delta) {
     const { player } = this
 
-    // kada trči treba sila * 2 ili - sila * dva, osim kada radi strafe sa caplockom, onda sila 0
     player.move(delta)
     player.turn(delta)
     player.strafe(delta)

@@ -1,3 +1,8 @@
+const chooseDuration = prevState => {
+  if (prevState === 'jump') return .25
+  return .75
+}
+
 export default class State {
   constructor(player, name) {
     this.player = player
@@ -29,8 +34,18 @@ export default class State {
 
   /* HELPERS */
 
-  syncTime() {
-    const oldAction = this.actions[this.prevState]
+  transitFrom(oldAction, duration = .25) {
+    this.action?.setEffectiveTimeScale(1)
+
+    // TODO: chooseDuration
+    if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
+    if (this.action) this.action.play()
+
+    // if (!this.action && oldAction) oldAction.fadeOut(.5)
+    // if (!oldAction) this.player.mixer?.stopAllAction()
+  }
+
+  syncTime(oldAction) {
     if (!this.action || !oldAction) return
     const ratio = this.action.getClip().duration / oldAction.getClip().duration
     this.action.time = oldAction.time * ratio

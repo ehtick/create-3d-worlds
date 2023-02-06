@@ -10,20 +10,13 @@ const chooseDuration = prevState => {
 export default class WalkState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
+    this.transitFrom(oldAction)
 
     const sign = this.keyboard.down ? -1 : 1
     const timeScale = this.joystick?.forward ? mapRange(-this.joystick.forward, 0, .75, .75, 1.25) : sign
     this.action?.setEffectiveTimeScale(timeScale)
 
-    if (this.prevState !== 'run' || this.actions.run) {
-      if (this.prevState === 'run') this.syncTime()
-
-      const duration = chooseDuration(oldState.name)
-      if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
-      else if (oldAction) oldAction.fadeOut(duration)
-    }
-
-    this.action?.play()
+    if (this.keyboard.down) this.reverseAction()
   }
 
   update(delta) {

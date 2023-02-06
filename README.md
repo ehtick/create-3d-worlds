@@ -11,9 +11,13 @@ npx live-server
 
 ### Scenes & examples
 
+https://threejs.org/examples/?q=animation#webgl_animation_skinning_blending
+https://threejs.org/examples/?q=animation#webgl_animation_skinning_additive_blending
+
 - AI / Player
   - srediti zaustavljanje walk animacije /examples/70-ai/26-follow/
     - srediti prelaze animacije generalno
+    - probati this.action.syncWith(oldAction)
   - napraviti AI stanja
   - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
 

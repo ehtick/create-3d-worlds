@@ -9,20 +9,7 @@ export default class IdleState extends State {
 
   enter(oldState, oldAction) {
     super.enter(oldState)
-    this.action?.setEffectiveTimeScale(1)
-    const duration = chooseDuration(oldState?.name)
-
-    if (!oldAction) this.player.mixer?.stopAllAction()
-
-    if (this.action && oldAction) {
-      if (this.prevState === 'walk' || this.prevState === 'run') this.syncTime()
-      this.action.crossFadeFrom(oldAction, duration)
-    }
-
-    if (!this.action && oldAction)
-      oldAction.fadeOut(duration)
-
-    this.action?.play()
+    this.transitFrom(oldAction)
   }
 
   update(delta) {
