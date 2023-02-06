@@ -10,10 +10,6 @@ export default class State {
     return this.player.keyboard
   }
 
-  get joystick() {
-    return this.player.joystick
-  }
-
   get actions() {
     return this.player.actions
   }
