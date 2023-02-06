@@ -66,11 +66,17 @@ export default class Player {
 
   get acceleration() {
     const { keyboard, speed } = this
-    if (keyboard.run && keyboard.up) return speed * 2
-    if (keyboard.run && keyboard.down) return -speed * 1.5
-    if (keyboard.up) return speed
-    if (keyboard.down) return -speed
+    if (keyboard.run && this.controlsUp) return speed * 2
+    if (keyboard.run && this.controlsDown) return -speed * 1.5
+    if (this.controlsUp) return speed
+    if (this.controlsDown) return -speed
     return 0
+  }
+
+  /* CONTROLS */
+
+  get controlsUp() {
+    return this.keyboard.up || this.joystick?.forward < 0
   }
 
   get controlsDown() {
@@ -135,10 +141,10 @@ export default class Player {
   /* UPDATES */
 
   move(delta) {
-    const direction = this.keyboard.up ? dir.forward : dir.backward
+    const direction = this.controlsUp ? dir.forward : dir.backward
     if (this.directionBlocked(direction)) return
 
-    const jumpDir = this.keyboard.up ? dir.upForward : dir.upBackward
+    const jumpDir = this.controlsUp ? dir.upForward : dir.upBackward
     if (this.keyboard.space && this.directionBlocked(jumpDir)) return
 
     this.velocity.z += this.acceleration * delta * (this.joystick?.forward || -1)

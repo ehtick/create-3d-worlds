@@ -16,11 +16,11 @@ export default class FlyState extends State {
       this.action.reset()
       this.action.setLoop(THREE.LoopOnce, 1)
       this.action.clampWhenFinished = true
-
       this.transitFrom(oldAction, .5)
-      if (this.player.controlsDown) this.reverseAction()
-    } else
-      this.actions[this.prevState]?.setEffectiveTimeScale(this.keyboard.down ? -1 : 1)
+    }
+
+    if (this.player.controlsDown)
+      this.reverseAction(this.action || this.actions[this.prevState])
   }
 
   update(delta) {

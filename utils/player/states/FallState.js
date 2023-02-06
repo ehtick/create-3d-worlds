@@ -10,7 +10,7 @@ export default class FallState extends State {
 
     /* TRANSIT */
 
-    if (player.jumpStyle === 'FLY' && this.keyboard.up)
+    if (player.jumpStyle === 'FLY' && player.controlsUp)
       player.move(delta)
 
     if (player.jumpStyle === 'FLY' && this.keyboard.space)

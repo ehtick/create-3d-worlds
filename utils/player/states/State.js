@@ -46,11 +46,11 @@ export default class State {
   }
 
   // https://gist.github.com/rtpHarry/2d41811d04825935039dfc075116d0ad
-  reverseAction() {
-    if (!this.action) return
-    if (this.action.time === 0)
-      this.action.time = this.action.getClip().duration
-    this.action.paused = false
-    this.action.setEffectiveTimeScale(-1)
+  reverseAction(action = this.action) {
+    if (!action) return
+    if (action.time === 0)
+      action.time = action.getClip().duration
+    action.paused = false
+    action.setEffectiveTimeScale(-1)
   }
 }

@@ -35,7 +35,7 @@ export default class WalkState extends State {
     if (this.player.controlsRun)
       this.player.setState('run')
 
-    if (!this.keyboard.up && !this.keyboard.down && !this.joystick?.forward
+    if (!this.player.controlsUp && !this.player.controlsDown
       && !this.keyboard.sideLeft && !this.keyboard.sideRight)
       this.player.setState('idle')
   }
