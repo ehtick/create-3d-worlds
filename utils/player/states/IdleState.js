@@ -19,7 +19,7 @@ export default class IdleState extends State {
       this.player.setState('walk')
 
     if (this.keyboard.sideLeft || this.keyboard.sideRight)
-      this.player.setState('walk') // TODO: strafe
+      this.player.setState('walk') // TODO: strafe state?
 
     if (this.player.inAir)
       this.player.setState('fall')

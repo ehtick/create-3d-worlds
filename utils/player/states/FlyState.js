@@ -2,8 +2,6 @@ import * as THREE from 'three'
 import State from './State.js'
 import { dir } from '/data/constants.js'
 
-const { lerp } = THREE.MathUtils
-
 export default class FlyState extends State {
   constructor(player, name) {
     super(player, name)

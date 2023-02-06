@@ -37,7 +37,7 @@ export default class RunState extends State {
     if (this.player.inAir)
       this.player.setState('fall')
 
-    if (!this.keyboard.capsLock && Math.abs(this.joystick?.forward) < .75)
+    if (!this.player.controlsRun)
       player.setState('walk')
 
     if (!this.keyboard.up && !this.keyboard.down && !this.joystick?.forward

@@ -32,7 +32,7 @@ export default class WalkState extends State {
     if (this.keyboard.pressed.Enter)
       this.player.setState('attack')
 
-    if (this.keyboard.capsLock || Math.abs(this.joystick?.forward) > .75)
+    if (this.player.controlsRun)
       this.player.setState('run')
 
     if (!this.keyboard.up && !this.keyboard.down && !this.joystick?.forward

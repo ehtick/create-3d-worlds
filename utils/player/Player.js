@@ -11,7 +11,7 @@ import { dir, RIGHT_ANGLE } from '/data/constants.js'
 export default class Player {
   constructor({
     mesh, animations, dict, camera, keyboard = defaultKeyboard, solids, useJoystick, gravity = .7,
-    jumpStyle = jumpStyles.FLY_JUMP, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5
+    jumpStyle = jumpStyles.JUMP, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5
   }) {
     this.mesh = mesh
     this.speed = speed
@@ -75,6 +75,10 @@ export default class Player {
 
   get controlsDown() {
     return this.keyboard.down || this.joystick?.forward > 0
+  }
+
+  get controlsRun() {
+    return this.keyboard.capsLock || Math.abs(this.joystick?.forward) > .75
   }
 
   /* STATE MACHINE */
