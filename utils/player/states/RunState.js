@@ -12,7 +12,6 @@ export default class RunState extends State {
       this.action?.setEffectiveTimeScale(1.5)
       this.action?.play()
     }
-
     if (this.player.controlsDown) this.reverseAction()
   }
 
@@ -37,9 +36,5 @@ export default class RunState extends State {
     if (!this.keyboard.up && !this.keyboard.down && !this.joystick?.forward
       && !this.keyboard.sideLeft && !this.keyboard.sideRight)
       player.setState('idle')
-  }
-
-  exit() {
-    this.action?.setEffectiveTimeScale(1)
   }
 }

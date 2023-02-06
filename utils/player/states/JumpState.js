@@ -10,8 +10,4 @@ export default class JumpState extends SpecialState {
   update(delta) {
     this.player.move(delta)
   }
-
-  exit() {
-    this.action?.setEffectiveTimeScale(1)
-  }
 }

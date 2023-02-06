@@ -25,13 +25,13 @@ export default class State {
 
   update() {}
 
-  exit() { }
+  exit() {
+    this.action?.setEffectiveTimeScale(1)
+  }
 
   /* HELPERS */
 
   transitFrom(oldAction, duration = .25) {
-    this.action?.setEffectiveTimeScale(1)
-
     if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
     if (!oldAction) this.player.mixer?.stopAllAction()
     if (this.action) this.action.play()
