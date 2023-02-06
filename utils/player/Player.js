@@ -73,6 +73,10 @@ export default class Player {
     return 0
   }
 
+  get controlsDown() {
+    return this.keyboard.down || this.joystick?.forward > 0
+  }
+
   /* STATE MACHINE */
 
   setState(name) {

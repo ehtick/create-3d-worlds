@@ -1,8 +1,3 @@
-const chooseDuration = prevState => {
-  if (prevState === 'jump') return .25
-  return .75
-}
-
 export default class State {
   constructor(player, name) {
     this.player = player
@@ -24,7 +19,6 @@ export default class State {
   }
 
   enter(oldState) {
-    console.log(this.name)
     this.prevState = oldState?.name
     if (this.action) this.action.enabled = true
   }
@@ -38,7 +32,6 @@ export default class State {
   transitFrom(oldAction, duration = .25) {
     this.action?.setEffectiveTimeScale(1)
 
-    // TODO: chooseDuration
     if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
     if (this.action) this.action.play()
 

@@ -2,9 +2,6 @@
 * Handle user input (including keyboard, touchscreen and mouse)
 * see keycode.info
 */
-let startX = null
-let startY = null
-const swipeThreshold = 5
 
 const preventSome = e => {
   // prevent shake and random btn click on enter
@@ -19,6 +16,10 @@ class Keyboard {
 
     this.SwipeX = 0
     this.SwipeY = 0
+
+    this.startX = null
+    this.startY = null
+    this.swipeThreshold = 5
 
     if (!listen) return
 
@@ -50,8 +51,8 @@ class Keyboard {
       this.pressed.mouse = true
     if (e.button === 2)
       this.pressed.mouse2 = true
-    startX = e.pageX
-    startY = e.pageY
+    this.startX = e.pageX
+    this.startY = e.pageY
   }
 
   handleMouseUp(e) {
@@ -65,8 +66,8 @@ class Keyboard {
 
   checkDirection(e) {
     if (!this.pressed.mouse) return
-    this.SwipeX = e.pageX - startX
-    this.SwipeY = e.pageY - startY
+    this.SwipeX = e.pageX - this.startX
+    this.SwipeY = e.pageY - this.startY
   }
 
   resetSwipe() {
@@ -142,19 +143,19 @@ class Keyboard {
   /* SWIPES */
 
   get swipeLeft() {
-    return this.SwipeX < -swipeThreshold
+    return this.SwipeX < -this.swipeThreshold
   }
 
   get swipeRight() {
-    return this.SwipeX > swipeThreshold
+    return this.SwipeX > this.swipeThreshold
   }
 
   get swipeUp() {
-    return this.SwipeY < -swipeThreshold
+    return this.SwipeY < -this.swipeThreshold
   }
 
   get swipeDown() {
-    return this.SwipeY > swipeThreshold
+    return this.SwipeY > this.swipeThreshold
   }
 
 }

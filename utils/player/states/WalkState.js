@@ -10,7 +10,7 @@ export default class WalkState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
     this.transitFrom(oldAction, chooseDuration(oldState.name))
-    if (this.keyboard.down || this.joystick?.forward > 0) this.reverseAction()
+    if (this.player.controlsDown) this.reverseAction()
   }
 
   update(delta) {
