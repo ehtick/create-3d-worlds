@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadSorceress()
-const player = new Player({ mesh, animations, dict: sorceressAnimations, useJoystick: true })
+const player = new Player({ mesh, animations, dict: sorceressAnimations, useJoystick: true, jumpStyle: 'FLY_JUMP' })
 
 scene.add(mesh)
 

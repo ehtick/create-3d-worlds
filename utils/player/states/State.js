@@ -33,10 +33,10 @@ export default class State {
     this.action?.setEffectiveTimeScale(1)
 
     if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
+    if (!oldAction) this.player.mixer?.stopAllAction()
     if (this.action) this.action.play()
 
     // if (!this.action && oldAction) oldAction.fadeOut(.5)
-    // if (!oldAction) this.player.mixer?.stopAllAction()
   }
 
   syncTime(oldAction) {

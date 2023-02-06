@@ -4,22 +4,16 @@ export default class RunState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
     const duration = this.prevState === 'jump' ? .15 : .75
-    const sign = this.keyboard.down || this.joystick?.forward > 0 ? -1 : 1
 
-    if (this.actions.run) {
-      if (this.prevState === 'walk') this.syncTime()
-      if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
-      this.action.setEffectiveTimeScale(sign)
-    }
+    if (this.actions.run)
+      this.transitFrom(oldAction, duration)
 
     if (!this.actions.run) {
-      this.action = this.actions.walk
-      if (this.action && oldAction && this.prevState !== 'walk') this.action.crossFadeFrom(oldAction, duration)
-      this.action?.setEffectiveTimeScale(1.5 * sign)
+      this.action?.setEffectiveTimeScale(1.5)
+      this.action?.play()
     }
 
-    this.action?.play()
-    if (this.action) this.action.enabled = true
+    if (this.player.controlsDown) this.reverseAction()
   }
 
   update(delta) {
