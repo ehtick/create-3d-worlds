@@ -1,9 +1,10 @@
 import State from './State.js'
 
 const chooseDuration = prevState => {
+  if (prevState === 'idle') return .25
   if (prevState === 'jump') return .15
   if (prevState === 'attack') return .15
-  return .75
+  return .5
 }
 
 export default class WalkState extends State {
