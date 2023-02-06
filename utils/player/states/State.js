@@ -35,12 +35,6 @@ export default class State {
     // if (!this.action && oldAction) oldAction.fadeOut(.5)
   }
 
-  syncTime(oldAction) {
-    if (!this.action || !oldAction) return
-    const ratio = this.action.getClip().duration / oldAction.getClip().duration
-    this.action.time = oldAction.time * ratio
-  }
-
   // https://gist.github.com/rtpHarry/2d41811d04825935039dfc075116d0ad
   reverseAction(action = this.action) {
     if (!action) return
