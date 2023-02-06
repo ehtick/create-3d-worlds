@@ -19,7 +19,7 @@ export default class FlyState extends State {
       this.action.setLoop(THREE.LoopOnce, 1)
       this.action.clampWhenFinished = true
 
-      this.transitFrom(oldAction)
+      this.transitFrom(oldAction, .5)
       if (this.keyboard.down) this.reverseAction()
     } else
       this.actions[this.prevState]?.setEffectiveTimeScale(this.keyboard.down ? -1 : 1)

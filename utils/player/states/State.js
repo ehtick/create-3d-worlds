@@ -24,6 +24,7 @@ export default class State {
   }
 
   enter(oldState) {
+    console.log(this.name)
     this.prevState = oldState?.name
     if (this.action) this.action.enabled = true
   }

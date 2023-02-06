@@ -15,6 +15,8 @@ https://threejs.org/examples/?q=animation#webgl_animation_skinning_blending
 https://threejs.org/examples/?q=animation#webgl_animation_skinning_additive_blending
 
 - AI / Player
+  - sa džojstikom iz walk u run preskače animacija
+  - isprobati joystick za sva stanja
   - srediti zaustavljanje walk animacije /examples/70-ai/26-follow/
     - srediti prelaze animacije generalno
     - probati this.action.syncWith(oldAction)

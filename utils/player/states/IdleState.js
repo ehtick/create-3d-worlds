@@ -9,15 +9,17 @@ export default class IdleState extends State {
 
   enter(oldState, oldAction) {
     super.enter(oldState)
-    this.transitFrom(oldAction)
+    this.transitFrom(oldAction, chooseDuration(oldState?.name))
   }
 
   update(delta) {
     this.player.turn(delta)
 
-    if (this.keyboard.up || this.keyboard.down || this.joystick?.forward < 0
-      || this.keyboard.sideLeft || this.keyboard.sideRight)
+    if (this.keyboard.up || this.keyboard.down || this.joystick?.forward)
       this.player.setState('walk')
+
+    if (this.keyboard.sideLeft || this.keyboard.sideRight)
+      this.player.setState('walk') // TODO: strafe
 
     if (this.player.inAir)
       this.player.setState('fall')
