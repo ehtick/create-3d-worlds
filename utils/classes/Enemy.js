@@ -13,14 +13,14 @@ export default class Enemy {
   }
 
   randomizeMove() {
-    this.lastRandomAngle = randFloat(-1, 1)
-    this.mesh.rotateY(this.lastRandomAngle)
-    this.lastRandomSpeed = randFloat(.5, 2)
+    const angle = randFloat(-1, 1)
+    this.mesh.rotateY(angle)
+    this.currentSpeed = randFloat(.5, 2)
   }
 
   update(delta) {
     const speed = this.speed * delta
     if (Math.random() > 0.995) this.randomizeMove()
-    this.mesh.translateZ(speed * this.lastRandomSpeed)
+    this.mesh.translateZ(speed * this.currentSpeed)
   }
 }
