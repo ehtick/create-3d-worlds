@@ -15,10 +15,10 @@ https://threejs.org/examples/?q=animation#webgl_animation_skinning_blending
 https://threejs.org/examples/?q=animation#webgl_animation_skinning_additive_blending
 
 - AI
-  - napraviti AI stanja
-  - prikačiti AI stanja na AI klasu
-  - doraditi idle da se okreće, i malo hoda
-  - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
+  - napraviti rucno sva AI stanja
+    - idle: da se okreće, i možda malo hoda
+    - wonder: povremeno menja pravac i hoda napred
+    - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
 
 - Savo
   - dodati NPC karaktere, Nemce, duhove
