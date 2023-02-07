@@ -27,23 +27,32 @@ export default class State {
 
   /* ANIM HELPERS */
 
-  isTheSame(oldAction) {
-    const activeAction = oldAction || this.player.mixer._actions.find(action => action.isRunning())
-    return activeAction?.getClip().name === this.action?.getClip().name
-  }
-
   get activeActions() {
     return this.player.mixer._actions.filter(action => action.isRunning())
   }
 
-  transitFrom(oldAction, duration = .25) {
+  findPrevAction(prevAction) {
+    if (prevAction) return prevAction
+    return this.activeActions.find(a => a !== this.action)
+  }
+
+  stopBacklogs(prevAction) {
+    const actions = this.activeActions.filter(a => a !== this.action && a !== prevAction)
+    actions.forEach(action => {
+      action.stop()
+    })
+  }
+
+  transitFrom(prevAction, duration = .25) {
+    const oldAction = this.findPrevAction(prevAction)
+
     if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
 
-    if (this.activeActions > 2) this.player.mixer?.stopAllAction()
+    // BUG: zaostaju stare akcije
+    // this.player.mixer?.stopAllAction()
+    // this.stopBacklogs(oldAction)
 
     if (this.action) this.action.play()
-
-    // if (!this.action && oldAction) oldAction.fadeOut(.5)
   }
 
   // https://gist.github.com/rtpHarry/2d41811d04825935039dfc075116d0ad
