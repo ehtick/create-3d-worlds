@@ -14,9 +14,8 @@ npx live-server
 https://threejs.org/examples/?q=animation#webgl_animation_skinning_blending
 https://threejs.org/examples/?q=animation#webgl_animation_skinning_additive_blending
 
-- izbaciti brojeve foldera gde može
-
-- AI / Player
+- AI
+  - klonirati mesh za ai
   - napraviti AI stanja
   - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
 

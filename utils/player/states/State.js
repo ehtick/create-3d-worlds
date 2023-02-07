@@ -25,7 +25,7 @@ export default class State {
     this.action?.setEffectiveTimeScale(1)
   }
 
-  /* HELPERS */
+  /* ANIM HELPERS */
 
   transitFrom(oldAction, duration = .25) {
     if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
