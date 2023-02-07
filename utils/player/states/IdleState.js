@@ -9,7 +9,7 @@ export default class IdleState extends State {
 
   enter(oldState, oldAction) {
     super.enter(oldState)
-    this.transitFrom(oldAction, chooseDuration(oldState?.name))
+    if (this.action) this.transitFrom(oldAction, chooseDuration(oldState?.name))
   }
 
   update(delta) {

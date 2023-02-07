@@ -11,12 +11,8 @@ npx live-server
 
 ### Scenes & examples
 
-https://threejs.org/examples/?q=animation#webgl_animation_skinning_blending
-https://threejs.org/examples/?q=animation#webgl_animation_skinning_additive_blending
-
 - AI
-  - napraviti rucno sva AI stanja
-    - idle: da se okreće, i možda malo hoda
+  - napraviti sva AI stanja
     - wonder: povremeno menja pravac i hoda napred
     - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
 

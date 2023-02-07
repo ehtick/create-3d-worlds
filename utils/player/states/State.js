@@ -28,12 +28,12 @@ export default class State {
   /* ANIM HELPERS */
 
   get activeActions() {
-    return this.player.mixer._actions.filter(action => action.isRunning())
+    return this.player.mixer?._actions.filter(action => action.isRunning())
   }
 
   findActiveAction(prevAction) {
     if (prevAction) return prevAction
-    return this.activeActions.find(a => a !== this.action)
+    return this.activeActions?.find(a => a !== this.action)
   }
 
   transitFrom(prevAction, duration = .25) {
