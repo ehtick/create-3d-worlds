@@ -5,13 +5,14 @@ import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
 import { getSize, directionBlocked } from '/utils/helpers.js'
-import { jumpStyles, getState } from './states/index.js'
 import { dir, RIGHT_ANGLE } from '/data/constants.js'
+
+import { jumpStyles, getPlayerState } from './states/index.js'
 
 export default class Player {
   constructor({
     mesh, animations, dict, camera, keyboard = defaultKeyboard, solids, useJoystick, gravity = .7,
-    jumpStyle = jumpStyles.FLY_JUMP, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5
+    jumpStyle = jumpStyles.FLY_JUMP, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle)
   }) {
     this.mesh = mesh
     this.speed = speed
@@ -25,6 +26,7 @@ export default class Player {
     this.jumpForce = jumpForce
     this.drag = drag
     this.keyboard = keyboard
+    this.getState = getState
 
     if (useJoystick) this.joystick = new JoyStick()
 
@@ -95,7 +97,7 @@ export default class Player {
       if (oldState.name == name) return
       oldState.exit()
     }
-    const State = getState(name, this.jumpStyle)
+    const State = this.getState(name)
     this.currentState = new State(this, name)
     this.currentState.enter(oldState, oldState?.action)
   }

@@ -15,8 +15,9 @@ https://threejs.org/examples/?q=animation#webgl_animation_skinning_blending
 https://threejs.org/examples/?q=animation#webgl_animation_skinning_additive_blending
 
 - AI
-  - klonirati mesh za ai
   - napraviti AI stanja
+  - prikačiti AI stanja na AI klasu
+  - doraditi idle da se okreće, i malo hoda
   - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
 
 - Savo

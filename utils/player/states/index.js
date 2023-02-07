@@ -30,7 +30,7 @@ const chooseJumpState = jumpStyle => {
   }
 }
 
-export function getState(name, jumpStyle) {
+export function getPlayerState(name, jumpStyle) {
   if (name === 'jump') return chooseJumpState (jumpStyle)
   return playerStates[name] || playerStates.special
 }
