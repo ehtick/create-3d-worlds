@@ -17,8 +17,6 @@ export default class State {
   enter(oldState) {
     this.prevState = oldState?.name
     if (this.action) this.action.enabled = true
-    // console.log('state:', this.name)
-    // console.log(this.activeActions.map(a => a.getClip().name))
   }
 
   update(delta) {}
@@ -36,11 +34,6 @@ export default class State {
   findActiveAction(prevAction) {
     if (prevAction) return prevAction
     return this.activeActions.find(a => a !== this.action)
-  }
-
-  stopBacklogs(prevAction) {
-    const actions = this.activeActions.filter(a => a !== this.action && a !== prevAction)
-    actions.forEach(action => action.stop())
   }
 
   transitFrom(prevAction, duration = .25) {
