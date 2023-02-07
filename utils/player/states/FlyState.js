@@ -14,7 +14,7 @@ export default class FlyState extends State {
 
     if (this.action) {
       this.action.reset()
-      this.action.setLoop(THREE.LoopOnce, 1)
+      // this.action.setLoop(THREE.LoopOnce, 1)
       this.action.clampWhenFinished = true
       this.transitFrom(oldAction, .5)
     }

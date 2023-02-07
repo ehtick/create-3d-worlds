@@ -17,6 +17,8 @@ export default class State {
   enter(oldState) {
     this.prevState = oldState?.name
     if (this.action) this.action.enabled = true
+    // console.log('state:', this.name)
+    // console.log(this.activeActions.map(a => a.getClip().name))
   }
 
   update(delta) {}
@@ -31,28 +33,21 @@ export default class State {
     return this.player.mixer._actions.filter(action => action.isRunning())
   }
 
-  findPrevAction(prevAction) {
+  findActiveAction(prevAction) {
     if (prevAction) return prevAction
     return this.activeActions.find(a => a !== this.action)
   }
 
   stopBacklogs(prevAction) {
     const actions = this.activeActions.filter(a => a !== this.action && a !== prevAction)
-    actions.forEach(action => {
-      action.stop()
-    })
+    actions.forEach(action => action.stop())
   }
 
   transitFrom(prevAction, duration = .25) {
-    const oldAction = this.findPrevAction(prevAction)
-
+    const oldAction = this.findActiveAction(prevAction)
+    // if (!oldAction) this.player.mixer?.stopAllAction()
     if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
-
-    // BUG: zaostaju stare akcije
-    // this.player.mixer?.stopAllAction()
-    // this.stopBacklogs(oldAction)
-
-    if (this.action) this.action.play()
+    this.action?.play()
   }
 
   // https://gist.github.com/rtpHarry/2d41811d04825935039dfc075116d0ad

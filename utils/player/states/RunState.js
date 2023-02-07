@@ -9,6 +9,8 @@ export default class RunState extends State {
       this.transitFrom(oldAction, duration)
 
     if (!this.actions.run) {
+      if (oldAction !== this.actions.walk) oldAction?.stop()
+      this.actions.walk?.reset()
       this.actions.walk?.setEffectiveTimeScale(1.5)
       this.actions.walk?.play()
     }
