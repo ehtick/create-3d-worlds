@@ -19,7 +19,7 @@ export default class State {
     if (this.action) this.action.enabled = true
   }
 
-  update(delta, timestamp) {}
+  update(delta) {}
 
   exit() {
     this.action?.setEffectiveTimeScale(1)
@@ -29,7 +29,7 @@ export default class State {
 
   transitFrom(oldAction, duration = .25) {
     if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
-    if (!oldAction) this.player.mixer?.stopAllAction()
+    // if (!oldAction) this.player.mixer?.stopAllAction()
     if (this.action) this.action.play()
 
     // if (!this.action && oldAction) oldAction.fadeOut(.5)

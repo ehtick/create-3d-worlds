@@ -7,14 +7,14 @@ export default class IdleState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
     this.transitFrom(oldAction, 4)
-    this.last = 0
+    this.last = Date.now()
     this.interval = randInt(3000, 5000)
   }
 
-  update(delta, timestamp) {
-    if (timestamp - this.last >= this.interval) {
-      this.last = timestamp
+  update(delta) {
+    if (Date.now() - this.last >= this.interval) {
       this.player.setState('turn')
+      this.last = Date.now()
     }
   }
 }

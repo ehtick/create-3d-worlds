@@ -205,10 +205,10 @@ export default class Player {
     }
   }
 
-  update(delta = 1 / 60, timestamp) {
+  update(delta = 1 / 60) {
     this.updateGround()
     if (this.thirdPersonCamera) this.updateCamera(delta)
-    this.currentState.update(delta, timestamp)
+    this.currentState.update(delta)
     this.mixer?.update(delta)
   }
 }
