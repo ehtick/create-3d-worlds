@@ -7,6 +7,7 @@ export default class IdleState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
     this.transitFrom(oldAction, 4)
+
     this.last = Date.now()
     this.interval = randInt(3000, 5000)
   }

@@ -27,9 +27,20 @@ export default class State {
 
   /* ANIM HELPERS */
 
+  isTheSame(oldAction) {
+    const activeAction = oldAction || this.player.mixer._actions.find(action => action.isRunning())
+    return activeAction?.getClip().name === this.action?.getClip().name
+  }
+
+  get activeActions() {
+    return this.player.mixer._actions.filter(action => action.isRunning())
+  }
+
   transitFrom(oldAction, duration = .25) {
     if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
-    // if (!oldAction) this.player.mixer?.stopAllAction()
+
+    if (this.activeActions > 2) this.player.mixer?.stopAllAction()
+
     if (this.action) this.action.play()
 
     // if (!this.action && oldAction) oldAction.fadeOut(.5)

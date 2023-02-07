@@ -4,8 +4,9 @@ import State from '../states/State.js'
 const { randInt } = MathUtils
 
 export default class TurnState extends State {
-  enter(oldState) {
+  enter(oldState, oldAction) {
     super.enter(oldState)
+
     this.last = Date.now()
     this.interval = randInt(500, 1000)
     this.sign = Math.random() > .5 ? 1 : -1
