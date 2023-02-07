@@ -8,10 +8,11 @@ export default class TurnState extends State {
     super.enter(oldState)
     this.last = Date.now()
     this.interval = randInt(500, 1000)
+    this.sign = Math.random() > .5 ? 1 : -1
   }
 
   update(delta) {
-    this.player.turn(Math.PI / 8 * delta)
+    this.player.turn(Math.PI / 8 * delta * this.sign)
 
     if (Date.now() - this.last >= this.interval) {
       this.player.setState('idle')
