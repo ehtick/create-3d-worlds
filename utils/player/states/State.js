@@ -19,7 +19,7 @@ export default class State {
     if (this.action) this.action.enabled = true
   }
 
-  update() {}
+  update(delta, timestamp) {}
 
   exit() {
     this.action?.setEffectiveTimeScale(1)

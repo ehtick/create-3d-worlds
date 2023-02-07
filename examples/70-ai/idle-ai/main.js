@@ -33,14 +33,14 @@ for (let i = 0; i < 10; i++) {
 
 /* LOOP */
 
-void function animate() {
+void function animate(timestamp) {
   requestAnimationFrame(animate)
   const delta = clock.getDelta()
 
   npcs.forEach(ai => {
-    ai.update(delta)
+    ai.update(delta, timestamp)
   })
 
   player.update(delta)
   renderer.render(scene, camera)
-}()
+}(0)

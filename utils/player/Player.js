@@ -132,12 +132,17 @@ export default class Player {
       this.mesh.position.y = this.groundY
   }
 
+  // TODO: move to AI
   randomizeAction() { // start at random time
     this.action.time = Math.random() * this.action.getClip().duration
   }
 
   directionBlocked(vector) {
     return directionBlocked(this.mesh, this.solids, vector)
+  }
+
+  turn(angle) {
+    this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle)
   }
 
   /* UPDATES */
@@ -158,12 +163,12 @@ export default class Player {
     if (!delta) return
     const angle = RIGHT_ANGLE * delta // 90 degrees per second
     if (this.joystick)
-      this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle * -this.joystick.updateTurn)
+      this.turn(angle * -this.joystick.updateTurn)
 
     if (this.keyboard.left)
-      this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle)
+      this.turn(angle)
     if (this.keyboard.right)
-      this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle * -1)
+      this.turn(angle * -1)
   }
 
   updateStrafe(delta) {
@@ -192,8 +197,6 @@ export default class Player {
   }
 
   updateCamera(delta) {
-    if (!this.thirdPersonCamera) return
-
     if (this.keyboard.pressed.mouse)
       this.controls.target = this.mesh.position.clone().add(new Vector3(0, this.height, 0))
     else {
@@ -202,10 +205,10 @@ export default class Player {
     }
   }
 
-  update(delta = 1 / 60) {
+  update(delta = 1 / 60, timestamp) {
     this.updateGround()
-    this.updateCamera(delta)
-    this.currentState.update(delta)
+    if (this.thirdPersonCamera) this.updateCamera(delta)
+    this.currentState.update(delta, timestamp)
     this.mixer?.update(delta)
   }
 }
