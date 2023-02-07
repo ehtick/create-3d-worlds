@@ -18,9 +18,9 @@ export default class RunState extends State {
   update(delta) {
     const { player } = this
 
-    player.move(delta)
-    player.turn(delta)
-    player.strafe(delta)
+    player.updateMove(delta)
+    player.updateTurn(delta)
+    player.updateStrafe(delta)
 
     /* TRANSIT */
 

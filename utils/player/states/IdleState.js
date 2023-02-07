@@ -13,13 +13,13 @@ export default class IdleState extends State {
   }
 
   update(delta) {
-    this.player.turn(delta)
+    this.player.updateTurn(delta)
 
     if (this.player.controlsUp || this.player.controlsDown)
       this.player.setState('walk')
 
     if (this.keyboard.sideLeft || this.keyboard.sideRight)
-      this.player.setState('walk') // TODO: strafe state?
+      this.player.setState('walk') // TODO: updateStrafe state?
 
     if (this.player.inAir)
       this.player.setState('fall')

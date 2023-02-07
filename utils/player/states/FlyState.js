@@ -26,8 +26,8 @@ export default class FlyState extends State {
   update(delta) {
     const { player } = this
 
-    player.turn(delta)
-    player.move(delta)
+    player.updateTurn(delta)
+    player.updateMove(delta)
     player.applyGravity(delta)
 
     if (this.keyboard.space && this.jumpTime < this.maxJumpTime) {

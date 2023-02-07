@@ -142,7 +142,7 @@ export default class Player {
 
   /* UPDATES */
 
-  move(delta) {
+  updateMove(delta) {
     const direction = this.controlsUp ? dir.forward : dir.backward
     if (this.directionBlocked(direction)) return
 
@@ -154,11 +154,11 @@ export default class Player {
     this.mesh.translateZ(this.velocity.z)
   }
 
-  turn(delta) {
+  updateTurn(delta) {
     if (!delta) return
     const angle = RIGHT_ANGLE * delta // 90 degrees per second
     if (this.joystick)
-      this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle * -this.joystick.turn)
+      this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle * -this.joystick.updateTurn)
 
     if (this.keyboard.left)
       this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle)
@@ -166,7 +166,7 @@ export default class Player {
       this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle * -1)
   }
 
-  strafe(delta) {
+  updateStrafe(delta) {
     if (this.keyboard.sideLeft && !this.directionBlocked(dir.left))
       this.mesh.translateX(-this.speed * delta)
 

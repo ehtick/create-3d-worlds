@@ -8,6 +8,6 @@ export default class JumpState extends SpecialState {
   }
 
   update(delta) {
-    this.player.move(delta)
+    this.player.updateMove(delta)
   }
 }

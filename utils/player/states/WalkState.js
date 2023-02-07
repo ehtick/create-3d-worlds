@@ -18,9 +18,9 @@ export default class WalkState extends State {
     const { player } = this
     player.handleRoughTerrain(player.speed * delta)
 
-    player.move(delta)
-    player.turn(delta)
-    player.strafe(delta)
+    player.updateMove(delta)
+    player.updateTurn(delta)
+    player.updateStrafe(delta)
 
     /* TRANSIT */
 
