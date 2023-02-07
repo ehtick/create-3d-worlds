@@ -1,4 +1,5 @@
 import { Vector3, AnimationMixer } from 'three'
+
 import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import JoyStick from '/utils/classes/JoyStick.js'
@@ -6,13 +7,12 @@ import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
 import { getSize, directionBlocked } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE } from '/data/constants.js'
-
-import { jumpStyles, getPlayerState } from './states/index.js'
+import { getPlayerState } from './states/index.js'
 
 export default class Player {
   constructor({
     mesh, animations, dict, camera, keyboard = defaultKeyboard, solids, useJoystick, gravity = .7,
-    jumpStyle = jumpStyles.FLY_JUMP, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle)
+    jumpStyle = 'FLY_JUMP', speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle)
   }) {
     this.mesh = mesh
     this.speed = speed

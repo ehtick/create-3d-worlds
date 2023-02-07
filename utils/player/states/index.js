@@ -6,14 +6,19 @@ import JumpState from './JumpState.js'
 import JumpFlyState from './JumpFlyState.js'
 import FlyState from './FlyState.js'
 import FallState from './FallState.js'
+import AIIdleState from '../ai-states/IdleState.js'
 
-export const playerStates = {
+const playerStates = {
   idle: IdleState,
   walk: WalkState,
   run: RunState,
   jump: FlyState,
   fall: FallState,
   special: SpecialState,
+}
+
+const aiStates = {
+  idle: AIIdleState,
 }
 
 export const jumpStyles = {
@@ -33,4 +38,9 @@ const chooseJumpState = jumpStyle => {
 export function getPlayerState(name, jumpStyle) {
   if (name === 'jump') return chooseJumpState (jumpStyle)
   return playerStates[name] || playerStates.special
+}
+
+export function getAIState(name, jumpStyle) {
+  if (name === 'jump') return chooseJumpState (jumpStyle)
+  return aiStates[name] || aiStates.special
 }
