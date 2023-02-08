@@ -1,16 +1,23 @@
-import * as THREE from 'three'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
+import * as THREE from 'three'
 import WalkState from '../states/WalkState.js'
 
 const { randFloat } = THREE.MathUtils
 
-const rotate = mesh => new TWEEN.Tween(mesh.rotation)
-  .to({ y: randFloat(-1, 1) })
-  .start()
+function rotate(mesh) {
+  const y = randFloat(-1, 1)
+  new TWEEN.Tween(mesh.rotation)
+    .to({ y, })
+    .start()
+}
 
 export default class WanderState extends WalkState {
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
+    // this.turn()
+  }
+
+  turn() {
     this.player.mesh.rotateY(randFloat(-1, 1))
   }
 
@@ -18,8 +25,8 @@ export default class WanderState extends WalkState {
     if (Math.random() > 0.995)
       rotate(this.player.mesh)
 
+    TWEEN.update()
     this.keyboard.pressed.ArrowUp = true
-    TWEEN.update(delta)
     super.update(delta)
   }
 }

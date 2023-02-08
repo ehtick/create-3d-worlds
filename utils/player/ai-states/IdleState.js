@@ -1,7 +1,15 @@
 import { MathUtils } from 'three'
+import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 import State from '../states/State.js'
 
-const { randInt } = MathUtils
+const { randInt, randFloat } = MathUtils
+
+function rotate(mesh, duration = 2000) {
+  const y = randFloat(-Math.PI / 4, Math.PI / 4)
+  new TWEEN.Tween(mesh.rotation)
+    .to({ y }, duration)
+    .start()
+}
 
 export default class IdleState extends State {
   enter(oldState, oldAction) {
@@ -14,8 +22,12 @@ export default class IdleState extends State {
 
   update(delta) {
     if (Date.now() - this.last >= this.interval) {
-      this.player.setState('turn')
+      rotate(this.player.mesh, this.interval / 2)
       this.last = Date.now()
     }
+
+    TWEEN.update()
+    this.keyboard.pressed.ArrowUp = true
+    super.update(delta)
   }
 }
