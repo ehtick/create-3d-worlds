@@ -34,7 +34,9 @@ export default class AI extends Player {
   }
 
   bounce() {
-    if (this.outOfBounds) this.mesh.rotateY(Math.PI)
+    if (!this.outOfBounds) return
+    this.mesh.rotateY(Math.PI)
+    this.mesh.translateZ(this.velocity.z)
   }
 
   update(delta) {
