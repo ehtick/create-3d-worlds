@@ -6,7 +6,7 @@ import { getAIState } from './states/index.js'
 
 export default class AI extends Player {
   constructor({ jumpStyle = 'JUMP', ...params } = {}) {
-    super({ ...params, mesh: clone(params.mesh), keyboard: new Keyboard(false), speed: 0, getState: name => getAIState(name, jumpStyle) })
+    super({ ...params, mesh: clone(params.mesh), keyboard: new Keyboard(false), getState: name => getAIState(name, jumpStyle) })
     this.randomizeAction()
     this.maxSpeed = .03
   }

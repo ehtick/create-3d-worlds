@@ -13,8 +13,7 @@ export default class Enemy {
   }
 
   randomizeMove() {
-    const angle = randFloat(-1, 1)
-    this.mesh.rotateY(angle)
+    this.mesh.rotateY(randFloat(-1, 1))
     this.currentSpeed = randFloat(.5, 2)
   }
 
