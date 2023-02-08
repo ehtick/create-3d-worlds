@@ -23,7 +23,7 @@ const playerStates = {
 const aiStates = {
   idle: AIIdleState,
   turn: AITurnState,
-  wander: WanderState,
+  walk: WanderState,
 }
 
 export const jumpStyles = {
@@ -42,10 +42,10 @@ const chooseJumpState = jumpStyle => {
 
 export function getPlayerState(name, jumpStyle) {
   if (name === 'jump') return chooseJumpState (jumpStyle)
-  return playerStates[name] || playerStates.special
+  return playerStates[name] || SpecialState
 }
 
 export function getAIState(name, jumpStyle) {
   if (name === 'jump') return chooseJumpState (jumpStyle)
-  return aiStates[name] || aiStates.special
+  return aiStates[name] || SpecialState
 }

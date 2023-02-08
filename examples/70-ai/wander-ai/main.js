@@ -25,7 +25,7 @@ for (let i = 0; i < 20; i++) {
   ai.position.set(randFloatSpread(mapSize), 0, randFloatSpread(mapSize))
   npcs.push(ai)
   scene.add(ai.mesh)
-  ai.setState('wander')
+  ai.setState('walk')
 }
 
 /* LOOP */

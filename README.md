@@ -15,6 +15,8 @@ npx live-server
   - napraviti sva AI stanja
     - wonder: povremeno menja pravac i hoda napred
     - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
+    - pročitati ai članak
+    - uporediti logiku iz steer entity
     - na loadGolem i ostale aliase dodati dict
 
 - Savo
