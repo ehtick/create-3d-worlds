@@ -9,5 +9,6 @@ export default class AI extends Player {
     super({ ...params, mesh: clone(params.mesh), keyboard: new Keyboard(false), getState: name => getAIState(name, jumpStyle) })
     this.randomizeAction()
     this.maxSpeed = .03
+    this.isAI = true
   }
 }

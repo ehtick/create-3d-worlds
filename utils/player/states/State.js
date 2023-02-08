@@ -1,9 +1,15 @@
+import * as THREE from 'three'
+import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
+
+const { randFloat, randInt } = THREE.MathUtils
+
 export default class State {
   constructor(player, name) {
     this.player = player
     this.name = name
     this.action = player?.actions[name]
     this.prevState = ''
+    this.last = Date.now() // for ai intervals
   }
 
   get keyboard() {
@@ -19,7 +25,9 @@ export default class State {
     if (this.action) this.action.enabled = true
   }
 
-  update(delta) {}
+  update(delta) {
+    if (this.player.isAI) TWEEN.update()
+  }
 
   exit() {
     this.action?.setEffectiveTimeScale(1)
@@ -50,5 +58,16 @@ export default class State {
       action.time = action.getClip().duration
     action.paused = false
     action.setEffectiveTimeScale(-1)
+  }
+
+  /* AI HELPERS */
+
+  turnPeriodically(interval, angle = Math.PI / 2) {
+    if (Date.now() - this.last >= interval) {
+      new TWEEN.Tween(this.player.mesh.rotation)
+        .to({ y: randFloat(-angle, angle) }, interval / 2)
+        .start()
+      this.last = Date.now()
+    }
   }
 }
