@@ -32,9 +32,7 @@ void function animate() {
   requestAnimationFrame(animate)
   const delta = clock.getDelta()
 
-  npcs.forEach(ai => {
-    ai.update(delta)
-  })
+  npcs.forEach(ai => ai.update(delta))
 
   player.update(delta)
   renderer.render(scene, camera)
