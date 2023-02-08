@@ -13,8 +13,7 @@ npx live-server
 
 - AI
   - napraviti sva AI stanja
-    - wonder: povremeno menja pravac i hoda napred
-      - postaviti granice
+    - wonder: postaviti granice
     - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
     - pročitati ai članak
     - uporediti logiku iz steer entity
