@@ -1,6 +1,6 @@
 import { MathUtils } from 'three'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
-import State from '../states/State.js'
+import IdleState from '../states/IdleState.js'
 
 const { randInt, randFloat } = MathUtils
 
@@ -10,10 +10,9 @@ function rotate(mesh, duration = 2000) {
     .start()
 }
 
-export default class IdleState extends State {
+export default class AIIdleState extends IdleState {
   enter(oldState, oldAction) {
-    super.enter(oldState)
-    this.transitFrom(oldAction, .4)
+    super.enter(oldState, oldAction)
 
     this.last = Date.now()
     this.interval = randInt(3000, 5000)

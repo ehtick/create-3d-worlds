@@ -23,7 +23,6 @@ export default class WanderState extends WalkState {
       rotate(this.player.mesh, this.interval / 2)
       this.last = Date.now()
     }
-
     this.keyboard.pressed.ArrowUp = true
     TWEEN.update()
     super.update(delta)
