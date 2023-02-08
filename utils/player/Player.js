@@ -132,11 +132,6 @@ export default class Player {
       this.mesh.position.y = this.groundY
   }
 
-  // TODO: move to AI
-  randomizeAction() { // start at random time
-    this.action.time = Math.random() * this.action.getClip().duration
-  }
-
   directionBlocked(vector) {
     return directionBlocked(this.mesh, this.solids, vector)
   }
