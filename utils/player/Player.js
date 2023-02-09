@@ -86,7 +86,7 @@ export default class Player {
   }
 
   get controlsRun() {
-    return this.keyboard.capsLock || Math.abs(this.joystick?.forward) > .75
+    return this.keyboard.run || Math.abs(this.joystick?.forward) > .75
   }
 
   /* STATE MACHINE */
