@@ -13,7 +13,8 @@ npx live-server
 
 - AI
   - napraviti sva AI stanja
-    - problem: koristiti istu animaciju za više stanja, npr. walk za wander, seek, patrol...
+    - postaviti distancu (limit) na pursue i flee state
+    - da npc ne prolaze jedni kroz druge
     - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
     - pročitati ai članak
     - uporediti logiku iz steer entity
