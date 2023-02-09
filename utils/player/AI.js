@@ -8,13 +8,14 @@ import { getAIState } from './states/index.js'
 const { randFloatSpread } = MathUtils
 
 export default class AI extends Player {
-  constructor({ jumpStyle = 'JUMP', mapSize, ...params } = {}) {
+  constructor({ jumpStyle = 'JUMP', state = 'idle', mapSize, ...params } = {}) {
     super({ ...params, mesh: clone(params.mesh), keyboard: new Keyboard(false), getState: name => getAIState(name, jumpStyle) })
 
     this.isAI = true
-    this.mesh.rotateY(Math.random() * Math.PI * 2)
-    this.randomizeAnimation()
     this.steeringForce = new Vector3(0, 0, 0)
+    this.mesh.rotateY(Math.random() * Math.PI * 2)
+    this.setState(state)
+    this.randomizeAnimation()
 
     if (mapSize) {
       this.position.set(randFloatSpread(mapSize), 0, randFloatSpread(mapSize))

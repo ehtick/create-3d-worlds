@@ -17,10 +17,9 @@ scene.add(createFloor({ size: mapSize }))
 const { mesh, animations } = await loadGolem()
 
 for (let i = 0; i < 20; i++) {
-  const ai = new AI({ mesh, animations, dict: golemAnimation, mapSize })
+  const ai = new AI({ mesh, animations, dict: golemAnimation, mapSize, state: 'wander' })
   npcs.push(ai)
   scene.add(ai.mesh)
-  ai.setState('wander')
 }
 
 /* LOOP */
