@@ -74,10 +74,15 @@ export const goblinAnimations = {
 export const golemAnimation = {
   idle: 'Unarmed Idle',
   walk: 'Mutant Walking',
-  wander: 'Mutant Walking',
   attack: 'Zombie Kicking',
   special: 'Mutant Swiping',
   death: 'Standing Death Forward 01',
+  // dupes for ai states
+  wander: 'Mutant Walking',
+  flee: 'Mutant Walking',
+  seek: 'Mutant Walking',
+  follow: 'Mutant Walking',
+  avoid: 'Mutant Walking',
 }
 
 export const druidAnimation = {
