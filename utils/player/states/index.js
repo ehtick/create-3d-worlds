@@ -8,7 +8,7 @@ import FlyState from './FlyState.js'
 import FallState from './FallState.js'
 
 import AIIdleState from '../ai-states/AIIdleState.js'
-import AIWalkState from '../ai-states/AIWalkState.js'
+import WanderState from '../ai-states/WanderState.js'
 
 const playerStates = {
   idle: IdleState,
@@ -21,7 +21,7 @@ const playerStates = {
 
 const aiStates = {
   idle: AIIdleState,
-  walk: AIWalkState,
+  walk: WanderState,
 }
 
 export const jumpStyles = {

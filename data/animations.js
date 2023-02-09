@@ -74,6 +74,7 @@ export const goblinAnimations = {
 export const golemAnimation = {
   idle: 'Unarmed Idle',
   walk: 'Mutant Walking',
+  wander: 'Mutant Walking',
   attack: 'Zombie Kicking',
   special: 'Mutant Swiping',
   death: 'Standing Death Forward 01',

@@ -13,7 +13,7 @@ npx live-server
 
 - AI
   - napraviti sva AI stanja
-    - wonder: ažurirati duhove
+    - problem: koristiti istu animaciju za više stanja, npr. walk za wander, seek, patrol...
     - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
     - pročitati ai članak
     - uporediti logiku iz steer entity

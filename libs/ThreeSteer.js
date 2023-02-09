@@ -164,7 +164,7 @@ export class SteeringEntity extends Entity {
   }
 
   getPredicted(target) {
-    const velocity = target.velocity ? target.velocity.clone() : new Vector3()
+    const velocity = target.velocity.clone()
     const lookAheadTime = this.position.distanceTo(target.position) / this.maxSpeed
     const predictedTarget = target.position.clone().add(velocity.setLength(lookAheadTime))
     return predictedTarget

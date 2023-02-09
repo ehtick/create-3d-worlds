@@ -3,7 +3,7 @@ import WalkState from '../states/WalkState.js'
 
 const { randInt } = THREE.MathUtils
 
-export default class AIWalkState extends WalkState {
+export default class WanderState extends WalkState {
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
     this.interval = randInt(3000, 5000)
