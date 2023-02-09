@@ -20,7 +20,7 @@ for (let i = 0; i < 20; i++) {
   const ai = new AI({ mesh, animations, dict: golemAnimation, mapSize })
   npcs.push(ai)
   scene.add(ai.mesh)
-  ai.setState('walk')
+  ai.setState('wander')
 }
 
 /* LOOP */

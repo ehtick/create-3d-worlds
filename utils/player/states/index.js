@@ -21,7 +21,7 @@ const playerStates = {
 
 const aiStates = {
   idle: AIIdleState,
-  walk: WanderState,
+  wander: WanderState,
 }
 
 export const jumpStyles = {
