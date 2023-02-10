@@ -12,7 +12,7 @@ import { getPlayerState } from './states/index.js'
 export default class Player {
   constructor({
     mesh, animations, dict, camera, keyboard = defaultKeyboard, solids, useJoystick, gravity = .7,
-    jumpStyle = 'FLY_JUMP', speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle)
+    jumpStyle = 'FLY_JUMP', speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle), shouldRaycastGround = true
   }) {
     this.mesh = mesh
     this.speed = speed
@@ -27,6 +27,7 @@ export default class Player {
     this.drag = drag
     this.keyboard = keyboard
     this.getState = getState
+    this.shouldRaycastGround = shouldRaycastGround
 
     if (useJoystick) this.joystick = new JoyStick()
 
@@ -175,6 +176,7 @@ export default class Player {
   }
 
   updateGround() {
+    if (!this.shouldRaycastGround) return
     const { mesh, solids } = this
     this.groundY = raycastGround({ mesh, solids }, { y: this.height })
   }

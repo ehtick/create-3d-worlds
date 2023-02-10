@@ -8,8 +8,8 @@ import { getAIState } from './states/index.js'
 const { randFloatSpread } = MathUtils
 
 export default class AI extends Player {
-  constructor({ jumpStyle = 'JUMP', defaultState = 'idle', minPursueDistance = 3, maxFleeDistance = 30, target, mapSize, ...params } = {}) {
-    super({ ...params, mesh: clone(params.mesh), keyboard: new Keyboard(false), getState: name => getAIState(name, jumpStyle) })
+  constructor({ jumpStyle = 'JUMP', defaultState = 'idle', shouldRaycastGround = false, minPursueDistance = 3, maxFleeDistance = 30, target, mapSize, ...params } = {}) {
+    super({ ...params, mesh: clone(params.mesh), keyboard: new Keyboard(false), shouldRaycastGround, getState: name => getAIState(name, jumpStyle) })
 
     this.target = target
     this.minPursueDistance = minPursueDistance
@@ -32,6 +32,11 @@ export default class AI extends Player {
       || this.position.x <= this.boundaries.min.x
       || this.position.z >= this.boundaries.max.z
       || this.position.z <= this.boundaries.min.z
+  }
+
+  addSolids(arr) {
+    const notMe = arr.filter(solid => solid !== this.mesh)
+    super.addSolids(notMe)
   }
 
   randomizeAnimation() {

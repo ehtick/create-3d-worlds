@@ -13,18 +13,26 @@ ambLight()
 camera.position.set(0, 10, 15)
 createOrbitControls()
 
-scene.add(createFloor({ size: mapSize }))
+const floor = createFloor({ size: mapSize })
+scene.add(floor)
 
 const player = new Player({ ...await loadSorceress(), dict: sorceressAnimations })
 scene.add(player.mesh)
 
 const { mesh, animations } = await loadGolem()
 
-for (let i = 0; i < 20; i++) {
+const solids = []
+
+for (let i = 0; i < 10; i++) {
   const ai = new AI({ mesh, animations, dict: golemAnimation, mapSize, defaultState: 'pursue', target: player.mesh })
   npcs.push(ai)
+  solids.push(ai.mesh)
   scene.add(ai.mesh)
 }
+
+npcs.forEach(npc => {
+  npc.addSolids(solids)
+})
 
 /* LOOP */
 
