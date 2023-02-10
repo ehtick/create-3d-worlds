@@ -18,7 +18,7 @@ export default class AI extends Player {
     this.isAI = true
     this.mesh.rotateY(Math.random() * Math.PI * 2)
     this.setState(defaultState)
-    this.randomizeAnimation()
+    if (this.action) this.randomizeAnimation()
 
     if (mapSize) {
       this.position.set(randFloatSpread(mapSize), 0, randFloatSpread(mapSize))

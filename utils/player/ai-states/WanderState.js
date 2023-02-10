@@ -10,8 +10,9 @@ export default class WanderState extends WalkState {
   }
 
   update(delta) {
-    this.keyboard.pressed.ArrowUp = true
     this.turnPeriodically(this.interval)
+    this.keyboard.pressed.ArrowUp = true
+    // if (this.player.solids) avoid()
     super.update(delta)
   }
 }
