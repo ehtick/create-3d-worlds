@@ -13,7 +13,7 @@ export default class AIIdleState extends IdleState {
     const { mesh, target, minDistance } = this.player
     this.turnPeriodically(this.interval, Math.PI / 4)
 
-    if (mesh.position.distanceTo(target.position) > minDistance)
+    if (mesh.position.distanceTo(target.position) > minDistance * 1.5)
       this.player.setState('pursue')
 
     super.update(delta)
