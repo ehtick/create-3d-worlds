@@ -160,5 +160,5 @@ class Keyboard {
 
 }
 
-export { Keyboard }
-export default new Keyboard // export instance
+export { Keyboard }         // export class
+export default new Keyboard // export instance (singleton)
