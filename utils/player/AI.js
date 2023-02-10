@@ -17,7 +17,6 @@ export default class AI extends Player {
     this.defaultState = defaultState
     this.isAI = true
     this.mesh.rotateY(Math.random() * Math.PI * 2)
-    this.setState(defaultState)
     if (this.action) this.randomizeAnimation()
 
     if (mapSize) {
@@ -25,6 +24,8 @@ export default class AI extends Player {
       const halfMap = mapSize / 2
       this.boundaries = new Box3(new Vector3(-halfMap, 0, -halfMap), new Vector3(halfMap, 0, halfMap))
     }
+
+    this.setState(defaultState)
   }
 
   get outOfBounds() {

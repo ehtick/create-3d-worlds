@@ -12,10 +12,9 @@ npx live-server
 ### Scenes & examples
 
 - AI
-  - napraviti sva AI stanja
-    - patrol
-    - attack
-    - da npc ne prolaze jedni kroz druge
+  - napraviti AI stanja
+    - Patrol
+    - Attack
     - na loadGolem i ostale aliase dodati dict
 
 - Savo

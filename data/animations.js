@@ -81,6 +81,7 @@ export const golemAnimation = {
   wander: 'Mutant Walking',
   pursue: 'Mutant Walking',
   flee: 'Mutant Walking',
+  patrol: 'Mutant Walking',
 }
 
 export const druidAnimation = {

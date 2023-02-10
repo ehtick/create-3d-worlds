@@ -1,7 +1,13 @@
-import State from '../states/State.js'
+import * as THREE from 'three'
+import WalkState from '../states/WalkState.js'
 
-export default class PatrolState extends State {
-  enter(oldState, oldAction) {}
+export default class PatrolState extends WalkState {
+  enter(oldState, oldAction) {
+    super.enter(oldState, oldAction)
+  }
 
-  update(delta) {}
+  update(delta) {
+    this.keyboard.pressed.ArrowUp = true
+    super.update(delta)
+  }
 }
