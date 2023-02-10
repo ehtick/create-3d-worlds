@@ -13,8 +13,7 @@ ambLight()
 camera.position.set(0, 10, 15)
 createOrbitControls()
 
-const floor = createFloor({ size: mapSize })
-scene.add(floor)
+scene.add(createFloor({ size: mapSize }))
 
 const player = new Player({ ...await loadSorceress(), dict: sorceressAnimations })
 scene.add(player.mesh)
