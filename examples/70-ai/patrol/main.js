@@ -15,8 +15,12 @@ scene.add(createFloor({ size: mapSize }))
 
 const { mesh, animations } = await loadGolem()
 
-const ai = new AI({ mesh, animations, dict: golemAnimation, defaultState: 'patrol' })
-scene.add(ai.mesh)
+const npcs = []
+for (let i = 0; i < 5; i++) {
+  const ai = new AI({ mesh, animations, dict: golemAnimation, mapSize, defaultState: 'patrol' })
+  npcs.push(ai)
+  scene.add(ai.mesh)
+}
 
 /* LOOP */
 
@@ -24,7 +28,7 @@ void function animate() {
   requestAnimationFrame(animate)
   const delta = clock.getDelta()
 
-  ai.update(delta)
+  npcs.forEach(ai => ai.update(delta))
 
   renderer.render(scene, camera)
 }()

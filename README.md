@@ -13,7 +13,6 @@ npx live-server
 
 - AI
   - napraviti AI stanja
-    - Patrol
     - Attack
     - na loadGolem i ostale aliase dodati dict
 
