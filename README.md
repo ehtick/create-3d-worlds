@@ -16,8 +16,7 @@ npx live-server
     - postaviti distancu (limit) na pursue i flee state
     - da npc ne prolaze jedni kroz druge
     - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
-    - pročitati ai članak
-    - uporediti logiku iz steer entity
+    - pursue kad priđe da napada?
     - na loadGolem i ostale aliase dodati dict
 
 - Savo
