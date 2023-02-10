@@ -6,12 +6,12 @@ export default class FleeState extends WalkState {
   }
 
   update(delta) {
-    const { mesh, target, maxDistance } = this.player
+    const { mesh, target, maxFleeDistance } = this.player
 
     mesh.lookAt(target.position) // looks away?
     this.keyboard.pressed.ArrowUp = true
 
-    if (mesh.position.distanceTo(target.position) >= maxDistance)
+    if (mesh.position.distanceTo(target.position) > maxFleeDistance)
       this.keyboard.pressed.ArrowUp = false
 
     super.update(delta)

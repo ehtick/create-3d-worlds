@@ -6,13 +6,13 @@ export default class PursueState extends WalkState {
   }
 
   update(delta) {
-    const { mesh, target, minDistance } = this.player
+    const { mesh, target, minPursueDistance } = this.player
 
     mesh.lookAt(target.position) // looks away?
     mesh.rotateY(Math.PI) // lookAt
     this.keyboard.pressed.ArrowUp = true
 
-    if (mesh.position.distanceTo(target.position) <= minDistance)
+    if (mesh.position.distanceTo(target.position) < minPursueDistance)
       this.keyboard.pressed.ArrowUp = false
 
     super.update(delta)
