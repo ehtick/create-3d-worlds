@@ -50,9 +50,7 @@ void function loop() {
   requestAnimationFrame(loop)
   const delta = clock.getDelta()
 
-  npcs.forEach(npc => {
-    npc.update(delta)
-  })
+  npcs.forEach(npc => npc.update(delta))
 
   renderer.render(scene, camera)
 }()

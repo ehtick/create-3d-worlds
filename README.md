@@ -13,10 +13,9 @@ npx live-server
 
 - AI
   - napraviti sva AI stanja
-    - postaviti distancu (limit) na pursue i flee state
+    - patrol
+    - attack
     - da npc ne prolaze jedni kroz druge
-    - izbegavanje: kad vidi prepreku, gleda levo desno i ide gde je slobodno
-    - pursue kad priđe da napada?
     - na loadGolem i ostale aliase dodati dict
 
 - Savo
