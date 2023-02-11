@@ -12,10 +12,10 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - AI kad udari u zid okret TWEEN
+  - AI wander kad udari u zid, nakon bounce da ne radi turnPeriodically
   - BUG: golemi hodaju po vazduhu
-  - Savo.shoot() ne radi za neprijatelje
-  - dodati Nemce, duhove
+  - izabrati neprijatelje (Nemci, duhovi)
+    - pucanje ne pogađa falične modele, popraviti izabrane ili izabrati ispravne
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola

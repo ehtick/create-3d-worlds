@@ -38,9 +38,7 @@ export default class State {
   findActiveAction(prevAction) {
     if (prevAction) return prevAction
     const active = this.player.mixer?._actions.filter(action => action.isRunning())
-    return active?.length > 1
-      ? active.find(a => a !== this.action)
-      : prevAction
+    return active?.find(a => a !== this.action)
   }
 
   transitFrom(prevAction, duration = .25) {

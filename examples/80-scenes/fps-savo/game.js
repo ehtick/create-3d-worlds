@@ -27,7 +27,7 @@ const { mesh, animations } = await loadGolem()
 
 const enemies = []
 for (let i = 0; i < 10; i++) {
-  const enemy = new AI({ mesh, animations, dict: golemAnimation, basicState: 'wander', solids: walls, target: player.mesh })
+  const enemy = new AI({ mesh, animations, dict: golemAnimation, basicState: 'wander', solids: walls })
   enemy.position.copy(tilemap.randomEmptyPos)
   enemies.push(enemy)
   scene.add(enemy.mesh)

@@ -80,13 +80,13 @@ export default class AI extends Player {
   /* AI */
 
   bounce(angle = Math.PI) {
-    this.mesh.rotateY(angle)
+    this.turn(angle)
     this.mesh.translateZ(this.velocity.z)
   }
 
   turnSmooth(angle = Math.PI) {
     new TWEEN.Tween(this.mesh.rotation)
-      .to({ y: this.mesh.rotation.y + angle })
+      .to({ y: this.mesh.rotation.y + angle }, 500)
       .start()
   }
 
@@ -94,7 +94,7 @@ export default class AI extends Player {
 
   updateMove(delta) {
     const direction = this.controlsUp ? dir.forward : dir.backward
-    if (this.directionBlocked(direction)) this.bounce()
+    if (this.directionBlocked(direction)) this.turnSmooth()
 
     this.velocity.z += -this.acceleration * delta
     this.velocity.z *= (1 - this.drag)
