@@ -20,6 +20,8 @@ export default class State {
     return this.player.actions
   }
 
+  /* FSM */
+
   enter(oldState) {
     this.prevState = oldState?.name
     if (this.action) this.action.enabled = true
@@ -33,17 +35,17 @@ export default class State {
 
   /* ANIM HELPERS */
 
-  get activeActions() {
-    return this.player.mixer?._actions.filter(action => action.isRunning())
-  }
-
   findActiveAction(prevAction) {
     if (prevAction) return prevAction
-    return this.activeActions?.find(a => a !== this.action)
+    const active = this.player.mixer?._actions.filter(action => action.isRunning())
+    return active?.length > 1
+      ? active.find(a => a !== this.action)
+      : prevAction
   }
 
   transitFrom(prevAction, duration = .25) {
     const oldAction = this.findActiveAction(prevAction)
+    if (this.action === oldAction) return
     // if (!oldAction) this.player.mixer?.stopAllAction()
     if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
     this.action?.play()
