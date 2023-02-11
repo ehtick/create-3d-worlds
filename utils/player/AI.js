@@ -65,8 +65,10 @@ export default class AI extends Player {
 
   /* UTILS */
 
-  addSolids(arr) {
-    const notMe = arr.filter(solid => solid !== this.mesh)
+  addSolids(solids) {
+    const notMe = Array.isArray(solids)
+      ? solids.filter(solid => solid !== this.mesh)
+      : solids
     super.addSolids(notMe)
   }
 

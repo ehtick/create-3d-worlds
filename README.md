@@ -12,7 +12,8 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - dodati NPC karaktere, Nemce, duhove
+  - AI kad udari u zid da se pametnije ponaša (ili totalni okret ili idle)
+  - dodati Nemce, duhove
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola

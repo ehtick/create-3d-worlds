@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { similarColor } from '/utils/helpers.js'
 import config from '/config.js'
+import keyboard from '/utils/classes/Keyboard.js'
 
 const { randFloat } = THREE.MathUtils
 const textureLoader = new THREE.TextureLoader()
@@ -138,7 +139,7 @@ export class Rain extends Particles {
     this.audio = new Audio('/assets/sounds/rain.mp3')
     this.audio.volume = config.volume
     this.audio.loop = true
-    this.audio.play()
+    if (keyboard.keyPressed) this.audio.play()
   }
 
   update({ min = 0, max = 200, minVelocity = 2, maxVelocity = 4, ...rest } = {}) {
