@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - AI wander kad udari u zid, nakon bounce da ne radi turnPeriodically
   - BUG: golemi hodaju po vazduhu
   - izabrati neprijatelje (Nemci, duhovi)
     - pucanje ne pogađa falične modele, popraviti izabrane ili izabrati ispravne

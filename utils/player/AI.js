@@ -94,7 +94,7 @@ export default class AI extends Player {
 
   updateMove(delta) {
     const direction = this.controlsUp ? dir.forward : dir.backward
-    if (this.directionBlocked(direction)) this.turnSmooth()
+    if (this.directionBlocked(direction)) this.turn(Math.PI)
 
     this.velocity.z += -this.acceleration * delta
     this.velocity.z *= (1 - this.drag)
