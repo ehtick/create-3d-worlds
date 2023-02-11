@@ -1,9 +1,10 @@
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { loadGolem } from '/utils/loaders.js'
-import { golemAnimation } from '/data/animations.js'
+import { loadGolem, loadSorceress } from '/utils/loaders.js'
+import { golemAnimation, sorceressAnimations } from '/data/animations.js'
 import AI from '/utils/player/AI.js'
+import Player from '/utils/player/Player.js'
 
 const mapSize = 100
 const npcs = []
@@ -13,6 +14,9 @@ camera.position.set(0, 10, 15)
 createOrbitControls()
 
 scene.add(createFloor({ size: mapSize }))
+
+const player = new Player({ ...await loadSorceress(), dict: sorceressAnimations })
+scene.add(player.mesh)
 
 const { mesh, animations } = await loadGolem()
 
@@ -28,9 +32,8 @@ void function animate() {
   requestAnimationFrame(animate)
   const delta = clock.getDelta()
 
-  npcs.forEach(ai => {
-    ai.update(delta)
-  })
+  player.update()
+  npcs.forEach(ai => ai.update(delta))
 
   renderer.render(scene, camera)
 }()

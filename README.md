@@ -11,7 +11,10 @@ npx live-server
 
 ### Scenes & examples
 
-- Savo
+AI
+- ako ima target prelazi u napad (iz idle, patrol, wander...), ako nema samo kulira
+
+- Savo / FPS
   - dodati NPC karaktere, Nemce, duhove
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
