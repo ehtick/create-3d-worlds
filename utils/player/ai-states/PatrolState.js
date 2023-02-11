@@ -16,7 +16,7 @@ export default class PatrolState extends WalkState {
     this.keyboard.pressed.ArrowUp = true
     this.walked += Math.abs(player.velocity.z)
 
-    if (this.walked >= player.patrolDistance) {
+    if (this.walked >= player.patrolLength) {
       turnAround(player.mesh)
       this.walked = 0
     }

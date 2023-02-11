@@ -8,16 +8,15 @@ import { getAIState } from './states/index.js'
 const { randFloatSpread } = MathUtils
 
 export default class AI extends Player {
-  constructor({ jumpStyle = 'JUMP', defaultState = 'idle', shouldRaycastGround = false, idleDistance = 3, fleeDistance = 30, pursueDistance = 30, patrolDistance = 10, attackDistance = 2, target, mapSize, ...params } = {}) {
+  constructor({ jumpStyle = 'JUMP', defaultState = 'idle', shouldRaycastGround = false, idleDistance = 3, sightDistance = 30, attackDistance = 2, patrolLength = 10, target, mapSize, ...params } = {}) {
     super({ ...params, mesh: clone(params.mesh), keyboard: new Keyboard(false), shouldRaycastGround, getState: name => getAIState(name, jumpStyle) })
 
     this.defaultState = defaultState
     this.target = target
     this.idleDistance = idleDistance
-    this.fleeDistance = fleeDistance
-    this.patrolDistance = patrolDistance
+    this.sightDistance = sightDistance
     this.attackDistance = attackDistance
-    this.pursueDistance = pursueDistance
+    this.patrolLength = patrolLength
 
     if (this.action) this.randomizeAnimation()
     this.mesh.rotateY(Math.random() * Math.PI * 2)
