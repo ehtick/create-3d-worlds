@@ -20,19 +20,21 @@ scene.add(createGround({ file: 'terrain/ground.jpg' }))
 const walls = tilemap.meshFromMatrix({ texture: 'terrain/concrete.jpg' })
 scene.add(walls)
 
+const player = new Savo({ camera })
+player.position.copy(tilemap.randomEmptyPos)
+
 const { mesh, animations } = await loadGolem()
 
 const enemies = []
 for (let i = 0; i < 10; i++) {
-  const enemy = new AI({ mesh, animations, dict: golemAnimation, basicState: 'wander', solids: walls })
+  const enemy = new AI({ mesh, animations, dict: golemAnimation, basicState: 'wander', solids: walls, target: player.mesh })
   enemy.position.copy(tilemap.randomEmptyPos)
   enemies.push(enemy)
   scene.add(enemy.mesh)
 }
 
 const solids = [walls, ...enemies.map(e => e.mesh)]
-const player = new Savo({ camera, solids })
-player.position.copy(tilemap.randomEmptyPos)
+player.addSolids(solids)
 
 const rain = new Rain()
 scene.add(rain.particles)

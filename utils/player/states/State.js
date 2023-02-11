@@ -25,9 +25,7 @@ export default class State {
     if (this.action) this.action.enabled = true
   }
 
-  update(delta) {
-    if (this.player.isAI) TWEEN.update()
-  }
+  update(delta) {}
 
   exit() {
     this.action?.setEffectiveTimeScale(1)

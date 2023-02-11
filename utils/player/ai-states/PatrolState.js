@@ -1,9 +1,4 @@
-import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 import WalkState from '../states/WalkState.js'
-
-const turnAround = mesh => new TWEEN.Tween(mesh.rotation)
-  .to({ y: mesh.rotation.y + Math.PI })
-  .start()
 
 export default class PatrolState extends WalkState {
   enter(oldState, oldAction) {
@@ -18,7 +13,7 @@ export default class PatrolState extends WalkState {
     this.walked += Math.abs(player.velocity.z)
 
     if (this.walked >= player.patrolLength) {
-      turnAround(player.mesh)
+      player.turnAround()
       this.walked = 0
     }
 

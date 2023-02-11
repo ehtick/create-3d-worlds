@@ -1,5 +1,6 @@
 import { Box3, Vector3, MathUtils } from 'three'
 import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
+import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 
 import { Keyboard } from '/utils/classes/Keyboard.js'
 import Player from './Player.js'
@@ -22,7 +23,7 @@ export default class AI extends Player {
       getState: name => getAIState(name, jumpStyle),
       shouldRaycastGround,
     })
-
+    this.mesh.name = 'enemy'
     this.basicState = basicState
     this.target = target
     this.idleDistance = idleDistance
@@ -43,10 +44,6 @@ export default class AI extends Player {
   }
 
   /* GETTERS */
-
-  get isAI() {
-    return true
-  }
 
   get pursueMode() {
     return ['idle', 'patrol', 'wander'].includes(this.basicState)
@@ -87,6 +84,12 @@ export default class AI extends Player {
     this.mesh.translateZ(this.velocity.z)
   }
 
+  turnAround() {
+    new TWEEN.Tween(this.mesh.rotation)
+      .to({ y: this.mesh.rotation.y + Math.PI })
+      .start()
+  }
+
   /* UPDATE */
 
   updateMove(delta) {
@@ -101,5 +104,6 @@ export default class AI extends Player {
   update(delta) {
     super.update(delta)
     if (this.outOfBounds) this.bounce()
+    TWEEN.update()
   }
 }

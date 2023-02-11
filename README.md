@@ -13,6 +13,9 @@ npx live-server
 
 - Savo / FPS
   - AI kad udari u zid okret TWEEN
+  - BUG: glič u AI animaciji na prelazu iz wander u pursue
+  - BUG: golemi hodaju po vazduhu
+  - Savo.shoot() ne radi za neprijatelje
   - dodati Nemce, duhove
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
