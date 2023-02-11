@@ -13,7 +13,7 @@ export default class PursueState extends WalkState {
     this.keyboard.pressed.ArrowUp = true
 
     if (mesh.position.distanceTo(target.position) < pursueDistance)
-      this.player.setState('attack')
+      this.keyboard.pressed.ArrowUp = false
 
     super.update(delta)
   }

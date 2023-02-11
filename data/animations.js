@@ -79,6 +79,7 @@ export const golemAnimation = {
   death: 'Standing Death Forward 01',
   // dupes for ai states
   wander: 'Mutant Walking',
+  follow: 'Mutant Walking',
   pursue: 'Mutant Walking',
   flee: 'Mutant Walking',
   patrol: 'Mutant Walking',

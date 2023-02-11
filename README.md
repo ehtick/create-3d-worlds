@@ -12,9 +12,8 @@ npx live-server
 ### Scenes & examples
 
 - AI
-  - napraviti AI stanja
-    - Attack
-    - na loadGolem i ostale aliase dodati dict
+  - napraviti AttackState
+  - isprobati pursue i attack sa igračem
 
 - Savo
   - dodati NPC karaktere, Nemce, duhove

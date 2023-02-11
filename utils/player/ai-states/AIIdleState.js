@@ -16,6 +16,9 @@ export default class AIIdleState extends IdleState {
     if (defaultState == 'pursue' && mesh.position.distanceTo(target.position) > pursueDistance * 1.25)
       this.player.setState('pursue')
 
+    if (defaultState == 'follow' && mesh.position.distanceTo(target.position) > pursueDistance * 1.25)
+      this.player.setState('follow')
+
     if (defaultState == 'flee' && mesh.position.distanceTo(target.position) < fleeDistance * .75)
       this.player.setState('flee')
 
