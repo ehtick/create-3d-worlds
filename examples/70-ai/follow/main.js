@@ -23,7 +23,7 @@ const { mesh, animations } = await loadGolem()
 const solids = []
 
 for (let i = 0; i < 10; i++) {
-  const ai = new AI({ mesh, animations, dict: golemAnimation, mapSize, defaultState: 'follow', target: player.mesh })
+  const ai = new AI({ mesh, animations, dict: golemAnimation, mapSize, basicState: 'follow', target: player.mesh })
   npcs.push(ai)
   solids.push(ai.mesh)
   scene.add(ai.mesh)

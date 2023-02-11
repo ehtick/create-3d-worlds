@@ -14,11 +14,11 @@ export default class PursueState extends WalkState {
 
     /* TRANSIT */
 
-    if (!player.targetInSight)
-      player.setState(player.defaultState == player.defaultState || 'idle')
-
     if (player.position.distanceTo(player.target.position) < player.attackDistance)
       player.setState('attack')
+
+    if (!player.targetInSight)
+      player.setState(player.basicState || 'idle')
 
     super.update(delta)
   }

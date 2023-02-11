@@ -12,19 +12,19 @@ export default class AIIdleState extends IdleState {
 
   update(delta) {
     const { player } = this
-    const { mesh, defaultState, target, idleDistance } = player
+    const { mesh, basicState, target, idleDistance } = player
 
     this.turnPeriodically(this.interval, Math.PI / 4)
 
     /* TRANSIT */
 
-    if (defaultState == 'pursue' && player.targetInSight)
+    if (player.pursueMode && player.targetInSight)
       player.setState('pursue')
 
-    if (defaultState == 'flee' && player.targetInSight)
+    if (basicState == 'flee' && player.targetInSight)
       player.setState('flee')
 
-    if (defaultState == 'follow' && mesh.position.distanceTo(target.position) > idleDistance * 1.25)
+    if (basicState == 'follow' && mesh.position.distanceTo(target.position) > idleDistance * 1.25)
       player.setState('follow')
 
     super.update(delta)

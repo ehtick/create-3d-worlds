@@ -7,9 +7,13 @@ import { getAIState } from './states/index.js'
 
 const { randFloatSpread } = MathUtils
 
+/**
+ * basic states that pursue (if target): idle, patrol, wander
+ * basic states that doesn't pursue: flee i follow
+ */
 export default class AI extends Player {
   constructor({
-    jumpStyle = 'JUMP', defaultState = 'idle', shouldRaycastGround = false, sightDistance = 30, idleDistance = 3, attackDistance = 2, patrolLength = 10, target, mapSize, ...params
+    jumpStyle = 'JUMP', basicState = 'idle', shouldRaycastGround = false, sightDistance = 30, idleDistance = 3, attackDistance = 2, patrolLength = 10, target, mapSize, ...params
   } = {}) {
     super({ ...params,
       mesh: clone(params.mesh),
@@ -18,7 +22,7 @@ export default class AI extends Player {
       shouldRaycastGround,
     })
 
-    this.defaultState = defaultState
+    this.basicState = basicState
     this.target = target
     this.idleDistance = idleDistance
     this.sightDistance = sightDistance
@@ -34,11 +38,17 @@ export default class AI extends Player {
       this.boundaries = new Box3(new Vector3(-halfMap, 0, -halfMap), new Vector3(halfMap, 0, halfMap))
     }
 
-    this.setState(defaultState)
+    this.setState(basicState)
   }
+
+  /* GETTERS */
 
   get isAI() {
     return true
+  }
+
+  get pursueMode() {
+    return ['idle', 'patrol', 'wander'].includes(this.basicState)
   }
 
   get outOfBounds() {
@@ -53,16 +63,20 @@ export default class AI extends Player {
     return this.position.distanceTo(this.target.position) < this.sightDistance
   }
 
+  /* UTILS */
+
   addSolids(arr) {
     const notMe = arr.filter(solid => solid !== this.mesh)
     super.addSolids(notMe)
   }
 
+  /* ANIMS */
+
   randomizeAnimation() {
     this.action.time = Math.random() * this.action.getClip().duration
   }
 
-  /* AI ACTIONS */
+  /* AI */
 
   bounce() {
     if (!this.outOfBounds) return

@@ -39,7 +39,7 @@ for (let i = 0; i < 50; i++) {
 }
 
 for (let i = 0; i < 50; i++) {
-  const npc = new AI({ mesh, animations, dict: ghostAnimations, mapSize, defaultState: 'wander', solids: obstacles })
+  const npc = new AI({ mesh, animations, dict: ghostAnimations, mapSize, basicState: 'wander', solids: obstacles })
   npcs.push(npc)
   scene.add(npc.mesh)
 }
