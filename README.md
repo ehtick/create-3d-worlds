@@ -12,7 +12,7 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - AI kad udari u zid da se pametnije ponaša (ili totalni okret ili idle)
+  - AI kad udari u zid okret TWEEN
   - dodati Nemce, duhove
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi

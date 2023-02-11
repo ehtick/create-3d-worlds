@@ -4,6 +4,7 @@ import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 import { Keyboard } from '/utils/classes/Keyboard.js'
 import Player from './Player.js'
 import { getAIState } from './states/index.js'
+import { dir } from '/data/constants.js'
 
 const { randFloatSpread } = MathUtils
 
@@ -52,6 +53,7 @@ export default class AI extends Player {
   }
 
   get outOfBounds() {
+    if (!this.boundaries) return false
     return this.position.x >= this.boundaries.max.x
       || this.position.x <= this.boundaries.min.x
       || this.position.z >= this.boundaries.max.z
@@ -81,15 +83,23 @@ export default class AI extends Player {
   /* AI */
 
   bounce() {
-    if (!this.outOfBounds) return
     this.mesh.rotateY(Math.PI)
     this.mesh.translateZ(this.velocity.z)
   }
 
   /* UPDATE */
 
+  updateMove(delta) {
+    const direction = this.controlsUp ? dir.forward : dir.backward
+    if (this.directionBlocked(direction)) this.bounce()
+
+    this.velocity.z += -this.acceleration * delta
+    this.velocity.z *= (1 - this.drag)
+    this.mesh.translateZ(this.velocity.z)
+  }
+
   update(delta) {
     super.update(delta)
-    if (this.boundaries) this.bounce()
+    if (this.outOfBounds) this.bounce()
   }
 }
