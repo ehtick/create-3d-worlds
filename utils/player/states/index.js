@@ -13,6 +13,7 @@ import PursueState from '../ai-states/PursueState.js'
 import FollowState from '../ai-states/FollowState.js'
 import FleeState from '../ai-states/FleeState.js'
 import PatrolState from '../ai-states/PatrolState.js'
+import AIWalkState from '../ai-states/AIWalkState.js'
 
 const playerStates = {
   idle: IdleState,
@@ -25,6 +26,7 @@ const playerStates = {
 
 const aiStates = {
   idle: AIIdleState,
+  walk: AIWalkState,
   wander: WanderState,
   pursue: PursueState,
   flee: FleeState,
