@@ -21,7 +21,7 @@ export default class PatrolState extends WalkState {
       this.walked = 0
     }
 
-    if (player.position.distanceTo(player.target.position) < player.sightDistance)
+    if (this.targetInSight)
       player.setState('pursue')
 
     super.update(delta)

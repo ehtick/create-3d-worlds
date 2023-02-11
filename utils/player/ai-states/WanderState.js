@@ -10,8 +10,14 @@ export default class WanderState extends WalkState {
   }
 
   update(delta) {
+    const { player } = this
+
     this.turnPeriodically(this.interval)
     this.keyboard.pressed.ArrowUp = true
+
+    if (player.targetInSight)
+      player.setState('pursue')
+
     super.update(delta)
   }
 }

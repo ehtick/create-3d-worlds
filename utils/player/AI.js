@@ -48,6 +48,11 @@ export default class AI extends Player {
       || this.position.z <= this.boundaries.min.z
   }
 
+  get targetInSight() {
+    if (!this.target) return false
+    return this.position.distanceTo(this.target.position) < this.sightDistance
+  }
+
   addSolids(arr) {
     const notMe = arr.filter(solid => solid !== this.mesh)
     super.addSolids(notMe)

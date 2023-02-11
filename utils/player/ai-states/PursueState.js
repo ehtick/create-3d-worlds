@@ -12,7 +12,7 @@ export default class PursueState extends WalkState {
     player.mesh.rotateY(Math.PI) // fix
     this.keyboard.pressed.ArrowUp = true
 
-    if (player.position.distanceTo(player.target.position) > player.sightDistance)
+    if (!player.targetInSight)
       player.setState(player.defaultState == 'patrol' ? 'patrol' : 'idle')
 
     if (player.position.distanceTo(player.target.position) < player.attackDistance)
