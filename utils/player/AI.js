@@ -9,7 +9,7 @@ const { randFloatSpread } = MathUtils
 
 export default class AI extends Player {
   constructor({
-    jumpStyle = 'JUMP', defaultState = 'idle', shouldRaycastGround = false, idleDistance = 3, sightDistance = 30, attackDistance = 2, patrolLength = 10, target, mapSize, ...params
+    jumpStyle = 'JUMP', defaultState = 'idle', shouldRaycastGround = false, sightDistance = 30, idleDistance = 3, attackDistance = 2, patrolLength = 10, target, mapSize, ...params
   } = {}) {
     super({ ...params,
       mesh: clone(params.mesh),

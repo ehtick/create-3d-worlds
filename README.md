@@ -11,10 +11,6 @@ npx live-server
 
 ### Scenes & examples
 
-- AI
-  - napraviti AttackState
-  - isprobati pursue i attack sa igračem
-
 - Savo
   - dodati NPC karaktere, Nemce, duhove
   - dodati neke modele vozila i kuca
