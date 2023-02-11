@@ -6,21 +6,22 @@ const { randInt } = MathUtils
 export default class AIIdleState extends IdleState {
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
+    this.keyboard.pressed.ArrowUp = false
     this.interval = randInt(3000, 5000)
   }
 
   update(delta) {
-    const { mesh, target, followDistance, fleeDistance, defaultState } = this.player
+    const { mesh, defaultState, target, idleDistance, fleeDistance, pursueDistance } = this.player
     this.turnPeriodically(this.interval, Math.PI / 4)
 
-    if (defaultState == 'pursue' && mesh.position.distanceTo(target.position) > followDistance * 1.25)
+    if (defaultState == 'pursue' && mesh.position.distanceTo(target.position) < pursueDistance)
       this.player.setState('pursue')
 
-    if (defaultState == 'follow' && mesh.position.distanceTo(target.position) > followDistance * 1.25)
-      this.player.setState('follow')
-
-    if (defaultState == 'flee' && mesh.position.distanceTo(target.position) < fleeDistance * .75)
+    if (defaultState == 'flee' && mesh.position.distanceTo(target.position) < fleeDistance)
       this.player.setState('flee')
+
+    if (defaultState == 'follow' && mesh.position.distanceTo(target.position) > idleDistance * 1.25)
+      this.player.setState('follow')
 
     super.update(delta)
   }

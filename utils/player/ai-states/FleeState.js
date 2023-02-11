@@ -12,7 +12,7 @@ export default class FleeState extends WalkState {
     this.keyboard.pressed.ArrowUp = true
 
     if (mesh.position.distanceTo(target.position) > fleeDistance)
-      this.keyboard.pressed.ArrowUp = false
+      this.player.setState('idle')
 
     super.update(delta)
   }
