@@ -15,6 +15,8 @@ export default class WanderState extends WalkState {
     this.turnPeriodically(this.interval)
     this.keyboard.pressed.ArrowUp = true
 
+    /* TRANSIT */
+
     if (player.targetInSight)
       player.setState('pursue')
 

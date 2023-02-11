@@ -16,6 +16,8 @@ export default class AIIdleState extends IdleState {
 
     this.turnPeriodically(this.interval, Math.PI / 4)
 
+    /* TRANSIT */
+
     if (defaultState == 'pursue' && player.targetInSight)
       player.setState('pursue')
 
