@@ -138,7 +138,7 @@ export class Rain extends Particles {
     this.audio = new Audio('/assets/sounds/rain.mp3')
     this.audio.volume = config.volume
     this.audio.loop = true
-    this.audio.play()
+    // this.audio.play()
   }
 
   update({ min = 0, max = 200, minVelocity = 2, maxVelocity = 4, ...rest } = {}) {

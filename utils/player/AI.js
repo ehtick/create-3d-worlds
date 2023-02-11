@@ -79,14 +79,14 @@ export default class AI extends Player {
 
   /* AI */
 
-  bounce() {
-    this.mesh.rotateY(Math.PI)
+  bounce(angle = Math.PI) {
+    this.mesh.rotateY(angle)
     this.mesh.translateZ(this.velocity.z)
   }
 
-  turnAround() {
+  turnSmooth(angle = Math.PI) {
     new TWEEN.Tween(this.mesh.rotation)
-      .to({ y: this.mesh.rotation.y + Math.PI })
+      .to({ y: this.mesh.rotation.y + angle })
       .start()
   }
 

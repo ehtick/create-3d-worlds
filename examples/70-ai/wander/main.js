@@ -21,7 +21,7 @@ scene.add(player.mesh)
 const { mesh, animations } = await loadGolem()
 
 for (let i = 0; i < 20; i++) {
-  const ai = new AI({ mesh, animations, dict: golemAnimation, mapSize, basicState: 'wander' })
+  const ai = new AI({ mesh, animations, dict: golemAnimation, mapSize, basicState: 'wander', target: player.mesh })
   npcs.push(ai)
   scene.add(ai.mesh)
 }
