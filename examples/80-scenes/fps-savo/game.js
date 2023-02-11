@@ -5,8 +5,10 @@ import Savo from '/utils/player/Savo.js'
 import Tilemap from '/utils/classes/Tilemap.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
 import { nemesis } from '/data/maps.js'
-import Enemy from '/utils/classes/Enemy.js'
 import { Rain } from '/utils/classes/Particles.js'
+import AI from '/utils/player/AI.js'
+import { loadGolem } from '/utils/loaders.js'
+import { golemAnimation } from '/data/animations.js'
 
 const light = hemLight()
 scene.background = createSkyBox({ folder: 'skybox4' })
@@ -18,9 +20,12 @@ scene.add(createGround({ file: 'terrain/ground.jpg' }))
 const walls = tilemap.meshFromMatrix({ texture: 'terrain/concrete.jpg' })
 scene.add(walls)
 
+const { mesh, animations } = await loadGolem()
+
 const enemies = []
 for (let i = 0; i < 10; i++) {
-  const enemy = new Enemy(tilemap.randomEmptyPos)
+  const enemy = new AI({ mesh, animations, dict: golemAnimation, basicState: 'wander' })
+  enemy.position.copy(tilemap.randomEmptyPos)
   enemies.push(enemy)
   scene.add(enemy.mesh)
 }
