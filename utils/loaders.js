@@ -105,7 +105,7 @@ export async function loadMd2(params) {
 
 export async function loadFbx(params) {
   const loader = new FBXLoader()
-  const { file, texture, doubleSide } = params
+  const { file = 'model.fbx', texture, doubleSide } = params
   const model = await loader.loadAsync(`/assets/models/${file}`)
 
   // fix holes in model
@@ -214,4 +214,4 @@ export const loadDemon = () => loadModel({ file: 'model.fbx', prefix: 'character
 
 export const loadIronGiant = () => loadModel({ file: 'model.fbx', prefix: 'character/iron-giant/', animDict: ironGiantAnimations, angle: Math.PI, size: 5, fixColors: true })
 
-export const loadSovietPartisan = () => loadModel({ file: 'model.fbx', prefix: 'character/partisan2/', animDict: sovietPartisanAnimations, angle: Math.PI, size: .5, fixColors: true })
+export const loadSovietPartisan = () => loadModel({ file: 'model.fbx', prefix: 'character/soviet-partisan/', animDict: sovietPartisanAnimations, angle: Math.PI, size: 2, fixColors: true })
