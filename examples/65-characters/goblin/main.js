@@ -9,7 +9,7 @@ scene.add(createSun())
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, animNames: goblinAnimations, prefix: 'character/goblin/', size: 1.5, fixColors: true })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, animDict: goblinAnimations, prefix: 'character/goblin/', size: 1.5, fixColors: true })
 const player = new Player({ mesh, animations, dict: goblinAnimations })
 
 scene.add(mesh)

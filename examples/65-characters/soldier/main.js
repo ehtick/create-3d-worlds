@@ -9,7 +9,7 @@ scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/soldier/', animNames: soldierAnimations, angle: Math.PI, fixColors: true })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/soldier/', animDict: soldierAnimations, angle: Math.PI, fixColors: true })
 const player = new Player({ mesh, animations, dict: soldierAnimations })
 
 scene.add(mesh)

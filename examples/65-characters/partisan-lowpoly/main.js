@@ -10,7 +10,7 @@ scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations } = await loadModel({ file: 'model-lowpoly.fbx', angle: Math.PI, animNames: partisanAnimations, prefix: 'character/partisan/', fixColors: true })
+const { mesh, animations } = await loadModel({ file: 'model-lowpoly.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/partisan/', fixColors: true })
 
 const player = new Player({ mesh, animations, dict: partisanAnimations, useJoystick: true })
 

@@ -9,7 +9,7 @@ scene.add(createSun())
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh, animations } = await loadLowPoly({ animNames: thiefAnimation, prefix: 'character/thief/' })
+const { mesh, animations } = await loadLowPoly({ animDict: thiefAnimation, prefix: 'character/thief/' })
 const player = new Player({ mesh, animations, dict: thiefAnimation })
 
 scene.add(mesh)

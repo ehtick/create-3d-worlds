@@ -44,7 +44,7 @@ function createMixer(mesh, animation) {
 const { mesh: towerModel } = await loadModel({ file: 'building/castle/castel/scene.gltf', size: 15 })
 scene.add(randomPos(towerModel))
 
-const { mesh, animations } = await loadModel({ file: 'model.fbx', animNames: witchAnimations, prefix: 'character/witch/' })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', animDict: witchAnimations, prefix: 'character/witch/' })
 for (let i = 0; i < GIRLS; i++) {
   const girl = SkeletonUtils.clone(mesh)
   createMixer(girl, animations[i])

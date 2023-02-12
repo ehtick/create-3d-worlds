@@ -12,9 +12,10 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - BUG: golemi hodaju po vazduhu
+  - pokušati da po defoltu koristi walk animaciju za ai akcije
   - izabrati neprijatelje (Nemci, duhovi)
     - pucanje ne pogađa falične modele, popraviti izabrane ili izabrati ispravne
+  - BUG: golemi hodaju po vazduhu
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola

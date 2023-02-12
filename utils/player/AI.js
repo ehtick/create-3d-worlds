@@ -1,4 +1,4 @@
-import { Box3, Vector3, MathUtils } from 'three'
+import { Box3, Vector3, MathUtils, AnimationMixer } from 'three'
 import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 
@@ -72,6 +72,14 @@ export default class AI extends Player {
   }
 
   /* ANIMS */
+
+  setupMixer(animations, dict) {
+    super.setupMixer(animations, dict)
+    const walkActions = ['wander', 'follow', 'pursue', 'flee', 'patrol']
+    walkActions.forEach(name => {
+      if (!this.actions[name]) this.actions[name] = this.actions.walk
+    })
+  }
 
   randomizeAnimation() {
     this.action.time = Math.random() * this.action.getClip().duration

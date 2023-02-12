@@ -9,7 +9,7 @@ scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/partisan2/', animNames: partisan2Animations, angle: Math.PI, size: .5, fixColors: true })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/partisan2/', animDict: partisan2Animations, angle: Math.PI, size: .5, fixColors: true })
 // TODO: pucanje da se ponavlja animacija dok je pritisnuto
 const player = new Player({ mesh, animations, dict: partisan2Animations })
 

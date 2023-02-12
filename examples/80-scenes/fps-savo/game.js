@@ -1,3 +1,4 @@
+import * as THREE from 'three'
 import { scene, renderer, camera, clock, createSkyBox } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 import Map2DRenderer from '/utils/classes/2d/Map2DRenderer.js'
@@ -8,7 +9,6 @@ import { nemesis } from '/data/maps.js'
 import { Rain } from '/utils/classes/Particles.js'
 import AI from '/utils/player/AI.js'
 import { loadGolem } from '/utils/loaders.js'
-import { golemAnimation } from '/data/animations.js'
 
 const light = hemLight()
 scene.background = createSkyBox({ folder: 'skybox4' })
@@ -23,14 +23,16 @@ scene.add(walls)
 const player = new Savo({ camera })
 player.position.copy(tilemap.randomEmptyPos)
 
-const { mesh, animations } = await loadGolem()
+const { mesh, animations, dict } = await loadGolem()
 
 const enemies = []
 for (let i = 0; i < 10; i++) {
-  const enemy = new AI({ mesh, animations, dict: golemAnimation, basicState: 'wander', solids: walls })
+  const enemy = new AI({ mesh, animations, dict, basicState: 'wander', solids: walls })
   enemy.position.copy(tilemap.randomEmptyPos)
   enemies.push(enemy)
   scene.add(enemy.mesh)
+  const box = new THREE.BoxHelper(enemy.mesh, 0xffff00)
+  scene.add(box)
 }
 
 const solids = [walls, ...enemies.map(e => e.mesh)]

@@ -8,7 +8,7 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
-import { sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations, witchAnimations, witcherAnimations } from '/data/animations.js'
+import { sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations, witchAnimations } from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -34,7 +34,7 @@ const createGroup = model => {
   return group
 }
 
-const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, shouldCenter, shouldAdjustHeight, castShadow = true, receiveShadow = false, scale = 1 }) => {
+const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, shouldCenter, shouldAdjustHeight, castShadow = true, receiveShadow = false, scale = 1, animDict }) => {
   scale = (scale === 1 && size) ? getScale(model, size) : scale // eslint-disable-line no-param-reassign
   model.scale.set(scale, scale, scale)
 
@@ -53,7 +53,7 @@ const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, sho
 
   const mixer = animations && animations.length ? getMixer(model, animations) : null
 
-  return { mesh: createGroup(model), animations, mixer }
+  return { mesh: createGroup(model), animations, mixer, dict: animDict }
 }
 
 /* OBJ */
@@ -128,11 +128,9 @@ export async function loadFbx(params) {
   return prepareMesh({ model, animations, ...params })
 }
 
-/* @param names: array or dict object */
+/* @param names: dict object */
 export async function loadFbxAnimations(names, prefix = '') {
-  const uniques = Array.isArray(names)
-    ? Array.from(new Set(names))
-    : Array.from(new Set(Object.values(names)))
+  const uniques = Array.from(new Set(Object.values(names)))
 
   const promises = uniques.map(name => loadFbx({ name, file: prefix + name + '.fbx' }))
   const responses = await Promise.all(promises)
@@ -146,6 +144,7 @@ export async function loadFbxAnimations(names, prefix = '') {
 * param could be:
 *   string (filepath) OR
 *   object { file, size, texture, mtl, angle, axis, shouldCenter, shouldAdjustHeight }
+* param.animDict is needed for multiple fbx animations
 * returns a promise that resolves with the { mesh, animations, mixer }
 */
 export const loadModel = async param => {
@@ -165,10 +164,10 @@ export const loadModel = async param => {
     case 'md2':
       return loadMd2(params)
     case 'fbx':
-      const { prefix, file, animNames } = params
+      const { prefix, file, animDict } = params
       if (prefix) {
         params.file = prefix + file
-        if (animNames) params.animations = await loadFbxAnimations(animNames, prefix)
+        if (animDict) params.animations = await loadFbxAnimations(animDict, prefix)
       }
       return loadFbx(params)
     default:
@@ -178,20 +177,18 @@ export const loadModel = async param => {
 
 /* ALIASES */
 
-export const loadLowPoly = ({ file = 'model.fbx', prefix, animNames }) =>
-  loadModel({ file, animNames, prefix, angle: Math.PI })
+export const loadLowPoly = ({ file = 'model.fbx', prefix, animDict }) =>
+  loadModel({ file, animDict, prefix, angle: Math.PI })
 
 export const loadRobotko = () =>
   loadModel({ file: 'character/robotko/robot.glb', size: 1.2, angle: Math.PI })
 
-export const loadSorceress = () => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: sorceressAnimations, prefix: 'character/sorceress/', size: 1.75 })
+export const loadSorceress = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: sorceressAnimations, prefix: 'character/sorceress/', size: 1.75 })
 
-export const loadGolem = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: golemAnimation, prefix: 'character/golem/', size: 2.5, fixColors: true, ...params })
+export const loadGolem = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: golemAnimation, prefix: 'character/golem/', size: 2.5, fixColors: true, ...params })
 
-export const loadGoblin = () => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: goblinAnimations, prefix: 'character/goblin/', size: 1.5 })
+export const loadGoblin = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: goblinAnimations, prefix: 'character/goblin/', size: 1.5 })
 
-export const loadPartisan = () => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: partisanAnimations, prefix: 'character/partisan/', fixColors: true })
+export const loadPartisan = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/partisan/', fixColors: true, size: 3 })
 
-export const loadWitch = () => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: witchAnimations, prefix: 'character/witch/', fixColors: true })
-
-export const loadWitcher = () => loadModel({ file: 'model.fbx', angle: Math.PI, animNames: witcherAnimations, prefix: 'character/witcher/', fixColors: true })
+export const loadWitch = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: witchAnimations, prefix: 'character/witch/', fixColors: true })

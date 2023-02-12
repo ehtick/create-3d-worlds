@@ -9,7 +9,7 @@ scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/nude-victim/', animNames: nudeVictimAnimations, angle: Math.PI, fixColors: true })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/nude-victim/', animDict: nudeVictimAnimations, angle: Math.PI, fixColors: true })
 const player = new Player({ mesh, animations, dict: nudeVictimAnimations })
 
 scene.add(mesh)

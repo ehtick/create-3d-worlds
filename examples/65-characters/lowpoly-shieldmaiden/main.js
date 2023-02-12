@@ -9,7 +9,7 @@ scene.add(createSun())
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh, animations } = await loadLowPoly({ animNames: shieldmaidenAnimation, prefix: 'character/shieldmaiden/' })
+const { mesh, animations } = await loadLowPoly({ animDict: shieldmaidenAnimation, prefix: 'character/shieldmaiden/' })
 const player = new Player({ mesh, animations, dict: shieldmaidenAnimation })
 
 scene.add(mesh)
