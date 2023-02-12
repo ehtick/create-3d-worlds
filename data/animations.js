@@ -292,11 +292,12 @@ export const trollAnimations = {
 }
 
 export const zombieCopAnimations = {
-  death: 'Zombie Death',
   idle: 'Zombie Idle',
+  walk: 'Zombie Walk',
   attack: 'Zombie Neck Bite',
   special: 'Zombie Punching',
-  walk: 'Zombie Walk',
+  pain: 'Hit Reaction',
+  death: 'Zombie Death',
 }
 
 export const zombieGirlAnimations = {
