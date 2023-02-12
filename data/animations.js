@@ -26,15 +26,6 @@ export const dupecheshAnimations = {
   // paina, painb, painc, crpain
 }
 
-export const forestTrollAnimations = {
-  idle: 'Idle',
-  walk: 'Walk',
-  jump: 'Melee_Hold',
-  attack: 'Attack',
-  special: 'Stand',
-  death: 'Dying',
-}
-
 export const demonAnimations = {
   idle: 'Mutant Breathing Idle',
   walk: 'Mutant Walking',

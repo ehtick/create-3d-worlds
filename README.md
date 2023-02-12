@@ -11,8 +11,9 @@ npx live-server
 
 ### Scenes & examples
 
+- fix dupechesh
+
 - Savo / FPS
-  - ispitati kompatibilnost vojničkih animacija (mogu li iste za partizane, nemce, i sl.)
   - dodati više napada, attack: [], ili poseban ključ
   - izabrati neprijatelje (Nemci, naziMachineGunnerAnimations)
     - naziMachineGunner i loadSovietPartisan da ponavljaju napad (anim loop)

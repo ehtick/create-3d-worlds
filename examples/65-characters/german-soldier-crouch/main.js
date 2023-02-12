@@ -9,8 +9,8 @@ scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, animDict: germanSoldierCrouchAnimations, prefix: 'character/german-soldier/', size: .75, fixColors: true })
-const player = new Player({ mesh, animations, animDict: germanSoldierCrouchAnimations })
+const { mesh, animations, animDict } = await loadModel({ file: 'model.fbx', angle: Math.PI, animDict: germanSoldierCrouchAnimations, prefix: 'character/german-soldier/', fixColors: true })
+const player = new Player({ mesh, animations, animDict })
 
 scene.add(mesh)
 
