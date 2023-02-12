@@ -81,6 +81,7 @@ export const golemAnimation = {
   walk: 'Mutant Walking',
   attack: 'Zombie Kicking',
   special: 'Mutant Swiping',
+  pain: 'Zombie Reaction Hit',
   death: 'Standing Death Forward 01',
 }
 
