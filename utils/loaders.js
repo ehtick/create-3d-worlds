@@ -188,7 +188,7 @@ export const loadSorceress = () => loadModel({ file: 'model.fbx', angle: Math.PI
 
 export const loadGolem = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: golemAnimation, prefix: 'character/golem/', size: 2.5, fixColors: true, ...params })
 
-export const loadGoblin = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: goblinAnimations, prefix: 'character/goblin/', size: 1.5 })
+export const loadGoblin = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: goblinAnimations, prefix: 'character/goblin/', fixColors: true, size: 1.5 })
 
 export const loadPartisan = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/partisan/', fixColors: true, size: 3 })
 
