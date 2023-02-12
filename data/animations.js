@@ -214,7 +214,7 @@ export const orcOgreAnimations = {
   idle: 'Unarmed Idle',
   walk: 'Mutant Walking',
   run: 'Mutant Run',
-  attack: 'Mutant Swiping',
+  attack: 'Mutant Swiping', // Zombie Attack
   special: 'Zombie Scream',
   death: 'Zombie Dying',
 }
