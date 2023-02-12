@@ -193,15 +193,6 @@ export const naziAgentAnimations = {
   death: 'Dying',
 }
 
-export const ninjaTurtleAnimations = {
-  idle: 'Ninja Idle',
-  walk: 'Dwarf Walk',
-  run: 'Run',
-  jump: 'Jump',
-  attack: 'Flying Kick',
-  special: 'Cartwheel',
-}
-
 export const orcAnimations = {
   idle: 'Unarmed Idle',
   walk: 'Orc Walk',
