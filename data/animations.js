@@ -205,7 +205,7 @@ export const ninjaTurtleAnimations = {
 export const orcAnimations = {
   idle: 'Unarmed Idle',
   walk: 'Orc Walk',
-  attack: 'Zombie Attack',
+  attack: 'Zombie Attack', // Zombie Kicking
   special: 'Zombie Scream',
   death: 'Death From The Back',
 }
