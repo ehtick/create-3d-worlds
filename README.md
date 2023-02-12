@@ -17,10 +17,9 @@ npx live-server
   - mixamo: import and add animations
 
 - Savo / FPS
-  - pokušati da po defoltu koristi walk animaciju za ai akcije
-  - izabrati neprijatelje (Nemci, duhovi)
+  - izabrati neprijatelje (Nemci, duhovi, naziMachineGunnerAnimations)
     - pucanje ne pogađa falične modele, popraviti izabrane ili izabrati ispravne
-  - BUG: golemi hodaju po vazduhu
+  - BUG: hodaju po vazduhu (možda dodati player.mesh u solids, da ga izbegavaju)
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola

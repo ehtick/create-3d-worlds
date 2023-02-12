@@ -176,6 +176,12 @@ export const naziOfficerAnimations = {
   special: 'Yelling',
 }
 
+export const naziMachineGunnerAnimations = {
+  idle: 'Rifle Idle',
+  walk: 'Walk With Rifle',
+  attack: 'Gunplay', // Crouch Rapid Fire
+}
+
 export const ninjaTurtleAnimations = {
   idle: 'Ninja Idle',
   walk: 'Dwarf Walk',
