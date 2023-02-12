@@ -220,4 +220,4 @@ export const loadPartisanLowpoly = () => loadModel({ file: 'model-lowpoly.fbx', 
 
 export const loadSoldier = () => loadModel({ file: 'model.fbx', prefix: 'character/soldier/', animDict: soldierAnimations, angle: Math.PI, fixColors: true, size: 1.8 })
 
-export const loadTroll = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: trollAnimations, prefix: 'character/troll/', fixColors: true })
+export const loadTroll = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: trollAnimations, prefix: 'character/troll/', fixColors: true, size: 3 })
