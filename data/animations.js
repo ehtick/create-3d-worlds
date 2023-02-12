@@ -260,10 +260,10 @@ export const sovietPartisanAnimations = {
 
 export const soldierAnimations = {
   idle: 'Rifle Idle',
-  walk: 'Walk Forward',
-  run: 'Rifle Run',
-  attack: 'Firing Rifle',
-  special: 'Fire Rifle',
+  walk: 'Walk With Rifle',
+  // run: 'Rifle Run',
+  // attack: 'Firing Rifle',
+  // special: 'Fire Rifle',
 }
 
 export const nudeVictimAnimations = {
