@@ -2,15 +2,14 @@ import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { loadModel } from '/utils/loaders.js'
-import { germanSoldierAnimations } from '/data/animations.js'
+import { loadGermanSoldier } from '/utils/loaders.js'
 
 scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, animDict: germanSoldierAnimations, prefix: 'character/german-soldier/', size: .75, fixColors: true })
-const player = new Player({ mesh, animations, animDict: germanSoldierAnimations })
+const { mesh, animations, animDict } = await loadGermanSoldier()
+const player = new Player({ mesh, animations, animDict })
 
 scene.add(mesh)
 

@@ -1,3 +1,8 @@
+/**
+ * ANIM DICTS
+ * map finite machine state to model animation
+ */
+
 export const robotkoAnimations = {
   idle: 'Idle',
   walk: 'Walking',
@@ -77,12 +82,6 @@ export const golemAnimation = {
   attack: 'Zombie Kicking',
   special: 'Mutant Swiping',
   death: 'Standing Death Forward 01',
-  // dupes for ai states
-  wander: 'Mutant Walking',
-  follow: 'Mutant Walking',
-  pursue: 'Mutant Walking',
-  flee: 'Mutant Walking',
-  patrol: 'Mutant Walking',
 }
 
 export const druidAnimation = {

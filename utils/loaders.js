@@ -8,7 +8,7 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
-import { sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations, witchAnimations } from '/data/animations.js'
+import { sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations, witchAnimations, naziAnimations, germanSoldierAnimations, naziOfficerAnimations } from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -53,7 +53,7 @@ const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, sho
 
   const mixer = animations && animations.length ? getMixer(model, animations) : null
 
-  return { mesh: createGroup(model), animations, mixer, animDict: animDict }
+  return { mesh: createGroup(model), animations, mixer, animDict }
 }
 
 /* OBJ */
@@ -192,3 +192,9 @@ export const loadGoblin = () => loadModel({ file: 'model.fbx', angle: Math.PI, a
 export const loadPartisan = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/partisan/', fixColors: true, size: 3 })
 
 export const loadWitch = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: witchAnimations, prefix: 'character/witch/', fixColors: true })
+
+export const loadNazi = () => loadModel({ file: 'model.fbx', animDict: naziAnimations, prefix: 'character/nazi/', angle: Math.PI, fixColors: true })
+
+export const loadGermanSoldier = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: germanSoldierAnimations, prefix: 'character/german-soldier/', size: .75, fixColors: true })
+
+export const loadNaziOfficer = () => loadModel({ file: 'model.fbx', prefix: 'character/nazi-officer/', animDict: naziOfficerAnimations, angle: Math.PI, fixColors: true })
