@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/orc-ogre/', animDict: orcOgreAnimations, angle: Math.PI, fixColors: true })
-const player = new Player({ mesh, animations, dict: orcOgreAnimations })
+const player = new Player({ mesh, animations, animDict: orcOgreAnimations })
 
 scene.add(mesh)
 

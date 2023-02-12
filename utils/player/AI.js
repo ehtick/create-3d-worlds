@@ -73,8 +73,8 @@ export default class AI extends Player {
 
   /* ANIMS */
 
-  setupMixer(animations, dict) {
-    super.setupMixer(animations, dict)
+  setupMixer(animations, animDict) {
+    super.setupMixer(animations, animDict)
     const walkActions = ['wander', 'follow', 'pursue', 'flee', 'patrol']
     walkActions.forEach(name => {
       if (!this.actions[name]) this.actions[name] = this.actions.walk

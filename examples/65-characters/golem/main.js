@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadGolem()
-const player = new Player({ mesh, animations, dict: golemAnimation })
+const player = new Player({ mesh, animations, animDict: golemAnimation })
 
 scene.add(mesh)
 

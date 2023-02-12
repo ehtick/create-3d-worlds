@@ -11,7 +11,7 @@ import { getPlayerState } from './states/index.js'
 
 export default class Player {
   constructor({
-    mesh, animations, dict, camera, keyboard = defaultKeyboard, solids, useJoystick, gravity = .7,
+    mesh, animations, animDict, camera, keyboard = defaultKeyboard, solids, useJoystick, gravity = .7,
     jumpStyle = 'FLY_JUMP', speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle), shouldRaycastGround = true
   }) {
     this.mesh = mesh
@@ -32,8 +32,8 @@ export default class Player {
     if (useJoystick) this.joystick = new JoyStick()
 
     this.actions = {}
-    if (animations?.length && dict)
-      this.setupMixer(animations, dict)
+    if (animations?.length && animDict)
+      this.setupMixer(animations, animDict)
 
     if (camera) {
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh })
@@ -105,10 +105,10 @@ export default class Player {
 
   /* ANIMATIONS */
 
-  setupMixer(animations, dict) {
+  setupMixer(animations, animDict) {
     this.mixer = new AnimationMixer(this.mesh)
-    for (const key in dict) {
-      const clip = animations.find(anim => anim.name == dict[key])
+    for (const key in animDict) {
+      const clip = animations.find(anim => anim.name == animDict[key])
       this.actions[key] = this.mixer.clipAction(clip)
     }
   }

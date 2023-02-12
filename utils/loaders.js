@@ -53,7 +53,7 @@ const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, sho
 
   const mixer = animations && animations.length ? getMixer(model, animations) : null
 
-  return { mesh: createGroup(model), animations, mixer, dict: animDict }
+  return { mesh: createGroup(model), animations, mixer, animDict: animDict }
 }
 
 /* OBJ */
@@ -128,7 +128,7 @@ export async function loadFbx(params) {
   return prepareMesh({ model, animations, ...params })
 }
 
-/* @param names: dict object */
+/* @param names: animDict object */
 export async function loadFbxAnimations(names, prefix = '') {
   const uniques = Array.from(new Set(Object.values(names)))
 

@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadLowPoly({ animDict: dwarfAnimation, prefix: 'character/dwarf/' })
-const player = new Player({ mesh, animations, dict: dwarfAnimation })
+const player = new Player({ mesh, animations, animDict: dwarfAnimation })
 
 scene.add(mesh)
 

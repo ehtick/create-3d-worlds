@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/skater-girl/', animDict: skaterAnimations, angle: Math.PI, fixColors: true })
-const player = new Player({ mesh, dict: skaterAnimations, animations })
+const player = new Player({ mesh, animDict: skaterAnimations, animations })
 
 scene.add(mesh)
 

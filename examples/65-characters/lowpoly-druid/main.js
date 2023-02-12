@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadLowPoly({ animDict: druidAnimation, prefix: 'character/druid/' })
-const player = new Player({ mesh, animations, dict: druidAnimation })
+const player = new Player({ mesh, animations, animDict: druidAnimation })
 
 scene.add(mesh)
 

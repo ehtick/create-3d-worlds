@@ -11,7 +11,7 @@ scene.add(createFloor({ size: 100 }))
 
 const { mesh } = await loadModel({ file: 'character/demon/demon.fbx', angle: Math.PI, fixColors: true })
 const animations = await loadFbxAnimations(demonAnimations, 'character/demon/')
-const player = new Player({ mesh, animations, dict: demonAnimations })
+const player = new Player({ mesh, animations, animDict: demonAnimations })
 
 scene.add(mesh)
 

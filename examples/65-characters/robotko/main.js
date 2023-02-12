@@ -11,7 +11,7 @@ camera.position.set(0, 3, 5)
 createOrbitControls()
 
 const { mesh, animations } = await loadModel({ file: 'character/robotko/robot.glb', size: 1.2, angle: Math.PI })
-const player = new Player({ mesh, animations, dict: robotkoAnimations })
+const player = new Player({ mesh, animations, animDict: robotkoAnimations })
 
 scene.add(mesh)
 

@@ -11,7 +11,7 @@ scene.add(createFloor({ size: 100 }))
 
 const { mesh } = await loadModel({ file: 'character/black-knight/model.fbx', angle: Math.PI, fixColors: true })
 const animations = await loadFbxAnimations(blackKnightAnimations, 'character/black-knight/')
-const player = new Player({ mesh, animations, dict: blackKnightAnimations })
+const player = new Player({ mesh, animations, animDict: blackKnightAnimations })
 
 scene.add(mesh)
 

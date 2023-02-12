@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'character/forest-monster/scene.gltf', angle: Math.PI })
-const player = new Player({ mesh, animations, dict: forestTrollAnimations, camera })
+const player = new Player({ mesh, animations, animDict: forestTrollAnimations, camera })
 
 scene.add(mesh)
 

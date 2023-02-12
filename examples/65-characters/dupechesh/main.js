@@ -11,7 +11,7 @@ camera.position.set(0, 2, 3)
 
 const { mesh, animations } = await loadModel({ file: 'character/ogro/ogro.md2', texture: 'character/ogro/skins/arboshak.png', size: 2, angle: Math.PI * .5, shouldCenter: true, shouldAdjustHeight: true })
 
-const player = new Player({ mesh, animations, dict: dupecheshAnimations })
+const player = new Player({ mesh, animations, animDict: dupecheshAnimations })
 scene.add(mesh)
 
 controls.target = mesh.position

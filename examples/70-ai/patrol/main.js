@@ -14,14 +14,14 @@ createOrbitControls()
 
 scene.add(createFloor({ size: mapSize }))
 
-const player = new Player({ ...await loadSorceress(), dict: sorceressAnimations })
+const player = new Player({ ...await loadSorceress(), animDict: sorceressAnimations })
 scene.add(player.mesh)
 
 const { mesh, animations } = await loadGolem()
 
 const npcs = []
 for (let i = 0; i < 4; i++) {
-  const ai = new AI({ mesh, animations, dict: golemAnimation, mapSize, basicState: 'patrol', target: player.mesh })
+  const ai = new AI({ mesh, animations, animDict: golemAnimation, mapSize, basicState: 'patrol', target: player.mesh })
   npcs.push(ai)
   scene.add(ai.mesh)
 }

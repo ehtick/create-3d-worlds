@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, animDict: trollAnimations, prefix: 'character/troll/', fixColors: true })
-const player = new Player({ mesh, animations, dict: trollAnimations })
+const player = new Player({ mesh, animations, animDict: trollAnimations })
 
 scene.add(mesh)
 

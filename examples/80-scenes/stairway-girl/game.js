@@ -18,7 +18,7 @@ const stairs = createSpiralStairs({ radius: 25, stairsInCirle: 50, floorHeight: 
 stairs.translateY(-2)
 scene.add(stairs)
 
-const player = new Player({ ...await loadSorceress(), dict: sorceressAnimations, camera, speed: 4 })
+const player = new Player({ ...await loadSorceress(), animDict: sorceressAnimations, camera, speed: 4 })
 scene.add(player.mesh)
 
 player.addSolids(floor, stairs)

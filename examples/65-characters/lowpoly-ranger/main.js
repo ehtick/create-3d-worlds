@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadLowPoly({ animDict: rangerAnimation, prefix: 'character/ranger/' })
-const player = new Player({ mesh, animations, dict: rangerAnimation })
+const player = new Player({ mesh, animations, animDict: rangerAnimation })
 
 scene.add(mesh)
 

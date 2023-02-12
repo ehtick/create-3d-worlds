@@ -11,7 +11,7 @@ scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadPartisan()
 
-const player = new Player({ mesh, animations, dict: partisanAnimations, useJoystick: true })
+const player = new Player({ mesh, animations, animDict: partisanAnimations, useJoystick: true })
 
 scene.add(mesh)
 

@@ -11,7 +11,7 @@ scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadWitch()
 
-const player = new Player({ mesh, animations, dict: witchAnimations })
+const player = new Player({ mesh, animations, animDict: witchAnimations })
 
 scene.add(mesh)
 

@@ -23,11 +23,11 @@ scene.add(walls)
 const player = new Savo({ camera })
 player.position.copy(tilemap.randomEmptyPos)
 
-const { mesh, animations, dict } = await loadGolem()
+const { mesh, animations, animDict } = await loadGolem()
 
 const enemies = []
 for (let i = 0; i < 10; i++) {
-  const enemy = new AI({ mesh, animations, dict, basicState: 'wander', solids: walls })
+  const enemy = new AI({ mesh, animations, animDict, basicState: 'wander', solids: walls })
   enemy.position.copy(tilemap.randomEmptyPos)
   enemies.push(enemy)
   scene.add(enemy.mesh)

@@ -10,7 +10,7 @@ scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadLowPoly({ animDict: skeletonAnimation, prefix: 'character/skeleton/' })
-const player = new Player({ mesh, animations, dict: skeletonAnimation, speed: 1.2 })
+const player = new Player({ mesh, animations, animDict: skeletonAnimation, speed: 1.2 })
 
 scene.add(mesh)
 

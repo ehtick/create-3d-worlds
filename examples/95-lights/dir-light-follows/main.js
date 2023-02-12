@@ -21,7 +21,7 @@ const plane = createGround({ size: 20 })
 scene.add(plane)
 
 const { mesh, animations } = await loadSorceress()
-const player = new Player({ mesh, animations, dict: sorceressAnimations })
+const player = new Player({ mesh, animations, animDict: sorceressAnimations })
 scene.add(mesh)
 
 const light = dirLight({ target: mesh, mapSize: 1024, area: 10 })
