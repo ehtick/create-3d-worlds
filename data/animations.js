@@ -170,7 +170,7 @@ export const naziProneAnimations = {
 }
 
 export const naziOfficerAnimations = {
-  idle: 'Pistol Idle',
+  idle: 'Dwarf Idle',
   walk: 'Pistol Walk',
   attack: 'Shooting',
   special: 'Yelling',

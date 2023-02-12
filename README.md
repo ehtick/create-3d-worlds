@@ -19,6 +19,7 @@ npx live-server
 - Savo / FPS
   - izabrati neprijatelje (Nemci, duhovi, naziMachineGunnerAnimations)
     - pucanje ne pogađa falične modele, popraviti izabrane ili izabrati ispravne
+    - naziMachineGunner da ponavlja napad anim (loop)
   - BUG: hodaju po vazduhu (možda dodati player.mesh u solids, da ga izbegavaju)
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
