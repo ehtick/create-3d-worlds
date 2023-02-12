@@ -194,7 +194,7 @@ export const loadPartisan = () => loadModel({ file: 'model.fbx', angle: Math.PI,
 
 export const loadWitch = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: witchAnimations, prefix: 'character/witch/', fixColors: true })
 
-export const loadGermanSoldier = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: germanSoldierAnimations, prefix: 'character/german-soldier/', size: .75, fixColors: true })
+export const loadGermanSoldier = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: germanSoldierAnimations, prefix: 'character/german-soldier/', size: 3, fixColors: true })
 
 export const loadNazi = () => loadModel({ file: 'model.fbx', animDict: naziAnimations, prefix: 'character/nazi/', angle: Math.PI, fixColors: true, size: 3 })
 

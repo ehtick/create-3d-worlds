@@ -127,6 +127,7 @@ export const thiefAnimation = {
 export const germanSoldierAnimations = {
   idle: 'Rifle Aiming Idle',
   walk: 'Rifle Walk',
+  pursue: 'Walk With Rifle',
   run: 'Rifle Run',
   attack: 'Firing Rifle',
   death: 'Dying'
