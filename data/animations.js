@@ -183,6 +183,15 @@ export const naziMachineGunnerAnimations = {
   attack: 'Gunplay', // Crouch Rapid Fire
 }
 
+export const naziAgentAnimations = {
+  idle: 'Standing Idle',
+  walk: 'Standard Walk',
+  attack: 'Shooting',
+  pursue: 'Pistol Walk',
+  pain: 'Hit Reaction',
+  death: 'Dying',
+}
+
 export const ninjaTurtleAnimations = {
   idle: 'Ninja Idle',
   walk: 'Dwarf Walk',
