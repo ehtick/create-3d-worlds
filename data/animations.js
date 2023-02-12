@@ -81,6 +81,12 @@ export const thiefAnimation = {
   walk: 'Crouch Torch Walk Forward'
 }
 
+export const bigfootAnimations = {
+  idle: 'Goalkeeper Idle',
+  walk: 'Mutant Walking',
+  attack: 'Zombie Punching',
+}
+
 export const germanSoldierAnimations = {
   idle: 'Rifle Aiming Idle',
   walk: 'Rifle Walk',
