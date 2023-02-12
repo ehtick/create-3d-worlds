@@ -11,14 +11,9 @@ npx live-server
 
 ### Scenes & examples
 
-- popravka modela: 
-  - rigmodels: export as obj
-  - blender: import obj, move height, rotate left 90?, export as fbx
-  - mixamo: import and add animations
-
 - Savo / FPS
-  - izabrati neprijatelje (Nemci, duhovi, naziMachineGunnerAnimations)
-    - pucanje ne pogađa falične modele, popraviti izabrane ili izabrati ispravne
+  - dodati više napada, attack: [], ili poseban ključ
+  - izabrati neprijatelje (Nemci, naziMachineGunnerAnimations)
     - naziMachineGunner da ponavlja napad anim (loop)
   - BUG: hodaju po vazduhu (možda dodati player.mesh u solids, da ga izbegavaju)
   - dodati neke modele vozila i kuca
@@ -64,6 +59,9 @@ Tenk (Vozilo)
   - napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
   - junior general slike
   - borba (vidi slike partizana animaciju staru)
+
+- Groblje
+ - nasumično zakriviti kamenove
 
 ### Polishing
 
@@ -112,6 +110,12 @@ Ako je teren jednobojan, bez svetla, uraditi:
 ```
 geometry.computeVertexNormals()
 ```
+
+## 3D models pipeline
+
+- rigmodels: export as obj
+- blender: import obj, move height, rotate left 90?, export as fbx
+- mixamo: import and add animations
 
 ## Documentation
 

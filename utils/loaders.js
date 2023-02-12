@@ -8,7 +8,7 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
-import { sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations, witchAnimations, naziAnimations, germanSoldierAnimations, naziOfficerAnimations, naziMachineGunnerAnimations, naziAgentAnimations } from '/data/animations.js'
+import { sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations, witchAnimations, naziAnimations, germanSoldierAnimations, naziOfficerAnimations, naziMachineGunnerAnimations, naziAgentAnimations, jungleScoutAnimations } from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -203,3 +203,5 @@ export const loadNaziOfficer = () => loadModel({ file: 'model.fbx', prefix: 'cha
 export const loadnaziMachineGunner = () => loadModel({ file: 'model.fbx', prefix: 'character/nazi-machine-gunner/', animDict: naziMachineGunnerAnimations, angle: Math.PI, fixColors: true })
 
 export const loadNaziAgent = () => loadModel({ file: 'model.fbx', prefix: 'character/nazi-agent/', animDict: naziAgentAnimations, angle: Math.PI, fixColors: true, size: 3 })
+
+export const loadJungleScount = () => loadModel({ file: 'model.fbx', prefix: 'character/jungle-scout/', animDict: jungleScoutAnimations, angle: Math.PI, fixColors: true, size: 2.5 })

@@ -325,3 +325,11 @@ export const zombieDocAnimations = {
 export const ghostAnimations = {
   idle: 'Take 001'
 }
+
+export const jungleScoutAnimations = {
+  idle: 'Rifle Idle',
+  walk: 'Walk With Rifle',
+  run: 'Rifle Run',
+  attack: 'Firing Rifle',
+  death: 'Rifle Death',
+}
