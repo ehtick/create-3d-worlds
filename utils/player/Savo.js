@@ -10,7 +10,7 @@ import keyboard from '/utils/classes/Keyboard.js'
 
 export default class Savo extends Player {
   constructor({
-    speed, size = 2, mousemove = false, camera = defaultCamera, rifleBurst = false, ...params
+    speed, size = 1.8, mousemove = false, camera = defaultCamera, rifleBurst = false, ...params
   } = {}) {
     super({
       mesh: createBox({ size }), jumpStyle: 'FLY', camera: null, ...params

@@ -3,16 +3,15 @@ import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { loadModel } from '/utils/loaders.js'
-import { partisanAnimations } from '/data/animations.js'
+import { loadModel, loadPartisanLowpoly } from '/utils/loaders.js'
 
 scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations } = await loadModel({ file: 'model-lowpoly.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/partisan/', fixColors: true })
+const { mesh, animations, animDict } = await loadPartisanLowpoly()
 
-const player = new Player({ mesh, animations, animDict: partisanAnimations, useJoystick: true })
+const player = new Player({ mesh, animations, animDict, useJoystick: true })
 
 scene.add(mesh)
 

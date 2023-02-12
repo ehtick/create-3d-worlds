@@ -22,7 +22,7 @@ npx live-server
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
   - srediti ubijanje protivnika
-  - probati 3D karakter
+  - probati 3D karakter za prvo lice (partisan-lowpoly)
 
 - Svemir 
   - dodati model ring space-arcology

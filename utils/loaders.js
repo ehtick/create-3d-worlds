@@ -215,3 +215,5 @@ export const loadDemon = () => loadModel({ file: 'model.fbx', prefix: 'character
 export const loadIronGiant = () => loadModel({ file: 'model.fbx', prefix: 'character/iron-giant/', animDict: ironGiantAnimations, angle: Math.PI, size: 5, fixColors: true })
 
 export const loadSovietPartisan = () => loadModel({ file: 'model.fbx', prefix: 'character/soviet-partisan/', animDict: sovietPartisanAnimations, angle: Math.PI, size: 2, fixColors: true })
+
+export const loadPartisanLowpoly = () => loadModel({ file: 'model-lowpoly.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/partisan/', fixColors: true })
