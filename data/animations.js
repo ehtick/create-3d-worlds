@@ -252,7 +252,7 @@ export const partisanAnimations = {
   death: 'Dying',
 }
 
-export const partisan2Animations = {
+export const sovietPartisanAnimations = {
   idle: 'Rifle Idle',
   walk: 'Walk With Rifle',
   attack: 'Gunplay',

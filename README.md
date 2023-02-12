@@ -15,6 +15,7 @@ npx live-server
   - dodati više napada, attack: [], ili poseban ključ
   - izabrati neprijatelje (Nemci, naziMachineGunnerAnimations)
     - naziMachineGunner da ponavlja napad anim (loop)
+    - napadati sa malom pauzom (izgleda neprirodno za kratak pucanj, npr. loadPartisan)
   - BUG: hodaju po vazduhu (možda dodati player.mesh u solids, da ga izbegavaju)
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
