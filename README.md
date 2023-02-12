@@ -11,6 +11,11 @@ npx live-server
 
 ### Scenes & examples
 
+- popravka modela: 
+  - rigmodels: export as obj
+  - blender: import obj, move height, rotate left 90?, export as fbx
+  - mixamo: import and add animations
+
 - Savo / FPS
   - pokušati da po defoltu koristi walk animaciju za ai akcije
   - izabrati neprijatelje (Nemci, duhovi)

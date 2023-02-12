@@ -150,6 +150,7 @@ export const naziAnimations = {
   idle: 'Rifle Aiming Idle',
   attack: 'Firing Rifle',
   walk: 'Walk With Rifle',
+  pain: 'Hit Reaction',
   death: 'Death Crouching Headshot Front',
 }
 

@@ -143,8 +143,9 @@ export async function loadFbxAnimations(names, prefix = '') {
 * Handle model load, resize, rotate, etc.
 * param could be:
 *   string (filepath) OR
-*   object { file, size, texture, mtl, angle, axis, shouldCenter, shouldAdjustHeight }
+*   object { file, size, texture, mtl, angle, axis, shouldCenter, shouldAdjustHeight, ... }
 * param.animDict is needed for multiple fbx animations
+* somethime 'size' not working, so you must use 'scale'
 * returns a promise that resolves with the { mesh, animations, mixer }
 */
 export const loadModel = async param => {
@@ -193,8 +194,8 @@ export const loadPartisan = () => loadModel({ file: 'model.fbx', angle: Math.PI,
 
 export const loadWitch = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: witchAnimations, prefix: 'character/witch/', fixColors: true })
 
-export const loadNazi = () => loadModel({ file: 'model.fbx', animDict: naziAnimations, prefix: 'character/nazi/', angle: Math.PI, fixColors: true })
-
 export const loadGermanSoldier = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: germanSoldierAnimations, prefix: 'character/german-soldier/', size: .75, fixColors: true })
+
+export const loadNazi = () => loadModel({ file: 'model.fbx', animDict: naziAnimations, prefix: 'character/nazi/', angle: Math.PI, fixColors: true, size: 3 })
 
 export const loadNaziOfficer = () => loadModel({ file: 'model.fbx', prefix: 'character/nazi-officer/', animDict: naziOfficerAnimations, angle: Math.PI, fixColors: true })
