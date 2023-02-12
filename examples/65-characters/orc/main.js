@@ -2,15 +2,14 @@ import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { loadModel } from '/utils/loaders.js'
-import { orcAnimations } from '/data/animations.js'
+import { loadOrc } from '/utils/loaders.js'
 
 scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/orc/', animDict: orcAnimations, angle: Math.PI, fixColors: true })
-const player = new Player({ mesh, animations, animDict: orcAnimations })
+const { mesh, animations, animDict } = await loadOrc()
+const player = new Player({ mesh, animations, animDict })
 
 scene.add(mesh)
 
