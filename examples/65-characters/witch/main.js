@@ -3,15 +3,14 @@ import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scen
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { loadWitch } from '/utils/loaders.js'
-import { witchAnimations } from '/data/animations.js'
 
 scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations } = await loadWitch()
+const { mesh, animations, animDict } = await loadWitch()
 
-const player = new Player({ mesh, animations, animDict: witchAnimations })
+const player = new Player({ mesh, animations, animDict })
 
 scene.add(mesh)
 
