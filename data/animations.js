@@ -76,41 +76,6 @@ export const golemAnimation = {
   death: 'Standing Death Forward 01',
 }
 
-export const druidAnimation = {
-  idle: 'Standing Idle',
-  walk: 'Standing Walk Forward',
-  run: 'Standing Run Forward',
-  jump: 'Standing Jump',
-  attack: 'Standing 2H Magic Attack 01',
-}
-
-export const dwarfAnimation = {
-  idle: 'Standing Idle',
-  walk: 'Standing Walk Forward',
-  run: 'Standing Run Forward',
-  jump: 'Standing Jump',
-  attack: 'Sword And Shield Slash',
-  special: 'Standing Taunt Chest Thump',
-}
-
-export const rangerAnimation = {
-  idle: 'Crouch Idle 03 Looking Over',
-  walk: 'Crouch Walk Forward',
-  death: 'Standing Death Forward 02',
-  attack: 'Standing Draw Arrow',
-  special: 'Standing Dive Forward',
-}
-
-export const shieldmaidenAnimation = {
-  idle: 'Sword And Shield Idle',
-  walk: 'Sword And Shield Walk',
-  run: 'Sword And Shield Run',
-  jump: 'Sword And Shield Jump',
-  attack: 'Sword And Shield Slash',
-  special: 'Sword And Shield Casting',
-  block: 'Sword And Shield Block',
-}
-
 export const thiefAnimation = {
   idle: 'Crouch Torch Idle 02',
   walk: 'Crouch Torch Walk Forward'
