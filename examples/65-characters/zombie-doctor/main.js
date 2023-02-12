@@ -2,15 +2,14 @@ import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { loadModel } from '/utils/loaders.js'
-import { zombieDocAnimations } from '/data/animations.js'
+import { loadZombieDoctor } from '/utils/loaders.js'
 
 scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/zombie-doctor/', angle: Math.PI, fixColors: true, animDict: zombieDocAnimations })
-const player = new Player({ mesh, animations, animDict: zombieDocAnimations })
+const { mesh, animations, animDict } = await loadZombieDoctor()
+const player = new Player({ mesh, animations, animDict })
 
 scene.add(mesh)
 
