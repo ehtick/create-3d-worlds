@@ -287,3 +287,11 @@ export const jungleScoutAnimations = {
   attack: 'Firing Rifle',
   death: 'Rifle Death',
 }
+
+export const barbarianAnimations = {
+  idle: 'Unarmed Idle', // Dwarf Idle
+  walk: 'Dwarf Walk',
+  run: 'Unarmed Run Forward',
+  attack: 'Standing Melee Attack 360 Low',
+  pain: 'Standing React Large From Right',
+}
