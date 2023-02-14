@@ -2,21 +2,19 @@ import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
-import { loadModel, loadFbxAnimations } from '/utils/loaders.js'
+import { loadModel } from '/utils/loaders.js'
 import { barbarianAnimations } from '/data/animations.js'
 
-scene.add(createSun())
+createOrbitControls()
 
+scene.add(createSun())
 scene.add(createFloor({ size: 100 }))
 
-const { mesh } = await loadModel({ file: 'character/barbarian/model.fbx', angle: Math.PI, fixColors: true })
-const animations = await loadFbxAnimations(barbarianAnimations, 'character/barbarian/')
-const player = new Player({ mesh, animations, animDict: barbarianAnimations })
+const { mesh, animations, animDict } = await loadModel({ prefix: 'character/barbarian/', file: 'model.fbx', angle: Math.PI, fixColors: true, animDict: barbarianAnimations })
+
+const player = new Player({ mesh, animations, animDict })
 
 scene.add(mesh)
-
-const controls = createOrbitControls()
-controls.target = mesh.position
 
 /* LOOP */
 
