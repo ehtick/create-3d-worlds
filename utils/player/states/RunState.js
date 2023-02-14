@@ -5,8 +5,10 @@ export default class RunState extends State {
     super.enter(oldState)
     const duration = this.prevState === 'jump' ? .15 : .75
 
-    if (this.actions.run)
+    if (this.actions.run) {
+      if (this.prevState === 'walk') this.syncLegs()
       this.transitFrom(oldAction, duration)
+    }
 
     if (!this.actions.run) {
       if (oldAction !== this.actions.walk) oldAction?.stop()
@@ -14,6 +16,7 @@ export default class RunState extends State {
       this.actions.walk?.setEffectiveTimeScale(1.5)
       this.actions.walk?.play()
     }
+
     if (this.player.controlsDown) this.reverseAction()
   }
 
