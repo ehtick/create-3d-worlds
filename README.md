@@ -11,7 +11,6 @@ npx live-server
 
 ### Scenes & examples
 
-- prelazak s hoda na trčanje zapinje kod barbarian
 - fix dupechesh
 
 - Savo / FPS

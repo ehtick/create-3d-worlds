@@ -1,5 +1,5 @@
 {
-  "name": "create-rpg-game",
+  "name": "create-3d-worlds",
   "version": "1.0.0",
   "description": "Create a role-playing game!",
   "main": "index.js",
@@ -8,16 +8,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mudroljub/create-rpg-game.git"
+    "url": "git+https://github.com/mudroljub/create-3d-worlds.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mudroljub/create-rpg-game/issues"
+    "url": "https://github.com/mudroljub/create-3d-worlds/issues"
   },
-  "homepage": "https://github.com/mudroljub/create-rpg-game#readme",
+  "homepage": "https://github.com/mudroljub/create-3d-worlds#readme",
   "dependencies": {
-    "three": "npm:three@^0.145.0"
+    "three": "npm:three@^0.149.0"
   }
 }
