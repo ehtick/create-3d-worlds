@@ -1,6 +1,7 @@
 /**
  * ANIM DICTS
- * map finite machine state to model animation
+ * maps fsm state to model animation
+ * available: idle, walk, run, jump, fall, attack, special, pain, death
  */
 
 export const robotkoAnimations = {
@@ -48,11 +49,6 @@ export const witchAnimations = {
   special: 'Zombie Scream', // Spell Casting
 }
 
-export const witcherAnimations = {
-  idle: 'Idle',
-  walk: 'Walking',
-}
-
 export const ironGiantAnimations = {
   idle: 'Idle',
   walk: 'Walking',
@@ -74,11 +70,6 @@ export const golemAnimation = {
   special: 'Mutant Swiping',
   pain: 'Zombie Reaction Hit',
   death: 'Standing Death Forward 01',
-}
-
-export const thiefAnimation = {
-  idle: 'Crouch Torch Idle 02',
-  walk: 'Crouch Torch Walk Forward'
 }
 
 export const bigfootAnimations = {
@@ -235,14 +226,6 @@ export const treemanAnimations = {
   idle: 'Idle',
   walk: 'Mutant Walking',
   attack: 'Zombie Attack',
-}
-
-export const trollLowpolyAnimations = {
-  idle: 'Mutant Breathing Idle',
-  death: 'Mutant Dying',
-  run: 'Mutant Run',
-  attack: 'Mutant Swiping',
-  walk: 'Mutant Walking',
 }
 
 export const trollAnimations = {

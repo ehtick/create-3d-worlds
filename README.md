@@ -12,7 +12,7 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - dodati više napada, attack: [], ili poseban ključ
+  - dodati više napada, poseban ključ
   - izabrati neprijatelje (Nemci, naziMachineGunnerAnimations)
     - naziMachineGunner i loadSovietPartisan da ponavljaju napad (anim loop)
     - napadati sa malom pauzom (izgleda neprirodno za kratak pucanj, npr. loadPartisan)
