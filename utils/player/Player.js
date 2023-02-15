@@ -5,7 +5,7 @@ import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
-import { getSize, directionBlocked } from '/utils/helpers.js'
+import { getSize, directionBlocked, getMesh } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE } from '/data/constants.js'
 import { getPlayerState } from './states/index.js'
 
@@ -106,7 +106,7 @@ export default class Player {
   /* ANIMATIONS */
 
   setupMixer(animations, animDict) {
-    this.mixer = new AnimationMixer(this.mesh)
+    this.mixer = new AnimationMixer(getMesh(this.mesh))
     for (const key in animDict) {
       const clip = animations.find(anim => anim.name == animDict[key])
       this.actions[key] = this.mixer.clipAction(clip)
