@@ -64,6 +64,8 @@ Tenk (Vozilo)
 - Groblje
  - nasumično zakriviti kamenove
 
+- ranjena varvarka puzi do nekog cilja
+
 ### Polishing
 
 - obrisati sve što nije modularno
