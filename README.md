@@ -11,8 +11,6 @@ npx live-server
 
 ### Scenes & examples
 
-- fix dupechesh
-
 - Savo / FPS
   - dodati više napada, attack: [], ili poseban ključ
   - izabrati neprijatelje (Nemci, naziMachineGunnerAnimations)

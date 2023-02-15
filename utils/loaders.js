@@ -128,12 +128,15 @@ export async function loadFbx(params) {
   return prepareMesh({ model, animations, ...params })
 }
 
-/* @param names: animDict object */
+/* @param names: array or dict object */
 export async function loadFbxAnimations(names, prefix = '') {
-  const uniques = Array.from(new Set(Object.values(names)))
+  const uniques = Array.isArray(names)
+    ? Array.from(new Set(names))
+    : Array.from(new Set(Object.values(names)))
 
   const promises = uniques.map(name => loadFbx({ name, file: prefix + name + '.fbx' }))
   const responses = await Promise.all(promises)
+
   return responses.map(res => res.animations[0])
 }
 
