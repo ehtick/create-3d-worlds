@@ -257,7 +257,16 @@ export const zombieBarefootAnimations = {
   walk: 'Zombie Walk',
   run: 'Zombie Running',
   attack: 'Zombie Punching',
-  // pain: '',
+  pain: 'Zombie Reaction Hit',
+  death: 'Zombie Death',
+}
+
+export const zombieDannyAnimations = {
+  idle: 'Zombie Scratch Idle',
+  walk: 'Zombie Walk',
+  run: 'Zombie Run',
+  attack: 'Zombie Kicking',
+  pain: 'Zombie Reaction Hit',
   death: 'Zombie Death',
 }
 
