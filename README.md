@@ -12,8 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - barbarianAnimations dodati wounded
-    - WoundedState extends WalkState, mnogo manja brzina i ne može da prelazi u druga stanja
   - Zombi anim: running crowl
   - isprobati svima attack2 (npc da nasumično koristi oba, player na posebne komande)
   - dodati jumpStyle: 'NO_JUMP'

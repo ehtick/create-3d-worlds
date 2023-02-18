@@ -249,13 +249,6 @@ export const zombieCopAnimations = {
   death: 'Zombie Death',
 }
 
-export const zombieGirlAnimations = {
-  idle: 'Zombie Idle',
-  walk: 'Walking',
-  attack: 'Zombie Neck Bite Mirror',
-  special: 'Zombie Attack',
-}
-
 export const zombieDocAnimations = {
   idle: 'Zombie Idle',
   walk: 'Walking',

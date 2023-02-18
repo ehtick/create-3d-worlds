@@ -9,7 +9,7 @@ scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
 const { mesh, animations, animDict } = await loadZombieCop()
-const player = new Player({ mesh, animations, animDict })
+const player = new Player({ mesh, animations, animDict, speed: .5 })
 
 scene.add(mesh)
 
