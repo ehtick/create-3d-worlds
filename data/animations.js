@@ -226,12 +226,6 @@ export const skaterAnimations = {
   jump: 'Jumping',
 }
 
-export const treemanAnimations = {
-  idle: 'Idle',
-  walk: 'Mutant Walking',
-  attack: 'Zombie Attack',
-}
-
 export const trollAnimations = {
   idle: 'Unarmed Idle',
   walk: 'Mutant Walking',
