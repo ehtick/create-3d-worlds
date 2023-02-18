@@ -12,7 +12,7 @@ import { getPlayerState } from './states/index.js'
 export default class Player {
   constructor({
     mesh, animations, animDict, camera, keyboard = defaultKeyboard, solids, useJoystick, gravity = .7,
-    jumpStyle = 'FLY_JUMP', speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle), shouldRaycastGround = true
+    jumpStyle = 'JUMP', speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle), shouldRaycastGround = true
   }) {
     this.mesh = mesh
     this.speed = speed

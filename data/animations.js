@@ -278,10 +278,12 @@ export const jungleScoutAnimations = {
 export const barbarianAnimations = {
   idle: 'Unarmed Idle',
   walk: 'Dwarf Walk',
-  // wounded: Zombie Crawl
   run: 'Running',
-  attack: 'Standing Melee Attack 360 Low', // Mma Kick, Kicking, Standing Melee Kick, Chapa 2
+  attack: 'Mma Kick',
+  attack2: 'Standing Melee Kick',
+  jump: 'Kicking',
+  special: 'Standing 2H Magic Attack 05',
   pain: 'Standing React Large From Right',
   death: 'Falling Back Death',
-  special: 'Standing 2H Magic Attack 05',
+  // wounded: Zombie Crawl
 }
