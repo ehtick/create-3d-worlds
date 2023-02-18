@@ -13,6 +13,7 @@ npx live-server
 
 - Savo / FPS
   - Zombi anim: running crowl
+  - dodati kondiciono učitavanje animacija (kao capoeira-girl)
   - isprobati svima attack2 (npc da nasumično koristi oba, player na posebne komande)
   - dodati jumpStyle: 'NO_JUMP'
   - izabrati neprijatelje (Nemci)
