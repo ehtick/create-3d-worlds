@@ -237,8 +237,8 @@ export const trollAnimations = {
 export const zombieCopAnimations = {
   idle: 'Zombie Idle',
   walk: 'Zombie Walk',
-  attack: 'Zombie Neck Bite',
-  special: 'Zombie Punching',
+  run: 'Zombie Run',
+  attack: 'Zombie Neck Bite', // Zombie Scream
   pain: 'Hit Reaction',
   death: 'Zombie Death',
 }
@@ -248,6 +248,7 @@ export const zombieDocAnimations = {
   walk: 'Walking',
   run: 'Zombie Running',
   attack: 'Zombie Attack',
+  pain: 'Zombie Reaction Hit',
   death: 'Zombie Dying',
 }
 
