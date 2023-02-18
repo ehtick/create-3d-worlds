@@ -244,7 +244,7 @@ export const zombieCopAnimations = {
 }
 
 export const zombieDocAnimations = {
-  idle: 'Zombie Idle',
+  idle: 'Thriller Idle',
   walk: 'Walking',
   run: 'Zombie Running',
   attack: 'Zombie Attack',
