@@ -12,8 +12,10 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - dodati više napada, poseban ključ
-  - izabrati neprijatelje (Nemci, naziMachineGunnerAnimations)
+  - barbarianAnimations izabrati napade, dodati wounded
+  - isprobati svima attack2 (npc da nasumično koristi oba, player na posebne komande)
+  - dodati jumpStyle: 'NO_JUMP'
+  - izabrati neprijatelje (Nemci)
     - naziMachineGunner i loadSovietPartisan da ponavljaju napad (anim loop)
     - napadati sa malom pauzom (izgleda neprirodno za kratak pucanj, npr. loadPartisan)
   - BUG: hodaju po vazduhu (možda dodati player.mesh u solids, da ga izbegavaju)

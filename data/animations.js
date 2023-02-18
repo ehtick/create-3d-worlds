@@ -46,7 +46,8 @@ export const witchAnimations = {
   walk: 'Crouched Walking',
   run: 'Run',
   attack: 'Standing 2H Magic Attack 01',
-  special: 'Zombie Scream', // Spell Casting
+  attack2: 'Spell Casting',
+  special: 'Zombie Scream',
 }
 
 export const ironGiantAnimations = {
@@ -134,7 +135,7 @@ export const naziOfficerAnimations = {
 export const naziMachineGunnerAnimations = {
   idle: 'Rifle Idle',
   walk: 'Walk With Rifle',
-  attack: 'Gunplay', // Crouch Rapid Fire
+  attack: 'Crouch Rapid Fire'
 }
 
 export const naziAgentAnimations = {
@@ -149,7 +150,8 @@ export const naziAgentAnimations = {
 export const orcAnimations = {
   idle: 'Unarmed Idle',
   walk: 'Orc Walk',
-  attack: 'Zombie Attack', // Zombie Kicking
+  attack: 'Zombie Attack',
+  attack2: 'Zombie Kicking',
   special: 'Zombie Scream',
   death: 'Death From The Back',
 }
@@ -158,7 +160,8 @@ export const orcOgreAnimations = {
   idle: 'Unarmed Idle',
   walk: 'Mutant Walking',
   run: 'Mutant Run',
-  attack: 'Mutant Swiping', // Zombie Attack
+  attack: 'Mutant Swiping',
+  attack2: 'Zombie Attack',
   special: 'Zombie Scream',
   death: 'Zombie Dying',
 }
@@ -205,6 +208,7 @@ export const sovietPartisanAnimations = {
 export const soldierAnimations = {
   idle: 'Rifle Idle',
   walk: 'Walk With Rifle',
+  // TODO:
   // run: 'Rifle Run',
   // attack: 'Firing Rifle',
   // special: 'Fire Rifle',
