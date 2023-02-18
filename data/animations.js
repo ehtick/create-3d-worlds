@@ -270,6 +270,15 @@ export const zombieDannyAnimations = {
   death: 'Zombie Death',
 }
 
+export const zombieGuardAnimations = {
+  idle: 'Zombie Idle',
+  walk: 'Walking',
+  run: 'Zombie Running',
+  attack: 'Zombie Headbutt',
+  pain: 'Zombie Reaction Hit',
+  death: 'Zombie Dying',
+}
+
 export const ghostAnimations = {
   idle: 'Take 001'
 }
