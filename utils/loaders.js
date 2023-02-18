@@ -225,8 +225,8 @@ export const loadSoldier = () => loadModel({ file: 'model.fbx', prefix: 'charact
 
 export const loadTroll = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: trollAnimations, prefix: 'character/troll/', fixColors: true, size: 3 })
 
-export const loadZombieCop = () => loadModel({ file: 'model.fbx', prefix: 'character/zombie-cop/', animDict: zombieCopAnimations, angle: Math.PI, fixColors: true })
+export const loadZombieCop = () => loadModel({ file: 'zombie-cop.fbx', prefix: 'character/zombie/', animDict: zombieCopAnimations, angle: Math.PI, fixColors: true })
 
-export const loadZombieDoctor = () => loadModel({ file: 'model.fbx', prefix: 'character/zombie-doctor/', angle: Math.PI, fixColors: true, animDict: zombieDocAnimations })
+export const loadZombieDoctor = () => loadModel({ file: 'zombie-doctor.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict: zombieDocAnimations })
 
 export const loadDupechesh = () => loadModel({ file: 'character/ogro/ogro.md2', texture: 'character/ogro/skins/arboshak.png', size: 2, angle: Math.PI * .5, shouldCenter: true, shouldAdjustHeight: true, fixColors: true })

@@ -9,7 +9,7 @@ scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations, animDict } = await loadModel({ file: 'model.fbx', prefix: 'character/zombie-barefoot/', angle: Math.PI, fixColors: true, animDict: zombieBarefootAnimations })
+const { mesh, animations, animDict } = await loadModel({ file: 'zombie-barefoot.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict: zombieBarefootAnimations })
 const player = new Player({ mesh, animations, animDict, speed: .5 })
 
 scene.add(mesh)
