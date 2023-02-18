@@ -284,6 +284,6 @@ export const barbarianAnimations = {
   jump: 'Kicking',
   special: 'Standing 2H Magic Attack 05',
   pain: 'Standing React Large From Right',
+  wounded: 'Zombie Crawl',
   death: 'Falling Back Death',
-  // wounded: Zombie Crawl
 }

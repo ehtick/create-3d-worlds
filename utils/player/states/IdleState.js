@@ -37,6 +37,6 @@ export default class IdleState extends State {
       this.player.setState('pain')
 
     if (this.keyboard.pressed.Delete)
-      this.player.setState('death')
+      this.player.setState('wounded')
   }
 }

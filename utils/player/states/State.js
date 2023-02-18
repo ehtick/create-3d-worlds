@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 
-const { randFloat, randInt } = THREE.MathUtils
+const { randFloat } = THREE.MathUtils
 
 export default class State {
   constructor(player, name) {

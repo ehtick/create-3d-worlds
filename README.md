@@ -12,7 +12,9 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - barbarianAnimations izabrati napade, dodati wounded
+  - barbarianAnimations dodati wounded
+    - WoundedState extends WalkState, mnogo manja brzina i ne može da prelazi u druga stanja
+  - Zombi anim: running crowl
   - isprobati svima attack2 (npc da nasumično koristi oba, player na posebne komande)
   - dodati jumpStyle: 'NO_JUMP'
   - izabrati neprijatelje (Nemci)
@@ -25,6 +27,7 @@ npx live-server
     - možda da se kursor pomera na ondrag
   - srediti ubijanje protivnika
   - probati 3D karakter za prvo lice (partisan-lowpoly)
+  - dodati energiju (zdravlje) u Player, prebacivati na wounded kad je pri kraju?
 
 - Svemir 
   - dodati model ring space-arcology
