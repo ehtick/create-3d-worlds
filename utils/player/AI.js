@@ -31,7 +31,7 @@ export default class AI extends Player {
     this.attackDistance = attackDistance
     this.patrolLength = patrolLength
 
-    if (this.action) this.randomizeAnimation()
+    if (this.action) this.randomizeAction()
     this.mesh.rotateY(Math.random() * Math.PI * 2)
 
     if (mapSize) {
@@ -81,7 +81,7 @@ export default class AI extends Player {
     })
   }
 
-  randomizeAnimation() {
+  randomizeAction() {
     this.action.time = Math.random() * this.action.getClip().duration
   }
 
