@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { scene as defaultScene, camera as defaultCamera } from '/utils/scene.js'
-import { dir } from '/data/constants.js'
+import { dir } from '/utils/constants.js'
 
 const { randFloat, randFloatSpread } = THREE.MathUtils
 const raycaster = new THREE.Raycaster()

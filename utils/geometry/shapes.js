@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { DEGREE, RIGHT_ANGLE } from '/data/constants.js'
+import { DEGREE, RIGHT_ANGLE } from '/utils/constants.js'
 import { centerMesh, adjustHeight, randomGray } from '/utils/helpers.js'
 
 /*  AIRPLANE */

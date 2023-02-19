@@ -6,7 +6,7 @@ import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Keyboard.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
 import { getSize, directionBlocked, getMesh } from '/utils/helpers.js'
-import { dir, RIGHT_ANGLE } from '/data/constants.js'
+import { dir, RIGHT_ANGLE } from '/utils/constants.js'
 import { getPlayerState } from './states/index.js'
 
 export default class Player {

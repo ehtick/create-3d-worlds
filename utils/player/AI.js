@@ -5,7 +5,7 @@ import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js
 import { Keyboard } from '/utils/classes/Keyboard.js'
 import Player from './Player.js'
 import { getAIState } from './states/index.js'
-import { dir } from '/data/constants.js'
+import { dir } from '/utils/constants.js'
 
 const { randFloatSpread } = MathUtils
 

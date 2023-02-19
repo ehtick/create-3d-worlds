@@ -1,6 +1,6 @@
 import Entity from './Entity.js'
 import { roll } from '../utils/helpers.js'
-import { DEGREE } from '/data/constants.js'
+import { DEGREE } from '/utils/constants.js'
 
 export default class Mine extends Entity {
   constructor(model) {

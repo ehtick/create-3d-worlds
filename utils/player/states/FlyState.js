@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import State from './State.js'
-import { dir } from '/data/constants.js'
+import { dir } from '/utils/constants.js'
 
 export default class FlyState extends State {
   constructor(player, name) {

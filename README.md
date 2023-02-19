@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS 
-  - dodati jumpStyle: 'NO_JUMP'
   - srediti da ne seckaju napadi zombija
   - izabrati neprijatelje (Nemci)
     - naziMachineGunner i loadSovietPartisan da ponavljaju napad (anim loop)

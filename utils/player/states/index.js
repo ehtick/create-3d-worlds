@@ -1,4 +1,4 @@
-import { jumpStyles } from '/data/constants.js'
+import { jumpStyles } from '/utils/constants.js'
 
 import IdleState from './IdleState.js'
 import RunState from './RunState.js'

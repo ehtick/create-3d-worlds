@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { dir } from '/data/constants.js'
+import { dir } from '/utils/constants.js'
 
 /**
    * Add solid objects for player to collide
