@@ -1,3 +1,5 @@
+import { jumpStyles } from '/data/constants.js'
+
 import IdleState from './IdleState.js'
 import RunState from './RunState.js'
 import WalkState from './WalkState.js'
@@ -35,12 +37,6 @@ const aiStates = {
   patrol: PatrolState,
   follow: FollowState,
   attack: AIAttackState,
-}
-
-export const jumpStyles = {
-  FLY: 'FLY',
-  JUMP: 'JUMP',
-  FLY_JUMP: 'FLY_JUMP',
 }
 
 const chooseJumpState = jumpStyle => {

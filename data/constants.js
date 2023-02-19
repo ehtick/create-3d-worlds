@@ -18,3 +18,9 @@ export const dir = {
   up: new Vector3(0, 1, 0),
   down: new Vector3(0, -1, 0),
 }
+
+export const jumpStyles = {
+  FLY: 'FLY',
+  JUMP: 'JUMP',
+  FLY_JUMP: 'FLY_JUMP',
+}
