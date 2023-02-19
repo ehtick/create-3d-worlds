@@ -30,7 +30,7 @@ class Keyboard {
       this.pressed[e.code] = true
     })
     document.addEventListener('keyup', e => {
-      delete this.pressed[e.code]
+      this.pressed[e.code] = false
       this.capsLock = e.getModifierState('CapsLock')
     })
 
@@ -57,11 +57,11 @@ class Keyboard {
 
   handleMouseUp(e) {
     if (e.button === 0) {
-      delete this.pressed.mouse
+      this.pressed.mouse = false
       this.resetSwipe()
     }
     if (e.button === 2)
-      delete this.pressed.mouse2
+      this.pressed.mouse2 = false
   }
 
   checkDirection(e) {
@@ -138,6 +138,10 @@ class Keyboard {
 
   get keyPressed() {
     return this.totalPressed > 0
+  }
+
+  get touched() {
+    return Object.keys(this.pressed).length > 0
   }
 
   /* SWIPES */

@@ -36,7 +36,6 @@ const solids = [walls, ...enemies.map(e => e.mesh)]
 player.addSolids(solids)
 
 const rain = new Rain()
-// TODO: rain.audio.play() on click
 scene.add(rain.particles)
 
 /* LOOP */
