@@ -181,9 +181,6 @@ export const loadModel = async param => {
 
 /* ALIASES */
 
-export const loadLowPoly = ({ file = 'model.fbx', prefix, animDict }) =>
-  loadModel({ file, animDict, prefix, angle: Math.PI })
-
 export const loadRobotko = () =>
   loadModel({ file: 'character/robotko/robot.glb', size: 1.2, angle: Math.PI })
 
@@ -193,9 +190,33 @@ export const loadGolem = (params = {}) => loadModel({ file: 'model.fbx', angle: 
 
 export const loadGoblin = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: goblinAnimations, prefix: 'character/goblin/', fixColors: true, size: 1.5 })
 
-export const loadPartisan = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/partisan/', fixColors: true, size: 1.8 })
-
 export const loadWitch = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: witchAnimations, prefix: 'character/witch/', fixColors: true, size: 1.7 })
+
+export const loadOrc = () => loadModel({ file: 'model.fbx', prefix: 'character/orc/', animDict: orcAnimations, angle: Math.PI, fixColors: true })
+
+export const loadOrcOgre = () => loadModel({ file: 'model.fbx', prefix: 'character/orc-ogre/', animDict: orcOgreAnimations, angle: Math.PI, fixColors: true })
+
+export const loadDemon = () => loadModel({ file: 'model.fbx', prefix: 'character/demon/', animDict: demonAnimations, angle: Math.PI, fixColors: true, size: 3 })
+
+export const loadIronGiant = () => loadModel({ file: 'model.fbx', prefix: 'character/iron-giant/', animDict: ironGiantAnimations, angle: Math.PI, size: 5, fixColors: true })
+
+export const loadTroll = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: trollAnimations, prefix: 'character/troll/', fixColors: true, size: 3 })
+
+export const loadDupechesh = () => loadModel({ file: 'character/ogro/ogro.md2', texture: 'character/ogro/skins/arboshak.png', size: 2, angle: Math.PI * .5, shouldCenter: true, shouldAdjustHeight: true, fixColors: true })
+
+/* ZOMBIES */
+
+export const loadZombieCop = () => loadModel({ file: 'zombie-cop.fbx', prefix: 'character/zombie/', animDict: zombieCopAnimations, angle: Math.PI, fixColors: true })
+
+export const loadZombieDoctor = () => loadModel({ file: 'zombie-doctor.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict: zombieDocAnimations })
+
+/* SOLDIERS */
+
+export const loadSovietPartisan = () => loadModel({ file: 'model.fbx', prefix: 'character/soviet-partisan/', animDict: sovietPartisanAnimations, angle: Math.PI, size: 1.8, fixColors: true })
+
+export const loadPartisanLowpoly = () => loadModel({ file: 'model-lowpoly.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/partisan/', fixColors: true, size: 1.8 })
+
+export const loadSoldier = () => loadModel({ file: 'model.fbx', prefix: 'character/soldier/', animDict: soldierAnimations, angle: Math.PI, fixColors: true, size: 1.8 })
 
 export const loadGermanSoldier = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: germanSoldierAnimations, prefix: 'character/german-soldier/', size: 1.8, fixColors: true })
 
@@ -209,24 +230,5 @@ export const loadNaziAgent = () => loadModel({ file: 'model.fbx', prefix: 'chara
 
 export const loadJungleScount = () => loadModel({ file: 'model.fbx', prefix: 'character/jungle-scout/', animDict: jungleScoutAnimations, angle: Math.PI, fixColors: true, size: 1.8 })
 
-export const loadOrc = () => loadModel({ file: 'model.fbx', prefix: 'character/orc/', animDict: orcAnimations, angle: Math.PI, fixColors: true })
+export const loadPartisan = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/partisan/', fixColors: true, size: 1.8 })
 
-export const loadOrcOgre = () => loadModel({ file: 'model.fbx', prefix: 'character/orc-ogre/', animDict: orcOgreAnimations, angle: Math.PI, fixColors: true })
-
-export const loadDemon = () => loadModel({ file: 'model.fbx', prefix: 'character/demon/', animDict: demonAnimations, angle: Math.PI, fixColors: true, size: 3 })
-
-export const loadIronGiant = () => loadModel({ file: 'model.fbx', prefix: 'character/iron-giant/', animDict: ironGiantAnimations, angle: Math.PI, size: 5, fixColors: true })
-
-export const loadSovietPartisan = () => loadModel({ file: 'model.fbx', prefix: 'character/soviet-partisan/', animDict: sovietPartisanAnimations, angle: Math.PI, size: 1.8, fixColors: true })
-
-export const loadPartisanLowpoly = () => loadModel({ file: 'model-lowpoly.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/partisan/', fixColors: true, size: 1.8 })
-
-export const loadSoldier = () => loadModel({ file: 'model.fbx', prefix: 'character/soldier/', animDict: soldierAnimations, angle: Math.PI, fixColors: true, size: 1.8 })
-
-export const loadTroll = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: trollAnimations, prefix: 'character/troll/', fixColors: true, size: 3 })
-
-export const loadZombieCop = () => loadModel({ file: 'zombie-cop.fbx', prefix: 'character/zombie/', animDict: zombieCopAnimations, angle: Math.PI, fixColors: true })
-
-export const loadZombieDoctor = () => loadModel({ file: 'zombie-doctor.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict: zombieDocAnimations })
-
-export const loadDupechesh = () => loadModel({ file: 'character/ogro/ogro.md2', texture: 'character/ogro/skins/arboshak.png', size: 2, angle: Math.PI * .5, shouldCenter: true, shouldAdjustHeight: true, fixColors: true })

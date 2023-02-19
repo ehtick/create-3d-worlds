@@ -2,15 +2,15 @@ import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
-import { loadLowPoly } from '/utils/loaders.js'
-import { skeletonAnimation } from '/data/animations.js'
+import { loadModel } from '/utils/loaders.js'
+import { skeletonAnimation as animDict } from '/data/animations.js'
 
 scene.add(createSun())
 
 scene.add(createFloor({ size: 100 }))
 
-const { mesh, animations } = await loadLowPoly({ animDict: skeletonAnimation, prefix: 'character/skeleton/' })
-const player = new Player({ mesh, animations, animDict: skeletonAnimation, speed: 1.2 })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/skeleton/', angle: Math.PI, animDict })
+const player = new Player({ mesh, animations, animDict, speed: 1.2 })
 
 scene.add(mesh)
 
