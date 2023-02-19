@@ -260,8 +260,8 @@ export const naziOfficerAnimations = {
   special: 'Yelling',
 }
 
-export const naziMachineGunnerAnimations = {
-  idle: 'Rifle Idle',
+export const germanMachineGunnerAnimations = {
+  idle: 'Machine Gun Idle',
   walk: 'Walk With Rifle',
   attack: 'Crouch Rapid Fire'
 }
