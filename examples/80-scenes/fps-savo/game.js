@@ -32,8 +32,11 @@ for (let i = 0; i < 10; i++) {
   scene.add(enemy.mesh)
 }
 
-const solids = [walls, ...enemies.map(e => e.mesh)]
+const enemyMeshes = enemies.map(e => e.mesh)
+const solids = [walls, ...enemyMeshes]
 player.addSolids(solids)
+
+// enemies.forEach(enemy => enemy.addSolids(enemyMeshes))
 
 const rain = new Rain()
 scene.add(rain.particles)

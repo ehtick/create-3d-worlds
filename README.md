@@ -12,8 +12,8 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS 
+  - da ne idu jedni kroz druge
   - naziMachineGunner i loadSovietPartisan da ponavljaju napad (anim loop)
-  - izabrati neprijatelje (Nemci)
   - srediti ubijanje protivnika
   - dodati energiju (zdravlje) u Player, prebacivati na wounded kad je pri kraju?
 
@@ -21,6 +21,7 @@ npx live-server
     - ai se okreću ka igraču, ako igrač skoči okreću se naviše, treba samo levo-desno
     - potražiti mesh.lookAt u player folderu
 
+  - izabrati neprijatelje
   - probati 3D karakter za prvo lice (partisan-lowpoly)
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi

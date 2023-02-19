@@ -185,10 +185,9 @@ export function similarColor(color, range = .25) {
 
 /* RAYCAST */
 
-export const directionBlocked = (mesh, solids, vector) => {
-  if (!mesh || !solids.length || !vector) return false
-  const vec = vector.clone() // because applyQuaternion is mutable
-  const direction = vec.applyQuaternion(mesh.quaternion)
+export const directionBlocked = (mesh, solids, dir) => {
+  if (!mesh || !solids.length || !dir) return false
+  const direction = dir.clone().applyQuaternion(mesh.quaternion)
   const bodyCenter = mesh.position.clone()
   const height = getHeight(mesh)
   bodyCenter.y += height * .5
