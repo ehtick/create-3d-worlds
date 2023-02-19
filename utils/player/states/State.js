@@ -44,7 +44,7 @@ export default class State {
   transitFrom(prevAction, duration = .25) {
     const oldAction = this.findActiveAction(prevAction)
     if (this.action === oldAction) return
-    // if (!oldAction) this.player.mixer?.stopAllAction()
+
     if (this.action && oldAction) this.action.crossFadeFrom(oldAction, duration)
     this.action?.play()
   }

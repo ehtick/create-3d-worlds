@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS 
-  - srediti da ne seckaju napadi zombija
   - izabrati neprijatelje (Nemci)
     - naziMachineGunner i loadSovietPartisan da ponavljaju napad (anim loop)
     - napadati sa malom pauzom (izgleda neprirodno za kratak pucanj, npr. loadPartisan)

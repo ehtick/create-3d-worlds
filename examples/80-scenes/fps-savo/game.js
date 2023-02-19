@@ -1,4 +1,3 @@
-import * as THREE from 'three'
 import { scene, renderer, camera, clock, createSkyBox } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 import Map2DRenderer from '/utils/classes/2d/Map2DRenderer.js'
@@ -31,8 +30,6 @@ for (let i = 0; i < 10; i++) {
   enemy.position.copy(tilemap.randomEmptyPos)
   enemies.push(enemy)
   scene.add(enemy.mesh)
-  const box = new THREE.BoxHelper(enemy.mesh, 0xffff00)
-  scene.add(box)
 }
 
 const solids = [walls, ...enemies.map(e => e.mesh)]
