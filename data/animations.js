@@ -290,11 +290,3 @@ export const sovietPartisanAnimations = {
   walk: 'Walk With Rifle',
   attack: 'Gunplay',
 }
-
-export const jungleScoutAnimations = {
-  idle: 'Rifle Idle',
-  walk: 'Walk With Rifle',
-  run: 'Rifle Run',
-  attack: 'Firing Rifle',
-  death: 'Rifle Death',
-}
