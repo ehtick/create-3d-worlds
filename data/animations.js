@@ -4,17 +4,6 @@
  * keys: idle, walk, run, jump, fall, attack, attack2, special, pain, wounded, death
  */
 
-export const robotkoAnimations = {
-  idle: 'Idle',
-  walk: 'Walking',
-  run: 'Running',
-  jump: 'Jump',
-  attack: 'Punch',
-  special: 'Wave',
-  death: 'Death',
-  // ThumbsUp, WalkJump, Yes, No, Dance
-}
-
 export const dupecheshAnimations = {
   idle: 'stand',
   walk: 'run',
