@@ -7,13 +7,14 @@ import { shootDecals } from '/utils/decals.js'
 import Particles from '/utils/classes/Particles.js'
 import config from '/config.js'
 import keyboard from '/utils/classes/Keyboard.js'
+import { jumpStyles } from '/utils/constants.js'
 
 export default class Savo extends Player {
   constructor({
     speed, size = 1.8, mousemove = false, camera = defaultCamera, rifleBurst = false, ...params
   } = {}) {
     super({
-      mesh: createBox({ size }), jumpStyle: 'FLY', camera: null, ...params
+      mesh: createBox({ size }), jumpStyle: jumpStyles.FLY, camera: null, ...params
     })
     this.speed = speed || size * 3
     this.mouseSensitivity = .05

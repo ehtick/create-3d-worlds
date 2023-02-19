@@ -1,3 +1,4 @@
+import { jumpStyles } from '/utils/constants.js'
 import State from './State.js'
 
 export default class FallState extends State {
@@ -10,10 +11,10 @@ export default class FallState extends State {
 
     /* TRANSIT */
 
-    if (player.jumpStyle === 'FLY' && player.controlsUp)
+    if (player.jumpStyle === jumpStyles.FLY && player.controlsUp)
       player.updateMove(delta)
 
-    if (player.jumpStyle === 'FLY' && this.keyboard.space)
+    if (player.jumpStyle === jumpStyles.FLY && this.keyboard.space)
       player.setState('jump')
 
     if (!player.inAir)

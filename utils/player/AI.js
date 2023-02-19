@@ -1,11 +1,11 @@
-import { Box3, Vector3, MathUtils, AnimationMixer } from 'three'
+import { Box3, Vector3, MathUtils } from 'three'
 import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 
 import { Keyboard } from '/utils/classes/Keyboard.js'
 import Player from './Player.js'
 import { getAIState } from './states/index.js'
-import { dir } from '/utils/constants.js'
+import { dir, jumpStyles } from '/utils/constants.js'
 
 const { randFloatSpread } = MathUtils
 
@@ -15,7 +15,7 @@ const { randFloatSpread } = MathUtils
  */
 export default class AI extends Player {
   constructor({
-    jumpStyle = 'JUMP', basicState = 'idle', shouldRaycastGround = false, sightDistance = 30, idleDistance = 3, attackDistance = 2, patrolLength = 10, target, mapSize, ...params
+    jumpStyle = jumpStyles.JUMP, basicState = 'idle', shouldRaycastGround = false, sightDistance = 30, idleDistance = 3, attackDistance = 2, patrolLength = 10, target, mapSize, ...params
   } = {}) {
     super({ ...params,
       mesh: clone(params.mesh),

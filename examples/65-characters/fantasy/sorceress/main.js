@@ -4,13 +4,15 @@ import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { loadSorceress } from '/utils/loaders.js'
 import { sorceressAnimations } from '/data/animations.js'
+import { jumpStyles } from '/utils/constants.js'
 
 scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
 const { mesh, animations } = await loadSorceress()
-const player = new Player({ mesh, animations, animDict: sorceressAnimations, useJoystick: true, jumpStyle: 'FLY_JUMP' })
+
+const player = new Player({ mesh, animations, animDict: sorceressAnimations, useJoystick: true, jumpStyle: jumpStyles.FLY_JUMP })
 
 scene.add(mesh)
 
