@@ -222,9 +222,9 @@ export const loadSovietPartisan = () => loadModel({ file: 'soviet-partisan.fbx',
 
 export const loadGermanSoldier = () => loadModel({ file: 'german-soldier.fbx', angle: Math.PI, animDict: germanSoldierAnimations, prefix: 'character/soldier/', size: 1.8, fixColors: true })
 
-export const loadNazi = () => loadModel({ file: 'model.fbx', animDict: naziAnimations, prefix: 'character/nazi/', angle: Math.PI, fixColors: true, size: 1.8 })
+export const loadNazi = () => loadModel({ file: 'nazi.fbx', animDict: naziAnimations, prefix: 'character/nazi/', angle: Math.PI, fixColors: true, size: 1.8 })
 
-export const loadNaziOfficer = () => loadModel({ file: 'model.fbx', prefix: 'character/nazi-officer/', animDict: naziOfficerAnimations, angle: Math.PI, fixColors: true, size: 2 })
+export const loadNaziOfficer = () => loadModel({ file: 'nazi-officer.fbx', prefix: 'character/nazi/', animDict: naziOfficerAnimations, angle: Math.PI, fixColors: true, size: 2 })
 
 export const loadnaziMachineGunner = () => loadModel({ file: 'model.fbx', prefix: 'character/german-machine-gunner/', animDict: germanMachineGunnerAnimations, size: 1.8, angle: Math.PI, fixColors: true })
 
