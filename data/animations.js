@@ -287,7 +287,7 @@ export const partisanAnimations = {
 
 export const sovietPartisanAnimations = {
   idle: 'Rifle Idle',
-  walk: 'Walk With Rifle',
+  walk: 'Walk With Rifle Patrol',
   attack: 'Gunplay',
 }
 

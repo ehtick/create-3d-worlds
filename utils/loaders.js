@@ -212,13 +212,13 @@ export const loadZombieDoctor = () => loadModel({ file: 'zombie-doctor.fbx', pre
 
 /* SOLDIERS */
 
-export const loadSovietPartisan = () => loadModel({ file: 'model.fbx', prefix: 'character/soviet-partisan/', animDict: sovietPartisanAnimations, angle: Math.PI, size: 1.8, fixColors: true })
+export const loadSovietPartisan = () => loadModel({ file: 'soviet-partisan.fbx', prefix: 'character/german-soldier/', animDict: sovietPartisanAnimations, angle: Math.PI, size: 1.8, fixColors: true })
 
 export const loadPartisanLowpoly = () => loadModel({ file: 'model-lowpoly.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/partisan/', fixColors: true, size: 1.8 })
 
 export const loadSoldier = () => loadModel({ file: 'model.fbx', prefix: 'character/soldier/', animDict: soldierAnimations, angle: Math.PI, fixColors: true, size: 1.8 })
 
-export const loadGermanSoldier = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: germanSoldierAnimations, prefix: 'character/german-soldier/', size: 1.8, fixColors: true })
+export const loadGermanSoldier = () => loadModel({ file: 'german-soldier.fbx', angle: Math.PI, animDict: germanSoldierAnimations, prefix: 'character/german-soldier/', size: 1.8, fixColors: true })
 
 export const loadNazi = () => loadModel({ file: 'model.fbx', animDict: naziAnimations, prefix: 'character/nazi/', angle: Math.PI, fixColors: true, size: 1.8 })
 
