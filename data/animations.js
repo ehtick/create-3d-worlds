@@ -210,8 +210,8 @@ export const zombieGuardAnimations = {
 export const germanSoldierAnimations = {
   idle: 'Rifle Aiming Idle',
   walk: 'Rifle Walk',
-  pursue: 'Walk With Rifle',
-  run: 'Rifle Run',
+  pursue: 'Walk With Rifle Aim',
+  run: 'Rifle Run Aim',
   attack: 'Firing Rifle',
   death: 'Dying'
 }
@@ -287,7 +287,7 @@ export const partisanAnimations = {
 
 export const sovietPartisanAnimations = {
   idle: 'Rifle Idle',
-  walk: 'Walk With Rifle Patrol',
+  walk: 'Walk With Rifle',
   attack: 'Gunplay',
 }
 
