@@ -183,6 +183,7 @@ export const zombieCrawlAnimations = {
   walk: 'Zombie Crawl',
   run: 'Running Crawl',
   attack: 'Zombie Biting',
+  death: 'Prone Death',
 }
 
 export const zombieBarefootAnimations = {

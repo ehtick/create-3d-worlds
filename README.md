@@ -12,8 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS 
-  - Zombi anim: running crowl
-  - proveriti dal su sve zombie animacije kompatibilne
   - dodati kondiciono učitavanje animacija (kao capoeira-girl)
   - isprobati svima attack2 (npc da nasumično koristi oba, player na posebne komande)
   - dodati jumpStyle: 'NO_JUMP'
