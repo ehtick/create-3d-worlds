@@ -8,4 +8,10 @@ export default class AIAttackState extends SpecialState {
       ? Math.random() > .5 ? actions.attack : actions.attack2
       : actions.attack
   }
+
+  enter(oldState, oldAction) {
+    super.enter(oldState, oldAction)
+    this.player.mesh.lookAt(this.player.target.position)
+    this.player.mesh.rotateY(Math.PI)
+  }
 }
