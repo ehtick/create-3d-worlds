@@ -182,7 +182,7 @@ export const zombieGuardAnimations = {
   idle: 'Zombie Idle',
   walk: 'Walking',
   run: 'Zombie Running',
-  attack: 'Zombie Headbutt',
+  attack: 'Zombie Kicking',
   pain: 'Zombie Reaction Hit',
   death: 'Zombie Dying',
 }

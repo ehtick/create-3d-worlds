@@ -14,6 +14,7 @@ npx live-server
 - Savo / FPS 
   - isprobati svima attack2 (npc da nasumično koristi oba)
   - dodati jumpStyle: 'NO_JUMP'
+  - srediti da ne seckaju napadi zombija
   - izabrati neprijatelje (Nemci)
     - naziMachineGunner i loadSovietPartisan da ponavljaju napad (anim loop)
     - napadati sa malom pauzom (izgleda neprirodno za kratak pucanj, npr. loadPartisan)
