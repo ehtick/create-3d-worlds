@@ -1,7 +1,7 @@
 /**
  * ANIM DICTS
- * maps fsm state to model animation
- * available: idle, walk, run, jump, fall, attack, special, pain, death
+ * maps state to animation
+ * keys: idle, walk, run, jump, fall, attack, attack2, special, pain, wounded, death
  */
 
 export const robotkoAnimations = {
@@ -79,6 +79,134 @@ export const bigfootAnimations = {
   attack: 'Zombie Punching',
 }
 
+export const orcAnimations = {
+  idle: 'Unarmed Idle',
+  walk: 'Orc Walk',
+  attack: 'Zombie Attack',
+  attack2: 'Zombie Kicking',
+  special: 'Zombie Scream',
+  death: 'Death From The Back',
+}
+
+export const orcOgreAnimations = {
+  idle: 'Unarmed Idle',
+  walk: 'Mutant Walking',
+  run: 'Mutant Run',
+  attack: 'Mutant Swiping',
+  attack2: 'Zombie Attack',
+  special: 'Zombie Scream',
+  death: 'Zombie Dying',
+}
+
+export const sorceressAnimations = {
+  idle: 'Standing Idle',
+  walk: 'Standing Walk Forward',
+  run: 'Standing Sprint Forward',
+  attack: 'Standing 1H Magic Attack 01',
+  special: 'Standing 2H Magic Attack 04',
+}
+
+export const skeletonAnimation = {
+  special: 'Zombie Scream',
+  run: 'Flying',
+  walk: 'Walking',
+  idle: 'Zombie Idle',
+  attack: 'Zombie Neck Bite',
+}
+
+export const trollAnimations = {
+  idle: 'Unarmed Idle',
+  walk: 'Mutant Walking',
+  attack: 'Zombie Attack',
+  pain: 'Shove Reaction',
+  death: 'Mutant Dying',
+}
+
+export const ghostAnimations = {
+  idle: 'Take 001'
+}
+
+export const robotSoldierAnimations = {
+  idle: 'Rifle Idle',
+  walk: 'Walk With Rifle',
+  run: 'Rifle Run',
+  attack: 'Rifle Punch',
+}
+
+export const skaterAnimations = {
+  idle: 'Skateboarding',
+  jump: 'Jumping',
+}
+
+export const nudeVictimAnimations = {
+  idle: 'Unarmed Idle',
+  walk: 'Drunk Run Forward',
+  attack: 'Terrified',
+  special: 'Zombie Agonizing',
+}
+
+export const barbarianAnimations = {
+  idle: 'Unarmed Idle',
+  walk: 'Dwarf Walk',
+  run: 'Running',
+  attack: 'Mma Kick',
+  attack2: 'Standing Melee Kick',
+  jump: 'Kicking',
+  special: 'Standing 2H Magic Attack 05',
+  pain: 'Standing React Large From Right',
+  wounded: 'Zombie Crawl',
+  death: 'Falling Back Death',
+}
+
+/* ZOMBIES */
+
+export const zombieCopAnimations = {
+  idle: 'Zombie Idle',
+  walk: 'Zombie Walk',
+  run: 'Zombie Run',
+  attack: 'Zombie Neck Bite', // Zombie Scream
+  pain: 'Hit Reaction',
+  death: 'Zombie Death',
+}
+
+export const zombieDocAnimations = {
+  idle: 'Thriller Idle',
+  walk: 'Walking',
+  run: 'Zombie Running',
+  attack: 'Zombie Attack',
+  pain: 'Zombie Reaction Hit',
+  death: 'Zombie Dying',
+}
+
+export const zombieBarefootAnimations = {
+  idle: 'Zombie Idle',
+  walk: 'Zombie Walk',
+  run: 'Zombie Running',
+  attack: 'Zombie Punching',
+  pain: 'Zombie Reaction Hit',
+  death: 'Zombie Death',
+}
+
+export const zombieDannyAnimations = {
+  idle: 'Zombie Scratch Idle',
+  walk: 'Zombie Walk',
+  run: 'Zombie Run',
+  attack: 'Zombie Kicking',
+  pain: 'Zombie Reaction Hit',
+  death: 'Zombie Death',
+}
+
+export const zombieGuardAnimations = {
+  idle: 'Zombie Idle',
+  walk: 'Walking',
+  run: 'Zombie Running',
+  attack: 'Zombie Headbutt',
+  pain: 'Zombie Reaction Hit',
+  death: 'Zombie Dying',
+}
+
+/* SOLDIERS */
+
 export const germanSoldierAnimations = {
   idle: 'Rifle Aiming Idle',
   walk: 'Rifle Walk',
@@ -147,48 +275,6 @@ export const naziAgentAnimations = {
   death: 'Dying',
 }
 
-export const orcAnimations = {
-  idle: 'Unarmed Idle',
-  walk: 'Orc Walk',
-  attack: 'Zombie Attack',
-  attack2: 'Zombie Kicking',
-  special: 'Zombie Scream',
-  death: 'Death From The Back',
-}
-
-export const orcOgreAnimations = {
-  idle: 'Unarmed Idle',
-  walk: 'Mutant Walking',
-  run: 'Mutant Run',
-  attack: 'Mutant Swiping',
-  attack2: 'Zombie Attack',
-  special: 'Zombie Scream',
-  death: 'Zombie Dying',
-}
-
-export const robotSoldierAnimations = {
-  idle: 'Rifle Idle',
-  walk: 'Walk With Rifle',
-  run: 'Rifle Run',
-  attack: 'Rifle Punch',
-}
-
-export const sorceressAnimations = {
-  idle: 'Standing Idle',
-  walk: 'Standing Walk Forward',
-  run: 'Standing Sprint Forward',
-  attack: 'Standing 1H Magic Attack 01',
-  special: 'Standing 2H Magic Attack 04',
-}
-
-export const skeletonAnimation = {
-  special: 'Zombie Scream',
-  run: 'Flying',
-  walk: 'Walking',
-  idle: 'Zombie Idle',
-  attack: 'Zombie Neck Bite',
-}
-
 export const partisanAnimations = {
   idle: 'Rifle Idle',
   walk: 'Walk With Rifle',
@@ -205,84 +291,6 @@ export const sovietPartisanAnimations = {
   attack: 'Gunplay',
 }
 
-export const soldierAnimations = {
-  idle: 'Rifle Idle',
-  walk: 'Walk With Rifle',
-  // TODO:
-  // run: 'Rifle Run',
-  // attack: 'Firing Rifle',
-  // special: 'Fire Rifle',
-}
-
-export const nudeVictimAnimations = {
-  idle: 'Unarmed Idle',
-  walk: 'Drunk Run Forward',
-  attack: 'Terrified',
-  special: 'Zombie Agonizing',
-}
-
-export const skaterAnimations = {
-  idle: 'Skateboarding',
-  jump: 'Jumping',
-}
-
-export const trollAnimations = {
-  idle: 'Unarmed Idle',
-  walk: 'Mutant Walking',
-  attack: 'Zombie Attack',
-  pain: 'Shove Reaction',
-  death: 'Mutant Dying',
-}
-
-export const zombieCopAnimations = {
-  idle: 'Zombie Idle',
-  walk: 'Zombie Walk',
-  run: 'Zombie Run',
-  attack: 'Zombie Neck Bite', // Zombie Scream
-  pain: 'Hit Reaction',
-  death: 'Zombie Death',
-}
-
-export const zombieDocAnimations = {
-  idle: 'Thriller Idle',
-  walk: 'Walking',
-  run: 'Zombie Running',
-  attack: 'Zombie Attack',
-  pain: 'Zombie Reaction Hit',
-  death: 'Zombie Dying',
-}
-
-export const zombieBarefootAnimations = {
-  idle: 'Zombie Idle',
-  walk: 'Zombie Walk',
-  run: 'Zombie Running',
-  attack: 'Zombie Punching',
-  pain: 'Zombie Reaction Hit',
-  death: 'Zombie Death',
-}
-
-export const zombieDannyAnimations = {
-  idle: 'Zombie Scratch Idle',
-  walk: 'Zombie Walk',
-  run: 'Zombie Run',
-  attack: 'Zombie Kicking',
-  pain: 'Zombie Reaction Hit',
-  death: 'Zombie Death',
-}
-
-export const zombieGuardAnimations = {
-  idle: 'Zombie Idle',
-  walk: 'Walking',
-  run: 'Zombie Running',
-  attack: 'Zombie Headbutt',
-  pain: 'Zombie Reaction Hit',
-  death: 'Zombie Dying',
-}
-
-export const ghostAnimations = {
-  idle: 'Take 001'
-}
-
 export const jungleScoutAnimations = {
   idle: 'Rifle Idle',
   walk: 'Walk With Rifle',
@@ -291,15 +299,11 @@ export const jungleScoutAnimations = {
   death: 'Rifle Death',
 }
 
-export const barbarianAnimations = {
-  idle: 'Unarmed Idle',
-  walk: 'Dwarf Walk',
-  run: 'Running',
-  attack: 'Mma Kick',
-  attack2: 'Standing Melee Kick',
-  jump: 'Kicking',
-  special: 'Standing 2H Magic Attack 05',
-  pain: 'Standing React Large From Right',
-  wounded: 'Zombie Crawl',
-  death: 'Falling Back Death',
+export const soldierAnimations = {
+  idle: 'Rifle Idle',
+  walk: 'Walk With Rifle',
+  // TODO:
+  // run: 'Rifle Run',
+  // attack: 'Firing Rifle',
+  // special: 'Fire Rifle',
 }
