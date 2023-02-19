@@ -163,16 +163,9 @@ export const zombieDocAnimations = {
   walk: 'Walking',
   run: 'Zombie Running',
   attack: 'Zombie Attack',
+  attack2: 'Zombie Attack Two Hand',
   pain: 'Zombie Reaction Hit',
   death: 'Zombie Dying',
-}
-
-export const zombieCrawlAnimations = {
-  idle: 'Sleeping Idle',
-  walk: 'Zombie Crawl',
-  run: 'Running Crawl',
-  attack: 'Zombie Biting',
-  death: 'Prone Death',
 }
 
 export const zombieBarefootAnimations = {
@@ -189,7 +182,7 @@ export const zombieDannyAnimations = {
   walk: 'Zombie Walk',
   run: 'Zombie Run',
   attack: 'Zombie Kicking',
-  pain: 'Zombie Reaction Hit',
+  pain: 'Zombie Reaction Hit Back',
   death: 'Zombie Death',
 }
 
@@ -200,6 +193,14 @@ export const zombieGuardAnimations = {
   attack: 'Zombie Headbutt',
   pain: 'Zombie Reaction Hit',
   death: 'Zombie Dying',
+}
+
+export const zombieCrawlAnimations = {
+  idle: 'Sleeping Idle',
+  walk: 'Zombie Crawl',
+  run: 'Running Crawl',
+  attack: 'Zombie Biting',
+  death: 'Prone Death',
 }
 
 /* SOLDIERS */
