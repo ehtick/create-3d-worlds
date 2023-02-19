@@ -27,8 +27,11 @@ export default class IdleState extends State {
     if (this.keyboard.space)
       this.player.setState('jump')
 
-    if (this.keyboard.pressed.Enter)
+    if (this.keyboard.pressed.mouse)
       this.player.setState('attack')
+
+    if (this.keyboard.pressed.Enter && this.actions.attack2)
+      this.player.setState('attack2')
 
     if (this.keyboard.control)
       this.player.setState('special')
