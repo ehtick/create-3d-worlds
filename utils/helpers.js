@@ -87,10 +87,10 @@ export const getCursorPosition = e => {
 /* MESHES */
 
 export const getMesh = obj => {
-  if (obj.isMesh) return obj
-  let mesh
+  if (obj.type == 'Mesh') return obj
+  let mesh = obj
   obj.traverse(child => {
-    if (child.isMesh) mesh = child
+    if (child.type == 'Mesh') mesh = child
     return
   })
   return mesh
