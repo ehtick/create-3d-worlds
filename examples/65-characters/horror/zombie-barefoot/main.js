@@ -2,14 +2,14 @@ import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { loadModel } from '/utils/loaders.js'
-import { zombieBarefootAnimations } from '/data/animations.js'
+import { loadZombieBarefoot } from '/utils/loaders.js'
 
 scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations, animDict } = await loadModel({ file: 'zombie-barefoot.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict: zombieBarefootAnimations })
+const { mesh, animations, animDict } = await loadZombieBarefoot()
+
 const player = new Player({ mesh, animations, animDict, speed: .5 })
 
 scene.add(mesh)

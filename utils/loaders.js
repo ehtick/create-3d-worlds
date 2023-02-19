@@ -9,7 +9,7 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
 import {
-  sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations, witchAnimations, naziAnimations, germanSoldierAnimations, naziOfficerAnimations, germanMachineGunnerAnimations, naziAgentAnimations, orcAnimations, orcOgreAnimations, demonAnimations, ironGiantAnimations, sovietPartisanAnimations, trollAnimations, zombieCopAnimations, zombieDocAnimations
+  sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations, witchAnimations, naziAnimations, germanSoldierAnimations, naziOfficerAnimations, germanMachineGunnerAnimations, naziAgentAnimations, orcAnimations, orcOgreAnimations, demonAnimations, ironGiantAnimations, sovietPartisanAnimations, trollAnimations, zombieCopAnimations, zombieDocAnimations, zombieBarefootAnimations
 } from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
@@ -211,6 +211,8 @@ export const loadDupechesh = () => loadModel({ file: 'character/ogro/ogro.md2', 
 export const loadZombieCop = () => loadModel({ file: 'zombie-cop.fbx', prefix: 'character/zombie/', animDict: zombieCopAnimations, angle: Math.PI, fixColors: true })
 
 export const loadZombieDoctor = () => loadModel({ file: 'zombie-doctor.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict: zombieDocAnimations })
+
+export const loadZombieBarefoot = () => loadModel({ file: 'zombie-barefoot.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict: zombieBarefootAnimations })
 
 /* SOLDIERS */
 
