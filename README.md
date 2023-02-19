@@ -11,8 +11,7 @@ npx live-server
 
 ### Scenes & examples
 
-- Savo / FPS
-  - BUG: partisan run 
+- Savo / FPS 
   - Zombi anim: running crowl
   - proveriti dal su sve zombie animacije kompatibilne
   - dodati kondiciono učitavanje animacija (kao capoeira-girl)
