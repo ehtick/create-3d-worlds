@@ -271,7 +271,7 @@ export const naziAgentAnimations = {
   walk: 'Standard Walk',
   attack: 'Shooting',
   pursue: 'Pistol Walk',
-  pain: 'Hit Reaction',
+  pain: 'Pistol Hit Reaction',
   death: 'Dying',
 }
 
