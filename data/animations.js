@@ -298,12 +298,3 @@ export const jungleScoutAnimations = {
   attack: 'Firing Rifle',
   death: 'Rifle Death',
 }
-
-export const soldierAnimations = {
-  idle: 'Rifle Idle',
-  walk: 'Walk With Rifle',
-  // TODO:
-  // run: 'Rifle Run',
-  // attack: 'Firing Rifle',
-  // special: 'Fire Rifle',
-}
