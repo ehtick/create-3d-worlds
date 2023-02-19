@@ -12,18 +12,20 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS 
-  - randomizovati malo napade i akcije
+  - naziMachineGunner i loadSovietPartisan da ponavljaju napad (anim loop)
   - izabrati neprijatelje (Nemci)
-    - naziMachineGunner i loadSovietPartisan da ponavljaju napad (anim loop)
-    - napadati sa malom pauzom (izgleda neprirodno za kratak pucanj, npr. loadPartisan)
+  - srediti ubijanje protivnika
+  - dodati energiju (zdravlje) u Player, prebacivati na wounded kad je pri kraju?
+
   - BUG: hodaju po vazduhu (možda dodati player.mesh u solids, da ga izbegavaju)
+    - ai se okreću ka igraču, ako igrač skoči okreću se naviše, treba samo levo-desno
+    - potražiti mesh.lookAt u player folderu
+
+  - probati 3D karakter za prvo lice (partisan-lowpoly)
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
-  - srediti ubijanje protivnika
-  - probati 3D karakter za prvo lice (partisan-lowpoly)
-  - dodati energiju (zdravlje) u Player, prebacivati na wounded kad je pri kraju?
 
 - Svemir 
   - dodati model ring space-arcology
