@@ -15,6 +15,7 @@ import FollowState from '../ai-states/FollowState.js'
 import FleeState from '../ai-states/FleeState.js'
 import PatrolState from '../ai-states/PatrolState.js'
 import AIWalkState from '../ai-states/AIWalkState.js'
+import AIAttackState from '../ai-states/AIAttackState.js'
 
 const playerStates = {
   idle: IdleState,
@@ -33,6 +34,7 @@ const aiStates = {
   flee: FleeState,
   patrol: PatrolState,
   follow: FollowState,
+  attack: AIAttackState,
 }
 
 export const jumpStyles = {

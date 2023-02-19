@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS 
-  - isprobati svima attack2 (npc da nasumično koristi oba)
   - dodati jumpStyle: 'NO_JUMP'
   - srediti da ne seckaju napadi zombija
   - izabrati neprijatelje (Nemci)
