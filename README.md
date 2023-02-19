@@ -12,7 +12,7 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - BUG: death on delete ne radi 
+  - BUG: partisan-lowpoly ne radi 
   - Zombi anim: running crowl
   - proveriti dal su sve zombie animacije kompatibilne
   - dodati kondiciono učitavanje animacija (kao capoeira-girl)

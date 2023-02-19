@@ -8,7 +8,7 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
-import { sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations, witchAnimations, naziAnimations, germanSoldierAnimations, naziOfficerAnimations, naziMachineGunnerAnimations, naziAgentAnimations, jungleScoutAnimations, orcAnimations, orcOgreAnimations, demonAnimations, ironGiantAnimations, sovietPartisanAnimations, trollAnimations, zombieCopAnimations, zombieDocAnimations } from '/data/animations.js'
+import { sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations, witchAnimations, naziAnimations, germanSoldierAnimations, naziOfficerAnimations, naziMachineGunnerAnimations, naziAgentAnimations, jungleScoutAnimations, orcAnimations, orcOgreAnimations, demonAnimations, ironGiantAnimations, sovietPartisanAnimations, trollAnimations, zombieCopAnimations, zombieDocAnimations, partisanLowpolyAnimations } from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -212,9 +212,11 @@ export const loadZombieDoctor = () => loadModel({ file: 'zombie-doctor.fbx', pre
 
 /* SOLDIERS */
 
-export const loadSovietPartisan = () => loadModel({ file: 'soviet-partisan.fbx', prefix: 'character/soldier/', animDict: sovietPartisanAnimations, angle: Math.PI, size: 1.8, fixColors: true })
+export const loadPartisan = () => loadModel({ file: 'partisan.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/soldier/', fixColors: true, size: 1.8 })
 
-export const loadPartisanLowpoly = () => loadModel({ file: 'model-lowpoly.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/partisan/', fixColors: true, size: 1.8 })
+export const loadPartisanLowpoly = () => loadModel({ file: 'partisan-lowpoly.fbx', angle: Math.PI, animDict: partisanLowpolyAnimations, prefix: 'character/partisan/', fixColors: true, size: 1.8 })
+
+export const loadSovietPartisan = () => loadModel({ file: 'soviet-partisan.fbx', prefix: 'character/soldier/', animDict: sovietPartisanAnimations, angle: Math.PI, size: 1.8, fixColors: true })
 
 export const loadGermanSoldier = () => loadModel({ file: 'german-soldier.fbx', angle: Math.PI, animDict: germanSoldierAnimations, prefix: 'character/soldier/', size: 1.8, fixColors: true })
 
@@ -227,5 +229,3 @@ export const loadnaziMachineGunner = () => loadModel({ file: 'model.fbx', prefix
 export const loadNaziAgent = () => loadModel({ file: 'model.fbx', prefix: 'character/nazi-agent/', animDict: naziAgentAnimations, angle: Math.PI, fixColors: true, size: 1.8 })
 
 export const loadJungleScount = () => loadModel({ file: 'jungle-scout.fbx', prefix: 'character/soldier/', animDict: jungleScoutAnimations, angle: Math.PI, fixColors: true, size: 1.8 })
-
-export const loadPartisan = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/partisan/', fixColors: true, size: 1.8 })
