@@ -16,12 +16,9 @@ export default class PursueState extends WalkState {
   update(delta) {
     const { player } = this
 
-    if (Date.now() - this.last > this.aimInterval)
-      player.lookAtTarget()
-
-    this.keyboard.pressed.ArrowUp = !player.directionBlocked(dir.forward, player.otherAi)
-
     if (Date.now() - this.last < this.aimInterval) return
+
+    player.lookAtTarget()
 
     /* TRANSIT */
 
