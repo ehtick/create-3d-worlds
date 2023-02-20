@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS 
-  - da se ai malo raziđu kad gone igrača (translateX), dodati TWEEN
   - pravit pauzu u pucanju?
   - srediti ubijanje protivnika
   - dodati energiju (zdravlje) u Player, prebacivati na wounded kad je pri kraju?

@@ -96,7 +96,7 @@ export default class AI extends Player {
     this.mesh.translateZ(this.velocity.z)
   }
 
-  strafeSmooth(x) {
+  translateSmooth(x) {
     new TWEEN.Tween(this.mesh.position)
       .to({ x: this.mesh.position.x + x }, 500)
       .start()
