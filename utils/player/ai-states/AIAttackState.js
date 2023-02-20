@@ -11,7 +11,6 @@ export default class AIAttackState extends SpecialState {
 
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
-    this.player.mesh.lookAt(this.player.target.position)
-    this.player.mesh.rotateY(Math.PI)
+    this.player.lookAtTarget()
   }
 }

@@ -24,7 +24,7 @@ export default class AIIdleState extends IdleState {
     if (basicState == 'flee' && player.targetInSight)
       player.setState('flee')
 
-    if (basicState == 'follow' && mesh.position.distanceTo(target.position) > idleDistance * 1.25)
+    if (basicState == 'follow' && player.distancToTarget > idleDistance * 1.25)
       player.setState('follow')
 
     super.update(delta)

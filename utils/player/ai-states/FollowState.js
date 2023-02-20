@@ -6,14 +6,13 @@ export default class PursueState extends WalkState {
   }
 
   update(delta) {
-    const { mesh, target, idleDistance } = this.player
+    const { player } = this
 
-    mesh.lookAt(target.position) // looks away?
-    mesh.rotateY(Math.PI)
+    player.lookAtTarget()
     this.keyboard.pressed.ArrowUp = true
 
-    if (mesh.position.distanceTo(target.position) < idleDistance)
-      this.player.setState('idle')
+    if (player.distancToTarget < player.idleDistance)
+      player.setState('idle')
 
     super.update(delta)
   }

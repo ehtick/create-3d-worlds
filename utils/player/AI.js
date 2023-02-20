@@ -57,9 +57,13 @@ export default class AI extends Player {
       || this.position.z <= this.boundaries.min.z
   }
 
+  get distancToTarget() {
+    return this.position.distanceTo(this.target.position)
+  }
+
   get targetInSight() {
     if (!this.target) return false
-    return this.position.distanceTo(this.target.position) < this.sightDistance
+    return this.distancToTarget < this.sightDistance
   }
 
   get otherAi() {
@@ -73,6 +77,12 @@ export default class AI extends Player {
       ? solids.filter(solid => solid !== this.mesh)
       : solids
     super.addSolids(notMe)
+  }
+
+  lookAtTarget() {
+    // BUG: da ne gleda y osu
+    this.mesh.lookAt(this.target.position)
+    this.mesh.rotateY(Math.PI)
   }
 
   /* ANIMS */
