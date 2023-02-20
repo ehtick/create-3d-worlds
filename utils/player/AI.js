@@ -17,7 +17,8 @@ export default class AI extends Player {
   constructor({
     jumpStyle = jumpStyles.JUMP, basicState = 'idle', shouldRaycastGround = false, sightDistance = 30, idleDistance = 3, attackDistance = 2, patrolLength = 10, target, mapSize, ...params
   } = {}) {
-    super({ ...params,
+    super({
+      ...params,
       mesh: clone(params.mesh),
       keyboard: new Keyboard(false),
       getState: name => getAIState(name, jumpStyle, params.attackStyle),
@@ -76,8 +77,9 @@ export default class AI extends Player {
   }
 
   lookAtTarget() {
-    // BUG: da ne gleda y osu
-    this.mesh.lookAt(this.target.position)
+    const { x, z } = this.target.position
+    const newPos = new Vector3(x, this.position.y, z)
+    this.mesh.lookAt(newPos)
     this.mesh.rotateY(Math.PI)
   }
 

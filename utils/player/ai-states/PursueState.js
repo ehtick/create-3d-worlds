@@ -1,6 +1,5 @@
 import { MathUtils } from 'three'
 import WalkState from '../states/WalkState.js'
-import { dir } from '/utils/constants.js'
 
 const { randInt } = MathUtils
 

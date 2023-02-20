@@ -14,12 +14,9 @@ npx live-server
 - Savo / FPS 
   - lookAtTarget TWEEN
   - smisliti kako da se ai ne preklapaju, bez raycasta
+    - ili da svaki 100 frejm baca raycast
   - srediti ubijanje protivnika
   - dodati energiju (zdravlje) u Player, prebacivati na wounded kad je pri kraju?
-
-  - BUG: hodaju po vazduhu (možda dodati player.mesh u solids, da ga izbegavaju)
-    - ai se okreću ka igraču, ako igrač skoči okreću se naviše, treba samo levo-desno
-    - potražiti mesh.lookAt u player folderu
 
   - izabrati neprijatelje
   - probati 3D karakter za prvo lice (partisan-lowpoly)
