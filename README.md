@@ -12,12 +12,12 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS 
-  - pravit pauzu u pucanju?
-  - srediti ubijanje protivnika
-  - dodati energiju (zdravlje) u Player, prebacivati na wounded kad je pri kraju?
+  - dodati energiju
+  - ubijanje protivnika
+  - prebacivati na wounded pri kraju zdravlja?
 
-  - izabrati neprijatelje
   - probati 3D karakter za prvo lice (partisan-lowpoly)
+  - izabrati neprijatelje
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola
