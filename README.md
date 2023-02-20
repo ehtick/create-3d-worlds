@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS 
-  - lookAtTarget TWEEN
   - smisliti kako da se ai ne preklapaju, bez raycasta
     - ili da svaki 100 frejm baca raycast
   - srediti ubijanje protivnika
