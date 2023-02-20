@@ -12,7 +12,7 @@ export default class AIIdleState extends IdleState {
 
   update(delta) {
     const { player } = this
-    const { mesh, basicState, target, idleDistance } = player
+    const { basicState, idleDistance } = player
 
     this.turnPeriodically(this.interval, Math.PI / 4)
 

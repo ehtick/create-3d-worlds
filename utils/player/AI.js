@@ -67,6 +67,14 @@ export default class AI extends Player {
     return this.distancToTarget < this.sightDistance
   }
 
+  get otherAi() {
+    return this.mesh.parent.children.filter(child => child.name == 'enemy' && child !== this.mesh)
+  }
+
+  get blocked() {
+    return this.directionBlocked(dir.forward, this.otherAi)
+  }
+
   /* UTILS */
 
   addSolids(solids) {
@@ -83,6 +91,17 @@ export default class AI extends Player {
     this.mesh.rotateY(Math.PI)
   }
 
+  bounce(angle = Math.PI) {
+    this.turn(angle)
+    this.mesh.translateZ(this.velocity.z)
+  }
+
+  turnSmooth(angle = Math.PI) {
+    new TWEEN.Tween(this.mesh.rotation)
+      .to({ y: this.mesh.rotation.y + angle }, 500)
+      .start()
+  }
+
   /* ANIMS */
 
   setupMixer(animations, animDict) {
@@ -95,19 +114,6 @@ export default class AI extends Player {
 
   randomizeAction() {
     this.action.time = Math.random() * this.action.getClip().duration
-  }
-
-  /* AI */
-
-  bounce(angle = Math.PI) {
-    this.turn(angle)
-    this.mesh.translateZ(this.velocity.z)
-  }
-
-  turnSmooth(angle = Math.PI) {
-    new TWEEN.Tween(this.mesh.rotation)
-      .to({ y: this.mesh.rotation.y + angle }, 500)
-      .start()
   }
 
   /* UPDATE */

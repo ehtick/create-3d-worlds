@@ -12,8 +12,9 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS 
-  - smisliti kako da se ai ne preklapaju, bez raycasta
-    - ili da svaki 100 frejm baca raycast
+  - da se ai ne preklapaju
+    - da se raziđu kad gone igrača
+  - pravit pauzu u pucanju?
   - srediti ubijanje protivnika
   - dodati energiju (zdravlje) u Player, prebacivati na wounded kad je pri kraju?
 

@@ -1,5 +1,7 @@
 import { MathUtils } from 'three'
+
 import WalkState from '../states/WalkState.js'
+import { dir } from '/utils/constants.js'
 
 const { randInt } = MathUtils
 
@@ -10,12 +12,17 @@ export default class PursueState extends WalkState {
     this.player.randomizeAction()
     this.keyboard.pressed.ArrowUp = true
     this.aimInterval = randInt(300, 600)
+
+    this.i = 0
   }
 
   update(delta) {
     const { player } = this
 
     if (Date.now() - this.last < this.aimInterval) return
+
+    if (this.i++ % 10 === 0)
+      this.keyboard.pressed.ArrowUp = !player.blocked
 
     player.lookAtTarget()
 
