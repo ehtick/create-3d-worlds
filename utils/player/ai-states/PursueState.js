@@ -22,7 +22,7 @@ export default class PursueState extends WalkState {
     if (Date.now() - this.last < this.aimInterval) return
 
     if (this.i++ % 10 === 0)
-      this.keyboard.pressed.ArrowUp = !player.blocked
+      if (player.blocked) player.strafeSmooth(.25)
 
     player.lookAtTarget()
 
