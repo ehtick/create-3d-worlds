@@ -133,8 +133,8 @@ export default class Player {
       this.mesh.position.y = this.groundY
   }
 
-  directionBlocked(vector) {
-    return directionBlocked(this.mesh, this.solids, vector)
+  directionBlocked(dir, solids = this.solids) {
+    return directionBlocked(this.mesh, solids, dir)
   }
 
   turn(angle) {

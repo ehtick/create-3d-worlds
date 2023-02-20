@@ -1,9 +1,8 @@
 import { MathUtils } from 'three'
 import WalkState from '../states/WalkState.js'
-import { directionBlocked } from '/utils/helpers.js'
 import { dir } from '/utils/constants.js'
 
-const { randInt, randFloatSpread } = MathUtils
+const { randInt } = MathUtils
 
 export default class PursueState extends WalkState {
 
@@ -12,9 +11,6 @@ export default class PursueState extends WalkState {
     this.player.randomizeAction()
     this.keyboard.pressed.ArrowUp = true
     this.aimInterval = randInt(300, 600)
-
-    const { mesh } = this.player
-    this.otherAi = mesh.parent.children.filter(m => m.name == 'enemy' && m !== mesh)
   }
 
   update(delta) {
@@ -25,8 +21,7 @@ export default class PursueState extends WalkState {
       player.mesh.rotateY(Math.PI)
     }
 
-    // TODO: koristiti distanceTo umesto raycast?
-    this.keyboard.pressed.ArrowUp = !directionBlocked(player.mesh, this.otherAi, dir.forward)
+    this.keyboard.pressed.ArrowUp = !player.directionBlocked(dir.forward, player.otherAi)
 
     if (Date.now() - this.last < this.aimInterval) return
 

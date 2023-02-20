@@ -62,6 +62,10 @@ export default class AI extends Player {
     return this.position.distanceTo(this.target.position) < this.sightDistance
   }
 
+  get otherAi() {
+    return this.mesh.parent.children.filter(m => m.name == 'enemy' && m !== this.mesh)
+  }
+
   /* UTILS */
 
   addSolids(solids) {
