@@ -20,7 +20,7 @@ export default class AI extends Player {
     super({ ...params,
       mesh: clone(params.mesh),
       keyboard: new Keyboard(false),
-      getState: name => getAIState(name, jumpStyle),
+      getState: name => getAIState(name, jumpStyle, params.attackStyle),
       shouldRaycastGround,
     })
     this.mesh.name = 'enemy'

@@ -18,6 +18,7 @@ import FleeState from '../ai-states/FleeState.js'
 import PatrolState from '../ai-states/PatrolState.js'
 import AIWalkState from '../ai-states/AIWalkState.js'
 import AIAttackState from '../ai-states/AIAttackState.js'
+import AIAttackLoopState from '../ai-states/AIAttackLoopState.js'
 
 const playerStates = {
   idle: IdleState,
@@ -52,7 +53,9 @@ export function getPlayerState(name, jumpStyle) {
   return playerStates[name] || SpecialState
 }
 
-export function getAIState(name, jumpStyle) {
+export function getAIState(name, jumpStyle, attackStyle) {
   if (name === 'jump') return chooseJumpState (jumpStyle)
+  if (name === 'attack') return attackStyle === 'LOOP' ? AIAttackLoopState : AIAttackState
+
   return aiStates[name] || SpecialState
 }

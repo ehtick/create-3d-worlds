@@ -7,7 +7,7 @@ import { hemLight, lightningStrike } from '/utils/light.js'
 import { nemesis } from '/data/maps.js'
 import { Rain } from '/utils/classes/Particles.js'
 import AI from '/utils/player/AI.js'
-import { loadGermanMachineGunner } from '/utils/loaders.js'
+import { loadSovietPartisan } from '/utils/loaders.js'
 
 const light = hemLight()
 scene.background = createSkyBox({ folder: 'skybox4' })
@@ -22,11 +22,11 @@ scene.add(walls)
 const player = new Savo({ camera })
 player.position.copy(tilemap.randomEmptyPos)
 
-const { mesh, animations, animDict } = await loadGermanMachineGunner()
+const { mesh, animations, animDict } = await loadSovietPartisan()
 
 const enemies = []
 for (let i = 0; i < 10; i++) {
-  const enemy = new AI({ mesh, animations, animDict, basicState: 'wander', solids: walls, target: player.mesh })
+  const enemy = new AI({ mesh, animations, animDict, basicState: 'wander', solids: walls, target: player.mesh, attackStyle: 'LOOP' })
   enemy.position.copy(tilemap.randomEmptyPos)
   enemies.push(enemy)
   scene.add(enemy.mesh)

@@ -12,7 +12,8 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS 
-  - naziMachineGunner i loadSovietPartisan da ponavljaju napad (anim loop)
+  - lookAtTarget TWEEN
+  - smisliti kako da se ai ne preklapaju, bez raycasta
   - srediti ubijanje protivnika
   - dodati energiju (zdravlje) u Player, prebacivati na wounded kad je pri kraju?
 
