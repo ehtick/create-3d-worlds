@@ -1,3 +1,4 @@
+import { MathUtils } from 'three'
 import Player from '/utils/player/Player.js'
 import { createBox } from '/utils/geometry.js'
 import { camera as defaultCamera } from '/utils/scene.js'
@@ -8,6 +9,8 @@ import Particles from '/utils/classes/Particles.js'
 import config from '/config.js'
 import keyboard from '/utils/classes/Keyboard.js'
 import { jumpStyles } from '/utils/constants.js'
+
+const { randInt } = MathUtils
 
 export default class Savo extends Player {
   constructor({
@@ -73,7 +76,7 @@ export default class Savo extends Player {
 
       if (isEnemy) {
         const mesh = getParent(object, 'enemy')
-        mesh.userData.hitAmount = 30
+        mesh.userData.hitAmount = randInt(35, 55)
       }
 
       this.time -= .5
