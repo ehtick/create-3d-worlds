@@ -150,7 +150,7 @@ export async function loadFbxAnimations(names, prefix = '') {
 *   string (filepath) OR
 *   object { file, size, texture, mtl, angle, axis, shouldCenter, shouldAdjustHeight, ... }
 * param.animDict is needed for multiple fbx animations
-* somethime 'size' not working, so you must use 'scale'
+* sometimes 'size' not working, so you must use 'scale'
 * returns a promise that resolves with the { mesh, animations, mixer }
 */
 export const loadModel = async param => {

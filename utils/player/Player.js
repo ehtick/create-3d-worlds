@@ -9,6 +9,8 @@ import { getSize, directionBlocked, getMesh } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE, jumpStyles } from '/utils/constants.js'
 import { getPlayerState } from './states/index.js'
 
+const pos = new Vector3()
+
 export default class Player {
   constructor({
     mesh, animations, animDict, camera, keyboard = defaultKeyboard, solids, useJoystick, gravity = .7,
@@ -29,10 +31,10 @@ export default class Player {
     this.getState = getState
     this.shouldRaycastGround = shouldRaycastGround
     this.energy = 100
+    this.actions = {}
 
     if (useJoystick) this.joystick = new JoyStick()
 
-    this.actions = {}
     if (animations?.length && animDict)
       this.setupMixer(animations, animDict)
 
@@ -77,7 +79,7 @@ export default class Player {
     return 0
   }
 
-  /* CONTROLS */
+  /* CONTROLS (move to separate class?) */
 
   get controlsUp() {
     return this.keyboard.up || this.joystick?.forward < 0
@@ -114,6 +116,15 @@ export default class Player {
     }
   }
 
+  findHands() {
+    this.rightHand = null
+    this.leftHand = null
+    this.mesh.traverse(child => {
+      if (child.name === 'mixamorigRightHand') this.rightHand = child
+      if (child.name === 'mixamorigLeftHandMiddle1') this.leftHand = child
+    })
+  }
+
   /* UTILS */
 
   add(obj) {
@@ -142,13 +153,31 @@ export default class Player {
     this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle)
   }
 
+  addWeapon(mesh) {
+    if (!this.rightHand || !this.leftHand) this.findHands()
+
+    this.rightHand.add(mesh)
+    mesh.translateY(34)
+    mesh.translateZ(4)
+    mesh.rotateX(Math.PI * .25)
+    mesh.rotateZ(-Math.PI * .5)
+    this.weapon = mesh
+  }
+
   /* UPDATES */
 
-  checkHit() {
-    if (!this.mesh.userData.hitAmount) return
+  updateWeapon() {
+    if (!this.weapon) return
+    this.leftHand.getWorldPosition(pos)
+    this.weapon.lookAt(pos)
+  }
 
-    this.energy -= this.mesh.userData.hitAmount
-    this.mesh.userData.hitAmount = 0
+  checkHit() {
+    const { userData } = this.mesh
+    if (!userData.hitAmount) return
+
+    this.energy -= userData.hitAmount
+    userData.hitAmount = 0
 
     if (this.energy <= 0)
       this.setState('death')
@@ -220,6 +249,7 @@ export default class Player {
     if (this.thirdPersonCamera) this.updateCamera(delta)
     this.currentState.update(delta)
     this.mixer?.update(delta)
+    this.updateWeapon()
     this.checkHit()
   }
 }
