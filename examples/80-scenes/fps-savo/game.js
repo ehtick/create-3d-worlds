@@ -25,7 +25,7 @@ player.position.copy(tilemap.randomEmptyPos)
 const { mesh, animations, animDict } = await loadSovietPartisan()
 
 const enemies = []
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 5; i++) {
   const enemy = new AI({ mesh, animations, animDict, basicState: 'wander', solids: walls, target: player.mesh, attackStyle: 'LOOP' })
   enemy.position.copy(tilemap.randomEmptyPos)
   enemies.push(enemy)

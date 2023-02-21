@@ -24,13 +24,15 @@ export default class AI extends Player {
       getState: name => getAIState(name, jumpStyle, params.attackStyle),
       shouldRaycastGround,
     })
-    this.mesh.name = 'enemy'
     this.basicState = basicState
     this.target = target
     this.idleDistance = idleDistance
     this.sightDistance = sightDistance
     this.attackDistance = attackDistance
     this.patrolLength = patrolLength
+
+    // game props for raycast
+    this.mesh.name = 'enemy'
 
     if (this.action) this.randomizeAction()
     this.mesh.rotateY(Math.random() * Math.PI * 2)

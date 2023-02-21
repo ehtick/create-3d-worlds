@@ -11,6 +11,9 @@ npx live-server
 
 ### Scenes & examples
 
+- dokumentovati yieldRandomCoord (vidi graffiti city)
+- doraditi yieldRandomCoord za matrix (da konta zidove kao zauzeta polja)
+
 - Savo / FPS 
   - dodati pain na pogadjanje
   - dodati death

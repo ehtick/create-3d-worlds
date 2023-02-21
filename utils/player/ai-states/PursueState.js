@@ -29,8 +29,6 @@ export default class PursueState extends WalkState {
 
     /* TRANSIT */
 
-    if (player.mesh.userData.energy <= 0) player.setState('death')
-
     if (player.distancToTarget < player.attackDistance)
       player.setState('attack')
 

@@ -29,8 +29,9 @@ export default class Player {
     this.getState = getState
     this.shouldRaycastGround = shouldRaycastGround
 
-    // game props should be on mesh, because raycast can see it
+    // game props for raycast
     this.mesh.userData.energy = 100
+    this.mesh.userData.player = this
 
     if (useJoystick) this.joystick = new JoyStick()
 

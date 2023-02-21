@@ -14,9 +14,5 @@ export default class WoundedState extends State {
 
     player.updateMove(delta)
     player.updateTurn(delta)
-
-    /* TRANSIT */
-    if (this.player.mesh.userData.energy <= 0)
-      this.player.setState('death')
   }
 }

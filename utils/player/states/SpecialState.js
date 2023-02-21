@@ -31,8 +31,6 @@ export default class SpecialState extends State {
     this._Cleanup()
     if (this.name === 'death') return
 
-    if (this.player.mesh.userData.energy <= 0) this.player.setState('death')
-
     this.player.setState(this.prevState || 'idle')
   }
 

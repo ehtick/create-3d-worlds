@@ -27,9 +27,6 @@ export default class WalkState extends State {
 
     /* TRANSIT */
 
-    if (this.player.mesh.userData.energy <= 0)
-      this.player.setState('death')
-
     if (this.keyboard.space)
       this.player.setState('jump')
 

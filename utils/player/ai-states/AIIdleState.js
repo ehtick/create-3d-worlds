@@ -18,9 +18,6 @@ export default class AIIdleState extends IdleState {
 
     /* TRANSIT */
 
-    if (player.mesh.userData.energy <= 0)
-      player.setState('death')
-
     if (player.pursueMode && player.targetInSight)
       player.setState('pursue')
 

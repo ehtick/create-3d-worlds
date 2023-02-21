@@ -147,7 +147,7 @@ export const barbarianAnimations = {
   death: 'Falling Back Death',
 }
 
-/* ZOMBIES */
+/* ZOMBIES COMPATIBLE */
 
 export const zombieCopAnimations = {
   idle: 'Zombie Idle',
@@ -197,30 +197,7 @@ export const zombieCrawlAnimations = {
   death: 'Prone Death',
 }
 
-/* SOLDIERS */
-
-export const germanSoldierAnimations = {
-  idle: 'Rifle Aiming Idle',
-  walk: 'Rifle Walk',
-  pursue: 'Walk With Rifle Aim',
-  run: 'Rifle Run Aim',
-  attack: 'Firing Rifle',
-  death: 'Dying'
-}
-
-export const germanSoldierCrouchAnimations = {
-  idle: 'Crouch Idle',
-  walk: 'Walk Crouching Forward',
-  attack: 'Fire Rifle Crouch',
-  death: 'Crouch Death',
-}
-
-export const germanSoldierProneAnimations = {
-  idle: 'Prone Idle',
-  walk: 'Prone Forward',
-  attack: 'Prone Firing Rifle',
-  death: 'Prone Death',
-}
+/* NAZI COMPATIBLE */
 
 export const naziAnimations = {
   idle: 'Rifle Aiming Idle',
@@ -250,6 +227,31 @@ export const naziOfficerAnimations = {
   walk: 'Pistol Walk',
   attack: 'Shooting',
   special: 'Yelling',
+}
+
+/* SOLDIERS COMPATIBLE */
+
+export const germanSoldierAnimations = {
+  idle: 'Rifle Aiming Idle',
+  walk: 'Rifle Walk',
+  pursue: 'Walk With Rifle Aim',
+  run: 'Rifle Run Aim',
+  attack: 'Firing Rifle',
+  death: 'Dying'
+}
+
+export const germanSoldierCrouchAnimations = {
+  idle: 'Crouch Idle',
+  walk: 'Walk Crouching Forward',
+  attack: 'Fire Rifle Crouch',
+  death: 'Crouch Death',
+}
+
+export const germanSoldierProneAnimations = {
+  idle: 'Prone Idle',
+  walk: 'Prone Forward',
+  attack: 'Prone Firing Rifle',
+  death: 'Prone Death',
 }
 
 export const germanMachineGunnerAnimations = {
@@ -282,5 +284,6 @@ export const sovietPartisanAnimations = {
   idle: 'Rifle Idle',
   walk: 'Walk With Rifle',
   attack: 'Gunplay',
+  pain: 'Reaction',
   death: 'Dying',
 }

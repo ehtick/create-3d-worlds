@@ -36,9 +36,6 @@ export default class IdleState extends State {
     if (this.keyboard.control)
       this.player.setState('special')
 
-    if (this.player.mesh.userData.energy <= 0)
-      this.player.setState('death')
-
     /* ONLY FOR TEST */
 
     if (this.keyboard.backspace)

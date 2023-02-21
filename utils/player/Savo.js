@@ -73,7 +73,7 @@ export default class Savo extends Player {
 
       if (isEnemy) {
         const mesh = getParent(object, 'enemy')
-        mesh.userData.energy -= 10
+        mesh.userData.player.setState('pain')
       }
 
       this.time -= .5
