@@ -21,7 +21,7 @@ export default class State {
   }
 
   get previousOrIdle() {
-    if (this.prevState == 'pain') return 'idle'
+    if (this.prevState == 'pain') return 'idle' // bugfix
     return this.prevState || 'idle'
   }
 
