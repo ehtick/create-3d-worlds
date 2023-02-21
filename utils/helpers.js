@@ -242,6 +242,11 @@ export const getScene = object => {
   return getScene(object.parent)
 }
 
+export const getParent = (object, name) => {
+  if (object.parent.name === name) return object.parent
+  return getParent(object.parent, name)
+}
+
 export const belongsTo = (object, name) => {
   if (!object) return false
   if (object.name === name) return true

@@ -12,9 +12,12 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS 
-  - dodati energiju
-  - ubijanje protivnika
+  - dodati pain na pogadjanje
+  - dodati death
   - prebacivati na wounded pri kraju zdravlja?
+  - dodati pain i death igrača
+
+  - BUG: Savo kad skače ne vrati se na tlo
 
   - probati 3D karakter za prvo lice (partisan-lowpoly)
   - izabrati neprijatelje

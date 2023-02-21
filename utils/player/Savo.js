@@ -1,7 +1,7 @@
 import Player from '/utils/player/Player.js'
 import { createBox } from '/utils/geometry.js'
 import { camera as defaultCamera } from '/utils/scene.js'
-import { normalizeMouse, getCameraIntersects, getScene, belongsTo } from '/utils/helpers.js'
+import { normalizeMouse, getCameraIntersects, getScene, getParent, belongsTo } from '/utils/helpers.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { shootDecals } from '/utils/decals.js'
 import Particles from '/utils/classes/Particles.js'
@@ -59,16 +59,23 @@ export default class Savo extends Player {
     for (let i = 0; i < shoots; i++) setTimeout(() => {
       const intersects = getCameraIntersects(this.camera, this.solids)
       if (!intersects.length) return
-      const { point, object } = intersects.find(x => x.object.name != 'decal')
 
+      const { point, object } = intersects.find(x => x.object.name != 'decal')
       const isEnemy = belongsTo(object, 'enemy')
+
       const decalColor = isEnemy ? 0x8a0303 : 0x000000
       shootDecals(intersects[0], { color: decalColor })
 
       const ricochetColor = isEnemy ? 0x8a0303 : 0xcccccc
       this.ricochet.reset({ pos: point, unitAngle: 0.2, color: ricochetColor })
       const scene = getScene(object)
+      console.log(scene)
       scene.add(this.ricochet.particles)
+
+      if (isEnemy) {
+        const mesh = getParent(object, 'enemy')
+        mesh.userData.energy -= 10
+      }
 
       this.time -= .5
     }, i * 100)
@@ -76,6 +83,7 @@ export default class Savo extends Player {
 
   update(delta) {
     super.update(delta)
+    console.log(this.position.y)
     this.time += (keyboard.run ? delta * 2 : delta)
     this.fpsRenderer.render(this.time)
     this.ricochet.expand({ scalar: 1.2, maxRounds: 5, gravity: .02 })
