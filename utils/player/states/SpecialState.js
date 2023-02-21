@@ -11,9 +11,13 @@ export default class SpecialState extends State {
   }
 
   enter(oldState, oldAction) {
-    this.prevState = oldState.name
+    if (oldAction === this.action)
+      return this.player.setState('idle') // prevent endless loop
+
+    super.enter(oldState)
     if (!this.action) return this.player.setState(this.prevState || 'idle')
 
+    this.oldState = oldState
     const mixer = this.action?.getMixer()
     mixer.addEventListener('finished', this._FinishedCallback)
     this.action.reset()

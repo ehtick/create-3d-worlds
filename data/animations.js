@@ -284,6 +284,6 @@ export const sovietPartisanAnimations = {
   idle: 'Rifle Idle',
   walk: 'Walk With Rifle',
   attack: 'Gunplay',
-  pain: 'Reaction',
+  pain: 'Hit Reaction',
   death: 'Dying',
 }

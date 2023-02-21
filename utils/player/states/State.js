@@ -22,7 +22,7 @@ export default class State {
 
   /* FSM */
 
-  enter(oldState) {
+  enter(oldState, oldAction) {
     this.prevState = oldState?.name
     if (this.action) this.action.enabled = true
   }

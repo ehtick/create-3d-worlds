@@ -9,12 +9,14 @@ npm i
 npx live-server
 ```
 
-### Scenes & examples
-
 - dokumentovati yieldRandomCoord (vidi graffiti city)
 - doraditi yieldRandomCoord za matrix (da konta zidove kao zauzeta polja)
 
+### Scenes & examples
+
 - Savo / FPS 
+  - iz special state ga stalno vraća u pain
+    - rešenje, da ne vraća u instance samog sebe
   - dodati pain na pogadjanje
   - dodati death
   - prebacivati na wounded pri kraju zdravlja?
