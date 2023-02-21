@@ -28,10 +28,10 @@ export default class Player {
     this.keyboard = keyboard
     this.getState = getState
     this.shouldRaycastGround = shouldRaycastGround
+    this.energy = 100
 
     // game props for raycast
-    this.mesh.userData.energy = 100
-    this.mesh.userData.player = this
+    this.mesh.userData.hit = false
 
     if (useJoystick) this.joystick = new JoyStick()
 
@@ -107,15 +107,6 @@ export default class Player {
     this.currentState.enter(oldState, oldState?.action)
   }
 
-  pain() {
-    this.mesh.userData.energy -= 10
-
-    if (this.mesh.userData.energy <= 0)
-      this.setState('death')
-    else
-      this.setState('pain')
-  }
-
   /* ANIMATIONS */
 
   setupMixer(animations, animDict) {
@@ -155,6 +146,18 @@ export default class Player {
   }
 
   /* UPDATES */
+
+  checkHit() {
+    if (!this.mesh.userData.hit) return
+
+    this.mesh.userData.hit = false
+    this.energy -= 10
+
+    if (this.energy <= 0)
+      this.setState('death')
+    else
+      this.setState('pain')
+  }
 
   updateMove(delta) {
     const direction = this.controlsUp ? dir.forward : dir.backward
@@ -220,5 +223,6 @@ export default class Player {
     if (this.thirdPersonCamera) this.updateCamera(delta)
     this.currentState.update(delta)
     this.mixer?.update(delta)
+    this.checkHit()
   }
 }
