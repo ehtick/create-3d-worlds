@@ -30,9 +30,6 @@ export default class Player {
     this.shouldRaycastGround = shouldRaycastGround
     this.energy = 100
 
-    // game props for raycast
-    this.mesh.userData.hit = false
-
     if (useJoystick) this.joystick = new JoyStick()
 
     this.actions = {}
@@ -148,10 +145,10 @@ export default class Player {
   /* UPDATES */
 
   checkHit() {
-    if (!this.mesh.userData.hit) return
+    if (!this.mesh.userData.hitAmount) return
 
-    this.mesh.userData.hit = false
-    this.energy -= 10
+    this.energy -= this.mesh.userData.hitAmount
+    this.mesh.userData.hitAmount = 0
 
     if (this.energy <= 0)
       this.setState('death')

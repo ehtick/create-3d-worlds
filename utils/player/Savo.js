@@ -73,7 +73,7 @@ export default class Savo extends Player {
 
       if (isEnemy) {
         const mesh = getParent(object, 'enemy')
-        mesh.userData.hit = true
+        mesh.userData.hitAmount = 30
       }
 
       this.time -= .5
