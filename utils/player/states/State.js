@@ -20,6 +20,11 @@ export default class State {
     return this.player.actions
   }
 
+  get previousOrIdle() {
+    if (this.prevState == 'pain') return 'idle'
+    return this.prevState || 'idle'
+  }
+
   /* FSM */
 
   enter(oldState, oldAction) {

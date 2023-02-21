@@ -107,6 +107,15 @@ export default class Player {
     this.currentState.enter(oldState, oldState?.action)
   }
 
+  pain() {
+    this.mesh.userData.energy -= 10
+
+    if (this.mesh.userData.energy <= 0)
+      this.setState('death')
+    else
+      this.setState('pain')
+  }
+
   /* ANIMATIONS */
 
   setupMixer(animations, animDict) {

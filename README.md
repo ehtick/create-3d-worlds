@@ -15,12 +15,13 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS 
-  - iz special state ga stalno vraća u pain
-    - rešenje, da ne vraća u instance samog sebe
+  - BUG: iz special state ga opet vraća u pain
+    - rešenje, da ne vraća u instance samog sebe?
   - dodati pain na pogadjanje
   - dodati death
   - prebacivati na wounded pri kraju zdravlja?
   - dodati pain i death igrača
+  - dodati metodu za dodavanje oružja
 
   - BUG: Savo kad skače ne vrati se na tlo
 

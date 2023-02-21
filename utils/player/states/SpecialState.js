@@ -11,11 +11,8 @@ export default class SpecialState extends State {
   }
 
   enter(oldState, oldAction) {
-    if (oldAction === this.action)
-      return this.player.setState('idle') // prevent endless loop
-
     super.enter(oldState)
-    if (!this.action) return this.player.setState(this.prevState || 'idle')
+    if (!this.action) return this.player.setState(this.previousOrIdle)
 
     this.oldState = oldState
     const mixer = this.action?.getMixer()
@@ -35,7 +32,7 @@ export default class SpecialState extends State {
     this._Cleanup()
     if (this.name === 'death') return
 
-    this.player.setState(this.prevState || 'idle')
+    this.player.setState(this.previousOrIdle)
   }
 
   exit() {
