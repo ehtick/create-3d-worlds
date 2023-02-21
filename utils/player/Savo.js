@@ -69,7 +69,6 @@ export default class Savo extends Player {
       const ricochetColor = isEnemy ? 0x8a0303 : 0xcccccc
       this.ricochet.reset({ pos: point, unitAngle: 0.2, color: ricochetColor })
       const scene = getScene(object)
-      console.log(scene)
       scene.add(this.ricochet.particles)
 
       if (isEnemy) {
@@ -83,7 +82,6 @@ export default class Savo extends Player {
 
   update(delta) {
     super.update(delta)
-    console.log(this.position.y)
     this.time += (keyboard.run ? delta * 2 : delta)
     this.fpsRenderer.render(this.time)
     this.ricochet.expand({ scalar: 1.2, maxRounds: 5, gravity: .02 })

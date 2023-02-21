@@ -255,7 +255,8 @@ export const naziOfficerAnimations = {
 export const germanMachineGunnerAnimations = {
   idle: 'Machine Gun Idle',
   walk: 'Walk With Rifle',
-  attack: 'Crouch Rapid Fire'
+  attack: 'Crouch Rapid Fire',
+  death: 'Crouch Death',
 }
 
 export const naziAgentAnimations = {
@@ -281,4 +282,5 @@ export const sovietPartisanAnimations = {
   idle: 'Rifle Idle',
   walk: 'Walk With Rifle',
   attack: 'Gunplay',
+  death: 'Dying',
 }

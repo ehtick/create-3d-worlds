@@ -18,6 +18,8 @@ export default class AIAttackLoopState extends State {
     if (this.i++ % 10 === 0)
       player.lookAtTarget()
 
+    if (player.mesh.userData.energy <= 0) player.setState('death')
+
     if (Date.now() - this.last >= this.attackTime)
       player.setState(this.prevState || 'idle')
 
