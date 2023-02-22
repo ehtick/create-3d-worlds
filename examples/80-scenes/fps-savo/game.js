@@ -8,17 +8,6 @@ import { nemesis } from '/data/maps.js'
 import { Rain } from '/utils/classes/Particles.js'
 import AI from '/utils/player/AI.js'
 import { loadSovietPartisan } from '/utils/loaders.js'
-import { shuffle } from '/utils/helpers.js'
-
-function getEmptyFields(matrix) {
-  const fields = []
-  matrix.forEach((row, y) => row.forEach((field, x) => {
-    if (!field) fields.push([x, y])
-  }))
-
-  shuffle(fields)
-  return fields
-}
 
 const light = hemLight()
 scene.background = createSkyBox({ folder: 'skybox4' })
@@ -26,18 +15,7 @@ scene.background = createSkyBox({ folder: 'skybox4' })
 const tilemap = new Tilemap(nemesis, 20)
 const smallMapRenderer = new Map2DRenderer(tilemap)
 
-function* yieldRandomCoord(matrix) {
-  const fields = getEmptyFields(matrix)
-  for (let i = 0; i < fields.length; i++)
-    yield tilemap.fieldToPosition(fields[i])
-
-  console.log(`No more fields to yield (total ${fields.length}).`)
-}
-
-const coords = yieldRandomCoord(nemesis)
-
-const pos = coords.next().value
-console.log(pos)
+const coords = tilemap.yieldRandomCoord(nemesis)
 
 scene.add(createGround({ file: 'terrain/ground.jpg' }))
 const walls = tilemap.meshFromMatrix({ texture: 'terrain/concrete.jpg' })

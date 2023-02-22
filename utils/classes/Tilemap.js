@@ -1,4 +1,5 @@
 import { randomMatrix, randomField, meshFromMatrix } from '/utils/mazes.js'
+import { shuffle } from '/utils/helpers.js'
 
 function getFieldValue(matrix, x, z) {
   x = Math.floor(x) // eslint-disable-line no-param-reassign
@@ -6,6 +7,16 @@ function getFieldValue(matrix, x, z) {
   if (x < 0 || x >= matrix[0].length || z < 0 || z >= matrix.length)
     return -1
   return matrix[z][x]
+}
+
+function getEmptyFields(matrix) {
+  const fields = []
+  matrix.forEach((row, y) => row.forEach((field, x) => {
+    if (!field) fields.push([x, y])
+  }))
+
+  shuffle(fields)
+  return fields
 }
 
 export default class Tilemap {
@@ -27,12 +38,14 @@ export default class Tilemap {
     }
   }
 
+  // TODO: delete
   get randomEmptyField() {
     const [x, y] = randomField(this.matrix)
     if (this.getFieldValue(x, y) === 0) return [x, y]
     return this.randomEmptyField
   }
 
+  // TODO: delete
   get randomEmptyPos() {
     const [randFieldX, randFieldZ] = this.randomEmptyField
     const x = randFieldX * this.cellSize + this.origin.x
@@ -52,5 +65,13 @@ export default class Tilemap {
 
   meshFromMatrix(params = {}) {
     return meshFromMatrix({ matrix: this.matrix, size: this.cellSize, origin: this.origin, ...params })
+  }
+
+  * yieldRandomCoord() {
+    const fields = getEmptyFields(this.matrix)
+    for (let i = 0; i < fields.length; i++)
+      yield this.fieldToPosition(fields[i])
+
+    console.log(`No more fields to yield (total ${fields.length}).`)
   }
 }
