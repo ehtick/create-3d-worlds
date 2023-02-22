@@ -2,7 +2,7 @@ import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { loadModel } from '/utils/loaders.js'
+import { loadModel, loadRifle } from '/utils/loaders.js'
 import { naziProneAnimations } from '/data/animations.js'
 
 scene.add(createSun())
@@ -13,6 +13,9 @@ const { mesh, animations } = await loadModel({ file: 'nazi.fbx', animDict: naziP
 const player = new Player({ mesh, animations, animDict: naziProneAnimations })
 
 scene.add(mesh)
+
+const { mesh: weapon } = await loadRifle()
+player.addWeapon(weapon)
 
 const controls = createOrbitControls()
 controls.target = mesh.position

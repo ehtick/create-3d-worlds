@@ -2,7 +2,7 @@ import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { loadNazi } from '/utils/loaders.js'
+import { loadNazi, loadRifle } from '/utils/loaders.js'
 
 scene.add(createSun())
 
@@ -12,6 +12,9 @@ const { mesh, animations, animDict } = await loadNazi()
 const player = new Player({ mesh, animations, animDict })
 
 scene.add(mesh)
+
+const { mesh: weapon } = await loadRifle()
+player.addWeapon(weapon)
 
 const controls = createOrbitControls()
 controls.target = mesh.position

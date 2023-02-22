@@ -233,3 +233,5 @@ export const loadNaziOfficer = () => loadModel({ file: 'nazi-officer.fbx', prefi
 export const loadGermanMachineGunner = () => loadModel({ file: 'german-machine-gunner.fbx', animDict: germanMachineGunnerAnimations, prefix: 'character/soldier/', angle: Math.PI, fixColors: true })
 
 export const loadNaziAgent = () => loadModel({ file: 'nazi-agent.fbx', prefix: 'character/soldier/', animDict: naziAgentAnimations, angle: Math.PI, fixColors: true, size: 1.8 })
+
+export const loadRifle = () => loadModel({ file: 'weapon/rifle.fbx', scale: 1.25, angle: Math.PI })

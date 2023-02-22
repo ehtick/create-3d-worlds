@@ -3,7 +3,7 @@ import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { loadModel, loadPartisanLowpoly } from '/utils/loaders.js'
+import { loadRifle, loadPartisanLowpoly } from '/utils/loaders.js'
 
 createOrbitControls()
 
@@ -15,7 +15,7 @@ const { mesh, animations, animDict } = await loadPartisanLowpoly()
 const player = new Player({ mesh, animations, animDict, useJoystick: true })
 scene.add(mesh)
 
-const { mesh: weapon } = await loadModel({ file: 'weapon/rifle.fbx', scale: 1.25, angle: Math.PI })
+const { mesh: weapon } = await loadRifle()
 player.addWeapon(weapon)
 
 /* LOOP */
