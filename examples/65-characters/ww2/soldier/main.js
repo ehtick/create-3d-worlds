@@ -9,7 +9,7 @@ scene.add(createSun())
 
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations, animDict } = await loadModel({ file: 'resistance-fighter.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/soldier/', fixColors: true })
+const { mesh, animations, animDict } = await loadModel({ file: 'soldier.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/soldier/', fixColors: true })
 
 const player = new Player({ mesh, animations, animDict })
 
