@@ -231,6 +231,15 @@ export const naziOfficerAnimations = {
 
 /* SOLDIERS COMPATIBLE */
 
+export const naziAgentAnimations = {
+  idle: 'Standing Idle',
+  walk: 'Standard Walk',
+  attack: 'Shooting',
+  pursue: 'Pistol Walk',
+  pain: 'Pistol Hit Reaction',
+  death: 'Dying',
+}
+
 export const germanSoldierAnimations = {
   idle: 'Rifle Aiming Idle',
   walk: 'Rifle Walk',
@@ -252,15 +261,6 @@ export const germanSoldierProneAnimations = {
   walk: 'Prone Forward',
   attack: 'Prone Firing Rifle',
   death: 'Prone Death',
-}
-
-export const naziAgentAnimations = {
-  idle: 'Standing Idle',
-  walk: 'Standard Walk',
-  attack: 'Shooting',
-  pursue: 'Pistol Walk',
-  pain: 'Pistol Hit Reaction',
-  death: 'Dying',
 }
 
 export const partisanAnimations = {
