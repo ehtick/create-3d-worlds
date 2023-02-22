@@ -2,7 +2,7 @@ import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { loadNaziOfficer } from '/utils/loaders.js'
+import { loadNaziOfficer, loadModel } from '/utils/loaders.js'
 
 scene.add(createSun())
 
@@ -12,6 +12,9 @@ const { mesh, animations, animDict } = await loadNaziOfficer()
 const player = new Player({ mesh, animations, animDict })
 
 scene.add(mesh)
+
+const { mesh: weapon } = await loadModel({ file: 'weapon/luger/model.fbx', scale: .18 })
+player.addPistol(weapon)
 
 const controls = createOrbitControls()
 controls.target = mesh.position

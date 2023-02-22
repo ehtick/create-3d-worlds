@@ -15,7 +15,7 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - dodati oružje drugim likovima
+  - dodati oružje svim likovima
   - joystick i pucanje su u koliziji
 
   - BUG: Savo kad skače ne vrati se na tlo

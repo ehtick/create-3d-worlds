@@ -15,7 +15,7 @@ const player = new Player({ mesh, animations, animDict: partisanAnimations, useJ
 scene.add(mesh)
 
 const { mesh: weapon } = await loadModel({ file: 'weapon/rifle-berthier/model.fbx', scale: .60, angle: Math.PI })
-player.addWeapon(weapon)
+player.addRifle(weapon)
 
 const controls = createOrbitControls()
 controls.target = mesh.position

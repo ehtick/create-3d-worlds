@@ -16,7 +16,7 @@ const player = new Player({ mesh, animations, animDict, useJoystick: true })
 scene.add(mesh)
 
 const { mesh: weapon } = await loadRifle()
-player.addWeapon(weapon)
+player.addRifle(weapon)
 
 /* LOOP */
 

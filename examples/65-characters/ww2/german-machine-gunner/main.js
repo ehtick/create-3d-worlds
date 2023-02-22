@@ -14,7 +14,7 @@ const player = new Player({ mesh, animations, animDict })
 scene.add(mesh)
 
 const { mesh: weapon } = await loadModel({ file: 'weapon/mg-42/lowpoly.fbx', scale: 1.4 })
-player.addWeapon(weapon)
+player.addRifle(weapon)
 
 const controls = createOrbitControls()
 controls.target = mesh.position

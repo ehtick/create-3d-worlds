@@ -15,7 +15,7 @@ const player = new Player({ mesh, animations, animDict: naziProneAnimations })
 scene.add(mesh)
 
 const { mesh: weapon } = await loadRifle()
-player.addWeapon(weapon)
+player.addRifle(weapon)
 
 const controls = createOrbitControls()
 controls.target = mesh.position

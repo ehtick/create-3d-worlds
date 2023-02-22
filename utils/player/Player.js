@@ -153,18 +153,23 @@ export default class Player {
     this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle)
   }
 
-  addWeapon(mesh) {
+  addRifle(mesh) {
     if (!this.rightHand || !this.leftHand) this.findHands()
     this.rightHand.add(mesh)
-    this.weapon = mesh
+    this.rifle = mesh
+  }
+
+  addPistol(mesh) {
+    if (!this.rightHand) this.findHands()
+    this.rightHand.add(mesh)
   }
 
   /* UPDATES */
 
   updateWeapon() {
-    if (!this.weapon) return
+    if (!this.rifle) return
     this.leftHand.getWorldPosition(pos)
-    this.weapon.lookAt(pos)
+    this.rifle.lookAt(pos)
   }
 
   checkHit() {
