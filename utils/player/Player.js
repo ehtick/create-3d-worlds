@@ -153,14 +153,12 @@ export default class Player {
     this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle)
   }
 
-  addWeapon(mesh) {
+  addWeapon(mesh, { translateY = 0, translateZ = 0 } = {}) {
     if (!this.rightHand || !this.leftHand) this.findHands()
 
     this.rightHand.add(mesh)
-    mesh.translateY(34)
-    mesh.translateZ(4)
-    mesh.rotateX(Math.PI * .25)
-    mesh.rotateZ(-Math.PI * .5)
+    // mesh.translateY(translateY)
+    // mesh.translateZ(translateZ)
     this.weapon = mesh
   }
 

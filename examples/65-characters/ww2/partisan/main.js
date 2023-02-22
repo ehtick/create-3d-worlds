@@ -14,7 +14,7 @@ const { mesh, animations } = await loadPartisan()
 const player = new Player({ mesh, animations, animDict: partisanAnimations, useJoystick: true })
 scene.add(mesh)
 
-const { mesh: weapon } = await loadModel({ file: 'weapon/rifle-berthier/model.fbx', scale: .66, angle: Math.PI })
+const { mesh: weapon } = await loadModel({ file: 'weapon/rifle-berthier/model.fbx', scale: .60, angle: Math.PI })
 player.addWeapon(weapon)
 
 const controls = createOrbitControls()

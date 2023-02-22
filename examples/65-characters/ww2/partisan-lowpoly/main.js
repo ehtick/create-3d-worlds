@@ -15,7 +15,7 @@ const { mesh, animations, animDict } = await loadPartisanLowpoly()
 const player = new Player({ mesh, animations, animDict, useJoystick: true })
 scene.add(mesh)
 
-const { mesh: weapon } = await loadModel({ file: 'weapon/rifle.fbx', scale: 1.4, angle: Math.PI })
+const { mesh: weapon } = await loadModel({ file: 'weapon/rifle.fbx', scale: 1.25, angle: Math.PI })
 player.addWeapon(weapon)
 
 /* LOOP */
