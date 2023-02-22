@@ -183,9 +183,6 @@ export const loadModel = async param => {
 
 /* ALIASES */
 
-export const loadRobotko = () =>
-  loadModel({ file: 'character/robotko/robot.glb', size: 1.2, angle: Math.PI })
-
 export const loadSorceress = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: sorceressAnimations, prefix: 'character/sorceress/', size: 1.75 })
 
 export const loadGolem = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: golemAnimation, prefix: 'character/golem/', size: 2.5, fixColors: true, ...params })

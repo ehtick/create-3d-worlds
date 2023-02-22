@@ -115,13 +115,6 @@ export const ghostAnimations = {
   idle: 'Take 001'
 }
 
-export const robotSoldierAnimations = {
-  idle: 'Rifle Idle',
-  walk: 'Walk With Rifle',
-  run: 'Rifle Run',
-  attack: 'Rifle Punch',
-}
-
 export const skaterAnimations = {
   idle: 'Skateboarding',
   jump: 'Jumping',
