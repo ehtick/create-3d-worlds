@@ -40,6 +40,12 @@ export default class Tilemap {
     return { x: x + this.cellSize / 2, y: 0, z: z + this.cellSize / 2 }
   }
 
+  fieldToPosition([x, z]) {
+    const posX = x * this.cellSize + this.origin.x
+    const posZ = z * this.cellSize + this.origin.z
+    return { x: posX + this.cellSize / 2, y: 0, z: posZ + this.cellSize / 2 }
+  }
+
   getFieldValue(x, y) {
     return getFieldValue(this.matrix, x, y)
   }

@@ -9,11 +9,11 @@ npm i
 npx live-server
 ```
 
-
 ### Scenes & examples
 
 - Savo / FPS
   - doraditi yieldRandomCoord za matrix (da konta zidove kao zauzeta polja)
+  - ai da trče u pursue stanju
   - probati 3D karakter za prvo lice (partisan-lowpoly)
   - izabrati neprijatelje
   - dodati neke modele vozila i kuca

@@ -34,7 +34,7 @@ export function randomInSquare(size, emptyCenter = 0) {
   return randomBool() ? { x, z } : { x: z, z: x }
 }
 
-function getRandomCoords(mapSize = 400, fieldSize = 20, emptyCenter = 0) {
+function getAllCoords(mapSize = 400, fieldSize = 20, emptyCenter = 0) {
   const halfSize = mapSize * .5
   const coords = []
   for (let i = -halfSize; i < halfSize; i += fieldSize)
@@ -49,7 +49,7 @@ function getRandomCoords(mapSize = 400, fieldSize = 20, emptyCenter = 0) {
 export function* yieldRandomCoord({
   mapSize = 400, fieldSize = 20, offset = fieldSize * .5, emptyCenter = 0
 } = {}) {
-  const coords = getRandomCoords(mapSize, fieldSize, emptyCenter)
+  const coords = getAllCoords(mapSize, fieldSize, emptyCenter)
 
   for (let i = 0; i < coords.length; i++) {
     const [x, z] = coords[i]
