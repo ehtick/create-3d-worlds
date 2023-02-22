@@ -13,7 +13,7 @@ const { mesh, animations, animDict } = await loadSovietPartisan()
 const player = new Player({ mesh, animations, animDict })
 scene.add(mesh)
 
-const { mesh: weapon } = await loadModel({ file: 'weapon/mg-42/untitled.fbx', scale: .4 })
+const { mesh: weapon } = await loadModel({ file: 'weapon/mg-42/model.fbx', scale: .4 })
 player.addWeapon(weapon)
 
 const controls = createOrbitControls()
