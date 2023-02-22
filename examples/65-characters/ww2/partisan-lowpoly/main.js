@@ -5,8 +5,9 @@ import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { loadModel, loadPartisanLowpoly } from '/utils/loaders.js'
 
-scene.add(createSun())
+createOrbitControls()
 
+scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
 const { mesh, animations, animDict } = await loadPartisanLowpoly()
@@ -14,11 +15,7 @@ const { mesh, animations, animDict } = await loadPartisanLowpoly()
 const player = new Player({ mesh, animations, animDict, useJoystick: true })
 scene.add(mesh)
 
-const controls = createOrbitControls()
-controls.target = mesh.position
-
 const { mesh: weapon } = await loadModel({ file: 'weapon/rifle.fbx', scale: 1.4, angle: Math.PI })
-scene.add(weapon)
 player.addWeapon(weapon)
 
 /* LOOP */

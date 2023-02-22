@@ -15,7 +15,9 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - dodati metodu za dodavanje oružja
+  - dodati oružje drugim likovima
+  - joystick i pucanje su u koliziji
+
   - BUG: Savo kad skače ne vrati se na tlo
 
   - probati 3D karakter za prvo lice (partisan-lowpoly)
