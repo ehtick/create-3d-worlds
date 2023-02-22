@@ -254,13 +254,6 @@ export const germanSoldierProneAnimations = {
   death: 'Prone Death',
 }
 
-export const germanMachineGunnerAnimations = {
-  idle: 'Machine Gun Idle',
-  walk: 'Walk With Rifle',
-  attack: 'Crouch Rapid Fire',
-  death: 'Crouch Death',
-}
-
 export const naziAgentAnimations = {
   idle: 'Standing Idle',
   walk: 'Standard Walk',
@@ -281,9 +274,17 @@ export const partisanAnimations = {
 }
 
 export const sovietPartisanAnimations = {
-  idle: 'Rifle Idle',
-  walk: 'Walk With Rifle',
+  idle: 'Machine Gun Idle',
+  walk: 'Machine Gun Walk',
   attack: 'Gunplay',
   pain: 'Hit Reaction',
   death: 'Dying',
+}
+
+export const germanMachineGunnerAnimations = {
+  idle: 'Machine Gun Idle',
+  walk: 'Machine Gun Walk',
+  attack: 'Crouch Rapid Fire',
+  pain: 'Hit Reaction',
+  death: 'Crouch Death',
 }
