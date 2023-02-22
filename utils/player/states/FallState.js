@@ -9,10 +9,10 @@ export default class FallState extends State {
     player.applyGravity(delta)
     player.applyVelocityY()
 
-    /* TRANSIT */
-
     if (player.jumpStyle === jumpStyles.FLY && player.controlsUp)
       player.updateMove(delta)
+
+    /* TRANSIT */
 
     if (player.jumpStyle === jumpStyles.FLY && this.keyboard.space)
       player.setState('jump')

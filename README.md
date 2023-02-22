@@ -9,17 +9,12 @@ npm i
 npx live-server
 ```
 
-- dokumentovati yieldRandomCoord (vidi graffiti city)
-- doraditi yieldRandomCoord za matrix (da konta zidove kao zauzeta polja)
 
 ### Scenes & examples
 
 - Savo / FPS
-  - dodati oružje svim likovima
-  - joystick i pucanje su u koliziji
-
   - BUG: Savo kad skače ne vrati se na tlo
-
+  - doraditi yieldRandomCoord za matrix (da konta zidove kao zauzeta polja)
   - probati 3D karakter za prvo lice (partisan-lowpoly)
   - izabrati neprijatelje
   - dodati neke modele vozila i kuca
