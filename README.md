@@ -13,7 +13,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - BUG: Savo kad skače ne vrati se na tlo
   - doraditi yieldRandomCoord za matrix (da konta zidove kao zauzeta polja)
   - probati 3D karakter za prvo lice (partisan-lowpoly)
   - izabrati neprijatelje

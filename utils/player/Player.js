@@ -63,7 +63,9 @@ export default class Player {
   }
 
   get inAir() {
-    return this.heightDifference > this.height * .2
+    if (this.jumpStyle === jumpStyles.JUMP) return false
+
+    return this.heightDifference > .001
   }
 
   get action() {
