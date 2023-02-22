@@ -14,6 +14,9 @@ const player = new Player({ mesh, animations, animDict })
 
 scene.add(mesh)
 
+const { mesh: weapon } = await loadModel({ file: 'weapon/rifle.fbx', scale: 1.33, angle: Math.PI })
+player.addWeapon(weapon)
+
 const controls = createOrbitControls()
 controls.target = mesh.position
 
