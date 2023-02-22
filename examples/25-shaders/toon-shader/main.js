@@ -14,7 +14,7 @@ scene.add(sun)
 const teapot = new THREE.Mesh(new TeapotGeometry(2), material)
 scene.add(teapot)
 
-teapot.material.uniforms.uMaterialColor.value = new THREE.Color('crimson')
+teapot.material.uniforms.uMaterialColor.value = new THREE.Color(0x427062)
 
 /* LOOP */
 
