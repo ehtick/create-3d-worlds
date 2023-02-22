@@ -1,4 +1,3 @@
-import * as THREE from 'three'
 import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
