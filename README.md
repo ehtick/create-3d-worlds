@@ -11,8 +11,9 @@ npx live-server
 
 ### Scenes & examples
 
+- dodati settere na keyboard
+
 - Savo / FPS
-  - doraditi yieldRandomCoord za matrix (da konta zidove kao zauzeta polja)
   - ai da trče u pursue stanju
   - možda spojiti učitavanje modela i instanciranje AI u jednu async funkciju?
   - probati 3D karakter za prvo lice (partisan-lowpoly)

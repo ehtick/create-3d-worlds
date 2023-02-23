@@ -1,8 +1,8 @@
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { loadGolem, loadSorceress } from '/utils/loaders.js'
-import { golemAnimation, sorceressAnimations } from '/data/animations.js'
+import { loadOrcOgre, loadSorceress } from '/utils/loaders.js'
+import { sorceressAnimations } from '/data/animations.js'
 import AI from '/utils/player/AI.js'
 import Player from '/utils/player/Player.js'
 
@@ -18,10 +18,10 @@ scene.add(createFloor({ size: mapSize }))
 const player = new Player({ ...await loadSorceress(), animDict: sorceressAnimations })
 scene.add(player.mesh)
 
-const { mesh, animations } = await loadGolem()
+const { mesh, animations, animDict } = await loadOrcOgre()
 
-for (let i = 0; i < 20; i++) {
-  const ai = new AI({ mesh, animations, animDict: golemAnimation, mapSize, basicState: 'wander' })
+for (let i = 0; i < 7; i++) {
+  const ai = new AI({ mesh, animations, animDict, mapSize, basicState: 'pursue', target: player.mesh })
   npcs.push(ai)
   scene.add(ai.mesh)
 }

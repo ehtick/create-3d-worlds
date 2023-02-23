@@ -9,6 +9,9 @@ import { dir, jumpStyles } from '/utils/constants.js'
 
 const { randFloatSpread } = MathUtils
 
+const walkActions = ['wander', 'follow', 'patrol']
+const runActions = ['pursue', 'flee']
+
 /**
  * basic states that pursue (if target): idle, patrol, wander
  * basic states that doesn't pursue: flee i follow
@@ -116,9 +119,11 @@ export default class AI extends Player {
 
   setupMixer(animations, animDict) {
     super.setupMixer(animations, animDict)
-    const walkActions = ['wander', 'follow', 'pursue', 'flee', 'patrol']
     walkActions.forEach(name => {
       if (!this.actions[name]) this.actions[name] = this.actions.walk
+    })
+    runActions.forEach(name => {
+      if (!this.actions[name]) this.actions[name] = this.actions.run
     })
   }
 

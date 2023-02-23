@@ -1,12 +1,13 @@
 import { MathUtils } from 'three'
-import WalkState from '../states/WalkState.js'
+import RunState from '../states/RunState.js'
 
 const { randInt } = MathUtils
 
-export default class PursueState extends WalkState {
+export default class PursueState extends RunState {
 
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
+
     this.player.randomizeAction()
     this.keyboard.pressed.ArrowUp = true
     this.startPursue = randInt(300, 600)
@@ -17,6 +18,8 @@ export default class PursueState extends WalkState {
     const { player } = this
 
     if (Date.now() - this.last < this.startPursue) return
+
+    this.keyboard.run = true
 
     // raycast once in 50 frames (expensive operation)
     if (this.i % 50 === 0 && player.blocked)
@@ -29,12 +32,17 @@ export default class PursueState extends WalkState {
 
     /* TRANSIT */
 
+    super.update(delta)
+
     if (player.distancToTarget < player.attackDistance)
       player.setState('attack')
 
     if (!player.targetInSight)
       player.setState(player.basicState || 'idle')
+  }
 
-    super.update(delta)
+  exit() {
+    this.keyboard.run = false
+    super.exit()
   }
 }

@@ -269,6 +269,7 @@ export const partisanAnimations = {
 export const sovietPartisanAnimations = {
   idle: 'Machine Gun Idle',
   walk: 'Machine Gun Walk',
+  run: 'Rifle Run Aim',
   attack: 'Gunplay',
   pain: 'Hit Reaction',
   death: 'Dying',

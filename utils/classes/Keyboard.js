@@ -108,6 +108,10 @@ class Keyboard {
     return this.capsLock
   }
 
+  set run(bool) {
+    this.capsLock = bool
+  }
+
   get space() {
     return this.pressed.Space
   }
