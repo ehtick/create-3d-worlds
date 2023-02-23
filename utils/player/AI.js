@@ -15,7 +15,7 @@ const { randFloatSpread } = MathUtils
  */
 export default class AI extends Player {
   constructor({
-    jumpStyle = jumpStyles.JUMP, basicState = 'idle', shouldRaycastGround = false, sightDistance = 30, idleDistance = 3, attackDistance = 2, patrolLength = 10, target, mapSize, ...params
+    jumpStyle = jumpStyles.JUMP, basicState = 'idle', shouldRaycastGround = false, sightDistance = 30, idleDistance = 3, attackDistance = 2, patrolLength = 10, target, mapSize, coords, ...params
   } = {}) {
     super({
       ...params,
@@ -38,10 +38,12 @@ export default class AI extends Player {
     this.mesh.rotateY(Math.random() * Math.PI * 2)
 
     if (mapSize) {
-      this.position.set(randFloatSpread(mapSize), 0, randFloatSpread(mapSize))
       const halfMap = mapSize / 2
       this.boundaries = new Box3(new Vector3(-halfMap, 0, -halfMap), new Vector3(halfMap, 0, halfMap))
+      if (!coords) this.position.set(randFloatSpread(mapSize), 0, randFloatSpread(mapSize))
     }
+
+    if (coords) this.position.copy(coords.next().value)
 
     this.setState(basicState)
   }

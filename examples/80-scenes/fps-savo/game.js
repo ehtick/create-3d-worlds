@@ -25,9 +25,7 @@ const { mesh, animations, animDict } = await loadSovietPartisan()
 
 const enemies = []
 for (let i = 0; i < 20; i++) {
-  // TODO: proslediti coords u AI, kao u city?
-  const enemy = new AI({ mesh, animations, animDict, basicState: 'wander', solids: walls, target: player.mesh, attackStyle: 'LOOP' })
-  enemy.position.copy(coords.next().value)
+  const enemy = new AI({ mesh, animations, animDict, basicState: 'wander', solids: walls, target: player.mesh, attackStyle: 'LOOP', coords })
   enemies.push(enemy)
   scene.add(enemy.mesh)
 }
