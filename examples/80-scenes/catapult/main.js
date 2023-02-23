@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import * as CANNON from '/libs/cannon-es.js'
-import keyboard from '/utils/classes/Keyboard.js'
+import input from '/utils/classes/Input.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { ambLight, createSun } from '/utils/light.js'
 import { createGround } from '/utils/physics-cannon.js'
@@ -156,7 +156,7 @@ void function update() {
   renderer.render(scene, activeCamera)
   if (pause) return
 
-  if (keyboard.pressed.Space && userShootVelocity < maxVelocity)
+  if (input.pressed.Space && userShootVelocity < maxVelocity)
     userShootVelocity += 0.5
 
   world.step(1 / 60)

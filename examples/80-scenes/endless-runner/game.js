@@ -3,7 +3,7 @@ import { camera, scene, renderer, clock, addScoreUI } from '/utils/scene.js'
 import { createBall, createWorldSphere } from '/utils/geometry.js'
 import { createFir } from '/utils/geometry/trees.js'
 import { hemLight } from '/utils/light.js'
-import keyboard from '/utils/classes/Keyboard.js'
+import input from '/utils/classes/Input.js'
 import Particles from '/utils/classes/Particles.js'
 
 const { randFloat, randInt } = THREE.MathUtils
@@ -145,15 +145,15 @@ const jump = val => {
 
 function handleInput() {
   if (jumping) return
-  if (keyboard.left && laneIndex > 0) {
+  if (input.left && laneIndex > 0) {
     laneIndex--
     jump(0.05)
   }
-  if (keyboard.right && laneIndex < 2) {
+  if (input.right && laneIndex < 2) {
     laneIndex++
     jump(0.05)
   }
-  if (keyboard.up || keyboard.pressed.Space) jump(0.1)
+  if (input.up || input.pressed.Space) jump(0.1)
 }
 
 /* LOOP */

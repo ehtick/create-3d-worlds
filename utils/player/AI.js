@@ -2,7 +2,7 @@ import { Box3, Vector3, MathUtils } from 'three'
 import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 
-import { Keyboard } from '/utils/classes/Keyboard.js'
+import { Input } from '/utils/classes/Input.js'
 import Player from './Player.js'
 import { getAIState } from './states/index.js'
 import { dir, jumpStyles } from '/utils/constants.js'
@@ -23,7 +23,7 @@ export default class AI extends Player {
     super({
       ...params,
       mesh: clone(params.mesh),
-      keyboard: new Keyboard(false),
+      input: new Input(false),
       getState: name => getAIState(name, jumpStyle, params.attackStyle),
       shouldRaycastGround,
     })
@@ -134,7 +134,7 @@ export default class AI extends Player {
   /* UPDATE */
 
   updateMove(delta) {
-    const direction = this.keyboard.up ? dir.forward : dir.backward
+    const direction = this.input.up ? dir.forward : dir.backward
     if (this.directionBlocked(direction)) this.turn(Math.PI)
 
     this.velocity.z += -this.acceleration * delta

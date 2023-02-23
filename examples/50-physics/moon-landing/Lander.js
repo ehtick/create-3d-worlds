@@ -1,6 +1,6 @@
 
 import Sprite from './Sprite.js'
-import keyboard from '/utils/classes/Keyboard.js'
+import input from '/utils/classes/Input.js'
 import Thrust from '/utils/classes/Thrust.js'
 import { getSize } from '/utils/helpers.js'
 
@@ -17,12 +17,12 @@ export default class Lander extends Sprite {
   handleInput(dt) {
     if (!this.falling) return
 
-    if (!keyboard.keyPressed)
+    if (!input.keyPressed)
       this.thrustCleared = false
 
     if (this.fuel < 1) return
 
-    if (keyboard.down) {
+    if (input.down) {
       this.addThrust(dt, 0, [0, -1, 0])
       this.addVector(Math.PI / 2, .09 * dt)
       this.fuel--
@@ -30,13 +30,13 @@ export default class Lander extends Sprite {
 
     if (this.fuel < .5) return
 
-    if (keyboard.left) {
+    if (input.left) {
       this.addThrust(dt, -Math.PI * .5, [-1, 1, 0])
       this.addVector(0, .1 * dt)
       this.fuel -= 0.5
     }
 
-    if (keyboard.right) {
+    if (input.right) {
       this.addThrust(dt, Math.PI * .5, [1, 1, 0])
       this.addVector(Math.PI, .1 * dt)
       this.fuel -= 0.5

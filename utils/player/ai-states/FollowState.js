@@ -9,7 +9,7 @@ export default class PursueState extends WalkState {
     const { player } = this
 
     player.lookAtTarget()
-    this.keyboard.up = true
+    this.input.up = true
 
     if (player.distancToTarget < player.followDistance)
       player.setState('idle')

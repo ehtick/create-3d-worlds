@@ -19,7 +19,7 @@ export default class FlyState extends State {
       this.transitFrom(oldAction, .5)
     }
 
-    if (this.player.keyboard.down)
+    if (this.player.input.down)
       this.reverseAction(this.action || this.actions[this.prevState])
   }
 
@@ -30,7 +30,7 @@ export default class FlyState extends State {
     player.updateMove(delta)
     player.applyGravity(delta)
 
-    if (this.keyboard.space && this.jumpTime < this.maxJumpTime) {
+    if (this.input.space && this.jumpTime < this.maxJumpTime) {
       if (player.velocity.y < player.fallLimit * delta)
         player.velocity.y += player.jumpForce * delta
       this.jumpTime++

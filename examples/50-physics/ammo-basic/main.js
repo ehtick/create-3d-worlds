@@ -3,13 +3,13 @@ import * as THREE from 'three'
 import { Ammo, createRigidBody } from '/utils/physics.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
-import keyboard from '/utils/classes/Keyboard.js'
+import input from '/utils/classes/Input.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
 import { createGround } from '/utils/ground.js'
 import { createSphere, createBox } from '/utils/geometry.js'
 import { normalizeMouse } from '/utils/helpers.js'
 
-const { pressed } = keyboard
+const { pressed } = input
 
 const world = new PhysicsWorld()
 const raycaster = new THREE.Raycaster()

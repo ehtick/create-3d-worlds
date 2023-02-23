@@ -6,7 +6,7 @@ const { randInt } = MathUtils
 export default class AIIdleState extends IdleState {
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
-    this.keyboard.up = false
+    this.input.up = false
     this.interval = randInt(3000, 5000)
   }
 

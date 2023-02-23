@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { DecalGeometry } from '/node_modules/three/examples/jsm/geometries/DecalGeometry.js'
 
 import { Ammo } from '/utils/physics.js'
-import keyboard from '/utils/classes/Keyboard.js'
+import input from '/utils/classes/Input.js'
 import { getMesh } from '/utils/helpers.js'
 
 const { randFloat } = THREE.MathUtils
@@ -78,7 +78,7 @@ function fixAngleRad(a) {
 }
 
 export function leaveDecals({ ground, vehicle, body, wheelMeshes, scene }) {
-  if (!keyboard.left && !keyboard.right || vehicle.getCurrentSpeedKmHour() < 30) return
+  if (!input.left && !input.right || vehicle.getCurrentSpeedKmHour() < 30) return
 
   const groundMesh = getMesh(ground)
   const velocity = new THREE.Vector3(0, 0, 0)

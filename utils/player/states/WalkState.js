@@ -14,7 +14,7 @@ export default class WalkState extends State {
 
     this.transitFrom(oldAction, chooseDuration(oldState.name))
 
-    if (this.player.keyboard.down) this.reverseAction()
+    if (this.player.input.down) this.reverseAction()
   }
 
   update(delta) {
@@ -27,20 +27,20 @@ export default class WalkState extends State {
 
     /* TRANSIT */
 
-    if (this.keyboard.space)
+    if (this.input.space)
       this.player.setState('jump')
 
     if (this.player.inAir)
       this.player.setState('fall')
 
-    if (this.keyboard.pressed.Enter)
+    if (this.input.pressed.Enter)
       this.player.setState('attack')
 
-    if (this.player.keyboard.run)
+    if (this.player.input.run)
       this.player.setState('run')
 
-    if (!this.player.keyboard.up && !this.player.keyboard.down
-      && !this.keyboard.sideLeft && !this.keyboard.sideRight)
+    if (!this.player.input.up && !this.player.input.down
+      && !this.input.sideLeft && !this.input.sideRight)
       this.player.setState('idle')
   }
 }

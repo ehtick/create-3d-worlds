@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { Ammo } from '/utils/physics.js'
 import { scene, camera, renderer, clock } from '/utils/scene.js'
-import keyboard from '/utils/classes/Keyboard.js'
+import input from '/utils/classes/Input.js'
 import { createSun } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import PhysicsWorld from '/utils/classes/PhysicsWorld.js'
@@ -57,7 +57,7 @@ function shoot() {
 }
 
 function handleInput() {
-  if ((keyboard.pressed.mouse) && impulse.value < maxImpulse)
+  if ((input.pressed.mouse) && impulse.value < maxImpulse)
     impulse.value = parseFloat(impulse.value) + .2
 }
 

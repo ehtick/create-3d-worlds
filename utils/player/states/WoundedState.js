@@ -10,7 +10,7 @@ export default class WoundedState extends State {
   update(delta) {
     const { player } = this
 
-    this.action?.setEffectiveTimeScale(this.keyboard.keyPressed ? 1 : 0.1)
+    this.action?.setEffectiveTimeScale(this.input.keyPressed ? 1 : 0.1)
 
     player.updateMove(delta)
     player.updateTurn(delta)

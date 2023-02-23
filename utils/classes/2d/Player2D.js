@@ -1,4 +1,4 @@
-import keyboard from '../Keyboard.js'
+import input from '../Input.js'
 
 const CIRCLE = Math.PI * 2
 
@@ -16,10 +16,10 @@ export default class Player2D {
   }
 
   checkKeys() {
-    if (keyboard.left) this.turn(-this.speed)
-    if (keyboard.right) this.turn(this.speed)
-    if (keyboard.up) this.move()
-    if (keyboard.down) this.move(-this.speed / 2)
+    if (input.left) this.turn(-this.speed)
+    if (input.right) this.turn(this.speed)
+    if (input.up) this.move()
+    if (input.down) this.move(-this.speed / 2)
   }
 
   move(speed = this.speed) {

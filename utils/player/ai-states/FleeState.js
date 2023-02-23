@@ -13,7 +13,7 @@ export default class FleeState extends RunState {
   update(delta) {
     const { player } = this
 
-    this.keyboard.up = this.keyboard.run = true
+    this.input.up = this.input.run = true
 
     player.updateMove(delta) // order is important
     player.mesh.lookAt(player.target.position) // looks away
@@ -23,7 +23,7 @@ export default class FleeState extends RunState {
   }
 
   exit() {
-    this.keyboard.run = this.keyboard.up = false
+    this.input.run = this.input.up = false
     super.exit()
   }
 }

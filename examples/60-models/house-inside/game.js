@@ -1,6 +1,6 @@
 import { scene, camera, renderer, createOrbitControls, addUIControls } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
-import keyboard from '/utils/classes/Keyboard.js'
+import input from '/utils/classes/Input.js'
 import { loadModel } from '/utils/loaders.js'
 import { createSun } from '/utils/light.js'
 
@@ -25,8 +25,8 @@ addUIControls({ commands: {
 /* FUNCTIONS */
 
 const updateCamera = () => {
-  if (keyboard.pressed.Digit1) camera.position.set(1.5, 2.5, -6.5)
-  if (keyboard.pressed.Digit2) camera.position.set(10, 20, 25)
+  if (input.pressed.Digit1) camera.position.set(1.5, 2.5, -6.5)
+  if (input.pressed.Digit2) camera.position.set(10, 20, 25)
 }
 
 /* LOOP */

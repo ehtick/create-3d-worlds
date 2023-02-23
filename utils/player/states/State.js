@@ -12,8 +12,8 @@ export default class State {
     this.last = Date.now() // for ai intervals
   }
 
-  get keyboard() {
-    return this.player.keyboard
+  get input() {
+    return this.player.input
   }
 
   get actions() {

@@ -1,7 +1,7 @@
 /*
 * Handle user input (including keyboard, touchscreen and mouse)
-* see keycode.info
 * (joystick can be optionally attached)
+* key codes: keycode.info
 */
 
 const preventSome = e => {
@@ -9,7 +9,7 @@ const preventSome = e => {
   if (e.code == 'Space' || e.code == 'Enter' || e.code.startsWith('Arrow')) e.preventDefault()
 }
 
-class Keyboard {
+class Input {
 
   constructor(listen = true) {
     this.pressed = {}
@@ -173,5 +173,5 @@ class Keyboard {
 
 }
 
-export { Keyboard }         // export class
-export default new Keyboard // export instance (singleton)
+export { Input }         // export class
+export default new Input // export instance (singleton)

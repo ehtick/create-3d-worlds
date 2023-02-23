@@ -7,7 +7,7 @@ import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { shootDecals } from '/utils/decals.js'
 import Particles from '/utils/classes/Particles.js'
 import config from '/config.js'
-import keyboard from '/utils/classes/Keyboard.js'
+import input from '/utils/classes/Input.js'
 import { jumpStyles } from '/utils/constants.js'
 
 const { randInt } = MathUtils
@@ -85,7 +85,7 @@ export default class Savo extends Player {
 
   update(delta) {
     super.update(delta)
-    this.time += (keyboard.run ? delta * 2 : delta)
+    this.time += (input.run ? delta * 2 : delta)
     this.fpsRenderer.render(this.time)
     this.ricochet.expand({ scalar: 1.2, maxRounds: 5, gravity: .02 })
     if (!this.mousemove) this.lookAtFront()

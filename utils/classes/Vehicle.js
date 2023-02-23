@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 import { Ammo, createRigidBody, updateMeshTransform } from '/utils/physics.js'
-import keyboard from '/utils/classes/Keyboard.js'
+import input from '/utils/classes/Input.js'
 import { getSize } from '/utils/helpers.js'
 
 const FRONT_LEFT = 0
@@ -155,13 +155,13 @@ export default class Vehicle {
   }
 
   update() {
-    if (keyboard.up) this.forward()
-    if (keyboard.down) this.backward()
+    if (input.up) this.forward()
+    if (input.down) this.backward()
 
-    if (keyboard.left) {
+    if (input.left) {
       if (this.vehicleSteering < steeringClamp)
         this.vehicleSteering += steeringIncrement
-    } else if (keyboard.right) {
+    } else if (input.right) {
       if (this.vehicleSteering > -steeringClamp)
         this.vehicleSteering -= steeringIncrement
     } else if (this.vehicleSteering < -steeringIncrement)
@@ -171,7 +171,7 @@ export default class Vehicle {
     else
       this.vehicleSteering = 0
 
-    if (keyboard.space) this.break()
+    if (input.space) this.break()
 
     this.updatePhysics()
     this.updateMeshes()

@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { scene, renderer, clock, camera, hemLight, addUIControls } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 import { createFirTrees } from '/utils/geometry/trees.js'
-import keyboard from '/utils/classes/Keyboard.js'
+import input from '/utils/classes/Input.js'
 import Avatar from '/utils/player/Avatar.js'
 
 hemLight({ intensity: 1.25 })
@@ -31,8 +31,8 @@ function followPlayer() {
 }
 
 const updateCamera = () => {
-  if (keyboard.pressed.Digit1) currentCamera = camera
-  if (keyboard.pressed.Digit2) currentCamera = fpsCamera
+  if (input.pressed.Digit1) currentCamera = camera
+  if (input.pressed.Digit2) currentCamera = fpsCamera
   if (currentCamera == fpsCamera) followPlayer()
   currentCamera.lookAt(avatar.position)
 }

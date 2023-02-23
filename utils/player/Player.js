@@ -3,7 +3,7 @@ import { Vector3, AnimationMixer } from 'three'
 import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import JoyStick from '/utils/classes/JoyStick.js'
-import defaultKeyboard from '/utils/classes/Keyboard.js'
+import defaultKeyboard from '/utils/classes/Input.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
 import { getSize, directionBlocked, getMesh } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE, jumpStyles } from '/utils/constants.js'
@@ -13,7 +13,7 @@ const pos = new Vector3()
 
 export default class Player {
   constructor({
-    mesh, animations, animDict, camera, keyboard = defaultKeyboard, solids, useJoystick, gravity = .7,
+    mesh, animations, animDict, camera, input = defaultKeyboard, solids, useJoystick, gravity = .7,
     jumpStyle = jumpStyles.JUMP, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle), shouldRaycastGround = true
   }) {
     this.mesh = mesh
@@ -27,13 +27,13 @@ export default class Player {
     this.maxJumpTime = maxJumpTime
     this.jumpForce = jumpForce
     this.drag = drag
-    this.keyboard = keyboard
+    this.input = input
     this.getState = getState
     this.shouldRaycastGround = shouldRaycastGround
     this.energy = 100
     this.actions = {}
 
-    if (useJoystick) this.keyboard.joystick = new JoyStick()
+    if (useJoystick) this.input.joystick = new JoyStick()
 
     if (animations?.length && animDict)
       this.setupMixer(animations, animDict)
@@ -73,15 +73,15 @@ export default class Player {
   }
 
   get acceleration() {
-    const { keyboard, speed } = this
-    if (keyboard?.joystick?.forward)
-      return speed * -keyboard.joystick.forward * (this.keyboard.up ? 2 : 1.5)
+    const { input, speed } = this
+    if (input?.joystick?.forward)
+      return speed * -input.joystick.forward * (this.input.up ? 2 : 1.5)
 
-    if (keyboard.run && this.keyboard.up) return speed * 2
-    if (keyboard.run && this.keyboard.down) return -speed * 1.5
+    if (input.run && this.input.up) return speed * 2
+    if (input.run && this.input.down) return -speed * 1.5
 
-    if (this.keyboard.up) return speed
-    if (this.keyboard.down) return -speed
+    if (this.input.up) return speed
+    if (this.input.down) return -speed
     return 0
   }
 
@@ -178,11 +178,11 @@ export default class Player {
   }
 
   updateMove(delta) {
-    const direction = this.keyboard.up ? dir.forward : dir.backward
+    const direction = this.input.up ? dir.forward : dir.backward
     if (this.directionBlocked(direction)) return
 
-    const jumpDir = this.keyboard.up ? dir.upForward : dir.upBackward
-    if (this.keyboard.space && this.directionBlocked(jumpDir)) return
+    const jumpDir = this.input.up ? dir.upForward : dir.upBackward
+    if (this.input.space && this.directionBlocked(jumpDir)) return
 
     this.velocity.z += -this.acceleration * delta
     this.velocity.z *= (1 - this.drag)
@@ -195,17 +195,17 @@ export default class Player {
     // if (this.joystick)
     //   this.turn(angle * -this.joystick.turn)
 
-    if (this.keyboard.left)
+    if (this.input.left)
       this.turn(angle)
-    if (this.keyboard.right)
+    if (this.input.right)
       this.turn(angle * -1)
   }
 
   updateStrafe(delta) {
-    if (this.keyboard.sideLeft && !this.directionBlocked(dir.left))
+    if (this.input.sideLeft && !this.directionBlocked(dir.left))
       this.mesh.translateX(-this.speed * delta)
 
-    if (this.keyboard.sideRight && !this.directionBlocked(dir.right))
+    if (this.input.sideRight && !this.directionBlocked(dir.right))
       this.mesh.translateX(this.speed * delta)
   }
 
@@ -228,7 +228,7 @@ export default class Player {
   }
 
   updateCamera(delta) {
-    if (this.keyboard.pressed.mouse)
+    if (this.input.pressed.mouse)
       this.controls.target = this.mesh.position.clone().add(new Vector3(0, this.height, 0))
     else {
       this.thirdPersonCamera.updateCurrentPosition()

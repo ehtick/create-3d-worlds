@@ -18,7 +18,7 @@ export default class PursueState extends RunState {
 
     if (Date.now() - this.last < this.startPursue) return
 
-    this.keyboard.run = this.keyboard.up = true
+    this.input.run = this.input.up = true
 
     // raycast once in 50 frames (expensive operation)
     if (this.i % 50 === 0 && player.blocked)
@@ -41,7 +41,7 @@ export default class PursueState extends RunState {
   }
 
   exit() {
-    this.keyboard.run = this.keyboard.up = false
+    this.input.run = this.input.up = false
     super.exit()
   }
 }

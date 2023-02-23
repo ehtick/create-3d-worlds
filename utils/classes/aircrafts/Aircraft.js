@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import keyboard from '/utils/classes/Keyboard.js'
+import input from '/utils/classes/Input.js'
 import { addSolids, raycastDown, raycastFront } from '/utils/classes/actions.js'
 
 const clock = new THREE.Clock()
@@ -36,14 +36,14 @@ export default class Aircraft {
   }
 
   handleInput() {
-    if (keyboard.left) this.left()
-    if (keyboard.right) this.right()
+    if (input.left) this.left()
+    if (input.right) this.right()
 
-    if (keyboard.up) this.up()
-    if (keyboard.down) this.down()
+    if (input.up) this.up()
+    if (input.down) this.down()
 
-    if (keyboard.pressed.PageUp || keyboard.pressed.Space) this.accelerate()
-    if (keyboard.pressed.PageDown) this.deaccelerate()
+    if (input.pressed.PageUp || input.pressed.Space) this.accelerate()
+    if (input.pressed.PageDown) this.deaccelerate()
   }
 
   up() {
@@ -110,7 +110,7 @@ export default class Aircraft {
   }
 
   stabilize() {
-    if (keyboard.keyPressed) return
+    if (input.keyPressed) return
     const unrollFactor = 0.04
     const rollAngle = Math.abs(this.mesh.rotation.z)
     if (this.mesh.rotation.z > 0) this.roll(-rollAngle * unrollFactor)
@@ -143,7 +143,7 @@ export default class Aircraft {
   }
 
   autopilot() {
-    if (keyboard.down) return
+    if (input.down) return
     if (!this.isMoving()) return
     if (this.isTooNear() || this.isTooLow()) this.up()
   }

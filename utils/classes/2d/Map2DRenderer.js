@@ -1,5 +1,5 @@
 import Canvas from './Canvas.js'
-import keyboard from '../Keyboard.js'
+import input from '../Input.js'
 import { mapRange } from '/utils/helpers.js'
 
 const CIRCLE = Math.PI * 2
@@ -74,7 +74,7 @@ export default class Map2DRenderer extends Canvas {
   }
 
   render(mesh, tilemap = this.tilemap) {
-    if (this.initiallyRendered && !keyboard.controlsPressed) return
+    if (this.initiallyRendered && !input.controlsPressed) return
     this.drawMap()
     this.drawMesh(mesh, tilemap)
     this.initiallyRendered = true

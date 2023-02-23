@@ -1,6 +1,6 @@
 // https://codepen.io/viniciusSouza/pen/gOPVmKV
 import * as THREE from 'three'
-import keyboard from '/utils/classes/Keyboard.js'
+import input from '/utils/classes/Input.js'
 
 const PI_HALF = Math.PI * .5
 
@@ -35,7 +35,7 @@ export default class FirstPersonControls {
 
   onKeyDown(event) {
     if (this.canJump && event.code == 'Space') {
-      this.velocity.y += !keyboard.run ? this.jumpHeight : this.jumpHeight + 5
+      this.velocity.y += !input.run ? this.jumpHeight : this.jumpHeight + 5
       this.canJump = false
     }
   }
@@ -45,18 +45,18 @@ export default class FirstPersonControls {
     const deltaX = 10 * delta
     velocity.add({ x: -velocity.x * deltaX, y: -9.8 * deltaX, z: -velocity.z * deltaX })
 
-    direction.z = (keyboard.up ? 1 : 0) - (keyboard.down ? 1 : 0)
-    direction.x = (keyboard.right ? 1 : 0) - (keyboard.left ? 1 : 0)
+    direction.z = (input.up ? 1 : 0) - (input.down ? 1 : 0)
+    direction.x = (input.right ? 1 : 0) - (input.left ? 1 : 0)
     direction.normalize()
 
-    const currentSpeed = keyboard.run && (keyboard.up || keyboard.down || keyboard.left || keyboard.right)
+    const currentSpeed = input.run && (input.up || input.down || input.left || input.right)
       ? this.speed * 2.1
       : this.speed
 
-    if (keyboard.up || keyboard.down)
+    if (input.up || input.down)
       velocity.z -= direction.z * currentSpeed * delta
 
-    if (keyboard.left || keyboard.right)
+    if (input.left || input.right)
       velocity.x -= direction.x * currentSpeed * delta
 
     this.mesh.translateX(-velocity.x * delta)
