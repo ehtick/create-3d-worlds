@@ -13,7 +13,7 @@ export default class WanderState extends WalkState {
     const { player } = this
 
     this.turnPeriodically(this.interval)
-    this.keyboard.pressed.ArrowUp = true
+    this.keyboard.up = true
 
     /* TRANSIT */
 

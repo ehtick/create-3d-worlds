@@ -18,7 +18,7 @@ const runActions = ['pursue', 'flee']
  */
 export default class AI extends Player {
   constructor({
-    jumpStyle = jumpStyles.JUMP, basicState = 'idle', shouldRaycastGround = false, sightDistance = 30, idleDistance = 3, attackDistance = 2, patrolLength = 10, target, mapSize, coords, ...params
+    jumpStyle = jumpStyles.JUMP, basicState = 'idle', shouldRaycastGround = false, sightDistance = 20, followDistance = 3, attackDistance = 2, patrolLength = 10, target, mapSize, coords, ...params
   } = {}) {
     super({
       ...params,
@@ -29,7 +29,7 @@ export default class AI extends Player {
     })
     this.basicState = basicState
     this.target = target
-    this.idleDistance = idleDistance
+    this.followDistance = followDistance
     this.sightDistance = sightDistance
     this.attackDistance = attackDistance
     this.patrolLength = patrolLength

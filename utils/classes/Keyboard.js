@@ -78,10 +78,14 @@ class Keyboard {
     for (const key in this.pressed) delete this.pressed[key]
   }
 
-  /* GETTERS */
+  /* GETTERS & SETTERS */
 
   get up() {
     return this.pressed.ArrowUp || this.pressed.KeyW
+  }
+
+  set up(bool) {
+    this.pressed.ArrowUp = bool
   }
 
   get down() {

@@ -9,7 +9,7 @@ export default class PatrolState extends WalkState {
   update(delta) {
     const { player } = this
 
-    this.keyboard.pressed.ArrowUp = true
+    this.keyboard.up = true
     this.walked += Math.abs(player.velocity.z)
 
     if (this.walked >= player.patrolLength) {

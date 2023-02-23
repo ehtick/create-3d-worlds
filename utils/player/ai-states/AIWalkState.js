@@ -4,7 +4,7 @@ export default class AIWalkState extends WalkState {
   update(delta) {
     const { player } = this
 
-    this.keyboard.pressed.ArrowUp = true
+    this.keyboard.up = true
 
     /* TRANSIT */
 

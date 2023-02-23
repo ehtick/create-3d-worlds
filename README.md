@@ -11,9 +11,10 @@ npx live-server
 
 ### Scenes & examples
 
-- dodati settere na keyboard
+- možda dodati joystick na keyboard i objediniti kontrole
 
 - Savo / FPS
+  - za pursue ne proveravati samo distancu već i ugao?
   - možda spojiti učitavanje modela i instanciranje AI u jednu async funkciju?
   - probati 3D karakter za prvo lice (partisan-lowpoly)
   - izabrati neprijatelje

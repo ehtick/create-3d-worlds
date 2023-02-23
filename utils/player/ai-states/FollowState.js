@@ -9,9 +9,9 @@ export default class PursueState extends WalkState {
     const { player } = this
 
     player.lookAtTarget()
-    this.keyboard.pressed.ArrowUp = true
+    this.keyboard.up = true
 
-    if (player.distancToTarget < player.idleDistance)
+    if (player.distancToTarget < player.followDistance)
       player.setState('idle')
 
     super.update(delta)
