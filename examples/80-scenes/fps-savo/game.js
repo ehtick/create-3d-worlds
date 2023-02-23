@@ -12,7 +12,7 @@ const light = hemLight()
 scene.background = createSkyBox({ folder: 'skybox4' })
 
 const tilemap = new Tilemap(nemesis, 20)
-const coords = tilemap.yieldRandomCoord()
+const coords = tilemap.yieldRandomEmpty()
 
 scene.add(createGround({ file: 'terrain/ground.jpg' }))
 const walls = tilemap.meshFromMatrix({ texture: 'terrain/concrete.jpg' })
