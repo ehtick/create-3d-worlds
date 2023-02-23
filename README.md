@@ -12,10 +12,9 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - ako igrač puca da ga ostali primete
-  - spojiti učitavanje modela i instanciranje AI u jednu async funkciju?
   - probati 3D karakter za prvo lice (partisan-lowpoly)
   - izabrati neprijatelje
+  - ako igrač puca da ga ostali primete
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola

@@ -5,8 +5,7 @@ import Tilemap from '/utils/classes/Tilemap.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
 import { nemesis } from '/data/maps.js'
 import { Rain } from '/utils/classes/Particles.js'
-import AI from '/utils/player/AI.js'
-import { loadSovietPartisan } from '/utils/loaders.js'
+import { crateEnemy } from '/utils/factory.js'
 
 const light = hemLight()
 scene.background = createSkyBox({ folder: 'skybox4' })
@@ -21,11 +20,9 @@ scene.add(walls)
 const player = new Savo({ camera })
 player.position.copy(coords.next().value)
 
-const { mesh, animations, animDict } = await loadSovietPartisan()
-
 const enemies = []
 for (let i = 0; i < 20; i++) {
-  const enemy = new AI({ mesh, animations, animDict, basicState: 'wander', solids: walls, target: player.mesh, attackStyle: 'LOOP', coords })
+  const enemy = crateEnemy({ solids: walls, target: player.mesh, coords })
   enemies.push(enemy)
   scene.add(enemy.mesh)
 }

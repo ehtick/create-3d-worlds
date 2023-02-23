@@ -16,8 +16,7 @@ export default class PursueState extends RunState {
   update(delta) {
     const { player } = this
 
-    if (this.i % 2 === 0)
-      player.lookAtTarget()
+    player.lookAtTarget()
 
     if (Date.now() - this.last < this.startPursue) return
 
