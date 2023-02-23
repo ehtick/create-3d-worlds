@@ -12,12 +12,11 @@ export default class RunState extends State {
 
     if (!this.actions.run) {
       if (oldAction !== this.actions.walk) oldAction?.stop()
-      this.actions.walk?.reset()
       this.actions.walk?.setEffectiveTimeScale(1.5)
       this.actions.walk?.play()
     }
 
-    if (this.player.controlsDown) this.reverseAction()
+    if (this.player.controlsDown) this.reverseAction(this.actions.run || this.actions.walk)
   }
 
   update(delta) {

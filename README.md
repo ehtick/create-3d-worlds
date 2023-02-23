@@ -11,7 +11,9 @@ npx live-server
 
 ### Scenes & examples
 
-- možda dodati joystick na keyboard i objediniti kontrole
+- dodati joystick na keyboard
+- vratiti osetljivost joysticka
+- objediniti kontrole
 
 - Savo / FPS
   - za pursue ne proveravati samo distancu već i ugao?

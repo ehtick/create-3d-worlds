@@ -33,7 +33,7 @@ export default class Player {
     this.energy = 100
     this.actions = {}
 
-    if (useJoystick) this.joystick = new JoyStick()
+    if (useJoystick) this.keyboard.joystick = new JoyStick()
 
     if (animations?.length && animDict)
       this.setupMixer(animations, animDict)
@@ -74,8 +74,12 @@ export default class Player {
 
   get acceleration() {
     const { keyboard, speed } = this
+    if (keyboard?.joystick?.forward)
+      return speed * -keyboard.joystick.forward * (this.controlsUp ? 2 : 1.5)
+
     if (keyboard.run && this.controlsUp) return speed * 2
     if (keyboard.run && this.controlsDown) return -speed * 1.5
+
     if (this.controlsUp) return speed
     if (this.controlsDown) return -speed
     return 0
@@ -84,15 +88,15 @@ export default class Player {
   /* CONTROLS (move to separate class?) */
 
   get controlsUp() {
-    return this.keyboard.up || this.joystick?.forward < 0
+    return this.keyboard.up
   }
 
   get controlsDown() {
-    return this.keyboard.down || this.joystick?.forward > 0
+    return this.keyboard.down
   }
 
   get controlsRun() {
-    return this.keyboard.run || Math.abs(this.joystick?.forward) > .75
+    return this.keyboard.run
   }
 
   /* STATE MACHINE */
@@ -194,7 +198,7 @@ export default class Player {
     const jumpDir = this.controlsUp ? dir.upForward : dir.upBackward
     if (this.keyboard.space && this.directionBlocked(jumpDir)) return
 
-    this.velocity.z += this.acceleration * delta * (this.joystick?.forward || -1)
+    this.velocity.z += -this.acceleration * delta
     this.velocity.z *= (1 - this.drag)
     this.mesh.translateZ(this.velocity.z)
   }
@@ -202,8 +206,8 @@ export default class Player {
   updateTurn(delta) {
     if (!delta) return
     const angle = RIGHT_ANGLE * delta // 90 degrees per second
-    if (this.joystick)
-      this.turn(angle * -this.joystick.turn)
+    // if (this.joystick)
+    //   this.turn(angle * -this.joystick.turn)
 
     if (this.keyboard.left)
       this.turn(angle)

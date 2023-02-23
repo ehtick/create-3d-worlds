@@ -1,6 +1,7 @@
 /*
 * Handle user input (including keyboard, touchscreen and mouse)
 * see keycode.info
+* (joystick can be optionally attached)
 */
 
 const preventSome = e => {
@@ -81,7 +82,7 @@ class Keyboard {
   /* GETTERS & SETTERS */
 
   get up() {
-    return this.pressed.ArrowUp || this.pressed.KeyW
+    return this.pressed.ArrowUp || this.pressed.KeyW || this.joystick?.forward < -.1
   }
 
   set up(bool) {
@@ -89,15 +90,15 @@ class Keyboard {
   }
 
   get down() {
-    return this.pressed.ArrowDown || this.pressed.KeyS
+    return this.pressed.ArrowDown || this.pressed.KeyS || this.joystick?.forward > .1
   }
 
   get left() {
-    return this.pressed.ArrowLeft || this.pressed.KeyA
+    return this.pressed.ArrowLeft || this.pressed.KeyA || this.joystick?.turn < -.1
   }
 
   get right() {
-    return this.pressed.ArrowRight || this.pressed.KeyD
+    return this.pressed.ArrowRight || this.pressed.KeyD || this.joystick?.turn > .1
   }
 
   get sideLeft() {
@@ -109,7 +110,7 @@ class Keyboard {
   }
 
   get run() {
-    return this.capsLock
+    return this.capsLock || Math.abs(this.joystick?.forward) > .75
   }
 
   set run(bool) {
