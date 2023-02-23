@@ -81,8 +81,12 @@ class Input {
 
   /* GETTERS & SETTERS */
 
+  get amountForward() {
+    return this.joystick?.forward
+  }
+
   get up() {
-    return this.pressed.ArrowUp || this.pressed.KeyW || this.joystick?.forward < -.1
+    return this.pressed.ArrowUp || this.pressed.KeyW || this.amountForward < -.1
   }
 
   set up(bool) {
@@ -90,7 +94,7 @@ class Input {
   }
 
   get down() {
-    return this.pressed.ArrowDown || this.pressed.KeyS || this.joystick?.forward > .1
+    return this.pressed.ArrowDown || this.pressed.KeyS || this.amountForward > .1
   }
 
   get left() {
@@ -110,7 +114,7 @@ class Input {
   }
 
   get run() {
-    return this.capsLock || Math.abs(this.joystick?.forward) > .75
+    return this.capsLock || Math.abs(this.amountForward) > .75
   }
 
   set run(bool) {
@@ -132,6 +136,8 @@ class Input {
   get control() {
     return this.pressed.ControlLeft || this.pressed.ControlRight
   }
+
+  /* UTILS */
 
   get arrowPressed() {
     return this.pressed.ArrowRight || this.pressed.ArrowLeft || this.pressed.ArrowDown || this.pressed.ArrowUp

@@ -74,14 +74,11 @@ export default class Player {
 
   get acceleration() {
     const { input, speed } = this
-    if (input?.joystick?.forward)
-      return speed * -input.joystick.forward * (this.input.up ? 2 : 1.5)
+    if (input.amountForward) return speed * -input.amountForward * (input.up ? 2 : 1.5)
 
-    if (input.run && this.input.up) return speed * 2
-    if (input.run && this.input.down) return -speed * 1.5
+    if (input.up) return speed * (input.run ? 2 : 1)
+    if (input.down) return -speed * (input.run ? 1.5 : 1)
 
-    if (this.input.up) return speed
-    if (this.input.down) return -speed
     return 0
   }
 
