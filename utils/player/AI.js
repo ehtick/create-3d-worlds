@@ -134,7 +134,7 @@ export default class AI extends Player {
   /* UPDATE */
 
   updateMove(delta) {
-    const direction = this.controlsUp ? dir.forward : dir.backward
+    const direction = this.keyboard.up ? dir.forward : dir.backward
     if (this.directionBlocked(direction)) this.turn(Math.PI)
 
     this.velocity.z += -this.acceleration * delta

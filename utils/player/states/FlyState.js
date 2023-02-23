@@ -19,7 +19,7 @@ export default class FlyState extends State {
       this.transitFrom(oldAction, .5)
     }
 
-    if (this.player.controlsDown)
+    if (this.player.keyboard.down)
       this.reverseAction(this.action || this.actions[this.prevState])
   }
 

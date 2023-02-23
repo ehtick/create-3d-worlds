@@ -4,7 +4,7 @@ export default class JumpState extends SpecialState {
 
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
-    if (this.player.controlsDown) this.reverseAction()
+    if (this.player.keyboard.down) this.reverseAction()
   }
 
   update(delta) {

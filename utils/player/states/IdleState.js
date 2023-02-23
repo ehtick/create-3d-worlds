@@ -15,7 +15,7 @@ export default class IdleState extends State {
   update(delta) {
     this.player.updateTurn(delta)
 
-    if (this.player.controlsUp || this.player.controlsDown)
+    if (this.player.keyboard.up || this.player.keyboard.down)
       this.player.setState('walk')
 
     if (this.keyboard.sideLeft || this.keyboard.sideRight)

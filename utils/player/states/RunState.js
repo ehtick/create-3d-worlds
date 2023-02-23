@@ -16,7 +16,7 @@ export default class RunState extends State {
       this.actions.walk?.play()
     }
 
-    if (this.player.controlsDown) this.reverseAction(this.actions.run || this.actions.walk)
+    if (this.player.keyboard.down) this.reverseAction(this.actions.run || this.actions.walk)
   }
 
   update(delta) {
@@ -34,10 +34,10 @@ export default class RunState extends State {
     if (this.player.inAir)
       this.player.setState('fall')
 
-    if (!this.player.controlsRun)
+    if (!this.player.keyboard.run)
       player.setState('walk')
 
-    if (!this.player.controlsUp && !this.player.controlsDown
+    if (!this.player.keyboard.up && !this.player.keyboard.down
       && !this.keyboard.sideLeft && !this.keyboard.sideRight)
       player.setState('idle')
   }
