@@ -14,12 +14,6 @@ const textureLoader = new THREE.TextureLoader()
 
 /* HELPERS */
 
-export function randomField(matrix) {
-  const y = Math.floor(Math.random() * matrix.length)
-  const x = Math.floor(Math.random() * matrix[0].length)
-  return [x, y]
-}
-
 export const getMapPosition = ({ obj, map, cellSize }) => {
   const mapWidth = map.length
   const mapHeight = map[0].length
