@@ -9,7 +9,6 @@ export default class PursueState extends RunState {
     super.enter(oldState, oldAction)
 
     this.player.randomizeAction()
-    this.keyboard.pressed.ArrowUp = true
     this.startPursue = randInt(300, 600)
     this.i = 0
   }
@@ -19,7 +18,7 @@ export default class PursueState extends RunState {
 
     if (Date.now() - this.last < this.startPursue) return
 
-    this.keyboard.run = true
+    this.keyboard.run = this.keyboard.pressed.ArrowUp = true
 
     // raycast once in 50 frames (expensive operation)
     if (this.i % 50 === 0 && player.blocked)
@@ -42,7 +41,7 @@ export default class PursueState extends RunState {
   }
 
   exit() {
-    this.keyboard.run = false
+    this.keyboard.run = this.keyboard.pressed.ArrowUp = false
     super.exit()
   }
 }
