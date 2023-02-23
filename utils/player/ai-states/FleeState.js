@@ -7,18 +7,18 @@ export default class FleeState extends RunState {
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
 
-    this.minFlee = randInt(500, 1000)
+    this.minFleeTime = randInt(500, 1000)
   }
 
   update(delta) {
     const { player } = this
 
-    player.mesh.lookAt(player.target.position) // looks away?
     this.keyboard.pressed.ArrowUp = this.keyboard.run = true
 
-    super.update(delta)
+    player.updateMove(delta) // order is important
+    player.mesh.lookAt(player.target.position) // looks away
 
-    if (Date.now() - this.last > this.minFlee && !player.targetInSight)
+    if (Date.now() - this.last > this.minFleeTime && !player.targetInSight)
       player.setState('idle')
   }
 

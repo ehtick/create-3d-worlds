@@ -14,7 +14,6 @@ npx live-server
 - dodati settere na keyboard
 
 - Savo / FPS
-  - ai da trče u pursue stanju
   - možda spojiti učitavanje modela i instanciranje AI u jednu async funkciju?
   - probati 3D karakter za prvo lice (partisan-lowpoly)
   - izabrati neprijatelje
