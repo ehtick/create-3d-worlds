@@ -12,9 +12,9 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - možda spojiti učitavanje modela i instanciranje AI u jednu async funkciju?
-  - probati 3D karakter za prvo lice (partisan-lowpoly)
   - ako igrač puca da ga ostali primete
+  - spojiti učitavanje modela i instanciranje AI u jednu async funkciju?
+  - probati 3D karakter za prvo lice (partisan-lowpoly)
   - izabrati neprijatelje
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi

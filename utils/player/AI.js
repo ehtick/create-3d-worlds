@@ -75,12 +75,12 @@ export default class AI extends Player {
       .sub(this.mesh.getWorldPosition(new Vector3())).normalize()
     const dotProduct = direction1.dot(direction2)
 
-    return -1.3 < dotProduct && dotProduct < -0.7
+    return (-1.3 < dotProduct && dotProduct < -0.7)
   }
 
   get targetSpotted() {
     if (!this.target) return false
-    return (this.lookingAtTarget && this.distancToTarget < this.sightDistance) 
+    return (this.lookingAtTarget && this.distancToTarget < this.sightDistance)
     || (this.distancToTarget < this.sightDistance * .3) // feel if too close
   }
 

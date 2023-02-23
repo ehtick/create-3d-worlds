@@ -64,7 +64,7 @@
     "space-infix-ops": "warn",
     "spaced-comment": ["warn", "always"],
     "vars-on-top": "error",
-    "yoda": ["error", {"exceptRange": true}]
+    "yoda": ["error", "never", { "exceptRange": true }]
   },
   "parserOptions": {
     "ecmaVersion": "latest",
