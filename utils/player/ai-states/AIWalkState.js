@@ -8,7 +8,7 @@ export default class AIWalkState extends WalkState {
 
     /* TRANSIT */
 
-    if (player.targetInSight)
+    if (player.targetSpotted)
       player.setState('pursue')
 
     super.update(delta)

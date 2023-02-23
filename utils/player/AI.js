@@ -18,7 +18,7 @@ const runActions = ['pursue', 'flee']
  */
 export default class AI extends Player {
   constructor({
-    jumpStyle = jumpStyles.JUMP, basicState = 'idle', shouldRaycastGround = false, sightDistance = 20, followDistance = 3, attackDistance = 2, patrolLength = 10, target, mapSize, coords, ...params
+    jumpStyle = jumpStyles.JUMP, basicState = 'idle', shouldRaycastGround = false, sightDistance = 30, followDistance = 3, attackDistance = 2, patrolLength = 10, target, mapSize, coords, ...params
   } = {}) {
     super({
       ...params,
@@ -69,9 +69,19 @@ export default class AI extends Player {
     return this.position.distanceTo(this.target.position)
   }
 
-  get targetInSight() {
+  get lookingAtTarget() {
+    const direction1 = this.mesh.getWorldDirection(new Vector3())
+    const direction2 = this.target.getWorldPosition(new Vector3())
+      .sub(this.mesh.getWorldPosition(new Vector3())).normalize()
+    const dotProduct = direction1.dot(direction2)
+
+    return -1.3 < dotProduct && dotProduct < -0.7
+  }
+
+  get targetSpotted() {
     if (!this.target) return false
-    return this.distancToTarget < this.sightDistance
+    return (this.lookingAtTarget && this.distancToTarget < this.sightDistance) 
+    || (this.distancToTarget < this.sightDistance * .3) // feel if too close
   }
 
   get otherAi() {

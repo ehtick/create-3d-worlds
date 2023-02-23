@@ -55,9 +55,9 @@ export default class Savo extends Player {
   }
 
   shoot() {
+    const shoots = this.rifleBurst ? 5 : 1
     this.audio.currentTime = 0
     this.audio.play()
-    const shoots = this.rifleBurst ? 5 : 1
 
     for (let i = 0; i < shoots; i++) setTimeout(() => {
       const intersects = getCameraIntersects(this.camera, this.solids)

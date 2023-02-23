@@ -12,9 +12,9 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - za ulazak u pursue ne proveravati samo distancu već i ugao?
   - možda spojiti učitavanje modela i instanciranje AI u jednu async funkciju?
   - probati 3D karakter za prvo lice (partisan-lowpoly)
+  - ako igrač puca da ga ostali primete
   - izabrati neprijatelje
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi

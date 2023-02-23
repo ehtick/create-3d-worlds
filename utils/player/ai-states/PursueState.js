@@ -16,6 +16,9 @@ export default class PursueState extends RunState {
   update(delta) {
     const { player } = this
 
+    if (this.i % 2 === 0)
+      player.lookAtTarget()
+
     if (Date.now() - this.last < this.startPursue) return
 
     this.input.run = this.input.up = true
@@ -23,9 +26,6 @@ export default class PursueState extends RunState {
     // raycast once in 50 frames (expensive operation)
     if (this.i % 50 === 0 && player.blocked)
       player.translateSmooth(.25)
-
-    if (this.i % 2 === 0)
-      player.lookAtTarget()
 
     this.i++
 
@@ -36,7 +36,7 @@ export default class PursueState extends RunState {
     if (player.distancToTarget < player.attackDistance)
       player.setState('attack')
 
-    if (!player.targetInSight)
+    if (!player.targetSpotted)
       player.setState(player.basicState || 'idle')
   }
 

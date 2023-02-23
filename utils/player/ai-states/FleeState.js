@@ -18,7 +18,7 @@ export default class FleeState extends RunState {
     player.updateMove(delta) // order is important
     player.mesh.lookAt(player.target.position) // looks away
 
-    if (Date.now() - this.last > this.minFleeTime && !player.targetInSight)
+    if (Date.now() - this.last > this.minFleeTime && !player.targetSpotted)
       player.setState('idle')
   }
 

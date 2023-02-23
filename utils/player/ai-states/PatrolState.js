@@ -19,7 +19,7 @@ export default class PatrolState extends WalkState {
 
     /* TRANSIT */
 
-    if (this.targetInSight)
+    if (this.targetSpotted)
       player.setState('pursue')
 
     super.update(delta)
