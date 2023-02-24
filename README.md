@@ -12,8 +12,9 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - probati 3D karakter za prvo lice (partisan-lowpoly)
+  - napraviti fabrike za sve, prebaciti aliase iz loadera
   - izabrati neprijatelje
+  - probati 3D karakter za prvo lice (partisan-lowpoly)
   - ako igrač puca da ga ostali primete
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
