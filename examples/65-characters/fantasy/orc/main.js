@@ -1,20 +1,15 @@
-import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { loadOrc } from '/utils/loaders.js'
+import { OrcPlayer } from '/utils/characters/fantasy/Orc.js'
+
+createOrbitControls()
 
 scene.add(createSun())
-
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations, animDict } = await loadOrc()
-const player = new Player({ mesh, animations, animDict })
-
-scene.add(mesh)
-
-const controls = createOrbitControls()
-controls.target = mesh.position
+const player = new OrcPlayer()
+scene.add(player.mesh)
 
 /* LOOP */
 
