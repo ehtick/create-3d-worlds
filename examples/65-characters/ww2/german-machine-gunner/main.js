@@ -1,23 +1,16 @@
-import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { loadGermanMachineGunner, loadModel } from '/utils/loaders.js'
+import { GermanMachineGunnerPlayer } from '/utils/player/ai-characters/GermanMachineGunner.js'
 
 scene.add(createSun())
-
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations, animDict } = await loadGermanMachineGunner()
-
-const player = new Player({ mesh, animations, animDict })
-scene.add(mesh)
-
-const { mesh: weapon } = await loadModel({ file: 'weapon/mg-42/lowpoly.fbx', scale: 1.4 })
-player.addRifle(weapon)
+const player = new GermanMachineGunnerPlayer()
+scene.add(player.mesh)
 
 const controls = createOrbitControls()
-controls.target = mesh.position
+controls.target = player.mesh.position
 
 /* LOOP */
 
