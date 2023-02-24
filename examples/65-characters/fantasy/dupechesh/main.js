@@ -1,27 +1,23 @@
-import { scene, renderer, camera, clock, createOrbitControls } from '/utils/scene.js'
-import Player from '/utils/player/Player.js'
-import { loadDupechesh } from '/utils/loaders.js'
-import { dupecheshAnimations } from '/data/animations.js'
+import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
+import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { dirLight } from '/utils/light.js'
+import { OgroPlayer } from '/utils/characters/fantasy/Ogro.js'
 
-dirLight()
+scene.add(createSun())
+scene.add(createGround({ size: 100 }))
 
-createOrbitControls()
-camera.position.set(0, 2, 3)
+const player = new OgroPlayer()
+scene.add(player.mesh)
 
-const { mesh, animations } = await loadDupechesh()
-const player = new Player({ mesh, animations, animDict: dupecheshAnimations })
-scene.add(mesh)
+const controls = createOrbitControls()
+controls.target = player.mesh.position
 
-const ground = createGround({ size: 10 })
-scene.add(ground)
-
-// LOOP
+/* LOOP */
 
 void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
+
   player.update(delta)
   renderer.render(scene, camera)
 }()
