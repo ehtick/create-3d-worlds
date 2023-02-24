@@ -1,27 +1,23 @@
-import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { loadRifle, loadPartisanLowpoly } from '/utils/loaders.js'
-
-createOrbitControls()
+import { PartisanLowpolyPlayer } from '/utils/player/ai-characters/PartisanLowpoly.js'
 
 scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations, animDict } = await loadPartisanLowpoly()
+const player = new PartisanLowpolyPlayer()
+scene.add(player.mesh)
 
-const player = new Player({ mesh, animations, animDict, useJoystick: true })
-scene.add(mesh)
-
-const { mesh: weapon } = await loadRifle()
-player.addRifle(weapon)
+const controls = createOrbitControls()
+controls.target = player.mesh.position
 
 /* LOOP */
 
 void function update() {
   requestAnimationFrame(update)
   const delta = clock.getDelta()
+
   player.update(delta)
   renderer.render(scene, camera)
 }()
