@@ -9,7 +9,7 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
 import {
-  sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations, witchAnimations, naziAnimations, germanSoldierAnimations, naziOfficerAnimations, naziAgentAnimations, orcAnimations, orcOgreAnimations, demonAnimations, ironGiantAnimations, trollAnimations, zombieCopAnimations, zombieDocAnimations, zombieBarefootAnimations, zombieGuardAnimations
+  sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations, witchAnimations, naziAnimations, naziOfficerAnimations, naziAgentAnimations, orcAnimations, orcOgreAnimations, demonAnimations, ironGiantAnimations, trollAnimations, zombieCopAnimations, zombieDocAnimations, zombieBarefootAnimations, zombieGuardAnimations
 } from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
@@ -218,8 +218,6 @@ export const loadZombieGuard = () => loadModel({ file: 'zombie-guard.fbx', prefi
 export const loadPartisan = () => loadModel({ file: 'partisan.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/soldier/', fixColors: true, size: 1.8 })
 
 export const loadPartisanLowpoly = () => loadModel({ file: 'partisan-lowpoly.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/soldier/', fixColors: true, size: 1.8 })
-
-export const loadGermanSoldier = () => loadModel({ file: 'german-soldier.fbx', angle: Math.PI, animDict: germanSoldierAnimations, prefix: 'character/soldier/', size: 1.8, fixColors: true })
 
 export const loadNazi = () => loadModel({ file: 'nazi.fbx', animDict: naziAnimations, prefix: 'character/nazi/', angle: Math.PI, fixColors: true, size: 1.8 })
 
