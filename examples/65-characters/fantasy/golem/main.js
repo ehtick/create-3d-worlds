@@ -3,14 +3,13 @@ import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { GolemPlayer } from '/utils/characters/fantasy/Golem.js'
 
+createOrbitControls()
+
 scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
 const player = new GolemPlayer()
 scene.add(player.mesh)
-
-const controls = createOrbitControls()
-controls.target = player.mesh.position
 
 /* LOOP */
 

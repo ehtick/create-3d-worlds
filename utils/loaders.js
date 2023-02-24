@@ -193,8 +193,6 @@ export const loadOrc = () => loadModel({ file: 'model.fbx', prefix: 'character/o
 
 export const loadOrcOgre = () => loadModel({ file: 'model.fbx', prefix: 'character/orc-ogre/', animDict: orcOgreAnimations, angle: Math.PI, fixColors: true })
 
-export const loadIronGiant = () => loadModel({ file: 'model.fbx', prefix: 'character/iron-giant/', animDict: ironGiantAnimations, angle: Math.PI, size: 5, fixColors: true })
-
 export const loadTroll = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: trollAnimations, prefix: 'character/troll/', fixColors: true, size: 3 })
 
 /* ZOMBIES */
