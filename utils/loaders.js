@@ -180,10 +180,3 @@ export const loadModel = async param => {
       throw new Error(`Unknown file extension: ${ext}`)
   }
 }
-
-/* ZOMBIES */
-
-
-export const loadZombieDoctor = () => loadModel({ file: 'zombie-doctor.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict: zombieDocAnimations })
-
-export const loadZombieGuard = () => loadModel({ file: 'zombie-guard.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict: zombieGuardAnimations })
