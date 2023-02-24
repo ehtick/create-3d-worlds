@@ -2,7 +2,7 @@ import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
 
-const ghostAnimations = {
+const animDict = {
   idle: 'Take 001'
 }
 
@@ -12,7 +12,7 @@ const { mesh, animations } = await loadModel({ file: 'character/ghost/scene.gltf
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict: ghostAnimations }
+const sharedProps = { mesh, animations, animDict }
 
 export class GhostPlayer extends Player {
   constructor(props = {}) {

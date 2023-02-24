@@ -2,7 +2,7 @@ import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
 
-const trollAnimations = {
+const animDict = {
   idle: 'Unarmed Idle',
   walk: 'Mutant Walking',
   attack: 'Zombie Attack',
@@ -12,7 +12,7 @@ const trollAnimations = {
 
 /* LOADING */
 
-const { mesh, animations, animDict } = await loadModel({ file: 'model.fbx', angle: Math.PI, animDict: trollAnimations, prefix: 'character/troll/', fixColors: true, size: 3 })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, animDict, prefix: 'character/troll/', fixColors: true, size: 3 })
 
 /* EXTENDED CLASSES */
 

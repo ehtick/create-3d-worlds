@@ -2,7 +2,7 @@ import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
 
-const skeletonAnimation = {
+const animDict = {
   special: 'Zombie Scream',
   run: 'Flying',
   walk: 'Walking',
@@ -12,7 +12,7 @@ const skeletonAnimation = {
 
 /* LOADING */
 
-const { mesh, animations, animDict } = await loadModel({ file: 'model.fbx', prefix: 'character/skeleton/', angle: Math.PI, animDict: skeletonAnimation })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/skeleton/', angle: Math.PI, animDict })
 
 /* EXTENDED CLASSES */
 

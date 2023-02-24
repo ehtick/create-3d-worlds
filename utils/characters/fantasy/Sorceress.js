@@ -3,7 +3,7 @@ import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
 import { jumpStyles } from '/utils/constants.js'
 
-const sorceressAnimations = {
+const animDict = {
   idle: 'Standing Idle',
   walk: 'Standing Walk Forward',
   run: 'Standing Sprint Forward',
@@ -13,7 +13,7 @@ const sorceressAnimations = {
 
 /* LOADING */
 
-const { mesh, animations, animDict } = await loadModel({ file: 'model.fbx', angle: Math.PI, animDict: sorceressAnimations, prefix: 'character/sorceress/', size: 1.75 })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', angle: Math.PI, animDict, prefix: 'character/sorceress/', size: 1.75 })
 
 /* EXTENDED CLASSES */
 

@@ -2,7 +2,7 @@ import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
 
-const naziAnimations = {
+const animDict = {
   idle: 'Rifle Aiming Idle',
   attack: 'Firing Rifle',
   walk: 'Walk With Rifle',
@@ -12,7 +12,7 @@ const naziAnimations = {
 
 /* LOADING */
 
-const { mesh, animations, animDict } = await loadModel({ file: 'nazi.fbx', animDict: naziAnimations, prefix: 'character/nazi/', angle: Math.PI, fixColors: true, size: 1.8 })
+const { mesh, animations } = await loadModel({ file: 'nazi.fbx', animDict, prefix: 'character/nazi/', angle: Math.PI, fixColors: true, size: 1.8 })
 
 const { mesh: rifle } = await loadModel({ file: 'weapon/rifle.fbx', scale: 1.33, angle: Math.PI })
 

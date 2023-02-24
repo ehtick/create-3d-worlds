@@ -2,7 +2,7 @@ import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
 
-const orcAnimations = {
+const animDict = {
   idle: 'Unarmed Idle',
   walk: 'Orc Walk',
   attack: 'Zombie Attack',
@@ -13,7 +13,7 @@ const orcAnimations = {
 
 /* LOADING */
 
-const { mesh, animations, animDict } = await loadModel({ file: 'model.fbx', prefix: 'character/orc/', animDict: orcAnimations, angle: Math.PI, fixColors: true })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/orc/', animDict, angle: Math.PI, fixColors: true })
 
 /* EXTENDED CLASSES */
 

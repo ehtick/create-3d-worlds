@@ -2,7 +2,7 @@ import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
 
-const barbarianAnimations = {
+const animDict = {
   idle: 'Unarmed Idle',
   walk: 'Dwarf Walk',
   run: 'Running',
@@ -17,7 +17,7 @@ const barbarianAnimations = {
 
 /* LOADING */
 
-const { mesh, animations, animDict } = await loadModel({ prefix: 'character/barbarian/', file: 'model.fbx', angle: Math.PI, fixColors: true, animDict: barbarianAnimations })
+const { mesh, animations } = await loadModel({ prefix: 'character/barbarian/', file: 'model.fbx', angle: Math.PI, fixColors: true, animDict })
 
 /* EXTENDED CLASSES */
 

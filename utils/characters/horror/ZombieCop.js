@@ -2,7 +2,7 @@ import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
 
-const zombieCopAnimations = {
+const animDict = {
   idle: 'Zombie Idle',
   walk: 'Zombie Walk',
   run: 'Zombie Run',
@@ -14,7 +14,7 @@ const zombieCopAnimations = {
 
 /* LOADING */
 
-const { mesh, animations, animDict } = await loadModel({ file: 'zombie-cop.fbx', prefix: 'character/zombie/', animDict: zombieCopAnimations, angle: Math.PI, fixColors: true })
+const { mesh, animations } = await loadModel({ file: 'zombie-cop.fbx', prefix: 'character/zombie/', animDict, angle: Math.PI, fixColors: true })
 
 /* EXTENDED CLASSES */
 

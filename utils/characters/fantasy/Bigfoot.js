@@ -2,7 +2,7 @@ import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
 
-const bigfootAnimations = {
+const animDict = {
   idle: 'Goalkeeper Idle',
   walk: 'Mutant Walking',
   attack: 'Zombie Punching',
@@ -10,7 +10,7 @@ const bigfootAnimations = {
 
 /* LOADING */
 
-const { mesh, animations, animDict } = await loadModel({ file: 'model.fbx', prefix: 'character/bigfoot/', angle: Math.PI, fixColors: true, animDict: bigfootAnimations })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/bigfoot/', angle: Math.PI, fixColors: true, animDict })
 
 /* EXTENDED CLASSES */
 

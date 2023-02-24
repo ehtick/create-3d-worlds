@@ -2,7 +2,7 @@ import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
 
-const ironGiantAnimations = {
+const animDict = {
   idle: 'Idle',
   walk: 'Walking',
   jump: 'Mutant Jumping',
@@ -11,7 +11,7 @@ const ironGiantAnimations = {
 
 /* LOADING */
 
-const { mesh, animations, animDict } = await loadModel({ file: 'model.fbx', prefix: 'character/iron-giant/', animDict: ironGiantAnimations, angle: Math.PI, size: 5, fixColors: true })
+const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/iron-giant/', animDict, angle: Math.PI, size: 5, fixColors: true })
 
 /* EXTENDED CLASSES */
 

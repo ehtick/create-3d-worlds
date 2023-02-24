@@ -1,11 +1,20 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { zombieDocAnimations } from '/data/animations.js'
+
+const animDict = {
+  idle: 'Thriller Idle',
+  walk: 'Walking',
+  run: 'Zombie Running',
+  attack: 'Zombie Attack',
+  attack2: 'Zombie Scream',
+  pain: 'Zombie Reaction Hit',
+  death: 'Zombie Dying',
+}
 
 /* LOADING */
 
-const { mesh, animations, animDict } = await loadModel({ file: 'zombie-doctor.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict: zombieDocAnimations })
+const { mesh, animations } = await loadModel({ file: 'zombie-doctor.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict })
 
 /* EXTENDED CLASSES */
 

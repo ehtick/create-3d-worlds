@@ -5,13 +5,13 @@ import { partisanAnimations } from '/data/animations.js'
 
 /* LOADING */
 
-const { mesh, animations, animDict } = await loadModel({ file: 'resistance-fighter.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/soldier/', fixColors: true })
+const { mesh, animations } = await loadModel({ file: 'resistance-fighter.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/soldier/', fixColors: true })
 
 const { mesh: rifle } = await loadModel({ file: 'weapon/rifle.fbx', scale: 1.25, angle: Math.PI })
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict, rifle }
+const sharedProps = { mesh, animations, animDict: partisanAnimations, rifle }
 
 export class ResistanceFighterPlayer extends Player {
   constructor(props = {}) {

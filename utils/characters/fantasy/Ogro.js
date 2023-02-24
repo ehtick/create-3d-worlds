@@ -2,7 +2,7 @@ import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
 
-const dupecheshAnimations = {
+const animDict = {
   idle: 'stand',
   walk: 'run',
   run: 'run',
@@ -20,7 +20,7 @@ const { mesh, animations } = await loadModel({ file: 'character/ogro/ogro.md2', 
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict: dupecheshAnimations }
+const sharedProps = { mesh, animations, animDict }
 
 export class OgroPlayer extends Player {
   constructor(props = {}) {

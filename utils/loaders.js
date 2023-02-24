@@ -33,7 +33,7 @@ const createGroup = model => {
   return group
 }
 
-const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, shouldCenter, shouldAdjustHeight, castShadow = true, receiveShadow = false, scale = 1, animDict }) => {
+const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, shouldCenter, shouldAdjustHeight, castShadow = true, receiveShadow = false, scale = 1 }) => {
   scale = (scale === 1 && size) ? getScale(model, size) : scale // eslint-disable-line no-param-reassign
   model.scale.set(scale, scale, scale)
 
@@ -52,7 +52,7 @@ const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, sho
 
   const mixer = animations && animations.length ? getMixer(model, animations) : null
 
-  return { mesh: createGroup(model), animations, mixer, animDict }
+  return { mesh: createGroup(model), animations, mixer }
 }
 
 /* OBJ */

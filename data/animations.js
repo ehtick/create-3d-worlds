@@ -1,16 +1,3 @@
-
-/* ZOMBIES COMPATIBLE */
-
-export const zombieDocAnimations = {
-  idle: 'Thriller Idle',
-  walk: 'Walking',
-  run: 'Zombie Running',
-  attack: 'Zombie Attack',
-  attack2: 'Zombie Scream',
-  pain: 'Zombie Reaction Hit',
-  death: 'Zombie Dying',
-}
-
 /* SOLDIERS COMPATIBLE */
 
 export const partisanAnimations = {

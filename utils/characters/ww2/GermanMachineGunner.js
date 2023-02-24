@@ -2,7 +2,7 @@ import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
 
-const germanMachineGunnerAnimations = {
+const animDict = {
   idle: 'Machine Gun Idle',
   walk: 'Machine Gun Walk',
   attack: 'Crouch Rapid Fire',
@@ -10,13 +10,9 @@ const germanMachineGunnerAnimations = {
   death: 'Crouch Death',
 }
 
-/* LOADERS */
-
-const loadGermanMachineGunner = () => loadModel({ file: 'german-machine-gunner.fbx', animDict: germanMachineGunnerAnimations, prefix: 'character/soldier/', angle: Math.PI, fixColors: true })
-
 /* LOADING */
 
-const { mesh, animations, animDict } = await loadGermanMachineGunner()
+const { mesh, animations } = await loadModel({ file: 'german-machine-gunner.fbx', animDict, prefix: 'character/soldier/', angle: Math.PI, fixColors: true })
 
 const { mesh: rifle } = await loadModel({ file: 'weapon/mg-42/lowpoly.fbx', scale: 1.4 })
 
