@@ -1,7 +1,7 @@
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { NaziCrouchPlayer } from '/utils/player/ai-characters/NaziCrouch.js'
+import { NaziCrouchPlayer } from '/utils/characters/ww2/NaziCrouch.js'
 
 scene.add(createSun())
 scene.add(createGround({ size: 100 }))

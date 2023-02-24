@@ -1,7 +1,7 @@
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { GermanSoldierPronePlayer } from '/utils/player/ai-characters/GermanSoldierProne.js'
+import { GermanSoldierPronePlayer } from '/utils/characters/ww2/GermanSoldierProne.js'
 
 scene.add(createSun())
 scene.add(createGround({ size: 100 }))

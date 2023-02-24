@@ -5,7 +5,7 @@ import { nemesis } from '/data/maps.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
 import { Rain } from '/utils/classes/Particles.js'
 import Savo from '/utils/player/Savo.js'
-import { GermanMachineGunnerAI } from '/utils/player/ai-characters/GermanMachineGunner.js'
+import { GermanMachineGunnerAI } from '/utils/characters/ww2/GermanMachineGunner.js'
 
 const light = hemLight()
 scene.background = createSkyBox({ folder: 'skybox4' })

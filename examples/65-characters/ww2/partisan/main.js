@@ -1,7 +1,7 @@
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { PartisanPlayer } from '/utils/player/ai-characters/Partisan.js'
+import { PartisanPlayer } from '/utils/characters/ww2/Partisan.js'
 
 scene.add(createSun())
 scene.add(createGround({ size: 100 }))
