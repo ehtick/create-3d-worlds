@@ -1,10 +1,8 @@
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { loadOrcOgre, loadSorceress } from '/utils/loaders.js'
-import { sorceressAnimations } from '/data/animations.js'
-import AI from '/utils/player/AI.js'
-import Player from '/utils/player/Player.js'
+import { SorceressPlayer } from '/utils/characters/fantasy/Sorceress.js'
+import { OrcOgreAI } from '/utils/characters/fantasy/OrcOgre.js'
 
 const mapSize = 100
 const npcs = []
@@ -15,13 +13,11 @@ createOrbitControls()
 
 scene.add(createFloor({ size: mapSize }))
 
-const player = new Player({ ...await loadSorceress(), animDict: sorceressAnimations })
+const player = new SorceressPlayer()
 scene.add(player.mesh)
 
-const { mesh, animations, animDict } = await loadOrcOgre()
-
 for (let i = 0; i < 7; i++) {
-  const ai = new AI({ mesh, animations, animDict, mapSize, basicState: 'pursue', target: player.mesh })
+  const ai = new OrcOgreAI({ mapSize, basicState: 'pursue', target: player.mesh })
   npcs.push(ai)
   scene.add(ai.mesh)
 }

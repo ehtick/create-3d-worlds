@@ -27,6 +27,6 @@ export class WitchPlayer extends Player {
 
 export class WitchAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', attackDistance: 10, ...props })
+    super({ ...sharedProps, basicState: 'wander', ...props })
   }
 }

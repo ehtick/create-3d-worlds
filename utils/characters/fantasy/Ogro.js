@@ -30,6 +30,6 @@ export class OgroPlayer extends Player {
 
 export class OgroAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', attackDistance: 10, ...props })
+    super({ ...sharedProps, basicState: 'wander', ...props })
   }
 }

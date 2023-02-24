@@ -17,7 +17,7 @@ const runActions = ['pursue', 'flee']
  */
 export default class AI extends Player {
   constructor({
-    jumpStyle = jumpStyles.JUMP, basicState = 'idle', shouldRaycastGround = false, sightDistance = 25, followDistance = 3, attackDistance = 2, patrolLength = 10, target, mapSize, coords, ...params
+    jumpStyle = jumpStyles.JUMP, basicState = 'idle', shouldRaycastGround = false, sightDistance = 25, followDistance = 3, attackDistance = 1.5, patrolLength = 10, target, mapSize, coords, ...params
   } = {}) {
     super({
       ...params,
