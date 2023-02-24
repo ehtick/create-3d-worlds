@@ -1,10 +1,8 @@
 import { camera, scene, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { ambLight } from '/utils/light.js'
-import { loadSorceress, loadGolem } from '/utils/loaders.js'
-import { sorceressAnimations, golemAnimation } from '/data/animations.js'
-import Player from '/utils/player/Player.js'
-import AI from '/utils/player/AI.js'
+import { SorceressPlayer } from '/utils/characters/fantasy/Sorceress.js'
+import { GolemAI } from '/utils/characters/fantasy/Golem.js'
 
 const mapSize = 100
 const npcs = []
@@ -15,13 +13,11 @@ createOrbitControls()
 
 scene.add(createFloor({ size: mapSize }))
 
-const player = new Player({ ...await loadSorceress(), animDict: sorceressAnimations })
+const player = new SorceressPlayer()
 scene.add(player.mesh)
 
-const { mesh, animations } = await loadGolem()
-
 for (let i = 0; i < 10; i++) {
-  const ai = new AI({ mesh, animations, animDict: golemAnimation, mapSize })
+  const ai = new GolemAI({ mapSize, basicState: 'idle' })
   npcs.push(ai)
   scene.add(ai.mesh)
 }
