@@ -1,5 +1,4 @@
 import { Box3, Vector3, MathUtils } from 'three'
-import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 
 import { Input } from '/utils/classes/Input.js'
@@ -22,7 +21,6 @@ export default class AI extends Player {
   } = {}) {
     super({
       ...params,
-      mesh: clone(params.mesh),
       input: new Input(false),
       getState: name => getAIState(name, jumpStyle, params.attackStyle),
       shouldRaycastGround,

@@ -1,4 +1,5 @@
 import { Vector3, AnimationMixer } from 'three'
+import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 
 import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
@@ -14,9 +15,9 @@ const pos = new Vector3()
 export default class Player {
   constructor({
     mesh, animations, animDict, camera, input = defaultKeyboard, solids, useJoystick, gravity = .7,
-    jumpStyle = jumpStyles.JUMP, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle), shouldRaycastGround = true
+    jumpStyle = jumpStyles.JUMP, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle), shouldRaycastGround = true, rifle, pistol
   }) {
-    this.mesh = mesh
+    this.mesh = clone(mesh),
     this.speed = speed
     this.solids = []
     this.groundY = 0
@@ -33,17 +34,20 @@ export default class Player {
     this.energy = 100
     this.actions = {}
 
+    if (solids) this.addSolids(solids)
+
     if (useJoystick) this.input.joystick = new JoyStick()
 
-    if (animations?.length && animDict)
+    if (animations?.length && animDict) {
       this.setupMixer(animations, animDict)
+      if (rifle) this.addRifle(clone(rifle))
+      if (pistol) this.addPistol(clone(pistol))
+    }
 
     if (camera) {
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh })
       this.controls = createOrbitControls()
     }
-
-    if (solids) this.addSolids(solids)
 
     this.setState('idle')
   }

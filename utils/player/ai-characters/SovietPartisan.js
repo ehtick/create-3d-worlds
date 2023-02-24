@@ -7,18 +7,22 @@ import { sovietPartisanAnimations } from '/data/animations.js'
 
 export const loadSovietPartisan = () => loadModel({ file: 'soviet-partisan.fbx', prefix: 'character/soldier/', animDict: sovietPartisanAnimations, angle: Math.PI, size: 1.8, fixColors: true })
 
-/* EXTENDED CLASSES */
+/* LOADING */
 
 const { mesh, animations, animDict } = await loadSovietPartisan()
 
+const { mesh: rifle } = await loadModel({ file: 'weapon/mg-42/model.fbx', scale: .4 })
+
+/* EXTENDED CLASSES */
+
 export class SovietPartisanPlayer extends Player {
   constructor() {
-    super({ mesh, animations, animDict })
+    super({ mesh, animations, animDict, rifle, attackStyle: 'LOOP' })
   }
 }
 
 export class SovietPartisanAI extends AI {
   constructor({ solids, target, coords } = {}) {
-    super({ mesh, animations, animDict, basicState: 'wander', solids, target, attackStyle: 'LOOP', coords })
+    super({ mesh, animations, animDict, rifle, basicState: 'wander', solids, target, attackStyle: 'LOOP', coords })
   }
 }
