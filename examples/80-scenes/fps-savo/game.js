@@ -5,7 +5,7 @@ import Tilemap from '/utils/classes/Tilemap.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
 import { nemesis } from '/data/maps.js'
 import { Rain } from '/utils/classes/Particles.js'
-import SovietPartisan from '/utils/player/ai-characters/SovietPartisan.js'
+import { SovietPartisanAI } from '/utils/player/ai-characters/SovietPartisan.js'
 
 const light = hemLight()
 scene.background = createSkyBox({ folder: 'skybox4' })
@@ -22,7 +22,7 @@ player.position.copy(coords.next().value)
 
 const enemies = []
 for (let i = 0; i < 20; i++) {
-  const enemy = new SovietPartisan({ solids: walls, target: player.mesh, coords })
+  const enemy = new SovietPartisanAI({ solids: walls, target: player.mesh, coords })
   enemies.push(enemy)
   scene.add(enemy.mesh)
 }
