@@ -9,7 +9,7 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
 import {
-  sorceressAnimations, golemAnimation, goblinAnimations, partisanAnimations, witchAnimations, naziAnimations, naziOfficerAnimations, naziAgentAnimations, orcAnimations, orcOgreAnimations, demonAnimations, ironGiantAnimations, trollAnimations, zombieCopAnimations, zombieDocAnimations, zombieBarefootAnimations, zombieGuardAnimations
+  sorceressAnimations, golemAnimation, goblinAnimations, witchAnimations, orcAnimations, orcOgreAnimations, demonAnimations, ironGiantAnimations, trollAnimations, zombieCopAnimations, zombieDocAnimations, zombieBarefootAnimations, zombieGuardAnimations
 } from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
@@ -194,8 +194,6 @@ export const loadWitch = () => loadModel({ file: 'model.fbx', angle: Math.PI, an
 export const loadOrc = () => loadModel({ file: 'model.fbx', prefix: 'character/orc/', animDict: orcAnimations, angle: Math.PI, fixColors: true })
 
 export const loadOrcOgre = () => loadModel({ file: 'model.fbx', prefix: 'character/orc-ogre/', animDict: orcOgreAnimations, angle: Math.PI, fixColors: true })
-
-export const loadDemon = () => loadModel({ file: 'model.fbx', prefix: 'character/demon/', animDict: demonAnimations, angle: Math.PI, fixColors: true, size: 3 })
 
 export const loadIronGiant = () => loadModel({ file: 'model.fbx', prefix: 'character/iron-giant/', animDict: ironGiantAnimations, angle: Math.PI, size: 5, fixColors: true })
 

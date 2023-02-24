@@ -1,20 +1,16 @@
-import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
-import { createFloor } from '/utils/ground.js'
-import { loadDemon } from '/utils/loaders.js'
+import { createGround } from '/utils/ground.js'
+import { DemonPlayer } from '/utils/characters/fantasy/Demon.js'
 
 scene.add(createSun())
+scene.add(createGround({ size: 100 }))
 
-scene.add(createFloor({ size: 100 }))
-
-const { mesh, animations, animDict } = await loadDemon()
-const player = new Player({ mesh, animations, animDict })
-
-scene.add(mesh)
+const player = new DemonPlayer()
+scene.add(player.mesh)
 
 const controls = createOrbitControls()
-controls.target = mesh.position
+controls.target = player.mesh.position
 
 /* LOOP */
 
