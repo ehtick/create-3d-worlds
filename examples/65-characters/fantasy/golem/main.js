@@ -1,21 +1,16 @@
-import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
-import { createFloor } from '/utils/ground.js'
-import { loadGolem } from '/utils/loaders.js'
-import { golemAnimation } from '/data/animations.js'
+import { createGround } from '/utils/ground.js'
+import { GolemPlayer } from '/utils/characters/fantasy/Golem.js'
 
 scene.add(createSun())
+scene.add(createGround({ size: 100 }))
 
-scene.add(createFloor({ size: 100 }))
-
-const { mesh, animations } = await loadGolem()
-const player = new Player({ mesh, animations, animDict: golemAnimation })
-
-scene.add(mesh)
+const player = new GolemPlayer()
+scene.add(player.mesh)
 
 const controls = createOrbitControls()
-controls.target = mesh.position
+controls.target = player.mesh.position
 
 /* LOOP */
 
