@@ -1,7 +1,13 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { germanSoldierProneAnimations } from '/data/animations.js'
+
+const germanSoldierProneAnimations = {
+  idle: 'Prone Idle',
+  walk: 'Prone Forward',
+  attack: 'Prone Firing Rifle',
+  death: 'Prone Death',
+}
 
 /* LOADING */
 

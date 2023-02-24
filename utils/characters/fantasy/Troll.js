@@ -1,7 +1,14 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { trollAnimations } from '/data/animations.js'
+
+const trollAnimations = {
+  idle: 'Unarmed Idle',
+  walk: 'Mutant Walking',
+  attack: 'Zombie Attack',
+  pain: 'Shove Reaction',
+  death: 'Mutant Dying',
+}
 
 /* LOADING */
 

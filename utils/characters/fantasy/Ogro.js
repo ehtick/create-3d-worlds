@@ -1,7 +1,18 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { dupecheshAnimations } from '/data/animations.js'
+
+const dupecheshAnimations = {
+  idle: 'stand',
+  walk: 'run',
+  run: 'run',
+  jump: 'jump', // wavealt
+  fall: 'bumflop',
+  attack: 'salute_alt', // attack, crattack
+  death: 'deathc', // deatha, deathb, deathc, crdeath
+  special: 'flip', // sniffsniff
+  // paina, painb, painc, crpain
+}
 
 /* LOADING */
 

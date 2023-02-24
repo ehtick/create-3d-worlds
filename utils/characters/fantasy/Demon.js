@@ -1,7 +1,14 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { demonAnimations } from '/data/animations.js'
+
+const demonAnimations = {
+  idle: 'Mutant Breathing Idle',
+  walk: 'Mutant Walking',
+  jump: 'Mutant Jumping',
+  attack: 'Zombie Attack',
+  special: 'Zombie Scream',
+}
 
 /* LOADING */
 

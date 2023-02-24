@@ -1,7 +1,14 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { skeletonAnimation } from '/data/animations.js'
+
+const skeletonAnimation = {
+  special: 'Zombie Scream',
+  run: 'Flying',
+  walk: 'Walking',
+  idle: 'Zombie Idle',
+  attack: 'Zombie Neck Bite',
+}
 
 /* LOADING */
 

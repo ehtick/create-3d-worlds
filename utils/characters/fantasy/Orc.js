@@ -1,7 +1,15 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { orcAnimations } from '/data/animations.js'
+
+const orcAnimations = {
+  idle: 'Unarmed Idle',
+  walk: 'Orc Walk',
+  attack: 'Zombie Attack',
+  attack2: 'Zombie Kicking',
+  special: 'Zombie Scream',
+  death: 'Death From The Back',
+}
 
 /* LOADING */
 

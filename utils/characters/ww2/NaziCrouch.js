@@ -1,7 +1,13 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { naziCrouchAnimations } from '/data/animations.js'
+
+const naziCrouchAnimations = {
+  idle: 'Crouch Idle',
+  walk: 'Crouched Run',
+  attack: 'Fire Rifle Crouch',
+  death: 'Crouch Death',
+}
 
 /* LOADING */
 

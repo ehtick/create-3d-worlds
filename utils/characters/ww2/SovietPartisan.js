@@ -1,7 +1,15 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { sovietPartisanAnimations } from '/data/animations.js'
+
+const sovietPartisanAnimations = {
+  idle: 'Machine Gun Idle',
+  walk: 'Machine Gun Walk',
+  run: 'Rifle Run Aim',
+  attack: 'Gunplay',
+  pain: 'Hit Reaction',
+  death: 'Dying',
+}
 
 /* LOADERS */
 

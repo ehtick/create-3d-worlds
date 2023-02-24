@@ -1,7 +1,13 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { goblinAnimations } from '/data/animations.js'
+
+const goblinAnimations = {
+  idle: 'Great Sword Idle',
+  walk: 'Great Sword Walk',
+  attack: 'Great Sword Slash',
+  death: 'Two Handed Sword Death',
+}
 
 /* LOADING */
 

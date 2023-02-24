@@ -8,9 +8,6 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
-import {
-  zombieCopAnimations, zombieDocAnimations, zombieBarefootAnimations, zombieGuardAnimations
-} from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
 
@@ -145,12 +142,10 @@ export async function loadFbxAnimations(names, prefix = '') {
 /* MASTER LOADER */
 
 /*
-* Handle model load, resize, rotate, etc.
-* param could be:
-*   string (filepath) OR
-*   object { file, size, texture, mtl, angle, axis, shouldCenter, shouldAdjustHeight, ... }
-* param.animDict is needed for multiple fbx animations
-* sometimes 'size' not working, so you must use 'scale'
+* Handle model load and preparation (scale, rotate, etc.)
+* param object: { file, size, texture, mtl, angle, axis, shouldCenter, shouldAdjustHeight, ... }
+  * param.animDict is needed for separate fbx animations
+  * param.size sometimes not working, so you must use 'scale'
 * returns a promise that resolves with the { mesh, animations, mixer }
 */
 export const loadModel = async param => {

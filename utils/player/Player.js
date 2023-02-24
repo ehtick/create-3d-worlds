@@ -12,6 +12,10 @@ import { getPlayerState } from './states/index.js'
 
 const pos = new Vector3()
 
+/**
+ * param animDict: maps state to animation
+ * keys: idle, walk, run, jump, fall, attack, attack2, special, pain, wounded, death
+ */
 export default class Player {
   constructor({
     mesh, animations, animDict, camera, input = defaultKeyboard, solids, useJoystick, gravity = .7,

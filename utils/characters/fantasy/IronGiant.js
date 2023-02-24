@@ -1,7 +1,13 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { ironGiantAnimations } from '/data/animations.js'
+
+const ironGiantAnimations = {
+  idle: 'Idle',
+  walk: 'Walking',
+  jump: 'Mutant Jumping',
+  attack: 'Zombie Attack',
+}
 
 /* LOADING */
 

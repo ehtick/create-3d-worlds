@@ -1,7 +1,14 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { naziAnimations } from '/data/animations.js'
+
+const naziAnimations = {
+  idle: 'Rifle Aiming Idle',
+  attack: 'Firing Rifle',
+  walk: 'Walk With Rifle',
+  pain: 'Hit Reaction',
+  death: 'Death Crouching Headshot Front',
+}
 
 /* LOADING */
 

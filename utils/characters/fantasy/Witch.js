@@ -1,7 +1,15 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { witchAnimations } from '/data/animations.js'
+
+const witchAnimations = {
+  idle: 'Crouch Idle',
+  walk: 'Crouched Walking',
+  run: 'Run',
+  attack: 'Standing 2H Magic Attack 01',
+  attack2: 'Spell Casting',
+  special: 'Zombie Scream',
+}
 
 /* LOADING */
 

@@ -1,7 +1,13 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { nudeVictimAnimations } from '/data/animations.js'
+
+const nudeVictimAnimations = {
+  idle: 'Unarmed Idle',
+  walk: 'Drunk Run Forward',
+  attack: 'Terrified',
+  special: 'Zombie Agonizing',
+}
 
 /* LOADING */
 

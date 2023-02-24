@@ -1,7 +1,19 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { barbarianAnimations } from '/data/animations.js'
+
+const barbarianAnimations = {
+  idle: 'Unarmed Idle',
+  walk: 'Dwarf Walk',
+  run: 'Running',
+  attack: 'Mma Kick',
+  attack2: 'Standing Melee Kick',
+  jump: 'Kicking',
+  special: 'Standing 2H Magic Attack 05',
+  pain: 'Standing React Large From Right',
+  wounded: 'Zombie Crawl',
+  death: 'Falling Back Death',
+}
 
 /* LOADING */
 

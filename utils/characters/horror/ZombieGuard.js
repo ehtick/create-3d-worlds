@@ -1,7 +1,16 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { zombieGuardAnimations } from '/data/animations.js'
+
+const zombieGuardAnimations = {
+  idle: 'Zombie Idle',
+  walk: 'Walking',
+  run: 'Zombie Running',
+  attack: 'Zombie Kicking',
+  attack2: 'Zombie Attack',
+  pain: 'Zombie Reaction Hit',
+  death: 'Zombie Dying',
+}
 
 /* LOADING */
 
