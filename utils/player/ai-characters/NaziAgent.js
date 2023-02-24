@@ -11,7 +11,7 @@ const { mesh: pistol } = await loadModel({ file: 'weapon/luger/model.fbx', scale
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict, pistol, attackStyle: 'LOOP' }
+const sharedProps = { mesh, animations, animDict, pistol }
 
 export class NaziAgentPlayer extends Player {
   constructor(props = {}) {

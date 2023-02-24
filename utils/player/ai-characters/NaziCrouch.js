@@ -1,11 +1,11 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { germanSoldierCrouchAnimations } from '/data/animations.js'
+import { naziCrouchAnimations } from '/data/animations.js'
 
 /* LOADING */
 
-const { mesh, animations, animDict } = await loadModel({ file: 'german-soldier.fbx', angle: Math.PI, animDict: germanSoldierCrouchAnimations, prefix: 'character/soldier/', size: 1.8, fixColors: true })
+const { mesh, animations, animDict } = await loadModel({ file: 'nazi.fbx', animDict: naziCrouchAnimations, prefix: 'character/nazi/', angle: Math.PI, fixColors: true })
 
 const { mesh: rifle } = await loadModel({ file: 'weapon/rifle.fbx', scale: 1.33, angle: Math.PI })
 
@@ -13,13 +13,13 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/rifle.fbx', scale: 1.33,
 
 const sharedProps = { mesh, animations, animDict, rifle }
 
-export class GermanSoldierCrouchPlayer extends Player {
+export class NaziCrouchPlayer extends Player {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
   }
 }
 
-export class GermanSoldierCrouchAI extends AI {
+export class NaziCrouchAI extends AI {
   constructor(props = {}) {
     super({ ...sharedProps, basicState: 'wander', attackDistance: 10, ...props })
   }

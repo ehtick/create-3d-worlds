@@ -35,7 +35,7 @@ export default class AI extends Player {
     // game props for raycast
     this.mesh.name = 'enemy'
 
-    if (this.action) this.randomizeAction()
+    this.randomizeAction()
     this.mesh.rotateY(Math.random() * Math.PI * 2)
 
     if (mapSize) {
@@ -136,6 +136,7 @@ export default class AI extends Player {
   }
 
   randomizeAction() {
+    if (!this.action) return
     this.action.time = Math.random() * this.action.getClip().duration
   }
 

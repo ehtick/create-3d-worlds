@@ -11,7 +11,7 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/rifle.fbx', scale: 1.33,
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict, rifle, attackStyle: 'LOOP' }
+const sharedProps = { mesh, animations, animDict, rifle }
 
 export class GermanSoldierPlayer extends Player {
   constructor(props = {}) {
