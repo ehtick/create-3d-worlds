@@ -212,7 +212,3 @@ export const loadZombieDoctor = () => loadModel({ file: 'zombie-doctor.fbx', pre
 export const loadZombieBarefoot = () => loadModel({ file: 'zombie-barefoot.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict: zombieBarefootAnimations })
 
 export const loadZombieGuard = () => loadModel({ file: 'zombie-guard.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict: zombieGuardAnimations })
-
-/* SOLDIERS */
-
-export const loadRifle = () => loadModel({ file: 'weapon/rifle.fbx', scale: 1.25, angle: Math.PI })
