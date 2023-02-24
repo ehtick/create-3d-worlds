@@ -1,21 +1,16 @@
-import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
-import { createFloor } from '/utils/ground.js'
-import { loadModel } from '/utils/loaders.js'
-import { bigfootAnimations } from '/data/animations.js'
+import { createGround } from '/utils/ground.js'
+import { BigfootPlayer } from '/utils/characters/fantasy/Bigfoot.js'
 
 scene.add(createSun())
+scene.add(createGround({ size: 100 }))
 
-scene.add(createFloor({ size: 100 }))
-
-const { mesh, animations, animDict } = await loadModel({ file: 'model.fbx', prefix: 'character/bigfoot/', angle: Math.PI, fixColors: true, animDict: bigfootAnimations })
-const player = new Player({ mesh, animations, animDict })
-
-scene.add(mesh)
+const player = new BigfootPlayer()
+scene.add(player.mesh)
 
 const controls = createOrbitControls()
-controls.target = mesh.position
+controls.target = player.mesh.position
 
 /* LOOP */
 
