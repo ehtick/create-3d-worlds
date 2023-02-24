@@ -1,12 +1,4 @@
 
-export const sorceressAnimations = {
-  idle: 'Standing Idle',
-  walk: 'Standing Walk Forward',
-  run: 'Standing Sprint Forward',
-  attack: 'Standing 1H Magic Attack 01',
-  special: 'Standing 2H Magic Attack 04',
-}
-
 export const ghostAnimations = {
   idle: 'Take 001'
 }
