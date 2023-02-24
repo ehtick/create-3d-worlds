@@ -3,19 +3,23 @@ import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scen
 import { createSun } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 import { loadModel } from '/utils/loaders.js'
-import { skaterAnimations } from '/data/animations.js'
+
+const skaterAnimations = {
+  idle: 'Skateboarding',
+  jump: 'Jumping',
+}
 
 scene.add(createSun())
-
 scene.add(createFloor({ size: 100 }))
 
 const { mesh, animations } = await loadModel({ file: 'model.fbx', prefix: 'character/skater-girl/', animDict: skaterAnimations, angle: Math.PI, fixColors: true })
+
 const player = new Player({ mesh, animDict: skaterAnimations, animations })
 
-scene.add(mesh)
+scene.add(player.mesh)
 
 const controls = createOrbitControls()
-controls.target = mesh.position
+controls.target = player.mesh.position
 
 /* LOOP */
 

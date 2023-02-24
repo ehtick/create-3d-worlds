@@ -21,7 +21,7 @@ export default class Player {
     mesh, animations, animDict, camera, input = defaultKeyboard, solids, useJoystick, gravity = .7,
     jumpStyle = jumpStyles.JUMP, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle), shouldRaycastGround = true, rifle, pistol
   }) {
-    this.mesh = clone(mesh),
+    this.mesh = clone(mesh)
     this.speed = speed
     this.solids = []
     this.groundY = 0

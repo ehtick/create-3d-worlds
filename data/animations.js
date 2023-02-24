@@ -19,11 +19,6 @@ export const ghostAnimations = {
   idle: 'Take 001'
 }
 
-export const skaterAnimations = {
-  idle: 'Skateboarding',
-  jump: 'Jumping',
-}
-
 /* ZOMBIES COMPATIBLE */
 
 export const zombieDocAnimations = {
