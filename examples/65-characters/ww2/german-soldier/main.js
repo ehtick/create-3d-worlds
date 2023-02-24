@@ -1,23 +1,16 @@
-import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { loadGermanSoldier, loadRifle } from '/utils/loaders.js'
+import { GermanSoldierPlayer } from '/utils/player/ai-characters/GermanSoldier.js'
 
 scene.add(createSun())
-
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations, animDict } = await loadGermanSoldier()
-const player = new Player({ mesh, animations, animDict })
-
-scene.add(mesh)
-
-const { mesh: weapon } = await loadRifle()
-player.addRifle(weapon)
+const player = new GermanSoldierPlayer()
+scene.add(player.mesh)
 
 const controls = createOrbitControls()
-controls.target = mesh.position
+controls.target = player.mesh.position
 
 /* LOOP */
 

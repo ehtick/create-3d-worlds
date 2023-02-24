@@ -5,7 +5,7 @@ import { germanMachineGunnerAnimations } from '/data/animations.js'
 
 /* LOADERS */
 
-export const loadGermanMachineGunner = () => loadModel({ file: 'german-machine-gunner.fbx', animDict: germanMachineGunnerAnimations, prefix: 'character/soldier/', angle: Math.PI, fixColors: true })
+const loadGermanMachineGunner = () => loadModel({ file: 'german-machine-gunner.fbx', animDict: germanMachineGunnerAnimations, prefix: 'character/soldier/', angle: Math.PI, fixColors: true })
 
 /* LOADING */
 
