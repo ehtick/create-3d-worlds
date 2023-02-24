@@ -15,14 +15,16 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/mg-42/model.fbx', scale:
 
 /* EXTENDED CLASSES */
 
+const sharedProps = { mesh, animations, animDict, rifle, attackStyle: 'LOOP' }
+
 export class SovietPartisanPlayer extends Player {
-  constructor() {
-    super({ mesh, animations, animDict, rifle, attackStyle: 'LOOP' })
+  constructor(props = {}) {
+    super({ ...sharedProps, ...props })
   }
 }
 
 export class SovietPartisanAI extends AI {
-  constructor({ solids, target, coords } = {}) {
-    super({ mesh, animations, animDict, rifle, basicState: 'wander', solids, target, attackStyle: 'LOOP', coords })
+  constructor(props = {}) {
+    super({ ...sharedProps, basicState: 'wander', ...props })
   }
 }
