@@ -14,6 +14,7 @@ npx live-server
 - Savo / FPS
   - napraviti fabrike za sve, prebaciti aliase iz loadera
   - add Player attackStyle: 'LOOP' 
+  - ako je ai pogođen, da se okrene ka igraču
   - izabrati neprijatelje
   - probati 3D karakter za prvo lice (partisan-lowpoly)
   - ako igrač puca da ga ostali primete

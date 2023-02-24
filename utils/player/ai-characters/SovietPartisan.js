@@ -25,6 +25,6 @@ export class SovietPartisanPlayer extends Player {
 
 export class SovietPartisanAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', ...props })
+    super({ ...sharedProps, basicState: 'wander', attackDistance: 10, ...props })
   }
 }

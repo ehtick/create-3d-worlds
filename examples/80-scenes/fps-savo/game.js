@@ -1,10 +1,10 @@
 import { scene, renderer, camera, clock, createSkyBox } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
-import Savo from '/utils/player/Savo.js'
 import Tilemap from '/utils/classes/Tilemap.js'
-import { hemLight, lightningStrike } from '/utils/light.js'
 import { nemesis } from '/data/maps.js'
+import { hemLight, lightningStrike } from '/utils/light.js'
 import { Rain } from '/utils/classes/Particles.js'
+import Savo from '/utils/player/Savo.js'
 import { SovietPartisanAI } from '/utils/player/ai-characters/SovietPartisan.js'
 
 const light = hemLight()
