@@ -187,8 +187,6 @@ export const loadSorceress = () => loadModel({ file: 'model.fbx', angle: Math.PI
 
 export const loadGolem = (params = {}) => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: golemAnimation, prefix: 'character/golem/', size: 2.5, fixColors: true, ...params })
 
-export const loadGoblin = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: goblinAnimations, prefix: 'character/goblin/', fixColors: true, size: 1.5 })
-
 export const loadWitch = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: witchAnimations, prefix: 'character/witch/', fixColors: true, size: 1.7 })
 
 export const loadOrc = () => loadModel({ file: 'model.fbx', prefix: 'character/orc/', animDict: orcAnimations, angle: Math.PI, fixColors: true })
@@ -198,8 +196,6 @@ export const loadOrcOgre = () => loadModel({ file: 'model.fbx', prefix: 'charact
 export const loadIronGiant = () => loadModel({ file: 'model.fbx', prefix: 'character/iron-giant/', animDict: ironGiantAnimations, angle: Math.PI, size: 5, fixColors: true })
 
 export const loadTroll = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: trollAnimations, prefix: 'character/troll/', fixColors: true, size: 3 })
-
-export const loadDupechesh = () => loadModel({ file: 'character/ogro/ogro.md2', texture: 'character/ogro/skins/arboshak.png', size: 2, angle: Math.PI * .5, shouldCenter: true, shouldAdjustHeight: true, fixColors: true })
 
 /* ZOMBIES */
 
