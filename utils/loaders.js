@@ -185,8 +185,6 @@ export const loadModel = async param => {
 
 export const loadWitch = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: witchAnimations, prefix: 'character/witch/', fixColors: true, size: 1.7 })
 
-export const loadTroll = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: trollAnimations, prefix: 'character/troll/', fixColors: true, size: 3 })
-
 /* ZOMBIES */
 
 export const loadZombieCop = () => loadModel({ file: 'zombie-cop.fbx', prefix: 'character/zombie/', animDict: zombieCopAnimations, angle: Math.PI, fixColors: true })
