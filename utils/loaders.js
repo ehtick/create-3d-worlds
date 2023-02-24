@@ -219,10 +219,6 @@ export const loadPartisan = () => loadModel({ file: 'partisan.fbx', angle: Math.
 
 export const loadPartisanLowpoly = () => loadModel({ file: 'partisan-lowpoly.fbx', angle: Math.PI, animDict: partisanAnimations, prefix: 'character/soldier/', fixColors: true, size: 1.8 })
 
-export const loadNazi = () => loadModel({ file: 'nazi.fbx', animDict: naziAnimations, prefix: 'character/nazi/', angle: Math.PI, fixColors: true, size: 1.8 })
-
 export const loadNaziOfficer = () => loadModel({ file: 'nazi-officer.fbx', prefix: 'character/nazi/', animDict: naziOfficerAnimations, angle: Math.PI, fixColors: true, size: 2 })
-
-export const loadNaziAgent = () => loadModel({ file: 'nazi-agent.fbx', prefix: 'character/soldier/', animDict: naziAgentAnimations, angle: Math.PI, fixColors: true, size: 1.8 })
 
 export const loadRifle = () => loadModel({ file: 'weapon/rifle.fbx', scale: 1.25, angle: Math.PI })
