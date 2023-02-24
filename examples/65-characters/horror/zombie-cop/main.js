@@ -1,20 +1,15 @@
-import Player from '/utils/player/Player.js'
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { loadZombieCop } from '/utils/loaders.js'
+import { ZombieCopPlayer } from '/utils/characters/horror/ZombieCop.js'
+
+createOrbitControls()
 
 scene.add(createSun())
-
 scene.add(createGround({ size: 100 }))
 
-const { mesh, animations, animDict } = await loadZombieCop()
-const player = new Player({ mesh, animations, animDict, speed: .5 })
-
-scene.add(mesh)
-
-const controls = createOrbitControls()
-controls.target = mesh.position
+const player = new ZombieCopPlayer()
+scene.add(player.mesh)
 
 /* LOOP */
 

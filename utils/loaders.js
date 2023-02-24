@@ -183,10 +183,7 @@ export const loadModel = async param => {
 
 /* ZOMBIES */
 
-export const loadZombieCop = () => loadModel({ file: 'zombie-cop.fbx', prefix: 'character/zombie/', animDict: zombieCopAnimations, angle: Math.PI, fixColors: true })
 
 export const loadZombieDoctor = () => loadModel({ file: 'zombie-doctor.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict: zombieDocAnimations })
-
-export const loadZombieBarefoot = () => loadModel({ file: 'zombie-barefoot.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict: zombieBarefootAnimations })
 
 export const loadZombieGuard = () => loadModel({ file: 'zombie-guard.fbx', prefix: 'character/zombie/', angle: Math.PI, fixColors: true, animDict: zombieGuardAnimations })
