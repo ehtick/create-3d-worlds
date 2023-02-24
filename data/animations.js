@@ -1,8 +1,4 @@
 
-export const ghostAnimations = {
-  idle: 'Take 001'
-}
-
 /* ZOMBIES COMPATIBLE */
 
 export const zombieDocAnimations = {

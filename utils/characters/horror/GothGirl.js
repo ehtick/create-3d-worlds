@@ -19,6 +19,6 @@ export class GothGirlPlayer extends Player {
 
 export class GothGirlAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', attackDistance: 10, ...props })
+    super({ ...sharedProps, basicState: 'wander', ...props })
   }
 }
