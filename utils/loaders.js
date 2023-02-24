@@ -9,7 +9,7 @@ import { FBXLoader } from '/node_modules/three/examples/jsm/loaders/FBXLoader.js
 import { fixColors } from '/utils/scene.js'
 import { getHeight, centerMesh, adjustHeight } from '/utils/helpers.js'
 import {
-  sorceressAnimations, golemAnimation, goblinAnimations, witchAnimations, orcAnimations, orcOgreAnimations, demonAnimations, ironGiantAnimations, trollAnimations, zombieCopAnimations, zombieDocAnimations, zombieBarefootAnimations, zombieGuardAnimations
+  zombieCopAnimations, zombieDocAnimations, zombieBarefootAnimations, zombieGuardAnimations
 } from '/data/animations.js'
 
 const textureLoader = new THREE.TextureLoader()
@@ -180,10 +180,6 @@ export const loadModel = async param => {
       throw new Error(`Unknown file extension: ${ext}`)
   }
 }
-
-/* ALIASES */
-
-export const loadWitch = () => loadModel({ file: 'model.fbx', angle: Math.PI, animDict: witchAnimations, prefix: 'character/witch/', fixColors: true, size: 1.7 })
 
 /* ZOMBIES */
 
