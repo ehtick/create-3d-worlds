@@ -13,6 +13,7 @@ npx live-server
 
 - Savo / FPS
   - napraviti fabrike za sve, prebaciti aliase iz loadera
+    - adjust speed za ležeće i sl.
   - add Player attackStyle: 'LOOP' 
   - ako je ai pogođen, da se okrene ka igraču
   - izabrati neprijatelje
