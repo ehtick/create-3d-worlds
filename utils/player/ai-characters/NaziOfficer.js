@@ -1,0 +1,26 @@
+import Player from '/utils/player/Player.js'
+import AI from '/utils/player/AI.js'
+import { loadModel } from '/utils/loaders.js'
+import { naziOfficerAnimations } from '/data/animations.js'
+
+/* LOADING */
+
+const { mesh, animations, animDict } = await loadModel({ file: 'nazi-officer.fbx', prefix: 'character/nazi/', animDict: naziOfficerAnimations, angle: Math.PI, fixColors: true, size: 2 })
+
+const { mesh: pistol } = await loadModel({ file: 'weapon/luger/model.fbx', scale: .18 })
+
+/* EXTENDED CLASSES */
+
+const sharedProps = { mesh, animations, animDict, pistol }
+
+export class NaziOfficerPlayer extends Player {
+  constructor(props = {}) {
+    super({ ...sharedProps, ...props })
+  }
+}
+
+export class NaziOfficerAI extends AI {
+  constructor(props = {}) {
+    super({ ...sharedProps, basicState: 'wander', attackDistance: 10, ...props })
+  }
+}
