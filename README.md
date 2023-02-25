@@ -14,7 +14,6 @@ npx live-server
 - Savo / FPS
   - fix: ai/flee, pregledati sve ai primere
   - fix: 3dp camera stairway-girl/
-  - fix: nude-victim (center in blender, new anims)
   - add Player attackStyle: 'LOOP' 
   - ako je ai pogođen, da se okrene ka igraču
   - izabrati neprijatelje

@@ -76,6 +76,11 @@ export default class AI extends Player {
     return (-1.3 < dotProduct && dotProduct < -0.7)
   }
 
+  get targetNear() {
+    if (!this.target) return false
+    return this.distancToTarget < this.sightDistance
+  }
+
   get targetSpotted() {
     if (!this.target) return false
     return (this.lookingAtTarget && this.distancToTarget < this.sightDistance)

@@ -28,6 +28,7 @@ export default class State {
   /* FSM */
 
   enter(oldState, oldAction) {
+    // if (this.player.mesh.name == 'enemy') console.log(this.name)
     this.prevState = oldState?.name
     if (this.action) this.action.enabled = true
   }
