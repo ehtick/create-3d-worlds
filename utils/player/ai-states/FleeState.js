@@ -6,8 +6,8 @@ const { randInt } = MathUtils
 export default class FleeState extends RunState {
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
-
     this.input.up = this.input.run = true
+
     this.minFleeTime = randInt(500, 1000)
   }
 
