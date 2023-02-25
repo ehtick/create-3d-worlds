@@ -7,6 +7,7 @@ export default class PursueState extends RunState {
 
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
+    this.input.run = this.input.up = true
 
     this.player.randomizeAction()
     this.startPursue = randInt(300, 600)
@@ -19,8 +20,6 @@ export default class PursueState extends RunState {
     player.lookAtTarget()
 
     if (Date.now() - this.last < this.startPursue) return
-
-    this.input.run = this.input.up = true
 
     // raycast once in 50 frames (expensive operation)
     if (this.i % 50 === 0 && player.blocked)

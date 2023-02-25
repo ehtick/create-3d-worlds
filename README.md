@@ -11,8 +11,10 @@ npx live-server
 
 ### Scenes & examples
 
+- pauzirati scenu na tab unfocus
+
 - Savo / FPS
-  - pregledati sve ai primere
+  - fix: ai/follow (trzanje)
   - fix: 3dp camera stairway-girl/
   - add Player attackStyle: 'LOOP' 
   - ako je ai pogođen, da se okrene ka igraču
