@@ -3,6 +3,7 @@ import State from './State.js'
 export default class RunState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
+
     const duration = this.prevState === 'jump' ? .15 : .75
 
     if (this.actions.run) {
@@ -12,6 +13,7 @@ export default class RunState extends State {
 
     if (!this.actions.run) {
       if (oldAction !== this.actions.walk) oldAction?.stop()
+      this.actions.walk?.reset()
       this.actions.walk?.setEffectiveTimeScale(1.5)
       this.actions.walk?.play()
     }

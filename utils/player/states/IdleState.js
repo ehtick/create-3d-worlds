@@ -1,6 +1,7 @@
 import State from './State.js'
 
 const chooseDuration = prevState => {
+  if (['run', 'flee', 'pursue'].includes(prevState)) return 1
   if (prevState === 'jump') return .25
   return .75
 }

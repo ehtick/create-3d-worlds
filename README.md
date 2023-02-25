@@ -12,7 +12,7 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - fix: ai/flee, pregledati sve ai primere
+  - pregledati sve ai primere
   - fix: 3dp camera stairway-girl/
   - add Player attackStyle: 'LOOP' 
   - ako je ai pogođen, da se okrene ka igraču
