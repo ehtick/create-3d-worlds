@@ -17,7 +17,7 @@ const runActions = ['pursue', 'flee']
  */
 export default class AI extends Player {
   constructor({
-    jumpStyle = jumpStyles.JUMP, basicState = 'idle', shouldRaycastGround = false, sightDistance = 25, minFollowDistance = 1, attackDistance = 1.5, patrolLength = 10, target, mapSize, coords, ...params
+    jumpStyle = jumpStyles.JUMP, basicState = 'idle', shouldRaycastGround = false, sightDistance = 25, closeDistance = 1.5, attackDistance = 1.5, patrolLength = 10, target, mapSize, coords, ...params
   } = {}) {
     super({
       ...params,
@@ -27,7 +27,7 @@ export default class AI extends Player {
     })
     this.basicState = basicState
     this.target = target
-    this.minFollowDistance = minFollowDistance
+    this.closeDistance = closeDistance
     this.sightDistance = sightDistance
     this.attackDistance = attackDistance
     this.patrolLength = patrolLength
@@ -87,14 +87,6 @@ export default class AI extends Player {
     || (this.distancToTarget < this.sightDistance * .3) // feel if too close
   }
 
-  get otherAi() {
-    return this.mesh.parent.children.filter(child => child.name == 'enemy' && child !== this.mesh)
-  }
-
-  get blocked() {
-    return this.directionBlocked(dir.forward, this.otherAi)
-  }
-
   /* UTILS */
 
   addSolids(solids) {
@@ -114,12 +106,6 @@ export default class AI extends Player {
   bounce(angle = Math.PI) {
     this.turn(angle)
     this.mesh.translateZ(this.velocity.z)
-  }
-
-  translateSmooth(x) {
-    new TWEEN.Tween(this.mesh.position)
-      .to({ x: this.mesh.position.x + x }, 500)
-      .start()
   }
 
   turnSmooth(angle = Math.PI) {
@@ -147,11 +133,11 @@ export default class AI extends Player {
 
   /* UPDATE */
 
-  updateMove(delta, halfCircle = true) {
+  updateMove(delta, turnAround = true) {
     const direction = this.input.up ? dir.forward : dir.backward
     if (this.directionBlocked(direction))
-      if (halfCircle) this.turn(Math.PI)
-      else this.translateSmooth(.25) // BUG: translate in world coords!
+      if (turnAround) this.turn(Math.PI)
+      else this.mesh.translateX(delta * 5)
 
     this.velocity.z += -this.acceleration * delta
     this.velocity.z *= (1 - this.drag)

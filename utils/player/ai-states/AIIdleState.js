@@ -11,7 +11,7 @@ export default class AIIdleState extends IdleState {
 
   update() {
     const { player } = this
-    const { basicState, minFollowDistance } = player
+    const { basicState, closeDistance } = player
 
     this.turnPeriodically(this.interval, Math.PI / 4)
 
@@ -23,7 +23,7 @@ export default class AIIdleState extends IdleState {
     if (basicState == 'flee' && player.targetNear)
       player.setState('flee')
 
-    if (basicState == 'follow' && player.targetNear && player.distancToTarget > minFollowDistance * 1.25)
+    if (basicState == 'follow' && player.targetNear && player.distancToTarget > closeDistance * 1.25)
       player.setState('follow')
 
     // super.update(delta)
