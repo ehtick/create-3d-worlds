@@ -17,7 +17,7 @@ const runActions = ['pursue', 'flee']
  */
 export default class AI extends Player {
   constructor({
-    jumpStyle = jumpStyles.JUMP, basicState = 'idle', shouldRaycastGround = false, sightDistance = 25, followDistance = 3, attackDistance = 1.5, patrolLength = 10, target, mapSize, coords, ...params
+    jumpStyle = jumpStyles.JUMP, basicState = 'idle', shouldRaycastGround = false, sightDistance = 25, minFollowDistance = 1, attackDistance = 1.5, patrolLength = 10, target, mapSize, coords, ...params
   } = {}) {
     super({
       ...params,
@@ -27,7 +27,7 @@ export default class AI extends Player {
     })
     this.basicState = basicState
     this.target = target
-    this.followDistance = followDistance
+    this.minFollowDistance = minFollowDistance
     this.sightDistance = sightDistance
     this.attackDistance = attackDistance
     this.patrolLength = patrolLength
@@ -147,9 +147,11 @@ export default class AI extends Player {
 
   /* UPDATE */
 
-  updateMove(delta) {
+  updateMove(delta, halfCircle = true) {
     const direction = this.input.up ? dir.forward : dir.backward
-    if (this.directionBlocked(direction)) this.turn(Math.PI)
+    if (this.directionBlocked(direction))
+      if (halfCircle) this.turn(Math.PI)
+      else this.translateSmooth(.25) // BUG: translate in world coords!
 
     this.velocity.z += -this.acceleration * delta
     this.velocity.z *= (1 - this.drag)

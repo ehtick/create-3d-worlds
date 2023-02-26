@@ -12,6 +12,7 @@ npx live-server
 ### Scenes & examples
 
 - pauzirati scenu na tab unfocus
+- probati ai updatove na svaki drugi frejm?
 
 - Savo / FPS
   - fix: ai/follow (trzanje)

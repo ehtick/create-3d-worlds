@@ -66,6 +66,10 @@ export default class Player {
     return this.mesh.position
   }
 
+  get name() {
+    return this.mesh.name
+  }
+
   get heightDifference() {
     return this.mesh.position.y - this.groundY
   }

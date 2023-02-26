@@ -21,11 +21,10 @@ export default class PursueState extends RunState {
 
     if (Date.now() - this.last < this.startPursue) return
 
+    // TODO: REMOVE
     // raycast once in 50 frames (expensive operation)
-    if (this.i % 50 === 0 && player.blocked)
+    if (this.i++ % 50 === 0 && player.blocked)
       player.translateSmooth(.25)
-
-    this.i++
 
     /* TRANSIT */
 
