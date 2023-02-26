@@ -9,6 +9,7 @@ import JumpFlyState from './JumpFlyState.js'
 import FlyState from './FlyState.js'
 import FallState from './FallState.js'
 import WoundedState from './WoundedState.js'
+import LoopState from './LoopState.js'
 
 import AIIdleState from '../ai-states/AIIdleState.js'
 import WanderState from '../ai-states/WanderState.js'
@@ -48,8 +49,9 @@ const chooseJumpState = jumpStyle => {
   }
 }
 
-export function getPlayerState(name, jumpStyle) {
+export function getPlayerState(name, jumpStyle, attackStyle) {
   if (name === 'jump') return chooseJumpState (jumpStyle)
+  if (name === 'attack' && attackStyle === 'LOOP') return LoopState
   return playerStates[name] || SpecialState
 }
 
