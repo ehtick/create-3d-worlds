@@ -10,7 +10,7 @@ export default class LoopState extends State {
   update() {
     const { player } = this
 
-    if (!player.input.pressed.Enter)
+    if (!player.input.attack)
       player.setState(this.previousOrIdle)
   }
 }

@@ -27,20 +27,20 @@ export default class WalkState extends State {
 
     /* TRANSIT */
 
-    if (this.input.space)
-      this.player.setState('jump')
+    if (player.input.space)
+      player.setState('jump')
 
-    if (this.player.inAir)
-      this.player.setState('fall')
+    if (player.inAir)
+      player.setState('fall')
 
-    if (this.input.pressed.Enter)
-      this.player.setState('attack')
+    if (player.input.attack)
+      player.setState('attack')
 
-    if (this.player.input.run)
-      this.player.setState('run')
+    if (player.input.run)
+      player.setState('run')
 
-    if (!this.player.input.up && !this.player.input.down
-      && !this.input.sideLeft && !this.input.sideRight)
-      this.player.setState('idle')
+    if (!player.input.up && !player.input.down
+      && !player.input.sideLeft && !player.input.sideRight)
+      player.setState('idle')
   }
 }

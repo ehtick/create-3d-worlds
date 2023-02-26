@@ -28,7 +28,7 @@ export default class IdleState extends State {
     if (this.input.space)
       this.player.setState('jump')
 
-    if (this.input.pressed.Enter)
+    if (this.input.attack)
       this.player.setState('attack')
 
     if (this.input.pressed.ShiftRight && this.actions.attack2)
