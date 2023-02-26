@@ -34,8 +34,8 @@ export default class IdleState extends State {
     if (this.input.pressed.ShiftRight && this.actions.attack2)
       this.player.setState('attack2')
 
-    // if (this.input.control)
-    //   this.player.setState('special')
+    if (this.input.control)
+      this.player.setState('special')
 
     /* ONLY FOR TEST */
 

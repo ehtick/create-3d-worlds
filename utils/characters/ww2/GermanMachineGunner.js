@@ -28,6 +28,6 @@ export class GermanMachineGunnerPlayer extends Player {
 
 export class GermanMachineGunnerAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', attackDistance: 10, ...props })
+    super({ ...sharedProps, attackDistance: 10, ...props })
   }
 }

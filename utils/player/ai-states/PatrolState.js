@@ -4,18 +4,21 @@ export default class PatrolState extends WalkState {
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
     this.input.up = true
-    this.walked = 0
+    this.distance = 0
   }
 
   update(delta) {
     const { player } = this
 
-    this.walked += Math.abs(player.velocity.z)
+    this.distance += Math.abs(player.velocity.z)
 
-    if (this.walked >= player.patrolLength) {
+    if (this.distance >= player.patrolLength) {
       player.turnSmooth()
-      this.walked = 0
+      this.distance = 0
     }
+
+    if (player.mesh.userData.hitAmount)
+      player.lookAtTarget()
 
     /* TRANSIT */
 

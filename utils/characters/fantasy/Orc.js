@@ -27,6 +27,6 @@ export class OrcPlayer extends Player {
 
 export class OrcAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', ...props })
+    super({ ...sharedProps, ...props })
   }
 }

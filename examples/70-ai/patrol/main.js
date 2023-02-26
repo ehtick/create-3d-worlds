@@ -17,7 +17,7 @@ scene.add(player.mesh)
 
 const npcs = []
 for (let i = 0; i < 4; i++) {
-  const ai = new GolemAI({ mapSize, basicState: 'patrol', target: player.mesh })
+  const ai = new GolemAI({ mapSize, baseState: 'patrol', target: player.mesh })
   npcs.push(ai)
   scene.add(ai.mesh)
 }

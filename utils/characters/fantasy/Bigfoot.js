@@ -24,6 +24,6 @@ export class BigfootPlayer extends Player {
 
 export class BigfootAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', ...props })
+    super({ ...sharedProps, ...props })
   }
 }

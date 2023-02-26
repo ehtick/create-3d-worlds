@@ -26,6 +26,6 @@ export class ZombieDoctorCrawlPlayer extends Player {
 
 export class ZombieDoctorCrawlAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', ...props })
+    super({ ...sharedProps, ...props })
   }
 }

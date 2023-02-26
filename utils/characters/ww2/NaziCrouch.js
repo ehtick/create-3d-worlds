@@ -27,6 +27,6 @@ export class NaziCrouchPlayer extends Player {
 
 export class NaziCrouchAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', attackDistance: 10, ...props })
+    super({ ...sharedProps, attackDistance: 10, ...props })
   }
 }

@@ -31,6 +31,6 @@ export class BarbarianPlayer extends Player {
 
 export class BarbarianAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', ...props })
+    super({ ...sharedProps, ...props })
   }
 }

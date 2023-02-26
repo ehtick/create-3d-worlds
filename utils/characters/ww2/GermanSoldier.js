@@ -8,6 +8,7 @@ const animDict = {
   pursue: 'Walk With Rifle Aim',
   run: 'Rifle Run Aim',
   attack: 'Firing Rifle',
+  pain: 'Hit Reaction',
   death: 'Dying'
 }
 
@@ -29,6 +30,6 @@ export class GermanSoldierPlayer extends Player {
 
 export class GermanSoldierAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', attackDistance: 10, ...props })
+    super({ ...sharedProps, attackDistance: 10, ...props })
   }
 }

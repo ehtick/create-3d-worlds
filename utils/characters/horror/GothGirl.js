@@ -28,6 +28,6 @@ export class GothGirlPlayer extends Player {
 
 export class GothGirlAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', ...props })
+    super({ ...sharedProps, ...props })
   }
 }

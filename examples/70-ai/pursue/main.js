@@ -17,7 +17,7 @@ const player = new SorceressPlayer()
 scene.add(player.mesh)
 
 for (let i = 0; i < 7; i++) {
-  const ai = new OrcOgreAI({ mapSize, basicState: 'pursue', target: player.mesh })
+  const ai = new OrcOgreAI({ mapSize, baseState: 'pursue', target: player.mesh })
   npcs.push(ai)
   scene.add(ai.mesh)
 }

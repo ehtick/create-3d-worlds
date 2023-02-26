@@ -5,7 +5,7 @@ import { nemesis } from '/data/maps.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
 import { Rain } from '/utils/classes/Particles.js'
 import Savo from '/utils/player/Savo.js'
-import { GermanMachineGunnerAI } from '/utils/characters/ww2/GermanMachineGunner.js'
+import { GermanSoldierAI } from '/utils/characters/ww2/GermanSoldier.js'
 
 const light = hemLight()
 scene.background = createSkyBox({ folder: 'skybox4' })
@@ -22,7 +22,7 @@ player.position.copy(coords.next().value)
 
 const enemies = []
 for (let i = 0; i < 20; i++) {
-  const enemy = new GermanMachineGunnerAI({ solids: walls, target: player.mesh, coords })
+  const enemy = new GermanSoldierAI({ solids: walls, target: player.mesh, coords })
   enemies.push(enemy)
   scene.add(enemy.mesh)
 }

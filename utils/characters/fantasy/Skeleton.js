@@ -26,6 +26,6 @@ export class SkeletonPlayer extends Player {
 
 export class SkeletonAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', ...props })
+    super({ ...sharedProps, ...props })
   }
 }

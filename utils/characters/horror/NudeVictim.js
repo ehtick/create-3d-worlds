@@ -25,6 +25,6 @@ export class NudeVictimPlayer extends Player {
 
 export class NudeVictimAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', ...props })
+    super({ ...sharedProps, ...props })
   }
 }

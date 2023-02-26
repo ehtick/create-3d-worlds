@@ -26,6 +26,6 @@ export class DemonPlayer extends Player {
 
 export class DemonAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', ...props })
+    super({ ...sharedProps, ...props })
   }
 }

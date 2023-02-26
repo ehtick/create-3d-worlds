@@ -27,6 +27,6 @@ export class NaziOfficerPlayer extends Player {
 
 export class NaziOfficerAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', attackDistance: 10, ...props })
+    super({ ...sharedProps, attackDistance: 10, ...props })
   }
 }

@@ -15,6 +15,9 @@ export default class WanderState extends WalkState {
 
     this.turnPeriodically(this.interval)
 
+    if (player.mesh.userData.hitAmount)
+      player.lookAtTarget()
+
     /* TRANSIT */
 
     if (player.targetSpotted)

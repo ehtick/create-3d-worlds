@@ -25,6 +25,6 @@ export class GoblinPlayer extends Player {
 
 export class GoblinAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', ...props })
+    super({ ...sharedProps, ...props })
   }
 }

@@ -12,12 +12,12 @@ const walkActions = ['wander', 'follow', 'patrol']
 const runActions = ['pursue', 'flee']
 
 /**
- * basic states that pursue (if target): idle, patrol, wander
- * basic states that doesn't pursue: flee i follow
+ * baseState that pursue target: idle, patrol, wander
+ * baseState that doesn't pursue: flee i follow
  */
 export default class AI extends Player {
   constructor({
-    jumpStyle = jumpStyles.JUMP, basicState = 'idle', shouldRaycastGround = false, sightDistance = 25, closeDistance = 1.5, attackDistance = 1.5, patrolLength = 10, target, mapSize, coords, ...params
+    jumpStyle = jumpStyles.JUMP, baseState = 'wander', shouldRaycastGround = false, sightDistance = 25, closeDistance = 1.5, attackDistance = 1.5, patrolLength = 10, target, mapSize, coords, ...params
   } = {}) {
     super({
       ...params,
@@ -25,7 +25,7 @@ export default class AI extends Player {
       getState: name => getAIState(name, jumpStyle, params.attackStyle),
       shouldRaycastGround,
     })
-    this.basicState = basicState
+    this.baseState = baseState
     this.target = target
     this.closeDistance = closeDistance
     this.sightDistance = sightDistance
@@ -46,13 +46,13 @@ export default class AI extends Player {
 
     if (coords) this.position.copy(coords.next().value)
 
-    this.setState(basicState)
+    this.setState(baseState)
   }
 
   /* GETTERS */
 
   get pursueMode() {
-    return ['idle', 'patrol', 'wander'].includes(this.basicState)
+    return ['idle', 'patrol', 'wander'].includes(this.baseState)
   }
 
   get outOfBounds() {

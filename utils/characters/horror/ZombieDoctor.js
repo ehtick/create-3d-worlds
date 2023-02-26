@@ -28,6 +28,6 @@ export class ZombieDoctorPlayer extends Player {
 
 export class ZombieDoctorAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', ...props })
+    super({ ...sharedProps, ...props })
   }
 }

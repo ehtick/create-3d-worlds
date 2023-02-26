@@ -21,6 +21,6 @@ export class PartisanLowpolyPlayer extends Player {
 
 export class PartisanLowpolyAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', attackDistance: 10, ...props })
+    super({ ...sharedProps, attackDistance: 10, ...props })
   }
 }

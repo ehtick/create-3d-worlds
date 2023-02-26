@@ -21,6 +21,6 @@ export class SoldierPlayer extends Player {
 
 export class SoldierAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', attackDistance: 10, ...props })
+    super({ ...sharedProps, attackDistance: 10, ...props })
   }
 }

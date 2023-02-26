@@ -29,7 +29,7 @@ export default class PursueState extends RunState {
       player.setState('attack')
 
     if (!player.targetSpotted)
-      player.setState(player.basicState || 'idle')
+      player.setState(player.baseState || 'idle')
   }
 
   exit() {

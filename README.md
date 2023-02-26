@@ -15,7 +15,6 @@ npx live-server
 - probati ai updatove na svaki drugi frejm?
 
 - Savo / FPS
-  - ako je ai pogođen, da se okrene ka igraču
   - izabrati neprijatelje
   - probati 3D karakter za prvo lice (partisan-lowpoly)
   - ako igrač puca da ga ostali primete

@@ -30,6 +30,6 @@ export class PartisanPlayer extends Player {
 
 export class PartisanAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', attackDistance: 10, ...props })
+    super({ ...sharedProps, attackDistance: 10, ...props })
   }
 }

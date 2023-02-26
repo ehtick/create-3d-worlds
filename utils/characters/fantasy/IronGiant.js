@@ -25,6 +25,6 @@ export class IronGiantPlayer extends Player {
 
 export class IronGiantAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', ...props })
+    super({ ...sharedProps, ...props })
   }
 }

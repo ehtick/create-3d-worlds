@@ -17,7 +17,7 @@ const player = new SorceressPlayer()
 scene.add(player.mesh)
 
 for (let i = 0; i < 10; i++) {
-  const ai = new GolemAI({ mapSize, basicState: 'idle' })
+  const ai = new GolemAI({ mapSize, baseState: 'idle' })
   npcs.push(ai)
   scene.add(ai.mesh)
 }

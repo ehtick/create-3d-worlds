@@ -22,6 +22,6 @@ export class GhostPlayer extends Player {
 
 export class GhostAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, basicState: 'wander', ...props })
+    super({ ...sharedProps, ...props })
   }
 }
