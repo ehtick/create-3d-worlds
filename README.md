@@ -15,7 +15,6 @@ npx live-server
 - probati ai updatove na svaki drugi frejm?
 
 - Savo / FPS
-  - fix: 3dp camera stairway-girl/
   - add Player attackStyle: 'LOOP' 
   - ako je ai pogođen, da se okrene ka igraču
   - izabrati neprijatelje

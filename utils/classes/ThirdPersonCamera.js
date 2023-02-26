@@ -21,11 +21,8 @@ export default class ThirdPersonCamera {
     this.currentLookat = new THREE.Vector3()
   }
 
-  updateCurrentPosition() {
-    this.currentPosition.copy(this.camera.position)
-  }
-
   update(delta) {
+    this.currentPosition.copy(this.camera.position)
     const { y } = this.mesh.position
     const newLookAt = [...this.lookAt]
 
