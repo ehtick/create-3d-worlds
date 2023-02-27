@@ -6,6 +6,7 @@ const { randInt } = MathUtils
 export default class PursueState extends RunState {
 
   enter(oldState, oldAction) {
+    this.actions.pursue = this.actions.run
     super.enter(oldState, oldAction)
     this.input.run = this.input.up = true
 
@@ -29,7 +30,7 @@ export default class PursueState extends RunState {
       player.setState('attack')
 
     if (!player.targetSpotted)
-      player.setState(player.baseState || 'idle')
+      player.setState(player.baseState)
   }
 
   exit() {

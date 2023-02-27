@@ -6,6 +6,16 @@ import { hemLight, lightningStrike } from '/utils/light.js'
 import { Rain } from '/utils/classes/Particles.js'
 import Savo from '/utils/player/Savo.js'
 import { GermanSoldierAI } from '/utils/characters/ww2/GermanSoldier.js'
+import { GermanMachineGunnerAI } from '/utils/characters/ww2/GermanMachineGunner.js'
+import { GermanSoldierCrouchAI } from '/utils/characters/ww2/GermanSoldierCrouch.js'
+import { GermanSoldierProneAI } from '/utils/characters/ww2/GermanSoldierProne.js'
+import { NaziAI } from '/utils/characters/ww2/Nazi.js'
+import { NaziCrouchAI } from '/utils/characters/ww2/NaziCrouch.js'
+import { NaziOfficerAI } from '/utils/characters/ww2/NaziOfficer.js'
+import { NaziProneAI } from '/utils/characters/ww2/NaziProne.js'
+import { sample } from '/utils/helpers.js'
+
+const enemyClasses = [GermanSoldierAI, GermanMachineGunnerAI, GermanSoldierCrouchAI, GermanSoldierProneAI, NaziAI, NaziCrouchAI, NaziOfficerAI, NaziProneAI]
 
 const light = hemLight()
 scene.background = createSkyBox({ folder: 'skybox4' })
@@ -22,7 +32,8 @@ player.position.copy(coords.next().value)
 
 const enemies = []
 for (let i = 0; i < 20; i++) {
-  const enemy = new GermanSoldierAI({ solids: walls, target: player.mesh, coords })
+  const EnemyClass = GermanSoldierAI // sample(enemyClasses)
+  const enemy = new EnemyClass({ solids: walls, target: player.mesh, coords })
   enemies.push(enemy)
   scene.add(enemy.mesh)
 }

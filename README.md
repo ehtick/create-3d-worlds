@@ -11,9 +11,13 @@ npx live-server
 
 ### Scenes & examples
 
+- BUG: kad je baseState 'pursue' radi trčeća animacija, kad nije ne radi
+
 - Savo / FPS
-  - srediti nemcima animacije
-  - dodati neprijatelje
+  - dodati svim nemcima sve animacije
+  - srediti AIAttackState: 
+    - nastavljati napad dok se meta ne odalji
+    - ne hodati dok puca
   - probati 3D karakter za prvo lice (partisan-lowpoly)
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi

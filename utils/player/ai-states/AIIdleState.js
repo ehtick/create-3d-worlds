@@ -20,7 +20,7 @@ export default class AIIdleState extends IdleState {
 
     /* TRANSIT */
 
-    if (player.pursueMode && player.targetSpotted)
+    if (player.inPursueState && player.targetSpotted)
       player.setState('pursue')
 
     if (baseState == 'flee' && player.targetNear)

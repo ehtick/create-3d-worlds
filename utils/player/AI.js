@@ -11,8 +11,10 @@ const { randFloatSpread } = MathUtils
 const walkActions = ['wander', 'follow', 'patrol']
 const runActions = ['pursue', 'flee']
 
+const pursueStates = ['idle', 'patrol', 'wander']
+
 /**
- * baseState that pursue target: idle, patrol, wander
+ * baseState that pursue target on sight: idle, patrol, wander
  * baseState that doesn't pursue: flee i follow
  */
 export default class AI extends Player {
@@ -25,15 +27,13 @@ export default class AI extends Player {
       getState: name => getAIState(name, jumpStyle, params.attackStyle),
       shouldRaycastGround,
     })
+    this.name = 'enemy'
     this.baseState = baseState
     this.target = target
     this.closeDistance = closeDistance
     this.sightDistance = sightDistance
     this.attackDistance = attackDistance
     this.patrolLength = patrolLength
-
-    // game props for raycast
-    this.mesh.name = 'enemy'
 
     this.randomizeAction()
     this.mesh.rotateY(Math.random() * Math.PI * 2)
@@ -51,8 +51,8 @@ export default class AI extends Player {
 
   /* GETTERS */
 
-  get pursueMode() {
-    return ['idle', 'patrol', 'wander'].includes(this.baseState)
+  get inPursueState() {
+    return pursueStates.includes(this.baseState)
   }
 
   get outOfBounds() {
