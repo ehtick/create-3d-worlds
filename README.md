@@ -12,6 +12,7 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
+  - BUG: nemac mrda nogama dok puca
   - dodati svim nemcima sve animacije
   - srediti AIAttackState: 
     - ponavljati napad dok se meta ne odalji
