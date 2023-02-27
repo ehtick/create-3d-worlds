@@ -6,6 +6,7 @@ const animDict = {
   idle: 'Crouch Idle',
   walk: 'Crouched Run',
   attack: 'Fire Rifle Crouch',
+  pain: 'Crouch Hit Reaction',
   death: 'Crouch Death',
 }
 

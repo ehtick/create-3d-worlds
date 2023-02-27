@@ -6,6 +6,7 @@ const animDict = {
   idle: 'Crouch Idle',
   walk: 'Walk Crouching Forward',
   attack: 'Fire Rifle Crouch',
+  pain: 'Crouch Hit Reaction',
   death: 'Crouch Death',
 }
 
@@ -17,7 +18,7 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/rifle.fbx', scale: 1.33,
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict, rifle }
+const sharedProps = { mesh, animations, animDict, rifle, speed: 1.75 }
 
 export class GermanSoldierCrouchPlayer extends Player {
   constructor(props = {}) {
@@ -27,6 +28,6 @@ export class GermanSoldierCrouchPlayer extends Player {
 
 export class GermanSoldierCrouchAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, attackDistance: 10, ...props })
+    super({ ...sharedProps, attackDistance: 11, ...props })
   }
 }

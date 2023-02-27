@@ -4,8 +4,8 @@ import { loadModel } from '/utils/loaders.js'
 
 const animDict = {
   idle: 'Rifle Aiming Idle',
-  attack: 'Firing Rifle',
   walk: 'Walk With Rifle',
+  attack: 'Firing Rifle',
   pain: 'Hit Reaction',
   death: 'Death Crouching Headshot Front',
 }
@@ -18,7 +18,7 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/rifle.fbx', scale: 1.33,
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict, rifle }
+const sharedProps = { mesh, animations, animDict, rifle, speed: 1.75 }
 
 export class NaziPlayer extends Player {
   constructor(props = {}) {

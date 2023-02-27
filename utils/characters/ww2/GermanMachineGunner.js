@@ -19,7 +19,7 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/mg-42/lowpoly.fbx', scal
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict, rifle, attackStyle: 'LOOP' }
+const sharedProps = { mesh, animations, animDict, rifle, speed: 1.8, attackStyle: 'LOOP' }
 
 export class GermanMachineGunnerPlayer extends Player {
   constructor(props = {}) {
@@ -29,6 +29,6 @@ export class GermanMachineGunnerPlayer extends Player {
 
 export class GermanMachineGunnerAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, attackDistance: 10, ...props })
+    super({ ...sharedProps, attackDistance: 14, ...props })
   }
 }

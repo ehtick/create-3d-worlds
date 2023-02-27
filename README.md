@@ -11,13 +11,18 @@ npx live-server
 
 ### Scenes & examples
 
+- deo problema: AI walkActions i runActions
+- BUG: kada nema run animacije, walk-run-walk ne resetuje brzinu nogu (vidi nazi)
+- BUG: nemac mrda nogama dok puca (izgleda se mešaju animacije, nekima se mrtvima mrdaju noge)
+  - možda je rešenje dodati run akciju odma na početku kao ubrzani walk, ako nema run animaciju
+
+
 - Savo / FPS
-  - BUG: nemac mrda nogama dok puca
   - dodati svim nemcima sve animacije
-  - srediti AIAttackState: 
-    - ponavljati napad dok se meta ne odalji
-    - ne hodati dok puca
-  - probati 3D karakter za prvo lice (partisan-lowpoly)
+  - srediti AIAttackState: ponavljati napad dok se meta ne odalji (ili kombinovati sa idle)
+  - onemogućiti trčanje po potrebi (npr za Prone karaktere)
+
+  - probati 3D karakter za prvo lice
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola

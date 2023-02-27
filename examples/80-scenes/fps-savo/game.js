@@ -12,10 +12,9 @@ import { GermanSoldierProneAI } from '/utils/characters/ww2/GermanSoldierProne.j
 import { NaziAI } from '/utils/characters/ww2/Nazi.js'
 import { NaziCrouchAI } from '/utils/characters/ww2/NaziCrouch.js'
 import { NaziOfficerAI } from '/utils/characters/ww2/NaziOfficer.js'
-import { NaziProneAI } from '/utils/characters/ww2/NaziProne.js'
 import { sample } from '/utils/helpers.js'
 
-const enemyClasses = [GermanSoldierAI, GermanMachineGunnerAI, GermanSoldierCrouchAI, GermanSoldierProneAI, NaziAI, NaziCrouchAI, NaziOfficerAI, NaziProneAI]
+const enemyClasses = [GermanSoldierAI, GermanMachineGunnerAI, GermanSoldierCrouchAI, GermanSoldierProneAI, NaziAI, NaziCrouchAI, NaziOfficerAI]
 
 const light = hemLight()
 scene.background = createSkyBox({ folder: 'skybox4' })
@@ -32,7 +31,7 @@ player.position.copy(coords.next().value)
 
 const enemies = []
 for (let i = 0; i < 20; i++) {
-  const EnemyClass = GermanSoldierCrouchAI // sample(enemyClasses)
+  const EnemyClass = NaziOfficerAI // sample(enemyClasses)
   const enemy = new EnemyClass({ solids: walls, target: player.mesh, coords })
   enemies.push(enemy)
   scene.add(enemy.mesh)
