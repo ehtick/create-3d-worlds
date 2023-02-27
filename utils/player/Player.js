@@ -201,8 +201,6 @@ export default class Player {
   updateTurn(delta) {
     if (!delta) return
     const angle = RIGHT_ANGLE * delta // 90 degrees per second
-    // if (this.joystick)
-    //   this.turn(angle * -this.joystick.turn)
 
     if (this.input.left)
       this.turn(angle)

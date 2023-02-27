@@ -11,13 +11,10 @@ npx live-server
 
 ### Scenes & examples
 
-- pauzirati scenu na tab unfocus
-- probati ai updatove na svaki drugi frejm?
-
 - Savo / FPS
-  - izabrati neprijatelje
+  - srediti nemcima animacije
+  - dodati neprijatelje
   - probati 3D karakter za prvo lice (partisan-lowpoly)
-  - ako igrač puca da ga ostali primete
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola
@@ -81,6 +78,8 @@ Tenk (Vozilo)
   - https://threejs.org/docs/#manual/en/introduction/How-to-create-VR-content
   - https://ski-mountain-vr.herokuapp.com/
 - dodati preloader po potrebi
+- reuse main loop?
+  - pauzirati scenu na tab unfocus
 
 ### Publish
 - srediti root-relativne linkove da rade u podfolderu
