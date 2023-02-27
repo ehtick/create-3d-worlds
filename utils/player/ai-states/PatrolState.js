@@ -20,12 +20,12 @@ export default class PatrolState extends WalkState {
     if (player.mesh.userData.hitAmount)
       player.lookAtTarget()
 
+    player.updateMove(delta)
+
     /* TRANSIT */
 
     if (this.targetSpotted)
       player.setState('pursue')
-
-    super.update(delta)
   }
 
   exit() {

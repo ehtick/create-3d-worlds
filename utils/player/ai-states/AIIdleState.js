@@ -28,7 +28,5 @@ export default class AIIdleState extends IdleState {
 
     if (baseState == 'follow' && player.targetNear && player.distancToTarget > closeDistance * 1.25)
       player.setState('follow')
-
-    // super.update(delta)
   }
 }

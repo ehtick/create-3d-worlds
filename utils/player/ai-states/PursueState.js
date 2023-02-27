@@ -6,7 +6,7 @@ const { randInt } = MathUtils
 export default class PursueState extends RunState {
 
   enter(oldState, oldAction) {
-    this.actions.pursue = this.actions.run
+    // this.actions.pursue = this.actions.run
     super.enter(oldState, oldAction)
     this.input.run = this.input.up = true
 

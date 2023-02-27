@@ -14,6 +14,7 @@ export default class WanderState extends WalkState {
     const { player } = this
 
     this.turnPeriodically(this.interval)
+    player.updateMove(delta)
 
     if (player.mesh.userData.hitAmount)
       player.lookAtTarget()
@@ -22,8 +23,6 @@ export default class WanderState extends WalkState {
 
     if (player.targetSpotted)
       player.setState('pursue')
-
-    super.update(delta)
   }
 
   exit() {
