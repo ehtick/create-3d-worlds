@@ -6,7 +6,6 @@ export default class FollowState extends WalkState {
     super.enter(oldState, oldAction)
     this.input.up = true
     this.player.randomizeAction()
-    this.i = 0
   }
 
   update(delta) {

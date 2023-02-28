@@ -14,8 +14,10 @@ export default class FleeState extends RunState {
   update(delta) {
     const { player } = this
 
-    player.updateMove(delta) // order is important
     player.mesh.lookAt(player.target.position) // looks away
+    player.updateMove(delta) // order is important
+
+    /* TRANSIT */
 
     if (Date.now() - this.last > this.minFleeTime && !player.targetNear)
       player.setState('idle')

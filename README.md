@@ -12,8 +12,9 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - dodati attack2 nemcima gde ima
+  - BUG: ai preklapaju se kad jure igrača
   - BUG: ai ugleda igrača i prolazi kroz zid
+  - dodati attack2 nemcima gde ima
 
   - probati 3D karakter za prvo lice
   - dodati neke modele vozila i kuca
