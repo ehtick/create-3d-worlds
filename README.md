@@ -12,9 +12,7 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - dodati svim nemcima sve animacije
-  - srediti AIAttackState: ponavljati napad dok se meta ne odalji (ili kombinovati sa idle)
-  - onemogućiti trčanje po potrebi (npr za Prone karaktere)
+  - AIAttackState: ponavljati napad dok se meta ne odalji (ili kombinovati sa idle)
 
   - probati 3D karakter za prvo lice
   - dodati neke modele vozila i kuca

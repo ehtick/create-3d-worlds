@@ -113,9 +113,8 @@ export default class Player {
 
   /* ANIMATIONS */
 
-  cloneAction(clip) {
-    const cloned = clip.clone()
-    return this.mixer.clipAction(cloned)
+  createRun(walk) {
+    return this.mixer.clipAction(walk.clone()).setEffectiveTimeScale(1.5)
   }
 
   setupMixer(animations, animDict) {
@@ -126,8 +125,7 @@ export default class Player {
     }
     if (!animDict.run && animDict.walk) {
       const clip = animations.find(anim => anim.name == animDict.walk)
-      this.actions.run = this.cloneAction(clip)
-      this.actions.run.setEffectiveTimeScale(1.5)
+      this.actions.run = this.createRun(clip)
     }
   }
 
