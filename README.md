@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - AIAttackState: ponavljati napad dok se meta ne odalji (ili kombinovati sa idle)
   - dodati attack2 nemcima gde ima
   - BUG: ai ugleda igrača i prolazi kroz zid
 
