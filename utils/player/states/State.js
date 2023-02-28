@@ -70,7 +70,7 @@ export default class State {
 
   /* AI HELPERS */
 
-  turnPeriodically(interval, angle = Math.PI / 2) {
+  turnEvery(interval, angle = Math.PI / 2) {
     if (Date.now() - this.last >= interval) {
       new TWEEN.Tween(this.player.mesh.rotation)
         .to({ y: randFloat(-angle, angle) }, interval / 2)

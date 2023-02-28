@@ -12,13 +12,21 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - dodati attack2 nemcima gde ima
-
   - probati 3D karakter za prvo lice
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
+
+- Fantasy / RPG
+  - napraviti scenu na osnovu mini-rpg
+  - dodati BarbarianPlayer i OrcAI
+  - isprobati borbu, možda dodati oružje
+  - oblaci, životinje, zamak
+  - cepelin u vazduhu (vinci aerial screw, santos dumont airship)
+  - karakter dolazi do kuće i ulazi (vidi house model primer)
+  - uzima predmete (50-rad-sa-modelima/80-uzimanje-predmeta/)
+  - ranjena varvarka puzi do nekog cilja?
 
 - Svemir 
   - dodati model ring space-arcology
@@ -30,37 +38,29 @@ npx live-server
   - dodati proceduralnu planetu http://colordodge.com/ProceduralPlanet/?seed=Ridi%20Genow
   - mozda iskoristiti astronauta da luta po planeti https://codepen.io/b29/pen/LoaRKx
 
-- Fantasy world
-  - dodati modele (vidi rad-sa-modelima)
-  - cepelin u vazduhu (vinci aerial screw, santos dumont airship)
-  - karakter dolazi do kuće i ulazi (vidi 50-rad-sa-modelima/35-kuca-unutrasnost)
-  - uzima predmete (50-rad-sa-modelima/80-uzimanje-predmeta/)
-  - oblaci, životinje, zamak (vidi 80-primeri/90-simulacija-sveta)
-
 - 1943
   - dodati izbor aviona
   - dodati drveće
   - dodati objekte
   - pucanje i eksplozije
 
-Tenk (Vozilo)
+- Tenk (Vozilo)
   - tenk da se trese kada ide
   - vozilo da se okreću točkovi kada ide
   - ispitati modele, jel moguće upravljati točkovima, kupolom ili nečim
   - ide kroz ratnu scenu (spaljene zgrade) i ruši stvari
 
 - Endless runner
+  - probati skejtera
   - probati konja ili dabra
 
-- Partizani
+- Partizani 2D
   - napraviti 2d scenu u 3d, ideja https://codepen.io/davekwiatkowski/pen/pWPVpX
   - junior general slike
   - borba (vidi slike partizana animaciju staru)
 
 - Groblje
  - nasumično zakriviti kamenove
-
-- ranjena varvarka puzi do nekog cilja
 
 ### Polishing
 

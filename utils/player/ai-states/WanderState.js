@@ -13,7 +13,7 @@ export default class WanderState extends WalkState {
   update(delta) {
     const { player } = this
 
-    this.turnPeriodically(this.interval)
+    this.turnEvery(this.interval)
     player.updateMove(delta)
 
     if (player.mesh.userData.hitAmount)

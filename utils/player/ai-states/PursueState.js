@@ -5,7 +5,6 @@ export default class PursueState extends RunState {
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
     this.input.run = this.input.up = true
-    this.player.randomizeAction()
   }
 
   update(delta) {

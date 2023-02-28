@@ -13,7 +13,7 @@ export default class AIIdleState extends IdleState {
     const { player } = this
     const { baseState, followDistance } = player
 
-    this.turnPeriodically(this.interval, Math.PI / 4)
+    this.turnEvery(this.interval, Math.PI / 4)
 
     if (player.mesh.userData.hitAmount)
       player.lookAtTarget()
