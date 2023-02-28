@@ -19,7 +19,7 @@ export default class FollowState extends WalkState {
     if (!player.targetNear)
       player.setState('idle')
 
-    if (player.distancToTarget < player.closeDistance)
+    if (player.distancToTarget < player.followDistance)
       player.setState('idle')
   }
 

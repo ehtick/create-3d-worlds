@@ -12,10 +12,11 @@ export default class SpecialState extends State {
 
   enter(oldState, oldAction) {
     super.enter(oldState)
+    // if (this.name === 'death') this.player.mixer.stopAllAction() // fix
     if (!this.action) return this.player.setState(this.previousOrIdle)
 
     this.oldState = oldState
-    const mixer = this.action?.getMixer()
+    const { mixer } = this.player
     mixer.addEventListener('finished', this._FinishedCallback)
     this.action.reset()
     this.action.setLoop(THREE.LoopOnce, 1)

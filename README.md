@@ -14,7 +14,12 @@ npx live-server
 - Savo / FPS
   - BUG: ai preklapaju se kad jure igrača
   - BUG: ai ugleda igrača i prolazi kroz zid
+  - BUG: ork se ponekad mrtav koprca
+    - napraviti DeathState extends SpecialState 
+
   - dodati attack2 nemcima gde ima
+  - orcs: reuse orc and orc ogre anims?
+  - orcs: dodati pain itd
 
   - probati 3D karakter za prvo lice
   - dodati neke modele vozila i kuca

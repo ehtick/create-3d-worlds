@@ -19,7 +19,7 @@ const pursueStates = ['idle', 'patrol', 'wander']
  */
 export default class AI extends Player {
   constructor({
-    jumpStyle = jumpStyles.JUMP, attackStyle = 'LOOP', baseState = 'wander', shouldRaycastGround = false, sightDistance = 25, closeDistance = 1.5, attackDistance = 1.5, patrolLength = 10, target, mapSize, coords, ...params
+    jumpStyle = jumpStyles.JUMP, attackStyle = 'LOOP', baseState = 'wander', shouldRaycastGround = false, sightDistance = 25, followDistance = 1.5, attackDistance = 1.5, patrolLength = 10, target, mapSize, coords, ...params
   } = {}) {
     super({
       ...params,
@@ -30,7 +30,7 @@ export default class AI extends Player {
     this.name = 'enemy'
     this.baseState = baseState
     this.target = target
-    this.closeDistance = closeDistance
+    this.followDistance = followDistance
     this.sightDistance = sightDistance
     this.attackDistance = attackDistance
     this.patrolLength = patrolLength
