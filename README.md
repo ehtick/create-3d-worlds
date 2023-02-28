@@ -17,6 +17,7 @@ npx live-server
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
+  - opciono neprijatelje zombije?
 
 - Fantasy / RPG
   - napraviti scenu na osnovu mini-rpg
