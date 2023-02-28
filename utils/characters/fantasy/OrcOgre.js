@@ -9,6 +9,7 @@ const animDict = {
   attack: 'Mutant Swiping',
   attack2: 'Zombie Attack',
   special: 'Zombie Scream',
+  pain: 'Zombie Reaction Hit',
   death: 'Zombie Dying',
 }
 

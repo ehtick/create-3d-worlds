@@ -13,8 +13,6 @@ npx live-server
 
 - Savo / FPS
   - dodati attack2 nemcima gde ima
-  - orcs: reuse orc and orc ogre anims?
-  - orcs: dodati pain itd
 
   - probati 3D karakter za prvo lice
   - dodati neke modele vozila i kuca
