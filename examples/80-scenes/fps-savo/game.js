@@ -31,7 +31,7 @@ player.position.copy(coords.next().value)
 
 const enemies = []
 for (let i = 0; i < 20; i++) {
-  const EnemyClass = sample(enemyClasses)
+  const EnemyClass = GermanSoldierAI // sample(enemyClasses)
   const enemy = new EnemyClass({ solids: walls, target: player.mesh, coords })
   enemies.push(enemy)
   scene.add(enemy.mesh)

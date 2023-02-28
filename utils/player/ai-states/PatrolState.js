@@ -30,6 +30,5 @@ export default class PatrolState extends WalkState {
 
   exit() {
     this.input.up = false
-    super.exit()
   }
 }

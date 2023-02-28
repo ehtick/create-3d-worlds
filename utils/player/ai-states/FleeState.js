@@ -23,6 +23,5 @@ export default class FleeState extends RunState {
 
   exit() {
     this.input.run = this.input.up = false
-    super.exit()
   }
 }

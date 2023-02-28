@@ -29,6 +29,5 @@ export default class PursueState extends RunState {
 
   exit() {
     this.input.run = this.input.up = false
-    super.exit()
   }
 }

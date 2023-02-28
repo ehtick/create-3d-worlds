@@ -113,11 +113,21 @@ export default class Player {
 
   /* ANIMATIONS */
 
+  cloneAction(clip) {
+    const cloned = clip.clone()
+    return this.mixer.clipAction(cloned)
+  }
+
   setupMixer(animations, animDict) {
     this.mixer = new AnimationMixer(getMesh(this.mesh))
     for (const key in animDict) {
       const clip = animations.find(anim => anim.name == animDict[key])
       this.actions[key] = this.mixer.clipAction(clip)
+    }
+    if (!animDict.run && animDict.walk) {
+      const clip = animations.find(anim => anim.name == animDict.walk)
+      this.actions.run = this.cloneAction(clip)
+      this.actions.run.setEffectiveTimeScale(1.5)
     }
   }
 

@@ -8,8 +8,8 @@ import { dir, jumpStyles } from '/utils/constants.js'
 
 const { randFloatSpread } = MathUtils
 
-const walkActions = ['wander', 'follow', 'patrol']
-const runActions = ['pursue', 'flee']
+const walkAnims = ['wander', 'follow', 'patrol']
+const runAnims = ['pursue', 'flee']
 
 const pursueStates = ['idle', 'patrol', 'wander']
 
@@ -117,12 +117,13 @@ export default class AI extends Player {
   /* ANIMS */
 
   setupMixer(animations, animDict) {
+    const { actions } = this
     super.setupMixer(animations, animDict)
-    walkActions.forEach(name => {
-      if (!this.actions[name]) this.actions[name] = this.actions.walk
+    walkAnims.forEach(name => {
+      if (!actions[name]) actions[name] = actions.walk
     })
-    runActions.forEach(name => {
-      if (!this.actions[name]) this.actions[name] = this.actions.run
+    runAnims.forEach(name => {
+      if (!actions[name]) actions[name] = actions.run
     })
   }
 

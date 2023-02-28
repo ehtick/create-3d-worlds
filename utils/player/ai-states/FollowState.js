@@ -26,6 +26,5 @@ export default class FollowState extends WalkState {
 
   exit() {
     this.input.up = false
-    super.exit()
   }
 }

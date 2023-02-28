@@ -27,6 +27,5 @@ export default class WanderState extends WalkState {
 
   exit() {
     this.input.up = false
-    super.exit()
   }
 }

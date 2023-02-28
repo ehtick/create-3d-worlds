@@ -35,9 +35,7 @@ export default class State {
 
   update(delta) {}
 
-  exit() {
-    this.action?.setEffectiveTimeScale(1)
-  }
+  exit() {}
 
   /* ANIM HELPERS */
 
