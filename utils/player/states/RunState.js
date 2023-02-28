@@ -1,14 +1,21 @@
 import State from './State.js'
 
+const chooseDuration = prevState => {
+  if (prevState === 'jump') return .15
+  return .75
+}
+
 export default class RunState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
-    const duration = this.prevState === 'jump' ? .15 : .75
+    if (!this.actions.run) return
 
     if (this.prevState === 'walk') this.syncLegs()
-    this.transitFrom(oldAction, duration)
 
-    if (this.player.input.down) this.reverseAction()
+    this.transitFrom(oldAction, chooseDuration(this.prevState))
+
+    this.timeScale = this.action.timeScale
+    if (this.player.input.down) this.reverseAction(this.action, -this.timeScale)
   }
 
   update(delta) {
@@ -32,5 +39,9 @@ export default class RunState extends State {
     if (!this.player.input.up && !this.player.input.down
       && !this.input.sideLeft && !this.input.sideRight)
       player.setState('idle')
+  }
+
+  exit() {
+    this.action?.setEffectiveTimeScale(this.timeScale)
   }
 }

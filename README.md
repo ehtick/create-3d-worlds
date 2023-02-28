@@ -11,13 +11,6 @@ npx live-server
 
 ### Scenes & examples
 
-- vraćati reverse action na početnu vrednost
-- možda je rešenje dodati run akciju odma na početku kao ubrzani walk, ako nema run animaciju
-- deo problema: AI walkActions i runActions
-- BUG: kada nema run animacije, walk-run-walk ne resetuje brzinu nogu (vidi nazi)
-- BUG: nemac mrda nogama dok puca (izgleda se mešaju animacije, nekima se mrtvima mrdaju noge)
-
-
 - Savo / FPS
   - dodati svim nemcima sve animacije
   - srediti AIAttackState: ponavljati napad dok se meta ne odalji (ili kombinovati sa idle)

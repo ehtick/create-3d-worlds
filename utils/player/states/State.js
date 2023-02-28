@@ -60,12 +60,12 @@ export default class State {
   }
 
   // https://gist.github.com/rtpHarry/2d41811d04825935039dfc075116d0ad
-  reverseAction(action = this.action) {
+  reverseAction(action = this.action, timescale = -1) {
     if (!action) return
     if (action.time === 0)
       action.time = action.getClip().duration
     action.paused = false
-    action.setEffectiveTimeScale(-1)
+    action.setEffectiveTimeScale(timescale)
   }
 
   /* AI HELPERS */
