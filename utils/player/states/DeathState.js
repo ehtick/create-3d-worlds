@@ -9,7 +9,7 @@ export default class DeathState extends SpecialState {
     super.enter(oldState, oldAction)
   }
 
-  _FinishedCallback() {
-    this._Cleanup()
+  onFinish() {
+    this.cleanup()
   }
 }

@@ -7,7 +7,7 @@ export default class SpecialState extends State {
   constructor(...args) {
     super(...args)
     this.prevState = ''
-    this._FinishedCallback = this._FinishedCallback.bind(this)
+    this.onFinish = this.onFinish.bind(this)
   }
 
   enter(oldState, oldAction) {
@@ -16,26 +16,26 @@ export default class SpecialState extends State {
 
     this.oldState = oldState
     const { mixer } = this.player
-    mixer.addEventListener('finished', this._FinishedCallback)
+    mixer.addEventListener('finished', this.onFinish)
     this.action.reset()
     this.action.setLoop(THREE.LoopOnce, 1)
     this.action.clampWhenFinished = true
     if (oldAction) this.action.crossFadeFrom(oldAction, duration)
+
     this.action.play()
   }
 
-  _Cleanup() {
-    this.action?.getMixer().removeEventListener('finished', this._FinishedCallback)
+  cleanup() {
+    this.action?.getMixer().removeEventListener('finished', this.onFinish)
   }
 
-  _FinishedCallback() {
-    this._Cleanup()
-    if (this.name === 'death') return
+  onFinish() {
+    this.cleanup()
 
     this.player.setState(this.previousOrIdle)
   }
 
   exit() {
-    this._Cleanup()
+    this.cleanup()
   }
 }
