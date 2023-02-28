@@ -1,7 +1,4 @@
-import { MathUtils } from 'three'
 import RunState from '../states/RunState.js'
-
-const { randInt } = MathUtils
 
 export default class PursueState extends RunState {
 
