@@ -138,7 +138,10 @@ export default class AI extends Player {
     const direction = this.input.up ? dir.forward : dir.backward
     if (this.directionBlocked(direction))
       if (turnAround) this.turn(Math.PI)
-      else this.mesh.translateX(delta * 5)
+      else {
+        this.mesh.translateX(delta * 2.5)
+        this.mesh.translateZ(delta * 2.5)
+      }
 
     this.velocity.z += -this.acceleration * delta
     this.velocity.z *= (1 - this.drag)

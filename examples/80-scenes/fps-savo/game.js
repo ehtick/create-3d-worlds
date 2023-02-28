@@ -43,6 +43,8 @@ for (let i = 0; i < 20; i++) {
 const enemyMeshes = enemies.map(e => e.mesh)
 player.addSolids([walls, ...enemyMeshes])
 
+enemies.forEach(enemy => enemy.addSolids([walls, ...enemyMeshes]))
+
 const rain = new Rain()
 scene.add(rain.particles)
 

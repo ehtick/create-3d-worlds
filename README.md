@@ -12,8 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - BUG: ai preklapaju se kad jure igrača
-  - BUG: ai ugleda igrača i prolazi kroz zid
   - BUG: ork se ponekad mrtav koprca
     - napraviti DeathState extends SpecialState 
 
