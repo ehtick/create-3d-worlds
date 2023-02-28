@@ -12,9 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - BUG: ork se ponekad mrtav koprca
-    - napraviti DeathState extends SpecialState 
-
   - dodati attack2 nemcima gde ima
   - orcs: reuse orc and orc ogre anims?
   - orcs: dodati pain itd

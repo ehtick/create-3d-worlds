@@ -10,6 +10,7 @@ import FlyState from './FlyState.js'
 import FallState from './FallState.js'
 import WoundedState from './WoundedState.js'
 import LoopState from './LoopState.js'
+import DeathState from './DeathState.js'
 
 import AIIdleState from '../ai-states/AIIdleState.js'
 import WanderState from '../ai-states/WanderState.js'
@@ -27,6 +28,7 @@ const playerStates = {
   jump: FlyState,
   fall: FallState,
   wounded: WoundedState,
+  death: DeathState,
 }
 
 const aiStates = {
@@ -37,6 +39,7 @@ const aiStates = {
   patrol: PatrolState,
   follow: FollowState,
   attack: AttackOnceState,
+  death: DeathState,
 }
 
 const chooseJumpState = jumpStyle => {

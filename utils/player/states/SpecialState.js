@@ -12,7 +12,6 @@ export default class SpecialState extends State {
 
   enter(oldState, oldAction) {
     super.enter(oldState)
-    // if (this.name === 'death') this.player.mixer.stopAllAction() // fix
     if (!this.action) return this.player.setState(this.previousOrIdle)
 
     this.oldState = oldState
