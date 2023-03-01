@@ -202,6 +202,8 @@ export default class Player {
     const direction = this.input.up ? dir.forward : dir.backward
     if (this.directionBlocked(direction)) return
 
+    this.handleRoughTerrain(this.speed * delta)
+
     const jumpDir = this.input.up ? dir.upForward : dir.upBackward
     if (this.input.space && this.directionBlocked(jumpDir)) return
 

@@ -21,7 +21,6 @@ export default class WalkState extends State {
 
   update(delta) {
     const { player } = this
-    player.handleRoughTerrain(player.speed * delta)
 
     player.updateMove(delta)
     player.updateTurn(delta)
