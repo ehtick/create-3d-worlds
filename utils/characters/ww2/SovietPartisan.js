@@ -5,7 +5,7 @@ import { loadModel } from '/utils/loaders.js'
 const animDict = {
   idle: 'Machine Gun Idle',
   walk: 'Machine Gun Walk',
-  run: 'Rifle Run Aim',
+  run: 'Rifle Run',
   attack: 'Gunplay',
   pain: 'Hit Reaction',
   death: 'Dying',
