@@ -7,6 +7,7 @@ const animDict = {
   walk: 'Rifle Walk',
   run: 'Rifle Run Aim',
   attack: 'Firing Rifle',
+  attack2: 'Fire Rifle Crouch',
   pain: 'Hit Reaction',
   death: 'Dying'
 }

@@ -12,6 +12,8 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
+  - (možda i ostalima čučeće ležeće napade)
+  - dodati nemcima run
   - probati 3D karakter za prvo lice
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
