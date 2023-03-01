@@ -6,7 +6,7 @@ import { createSun } from '/utils/light.js'
 // import { OrcOgreAI } from '/utils/characters/fantasy/OrcOgre.js'
 import { BarbarianPlayer } from '/utils/characters/fantasy/Barbarian.js'
 
-const mapSize = 400
+const mapSize = 200
 
 scene.add(createSun())
 
@@ -16,9 +16,9 @@ scene.add(terrain)
 const trees = createTreesOnTerrain({ terrain })
 scene.add(trees)
 
-const player = new BarbarianPlayer({ camera })
+const player = new BarbarianPlayer({ camera, mapSize })
 player.addSolids(terrain)
-player.position.y = 40
+player.position.y = 20
 scene.add(player.mesh)
 
 /* LOOP */

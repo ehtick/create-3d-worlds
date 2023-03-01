@@ -36,6 +36,7 @@ npx live-server
   - karakter dolazi do kuće i ulazi (vidi house model primer)
   - uzima predmete (50-rad-sa-modelima/80-uzimanje-predmeta/)
   - ranjena varvarka puzi do nekog cilja?
+  - kad je idle da se kamera okreće oko glave
 
 - Svemir 
   - dodati model ring space-arcology

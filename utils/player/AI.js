@@ -1,4 +1,4 @@
-import { Box3, Vector3, MathUtils } from 'three'
+import { Vector3, MathUtils } from 'three'
 import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 
 import { Input } from '/utils/classes/Input.js'
@@ -39,11 +39,8 @@ export default class AI extends Player {
     this.randomizeAction()
     this.mesh.rotateY(Math.random() * Math.PI * 2)
 
-    if (mapSize) {
-      const halfMap = mapSize / 2
-      this.boundaries = new Box3(new Vector3(-halfMap, 0, -halfMap), new Vector3(halfMap, 0, halfMap))
-      if (!coords) this.position.set(randFloatSpread(mapSize), 0, randFloatSpread(mapSize))
-    }
+    if (mapSize && !coords)
+      this.position.set(randFloatSpread(mapSize), 0, randFloatSpread(mapSize))
 
     if (coords) this.position.copy(coords.next().value)
 
@@ -54,14 +51,6 @@ export default class AI extends Player {
 
   get inPursueState() {
     return pursueStates.includes(this.baseState)
-  }
-
-  get outOfBounds() {
-    if (!this.boundaries) return false
-    return this.position.x >= this.boundaries.max.x
-      || this.position.x <= this.boundaries.min.x
-      || this.position.z >= this.boundaries.max.z
-      || this.position.z <= this.boundaries.min.z
   }
 
   get distancToTarget() {
@@ -102,11 +91,6 @@ export default class AI extends Player {
     const newPos = new Vector3(x, this.position.y, z)
     this.mesh.lookAt(newPos)
     this.mesh.rotateY(Math.PI)
-  }
-
-  bounce(angle = Math.PI) {
-    this.turn(angle)
-    this.mesh.translateZ(this.velocity.z)
   }
 
   turnSmooth(angle = Math.PI) {
@@ -151,7 +135,6 @@ export default class AI extends Player {
 
   update(delta) {
     super.update(delta)
-    if (this.outOfBounds) this.bounce()
     TWEEN.update()
   }
 }

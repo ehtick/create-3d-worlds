@@ -1,4 +1,4 @@
-import { Vector3, AnimationMixer } from 'three'
+import { Vector3, AnimationMixer, Box3 } from 'three'
 import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 
 import { createOrbitControls } from '/utils/scene.js'
@@ -19,7 +19,7 @@ const pos = new Vector3()
  */
 export default class Player {
   constructor({
-    mesh = createPlayerBox(), animations, animDict, camera, input = defaultKeyboard, solids, useJoystick, gravity = .7, jumpStyle = jumpStyles.JUMP, attackStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle, attackStyle), shouldRaycastGround = true, rifle, pistol, cameraConfig = {},
+    mesh = createPlayerBox(), animations, animDict, camera, input = defaultKeyboard, solids, useJoystick, gravity = .7, jumpStyle = jumpStyles.JUMP, attackStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle, attackStyle), shouldRaycastGround = true, rifle, pistol, cameraConfig = {}, mapSize,
   }) {
     this.mesh = clone(mesh)
     this.speed = speed
@@ -51,6 +51,11 @@ export default class Player {
     if (camera) {
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, ...cameraConfig })
       this.controls = createOrbitControls()
+    }
+
+    if (mapSize) {
+      const halfMap = mapSize / 2
+      this.boundaries = new Box3(new Vector3(-halfMap, 0, -halfMap), new Vector3(halfMap, 0, halfMap))
     }
 
     this.setState('idle')
@@ -96,6 +101,14 @@ export default class Player {
     if (input.down) return -speed * (input.run ? 1.5 : 1)
 
     return 0
+  }
+
+  get outOfBounds() {
+    if (!this.boundaries) return false
+    return this.position.x >= this.boundaries.max.x
+      || this.position.x <= this.boundaries.min.x
+      || this.position.z >= this.boundaries.max.z
+      || this.position.z <= this.boundaries.min.z
   }
 
   /* STATE MACHINE */
@@ -164,6 +177,11 @@ export default class Player {
 
   turn(angle) {
     this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle)
+  }
+
+  bounce(angle = Math.PI) {
+    this.turn(angle)
+    this.mesh.translateZ(this.velocity.z)
   }
 
   addRifle(mesh) {
@@ -262,5 +280,6 @@ export default class Player {
     this.mixer?.update(delta)
     this.updateWeapon()
     this.checkHit()
+    if (this.outOfBounds) this.bounce()
   }
 }
