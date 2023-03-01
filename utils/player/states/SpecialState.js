@@ -12,7 +12,7 @@ export default class SpecialState extends State {
 
   enter(oldState, oldAction) {
     super.enter(oldState)
-    if (!this.action) return this.player.setState(this.previousOrIdle)
+    if (!this.action) return this.player.setState(this.prevOrIdle)
 
     this.oldState = oldState
     const { mixer } = this.player
@@ -32,7 +32,7 @@ export default class SpecialState extends State {
   onFinish() {
     this.cleanup()
 
-    this.player.setState(this.previousOrIdle)
+    this.player.setState(this.prevOrIdle)
   }
 
   exit() {

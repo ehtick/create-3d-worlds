@@ -26,7 +26,6 @@ npx live-server
   - opciono neprijatelje zombije?
 
 - RPG / Fantasy
-  - ai da kontaju tlo
   - igrač da sam pronađe visinu tla kad je na terenu
   - BUG: raycast ne radi unazad na terenu
   - kada se igrač odaljava dok ai napadaju secka. rešenje: završiti napad pre pomeranja

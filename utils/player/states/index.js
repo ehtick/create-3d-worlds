@@ -20,6 +20,7 @@ import FleeState from '../ai-states/FleeState.js'
 import PatrolState from '../ai-states/PatrolState.js'
 import AttackOnceState from '../ai-states/AttackOnceState.js'
 import AttackLoopState from '../ai-states/AttackLoopState.js'
+import AIFallState from '../ai-states/AIFallState.js'
 
 const playerStates = {
   idle: IdleState,
@@ -39,6 +40,7 @@ const aiStates = {
   patrol: PatrolState,
   follow: FollowState,
   attack: AttackOnceState,
+  fall: AIFallState,
   death: DeathState,
 }
 

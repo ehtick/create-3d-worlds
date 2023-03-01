@@ -21,6 +21,9 @@ export default class WanderState extends WalkState {
 
     /* TRANSIT */
 
+    if (player.inAir)
+      player.setState('fall')
+
     if (player.targetSpotted)
       player.setState('pursue')
   }

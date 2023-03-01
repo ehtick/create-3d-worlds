@@ -20,6 +20,6 @@ export default class AttackLoopState extends State {
     player.lookAtTarget()
 
     if (player.distancToTarget > player.attackDistance)
-      player.setState(this.previousOrIdle)
+      player.setState(this.prevOrIdle)
   }
 }

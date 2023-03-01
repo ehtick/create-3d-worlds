@@ -20,7 +20,7 @@ export default class State {
     return this.player.actions
   }
 
-  get previousOrIdle() {
+  get prevOrIdle() {
     if (this.prevState == 'pain') return 'idle' // bugfix
     return this.prevState || 'idle'
   }
