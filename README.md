@@ -14,6 +14,7 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
+  - ai da kontaju tlo
   - ai napad da skida energiju
   - dodati reakciju na ai napad (trese se ekran)
   - ako je neprijatelj mrtav izbaciti ga iz računjanja (raycast, blizina...)
