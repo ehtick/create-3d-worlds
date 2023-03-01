@@ -32,4 +32,9 @@ export class NaziOfficerAI extends AI {
   constructor(props = {}) {
     super({ ...sharedProps, attackDistance: 7, ...props })
   }
+
+  lookAtTarget() {
+    super.lookAtTarget()
+    this.mesh.rotateY(Math.PI / 16)
+  }
 }

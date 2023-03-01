@@ -9,13 +9,14 @@ import Savo from '/utils/player/Savo.js'
 import { GermanSoldierAI } from '/utils/characters/ww2/GermanSoldier.js'
 import { GermanMachineGunnerAI } from '/utils/characters/ww2/GermanMachineGunner.js'
 import { NaziAI } from '/utils/characters/ww2/Nazi.js'
+import { NaziAgentAI } from '/utils/characters/ww2/NaziAgent.js'
 import { NaziCrouchAI } from '/utils/characters/ww2/NaziCrouch.js'
 import { NaziOfficerAI } from '/utils/characters/ww2/NaziOfficer.js'
 // import { OrcAI } from '/utils/characters/fantasy/Orc.js'
 // import { OrcOgreAI } from '/utils/characters/fantasy/OrcOgre.js'
 
 // const enemyClasses = [OrcAI, OrcOgreAI]
-const enemyClasses = [GermanSoldierAI, GermanMachineGunnerAI, NaziAI, NaziCrouchAI, NaziOfficerAI]
+const enemyClasses = [NaziAgentAI, GermanSoldierAI, GermanMachineGunnerAI, NaziAI, NaziCrouchAI, NaziOfficerAI]
 
 const light = hemLight()
 scene.background = createSkyBox({ folder: 'skybox4' })

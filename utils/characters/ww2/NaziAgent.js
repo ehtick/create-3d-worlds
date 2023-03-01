@@ -31,4 +31,9 @@ export class NaziAgentAI extends AI {
   constructor(props = {}) {
     super({ ...sharedProps, attackDistance: 10, ...props })
   }
+
+  lookAtTarget() {
+    super.lookAtTarget()
+    this.mesh.rotateY(Math.PI / 16)
+  }
 }

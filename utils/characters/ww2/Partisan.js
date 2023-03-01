@@ -7,6 +7,7 @@ export const animDict = {
   walk: 'Walk With Rifle',
   jump: 'Jump Forward',
   attack: 'Firing Rifle',
+  attack2: 'Fire Rifle Crouch',
   special: 'Toss Grenade',
   pain: 'Reaction',
   death: 'Dying',
