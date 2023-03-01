@@ -10,7 +10,7 @@ import { GermanMachineGunnerAI } from '/utils/characters/ww2/GermanMachineGunner
 import { NaziAI } from '/utils/characters/ww2/Nazi.js'
 import { NaziAgentAI } from '/utils/characters/ww2/NaziAgent.js'
 import { NaziOfficerAI } from '/utils/characters/ww2/NaziOfficer.js'
-import { PartisanLowpolyPlayer } from '/utils/characters/ww2/PartisanLowpoly.js'
+import { BarbarianPlayer } from '/utils/characters/fantasy/Barbarian.js'
 
 const enemyClasses = [NaziAgentAI, GermanSoldierAI, GermanMachineGunnerAI, NaziAI, NaziOfficerAI]
 
@@ -24,7 +24,7 @@ scene.add(createGround({ file: 'terrain/ground.jpg' }))
 const walls = tilemap.meshFromMatrix({ texture: 'terrain/concrete.jpg' })
 scene.add(walls)
 
-const player = new PartisanLowpolyPlayer({ camera })
+const player = new BarbarianPlayer({ camera })
 scene.add(player.mesh)
 player.position.copy(coords.next().value)
 

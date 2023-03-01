@@ -1,6 +1,5 @@
 /* credit to simon dev */
 import * as THREE from 'three'
-import { mapRange } from '/utils/helpers.js'
 import input from '/utils/classes/Input.js'
 
 let oldY = 0
