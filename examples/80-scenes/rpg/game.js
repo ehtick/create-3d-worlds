@@ -17,7 +17,7 @@ scene.add(terrain)
 const trees = createTreesOnTerrain({ terrain })
 scene.add(trees)
 
-const player = new Player({ camera, jumpStyle: 'FLY' })
+const player = new Player({ camera })
 player.addSolids(terrain)
 player.position.y = 40
 scene.add(player.mesh)

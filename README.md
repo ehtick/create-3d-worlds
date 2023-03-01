@@ -9,7 +9,6 @@ npm i
 npx live-server
 ```
 
-- BUG: samo Player jumpStyle: 'FLY' konta teren
 - BUG: Player run ne radi na terenu
 - BUG: 3rd camera ne radi sa joystickom (vidi partizan karakter)
 

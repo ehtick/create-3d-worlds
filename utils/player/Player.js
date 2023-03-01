@@ -79,7 +79,7 @@ export default class Player {
   }
 
   get inAir() {
-    if (this.jumpStyle === jumpStyles.JUMP) return false
+    if (!this.shouldRaycastGround) return false
 
     return this.heightDifference > .001
   }
