@@ -6,7 +6,7 @@ import { PartisanLowpolyPlayer } from '/utils/characters/ww2/PartisanLowpoly.js'
 scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
-const player = new PartisanLowpolyPlayer({ camera })
+const player = new PartisanLowpolyPlayer({ camera, useJoystick: true })
 scene.add(player.mesh)
 
 /* LOOP */

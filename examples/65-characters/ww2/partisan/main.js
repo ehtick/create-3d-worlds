@@ -6,7 +6,7 @@ import { PartisanPlayer } from '/utils/characters/ww2/Partisan.js'
 scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
-const player = new PartisanPlayer({ camera })
+const player = new PartisanPlayer({ camera, useJoystick: true })
 scene.add(player.mesh)
 
 /* LOOP */

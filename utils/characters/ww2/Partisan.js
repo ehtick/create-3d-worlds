@@ -26,7 +26,7 @@ const sharedProps = { mesh, animations, animDict, rifle }
 
 export class PartisanPlayer extends Player {
   constructor(props = {}) {
-    super({ ...sharedProps, useJoystick: true, ...props })
+    super({ ...sharedProps, ...props })
   }
 }
 

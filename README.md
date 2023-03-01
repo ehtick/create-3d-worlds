@@ -12,7 +12,6 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - probati 3D karakter za prvo lice
   - bug: 3rd camera ne radi sa joystickom
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
