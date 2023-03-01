@@ -14,7 +14,7 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
-  - ai da kontaju tlo
+  - BUG: baseState: 'patrol' ne prelazi u napad
   - ai napad da skida energiju
   - dodati reakciju na ai napad (trese se ekran)
   - ako je neprijatelj mrtav izbaciti ga iz računjanja (raycast, blizina...)
@@ -26,6 +26,9 @@ npx live-server
   - opciono neprijatelje zombije?
 
 - RPG / Fantasy
+  - ai da kontaju tlo
+  - igrač da sam pronađe visinu tla kad je na terenu
+  - BUG: raycast ne radi unazad na terenu
   - kada se igrač odaljava dok ai napadaju secka. rešenje: završiti napad pre pomeranja
   - napraviti scenu na osnovu mini-rpg
   - dodati BarbarianPlayer i OrcAI

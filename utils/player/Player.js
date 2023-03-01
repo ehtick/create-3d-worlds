@@ -161,6 +161,17 @@ export default class Player {
     addSolids(this.solids, ...newSolids)
   }
 
+  addRifle(mesh) {
+    if (!this.rightHand || !this.leftHand) this.findHands()
+    this.rightHand.add(mesh)
+    this.rifle = mesh
+  }
+
+  addPistol(mesh) {
+    if (!this.rightHand) this.findHands()
+    this.rightHand.add(mesh)
+  }
+
   handleRoughTerrain(step) {
     if (!this.heightDifference) return
 
@@ -184,21 +195,9 @@ export default class Player {
     this.mesh.translateZ(this.velocity.z)
   }
 
-  addRifle(mesh) {
-    if (!this.rightHand || !this.leftHand) this.findHands()
-    this.rightHand.add(mesh)
-    this.rifle = mesh
-  }
-
-  addPistol(mesh) {
-    if (!this.rightHand) this.findHands()
-    this.rightHand.add(mesh)
-  }
-
   /* UPDATES */
 
   updateWeapon() {
-    if (!this.rifle) return
     this.leftHand.getWorldPosition(pos)
     this.rifle.lookAt(pos)
   }
@@ -216,9 +215,15 @@ export default class Player {
       this.setState('pain')
   }
 
-  updateMove(delta) {
+  updateMove(delta, bounce = false) {
     const direction = this.input.up ? dir.forward : dir.backward
-    if (this.directionBlocked(direction)) return
+    if (this.directionBlocked(direction))
+      // TODO: refactor with enums
+      if (bounce === true) this.bounce()
+      else if (bounce === false) {
+        this.mesh.translateX(delta * 2.5)
+        this.mesh.translateZ(delta * 2.5)
+      } else return
 
     this.handleRoughTerrain(this.acceleration * delta)
 
@@ -275,11 +280,11 @@ export default class Player {
 
   update(delta = 1 / 60) {
     this.updateGround()
-    if (this.thirdPersonCamera) this.updateCamera(delta)
     this.currentState.update(delta)
     this.mixer?.update(delta)
-    this.updateWeapon()
+    if (this.rifle) this.updateWeapon()
     this.checkHit()
     if (this.outOfBounds) this.bounce()
+    if (this.thirdPersonCamera) this.updateCamera(delta)
   }
 }

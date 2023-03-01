@@ -119,18 +119,8 @@ export default class AI extends Player {
 
   /* UPDATE */
 
-  updateMove(delta, turnAround = true) {
-    const direction = this.input.up ? dir.forward : dir.backward
-    if (this.directionBlocked(direction))
-      if (turnAround) this.turn(Math.PI)
-      else {
-        this.mesh.translateX(delta * 2.5)
-        this.mesh.translateZ(delta * 2.5)
-      }
-
-    this.velocity.z += -this.acceleration * delta
-    this.velocity.z *= (1 - this.drag)
-    this.mesh.translateZ(this.velocity.z)
+  updateMove(delta, bounce = true) {
+    super.updateMove(delta, bounce)
   }
 
   update(delta) {
