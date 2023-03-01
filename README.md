@@ -9,20 +9,27 @@ npm i
 npx live-server
 ```
 
+- BUG: 3rd camera ne radi sa joystickom (vidi partizan karakter)
+
 ### Scenes & examples
 
-- Savo / FPS
-  - bug: 3rd camera ne radi sa joystickom
-  - dodati neke modele vozila i kuca
+- FPS / Savo
+  - ai napad da skida energiju
+  - dodati reakciju na ai napad (trese se ekran)
+  - zamračiti nebo i naglasiti kišu i munje
+  - dodati modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
   - opciono neprijatelje zombije?
 
-- Fantasy / RPG
+- RPG / Fantasy
+  - kada se igrač odaljava dok ai napadaju secka. rešenje: završiti napad pre pomeranja
   - napraviti scenu na osnovu mini-rpg
   - dodati BarbarianPlayer i OrcAI
-  - isprobati borbu, možda dodati oružje
+  - dodati player attack, možda dodati oružje
+  - ai napad da skida energiju
+  - dodati reakciju na ai napad 
   - oblaci, životinje, zamak
   - cepelin u vazduhu (vinci aerial screw, santos dumont airship)
   - karakter dolazi do kuće i ulazi (vidi house model primer)
