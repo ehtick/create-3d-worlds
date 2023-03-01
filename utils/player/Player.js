@@ -9,6 +9,7 @@ import { addSolids, raycastGround } from '/utils/classes/actions.js'
 import { getSize, directionBlocked, getMesh } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE, jumpStyles } from '/utils/constants.js'
 import { getPlayerState } from './states/index.js'
+import { createPlayerBox } from '/utils/geometry.js'
 
 const pos = new Vector3()
 
@@ -18,8 +19,7 @@ const pos = new Vector3()
  */
 export default class Player {
   constructor({
-    mesh, animations, animDict, camera, input = defaultKeyboard, solids, useJoystick, gravity = .7,
-    jumpStyle = jumpStyles.JUMP, attackStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle, attackStyle), shouldRaycastGround = true, rifle, pistol, cameraConfig = {},
+    mesh = createPlayerBox(), animations, animDict, camera, input = defaultKeyboard, solids, useJoystick, gravity = .7, jumpStyle = jumpStyles.JUMP, attackStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle, attackStyle), shouldRaycastGround = true, rifle, pistol, cameraConfig = {},
   }) {
     this.mesh = clone(mesh)
     this.speed = speed

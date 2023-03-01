@@ -1,44 +1,31 @@
-import { scene, renderer, camera, clock, createSkyBox } from '/utils/scene.js'
-import { createGround } from '/utils/ground.js'
-import { sample } from '/utils/helpers.js'
-import { hemLight } from '/utils/light.js'
+import { scene, renderer, camera, clock } from '/utils/scene.js'
+import { createHillyTerrain } from '/utils/ground.js'
+import { createTreesOnTerrain } from '/utils/geometry/trees.js'
+import { createSun } from '/utils/light.js'
+// import { OrcAI } from '/utils/characters/fantasy/Orc.js'
+// import { OrcOgreAI } from '/utils/characters/fantasy/OrcOgre.js'
 import { BarbarianPlayer } from '/utils/characters/fantasy/Barbarian.js'
-import { OrcAI } from '/utils/characters/fantasy/Orc.js'
-import { OrcOgreAI } from '/utils/characters/fantasy/OrcOgre.js'
+import Player from '/utils/player/Player.js'
 
-const mapSize = 200
-const enemyClasses = [OrcAI, OrcOgreAI]
+const mapSize = 400
 
-hemLight()
-scene.background = createSkyBox({ folder: 'skybox4', mapSize })
+scene.add(createSun())
 
-scene.add(createGround({ file: 'terrain/ground.jpg' }))
+const terrain = createHillyTerrain({ size: mapSize, segments: 20 })
+scene.add(terrain)
 
-/* LOGIC */
+const trees = createTreesOnTerrain({ terrain })
+scene.add(trees)
 
-const player = new BarbarianPlayer({ camera })
+const player = new Player({ camera, jumpStyle: 'FLY' })
+player.addSolids(terrain)
+player.position.y = 40
 scene.add(player.mesh)
-
-const enemies = []
-for (let i = 0; i < 20; i++) {
-  const EnemyClass = sample(enemyClasses)
-  const enemy = new EnemyClass({ target: player.mesh, mapSize })
-  enemies.push(enemy)
-  scene.add(enemy.mesh)
-}
-
-const enemyMeshes = enemies.map(e => e.mesh)
-player.addSolids(enemyMeshes)
-enemies.forEach(enemy => enemy.addSolids(enemyMeshes))
 
 /* LOOP */
 
 void function animate() {
   requestAnimationFrame(animate)
-  const delta = clock.getDelta()
-
-  player.update(delta)
-  enemies.forEach(enemy => enemy.update(delta))
-
+  player.update(clock.getDelta())
   renderer.render(scene, camera)
 }()

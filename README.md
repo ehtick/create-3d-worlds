@@ -9,6 +9,8 @@ npm i
 npx live-server
 ```
 
+- BUG: samo Player jumpStyle: 'FLY' konta teren
+- BUG: Player run ne radi na terenu
 - BUG: 3rd camera ne radi sa joystickom (vidi partizan karakter)
 
 ### Scenes & examples
@@ -16,6 +18,7 @@ npx live-server
 - FPS / Savo
   - ai napad da skida energiju
   - dodati reakciju na ai napad (trese se ekran)
+  - ako je neprijatelj mrtav izbaciti ga iz računjanja (raycast, blizina...)
   - zamračiti nebo i naglasiti kišu i munje
   - dodati modele vozila i kuca
   - dodati tenk kako prolazi
