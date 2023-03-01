@@ -12,8 +12,8 @@ npx live-server
 ### Scenes & examples
 
 - Savo / FPS
-  - dodati nemcima run
   - probati 3D karakter za prvo lice
+  - bug: 3rd camera ne radi sa joystickom
   - dodati neke modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola

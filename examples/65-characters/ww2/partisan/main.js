@@ -1,4 +1,4 @@
-import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
+import { scene, renderer, camera, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
 import { PartisanPlayer } from '/utils/characters/ww2/Partisan.js'
@@ -6,11 +6,8 @@ import { PartisanPlayer } from '/utils/characters/ww2/Partisan.js'
 scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
-const player = new PartisanPlayer()
+const player = new PartisanPlayer({ camera })
 scene.add(player.mesh)
-
-const controls = createOrbitControls()
-controls.target = player.mesh.position
 
 /* LOOP */
 
