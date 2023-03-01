@@ -12,7 +12,7 @@ const animDict = {
 
 /* LOADING */
 
-const { mesh, animations } = await loadModel({ file: 'nazi.fbx', animDict, prefix: 'character/nazi/', angle: Math.PI, fixColors: true })
+const { mesh, animations } = await loadModel({ file: 'nazi.fbx', animDict, prefix: 'character/soldier/', angle: Math.PI, fixColors: true })
 
 const { mesh: rifle } = await loadModel({ file: 'weapon/rifle.fbx', scale: 1.33, angle: Math.PI })
 
@@ -23,11 +23,13 @@ const sharedProps = { mesh, animations, animDict, rifle }
 export class NaziCrouchPlayer extends Player {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
+    this.mesh.translateY(.1)
   }
 }
 
 export class NaziCrouchAI extends AI {
   constructor(props = {}) {
     super({ ...sharedProps, attackDistance: 10, ...props })
+    this.mesh.translateY(.1)
   }
 }
