@@ -48,7 +48,7 @@ export function getAllCoords({
     for (let z = -halfSize; z < halfSize; z += fieldSize)
       if ((x <= -emptyCenter || x >= emptyCenter || z <= -emptyCenter || z >= emptyCenter)) {
         const xOffset = randFloatSpread(offSet), zOffset = randFloatSpread(offSet)
-        coords.push([x + xOffset, z + zOffset])
+        coords.push({ x: x + xOffset, y: 0, z: z + zOffset })
       }
 
   shuffle(coords)
@@ -262,7 +262,7 @@ export function createChaseCamera(mesh, camera = defaultCamera) {
 
   camera.position.copy(mesh.position)
 
-  return function() {
+  return function () {
     const v = new THREE.Vector3()
     camera.lookAt(mesh.position)
     pivot.getWorldPosition(v)

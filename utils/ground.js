@@ -10,7 +10,6 @@ const simplex = new SimplexNoise()
 export const groundColors = [0xA62A2A, 0x7a8a46, 0x228b22, 0xfffacd]
 export const sandColors = [0xc2b280, 0xF2D16B, 0xf0e68c, 0xfffacd]
 export const cratersColors = [0x5C4033, 0xA62A2A, 0xc2b280]
-export const camoColors = [0x7a8a46, 0xc2b280, 0x228b22, 0x509f53]
 export const desertPlanetColors = [0xB0E0E6, 0xCD853F, 0xEEE8AA, 0xA62A2A, 0x666666] // 0xbf8040
 
 /* HILL */
@@ -55,13 +54,6 @@ export function createGround({ size = 1000, color, circle, file, repeat = size /
 
 export function createFloor({ color = 0x808080, circle = false, ...rest } = {}) {
   return createGround({ color, circle, ...rest })
-}
-
-// TODO: delete if unused
-export function createCamoGround({ size, segments, domainColors } = {}) {
-  const ground = createTerrainMesh({ size, segments })
-  addCamoColors({ geometry: ground.geometry, domainColors })
-  return ground
 }
 
 /* NOISE HELPERS */
@@ -137,24 +129,9 @@ export function heightColors({ geometry, maxY, minY = 0, domainColors = groundCo
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
 }
 
-function addCamoColors({ geometry, domainColors = camoColors } = {}) {
-  const { position } = geometry.attributes
-  const colors = []
-  const vertex = new THREE.Vector3()
-
-  for (let i = 0, l = position.count; i < l; i++) {
-    vertex.fromBufferAttribute(position, i)
-    const noise = simplex.noise(vertex.x * .05, vertex.z * .05)
-    const index = Math.floor(noise * domainColors.length * .5 + domainColors.length * .5)
-    const shade = new THREE.Color(domainColors[index])
-    colors.push(shade.r, shade.g, shade.b)
-  }
-  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
-}
-
 /* TERRAIN */
 
-export function createTerrainMesh({ size = 400, segments = 100 } = {}) {
+function createTerrainMesh({ size = 400, segments = 100 } = {}) {
   const geometry = new THREE.PlaneGeometry(size, size, segments, segments)
   geometry.rotateX(- Math.PI / 2)
 
@@ -171,7 +148,7 @@ export function createTerrain({ size = 400, segments = 50, colorParam = 0x44aa44
   return mesh
 }
 
-/* CRATERS TERRAIN */
+/* CRATERS */
 
 export function createCraters({ size = 100, segments = 100 } = {}) {
   const mesh = createTerrainMesh({ size, segments })

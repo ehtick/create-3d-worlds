@@ -48,12 +48,13 @@ export default class Player {
       if (pistol) this.addPistol(clone(pistol))
     }
 
+    if (coords) this.position.copy(coords.pop())
+
     if (camera) {
+      camera.position.copy(this.position)
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, ...cameraConfig })
       this.controls = createOrbitControls()
     }
-
-    if (coords) this.position.copy(coords.pop())
 
     if (mapSize) {
       const halfMap = mapSize / 2
