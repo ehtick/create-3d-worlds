@@ -47,11 +47,8 @@ export default class Tilemap {
     return meshFromMatrix({ matrix: this.matrix, size: this.cellSize, origin: this.origin, ...params })
   }
 
-  * yieldRandomEmpty(fieldOnly = false) {
+  getEmptyCoords(fieldOnly = false) {
     const fields = getEmptyFields(this.matrix)
-    for (let i = 0; i < fields.length; i++)
-      yield fieldOnly ? fields[i] : this.fieldToPosition(fields[i])
-
-    console.log(`No more empty fields to yield (total ${fields.length}).`)
+    return fieldOnly ? fields : fields.map(field => this.fieldToPosition(field))
   }
 }
