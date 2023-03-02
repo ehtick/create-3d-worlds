@@ -28,7 +28,6 @@ npx live-server
   - opciono neprijatelje zombije?
 
 - RPG / Fantasy
-  - BUG: raycast ne radi unazad na terenu
   - igrač da sam pronađe visinu tla kad je na terenu
   - napraviti scenu na osnovu mini-rpg
   - dodati BarbarianPlayer i OrcAI

@@ -231,7 +231,7 @@ export default class Player {
         default: return // stuck
       }
 
-    this.handleRoughTerrain(this.acceleration * delta)
+    this.handleRoughTerrain(Math.abs(this.acceleration) * delta)
 
     const jumpDir = this.input.up ? dir.upForward : dir.upBackward
     if (this.input.space && this.directionBlocked(jumpDir)) return
