@@ -1,7 +1,8 @@
 import * as THREE from 'three'
-import { scene, camera, renderer, createOrbitControls, hemLight } from '/utils/scene.js'
+import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 import { createLampposts } from '/utils/city.js'
+import { hemLight } from '/utils/light.js'
 
 hemLight({ intensity: .4 })
 renderer.setClearColor(0x000000)

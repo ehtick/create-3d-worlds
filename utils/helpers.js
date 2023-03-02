@@ -34,28 +34,28 @@ export function randomInSquare(size, emptyCenter = 0) {
   return randomBool() ? { x, z } : { x: z, z: x }
 }
 
-function getAllCoords(mapSize = 400, fieldSize = 20, emptyCenter = 0) {
+function getAllCoords({ mapSize = 400, fieldSize = 20, offCenter = fieldSize * .5, emptyCenter = 0 } = {}) {
   const halfSize = mapSize * .5
   const coords = []
-  for (let i = -halfSize; i < halfSize; i += fieldSize)
-    for (let j = -halfSize; j < halfSize; j += fieldSize)
-      if ((i <= -emptyCenter || i >= emptyCenter || j <= -emptyCenter || j >= emptyCenter))
-        coords.push([i, j])
+  for (let x = -halfSize; x < halfSize; x += fieldSize)
+    for (let z = -halfSize; z < halfSize; z += fieldSize)
+      if ((x <= -emptyCenter || x >= emptyCenter || z <= -emptyCenter || z >= emptyCenter)) {
+        const xOffset = randFloatSpread(offCenter), zOffset = randFloatSpread(offCenter)
+        coords.push([x + xOffset, z + zOffset])
+      }
 
   shuffle(coords)
   return coords
 }
 
 export function* yieldRandomCoord({
-  mapSize = 400, fieldSize = 20, offset = fieldSize * .5, emptyCenter = 0
+  mapSize = 400, fieldSize = 20, offCenter = fieldSize * .5, emptyCenter = 0
 } = {}) {
-  const coords = getAllCoords(mapSize, fieldSize, emptyCenter)
+  const coords = getAllCoords({ mapSize, fieldSize, offCenter, emptyCenter })
 
-  for (let i = 0; i < coords.length; i++) {
-    const [x, z] = coords[i]
-    const xOffset = randFloatSpread(offset), zOffset = randFloatSpread(offset)
-    yield [x + xOffset, z + zOffset]
-  }
+  for (let i = 0; i < coords.length; i++)
+    yield coords[i]
+
   console.log(`No more coords to yield (total ${coords.length}), set bigger map size.`)
 }
 
