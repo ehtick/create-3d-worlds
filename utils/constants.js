@@ -21,6 +21,6 @@ export const dir = {
 
 export const jumpStyles = {
   FLY: 'FLY',
-  JUMP: 'JUMP',
+  FALSE_JUMP: 'FALSE_JUMP',
   FLY_JUMP: 'FLY_JUMP',
 }

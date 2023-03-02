@@ -46,9 +46,9 @@ const aiStates = {
 
 const chooseJumpState = jumpStyle => {
   switch (jumpStyle) {
-    case jumpStyles.FLY: return FlyState
-    case jumpStyles.JUMP: return JumpState
+    case jumpStyles.FALSE_JUMP: return JumpState
     case jumpStyles.FLY_JUMP: return JumpFlyState
+    case jumpStyles.FLY: return FlyState
   }
 }
 
