@@ -1,5 +1,5 @@
 import { scene, renderer, camera, clock } from '/utils/scene.js'
-import { createHillyTerrain, createFloor } from '/utils/ground.js'
+import { createHillyTerrain } from '/utils/ground.js'
 import { createTreesOnTerrain } from '/utils/geometry/trees.js'
 import { createSun } from '/utils/light.js'
 import { sample, getAllCoords } from '/utils/helpers.js'
@@ -19,7 +19,7 @@ scene.add(trees)
 
 const player = new BarbarianPlayer({ coords, mapSize, camera })
 player.addSolids(terrain)
-player.position.y = 20
+player.position.y = 40
 scene.add(player.mesh)
 
 const enemyClasses = [OrcAI, OrcOgreAI]
@@ -29,7 +29,7 @@ for (let i = 0; i < 20; i++) {
   const EnemyClass = sample(enemyClasses)
   const enemy = new EnemyClass({ coords, target: player.mesh, mapSize, shouldRaycastGround: true })
   enemies.push(enemy)
-  enemy.position.y = 20
+  enemy.position.y = 40
   scene.add(enemy.mesh)
 }
 

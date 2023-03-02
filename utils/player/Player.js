@@ -279,8 +279,8 @@ export default class Player {
   }
 
   updateCamera(delta) {
-    if (this.input.pressed.mouse)
-      this.controls.target = this.mesh.position.clone().add(new Vector3(0, this.height, 0))
+    if (this.input.pressed.mouse2)
+      this.controls.target = this.position.clone().add(new Vector3(0, this.height, 0))
     else
       this.thirdPersonCamera.update(delta)
   }

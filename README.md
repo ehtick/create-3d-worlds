@@ -11,8 +11,11 @@ npx live-server
 
 ## TODO
 
-- BUG: 3rd camera ne radi sa joystickom (vidi partizan karakter)
 - odvojiti osnovna stanja za animacije i player i ai stanja?
+
+player idle: 
+    this.controls.update()
+    this.controls.autoRotate=true
 
 ### Scenes & examples
 
