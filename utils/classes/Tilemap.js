@@ -47,8 +47,8 @@ export default class Tilemap {
     return meshFromMatrix({ matrix: this.matrix, size: this.cellSize, origin: this.origin, ...params })
   }
 
-  getEmptyCoords(fieldOnly = false) {
+  getEmptyCoords(toPosition = true) {
     const fields = getEmptyFields(this.matrix)
-    return fieldOnly ? fields : fields.map(field => this.fieldToPosition(field))
+    return toPosition ? fields.map(field => this.fieldToPosition(field)) : fields
   }
 }
