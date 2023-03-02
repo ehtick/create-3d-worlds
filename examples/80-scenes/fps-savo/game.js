@@ -30,7 +30,7 @@ player.position.copy(coords.pop())
 const enemies = []
 for (let i = 0; i < 20; i++) {
   const EnemyClass = sample(enemyClasses)
-  const enemy = new EnemyClass({ baseState: 'patrol', coords, target: player.mesh }) // 
+  const enemy = new EnemyClass({ coords, target: player.mesh }) // 
   enemies.push(enemy)
   scene.add(enemy.mesh)
 }

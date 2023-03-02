@@ -9,12 +9,13 @@ npm i
 npx live-server
 ```
 
+## TODO
+
 - BUG: 3rd camera ne radi sa joystickom (vidi partizan karakter)
 
 ### Scenes & examples
 
 - FPS / Savo
-  - BUG: kada igrač beži dok ai napadaju secka. sačekati kraj attack state pre pursue, min time ili mali razmak?
   - ai napad da skida energiju
   - dodati reakciju na ai napad (trese se ekran)
   - ako je neprijatelj mrtav izbaciti ga iz računjanja (raycast, blizina...)

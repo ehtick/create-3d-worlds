@@ -2,6 +2,7 @@ import State from './State.js'
 
 const chooseDuration = prevState => {
   if (prevState === 'jump') return .15
+  if (prevState === 'attack') return .15
   return .75
 }
 

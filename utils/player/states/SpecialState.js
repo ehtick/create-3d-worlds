@@ -6,7 +6,6 @@ const duration = .25
 export default class SpecialState extends State {
   constructor(...args) {
     super(...args)
-    this.prevState = ''
     this.onFinish = this.onFinish.bind(this)
   }
 
@@ -26,12 +25,11 @@ export default class SpecialState extends State {
   }
 
   cleanup() {
-    this.action?.getMixer().removeEventListener('finished', this.onFinish)
+    this.player.mixer.removeEventListener('finished', this.onFinish)
   }
 
   onFinish() {
     this.cleanup()
-
     this.player.setState(this.prevOrIdle)
   }
 
