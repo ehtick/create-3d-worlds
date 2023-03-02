@@ -199,6 +199,12 @@ export default class Player {
     this.mesh.translateZ(this.velocity.z)
   }
 
+  putOnGround(y = 200) {
+    this.position.y = y
+    this.updateGround()
+    this.mesh.position.y = this.groundY
+  }
+
   /* UPDATES */
 
   updateWeapon() {

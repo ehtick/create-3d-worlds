@@ -17,9 +17,8 @@ scene.add(terrain)
 const trees = createTreesOnTerrain({ terrain })
 scene.add(trees)
 
-const player = new BarbarianPlayer({ coords, mapSize, camera })
-player.addSolids(terrain)
-player.position.y = 40
+const player = new BarbarianPlayer({ coords, mapSize, camera, solids: terrain })
+player.putOnGround()
 scene.add(player.mesh)
 
 const enemyClasses = [OrcAI, OrcOgreAI]
@@ -27,16 +26,16 @@ const enemyClasses = [OrcAI, OrcOgreAI]
 const enemies = []
 for (let i = 0; i < 20; i++) {
   const EnemyClass = sample(enemyClasses)
-  const enemy = new EnemyClass({ coords, target: player.mesh, mapSize, shouldRaycastGround: true })
+  const enemy = new EnemyClass({ coords, solids: terrain, target: player.mesh, mapSize, shouldRaycastGround: true })
   enemies.push(enemy)
-  enemy.position.y = 40
+  enemy.putOnGround()
   scene.add(enemy.mesh)
 }
 
 const enemyMeshes = enemies.map(e => e.mesh)
 player.addSolids(enemyMeshes)
 
-enemies.forEach(enemy => enemy.addSolids(terrain))
+// enemies.forEach(enemy => enemy.addSolids(terrain))
 
 /* LOOP */
 
