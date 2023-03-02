@@ -34,29 +34,25 @@ export function randomInSquare(size, emptyCenter = 0) {
   return randomBool() ? { x, z } : { x: z, z: x }
 }
 
-function getAllCoords({ mapSize = 400, fieldSize = 20, offCenter = fieldSize * .5, emptyCenter = 0 } = {}) {
+/*
+  @return shuffled coordinates for given mapSize
+    offSet: random shift from field center
+    emptyCenter: empty square in map center
+*/
+export function getAllCoords({
+  mapSize = 400, fieldSize = 20, offSet = fieldSize * .5, emptyCenter = 0
+} = {}) {
   const halfSize = mapSize * .5
   const coords = []
   for (let x = -halfSize; x < halfSize; x += fieldSize)
     for (let z = -halfSize; z < halfSize; z += fieldSize)
       if ((x <= -emptyCenter || x >= emptyCenter || z <= -emptyCenter || z >= emptyCenter)) {
-        const xOffset = randFloatSpread(offCenter), zOffset = randFloatSpread(offCenter)
+        const xOffset = randFloatSpread(offSet), zOffset = randFloatSpread(offSet)
         coords.push([x + xOffset, z + zOffset])
       }
 
   shuffle(coords)
   return coords
-}
-
-export function* yieldRandomCoord({
-  mapSize = 400, fieldSize = 20, offCenter = fieldSize * .5, emptyCenter = 0
-} = {}) {
-  const coords = getAllCoords({ mapSize, fieldSize, offCenter, emptyCenter })
-
-  for (let i = 0; i < coords.length; i++)
-    yield coords[i]
-
-  console.log(`No more coords to yield (total ${coords.length}), set bigger map size.`)
 }
 
 export const maxItems = (mapSize, fieldSize) => Math.pow(mapSize / fieldSize, 2)

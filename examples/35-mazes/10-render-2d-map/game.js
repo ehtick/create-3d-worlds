@@ -5,7 +5,7 @@ import Map2DRenderer from '/utils/classes/2d/Map2DRenderer.js'
 
 const tilemap = new Tilemap(matrix, 30)
 const coords = tilemap.yieldRandomEmpty(true)
-const [x, y] = coords.next().value
+const [x, y] = coords.pop()
 
 const player = new Player2D(tilemap, x, y)
 const mapRenderer = new Map2DRenderer(tilemap)

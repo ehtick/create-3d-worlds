@@ -53,7 +53,7 @@ export default class Player {
       this.controls = createOrbitControls()
     }
 
-    if (coords) this.position.copy(coords.next().value)
+    if (coords) this.position.copy(coords.pop())
 
     if (mapSize) {
       const halfMap = mapSize / 2

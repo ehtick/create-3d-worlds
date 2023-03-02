@@ -14,7 +14,6 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
-  - koristiti arr.pop() za coords
   - BUG: baseState: 'patrol' ne prelazi u napad
   - BUG: kada igrač beži dok ai napadaju secka. sačekati kraj attack state pre pursue, min time ili mali razmak?
   - ai napad da skida energiju

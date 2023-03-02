@@ -25,7 +25,7 @@ const walls = tilemap.meshFromMatrix({ texture: 'terrain/concrete.jpg' })
 scene.add(walls)
 
 const player = new Savo({ camera })
-player.position.copy(coords.next().value)
+player.position.copy(coords.pop())
 
 const enemies = []
 for (let i = 0; i < 20; i++) {

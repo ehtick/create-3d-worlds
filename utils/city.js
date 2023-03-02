@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
-import { randomGrayish, yieldRandomCoord, sample, mapRange, maxItems } from '/utils/helpers.js'
+import { randomGrayish, getAllCoords, sample, mapRange, maxItems } from '/utils/helpers.js'
 import { createTrees } from '/utils/geometry/trees.js'
 import { createFloor } from '/utils/ground.js'
 
@@ -313,13 +313,13 @@ const shouldRotate = (rotateEvery, i) => rotateEvery && i % rotateEvery == 0
 const shouldEnlarge = (enlargeEvery, i) => enlargeEvery && i % enlargeEvery == 0
 
 export function createCity({
-  mapSize = 400, fieldSize = 20, numBuildings = maxItems(mapSize, fieldSize) / 2, emptyCenter = 0, coords = yieldRandomCoord({ mapSize, fieldSize, emptyCenter }), rotateEvery = 9, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map, castShadow = true, receiveShadow = true, numLampposts = 0, numTrees = 0
+  mapSize = 400, fieldSize = 20, numBuildings = maxItems(mapSize, fieldSize) / 2, emptyCenter = 0, coords = getAllCoords({ mapSize, fieldSize, emptyCenter }), rotateEvery = 9, enlargeEvery = 0, addWindows = false, colorParams = { min: 0, max: .1, colorful: .1 }, map, castShadow = true, receiveShadow = true, numLampposts = 0, numTrees = 0
 } = {}) {
   const buildings = []
 
   for (let i = 0; i < numBuildings; i++) {
     const color = colorParams ? randomGrayish(colorParams) : new THREE.Color(0x000000)
-    const [x, z] = coords.next().value
+    const [x, z] = coords.pop()
 
     const rotY = shouldRotate(rotateEvery, i) ? Math.random() * Math.PI : 0
     const bWidth = shouldEnlarge(enlargeEvery, i)
@@ -354,7 +354,7 @@ export function createCity({
 export const createNightCity = ({ addWindows = true, colorParams = null, numLampposts = 15, ...rest } = {}) =>
   createCity({ addWindows, colorParams, numLampposts, ...rest })
 
-export async function createGraffitiCity({ mapSize, coords = yieldRandomCoord({ mapSize }), nTrees = 40, nFirTrees = 10 } = {}) {
+export async function createGraffitiCity({ mapSize, coords = getAllCoords({ mapSize }), nTrees = 40, nFirTrees = 10 } = {}) {
   const group = new THREE.Group()
   const floor = createFloor({ size: mapSize * 1.2 }) // color: 0x509f53
   group.add(floor)
@@ -363,7 +363,7 @@ export async function createGraffitiCity({ mapSize, coords = yieldRandomCoord({ 
   group.add(trees)
 
   for (let i = 0; i < 50; i++) {
-    const [x, z] = coords.next().value
+    const [x, z] = coords.pop()
     const building = await createGraffitiBuilding({ x, z })
     group.add(building)
   }
@@ -405,21 +405,21 @@ function createLamppost({ x = 0, z = 0, height = 20 } = {}) {
   return group
 }
 
-export function createLampposts({ mapSize = 200, coords = yieldRandomCoord({ mapSize }), numLampposts = 10, height } = {}) {
+export function createLampposts({ mapSize = 200, coords = getAllCoords({ mapSize }), numLampposts = 10, height } = {}) {
   const group = new THREE.Group()
   for (let i = 0; i < numLampposts; i++) {
-    const [x, z] = coords.next().value
+    const [x, z] = coords.pop()
     const lamppost = createLamppost({ x, z, height })
     group.add(lamppost)
   }
   return group
 }
 
-export function createCityLights({ mapSize, coords = yieldRandomCoord({ mapSize }), numLights = 4, height = 10 } = {}) {
+export function createCityLights({ mapSize, coords = getAllCoords({ mapSize }), numLights = 4, height = 10 } = {}) {
   const group = new THREE.Group()
   for (let i = 0; i < numLights; i++) {
     const light = new THREE.SpotLight(0xF5F5DC)
-    const [x, z] = coords.next().value
+    const [x, z] = coords.pop()
     light.position.set(x, height, z)
     light.castShadow = true
     group.add(light)
