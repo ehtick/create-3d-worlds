@@ -6,12 +6,9 @@ import { sample, getAllCoords } from '/utils/helpers.js'
 import { BarbarianPlayer } from '/utils/characters/fantasy/Barbarian.js'
 import { OrcAI } from '/utils/characters/fantasy/Orc.js'
 import { OrcOgreAI } from '/utils/characters/fantasy/OrcOgre.js'
-import { FlamingoAI } from '/utils/characters/animals/Flamingo.js'
+import { FlamingoAI, FlamingoPlayer } from '/utils/characters/animals/Flamingo.js'
 
 const mapSize = 200
-const enemyClasses = [OrcAI, OrcOgreAI]
-const creatures = []
-
 const coords = getAllCoords({ mapSize: mapSize * .9, fieldSize: 5 })
 scene.add(createSun())
 
@@ -21,23 +18,26 @@ scene.add(terrain)
 const trees = createTreesOnTerrain({ terrain })
 scene.add(trees)
 
-/* ACTORS */
-
-const player = new BarbarianPlayer({ coords, mapSize, camera, solids: terrain })
+const player = new FlamingoPlayer({ coords, mapSize, camera, solids: terrain })
 scene.add(player.mesh)
 
+const enemyClasses = [OrcAI, OrcOgreAI]
+
+const enemies = []
 for (let i = 0; i < 10; i++) {
-  const Enemy = sample(enemyClasses)
-  const enemy = new Enemy({ coords, solids: terrain, target: player.mesh, mapSize, shouldRaycastGround: true })
-  creatures.push(enemy)
+  const EnemyClass = sample(enemyClasses)
+  const enemy = new EnemyClass({ coords, solids: terrain, target: player.mesh, mapSize, shouldRaycastGround: true })
+  enemies.push(enemy)
   scene.add(enemy.mesh)
 }
 
-player.addSolids(creatures.map(e => e.mesh))
+const enemyMeshes = enemies.map(e => e.mesh)
+player.addSolids(enemyMeshes)
 
+const birds = []
 for (let i = 0; i < 10; i++) {
   const bird = new FlamingoAI({ mapSize, coords })
-  creatures.push(bird)
+  birds.push(bird)
   scene.add(bird.mesh)
 }
 
@@ -48,7 +48,8 @@ void function animate() {
 
   const delta = clock.getDelta()
   player.update(delta)
-  creatures.forEach(enemy => enemy.update(delta))
+  enemies.forEach(enemy => enemy.update(delta))
+  birds.forEach(bird => bird.update(delta))
 
   renderer.render(scene, camera)
 }()

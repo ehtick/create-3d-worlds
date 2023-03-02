@@ -10,18 +10,18 @@ const { mesh, animations } = await loadModel({ file: 'animal/flamingo.glb', size
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict, speed: 8 }
+const sharedProps = { mesh, animations, animDict, speed: 8, shouldRaycastGround: false }
 
 export class FlamingoPlayer extends Player {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
-    this.mesh.position.y = 50
+    this.mesh.position.y = 45
   }
 }
 
 export class FlamingoAI extends AI {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
-    this.mesh.position.y = 50
+    this.mesh.position.y = 45
   }
 }

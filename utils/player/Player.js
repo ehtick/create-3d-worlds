@@ -238,7 +238,7 @@ export default class Player {
           this.mesh.translateX(delta * 2.5)
           this.mesh.translateZ(delta * 2.5)
           break
-        default: return // stuck
+        default: return // stop
       }
 
     this.handleRoughTerrain(Math.abs(this.acceleration) * delta)
