@@ -54,6 +54,7 @@ export default class Player {
       camera.position.copy(this.position)
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, ...cameraConfig })
       this.controls = createOrbitControls()
+      this.controls.target = this.position
     }
 
     if (mapSize) {
@@ -279,9 +280,7 @@ export default class Player {
   }
 
   updateCamera(delta) {
-    if (this.input.pressed.mouse2)
-      this.controls.target = this.position.clone().add(new Vector3(0, this.height, 0))
-    else
+    if (!this.input.pressed.mouse2)
       this.thirdPersonCamera.update(delta)
   }
 
