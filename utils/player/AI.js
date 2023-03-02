@@ -117,8 +117,8 @@ export default class AI extends Player {
 
   /* UPDATE */
 
-  updateMove(delta, bounce = true) {
-    super.updateMove(delta, bounce)
+  updateMove(delta, reaction = 'BOUNCE') {
+    super.updateMove(delta, reaction)
   }
 
   update(delta) {

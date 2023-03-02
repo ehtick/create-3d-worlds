@@ -217,15 +217,19 @@ export default class Player {
       this.setState('pain')
   }
 
-  updateMove(delta, bounce = false) {
+  updateMove(delta, reaction) {
     const direction = this.input.up ? dir.forward : dir.backward
     if (this.directionBlocked(direction))
-      // TODO: refactor with enums
-      if (bounce === true) this.bounce()
-      else if (bounce === false) {
-        this.mesh.translateX(delta * 2.5)
-        this.mesh.translateZ(delta * 2.5)
-      } else return
+      switch (reaction) {
+        case 'BOUNCE':
+          this.bounce()
+          break
+        case 'TRANSLATE':
+          this.mesh.translateX(delta * 2.5)
+          this.mesh.translateZ(delta * 2.5)
+          break
+        default: return // stuck
+      }
 
     this.handleRoughTerrain(this.acceleration * delta)
 

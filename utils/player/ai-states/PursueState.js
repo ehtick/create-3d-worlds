@@ -11,7 +11,7 @@ export default class PursueState extends RunState {
     const { player } = this
 
     player.lookAtTarget()
-    player.updateMove(delta, false)
+    player.updateMove(delta, 'TRANSLATE')
 
     /* TRANSIT */
 
