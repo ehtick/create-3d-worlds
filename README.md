@@ -13,7 +13,6 @@ npx live-server
 
 - BUG: 3rd camera ne radi sa joystickom (vidi partizan karakter)
 - odvojiti osnovna stanja za animacije i player i ai stanja?
-- BUG: ne pozicionira dobro na terenu, a ground radi. reuse createGround za teren?
 
 ### Scenes & examples
 

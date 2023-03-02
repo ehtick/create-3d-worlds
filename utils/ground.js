@@ -37,7 +37,7 @@ export function createGroundMaterial({ color = 0x509f53, file, repeat } = {}) {
 export function crateGroundGeometry({ size, segments = 32, circle = true }) {
   const geometry = circle
     ? new THREE.CircleGeometry(size, segments)
-    : new THREE.PlaneGeometry(size, size)
+    : new THREE.PlaneGeometry(size, size, segments, segments)
 
   geometry.rotateX(-Math.PI * 0.5)
   return geometry
@@ -45,7 +45,7 @@ export function crateGroundGeometry({ size, segments = 32, circle = true }) {
 
 export function createGround({ size = 1000, color, circle, file, repeat = size / 8 } = {}) {
   const material = createGroundMaterial({ file, color, repeat })
-  const geometry = crateGroundGeometry({ size, circle })
+  const geometry = crateGroundGeometry({ size, circle, segments: 1 })
 
   const mesh = new THREE.Mesh(geometry, material)
   mesh.receiveShadow = true
@@ -132,8 +132,7 @@ export function heightColors({ geometry, maxY, minY = 0, domainColors = groundCo
 /* TERRAIN */
 
 function createTerrainMesh({ size = 400, segments = 100 } = {}) {
-  const geometry = new THREE.PlaneGeometry(size, size, segments, segments)
-  geometry.rotateX(- Math.PI / 2)
+  const geometry = crateGroundGeometry({ size, segments, circle: false })
 
   const material = new THREE.MeshLambertMaterial({ vertexColors: true })
   const mesh = new THREE.Mesh(geometry, material)

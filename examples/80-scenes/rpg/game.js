@@ -11,7 +11,7 @@ const mapSize = 200
 const coords = getAllCoords({ mapSize, fieldSize: 5 })
 scene.add(createSun())
 
-const terrain = createFloor({ size: mapSize, segments: 20 })
+const terrain = createHillyTerrain({ size: mapSize, segments: 20 })
 scene.add(terrain)
 
 const trees = createTreesOnTerrain({ terrain })
