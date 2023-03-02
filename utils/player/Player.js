@@ -50,6 +50,8 @@ export default class Player {
 
     if (coords) this.position.copy(coords.pop())
 
+    if (shouldRaycastGround) this.putOnGround()
+
     if (camera) {
       camera.position.copy(this.position)
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, ...cameraConfig })

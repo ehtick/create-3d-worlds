@@ -11,9 +11,6 @@ npx live-server
 
 ## TODO
 
-- da igrač ne sleće polako na početku
-- odvojiti osnovna stanja za animacije i player i ai stanja?
-
 ### Scenes & examples
 
 - FPS / Savo
