@@ -19,7 +19,7 @@ const pos = new Vector3()
  */
 export default class Player {
   constructor({
-    mesh = createPlayerBox(), animations, animDict, camera, input = defaultKeyboard, solids, useJoystick, gravity = .7, jumpStyle = jumpStyles.JUMP, attackStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle, attackStyle), shouldRaycastGround = true, rifle, pistol, cameraConfig = {}, mapSize,
+    mesh = createPlayerBox(), animations, animDict, camera, input = defaultKeyboard, solids, useJoystick, gravity = .7, jumpStyle = jumpStyles.JUMP, attackStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle, attackStyle), shouldRaycastGround = true, rifle, pistol, cameraConfig = {}, mapSize, coords
   }) {
     this.mesh = clone(mesh)
     this.speed = speed
@@ -52,6 +52,8 @@ export default class Player {
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, ...cameraConfig })
       this.controls = createOrbitControls()
     }
+
+    if (coords) this.position.copy(coords.next().value)
 
     if (mapSize) {
       const halfMap = mapSize / 2

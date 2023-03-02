@@ -4,7 +4,7 @@ import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js
 import { Input } from '/utils/classes/Input.js'
 import Player from './Player.js'
 import { getAIState } from './states/index.js'
-import { dir, jumpStyles } from '/utils/constants.js'
+import { jumpStyles } from '/utils/constants.js'
 
 const { randFloatSpread } = MathUtils
 
@@ -19,7 +19,7 @@ const pursueStates = ['idle', 'patrol', 'wander']
  */
 export default class AI extends Player {
   constructor({
-    jumpStyle = jumpStyles.JUMP, attackStyle = 'LOOP', baseState = 'wander', speed = 1.8, shouldRaycastGround = false, sightDistance = 25, followDistance = 1.5, attackDistance = 1.5, patrolLength = 10, target, mapSize, coords, ...params
+    jumpStyle = jumpStyles.JUMP, attackStyle = 'LOOP', baseState = 'wander', speed = 1.8, shouldRaycastGround = false, sightDistance = 25, followDistance = 1.5, attackDistance = 1, patrolLength = 10, target, ...params
   } = {}) {
     super({
       ...params,
@@ -39,10 +39,8 @@ export default class AI extends Player {
     this.randomizeAction()
     this.mesh.rotateY(Math.random() * Math.PI * 2)
 
-    if (mapSize && !coords)
-      this.position.set(randFloatSpread(mapSize), 0, randFloatSpread(mapSize))
-
-    if (coords) this.position.copy(coords.next().value)
+    if (params.mapSize && !params.coords)
+      this.position.set(randFloatSpread(params.mapSize), 0, randFloatSpread(params.mapSize))
 
     this.setState(baseState)
   }
