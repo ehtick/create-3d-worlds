@@ -5,7 +5,7 @@ import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
 import { getSize, directionBlocked, getMesh } from '/utils/helpers.js'
-import { dir, RIGHT_ANGLE } from '/utils/constants.js'
+import { dir, RIGHT_ANGLE, reactions } from '/utils/constants.js'
 import { createUpdatedBox } from '/utils/geometry.js'
 
 /**
@@ -151,16 +151,6 @@ export default class Actor {
     })
   }
 
-  /* UTILS */
-
-  add(obj) {
-    this.mesh.add(obj)
-  }
-
-  addSolids(...newSolids) {
-    addSolids(this.solids, ...newSolids)
-  }
-
   addRifle(mesh) {
     if (!this.rightHand || !this.leftHand) this.findHands()
     this.rightHand.add(mesh)
@@ -170,6 +160,16 @@ export default class Actor {
   addPistol(mesh) {
     if (!this.rightHand) this.findHands()
     this.rightHand.add(mesh)
+  }
+
+  /* UTILS */
+
+  add(obj) {
+    this.mesh.add(obj)
+  }
+
+  addSolids(...newSolids) {
+    addSolids(this.solids, ...newSolids)
   }
 
   handleRoughTerrain(step) {
@@ -230,9 +230,9 @@ export default class Actor {
   updateMove(delta, reaction) {
     const direction = this.input.up ? dir.forward : dir.backward
     if (this.directionBlocked(direction))
-      if (reaction == 'BOUNCE') this.bounce()
-      else if (reaction == 'STEP_OFF') this.stepOff(delta * 2.5)
-      else if (reaction == 'STOP') return
+      if (reaction == reactions.BOUNCE) this.bounce()
+      else if (reaction == reactions.STEP_OFF) this.stepOff(delta * 2.5)
+      else if (reaction == reactions.STOP) return
 
     this.handleRoughTerrain(Math.abs(this.acceleration) * delta)
 

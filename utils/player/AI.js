@@ -4,7 +4,7 @@ import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js
 import { Input } from '/utils/classes/Input.js'
 import Actor from './Actor.js'
 import { getAIState } from './states/index.js'
-import { jumpStyles, attackStyles, baseAiStates, pursueStates } from '/utils/constants.js'
+import { jumpStyles, attackStyles, baseAiStates, pursueStates, reactions } from '/utils/constants.js'
 
 const { randFloatSpread } = MathUtils
 
@@ -13,7 +13,17 @@ const runAnims = ['pursue', 'flee']
 
 export default class AI extends Actor {
   constructor({
-    jumpStyle = jumpStyles.FALSE_JUMP, attackStyle = attackStyles.LOOP, baseState = baseAiStates.wander, speed = 1.8, shouldRaycastGround = false, sightDistance = 25, followDistance = 1.5, attackDistance = 1, patrolLength = 10, target, ...params
+    jumpStyle = jumpStyles.FALSE_JUMP,
+    attackStyle = attackStyles.LOOP,
+    baseState = baseAiStates.wander,
+    speed = 1.8,
+    shouldRaycastGround = false,
+    sightDistance = 25,
+    followDistance = 1.5,
+    attackDistance = 1,
+    patrolLength = 10,
+    target,
+    ...params
   } = {}) {
     super({
       ...params,
@@ -111,7 +121,7 @@ export default class AI extends Actor {
 
   /* UPDATE */
 
-  updateMove(delta, reaction = 'BOUNCE') {
+  updateMove(delta, reaction = reactions.BOUNCE) {
     super.updateMove(delta, reaction)
   }
 

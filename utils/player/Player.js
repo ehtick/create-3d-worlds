@@ -1,6 +1,6 @@
 import JoyStick from '/utils/classes/JoyStick.js'
 import defaultKeyboard from '/utils/classes/Input.js'
-import { jumpStyles, attackStyles } from '/utils/constants.js'
+import { jumpStyles, attackStyles, reactions } from '/utils/constants.js'
 import { getPlayerState } from './states/index.js'
 
 import Actor from './Actor.js'
@@ -20,7 +20,7 @@ export default class Player extends Actor {
     if (useJoystick) this.input.joystick = new JoyStick()
   }
 
-  updateMove(delta, reaction = 'STOP') {
+  updateMove(delta, reaction = reactions.STOP) {
     super.updateMove(delta, reaction)
   }
 }

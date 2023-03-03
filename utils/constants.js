@@ -30,6 +30,12 @@ export const attackStyles = {
   LOOP: 'LOOP',
 }
 
+export const reactions = {
+  BOUNCE: 'BOUNCE',
+  STEP_OFF: 'STEP_OFF',
+  STOP: 'STOP',
+}
+
 /**
  * pursue (if target): idle, patrol, wander
  * doesn't pursue: flee i follow
