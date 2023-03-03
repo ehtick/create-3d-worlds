@@ -83,7 +83,7 @@ class GameEngine {
   }
 
   place(position) {
-    return findGround(this.scene.getObjectByName('terrain'), position) || position
+    return findGround({ solids: this.scene.getObjectByName('terrain'), pos: position }) || position
   }
 
   randomPlaceEntity(entity) {

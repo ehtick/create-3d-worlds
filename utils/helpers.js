@@ -209,8 +209,8 @@ export const raycastDown = ({ pos, solids }) => raycast({ pos, solids }, dir.dow
 
 // TODO: merge getGroundY and findGround?
 
-export function findGround(solids, coord, y = 200) {
-  const origin = { x: coord.x, y: coord.y + y, z: coord.z }
+export function findGround({ solids, pos, y = 200 }) {
+  const origin = { x: pos.x, y: pos.y + y, z: pos.z }
   raycaster.set(origin, dir.down)
   const intersects = Array.isArray(solids)
     ? raycaster.intersectObjects(solids)
@@ -229,7 +229,7 @@ export const getGroundY = ({ solids, pos, y = 0 }) => {
 // TODO: use coords, remove recursive
 export const findGroundRecursive = (terrain, size, counter = 0) => {
   const coord = randomInSquare(size)
-  const intersect = findGround(terrain, coord)
+  const intersect = findGround({ solids: terrain, pos: coord, y: 200 })
   if (intersect && intersect.y > 0) return intersect
   if (counter > 5) return null
   return findGroundRecursive(terrain, size, counter + 1)
