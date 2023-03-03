@@ -7,6 +7,7 @@ import { BarbarianPlayer } from '/utils/characters/fantasy/Barbarian.js'
 import { OrcAI } from '/utils/characters/fantasy/Orc.js'
 import { OrcOgreAI } from '/utils/characters/fantasy/OrcOgre.js'
 import { FlamingoAI } from '/utils/characters/animals/Flamingo.js'
+import { loadModel } from '/utils/loaders.js'
 
 const mapSize = 200
 const enemyClasses = [OrcAI, OrcOgreAI]
@@ -33,13 +34,16 @@ for (let i = 0; i < 10; i++) {
   scene.add(enemy.mesh)
 }
 
-player.addSolids(creatures.map(e => e.mesh))
+player.addSolids(creatures.map(enemy => enemy.mesh))
 
 for (let i = 0; i < 10; i++) {
   const bird = new FlamingoAI({ mapSize, coords })
   creatures.push(bird)
   scene.add(bird.mesh)
 }
+
+const { mesh } = await loadModel({ file: 'building/castle/magic-castle.fbx', size: 200, shouldCenter: true, shouldAdjustHeight: true })
+scene.add(mesh)
 
 /* LOOP */
 

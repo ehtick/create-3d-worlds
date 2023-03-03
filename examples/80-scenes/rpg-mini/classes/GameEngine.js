@@ -1,9 +1,16 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { putOnTerrain, checkIntersect } from '/utils/helpers.js'
+import { findGroundRecursive, checkIntersect } from '/utils/helpers.js'
 import { createSun } from '/utils/light.js'
 import { createHillyTerrain, createWater } from '/utils/ground.js'
 import Tree from './Tree.js'
+
+function putOnTerrain({ terrain, size, total, callBack }) {
+  for (let i = 0; i < total; i++) {
+    const pos = findGroundRecursive(terrain, size)
+    if (pos) callBack(pos)
+  }
+}
 
 const { randInt } = THREE.MathUtils
 
@@ -63,7 +70,7 @@ class GameEngine {
   }
 
   pause() {
-    this.paused = this.paused ? false : true
+    this.paused = !this.paused
   }
 
   plantTrees() {

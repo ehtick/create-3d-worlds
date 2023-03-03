@@ -218,20 +218,17 @@ export function checkIntersect(terrain, origin) {
     : null
 }
 
+export const findGround = (terrain, pos) => checkIntersect(terrain, { x: pos.x, y: 200, z: pos.z })
+
 export const findGroundRecursive = (terrain, size, counter = 0) => {
-  const { x, z } = randomInSquare(size)
-  const intersect = checkIntersect(terrain, { x, y: 200, z })
+  const pos = randomInSquare(size)
+  const intersect = findGround(terrain, pos)
   if (intersect && intersect.y > 0) return intersect
   if (counter > 5) return null
   return findGroundRecursive(terrain, size, counter + 1)
 }
 
-export function putOnTerrain({ terrain, size, total, callBack }) {
-  for (let i = 0; i < total; i++) {
-    const pos = findGroundRecursive(terrain, size)
-    if (pos) callBack(pos)
-  }
-}
+/* FIND OBJECTS */
 
 export const getScene = object => {
   if (object.parent.type === 'Scene') return object.parent
@@ -262,7 +259,7 @@ export function createChaseCamera(mesh, camera = defaultCamera) {
 
   camera.position.copy(mesh.position)
 
-  return function () {
+  return function() {
     const v = new THREE.Vector3()
     camera.lookAt(mesh.position)
     pivot.getWorldPosition(v)
