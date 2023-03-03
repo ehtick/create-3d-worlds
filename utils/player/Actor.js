@@ -3,7 +3,7 @@ import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 
 import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
-import { addSolids, raycastGround, getSize, directionBlocked, getMesh } from '/utils/helpers.js'
+import { addSolids, getGroundY, getSize, directionBlocked, getMesh } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE, reactions } from '/utils/constants.js'
 import { createUpdatedBox } from '/utils/geometry.js'
 
@@ -263,7 +263,7 @@ export default class Actor {
   updateGround() {
     if (!this.shouldRaycastGround) return
     const { mesh, solids } = this
-    this.groundY = raycastGround({ pos: mesh.position, solids, y: this.height })
+    this.groundY = getGroundY({ pos: mesh.position, solids, y: this.height })
   }
 
   applyGravity(delta) {

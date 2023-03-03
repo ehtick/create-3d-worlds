@@ -208,7 +208,7 @@ export const raycastFront = ({ mesh, solids }) => {
 export const raycastDown = ({ pos, solids }) => raycast({ pos, solids }, dir.down)
 
 // TODO: merge with raycastDown / findGround?
-export const raycastGround = ({ pos, solids, y = 0 }) => {
+export const getGroundY = ({ pos, solids, y = 0 }) => {
   if (!pos || !solids.length) return 0
   const origin = { x: pos.x, y: pos.y + y, z: pos.z }
   raycaster.set(origin, dir.down)
