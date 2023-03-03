@@ -33,8 +33,6 @@ export default class Actor {
     this.energy = 100
     this.actions = {}
 
-    if (solids) this.addSolids(solids)
-
     if (animations?.length && animDict) {
       this.setupMixer(animations, animDict)
       if (rifle) this.addRifle(clone(rifle))
@@ -43,12 +41,15 @@ export default class Actor {
 
     if (coords) this.position.copy(coords.pop())
 
-    if (shouldRaycastGround) this.putOnGround()
-
     if (camera) {
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, ...cameraConfig })
       this.controls = createOrbitControls()
       this.controls.target = this.position
+    }
+
+    if (solids) {
+      this.addSolids(solids)
+      if (shouldRaycastGround) this.putOnGround()
     }
 
     if (mapSize) {
@@ -261,8 +262,9 @@ export default class Actor {
   }
 
   updateGround() {
-    if (!this.shouldRaycastGround) return
     const { mesh, solids } = this
+    if (!solids || !this.shouldRaycastGround) return
+
     this.groundY = getGroundY({ pos: mesh.position, solids, y: this.height })
   }
 

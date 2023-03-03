@@ -207,8 +207,6 @@ export const raycastFront = ({ mesh, solids }) => {
 
 export const raycastDown = ({ pos, solids }) => raycast({ pos, solids }, dir.down)
 
-// TODO: merge getGroundY and findGround?
-
 export function findGround({ solids, pos, y = 200 }) {
   const origin = { x: pos.x, y: pos.y + y, z: pos.z }
   raycaster.set(origin, dir.down)
@@ -219,11 +217,8 @@ export function findGround({ solids, pos, y = 200 }) {
 }
 
 export const getGroundY = ({ solids, pos, y = 0 }) => {
-  if (!pos || !solids.length) return 0
-  const origin = { x: pos.x, y: pos.y + y, z: pos.z }
-  raycaster.set(origin, dir.down)
-  const intersects = raycaster.intersectObjects(solids)
-  return intersects[0] ? intersects[0].point.y : 0
+  const point = findGround({ solids, pos, y })
+  return point?.y || 0
 }
 
 // TODO: use coords, remove recursive
