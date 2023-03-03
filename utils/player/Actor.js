@@ -11,7 +11,7 @@ import { createUpdatedBox } from '/utils/geometry.js'
 /**
  * Base abstract class for AI and Player, handles movement, animations...
  * @param animDict: maps finite state to animation
- ** keys: idle, walk, run, jump, fall, attack, attack2, special, pain, wounded, death
+ ** anim keys: idle, walk, run, jump, fall, attack, attack2, special, pain, wounded, death
  */
 export default class Actor {
   constructor({

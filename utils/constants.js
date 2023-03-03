@@ -20,7 +20,26 @@ export const dir = {
 }
 
 export const jumpStyles = {
-  FLY: 'FLY',
   FALSE_JUMP: 'FALSE_JUMP',
   FLY_JUMP: 'FLY_JUMP',
+  FLY: 'FLY',
 }
+
+export const attackStyles = {
+  ONCE: 'ONCE',
+  LOOP: 'LOOP',
+}
+
+/**
+ * pursue (if target): idle, patrol, wander
+ * doesn't pursue: flee i follow
+ */
+export const baseAiStates = {
+  idle: 'idle',
+  patrol: 'patrol',
+  wander: 'wander',
+  flee: 'flee',
+  follow: 'follow',
+}
+
+export const pursueStates = [baseAiStates.idle, baseAiStates.patrol, baseAiStates.wander]
