@@ -3,23 +3,22 @@ import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 
 import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
-import defaultKeyboard from '/utils/classes/Input.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
 import { getSize, directionBlocked, getMesh } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE, jumpStyles } from '/utils/constants.js'
 import { getPlayerState } from './states/index.js'
-import { createPlayerBox } from '/utils/geometry.js'
+import { createUpdatedBox } from '/utils/geometry.js'
 
 const pos = new Vector3()
 
 /**
- * Base class for AI and Player
+ * Base abstract class for AI and Player
  * param animDict: maps state to animation
  ** valid keys: idle, walk, run, jump, fall, attack, attack2, special, pain, wounded, death
  */
 export default class Actor {
   constructor({
-    mesh = createPlayerBox(), animations, animDict, camera, input = defaultKeyboard, solids, gravity = .7, jumpStyle = jumpStyles.FALSE_JUMP, attackStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle, attackStyle), shouldRaycastGround = true, rifle, pistol, cameraConfig = {}, mapSize, coords
+    mesh = createUpdatedBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle = jumpStyles.FALSE_JUMP, attackStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle, attackStyle), shouldRaycastGround = true, rifle, pistol, cameraConfig = {}, mapSize, coords
   }) {
     this.mesh = clone(mesh)
     this.speed = speed

@@ -27,7 +27,7 @@ export function createBox({ size = 1, width = size, height = size, depth = size,
   return mesh
 }
 
-export const createPlayerBox = params => {
+export const createUpdatedBox = params => {
   const mesh = createBox(params)
   mesh.updateMatrix()
   mesh.geometry.applyMatrix4(mesh.matrix)
