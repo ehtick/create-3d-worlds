@@ -112,14 +112,14 @@ export const getSize = (mesh, key) => {
 
 export const getHeight = mesh => getSize(mesh, 'y')
 
-// https://stackoverflow.com/questions/28848863/, geometry.center() not working for groups
+// geometry.center() not working for groups stackoverflow.com/questions/28848863
 export const centerMesh = mesh => {
   const box = new THREE.Box3().setFromObject(mesh)
   box.getCenter(mesh.position) // re-sets mesh position
   mesh.position.multiplyScalar(-1)
 }
 
-// different from geometry.center() - not adjusting height
+// different from geometry.center(), not adjusting height
 export const centerGeometry = geometry => {
   const _offset = new THREE.Vector3()
   geometry.computeBoundingBox()
@@ -158,27 +158,6 @@ export const belongsTo = (object, name) => {
   return belongsTo(object.parent, name)
 }
 
-/* TEXTURES */
-
-export const getTexture = ({ file, repeat = 1 } = {}) => {
-  const texture = new THREE.TextureLoader().load(`/assets/textures/${file}`)
-  texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-  texture.magFilter = THREE.NearestFilter
-  // texture.minFilter = THREE.LinearMipMapLinearFilter
-  texture.repeat.set(repeat, repeat)
-  return texture
-}
-
-export const addTexture = ({ mesh, file = 'terrain/concrete.jpg', repeat = 1 } = {}) => {
-  const texture = getTexture({ file, repeat })
-  mesh.traverse(child => {
-    if (child.isMesh) {
-      child.material = new THREE.MeshLambertMaterial()
-      child.material.map = texture
-    }
-  })
-}
-
 /* COLORS */
 
 export const randomColor = () => new THREE.Color(Math.random() * 0xffffff)
@@ -210,10 +189,9 @@ export function similarColor(color, range = .25) {
 
 /* RAYCAST */
 
-export const raycast = ({ mesh, solids }, direction) => {
-  if (!mesh || !solids.length) return Infinity
-  const pos = mesh.position.clone()
-  const raycaster = new THREE.Raycaster(pos, direction)
+export const raycast = ({ pos, solids }, direction) => {
+  if (!pos || !solids.length) return Infinity
+  raycaster.set(pos, direction)
   const intersects = raycaster.intersectObjects(solids)
 
   const target = intersects[0] ? intersects[0].point : null
@@ -221,29 +199,39 @@ export const raycast = ({ mesh, solids }, direction) => {
   return distance
 }
 
-export const raycastDown = ({ mesh, solids }) => {
-  const direction = new THREE.Vector3(0, -1, 0)
-  return raycast({ mesh, solids }, direction)
-}
-
 export const raycastFront = ({ mesh, solids }) => {
   if (!mesh) return
-  const direction = new THREE.Vector3(0, 0, -1).applyQuaternion(mesh.quaternion)
-  return raycast({ mesh, solids }, direction)
+  const direction = dir.forward.applyQuaternion(mesh.quaternion)
+  return raycast({ pos: mesh.position, solids }, direction)
 }
 
-// TODO: deprecated, find and replace with raycastDown
-export const raycastGround = ({ mesh, solids }, { x = 0, y = 0, z = 0 } = {}) => {
-  if (!mesh || !solids.length) return 0
-  const pos = mesh.position.clone()
-  pos.x += x // adjustments
-  pos.y += y
-  pos.z += z
-  const raycaster = new THREE.Raycaster(pos, dir.down)
+export const raycastDown = ({ pos, solids }) => raycast({ pos, solids }, dir.down)
+
+// TODO: merge with raycastDown / findGround?
+export const raycastGround = ({ pos, solids, y = 0 }) => {
+  if (!pos || !solids.length) return 0
+  const origin = pos.clone()
+  origin.y += y
+  raycaster.set(origin, dir.down)
   const intersects = raycaster.intersectObjects(solids)
 
-  const groundY = intersects[0] ? intersects[0].point.y : 0
-  return groundY
+  return intersects[0] ? intersects[0].point.y : 0
+}
+
+export function findGround(terrain, coord) {
+  const origin = { x: coord.x, y: 200, z: coord.z }
+  raycaster.set(origin, dir.down)
+  const intersects = raycaster.intersectObject(terrain)
+  return intersects?.[0]?.point
+}
+
+// TODO: use coords
+export const findGroundRecursive = (terrain, size, counter = 0) => {
+  const coord = randomInSquare(size)
+  const intersect = findGround(terrain, coord)
+  if (intersect && intersect.y > 0) return intersect
+  if (counter > 5) return null
+  return findGroundRecursive(terrain, size, counter + 1)
 }
 
 export const directionBlocked = (mesh, solids, dir) => {
@@ -275,19 +263,25 @@ export function getCameraIntersects(camera, target) {
   return getIntersects(raycaster, target)
 }
 
-export function findGround(terrain, pos) {
-  const origin = { x: pos.x, y: 200, z: pos.z }
-  raycaster.set(origin, dir.down)
-  const intersects = raycaster.intersectObject(terrain)
-  return intersects?.[0]?.point
+/* TEXTURES */
+
+export const getTexture = ({ file, repeat = 1 } = {}) => {
+  const texture = new THREE.TextureLoader().load(`/assets/textures/${file}`)
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+  texture.magFilter = THREE.NearestFilter
+  // texture.minFilter = THREE.LinearMipMapLinearFilter
+  texture.repeat.set(repeat, repeat)
+  return texture
 }
 
-export const findGroundRecursive = (terrain, size, counter = 0) => {
-  const pos = randomInSquare(size)
-  const intersect = findGround(terrain, pos)
-  if (intersect && intersect.y > 0) return intersect
-  if (counter > 5) return null
-  return findGroundRecursive(terrain, size, counter + 1)
+export const addTexture = ({ mesh, file = 'terrain/concrete.jpg', repeat = 1 } = {}) => {
+  const texture = getTexture({ file, repeat })
+  mesh.traverse(child => {
+    if (child.isMesh) {
+      child.material = new THREE.MeshLambertMaterial()
+      child.material.map = texture
+    }
+  })
 }
 
 /* CAMERA */
