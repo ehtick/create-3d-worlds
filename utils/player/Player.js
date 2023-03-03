@@ -19,4 +19,8 @@ export default class Player extends Actor {
 
     if (useJoystick) this.input.joystick = new JoyStick()
   }
+
+  updateMove(delta, reaction = 'STOP') {
+    super.updateMove(delta, reaction)
+  }
 }

@@ -12,7 +12,7 @@ export default class FollowState extends WalkState {
     const { player } = this
 
     player.lookAtTarget()
-    player.updateMove(delta, 'TRANSLATE')
+    player.updateMove(delta, 'STEP_OFF')
 
     /* TRANSIT */
 

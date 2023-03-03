@@ -8,12 +8,10 @@ import { getSize, directionBlocked, getMesh } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE } from '/utils/constants.js'
 import { createUpdatedBox } from '/utils/geometry.js'
 
-const pos = new Vector3()
-
 /**
- * Base abstract class for AI and Player
- * param animDict: maps state to animation
- ** valid keys: idle, walk, run, jump, fall, attack, attack2, special, pain, wounded, death
+ * Base abstract class for AI and Player, handles movement, animations...
+ * @param animDict: maps finite state to animation
+ ** keys: idle, walk, run, jump, fall, attack, attack2, special, pain, wounded, death
  */
 export default class Actor {
   constructor({
@@ -128,10 +126,6 @@ export default class Actor {
 
   /* ANIMATIONS */
 
-  createRun(walk) {
-    return this.mixer.clipAction(walk.clone()).setEffectiveTimeScale(1.5)
-  }
-
   setupMixer(animations, animDict) {
     this.mixer = new AnimationMixer(getMesh(this.mesh))
     for (const key in animDict) {
@@ -142,6 +136,10 @@ export default class Actor {
       const clip = animations.find(anim => anim.name == animDict.walk)
       this.actions.run = this.createRun(clip)
     }
+  }
+
+  createRun(walk) {
+    return this.mixer.clipAction(walk.clone()).setEffectiveTimeScale(1.5)
   }
 
   findHands() {
@@ -205,7 +203,8 @@ export default class Actor {
 
   /* UPDATES */
 
-  updateWeapon() {
+  updateRifle() {
+    const pos = new Vector3()
     this.leftHand.getWorldPosition(pos)
     this.rifle.lookAt(pos)
   }
@@ -223,19 +222,17 @@ export default class Actor {
       this.setState('pain')
   }
 
+  stepOff(val) {
+    this.mesh.translateX(val)
+    this.mesh.translateZ(val)
+  }
+
   updateMove(delta, reaction) {
     const direction = this.input.up ? dir.forward : dir.backward
     if (this.directionBlocked(direction))
-      switch (reaction) {
-        case 'BOUNCE':
-          this.bounce()
-          break
-        case 'TRANSLATE':
-          this.mesh.translateX(delta * 2.5)
-          this.mesh.translateZ(delta * 2.5)
-          break
-        default: return // stop
-      }
+      if (reaction == 'BOUNCE') this.bounce()
+      else if (reaction == 'STEP_OFF') this.stepOff(delta * 2.5)
+      else if (reaction == 'STOP') return
 
     this.handleRoughTerrain(Math.abs(this.acceleration) * delta)
 
@@ -292,7 +289,7 @@ export default class Actor {
     this.updateGround()
     this.currentState.update(delta)
     this.mixer?.update(delta)
-    if (this.rifle) this.updateWeapon()
+    if (this.rifle) this.updateRifle()
     this.checkHit()
     if (this.outOfBounds) this.bounce()
     if (this.thirdPersonCamera) this.updateCamera(delta)
