@@ -210,11 +210,9 @@ export const raycastDown = ({ pos, solids }) => raycast({ pos, solids }, dir.dow
 // TODO: merge with raycastDown / findGround?
 export const raycastGround = ({ pos, solids, y = 0 }) => {
   if (!pos || !solids.length) return 0
-  const origin = pos.clone()
-  origin.y += y
+  const origin = { x: pos.x, y: pos.y + y, z: pos.z }
   raycaster.set(origin, dir.down)
   const intersects = raycaster.intersectObjects(solids)
-
   return intersects[0] ? intersects[0].point.y : 0
 }
 
