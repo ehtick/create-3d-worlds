@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import input from '/utils/classes/Input.js'
-import { addSolids, raycastDown, raycastFront } from '/utils/classes/actions.js'
+import { addSolids, raycastDown, raycastFront } from '/utils/helpers.js'
 
 const clock = new THREE.Clock()
 
