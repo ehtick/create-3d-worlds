@@ -31,7 +31,7 @@ export function randomInSquare(size, emptyCenter = 0) {
   const z = x > -emptyCenter && x < emptyCenter
     ? randomInRangeExcluded(-halfSize, halfSize, -emptyCenter, emptyCenter)
     : randFloatSpread(size)
-  return randomBool() ? { x, z } : { x: z, z: x }
+  return randomBool() ? { x, y: 0, z } : { x: z, y: 0, z: x }
 }
 
 /*
@@ -207,8 +207,18 @@ export const raycastFront = ({ mesh, solids }) => {
 
 export const raycastDown = ({ pos, solids }) => raycast({ pos, solids }, dir.down)
 
-// TODO: merge with raycastDown / findGround?
-export const getGroundY = ({ pos, solids, y = 0 }) => {
+// TODO: merge getGroundY and findGround?
+
+export function findGround(solids, coord, y = 200) {
+  const origin = { x: coord.x, y: coord.y + y, z: coord.z }
+  raycaster.set(origin, dir.down)
+  const intersects = Array.isArray(solids)
+    ? raycaster.intersectObjects(solids)
+    : raycaster.intersectObject(solids)
+  return intersects?.[0]?.point
+}
+
+export const getGroundY = ({ solids, pos, y = 0 }) => {
   if (!pos || !solids.length) return 0
   const origin = { x: pos.x, y: pos.y + y, z: pos.z }
   raycaster.set(origin, dir.down)
@@ -216,14 +226,7 @@ export const getGroundY = ({ pos, solids, y = 0 }) => {
   return intersects[0] ? intersects[0].point.y : 0
 }
 
-export function findGround(terrain, coord) {
-  const origin = { x: coord.x, y: 200, z: coord.z }
-  raycaster.set(origin, dir.down)
-  const intersects = raycaster.intersectObject(terrain)
-  return intersects?.[0]?.point
-}
-
-// TODO: use coords
+// TODO: use coords, remove recursive
 export const findGroundRecursive = (terrain, size, counter = 0) => {
   const coord = randomInSquare(size)
   const intersect = findGround(terrain, coord)
