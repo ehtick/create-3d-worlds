@@ -11,6 +11,8 @@ npx live-server
 
 ## TODO
 
+- BUG: ponekad se pomešaju animacije na karakteru, ubijati ih ako ima više aktivnih
+
 ### Scenes & examples
 
 - FPS / Savo

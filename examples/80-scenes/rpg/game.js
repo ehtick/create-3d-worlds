@@ -9,7 +9,7 @@ import { OrcOgreAI } from '/utils/characters/fantasy/OrcOgre.js'
 import { FlamingoAI } from '/utils/characters/animals/Flamingo.js'
 import { loadModel } from '/utils/loaders.js'
 
-const mapSize = 200
+const mapSize = 400
 const enemyClasses = [OrcAI, OrcOgreAI]
 const creatures = []
 
@@ -45,7 +45,7 @@ for (let i = 0; i < 10; i++) {
 // building/castle/fortress.fbx 118 kb
 // building/castle/castel/scene.gltf 200 kb
 const { mesh } = await loadModel({ file: 'building/castle/fortress.fbx', size: 50 })
-putOnGround(mesh, terrain)
+putOnGround(mesh, terrain, -5)
 scene.add(mesh)
 
 player.addSolids(mesh)

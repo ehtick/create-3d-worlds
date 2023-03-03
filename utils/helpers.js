@@ -218,8 +218,8 @@ export function findGround({ solids, pos, y = 200 }) {
 
 export const getGroundY = ({ solids, pos, y }) => findGround({ solids, pos, y })?.y || 0
 
-export const putOnGround = (mesh, solids) => {
-  mesh.position.y = getGroundY({ solids, pos: mesh.position })
+export const putOnGround = (mesh, solids, adjustment = 0) => {
+  mesh.position.y = getGroundY({ solids, pos: mesh.position }) + adjustment
 }
 
 // TODO: use coords, remove recursive

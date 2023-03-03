@@ -134,7 +134,7 @@ export function heightColors({ geometry, maxY, minY = 0, domainColors = groundCo
 function createTerrainMesh({ size = 400, segments = 100 } = {}) {
   const geometry = crateGroundGeometry({ size, segments, circle: false })
 
-  const material = new THREE.MeshLambertMaterial({ vertexColors: true })
+  const material = new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide })
   const mesh = new THREE.Mesh(geometry, material)
   mesh.receiveShadow = true
   return mesh
