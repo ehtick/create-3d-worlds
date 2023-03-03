@@ -25,8 +25,8 @@ npx live-server
   - opciono neprijatelje zombije?
 
 - RPG / Fantasy
-  - napraviti scenu na osnovu mini-rpg, dodati lagane modele
-    - smestiti zamak na zemlju (napraviti funkciju)
+  - dodati pravi skok, nemože uz stepenice
+  - napraviti scenu na osnovu mini-rpg
     - cepelin u vazduhu (vinci aerial screw, santos dumont airship)
     - oblaci, životinje, zamak
   - dugme za promenu kamere, da budu samo orbit kontrole

@@ -189,6 +189,10 @@ export function similarColor(color, range = .25) {
 
 /* RAYCAST */
 
+const getIntersects = (raycaster, target = defaultScene) => Array.isArray(target)
+  ? raycaster.intersectObjects(target)
+  : raycaster.intersectObject(target)
+
 const distanceTo = ({ pos, solids }, direction) => {
   if (!pos || !solids.length) return Infinity
   raycaster.set(pos, direction)
@@ -199,7 +203,6 @@ const distanceTo = ({ pos, solids }, direction) => {
 }
 
 export const distanceFront = ({ mesh, solids }) => {
-  if (!mesh) return
   const direction = dir.forward.applyQuaternion(mesh.quaternion)
   return distanceTo({ pos: mesh.position, solids }, direction)
 }
@@ -209,13 +212,15 @@ export const distanceDown = ({ pos, solids }) => distanceTo({ pos, solids }, dir
 export function findGround({ solids, pos, y = 200 }) {
   const origin = { x: pos.x, y: pos.y + y, z: pos.z }
   raycaster.set(origin, dir.down)
-  const intersects = Array.isArray(solids)
-    ? raycaster.intersectObjects(solids)
-    : raycaster.intersectObject(solids)
+  const intersects = getIntersects(raycaster, solids)
   return intersects?.[0]?.point
 }
 
-export const getGroundY = ({ solids, pos, y = 0 }) => findGround({ solids, pos, y })?.y || 0
+export const getGroundY = ({ solids, pos, y }) => findGround({ solids, pos, y })?.y || 0
+
+export const putOnGround = (mesh, solids) => {
+  mesh.position.y = getGroundY({ solids, pos: mesh.position })
+}
 
 // TODO: use coords, remove recursive
 export const findGroundRecursive = (terrain, size, counter = 0) => {
@@ -235,13 +240,6 @@ export const directionBlocked = (mesh, solids, dir) => {
   const raycaster = new THREE.Raycaster(bodyCenter, direction, 0, height)
   const intersections = raycaster.intersectObjects(solids, true)
   return intersections.length > 0
-}
-
-function getIntersects(raycaster, target = defaultScene) {
-  const intersects = target.length
-    ? raycaster.intersectObjects(target)
-    : raycaster.intersectObject(target)
-  return intersects
 }
 
 export function getMouseIntersects(e, camera = defaultCamera, target = defaultScene) {

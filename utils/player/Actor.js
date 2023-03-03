@@ -3,7 +3,7 @@ import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 
 import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
-import { addSolids, getGroundY, getSize, directionBlocked, getMesh } from '/utils/helpers.js'
+import { addSolids, getGroundY, getSize, directionBlocked, getMesh, putOnGround } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE, reactions } from '/utils/constants.js'
 import { createUpdatedBox } from '/utils/geometry.js'
 
@@ -194,10 +194,8 @@ export default class Actor {
     this.mesh.translateZ(this.velocity.z)
   }
 
-  putOnGround(y = 200) {
-    this.position.y = y
-    this.updateGround()
-    this.mesh.position.y = this.groundY
+  putOnGround() {
+    putOnGround(this.mesh, this.solids)
   }
 
   /* UPDATES */

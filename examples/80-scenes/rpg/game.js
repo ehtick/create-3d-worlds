@@ -2,7 +2,7 @@ import { scene, renderer, camera, clock } from '/utils/scene.js'
 import { createHillyTerrain } from '/utils/ground.js'
 import { createTreesOnTerrain } from '/utils/geometry/trees.js'
 import { createSun } from '/utils/light.js'
-import { sample, getAllCoords } from '/utils/helpers.js'
+import { sample, getAllCoords, putOnGround } from '/utils/helpers.js'
 import { BarbarianPlayer } from '/utils/characters/fantasy/Barbarian.js'
 import { OrcAI } from '/utils/characters/fantasy/Orc.js'
 import { OrcOgreAI } from '/utils/characters/fantasy/OrcOgre.js'
@@ -44,8 +44,11 @@ for (let i = 0; i < 10; i++) {
 
 // building/castle/fortress.fbx 118 kb
 // building/castle/castel/scene.gltf 200 kb
-const { mesh } = await loadModel({ file: 'building/castle/fortress.fbx', size: 50, shouldCenter: true, shouldAdjustHeight: true })
+const { mesh } = await loadModel({ file: 'building/castle/fortress.fbx', size: 50 })
+putOnGround(mesh, terrain)
 scene.add(mesh)
+
+player.addSolids(mesh)
 
 /* LOOP */
 
