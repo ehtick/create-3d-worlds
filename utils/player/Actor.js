@@ -5,8 +5,7 @@ import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import { addSolids, raycastGround } from '/utils/classes/actions.js'
 import { getSize, directionBlocked, getMesh } from '/utils/helpers.js'
-import { dir, RIGHT_ANGLE, jumpStyles } from '/utils/constants.js'
-import { getPlayerState } from './states/index.js'
+import { dir, RIGHT_ANGLE } from '/utils/constants.js'
 import { createUpdatedBox } from '/utils/geometry.js'
 
 const pos = new Vector3()
@@ -18,7 +17,7 @@ const pos = new Vector3()
  */
 export default class Actor {
   constructor({
-    mesh = createUpdatedBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle = jumpStyles.FALSE_JUMP, attackStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState = name => getPlayerState(name, jumpStyle, attackStyle), shouldRaycastGround = true, rifle, pistol, cameraConfig = {}, mapSize, coords
+    mesh = createUpdatedBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, cameraConfig = {}, mapSize, coords
   }) {
     this.mesh = clone(mesh)
     this.speed = speed
