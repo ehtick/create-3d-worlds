@@ -11,6 +11,8 @@ npx live-server
 
 ## TODO
 
+- TODO: merge actions with helpers
+
 ### Scenes & examples
 
 - FPS / Savo

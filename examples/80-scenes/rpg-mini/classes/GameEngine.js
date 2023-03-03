@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { findGroundRecursive, checkIntersect } from '/utils/helpers.js'
+import { findGroundRecursive, findGround } from '/utils/helpers.js'
 import { createSun } from '/utils/light.js'
 import { createHillyTerrain, createWater } from '/utils/ground.js'
 import Tree from './Tree.js'
@@ -83,7 +83,7 @@ class GameEngine {
   }
 
   place(position) {
-    return checkIntersect(this.scene.getObjectByName('terrain'), position) || position
+    return findGround(this.scene.getObjectByName('terrain'), position) || position
   }
 
   randomPlaceEntity(entity) {

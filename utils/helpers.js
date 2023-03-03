@@ -210,15 +210,12 @@ export function getCameraIntersects(camera, target) {
   return getIntersects(raycaster, target)
 }
 
-export function checkIntersect(terrain, origin) {
+export function findGround(terrain, pos) {
+  const origin = { x: pos.x, y: 200, z: pos.z }
   raycaster.set(origin, dir.down)
   const intersects = raycaster.intersectObject(terrain)
-  return intersects.length
-    ? intersects[0].point
-    : null
+  return intersects?.[0]?.point
 }
-
-export const findGround = (terrain, pos) => checkIntersect(terrain, { x: pos.x, y: 200, z: pos.z })
 
 export const findGroundRecursive = (terrain, size, counter = 0) => {
   const pos = randomInSquare(size)
