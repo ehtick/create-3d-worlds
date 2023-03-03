@@ -16,7 +16,7 @@ npx live-server
 - FPS / Savo
   - ai napad da skida energiju
   - dodati reakciju na ai napad (trese se ekran)
-  - ako je neprijatelj mrtav izbaciti ga iz računjanja (raycast, blizina...)
+  - ako je neprijatelj mrtav izbaciti ga iz računjanja (distanceTo, blizina...)
   - zamračiti nebo i naglasiti kišu i munje
   - dodati modele vozila i kuca
   - dodati tenk kako prolazi
@@ -25,17 +25,18 @@ npx live-server
   - opciono neprijatelje zombije?
 
 - RPG / Fantasy
-  - napraviti scenu na osnovu mini-rpg
-  - dodati BarbarianPlayer i OrcAI
+  - napraviti scenu na osnovu mini-rpg, dodati lagane modele
+    - smestiti zamak na zemlju (napraviti funkciju)
+    - cepelin u vazduhu (vinci aerial screw, santos dumont airship)
+    - oblaci, životinje, zamak
+  - dugme za promenu kamere, da budu samo orbit kontrole
   - dodati player attack, možda dodati oružje
   - ai napad da skida energiju
   - dodati reakciju na ai napad 
-  - oblaci, životinje, zamak
-  - cepelin u vazduhu (vinci aerial screw, santos dumont airship)
   - karakter dolazi do kuće i ulazi (vidi house model primer)
   - uzima predmete (50-rad-sa-modelima/80-uzimanje-predmeta/)
   - ranjena varvarka puzi do nekog cilja? ili obrisati wounded
-  - kad je idle da se kamera okreće oko glave
+  - kad je dugo idle da se kamera okreće oko glave
 
 - Svemir 
   - dodati model ring space-arcology

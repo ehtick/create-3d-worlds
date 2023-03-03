@@ -189,23 +189,22 @@ export function similarColor(color, range = .25) {
 
 /* RAYCAST */
 
-export const raycast = ({ pos, solids }, direction) => {
+const distanceTo = ({ pos, solids }, direction) => {
   if (!pos || !solids.length) return Infinity
   raycaster.set(pos, direction)
   const intersects = raycaster.intersectObjects(solids)
 
-  const target = intersects[0] ? intersects[0].point : null
-  const distance = target ? pos.distanceTo(target) : Infinity
-  return distance
+  const point = intersects[0]?.point
+  return point ? pos.distanceTo(point) : Infinity
 }
 
-export const raycastFront = ({ mesh, solids }) => {
+export const distanceFront = ({ mesh, solids }) => {
   if (!mesh) return
   const direction = dir.forward.applyQuaternion(mesh.quaternion)
-  return raycast({ pos: mesh.position, solids }, direction)
+  return distanceTo({ pos: mesh.position, solids }, direction)
 }
 
-export const raycastDown = ({ pos, solids }) => raycast({ pos, solids }, dir.down)
+export const distanceDown = ({ pos, solids }) => distanceTo({ pos, solids }, dir.down)
 
 export function findGround({ solids, pos, y = 200 }) {
   const origin = { x: pos.x, y: pos.y + y, z: pos.z }
@@ -216,10 +215,7 @@ export function findGround({ solids, pos, y = 200 }) {
   return intersects?.[0]?.point
 }
 
-export const getGroundY = ({ solids, pos, y = 0 }) => {
-  const point = findGround({ solids, pos, y })
-  return point?.y || 0
-}
+export const getGroundY = ({ solids, pos, y = 0 }) => findGround({ solids, pos, y })?.y || 0
 
 // TODO: use coords, remove recursive
 export const findGroundRecursive = (terrain, size, counter = 0) => {

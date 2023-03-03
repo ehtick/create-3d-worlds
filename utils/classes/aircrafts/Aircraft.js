@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import input from '/utils/classes/Input.js'
-import { addSolids, raycastDown, raycastFront } from '/utils/helpers.js'
+import { addSolids, distanceDown, distanceFront } from '/utils/helpers.js'
 
 const clock = new THREE.Clock()
 
@@ -119,18 +119,18 @@ export default class Aircraft {
 
   isTouchingGround() {
     const { mesh, solids } = this
-    const groundDistance = raycastDown({ pos: mesh.position, solids })
+    const groundDistance = distanceDown({ pos: mesh.position, solids })
     return groundDistance < this.minHeight
   }
 
   isTooLow() {
     const { mesh, solids } = this
-    const groundDistance = raycastDown({ pos: mesh.position, solids })
+    const groundDistance = distanceDown({ pos: mesh.position, solids })
     return groundDistance < this.minHeight * 2
   }
 
   isTooNear() {
-    const distance = raycastFront({ mesh: this.mesh, solids: this.solids })
+    const distance = distanceFront({ mesh: this.mesh, solids: this.solids })
     return distance < minDistance
   }
 

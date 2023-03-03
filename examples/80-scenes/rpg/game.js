@@ -42,8 +42,10 @@ for (let i = 0; i < 10; i++) {
   scene.add(bird.mesh)
 }
 
-// const { mesh } = await loadModel({ file: 'building/castle/magic-castle.fbx', size: 200, shouldCenter: true, shouldAdjustHeight: true })
-// scene.add(mesh)
+// building/castle/fortress.fbx 118 kb
+// building/castle/castel/scene.gltf 200 kb
+const { mesh } = await loadModel({ file: 'building/castle/fortress.fbx', size: 50, shouldCenter: true, shouldAdjustHeight: true })
+scene.add(mesh)
 
 /* LOOP */
 
