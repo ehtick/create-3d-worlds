@@ -34,7 +34,7 @@ npx live-server
   - cepelin u vazduhu (vinci aerial screw, santos dumont airship)
   - karakter dolazi do kuće i ulazi (vidi house model primer)
   - uzima predmete (50-rad-sa-modelima/80-uzimanje-predmeta/)
-  - ranjena varvarka puzi do nekog cilja?
+  - ranjena varvarka puzi do nekog cilja? ili obrisati wounded
   - kad je idle da se kamera okreće oko glave
 
 - Svemir 

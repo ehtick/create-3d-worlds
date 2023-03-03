@@ -47,7 +47,6 @@ export default class Actor {
     if (shouldRaycastGround) this.putOnGround()
 
     if (camera) {
-      camera.position.copy(this.position)
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, ...cameraConfig })
       this.controls = createOrbitControls()
       this.controls.target = this.position

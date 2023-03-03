@@ -18,6 +18,9 @@ export default class ThirdPersonCamera {
     this.speed = speed
     this.currentPosition = new THREE.Vector3()
     this.currentLookat = new THREE.Vector3()
+
+    this.camera.position.copy(calc(mesh, offset))
+    this.camera.lookAt(calc(mesh, lookAt))
   }
 
   update(delta) {
