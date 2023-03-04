@@ -6,7 +6,7 @@ const animDict = {
   idle: 'Unarmed Idle',
   walk: 'Dwarf Walk',
   run: 'Running',
-  jump: 'Jumping',
+  jump: 'Mutant Jumping',
   attack: 'Mma Kick',
   attack2: 'Standing Melee Kick',
   special: 'Standing 2H Magic Attack 05',
@@ -21,7 +21,7 @@ const { mesh, animations } = await loadModel({ prefix: 'character/barbarian/', f
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict, jumpStyle: 'FLY_JUMP', maxJumpTime: 12 }
+const sharedProps = { mesh, animations, animDict, jumpStyle: 'FLY_JUMP', maxJumpTime: 15 }
 
 export class BarbarianPlayer extends Player {
   constructor(props = {}) {

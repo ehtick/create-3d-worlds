@@ -13,6 +13,7 @@ npx live-server
 
 - BUG: mešaju se animacije na karakteru, ubijati ih ako ima više aktivnih
 - BUG: strafe levo i desno secka/glavi na terenu
+- BUG: kad igrač skoči nekome na leđa; ako je meta iznad da ai stane?
 
 ### Scenes & examples
 

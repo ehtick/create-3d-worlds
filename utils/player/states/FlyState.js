@@ -19,8 +19,7 @@ export default class FlyState extends State {
       this.transitFrom(oldAction, .5)
     }
 
-    // if (this.player.input.down)
-    //   this.reverseAction(this.action || this.actions[this.prevState])
+    if (this.player.input.down) this.reverseAction()
   }
 
   update(delta) {
@@ -47,5 +46,9 @@ export default class FlyState extends State {
       player.velocity.y = 0
       player.setState(this.prevState) // bez prevState brlja aktivne animacije
     }
+  }
+
+  exit() {
+    this.action?.setEffectiveTimeScale(1)
   }
 }
