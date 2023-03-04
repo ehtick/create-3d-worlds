@@ -73,8 +73,13 @@ export default class AI extends Actor {
     return this.distancToTarget < this.sightDistance
   }
 
+  get targetAbove() {
+    return this.target.position.y >= this.position.y + this.height * .5
+  }
+
   get targetSpotted() {
     if (!this.target) return false
+    if (this.targetAbove) return false
     return (this.targetInRange && this.lookingAtTarget) || (this.targetInRange * .3) // feel if too close
   }
 

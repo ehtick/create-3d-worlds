@@ -11,7 +11,6 @@ npx live-server
 
 ## TODO
 
-- BUG: kad igrač skoči nekome na leđa; ako je meta iznad da ai stane?
 - BUG: strafe levo i desno secka na terenu
 
 ### Scenes & examples

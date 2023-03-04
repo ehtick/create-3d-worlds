@@ -11,7 +11,7 @@ export default class PursueState extends RunState {
   update(delta) {
     const { player } = this
 
-    player.lookAtTarget()
+    if (!player.targetAbove) player.lookAtTarget()
     player.updateMove(delta, reactions.STEP_OFF)
 
     /* TRANSIT */
