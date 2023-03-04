@@ -27,7 +27,6 @@ npx live-server
   - opciono neprijatelje zombije?
 
 - RPG / Fantasy
-  - cepelin u vazduhu (vinci aerial screw, santos dumont airship)
   - dodati pravi skok, nemože uz stepenice
   - podesiti 3rd cameru, okrenuti je malo naviše ka nebu (isprobati i drugu prateću)
   - opet probati fokus orbit kontrola na glavu
