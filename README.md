@@ -11,7 +11,6 @@ npx live-server
 
 ## TODO
 
-- BUG: mešaju se animacije na karakteru, ubijati ih ako ima više aktivnih
 - BUG: strafe levo i desno secka/glavi na terenu
 - BUG: kad igrač skoči nekome na leđa; ako je meta iznad da ai stane?
 
@@ -29,7 +28,7 @@ npx live-server
   - opciono neprijatelje zombije?
 
 - RPG / Fantasy
-  - dodati pravi skok, nemože uz stepenice
+  - probati aerial screw
   - podesiti 3rd cameru, okrenuti je malo naviše ka nebu (isprobati i drugu prateću)
   - opet probati fokus orbit kontrola na glavu
   - dugme za promenu kamere, da budu samo orbit kontrole
