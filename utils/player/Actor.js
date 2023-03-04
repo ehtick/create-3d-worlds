@@ -231,6 +231,7 @@ export default class Actor {
     const direction = this.input.up ? dir.forward : dir.backward
     if (this.directionBlocked(direction))
       if (reaction == reactions.BOUNCE) this.bounce()
+      else if (reaction == reactions.TURN_SMOOTH) this.turnSmooth()
       else if (reaction == reactions.STEP_OFF) this.stepOff(delta * 2.5)
       else if (reaction == reactions.STOP) return
 

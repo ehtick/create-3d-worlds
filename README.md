@@ -11,7 +11,7 @@ npx live-server
 
 ## TODO
 
-- BUG: ponekad se pomešaju animacije na karakteru, ubijati ih ako ima više aktivnih
+- BUG: mešaju se animacije na karakteru, ubijati ih ako ima više aktivnih
 
 ### Scenes & examples
 
@@ -27,9 +27,9 @@ npx live-server
   - opciono neprijatelje zombije?
 
 - RPG / Fantasy
-  - možda zmaja?
   - cepelin u vazduhu (vinci aerial screw, santos dumont airship)
   - dodati pravi skok, nemože uz stepenice
+  - podesiti 3rd cameru, okrenuti je malo naviše ka nebu (isprobati i drugu prateću)
   - opet probati fokus orbit kontrola na glavu
   - dugme za promenu kamere, da budu samo orbit kontrole
   - dodati player attack, možda dodati oružje

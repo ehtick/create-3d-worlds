@@ -32,6 +32,7 @@ export const attackStyles = {
 
 export const reactions = {
   BOUNCE: 'BOUNCE',
+  TURN_SMOOTH: 'TURN_SMOOTH',
   STEP_OFF: 'STEP_OFF',
   STOP: 'STOP',
 }

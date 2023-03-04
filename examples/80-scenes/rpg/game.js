@@ -8,6 +8,7 @@ import { OrcAI } from '/utils/characters/fantasy/Orc.js'
 import { OrcOgreAI } from '/utils/characters/fantasy/OrcOgre.js'
 import { FlamingoAI } from '/utils/characters/animals/Flamingo.js'
 import { CloudAI } from '/utils/characters/animals/Cloud.js'
+import { ZappelinAI } from '/utils/characters/animals/Zappelin.js'
 import { loadModel } from '/utils/loaders.js'
 
 const mapSize = 400
@@ -15,7 +16,7 @@ const enemyClasses = [OrcAI, OrcOgreAI]
 const npcs = []
 
 const coords = getAllCoords({ mapSize: mapSize * .9, fieldSize: 5 })
-scene.add(createSun())
+scene.add(createSun({ position: [15, 100, 50] }))
 
 const terrain = createHillyTerrain({ size: mapSize, factorY: 30 })
 scene.add(terrain)
@@ -54,6 +55,10 @@ putOnGround(castle, terrain, -5)
 scene.add(castle)
 
 player.addSolids(castle)
+
+const airship = new ZappelinAI({ mapSize })
+scene.add(airship.mesh)
+npcs.push(airship)
 
 /* LOOP */
 
