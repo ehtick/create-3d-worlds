@@ -31,7 +31,7 @@ export const setBackground = color => {
 
 // CAMERA
 
-export const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, .5, 10000)
+export const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000)
 camera.position.set(0, 2, 4)
 
 // RENDERER

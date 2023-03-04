@@ -36,8 +36,6 @@ export function randomInSquare(size, emptyCenter = 0) {
 
 /*
   @return shuffled coordinates for given mapSize
-    offSet: random shift from field center
-    emptyCenter: empty square in map center
 */
 export function getAllCoords({
   mapSize = 400, fieldSize = 20, offSet = fieldSize * .5, emptyCenter = 0
@@ -157,6 +155,14 @@ export const belongsTo = (object, name) => {
   if (object.name === name) return true
   return belongsTo(object.parent, name)
 }
+
+// export const findChild = (name, parent) => {
+//   let found = null
+//   parent.traverse(child => {
+//     if (child.name === name) found = child
+//   })
+//   return found
+// }
 
 /* COLORS */
 

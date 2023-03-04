@@ -44,7 +44,7 @@ export default class Actor {
     if (camera) {
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, ...cameraConfig })
       this.controls = createOrbitControls()
-      this.controls.target = this.position
+      this.controls.target = this.mesh.position
     }
 
     if (solids) {

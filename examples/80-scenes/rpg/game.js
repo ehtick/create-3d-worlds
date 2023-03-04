@@ -16,7 +16,7 @@ const creatures = []
 const coords = getAllCoords({ mapSize: mapSize * .9, fieldSize: 5 })
 scene.add(createSun())
 
-const terrain = createHillyTerrain({ size: mapSize, segments: 20 })
+const terrain = createHillyTerrain({ size: mapSize, factorY: 20 })
 scene.add(terrain)
 
 const trees = createTreesOnTerrain({ terrain })
