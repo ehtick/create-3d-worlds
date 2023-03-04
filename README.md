@@ -12,6 +12,7 @@ npx live-server
 ## TODO
 
 - BUG: mešaju se animacije na karakteru, ubijati ih ako ima više aktivnih
+- BUG: strafe levo i desno secka/glavi na terenu
 
 ### Scenes & examples
 
