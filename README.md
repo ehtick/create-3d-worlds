@@ -27,9 +27,10 @@ npx live-server
   - opciono neprijatelje zombije?
 
 - RPG / Fantasy
-  - cepelin u vazduhu (vinci aerial screw, santos dumont airship)
   - možda zmaja?
+  - cepelin u vazduhu (vinci aerial screw, santos dumont airship)
   - dodati pravi skok, nemože uz stepenice
+  - opet probati fokus orbit kontrola na glavu
   - dugme za promenu kamere, da budu samo orbit kontrole
   - dodati player attack, možda dodati oružje
   - ai napad da skida energiju

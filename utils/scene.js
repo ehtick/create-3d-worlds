@@ -79,9 +79,6 @@ export function createOrbitControls(cam = camera, el = renderer.domElement) {
   controls.zoomSpeed = .3
   controls.enableDamping = true
   controls.dampingFactor = 0.1
-  controls.mouseButtons = {
-    RIGHT: THREE.MOUSE.ROTATE
-  }
   return controls
 }
 

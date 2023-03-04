@@ -1,4 +1,4 @@
-import { Vector3, AnimationMixer, Box3 } from 'three'
+import { Vector3, AnimationMixer, Box3, MOUSE } from 'three'
 import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 
 import { createOrbitControls } from '/utils/scene.js'
@@ -45,6 +45,9 @@ export default class Actor {
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, ...cameraConfig })
       this.controls = createOrbitControls()
       this.controls.target = this.mesh.position
+      this.controls.mouseButtons = {
+        RIGHT: MOUSE.ROTATE
+      }
     }
 
     if (solids) {
