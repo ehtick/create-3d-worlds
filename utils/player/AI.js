@@ -68,15 +68,14 @@ export default class AI extends Actor {
     return (-1.3 < dotProduct && dotProduct < -0.7)
   }
 
-  get targetNear() {
+  get targetInRange() {
     if (!this.target) return false
     return this.distancToTarget < this.sightDistance
   }
 
   get targetSpotted() {
     if (!this.target) return false
-    return (this.lookingAtTarget && this.distancToTarget < this.sightDistance)
-    || (this.distancToTarget < this.sightDistance * .3) // feel if too close
+    return (this.targetInRange && this.lookingAtTarget) || (this.targetInRange * .3) // feel if too close
   }
 
   /* UTILS */

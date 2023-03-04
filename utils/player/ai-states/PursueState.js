@@ -1,4 +1,5 @@
 import RunState from '../states/RunState.js'
+import { reactions } from '/utils/constants.js'
 
 export default class PursueState extends RunState {
 
@@ -11,7 +12,7 @@ export default class PursueState extends RunState {
     const { player } = this
 
     player.lookAtTarget()
-    player.updateMove(delta, 'STEP_OFF')
+    player.updateMove(delta, reactions.STEP_OFF)
 
     /* TRANSIT */
 

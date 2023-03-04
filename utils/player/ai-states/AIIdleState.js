@@ -26,10 +26,10 @@ export default class AIIdleState extends IdleState {
     if (player.inPursueState && player.targetSpotted)
       player.setState('pursue')
 
-    if (baseState == 'flee' && player.targetNear)
+    if (baseState == 'flee' && player.targetInRange)
       player.setState('flee')
 
-    if (baseState == 'follow' && player.targetNear && player.distancToTarget > followDistance * 1.25)
+    if (baseState == 'follow' && player.targetInRange && player.distancToTarget > followDistance * 1.25)
       player.setState('follow')
   }
 }

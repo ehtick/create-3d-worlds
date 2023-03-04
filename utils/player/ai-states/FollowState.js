@@ -1,4 +1,5 @@
 import WalkState from '../states/WalkState.js'
+import { reactions } from '/utils/constants.js'
 
 export default class FollowState extends WalkState {
 
@@ -12,11 +13,11 @@ export default class FollowState extends WalkState {
     const { player } = this
 
     player.lookAtTarget()
-    player.updateMove(delta, 'STEP_OFF')
+    player.updateMove(delta, reactions.STEP_OFF)
 
     /* TRANSIT */
 
-    if (!player.targetNear)
+    if (!player.targetInRange)
       player.setState('idle')
 
     if (player.distancToTarget < player.followDistance)
