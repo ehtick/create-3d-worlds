@@ -12,7 +12,7 @@ export default class PatrolState extends WalkState {
 
     this.distance += Math.abs(player.velocity.z)
 
-    if (this.distance >= player.patrolLength) {
+    if (this.distance >= player.patrolDistance) {
       player.turnSmooth()
       this.distance = 0
     }

@@ -21,7 +21,7 @@ export default class AI extends Actor {
     sightDistance = 25,
     followDistance = 1.5,
     attackDistance = 1,
-    patrolLength = 10,
+    patrolDistance = 10,
     target,
     ...params
   } = {}) {
@@ -37,7 +37,7 @@ export default class AI extends Actor {
     this.followDistance = followDistance
     this.sightDistance = sightDistance
     this.attackDistance = attackDistance
-    this.patrolLength = patrolLength
+    this.patrolDistance = patrolDistance
     this.speed = speed
 
     this.randomizeAction()
