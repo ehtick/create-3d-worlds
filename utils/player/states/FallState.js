@@ -2,6 +2,14 @@ import { jumpStyles } from '/utils/constants.js'
 import State from './State.js'
 
 export default class FallState extends State {
+  enter(oldState, oldAction) {
+    super.enter(oldState, oldAction)
+    if (this.player.thirdPersonCamera) {
+      this.initCameraSpeed = this.player.thirdPersonCamera.speed
+      this.player.thirdPersonCamera.speed = this.initCameraSpeed * 3
+    }
+  }
+
   update(delta) {
     const { player } = this
 
@@ -19,5 +27,10 @@ export default class FallState extends State {
 
     if (!player.inAir)
       player.setState('idle')
+  }
+
+  exit() {
+    if (this.player.thirdPersonCamera)
+      this.player.thirdPersonCamera.speed = this.initCameraSpeed
   }
 }

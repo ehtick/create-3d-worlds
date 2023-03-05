@@ -9,7 +9,7 @@ export default class FlyState extends State {
   }
 
   enter(oldState, oldAction) {
-    super.enter(oldState)
+    super.enter(oldState, oldAction)
     this.jumpTime = 0
 
     if (this.action) {
@@ -20,6 +20,11 @@ export default class FlyState extends State {
     }
 
     if (this.player.input.down) this.reverseAction()
+
+    if (this.player.thirdPersonCamera) {
+      this.initCameraSpeed = this.player.thirdPersonCamera.speed
+      this.player.thirdPersonCamera.speed = this.initCameraSpeed * 3
+    }
   }
 
   update(delta) {
@@ -50,5 +55,7 @@ export default class FlyState extends State {
 
   exit() {
     this.action?.setEffectiveTimeScale(1)
+    if (this.player.thirdPersonCamera)
+      this.player.thirdPersonCamera.speed = this.initCameraSpeed
   }
 }

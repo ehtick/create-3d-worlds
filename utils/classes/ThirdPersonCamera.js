@@ -2,9 +2,6 @@
 import * as THREE from 'three'
 import input from '/utils/classes/Input.js'
 
-let oldY = 0
-let fallingTime = 0
-
 const calc = (mesh, pos) => new THREE.Vector3(...pos)
   .applyQuaternion(mesh.quaternion)
   .add(mesh.position)
@@ -25,15 +22,7 @@ export default class ThirdPersonCamera {
 
   update(delta) {
     this.currentPosition.copy(this.camera.position)
-    const { y } = this.mesh.position
     const newLookAt = [...this.lookAt]
-
-    // if long falling move camera down
-    // if (y - oldY < 0) {
-    //   if (fallingTime > 25) newLookAt[1] = 0
-    //   fallingTime++
-    // } else
-    //   fallingTime = 0
 
     const idealPosition = calc(this.mesh, this.offset)
     const idealLookAt = calc(this.mesh, newLookAt)
@@ -44,7 +33,5 @@ export default class ThirdPersonCamera {
 
     this.camera.position.copy(this.currentPosition)
     this.camera.lookAt(this.currentLookat)
-
-    oldY = y
   }
 }
