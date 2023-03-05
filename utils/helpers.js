@@ -10,7 +10,6 @@ const raycaster = new THREE.Raycaster()
 export const mapRange = (number, inMin, inMax, outMin, outMax) =>
   (number - inMin) * (outMax - outMin) / (inMax - inMin) + outMin
 
-/* return 2D vector { x, z } */
 export function randomInCircle(radius, emptyCenter = 0) {
   const random = emptyCenter ? randFloat(emptyCenter, 1) : Math.random()
   const r = Math.sqrt(random) * radius
@@ -237,16 +236,20 @@ export const findGroundRecursive = (terrain, size, counter = 0) => {
   return findGroundRecursive(terrain, size, counter + 1)
 }
 
+export const raycast = (mesh, solids, dir, height, rayLength) => {
+  const direction = dir.clone().applyQuaternion(mesh.quaternion)
+  const bodyCenter = mesh.position.clone()
+  bodyCenter.y += height * .5
+  const raycaster = new THREE.Raycaster(bodyCenter, direction, 0, rayLength)
+  return raycaster.intersectObjects(solids, true)
+}
+
 export const directionBlocked = (mesh, solids, currDir) => {
   if (!mesh || !solids.length || !currDir) return false
-  const direction = currDir.clone().applyQuaternion(mesh.quaternion)
-  const bodyCenter = mesh.position.clone()
   const height = getHeight(mesh)
-  bodyCenter.y += height * .5
   const rayLength = currDir == dir.forward ? height * .5 : height
-  const raycaster = new THREE.Raycaster(bodyCenter, direction, 0, rayLength)
-  const intersections = raycaster.intersectObjects(solids, true)
-  return intersections.length > 0
+  const intersects = raycast(mesh, solids, currDir, height, rayLength)
+  return intersects.length > 0
 }
 
 export function getMouseIntersects(e, camera = defaultCamera, target = defaultScene) {

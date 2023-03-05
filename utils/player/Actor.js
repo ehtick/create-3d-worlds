@@ -1,11 +1,13 @@
-import { Vector3, AnimationMixer, Box3, MOUSE } from 'three'
+import { Vector3, AnimationMixer, Box3, MOUSE, MathUtils } from 'three'
 import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 
 import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
-import { addSolids, getGroundY, getSize, directionBlocked, getMesh, putOnGround } from '/utils/helpers.js'
+import { addSolids, getGroundY, getSize, directionBlocked, getMesh, putOnGround, raycast, belongsTo, getParent } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE, reactions } from '/utils/constants.js'
 import { createUpdatedBox } from '/utils/geometry.js'
+
+const { randInt } = MathUtils
 
 /**
  * Base abstract class for AI and Player, handles movement, animations...
@@ -201,12 +203,12 @@ export default class Actor {
   }
 
   attack() {
-    /**
-   * TODO: napraviti metodu attack
-   * baca zrak napred,
-   * ako ima neprijatelja i ako je unutar attackDistance, skinuti mu energiju
-   */
-    console.log('attack')
+    const intersects = raycast(this.mesh, this.solids, dir.forward, this.height, this.attackDistance)
+    const object = intersects[0]?.object
+    if (belongsTo(object, 'enemy')) {
+      const mesh = getParent(object, 'enemy')
+      mesh.userData.hitAmount = randInt(35, 55)
+    }
   }
 
   /* UPDATES */
