@@ -1,6 +1,6 @@
 import State from '../states/State.js'
 
-export default class AttackLoopState extends State {
+export default class AIAttackLoopState extends State {
   constructor(...args) {
     super(...args)
     const { actions } = this.player

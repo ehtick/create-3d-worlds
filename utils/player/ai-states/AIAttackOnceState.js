@@ -1,6 +1,6 @@
 import SpecialState from '../states/SpecialState.js'
 
-export default class AttackOnceState extends SpecialState {
+export default class AIAttackOnceState extends SpecialState {
   constructor(...args) {
     super(...args)
     const { actions } = this.player
