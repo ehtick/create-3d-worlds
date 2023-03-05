@@ -201,7 +201,7 @@ const getIntersects = (raycaster, target = defaultScene) => Array.isArray(target
 const distanceTo = ({ pos, solids }, direction) => {
   if (!pos || !solids.length) return Infinity
   raycaster.set(pos, direction)
-  const intersects = raycaster.intersectObjects(solids)
+  const intersects = getIntersects(raycaster, solids)
 
   const point = intersects[0]?.point
   return point ? pos.distanceTo(point) : Infinity
@@ -241,7 +241,7 @@ export const raycast = (mesh, solids, dir, height, rayLength) => {
   const bodyCenter = mesh.position.clone()
   bodyCenter.y += height * .5
   const raycaster = new THREE.Raycaster(bodyCenter, direction, 0, rayLength)
-  return raycaster.intersectObjects(solids, true)
+  return getIntersects(raycaster, solids)
 }
 
 export const directionBlocked = (mesh, solids, currDir) => {
