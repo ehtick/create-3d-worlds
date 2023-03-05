@@ -13,7 +13,7 @@ const runAnims = ['pursue', 'flee']
 
 export default class AI extends Actor {
   constructor({
-    jumpStyle = jumpStyles.FALSE_JUMP, attackStyle = attackStyles.LOOP, baseState = baseAiStates.wander, speed = 1.8, shouldRaycastGround = false, sightDistance = 25, followDistance = 1.5, attackDistance = 1, patrolDistance = 10, target, ...params
+    jumpStyle = jumpStyles.FALSE_JUMP, attackStyle = attackStyles.LOOP, baseState = baseAiStates.wander, speed = 1.8, shouldRaycastGround = false, sightDistance = 25, followDistance = 1.5, patrolDistance = 10, target, ...params
   } = {}) {
     super({
       ...params,
@@ -26,7 +26,6 @@ export default class AI extends Actor {
     this.target = target
     this.followDistance = followDistance
     this.sightDistance = sightDistance
-    this.attackDistance = attackDistance
     this.patrolDistance = patrolDistance
     this.speed = speed
 

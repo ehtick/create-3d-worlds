@@ -14,7 +14,7 @@ import { createUpdatedBox } from '/utils/geometry.js'
  */
 export default class Actor {
   constructor({
-    mesh = createUpdatedBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, mapSize, coords
+    mesh = createUpdatedBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, mapSize, coords, attackDistance = 1,
   }) {
     this.mesh = clone(mesh)
     this.speed = speed
@@ -30,6 +30,7 @@ export default class Actor {
     this.input = input
     this.getState = getState
     this.shouldRaycastGround = shouldRaycastGround
+    this.attackDistance = attackDistance
     this.energy = 100
     this.actions = {}
 
@@ -197,6 +198,15 @@ export default class Actor {
 
   putOnGround() {
     putOnGround(this.mesh, this.solids)
+  }
+
+  attack() {
+    /**
+   * TODO: napraviti metodu attack
+   * baca zrak napred,
+   * ako ima neprijatelja i ako je unutar attackDistance, skinuti mu energiju
+   */
+    console.log('attack')
   }
 
   /* UPDATES */
