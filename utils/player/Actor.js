@@ -16,7 +16,7 @@ const { randInt } = MathUtils
  */
 export default class Actor {
   constructor({
-    mesh = createUpdatedBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, mapSize, coords, attackDistance = 1.2,
+    mesh = createUpdatedBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, mapSize, coords, attackDistance = 1.25,
   }) {
     this.mesh = clone(mesh)
     this.speed = speed
