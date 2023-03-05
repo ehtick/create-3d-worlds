@@ -27,11 +27,9 @@ npx live-server
   - opciono neprijatelje zombije?
 
 - RPG / Fantasy
-  - probati aerial screw
-  - podesiti 3rd cameru, okrenuti je malo naviše ka nebu (isprobati i drugu prateću)
+  - srediti padanje kamere
   - opet probati fokus orbit kontrola na glavu
-  - dugme za promenu kamere, da budu samo orbit kontrole
-  - dodati player attack, možda dodati oružje
+  - dodati player attack
   - ai napad da skida energiju
   - dodati reakciju na ai napad 
   - karakter dolazi do kuće i ulazi (vidi house model primer)
@@ -48,6 +46,9 @@ npx live-server
     - sletanje na mesec (textured moon)
   - dodati proceduralnu planetu http://colordodge.com/ProceduralPlanet/?seed=Ridi%20Genow
   - mozda iskoristiti astronauta da luta po planeti https://codepen.io/b29/pen/LoaRKx
+
+- Zeppelin
+  - umesto createChaseCamera koristiti 3rd person?
 
 - 1943
   - dodati izbor aviona

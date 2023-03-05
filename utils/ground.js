@@ -7,7 +7,7 @@ import { material as lavaMaterial } from '/utils/shaders/lava.js'
 const { randFloat } = THREE.MathUtils
 const simplex = new SimplexNoise()
 
-export const groundColors = [0xA62A2A, 0x7a8a46, 0x228b22, 0xfffacd]
+export const groundColors = [0xA62A2A, 0x7a8a46, 0x228b22, 0xf0e68c]
 export const sandColors = [0xc2b280, 0xF2D16B, 0xf0e68c, 0xfffacd]
 export const cratersColors = [0x5C4033, 0xA62A2A, 0xc2b280]
 export const desertPlanetColors = [0xB0E0E6, 0xCD853F, 0xEEE8AA, 0xA62A2A, 0x666666] // 0xbf8040

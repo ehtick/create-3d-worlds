@@ -10,7 +10,7 @@ const calc = (mesh, pos) => new THREE.Vector3(...pos)
   .add(mesh.position)
 
 export default class ThirdPersonCamera {
-  constructor({ camera, mesh, offset = [0, 2, 4], lookAt = [0, 2, 0], speed = 3 }) {
+  constructor({ camera, mesh, offset = [0, 1.5, 3.5], lookAt = [0, 2, 0], speed = 3 }) {
     this.mesh = mesh
     this.camera = camera
     this.offset = offset
@@ -29,11 +29,11 @@ export default class ThirdPersonCamera {
     const newLookAt = [...this.lookAt]
 
     // if long falling move camera down
-    if (y - oldY < 0) {
-      if (fallingTime > 25) newLookAt[1] = 0
-      fallingTime++
-    } else
-      fallingTime = 0
+    // if (y - oldY < 0) {
+    //   if (fallingTime > 25) newLookAt[1] = 0
+    //   fallingTime++
+    // } else
+    //   fallingTime = 0
 
     const idealPosition = calc(this.mesh, this.offset)
     const idealLookAt = calc(this.mesh, newLookAt)
