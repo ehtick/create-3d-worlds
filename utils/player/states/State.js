@@ -44,9 +44,10 @@ export default class State {
     const active = this.player.mixer?._actions
       .filter(action => action.isRunning() && action !== this.action)
 
-    if (active.length > 1) this.player.mixer.stopAllAction()
-
-    return active[0]
+    // if (active.length > 1) this.player.mixer.stopAllAction()
+    const first = active.pop()
+    active.forEach(action => action.stop())
+    return first
   }
 
   transitFrom(prevAction, duration = .25) {

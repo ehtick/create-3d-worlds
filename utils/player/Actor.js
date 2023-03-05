@@ -16,7 +16,7 @@ const { randInt } = MathUtils
  */
 export default class Actor {
   constructor({
-    mesh = createUpdatedBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, mapSize, coords, attackDistance = 1,
+    mesh = createUpdatedBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, mapSize, coords, attackDistance = 1.2,
   }) {
     this.mesh = clone(mesh)
     this.speed = speed
@@ -202,13 +202,15 @@ export default class Actor {
     putOnGround(this.mesh, this.solids)
   }
 
-  attack() {
+  hit(object) {
+    if (!belongsTo(object, 'enemy')) return
+    const mesh = getParent(object, 'enemy')
+    mesh.userData.hitAmount = randInt(35, 55)
+  }
+
+  kick() {
     const intersects = raycast(this.mesh, this.solids, dir.forward, this.height, this.attackDistance)
-    const object = intersects[0]?.object
-    if (belongsTo(object, 'enemy')) {
-      const mesh = getParent(object, 'enemy')
-      mesh.userData.hitAmount = randInt(35, 55)
-    }
+    return intersects[0]?.object
   }
 
   /* UPDATES */
