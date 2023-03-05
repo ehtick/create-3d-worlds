@@ -13,8 +13,8 @@ renderer.outputEncoding = THREE.GammaEncoding
 
 scene.add(createGround())
 
-const { mesh } = await loadModel({ file: 'character/partisan/model.fbx', fixColors: true })
-const animations = await loadFbxAnimations({ idle: 'Rifle Idle' }, 'character/partisan/')
+const { mesh } = await loadModel({ file: 'character/soldier/partisan.fbx', fixColors: true })
+const animations = await loadFbxAnimations({ idle: 'Rifle Idle' }, 'character/soldier/')
 
 mesh.traverse(child => {
   if (child.name === 'mixamorigNeck') neck = child
