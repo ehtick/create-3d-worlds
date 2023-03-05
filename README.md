@@ -27,7 +27,6 @@ npx live-server
   - opciono neprijatelje zombije?
 
 - RPG / Fantasy
-  - opet probati fokus orbit kontrola na glavu
   - dodati player attack
   - ai napad da skida energiju
   - dodati reakciju na ai napad 

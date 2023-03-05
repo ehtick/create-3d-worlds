@@ -14,7 +14,7 @@ import { createUpdatedBox } from '/utils/geometry.js'
  */
 export default class Actor {
   constructor({
-    mesh = createUpdatedBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, cameraConfig = {}, mapSize, coords
+    mesh = createUpdatedBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, mapSize, coords
   }) {
     this.mesh = clone(mesh)
     this.speed = speed
@@ -42,12 +42,10 @@ export default class Actor {
     if (coords) this.position.copy(coords.pop())
 
     if (camera) {
-      this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, ...cameraConfig })
+      this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, height: this.height })
       this.controls = createOrbitControls()
       this.controls.target = this.mesh.position
-      this.controls.mouseButtons = {
-        RIGHT: MOUSE.ROTATE
-      }
+      this.controls.mouseButtons = { RIGHT: MOUSE.ROTATE }
     }
 
     if (solids) {
@@ -282,7 +280,10 @@ export default class Actor {
   }
 
   updateCamera(delta) {
-    if (!this.input.pressed.mouse2)
+    const { x, y, z } = this.mesh.position
+    if (this.input.pressed.mouse2)
+      this.controls.target = new Vector3(x, y + this.height, z)
+    else
       this.thirdPersonCamera.update(delta)
   }
 
