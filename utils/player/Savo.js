@@ -1,16 +1,13 @@
-import { MathUtils } from 'three'
 import Player from '/utils/player/Player.js'
 import { createBox } from '/utils/geometry.js'
 import { camera as defaultCamera } from '/utils/scene.js'
-import { normalizeMouse, getCameraIntersects, getScene, getParent, belongsTo } from '/utils/helpers.js'
+import { normalizeMouse, getCameraIntersects, getScene, belongsTo } from '/utils/helpers.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { shootDecals } from '/utils/decals.js'
 import Particles from '/utils/classes/Particles.js'
 import config from '/config.js'
 import input from '/utils/classes/Input.js'
 import { jumpStyles } from '/utils/constants.js'
-
-const { randInt } = MathUtils
 
 export default class Savo extends Player {
   constructor({

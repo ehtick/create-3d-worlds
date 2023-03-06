@@ -16,30 +16,30 @@ export default class RunState extends State {
     this.transitFrom(oldAction, chooseDuration(this.prevState))
 
     this.timeScale = this.action.timeScale
-    if (this.player.input.down) this.reverseAction(this.action, -this.timeScale)
+    if (this.actor.input.down) this.reverseAction(this.action, -this.timeScale)
   }
 
   update(delta) {
-    const { player } = this
+    const { actor } = this
 
-    player.updateMove(delta)
-    player.updateTurn(delta)
-    player.updateStrafe(delta)
+    actor.updateMove(delta)
+    actor.updateTurn(delta)
+    actor.updateStrafe(delta)
 
     /* TRANSIT */
 
     if (this.input.space)
-      this.player.setState('jump')
+      this.actor.setState('jump')
 
-    if (this.player.inAir)
-      this.player.setState('fall')
+    if (this.actor.inAir)
+      this.actor.setState('fall')
 
-    if (!this.player.input.run)
-      player.setState('walk')
+    if (!this.actor.input.run)
+      actor.setState('walk')
 
-    if (!this.player.input.up && !this.player.input.down
+    if (!this.actor.input.up && !this.actor.input.down
       && !this.input.sideLeft && !this.input.sideRight)
-      player.setState('idle')
+      actor.setState('idle')
   }
 
   exit() {

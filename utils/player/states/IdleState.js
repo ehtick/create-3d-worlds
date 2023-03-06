@@ -14,35 +14,35 @@ export default class IdleState extends State {
   }
 
   update(delta) {
-    this.player.updateTurn(delta)
+    this.actor.updateTurn(delta)
 
-    if (this.player.input.up || this.player.input.down)
-      this.player.setState('walk')
+    if (this.actor.input.up || this.actor.input.down)
+      this.actor.setState('walk')
 
     if (this.input.sideLeft || this.input.sideRight)
-      this.player.setState('walk') // TODO: strafe state?
+      this.actor.setState('walk') // TODO: strafe state?
 
-    if (this.player.inAir)
-      this.player.setState('fall')
+    if (this.actor.inAir)
+      this.actor.setState('fall')
 
     if (this.input.space)
-      this.player.setState('jump')
+      this.actor.setState('jump')
 
     if (this.input.attack)
-      this.player.setState('attack')
+      this.actor.setState('attack')
 
     if (this.input.pressed.ShiftRight && this.actions.attack2)
-      this.player.setState('attack2')
+      this.actor.setState('attack2')
 
     if (this.input.control)
-      this.player.setState('special')
+      this.actor.setState('special')
 
     /* ONLY FOR TEST */
 
     if (this.input.backspace)
-      this.player.setState('pain')
+      this.actor.setState('pain')
 
     if (this.input.pressed.Delete)
-      this.player.setState('death')
+      this.actor.setState('death')
   }
 }

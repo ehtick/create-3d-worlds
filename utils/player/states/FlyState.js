@@ -3,8 +3,8 @@ import State from './State.js'
 import { dir } from '/utils/constants.js'
 
 export default class FlyState extends State {
-  constructor(player, name) {
-    super(player, name)
+  constructor(actor, name) {
+    super(actor, name)
     this.maxJumpTime = Infinity
   }
 
@@ -19,43 +19,43 @@ export default class FlyState extends State {
       this.transitFrom(oldAction, .5)
     }
 
-    if (this.player.input.down) this.reverseAction()
+    if (this.actor.input.down) this.reverseAction()
 
-    if (this.player.thirdPersonCamera) {
-      this.initCameraSpeed = this.player.thirdPersonCamera.speed
-      this.player.thirdPersonCamera.speed = this.initCameraSpeed * 3
+    if (this.actor.thirdPersonCamera) {
+      this.initCameraSpeed = this.actor.thirdPersonCamera.speed
+      this.actor.thirdPersonCamera.speed = this.initCameraSpeed * 3
     }
   }
 
   update(delta) {
-    const { player } = this
+    const { actor } = this
 
-    player.updateTurn(delta)
-    player.updateMove(delta)
-    player.applyGravity(delta)
+    actor.updateTurn(delta)
+    actor.updateMove(delta)
+    actor.applyGravity(delta)
 
     if (this.input.space && this.jumpTime < this.maxJumpTime) {
-      if (player.velocity.y < player.fallLimit * delta)
-        player.velocity.y += player.jumpForce * delta
+      if (actor.velocity.y < actor.fallLimit * delta)
+        actor.velocity.y += actor.jumpForce * delta
       this.jumpTime++
     }
 
-    if (player.velocity.y > 0 && player.directionBlocked(dir.up))
-      player.velocity.y = -player.velocity.y
+    if (actor.velocity.y > 0 && actor.directionBlocked(dir.up))
+      actor.velocity.y = -actor.velocity.y
 
-    player.applyVelocityY()
+    actor.applyVelocityY()
 
     /* TRANSIT */
 
-    if (player.velocity.y <= 0 && !player.inAir) {
-      player.velocity.y = 0
-      player.setState(this.prevState) // bez prevState brlja aktivne animacije
+    if (actor.velocity.y <= 0 && !actor.inAir) {
+      actor.velocity.y = 0
+      actor.setState(this.prevState) // bez prevState brlja aktivne animacije
     }
   }
 
   exit() {
     this.action?.setEffectiveTimeScale(1)
-    if (this.player.thirdPersonCamera)
-      this.player.thirdPersonCamera.speed = this.initCameraSpeed
+    if (this.actor.thirdPersonCamera)
+      this.actor.thirdPersonCamera.speed = this.initCameraSpeed
   }
 }

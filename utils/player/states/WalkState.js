@@ -16,33 +16,33 @@ export default class WalkState extends State {
 
     this.transitFrom(oldAction, chooseDuration(oldState.name))
 
-    if (this.player.input.down) this.reverseAction()
+    if (this.actor.input.down) this.reverseAction()
   }
 
   update(delta) {
-    const { player } = this
+    const { actor } = this
 
-    player.updateMove(delta)
-    player.updateTurn(delta)
-    player.updateStrafe(delta)
+    actor.updateMove(delta)
+    actor.updateTurn(delta)
+    actor.updateStrafe(delta)
 
     /* TRANSIT */
 
-    if (player.input.space)
-      player.setState('jump')
+    if (actor.input.space)
+      actor.setState('jump')
 
-    if (player.inAir)
-      player.setState('fall')
+    if (actor.inAir)
+      actor.setState('fall')
 
-    if (player.input.attack)
-      player.setState('attack')
+    if (actor.input.attack)
+      actor.setState('attack')
 
-    if (player.input.run)
-      player.setState('run')
+    if (actor.input.run)
+      actor.setState('run')
 
-    if (!player.input.up && !player.input.down
-      && !player.input.sideLeft && !player.input.sideRight)
-      player.setState('idle')
+    if (!actor.input.up && !actor.input.down
+      && !actor.input.sideLeft && !actor.input.sideRight)
+      actor.setState('idle')
   }
 
   exit() {

@@ -4,20 +4,20 @@ import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js
 const { randFloat } = THREE.MathUtils
 
 export default class State {
-  constructor(player, name) {
-    this.player = player
+  constructor(actor, name) {
+    this.actor = actor
     this.name = name
-    this.action = player?.actions[name]
+    this.action = actor?.actions[name]
     this.prevState = ''
     this.last = Date.now() // for ai intervals
   }
 
   get input() {
-    return this.player.input
+    return this.actor.input
   }
 
   get actions() {
-    return this.player.actions
+    return this.actor.actions
   }
 
   get prevOrIdle() {
@@ -28,7 +28,7 @@ export default class State {
   /* FSM */
 
   enter(oldState, oldAction) {
-    // if (this.player.name == 'enemy') console.log(this.name)
+    // if (this.actor.name == 'enemy') console.log(this.name)
     this.prevState = oldState?.name
     if (this.action) this.action.enabled = true
   }
@@ -41,10 +41,10 @@ export default class State {
 
   findActiveAction(prevAction) {
     if (prevAction) return prevAction
-    const active = this.player.mixer?._actions
+    const active = this.actor.mixer?._actions
       .filter(action => action.isRunning() && action !== this.action)
 
-    // if (active.length > 1) this.player.mixer.stopAllAction()
+    // if (active.length > 1) this.actor.mixer.stopAllAction()
     const first = active.pop()
     active.forEach(action => action.stop())
     return first
@@ -77,7 +77,7 @@ export default class State {
 
   turnEvery(interval, angle = Math.PI / 2) {
     if (Date.now() - this.last >= interval) {
-      new TWEEN.Tween(this.player.mesh.rotation)
+      new TWEEN.Tween(this.actor.mesh.rotation)
         .to({ y: randFloat(-angle, angle) }, 1000)
         .start()
       this.last = Date.now()

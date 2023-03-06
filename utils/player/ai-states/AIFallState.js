@@ -2,15 +2,15 @@ import State from '../states/State.js'
 
 export default class AIFallState extends State {
   update(delta) {
-    const { player } = this
+    const { actor } = this
 
-    player.updateTurn(delta)
-    player.applyGravity(delta)
-    player.applyVelocityY()
+    actor.updateTurn(delta)
+    actor.applyGravity(delta)
+    actor.applyVelocityY()
 
     /* TRANSIT */
 
-    if (!player.inAir)
-      player.setState(this.prevOrIdle)
+    if (!actor.inAir)
+      actor.setState(this.prevOrIdle)
   }
 }

@@ -11,10 +11,10 @@ export default class SpecialState extends State {
 
   enter(oldState, oldAction) {
     super.enter(oldState)
-    if (!this.action) return this.player.setState(this.prevOrIdle)
+    if (!this.action) return this.actor.setState(this.prevOrIdle)
 
     this.oldState = oldState
-    const { mixer } = this.player
+    const { mixer } = this.actor
     mixer.addEventListener('finished', this.onFinish)
     this.action.reset()
     this.action.setLoop(THREE.LoopOnce, 1)
@@ -25,12 +25,12 @@ export default class SpecialState extends State {
   }
 
   cleanup() {
-    this.player.mixer.removeEventListener('finished', this.onFinish)
+    this.actor.mixer.removeEventListener('finished', this.onFinish)
   }
 
   onFinish() {
     this.cleanup()
-    this.player.setState(this.prevOrIdle)
+    this.actor.setState(this.prevOrIdle)
   }
 
   exit() {

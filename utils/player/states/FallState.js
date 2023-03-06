@@ -4,33 +4,33 @@ import State from './State.js'
 export default class FallState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
-    if (this.player.thirdPersonCamera) {
-      this.initCameraSpeed = this.player.thirdPersonCamera.speed
-      this.player.thirdPersonCamera.speed = this.initCameraSpeed * 3
+    if (this.actor.thirdPersonCamera) {
+      this.initCameraSpeed = this.actor.thirdPersonCamera.speed
+      this.actor.thirdPersonCamera.speed = this.initCameraSpeed * 3
     }
   }
 
   update(delta) {
-    const { player } = this
+    const { actor } = this
 
-    player.updateTurn(delta)
-    player.applyGravity(delta)
-    player.applyVelocityY()
+    actor.updateTurn(delta)
+    actor.applyGravity(delta)
+    actor.applyVelocityY()
 
-    if (player.jumpStyle === jumpStyles.FLY && player.input.up)
-      player.updateMove(delta)
+    if (actor.jumpStyle === jumpStyles.FLY && actor.input.up)
+      actor.updateMove(delta)
 
     /* TRANSIT */
 
-    if (player.jumpStyle === jumpStyles.FLY && this.input.space)
-      player.setState('jump')
+    if (actor.jumpStyle === jumpStyles.FLY && this.input.space)
+      actor.setState('jump')
 
-    if (!player.inAir)
-      player.setState('idle')
+    if (!actor.inAir)
+      actor.setState('idle')
   }
 
   exit() {
-    if (this.player.thirdPersonCamera)
-      this.player.thirdPersonCamera.speed = this.initCameraSpeed
+    if (this.actor.thirdPersonCamera)
+      this.actor.thirdPersonCamera.speed = this.initCameraSpeed
   }
 }

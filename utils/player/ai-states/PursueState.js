@@ -9,18 +9,18 @@ export default class PursueState extends RunState {
   }
 
   update(delta) {
-    const { player } = this
+    const { actor } = this
 
-    if (!player.targetAbove) player.lookAtTarget()
-    player.updateMove(delta, reactions.STEP_OFF)
+    if (!actor.targetAbove) actor.lookAtTarget()
+    actor.updateMove(delta, reactions.STEP_OFF)
 
     /* TRANSIT */
 
-    if (player.distancToTarget < player.attackDistance)
-      player.setState('attack')
+    if (actor.distancToTarget < actor.attackDistance)
+      actor.setState('attack')
 
-    if (!player.targetSpotted)
-      player.setState(player.baseState)
+    if (!actor.targetSpotted)
+      actor.setState(actor.baseState)
   }
 
   exit() {

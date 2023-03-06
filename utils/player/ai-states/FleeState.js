@@ -12,15 +12,15 @@ export default class FleeState extends RunState {
   }
 
   update(delta) {
-    const { player } = this
+    const { actor } = this
 
-    player.mesh.lookAt(player.target.position) // looks away
-    player.updateMove(delta) // order is important
+    actor.mesh.lookAt(actor.target.position) // looks away
+    actor.updateMove(delta) // order is important
 
     /* TRANSIT */
 
-    if (Date.now() - this.last > this.minFleeTime && !player.targetInRange)
-      player.setState('idle')
+    if (Date.now() - this.last > this.minFleeTime && !actor.targetInRange)
+      actor.setState('idle')
   }
 
   exit() {

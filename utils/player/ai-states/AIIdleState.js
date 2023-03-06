@@ -10,26 +10,26 @@ export default class AIIdleState extends IdleState {
   }
 
   update() {
-    const { player } = this
-    const { baseState, followDistance } = player
+    const { actor } = this
+    const { baseState, followDistance } = actor
 
     this.turnEvery(this.interval, Math.PI / 4)
 
-    if (player.mesh.userData.hitAmount)
-      player.lookAtTarget()
+    if (actor.mesh.userData.hitAmount)
+      actor.lookAtTarget()
 
     /* TRANSIT */
 
-    if (player.inAir)
-      player.setState('fall')
+    if (actor.inAir)
+      actor.setState('fall')
 
-    if (player.inPursueState && player.targetSpotted)
-      player.setState('pursue')
+    if (actor.inPursueState && actor.targetSpotted)
+      actor.setState('pursue')
 
-    if (baseState == 'flee' && player.targetInRange)
-      player.setState('flee')
+    if (baseState == 'flee' && actor.targetInRange)
+      actor.setState('flee')
 
-    if (baseState == 'follow' && player.targetInRange && player.distancToTarget > followDistance * 1.25)
-      player.setState('follow')
+    if (baseState == 'follow' && actor.targetInRange && actor.distancToTarget > followDistance * 1.25)
+      actor.setState('follow')
   }
 }

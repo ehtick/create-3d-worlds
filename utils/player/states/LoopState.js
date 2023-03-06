@@ -8,9 +8,9 @@ export default class LoopState extends State {
   }
 
   update() {
-    const { player } = this
+    const { actor } = this
 
-    if (!player.input.attack)
-      player.setState(this.prevOrIdle)
+    if (!actor.input.attack)
+      actorsetState(this.prevOrIdle)
   }
 }

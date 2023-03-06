@@ -4,15 +4,15 @@ export default class WoundedState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
     this.transitFrom(oldAction, .5)
-    this.player.speed *= .2
+    this.actor.speed *= .2
   }
 
   update(delta) {
-    const { player } = this
+    const { actor } = this
 
     this.action?.setEffectiveTimeScale(this.input.keyPressed ? 1 : 0.1)
 
-    player.updateMove(delta)
-    player.updateTurn(delta)
+    actor.updateMove(delta)
+    actor.updateTurn(delta)
   }
 }

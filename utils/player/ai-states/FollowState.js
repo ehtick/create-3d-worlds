@@ -6,22 +6,22 @@ export default class FollowState extends WalkState {
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
     this.input.up = true
-    this.player.randomizeAction()
+    this.actor.randomizeAction()
   }
 
   update(delta) {
-    const { player } = this
+    const { actor } = this
 
-    player.lookAtTarget()
-    player.updateMove(delta, reactions.STEP_OFF)
+    actor.lookAtTarget()
+    actor.updateMove(delta, reactions.STEP_OFF)
 
     /* TRANSIT */
 
-    if (!player.targetInRange)
-      player.setState('idle')
+    if (!actor.targetInRange)
+      actor.setState('idle')
 
-    if (player.distancToTarget < player.followDistance)
-      player.setState('idle')
+    if (actor.distancToTarget < actor.followDistance)
+      actor.setState('idle')
   }
 
   exit() {

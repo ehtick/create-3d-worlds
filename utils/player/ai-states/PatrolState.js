@@ -8,27 +8,27 @@ export default class PatrolState extends WalkState {
   }
 
   update(delta) {
-    const { player } = this
+    const { actor } = this
 
-    this.distance += Math.abs(player.velocity.z)
+    this.distance += Math.abs(actor.velocity.z)
 
-    if (this.distance >= player.patrolDistance) {
-      player.turnSmooth()
+    if (this.distance >= actor.patrolDistance) {
+      actor.turnSmooth()
       this.distance = 0
     }
 
-    if (player.mesh.userData.hitAmount)
-      player.lookAtTarget()
+    if (actor.mesh.userData.hitAmount)
+      actor.lookAtTarget()
 
-    player.updateMove(delta)
+    actor.updateMove(delta)
 
     /* TRANSIT */
 
-    if (player.inAir)
-      player.setState('fall')
+    if (actor.inAir)
+      actor.setState('fall')
 
-    if (player.targetSpotted)
-      player.setState('pursue')
+    if (actor.targetSpotted)
+      actor.setState('pursue')
   }
 
   exit() {

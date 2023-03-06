@@ -11,21 +11,21 @@ export default class WanderState extends WalkState {
   }
 
   update(delta) {
-    const { player } = this
+    const { actor } = this
 
     this.turnEvery(this.interval)
-    player.updateMove(delta)
+    actor.updateMove(delta)
 
-    if (player.mesh.userData.hitAmount)
-      player.lookAtTarget()
+    if (actor.mesh.userData.hitAmount)
+      actor.lookAtTarget()
 
     /* TRANSIT */
 
-    if (player.inAir)
-      player.setState('fall')
+    if (actor.inAir)
+      actor.setState('fall')
 
-    if (player.targetSpotted)
-      player.setState('pursue')
+    if (actor.targetSpotted)
+      actor.setState('pursue')
   }
 
   exit() {
