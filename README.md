@@ -27,8 +27,8 @@ npx live-server
   - opciono neprijatelje zombije?
 
 - RPG / Fantasy
-  - ai napad da skida energiju
-  - dodati reakciju na ai napad 
+  - bacanje magije
+  - slona 
   - karakter dolazi do kuće i ulazi (vidi house model primer)
   - uzima predmete (50-rad-sa-modelima/80-uzimanje-predmeta/)
   - ranjena varvarka puzi do nekog cilja? ili obrisati wounded
