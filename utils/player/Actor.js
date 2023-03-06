@@ -33,8 +33,9 @@ export default class Actor {
     this.getState = getState
     this.shouldRaycastGround = shouldRaycastGround
     this.attackDistance = attackDistance
-    this.energy = 100
     this.actions = {}
+    this.energy = 100
+    this.untouchable = false
 
     if (animations?.length && animDict) {
       this.setupMixer(animations, animDict)
@@ -219,6 +220,7 @@ export default class Actor {
   closeAttack(name) {
     const object = this.raycast()
     if (!belongsTo(object, name)) return
+
     const halfAction = this.action.getClip().duration * 500
 
     setTimeout(() => {
@@ -236,7 +238,7 @@ export default class Actor {
 
   checkHit() {
     const { userData } = this.mesh
-    if (!userData.hitAmount) return
+    if (!userData.hitAmount || this.untouchable) return
 
     this.energy -= userData.hitAmount
     userData.hitAmount = 0

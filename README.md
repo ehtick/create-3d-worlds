@@ -11,9 +11,10 @@ npx live-server
 
 ## TODO
 
-- otežati ai napad, olakšati player napad
+- borba
   - ne prekidati player napad sa pain ukoliko je pogođen?
   - kad je igrač mrtav da ai napad prestane
+    - observer / subscriber pattern?
   - naterati ai da se random pogrešno okrene
 - BUG: strafe levo i desno secka na terenu
 
