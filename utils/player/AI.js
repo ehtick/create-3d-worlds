@@ -100,6 +100,12 @@ export default class AI extends Actor {
     super.hit(mesh, range)
   }
 
+  startAttack(name) {
+    this.lookAtTarget()
+    this.mesh.rotateY(randFloatSpread(Math.PI / 8))
+    super.startAttack(name)
+  }
+
   /* ANIMS */
 
   setupMixer(animations, animDict) {
