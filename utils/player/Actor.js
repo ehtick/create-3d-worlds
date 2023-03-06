@@ -45,8 +45,8 @@ export default class Actor {
     if (coords) this.position.copy(coords.pop())
 
     if (camera) {
-      camera.near = 1.5
-      camera.updateProjectionMatrix()
+      // camera.near = 1.5
+      // camera.updateProjectionMatrix()
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, height: this.height })
       this.controls = createOrbitControls()
       this.controls.mouseButtons = { RIGHT: MOUSE.ROTATE }

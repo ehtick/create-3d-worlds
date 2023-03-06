@@ -23,7 +23,7 @@ export default class AIAttackLoopState extends State {
   }
 
   onLoop() {
-    this.actor.closeAttack()
+    this.actor.closeAttack('player')
 
     if (!this.shouldFinish) return
     this.cleanup()

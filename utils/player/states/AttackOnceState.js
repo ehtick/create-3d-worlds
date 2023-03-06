@@ -8,7 +8,7 @@ export default class AttackOnceState extends SpecialState {
 
   update() {
     if (this.done) return
-    this.actor.closeAttack()
+    this.actor.closeAttack('enemy')
     this.done = true
   }
 }
