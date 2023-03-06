@@ -12,7 +12,6 @@ npx live-server
 ## TODO
 
 - borba
-  - ako ai pridje bliže od attack state da se odalji
   - kad je igrač mrtav da ai napad prestane
     - observer / subscriber pattern?
 - BUG: strafe levo i desno secka na terenu
