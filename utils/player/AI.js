@@ -95,8 +95,8 @@ export default class AI extends Actor {
       .start()
   }
 
-  hit(object, range = [25, 45]) {
-    super.hit(object, range, 'player')
+  hit(mesh, range = [25, 45]) {
+    super.hit(mesh, range)
   }
 
   /* ANIMS */

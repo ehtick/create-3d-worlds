@@ -25,7 +25,7 @@ export default class Player extends Actor {
     super.updateMove(delta, reaction)
   }
 
-  hit(object, range = [35, 55]) {
-    super.hit(object, range, 'enemy')
+  hit(mesh, range = [35, 55]) {
+    super.hit(mesh, range)
   }
 }

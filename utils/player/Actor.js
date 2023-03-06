@@ -208,8 +208,7 @@ export default class Actor {
     return intersects[0]?.object
   }
 
-  hit(object, range = [35, 55], name) {
-    const mesh = getParent(object, name)
+  hit(mesh, range = [35, 55]) {
     const distance = this.position.distanceTo(mesh.position)
     if (distance <= this.attackDistance)
       mesh.userData.hitAmount = randInt(...range)
@@ -221,7 +220,7 @@ export default class Actor {
     const halfAction = this.action.getClip().duration * 500
 
     setTimeout(() => {
-      this.hit(object)
+      this.hit(getParent(object, name))
     }, halfAction)
   }
 
