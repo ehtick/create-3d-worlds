@@ -25,7 +25,7 @@ export default class SpecialState extends State {
   }
 
   cleanup() {
-    this.actor.mixer.removeEventListener('finished', this.onFinish)
+    this.actor?.mixer?.removeEventListener('finished', this.onFinish)
   }
 
   onFinish() {

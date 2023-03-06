@@ -26,6 +26,7 @@ scene.add(walls)
 
 const player = new Savo({ camera })
 player.position.copy(coords.pop())
+scene.add(player.mesh)
 
 const enemies = []
 for (let i = 0; i < 20; i++) {
@@ -38,7 +39,7 @@ for (let i = 0; i < 20; i++) {
 const enemyMeshes = enemies.map(e => e.mesh)
 player.addSolids([walls, ...enemyMeshes])
 
-enemies.forEach(enemy => enemy.addSolids([walls, ...enemyMeshes]))
+enemies.forEach(enemy => enemy.addSolids([walls, player.mesh, ...enemyMeshes]))
 
 const rain = new Rain()
 scene.add(rain.particles)

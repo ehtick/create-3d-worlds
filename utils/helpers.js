@@ -145,7 +145,7 @@ export const getScene = object => {
 }
 
 export const getParent = (object, name) => {
-  if (object.parent.name === name) return object.parent
+  if (object.name === name) return object
   return getParent(object.parent, name)
 }
 
@@ -194,7 +194,7 @@ export function similarColor(color, range = .25) {
 
 /* RAYCAST */
 
-const getIntersects = (raycaster, target = defaultScene) => Array.isArray(target)
+export const getIntersects = (raycaster, target = defaultScene) => Array.isArray(target)
   ? raycaster.intersectObjects(target)
   : raycaster.intersectObject(target)
 

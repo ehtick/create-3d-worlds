@@ -5,7 +5,7 @@ import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
 import { addSolids, getGroundY, getSize, directionBlocked, getMesh, putOnGround, raycast, getParent, belongsTo } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE, reactions } from '/utils/constants.js'
-import { createUpdatedBox } from '/utils/geometry.js'
+import { createPlayerBox } from '/utils/geometry.js'
 
 const { randInt } = MathUtils
 
@@ -16,7 +16,7 @@ const { randInt } = MathUtils
  */
 export default class Actor {
   constructor({
-    mesh = createUpdatedBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, mapSize, coords, attackDistance,
+    mesh = createPlayerBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, mapSize, coords, attackDistance,
   }) {
     this.mesh = clone(mesh)
     this.mesh.userData.energy = 100
@@ -221,6 +221,7 @@ export default class Actor {
   startAttack(name) {
     const object = this.raycast()
     if (!belongsTo(object, name)) return
+    console.log(object)
 
     const halfAction = this.action.getClip().duration * 500
 

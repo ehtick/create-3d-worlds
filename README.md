@@ -11,7 +11,7 @@ npx live-server
 
 ## TODO
 
-- BUG: strafe levo i desno secka na terenu
+- ponavlja se problem da raycast ne radi jer nisam dodao igrača u neprijateljski solid. treba po defaultu da bacaju na celu scenu
 
 ### Scenes & examples
 
@@ -98,26 +98,26 @@ npx live-server
 
 Raycaster helper:
 
-```
+```js
 scene.add(new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, 300))
 ```
 
 Box helper:
 
-```
+```js
 const box = new THREE.BoxHelper(mesh, 0xffff00)
 scene.add(box)
 ```
 
 Axes helper (X axis is red, Y is green, Z is blue):
 
-```
+```js
 scene.add(new THREE.AxesHelper(50))
 ```
 
 Ako je teren jednobojan, bez svetla, uraditi:
 
-```
+```js
 geometry.computeVertexNormals()
 ```
 
@@ -135,7 +135,7 @@ All libraries in `/libs` folder are updated manually to support ES6 export.
 
 Prevent OrbitControls bellow ground:
 
-```
+```js
 controls.maxPolarAngle = Math.PI / 2 - 0.1
 ```
 

@@ -1,6 +1,5 @@
 import { MathUtils } from 'three'
 import Player from '/utils/player/Player.js'
-import { createBox } from '/utils/geometry.js'
 import { camera as defaultCamera } from '/utils/scene.js'
 import { normalizeMouse, getCameraIntersects, getScene, belongsTo, getParent } from '/utils/helpers.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
@@ -14,12 +13,12 @@ const { randInt } = MathUtils
 
 export default class Savo extends Player {
   constructor({
-    speed, size = 1.8, mousemove = false, camera = defaultCamera, rifleBurst = false, ...params
+    mousemove = false, camera = defaultCamera, rifleBurst = false, ...params
   } = {}) {
     super({
-      mesh: createBox({ size }), jumpStyle: jumpStyles.FLY, camera: null, ...params
+      jumpStyle: jumpStyles.FLY,
+      ...params
     })
-    this.speed = speed || size * 3
     this.mouseSensitivity = .05
     this.mousemove = mousemove
     this.rifleBurst = rifleBurst
