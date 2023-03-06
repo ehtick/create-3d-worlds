@@ -3,7 +3,7 @@ import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 
 import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
-import { addSolids, getGroundY, getSize, directionBlocked, getMesh, putOnGround, raycast, getParent } from '/utils/helpers.js'
+import { addSolids, getGroundY, getSize, directionBlocked, getMesh, putOnGround, raycast, getParent, belongsTo } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE, reactions } from '/utils/constants.js'
 import { createUpdatedBox } from '/utils/geometry.js'
 
@@ -211,6 +211,17 @@ export default class Actor {
   hit(object, range = [35, 55], name) {
     const mesh = getParent(object, name)
     mesh.userData.hitAmount = randInt(...range)
+  }
+
+  attack(name) {
+    const object = this.raycast()
+    if (!belongsTo(object, name)) return
+
+    const halfAction = this.action.getClip().duration * 500
+
+    setTimeout(() => {
+      this.hit(object)
+    }, halfAction)
   }
 
   /* UPDATES */

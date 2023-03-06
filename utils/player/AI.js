@@ -99,6 +99,11 @@ export default class AI extends Actor {
     super.hit(object, range, 'player')
   }
 
+  attack() {
+    this.lookAtTarget()
+    super.attack('player')
+  }
+
   /* ANIMS */
 
   setupMixer(animations, animDict) {

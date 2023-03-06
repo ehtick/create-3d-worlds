@@ -28,4 +28,8 @@ export default class Player extends Actor {
   hit(object, range = [35, 55]) {
     super.hit(object, range, 'enemy')
   }
+
+  attack() {
+    super.attack('enemy')
+  }
 }
