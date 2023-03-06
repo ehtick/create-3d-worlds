@@ -11,6 +11,10 @@ npx live-server
 
 ## TODO
 
+- otežati ai napad, olakšati player napad
+  - ne prekidati player napad sa pain ukoliko je pogođen?
+  - naterati ai da se random pogrešno okrene
+  - kad je igrač mrtav da ai napad prestane
 - BUG: strafe levo i desno secka na terenu
 
 ### Scenes & examples

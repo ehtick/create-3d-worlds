@@ -29,7 +29,7 @@ export default class Player extends Actor {
     super.hit(object, range, 'enemy')
   }
 
-  attack() {
-    super.attack('enemy')
+  closeAttack() {
+    super.closeAttack('enemy')
   }
 }

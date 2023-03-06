@@ -99,9 +99,9 @@ export default class AI extends Actor {
     super.hit(object, range, 'player')
   }
 
-  attack() {
+  closeAttack() {
     this.lookAtTarget()
-    super.attack('player')
+    super.closeAttack('player')
   }
 
   /* ANIMS */

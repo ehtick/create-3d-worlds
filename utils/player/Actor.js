@@ -210,13 +210,14 @@ export default class Actor {
 
   hit(object, range = [35, 55], name) {
     const mesh = getParent(object, name)
-    mesh.userData.hitAmount = randInt(...range)
+    const distance = this.position.distanceTo(mesh.position)
+    if (distance <= this.attackDistance)
+      mesh.userData.hitAmount = randInt(...range)
   }
 
-  attack(name) {
+  closeAttack(name) {
     const object = this.raycast()
     if (!belongsTo(object, name)) return
-
     const halfAction = this.action.getClip().duration * 500
 
     setTimeout(() => {
