@@ -11,9 +11,6 @@ npx live-server
 
 ## TODO
 
-- borba
-  - kad je igrač mrtav da ai napad prestane
-    - observer / subscriber pattern?
 - BUG: strafe levo i desno secka na terenu
 
 ### Scenes & examples

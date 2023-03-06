@@ -46,6 +46,7 @@ export default class AI extends Actor {
   }
 
   get distancToTarget() {
+    if (!this.target) return Infinity
     return this.position.distanceTo(this.target.position)
   }
 
@@ -64,6 +65,7 @@ export default class AI extends Actor {
   }
 
   get targetAbove() {
+    if (!this.target) return false
     return this.target.position.y >= this.position.y + this.height * .5
   }
 
@@ -83,6 +85,7 @@ export default class AI extends Actor {
   }
 
   lookAtTarget() {
+    if (!this.target) return
     const { x, z } = this.target.position
     const newPos = new Vector3(x, this.position.y, z)
     this.mesh.lookAt(newPos)
@@ -126,12 +129,18 @@ export default class AI extends Actor {
 
   /* UPDATE */
 
+  checkTarget() {
+    if (this?.target?.userData?.energy <= 0)
+      this.target = null
+  }
+
   updateMove(delta, reaction = reactions.BOUNCE) {
     super.updateMove(delta, reaction)
   }
 
   update(delta) {
     super.update(delta)
+    this.checkTarget()
     TWEEN.update()
   }
 }

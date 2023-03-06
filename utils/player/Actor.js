@@ -19,6 +19,8 @@ export default class Actor {
     mesh = createUpdatedBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, mapSize, coords, attackDistance,
   }) {
     this.mesh = clone(mesh)
+    this.mesh.userData.energy = 100
+    this.mesh.userData.hitAmount = 0
     this.speed = speed
     this.solids = []
     this.groundY = 0
@@ -34,7 +36,6 @@ export default class Actor {
     this.shouldRaycastGround = shouldRaycastGround
     this.attackDistance = attackDistance
     this.actions = {}
-    this.energy = 100
     this.untouchable = false
 
     if (animations?.length && animDict) {
@@ -240,10 +241,10 @@ export default class Actor {
     const { userData } = this.mesh
     if (!userData.hitAmount || this.untouchable) return
 
-    this.energy -= userData.hitAmount
+    userData.energy -= userData.hitAmount
     userData.hitAmount = 0
 
-    if (this.energy <= 0)
+    if (userData.energy <= 0)
       this.setState('death')
     else
       this.setState('pain')
