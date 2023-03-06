@@ -55,7 +55,7 @@ const chooseJumpState = jumpStyle => {
 
 export function getPlayerState(name, jumpStyle, attackStyle) {
   if (name === 'jump') return chooseJumpState (jumpStyle)
-  if (name === 'attack') {
+  if (name === 'attack' || name === 'attack2') {
     if (attackStyle === 'LOOP') return LoopState
     if (attackStyle === 'ONCE') return AttackOnceState
   }
