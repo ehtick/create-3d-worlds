@@ -203,6 +203,8 @@ export default class Actor {
     putOnGround(this.mesh, this.solids)
   }
 
+  /* COMBAT */
+
   raycast() {
     const intersects = raycast(this.mesh, this.solids, dir.forward, this.height, this.attackDistance)
     return intersects[0]?.object

@@ -96,6 +96,7 @@ export default class AI extends Actor {
   }
 
   hit(mesh, range = [25, 45]) {
+    if (!this.lookingAtTarget) return
     super.hit(mesh, range)
   }
 
