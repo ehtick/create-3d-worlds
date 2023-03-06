@@ -1,13 +1,22 @@
 import SpecialState from './SpecialState.js'
+import { belongsTo } from '/utils/helpers.js'
 
 export default class AttackOnceState extends SpecialState {
   enter(oldState, oldAction) {
-    const { player } = this
     super.enter(oldState, oldAction)
+    this.halfAction = this.action.getClip().duration * 500
+    this.done = false
+  }
 
-    const object = player.kick()
+  update() {
+    if (this.done) return
+
+    const object = this.player.raycast()
+    if (!belongsTo(object, 'enemy')) return
+
     setTimeout(() => {
-      player.hit(object)
-    }, this.action.getClip().duration * 500)
+      this.player.hit(object) // reaction
+    }, this.halfAction)
+    this.done = true
   }
 }

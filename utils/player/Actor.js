@@ -47,7 +47,6 @@ export default class Actor {
     if (camera) {
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, height: this.height })
       this.controls = createOrbitControls()
-      this.controls.target = this.mesh.position
       this.controls.mouseButtons = { RIGHT: MOUSE.ROTATE }
     }
 
@@ -202,15 +201,14 @@ export default class Actor {
     putOnGround(this.mesh, this.solids)
   }
 
-  hit(object) {
-    if (!belongsTo(object, 'enemy')) return
-    const mesh = getParent(object, 'enemy')
-    mesh.userData.hitAmount = randInt(35, 55)
-  }
-
-  kick() {
+  raycast() {
     const intersects = raycast(this.mesh, this.solids, dir.forward, this.height, this.attackDistance)
     return intersects[0]?.object
+  }
+
+  hit(object, range = [35, 55]) {
+    const mesh = getParent(object, 'enemy')
+    mesh.userData.hitAmount = randInt(...range)
   }
 
   /* UPDATES */
@@ -295,8 +293,10 @@ export default class Actor {
 
   updateCamera(delta) {
     const { x, y, z } = this.mesh.position
+    const { lookAt } = this.thirdPersonCamera
+
     if (this.input.pressed.mouse2)
-      this.controls.target = new Vector3(x, y + this.height, z)
+      this.controls.target = new Vector3(x, y + lookAt[1], z)
     else
       this.thirdPersonCamera.update(delta)
   }

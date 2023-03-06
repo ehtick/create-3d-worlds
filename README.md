@@ -27,7 +27,6 @@ npx live-server
   - opciono neprijatelje zombije?
 
 - RPG / Fantasy
-  - dodati player attack
   - ai napad da skida energiju
   - dodati reakciju na ai napad 
   - karakter dolazi do kuće i ulazi (vidi house model primer)

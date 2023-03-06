@@ -74,10 +74,7 @@ export default class Savo extends Player {
       const scene = getScene(object)
       scene.add(this.ricochet.particles)
 
-      if (isEnemy) {
-        const mesh = getParent(object, 'enemy')
-        mesh.userData.hitAmount = randInt(35, 55)
-      }
+      if (isEnemy) this.hit(object)
 
       this.time -= .5
     }, i * 100)
