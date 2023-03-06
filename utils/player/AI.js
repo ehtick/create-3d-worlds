@@ -13,7 +13,7 @@ const runAnims = ['pursue', 'flee']
 
 export default class AI extends Actor {
   constructor({
-    jumpStyle = jumpStyles.FALSE_JUMP, attackStyle = attackStyles.LOOP, baseState = baseAiStates.wander, speed = 1.8, shouldRaycastGround = false, sightDistance = 25, followDistance = 1.5, patrolDistance = 10, target, ...params
+    jumpStyle = jumpStyles.FALSE_JUMP, attackStyle = attackStyles.LOOP, baseState = baseAiStates.wander, speed = 1.8, shouldRaycastGround = false, sightDistance = 25, followDistance = 1.5, patrolDistance = 10, attackDistance = 1, target, ...params
   } = {}) {
     super({
       ...params,
@@ -22,12 +22,13 @@ export default class AI extends Actor {
       shouldRaycastGround,
     })
     this.name = 'enemy'
-    this.baseState = baseState
+    this.speed = speed
     this.target = target
+    this.baseState = baseState
     this.followDistance = followDistance
     this.sightDistance = sightDistance
     this.patrolDistance = patrolDistance
-    this.speed = speed
+    this.attackDistance = attackDistance
 
     this.randomizeAction()
     this.mesh.rotateY(Math.random() * Math.PI * 2)
@@ -92,6 +93,10 @@ export default class AI extends Actor {
     new TWEEN.Tween(this.mesh.rotation)
       .to({ y: this.mesh.rotation.y + angle }, 500)
       .start()
+  }
+
+  hit(object, range = [25, 45]) {
+    super.hit(object, range, 'player')
   }
 
   /* ANIMS */

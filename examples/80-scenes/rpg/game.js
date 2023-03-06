@@ -31,12 +31,13 @@ scene.add(player.mesh)
 
 for (let i = 0; i < 20; i++) {
   const Enemy = sample(enemyClasses)
-  const enemy = new Enemy({ coords, solids: terrain, target: player.mesh, mapSize, shouldRaycastGround: true })
+  const enemy = new Enemy({ coords, solids: [terrain, player.mesh], target: player.mesh, mapSize, shouldRaycastGround: true })
   npcs.push(enemy)
   scene.add(enemy.mesh)
 }
 
 player.addSolids(npcs.map(enemy => enemy.mesh))
+
 
 for (let i = 0; i < 10; i++) {
   const bird = new FlamingoAI({ mapSize, coords })
