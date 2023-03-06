@@ -76,7 +76,6 @@ export default class Savo extends Player {
 
       if (isEnemy) {
         const mesh = getParent(object, 'enemy')
-        this.hit(mesh)
         mesh.userData.hitAmount = randInt([35, 55])
       }
 
