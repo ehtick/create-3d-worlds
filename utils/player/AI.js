@@ -17,18 +17,18 @@ export default class AI extends Actor {
   } = {}) {
     super({
       ...params,
+      speed,
+      attackDistance,
       input: new Input(false),
       getState: name => getAIState(name, jumpStyle, attackStyle),
       shouldRaycastGround,
     })
     this.name = 'enemy'
-    this.speed = speed
     this.target = target
     this.baseState = baseState
     this.followDistance = followDistance
     this.sightDistance = sightDistance
     this.patrolDistance = patrolDistance
-    this.attackDistance = attackDistance
 
     this.randomizeAction()
     this.mesh.rotateY(Math.random() * Math.PI * 2)

@@ -15,7 +15,7 @@ export default class AIAttackLoopState extends State {
     super.enter(oldState)
     if (this.action) this.transitFrom(oldAction, .5)
     this.actor.mixer.addEventListener('loop', this.onLoop)
-    this.actor.closeAttack()
+    this.actor.startAttack()
   }
 
   cleanup() {
@@ -23,7 +23,7 @@ export default class AIAttackLoopState extends State {
   }
 
   onLoop() {
-    this.actor.closeAttack('player')
+    this.actor.startAttack('player')
 
     if (!this.shouldFinish) return
     this.cleanup()

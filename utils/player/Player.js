@@ -13,9 +13,10 @@ export default class Player extends Actor {
     jumpStyle = jumpStyles.FALSE_JUMP,
     getState = name => getPlayerState(name, jumpStyle, attackStyle),
     shouldRaycastGround = true,
+    attackDistance = 1.5,
     ...params
   }) {
-    super({ input, jumpStyle, getState, shouldRaycastGround, ...params })
+    super({ input, jumpStyle, getState, shouldRaycastGround, attackDistance, ...params })
     this.name = 'player'
 
     if (useJoystick) this.input.joystick = new JoyStick()
