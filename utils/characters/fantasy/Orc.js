@@ -5,7 +5,7 @@ import { loadModel } from '/utils/loaders.js'
 const animDict = {
   idle: 'Unarmed Idle',
   walk: 'Orc Walk',
-  run: 'Zombie Run',
+  run: 'Unarmed Run Forward',
   attack: 'Zombie Attack',
   attack2: 'Zombie Kicking',
   special: 'Zombie Scream',

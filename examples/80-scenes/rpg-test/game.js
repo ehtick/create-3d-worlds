@@ -21,7 +21,7 @@ scene.add(terrain)
 const player = new BarbarianPlayer({ coords, mapSize, camera, solids: terrain })
 scene.add(player.mesh)
 
-for (let i = 0; i < 4; i++) {
+for (let i = 0; i < 6; i++) {
   const Enemy = sample(enemyClasses)
   const enemy = new Enemy({ coords, solids: [terrain, player.mesh], target: player.mesh, mapSize, shouldRaycastGround: true })
   npcs.push(enemy)
