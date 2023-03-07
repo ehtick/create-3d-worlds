@@ -23,8 +23,11 @@ export default class AI extends Actor {
       getState: name => getAIState(name, jumpStyle, attackStyle),
       shouldRaycastGround,
     })
-    this.name = 'enemy'
-    this.target = target
+    this.mesh.name = 'enemy'
+    if (target) {
+      this.target = target
+      this.addSolids(target)
+    }
     this.baseState = baseState
     this.followDistance = followDistance
     this.sightDistance = sightDistance
@@ -98,6 +101,8 @@ export default class AI extends Actor {
       .start()
   }
 
+  /* COMBAT */
+
   hit(mesh, range = [25, 45]) {
     if (!this.lookingAtTarget) return
     super.hit(mesh, range)
@@ -105,7 +110,7 @@ export default class AI extends Actor {
 
   startAttack(name) {
     this.lookAtTarget()
-    this.mesh.rotateY(randFloatSpread(Math.PI / 4))
+    this.mesh.rotateY(randFloatSpread(Math.PI / 8))
     super.startAttack(name)
   }
 

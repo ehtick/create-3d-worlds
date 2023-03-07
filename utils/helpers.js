@@ -132,10 +132,13 @@ export const adjustHeight = mesh => mesh.translateY(getHeight(mesh) / 2)
    * @param {any} newSolids mesh group, array or a single mesh
    */
 export const addSolids = (oldSolids, ...newSolids) => {
+  const pushUnique = obj => {
+    if (!oldSolids.includes(obj)) oldSolids.push(obj)
+  }
   newSolids.forEach(solid => {
-    if (solid.children && solid.children.length) oldSolids.push(...solid.children)
-    else if (solid.length) oldSolids.push(...solid)
-    else oldSolids.push(solid)
+    // if (solid?.type == 'Group' && solid.children.length) oldSolids.push(...solid.children)
+    if (Array.isArray(solid)) solid.forEach(pushUnique)
+    else pushUnique(solid)
   })
 }
 

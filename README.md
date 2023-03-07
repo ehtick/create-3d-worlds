@@ -11,12 +11,10 @@ npx live-server
 
 ## TODO
 
-- ponavlja se problem da raycast ne radi jer nisam dodao igrača u neprijateljski solid. treba po defaultu da bacaju na celu scenu
-
 ### Scenes & examples
 
 - FPS / Savo
-  - ai napad da skida energiju
+  - savo death
   - dodati reakciju na ai napad (trese se ekran)
   - ako je neprijatelj mrtav izbaciti ga iz računjanja (distanceTo, blizina...)
   - zamračiti nebo i naglasiti kišu i munje

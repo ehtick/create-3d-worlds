@@ -221,7 +221,6 @@ export default class Actor {
   startAttack(name) {
     const object = this.raycast()
     if (!belongsTo(object, name)) return
-    console.log(object)
 
     const halfAction = this.action.getClip().duration * 500
 
