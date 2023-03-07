@@ -10,7 +10,7 @@ import Particles from '/utils/classes/Particles.js'
 const mapSize = 200
 
 const ricochet = new Particles({ num: 100, size: .05, unitAngle: 0.2 })
-scene.add(ricochet.particles)
+scene.add(ricochet.mesh)
 
 scene.fog = new THREE.FogExp2(0xF6F1D5, 0.0055)
 scene.add(createMoon())

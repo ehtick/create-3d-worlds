@@ -42,7 +42,7 @@ player.addSolids([walls, ...enemyMeshes])
 enemies.forEach(enemy => enemy.addSolids([walls, ...enemyMeshes]))
 
 const rain = new Rain()
-scene.add(rain.particles)
+scene.add(rain.mesh)
 
 /* LOOP */
 

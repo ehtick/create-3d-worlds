@@ -69,6 +69,7 @@ export default class Particles {
     this.mesh = createParticles(params)
   }
 
+  // TODO: remove
   get particles() {
     return this.mesh
   }

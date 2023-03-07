@@ -26,7 +26,7 @@ terrain.material.wireframe = true
 scene.add(terrain)
 
 const stars = new Stars({ num: 1000 })
-scene.add(stars.particles)
+scene.add(stars.mesh)
 
 /* FUNCTIONS */
 

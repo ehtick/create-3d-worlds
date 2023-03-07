@@ -45,7 +45,7 @@ earth.position.set(0, -24, 2)
 scene.add(earth)
 
 const explosion = new Particles({ num: 50, size: 0.07, unitAngle: 0.1 })
-scene.add(explosion.particles)
+scene.add(explosion.mesh)
 
 for (let i = 0; i < treesInPool; i++)
   treesPool.push(createFir({ size: 1 }))

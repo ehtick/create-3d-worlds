@@ -40,7 +40,7 @@ scene.add(platform)
 const lander = new Lander(landerMesh)
 
 const stars = new Stars()
-scene.add(stars.particles)
+scene.add(stars.mesh)
 
 /* LOOP */
 

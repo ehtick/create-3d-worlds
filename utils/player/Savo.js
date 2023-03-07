@@ -77,7 +77,7 @@ export default class Savo extends Player {
       const ricochetColor = isEnemy ? 0x8a0303 : 0xcccccc
       this.ricochet.reset({ pos: point, unitAngle: 0.2, color: ricochetColor })
       const scene = getScene(object)
-      scene.add(this.ricochet.particles)
+      scene.add(this.ricochet.mesh)
 
       if (isEnemy) {
         const mesh = getParent(object, 'enemy')
