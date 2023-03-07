@@ -98,6 +98,7 @@ export default class Thrust {
 
   clear() {
     this.particles = []
+    this.updateParticles()
   }
 
   update(dt, { velocity } = {}) {

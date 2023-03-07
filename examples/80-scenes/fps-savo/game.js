@@ -11,8 +11,9 @@ import { GermanMachineGunnerAI } from '/utils/characters/ww2/GermanMachineGunner
 import { NaziAI } from '/utils/characters/ww2/Nazi.js'
 import { NaziAgentAI } from '/utils/characters/ww2/NaziAgent.js'
 import { NaziOfficerAI } from '/utils/characters/ww2/NaziOfficer.js'
+import { GermanFlameThrowerAI } from '/utils/characters/ww2/GermanFlameThrower.js'
 
-const enemyClasses = [GermanMachineGunnerAI] // [GermanSoldierAI, GermanMachineGunnerAI, NaziAI, GermanSoldierAI, GermanMachineGunnerAI, NaziAI, NaziAgentAI, NaziOfficerAI]
+const enemyClasses = [GermanFlameThrowerAI] // [GermanSoldierAI, GermanMachineGunnerAI, NaziAI, GermanSoldierAI, GermanMachineGunnerAI, NaziAI, NaziAgentAI, NaziOfficerAI]
 
 const light = hemLight()
 scene.background = createSkyBox({ folder: 'skybox4' })

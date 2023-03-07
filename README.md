@@ -19,6 +19,7 @@ npx live-server
   - shake smanjiti 10 puta?
   - čestice iz cevi mitraljesca kad puca
   - isključiti input slušanje za enter i ostalo što ne treba
+  - dodati bacač plamena nekom vojniku
   - ispraviti nazi agenta?
   - ako je neprijatelj mrtav izbaciti ga iz računjanja (distanceTo, blizina...)
   - zamračiti nebo i naglasiti kišu i munje

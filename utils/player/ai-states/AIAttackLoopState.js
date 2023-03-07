@@ -34,7 +34,7 @@ export default class AIAttackLoopState extends State {
 
   update(delta) {
     const { actor } = this
-    actor.thrust.update(delta)
+    actor.thrust.addParticles(delta)
 
     if (actor.distancToTarget > actor.attackDistance)
       this.shouldFinish = true
@@ -42,7 +42,5 @@ export default class AIAttackLoopState extends State {
 
   exit() {
     this.cleanup()
-    this.actor.thrust.clear()
-    this.actor.thrust.updateParticles(.1)
   }
 }

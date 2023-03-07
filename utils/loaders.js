@@ -33,8 +33,7 @@ const createGroup = model => {
   return group
 }
 
-const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, shouldCenter, shouldAdjustHeight, castShadow = true, receiveShadow = false, scale = 1 }) => {
-  scale = (scale === 1 && size) ? getScale(model, size) : scale // eslint-disable-line no-param-reassign
+const prepareMesh = ({ model, size = 2, angle, axis = [0, 1, 0], animations, shouldCenter, shouldAdjustHeight, castShadow = true, receiveShadow = false, scale = getScale(model, size) }) => {
   model.scale.set(scale, scale, scale)
 
   // https://stackoverflow.com/questions/28848863/
