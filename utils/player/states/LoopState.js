@@ -11,6 +11,6 @@ export default class LoopState extends State {
     const { actor } = this
 
     if (!actor.input.attack)
-      actorsetState(this.prevOrIdle)
+      actor.setState(this.prevOrIdle)
   }
 }

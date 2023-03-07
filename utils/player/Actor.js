@@ -93,10 +93,6 @@ export default class Actor {
     return this.mesh.userData.hitAmount
   }
 
-  set hitAmount(hitAmount) {
-    this.mesh.userData.hitAmount = hitAmount
-  }
-
   get height() {
     return getSize(this.mesh, 'y')
   }

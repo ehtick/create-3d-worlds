@@ -298,7 +298,7 @@ export function shakeCamera(camera, offset = .5) {
 
   camera.position.add(new THREE.Vector3(offsetX, offsetY, offsetZ))
 
-  setTimeout(() => camera.position.copy(cameraPosition), 100)
+  setTimeout(() => camera.position.copy(cameraPosition), offset * 100)
 }
 
 export function createChaseCamera(mesh, camera = defaultCamera) {

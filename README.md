@@ -11,10 +11,13 @@ npx live-server
 
 ## TODO
 
+- this.particles to this.mesh in Particles class
+
 ### Scenes & examples
 
 - FPS / Savo
-  - vatra ili dim iz cevi kad pucaju
+  - čestice iz cevi mitraljesca kad puca
+  - ispraviti nazi agenta?
   - ako je neprijatelj mrtav izbaciti ga iz računjanja (distanceTo, blizina...)
   - zamračiti nebo i naglasiti kišu i munje
   - dodati modele vozila i kuca
