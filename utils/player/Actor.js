@@ -300,11 +300,13 @@ export default class Actor {
   }
 
   updateStrafe(delta) {
+    const acceleration = this.speed * (this.input.run ? 2 : 1)
+
     if (this.input.sideLeft && !this.directionBlocked(dir.left))
-      this.mesh.translateX(-this.speed * delta)
+      this.mesh.translateX(-acceleration * delta)
 
     if (this.input.sideRight && !this.directionBlocked(dir.right))
-      this.mesh.translateX(this.speed * delta)
+      this.mesh.translateX(acceleration * delta)
   }
 
   updateGround() {

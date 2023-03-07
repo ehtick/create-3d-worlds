@@ -84,7 +84,7 @@ export default class Savo extends Player {
         mesh.userData.hitAmount = randInt(35, 55)
       }
 
-      this.time -= .5
+      this.time -= .75 // recoil
     }, i * 100)
   }
 
