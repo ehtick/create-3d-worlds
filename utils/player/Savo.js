@@ -84,12 +84,12 @@ export default class Savo extends Player {
         mesh.userData.hitAmount = randInt(35, 55)
       }
 
-      this.time -= .75 // recoil
+      this.time -= .5 // recoil
     }, i * 100)
   }
 
   checkHit() {
-    if (this.hitAmount) shakeCamera(this.camera, this.hitAmount / 100)
+    if (this.hitAmount) shakeCamera(this.camera, this.hitAmount * .001)
     super.checkHit()
   }
 

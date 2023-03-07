@@ -11,13 +11,14 @@ npx live-server
 
 ## TODO
 
-- ako je moguće praviti pauzu između attackLoop, zalediti zadnji kadar?
+- ako je moguće praviti pauzu između attackLoop, zalediti zadnji kadar? ili stanje nišanjenja između
 
 ### Scenes & examples
 
 - FPS / Savo
   - shake smanjiti 10 puta?
   - čestice iz cevi mitraljesca kad puca
+  - isključiti input slušanje za enter i ostalo što ne treba
   - ispraviti nazi agenta?
   - ako je neprijatelj mrtav izbaciti ga iz računjanja (distanceTo, blizina...)
   - zamračiti nebo i naglasiti kišu i munje
