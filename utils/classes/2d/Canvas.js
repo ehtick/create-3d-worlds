@@ -20,6 +20,11 @@ export default class Canvas extends HTMLCanvasElement {
     this.style = style
     document.body.style = bodyStyle
     document.body.appendChild(this)
+
+    window.addEventListener('resize', () => {
+      this.width = window.innerWidth
+      this.height = window.innerHeight
+    })
   }
 
   get ctx() {

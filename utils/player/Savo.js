@@ -104,6 +104,6 @@ export default class Savo extends Player {
       this.fpsRenderer.drawFixedTarget()
     }
 
-    // if (!this.mousemove) this.lookAtFront()
+    if (!this.mousemove) this.lookAtFront()
   }
 }
