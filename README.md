@@ -11,7 +11,6 @@ npx live-server
 
 ## TODO
 
-- this.particles to this.mesh in Particles class
 - ako je moguće praviti pauzu između attackLoop, zalediti zadnji kadar?
 
 ### Scenes & examples

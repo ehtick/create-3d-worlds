@@ -69,11 +69,6 @@ export default class Particles {
     this.mesh = createParticles(params)
   }
 
-  // TODO: remove
-  get particles() {
-    return this.mesh
-  }
-
   reset({ pos = [0, 0, 0], unitAngle = 1, color } = {}) {
     const { mesh } = this
     this.t = 0
