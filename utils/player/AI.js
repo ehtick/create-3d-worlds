@@ -54,6 +54,7 @@ export default class AI extends Actor {
   }
 
   get lookingAtTarget() {
+    if (!this.target) return false
     const direction1 = this.mesh.getWorldDirection(new Vector3())
     const direction2 = this.target.getWorldPosition(new Vector3())
       .sub(this.mesh.getWorldPosition(new Vector3())).normalize()
@@ -110,7 +111,7 @@ export default class AI extends Actor {
 
   startAttack(name) {
     this.lookAtTarget()
-    this.mesh.rotateY(randFloatSpread(Math.PI / 8))
+    this.mesh.rotateY(randFloatSpread(Math.PI / this.attackDistance / 4))
     super.startAttack(name)
   }
 

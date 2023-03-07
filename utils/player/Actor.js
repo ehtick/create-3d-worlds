@@ -69,10 +69,6 @@ export default class Actor {
 
   /* GETTERS */
 
-  get height() {
-    return getSize(this.mesh, 'y')
-  }
-
   get position() {
     return this.mesh.position
   }
@@ -83,6 +79,18 @@ export default class Actor {
 
   set name(name) {
     this.mesh.name = name
+  }
+
+  get energy() {
+    return this.mesh.userData.energy
+  }
+
+  set energy(energy) {
+    this.mesh.userData.energy = energy
+  }
+
+  get height() {
+    return getSize(this.mesh, 'y')
   }
 
   get heightDifference() {
@@ -241,10 +249,11 @@ export default class Actor {
     const { userData } = this.mesh
     if (!userData.hitAmount || this.untouchable) return
 
-    userData.energy -= userData.hitAmount
+    const newAmount = this.energy - userData.hitAmount
+    this.energy = newAmount > 0 ? newAmount : 0
     userData.hitAmount = 0
 
-    if (userData.energy <= 0)
+    if (this.energy <= 0)
       this.setState('death')
     else
       this.setState('pain')

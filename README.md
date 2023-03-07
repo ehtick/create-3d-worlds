@@ -14,7 +14,7 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
-  - savo death
+  - savo death smisliti nešto
   - dodati reakciju na ai napad (trese se ekran)
   - ako je neprijatelj mrtav izbaciti ga iz računjanja (distanceTo, blizina...)
   - zamračiti nebo i naglasiti kišu i munje

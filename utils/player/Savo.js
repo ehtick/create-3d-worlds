@@ -84,9 +84,13 @@ export default class Savo extends Player {
 
   update(delta) {
     super.update(delta)
-    this.time += (input.run ? delta * 2 : delta)
-    this.fpsRenderer.render(this.time)
-    this.ricochet.expand({ scalar: 1.2, maxRounds: 5, gravity: .02 })
+
+    if (this.energy > 0) {
+      this.time += (input.run ? delta * 2 : delta)
+      this.fpsRenderer.render(this.time)
+      this.ricochet.expand({ scalar: 1.2, maxRounds: 5, gravity: .02 })
+    } else this.fpsRenderer.clear()
+
     if (!this.mousemove) this.lookAtFront()
   }
 }
