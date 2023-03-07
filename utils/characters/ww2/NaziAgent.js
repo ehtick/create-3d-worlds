@@ -35,6 +35,6 @@ export class NaziAgentAI extends AI {
 
   lookAtTarget() {
     super.lookAtTarget()
-    this.mesh.rotateY(Math.PI / 16)
+    this.mesh.rotateY(Math.PI / 32)
   }
 }

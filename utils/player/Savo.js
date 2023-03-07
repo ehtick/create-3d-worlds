@@ -54,6 +54,8 @@ export default class Savo extends Player {
   }
 
   shoot() {
+    if (this.energy <= 0) return
+
     const shoots = this.rifleBurst ? 5 : 1
     this.audio.currentTime = 0
     this.audio.play()
@@ -83,13 +85,15 @@ export default class Savo extends Player {
   }
 
   update(delta) {
-    super.update(delta)
-
     if (this.energy > 0) {
+      super.update(delta)
       this.time += (input.run ? delta * 2 : delta)
       this.fpsRenderer.render(this.time)
       this.ricochet.expand({ scalar: 1.2, maxRounds: 5, gravity: .02 })
-    } else this.fpsRenderer.clear()
+    } else {
+      this.fpsRenderer.clear()
+      this.fpsRenderer.drawFixedTarget()
+    }
 
     if (!this.mousemove) this.lookAtFront()
   }

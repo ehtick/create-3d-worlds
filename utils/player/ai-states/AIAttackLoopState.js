@@ -25,10 +25,11 @@ export default class AIAttackLoopState extends State {
   onLoop() {
     this.actor.startAttack('player')
 
-    if (!this.shouldFinish) return
-    this.cleanup()
-    this.actor.setState(this.prevOrIdle)
-    this.shouldFinish = false
+    if (this.shouldFinish) {
+      this.cleanup()
+      this.actor.setState(this.prevOrIdle)
+      this.shouldFinish = false
+    }
   }
 
   update() {
