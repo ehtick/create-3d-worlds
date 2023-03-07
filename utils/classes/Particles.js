@@ -66,34 +66,38 @@ function createParticles({ num = 10000, file = 'ball.png', color, size = .5, opa
 export default class Particles {
   constructor(params) {
     this.t = 0
-    this.particles = createParticles(params)
+    this.mesh = createParticles(params)
+  }
+
+  get particles() {
+    return this.mesh
   }
 
   reset({ pos = [0, 0, 0], unitAngle = 1, color } = {}) {
-    const { particles } = this
+    const { mesh } = this
     this.t = 0
-    particles.visible = true
-    setPosition(particles, pos)
+    mesh.visible = true
+    setPosition(mesh, pos)
 
-    const { position } = particles.geometry.attributes
+    const { position } = mesh.geometry.attributes
     for (let i = 0, l = position.array.length; i < l; i++)
       position.array[i] = randFloat(-unitAngle, unitAngle)
     position.needsUpdate = true
 
     if (color)
-      particles.material.color = new THREE.Color(color)
+      mesh.material.color = new THREE.Color(color)
 
   }
 
   expand({ scalar = 1.1, maxRounds = 50, gravity = 0 } = {}) { // scalar < 1 reverses direction
-    const { particles } = this
+    const { mesh } = this
     if (++this.t > maxRounds) {
-      particles.visible = false
+      mesh.visible = false
       return
     }
 
-    particles.material.opacity = 1 - this.t / maxRounds
-    const { position } = particles.geometry.attributes
+    mesh.material.opacity = 1 - this.t / maxRounds
+    const { position } = mesh.geometry.attributes
 
     const vertex = new THREE.Vector3()
     for (let i = 0, l = position.count; i < l; i ++) {
@@ -107,7 +111,7 @@ export default class Particles {
   }
 
   update({ min = -500, max = 500, axis = 2, minVelocity = .5, maxVelocity = 3, pos } = {}) {
-    const { geometry } = this.particles
+    const { geometry } = this.mesh
     if (!geometry.attributes.velocity) addVelocity({ geometry, min: minVelocity, max: maxVelocity })
     const { position, velocity } = geometry.attributes
 
@@ -121,7 +125,7 @@ export default class Particles {
     })
 
     position.needsUpdate = true
-    if (pos) this.particles.position.set(pos.x, 0, pos.z) // follow player
+    if (pos) this.mesh.position.set(pos.x, 0, pos.z) // follow player
   }
 }
 
@@ -155,7 +159,7 @@ export class Snow extends Rain {
 
   update({ rotateY = .003, ...rest } = {}) {
     super.update({ ...rest })
-    this.particles.rotateY(rotateY)
+    this.mesh.rotateY(rotateY)
   }
 }
 

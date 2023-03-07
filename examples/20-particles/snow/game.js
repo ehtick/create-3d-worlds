@@ -6,7 +6,7 @@ hemLight()
 renderer.setClearColor(0x000000)
 
 const snow = new Snow()
-scene.add(snow.particles)
+scene.add(snow.mesh)
 
 /* LOOP */
 

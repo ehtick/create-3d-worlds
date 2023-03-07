@@ -5,7 +5,7 @@ import { Explosion } from '/utils/classes/Particles.js'
 renderer.setClearColor(0x000000)
 
 const explosion = new Explosion()
-scene.add(explosion.particles)
+scene.add(explosion.mesh)
 
 /* LOOP */
 

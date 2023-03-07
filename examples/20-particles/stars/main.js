@@ -5,7 +5,7 @@ renderer.setClearColor(0x000000)
 createOrbitControls()
 
 const stars = new Particles()
-scene.add(stars.particles)
+scene.add(stars.mesh)
 
 /* LOOP */
 

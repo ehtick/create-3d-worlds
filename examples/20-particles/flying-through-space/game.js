@@ -5,7 +5,7 @@ import { Stars } from '/utils/classes/Particles.js'
 scene.background = new THREE.Color(0x000000)
 
 const stars = new Stars()
-scene.add(stars.particles)
+scene.add(stars.mesh)
 
 /* LOOP */
 

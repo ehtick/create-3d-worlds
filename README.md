@@ -12,10 +12,12 @@ npx live-server
 ## TODO
 
 - this.particles to this.mesh in Particles class
+- ako je moguće praviti pauzu između attackLoop, zalediti zadnji kadar?
 
 ### Scenes & examples
 
 - FPS / Savo
+  - shake smanjiti 10 puta?
   - čestice iz cevi mitraljesca kad puca
   - ispraviti nazi agenta?
   - ako je neprijatelj mrtav izbaciti ga iz računjanja (distanceTo, blizina...)
