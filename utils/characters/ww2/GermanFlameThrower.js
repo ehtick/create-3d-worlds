@@ -38,6 +38,10 @@ export class GermanFlameThrowerAI extends AI {
     this.add(this.thrust.mesh)
   }
 
+  attackUpdate(delta) {
+    this.thrust.addParticles(delta)
+  }
+
   update(delta) {
     super.update(delta)
     this.thrust.updateParticles(delta)
