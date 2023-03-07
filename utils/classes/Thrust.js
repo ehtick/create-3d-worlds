@@ -69,7 +69,7 @@ export default class Thrust {
     }
   }
 
-  updateParticles(deltaTime) {
+  updateParticles(deltaTime = 1 / 60) {
     this.particles = this.particles.filter(p => {
       p.life -= deltaTime
       return p.life > 0.0

@@ -230,7 +230,7 @@ export default class Actor {
       mesh.userData.hitAmount = randInt(...range)
   }
 
-  startAttack(name) {
+  startHit(name) {
     const object = this.raycast()
     if (!belongsTo(object, name)) return
 

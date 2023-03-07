@@ -9,7 +9,7 @@ export default class AttackOnceState extends SpecialState {
 
   update() {
     if (this.done) return
-    this.actor.startAttack('enemy')
+    this.actor.startHit('enemy')
     this.done = true
   }
 
