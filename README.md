@@ -14,7 +14,7 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
-  - da neprijatelji pucaju ređe
+  - da neprijatelji budu lakši (pucaju ređe, promašuju, skidaju manje)
   - vatra ili dim iz cevi kad pucaju
   - dodati reakciju na ai napad (trese se ekran ili krv/čestice)
   - ako je neprijatelj mrtav izbaciti ga iz računjanja (distanceTo, blizina...)

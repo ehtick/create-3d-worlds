@@ -1,7 +1,7 @@
 import { MathUtils } from 'three'
 import Player from '/utils/player/Player.js'
 import { camera as defaultCamera } from '/utils/scene.js'
-import { normalizeMouse, getCameraIntersects, getScene, belongsTo, getParent } from '/utils/helpers.js'
+import { normalizeMouse, getCameraIntersects, getScene, belongsTo, getParent, shakeCamera } from '/utils/helpers.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { shootDecals } from '/utils/decals.js'
 import Particles from '/utils/classes/Particles.js'
@@ -40,17 +40,21 @@ export default class Savo extends Player {
     if (mousemove) document.addEventListener('mousemove', e => this.onMouseMove(e))
   }
 
+  get cameraTarget() {
+    const pos = this.mesh.position.clone()
+    pos.y += this.height * .8
+    return pos
+  }
+
+  lookAtFront() {
+    this.camera.lookAt(this.cameraTarget)
+  }
+
   onMouseMove(e) {
     const { x, y } = normalizeMouse(e)
     this.mesh.rotateY(-x * this.mouseSensitivity)
     this.camera.rotateX(y * this.mouseSensitivity)
     this.camera.rotation.x = Math.max(-0.1, Math.min(Math.PI / 4, this.camera.rotation.x))
-  }
-
-  lookAtFront() {
-    const target = this.mesh.position.clone()
-    target.y = this.mesh.position.y + this.height * .8
-    this.camera.lookAt(target)
   }
 
   shoot() {
@@ -84,6 +88,11 @@ export default class Savo extends Player {
     }, i * 100)
   }
 
+  checkHit() {
+    if (this.hitAmount) shakeCamera(this.camera, this.hitAmount / 100)
+    super.checkHit()
+  }
+
   update(delta) {
     if (this.energy > 0) {
       super.update(delta)
@@ -95,6 +104,6 @@ export default class Savo extends Player {
       this.fpsRenderer.drawFixedTarget()
     }
 
-    if (!this.mousemove) this.lookAtFront()
+    // if (!this.mousemove) this.lookAtFront()
   }
 }
