@@ -1,3 +1,4 @@
+/* credit to simon dev */
 import * as THREE from 'three'
 import { material } from '/utils/shaders/thrust.js'
 
