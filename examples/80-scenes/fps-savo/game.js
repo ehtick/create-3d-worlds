@@ -6,12 +6,12 @@ import { nemesis } from '/data/maps.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
 import { Rain } from '/utils/classes/Particles.js'
 import Savo from '/utils/player/Savo.js'
-import { GermanSoldierAI } from '/utils/characters/ww2/GermanSoldier.js'
-import { GermanMachineGunnerAI } from '/utils/characters/ww2/GermanMachineGunner.js'
-import { NaziAI } from '/utils/characters/ww2/Nazi.js'
-import { NaziAgentAI } from '/utils/characters/ww2/NaziAgent.js'
-import { NaziOfficerAI } from '/utils/characters/ww2/NaziOfficer.js'
-import { GermanFlameThrowerAI } from '/utils/characters/ww2/GermanFlameThrower.js'
+import { GermanSoldierAI } from '/utils/actors/ww2/GermanSoldier.js'
+import { GermanMachineGunnerAI } from '/utils/actors/ww2/GermanMachineGunner.js'
+import { NaziAI } from '/utils/actors/ww2/Nazi.js'
+import { NaziAgentAI } from '/utils/actors/ww2/NaziAgent.js'
+import { NaziOfficerAI } from '/utils/actors/ww2/NaziOfficer.js'
+import { GermanFlameThrowerAI } from '/utils/actors/ww2/GermanFlameThrower.js'
 
 const enemyClasses = [GermanFlameThrowerAI] // [GermanSoldierAI, GermanMachineGunnerAI, NaziAI, GermanSoldierAI, GermanMachineGunnerAI, NaziAI, NaziAgentAI, NaziOfficerAI]
 

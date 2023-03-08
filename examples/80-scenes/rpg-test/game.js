@@ -2,9 +2,9 @@ import { scene, renderer, camera, clock } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 import { createSun } from '/utils/light.js'
 import { sample, getAllCoords } from '/utils/helpers.js'
-import { BarbarianPlayer } from '/utils/characters/fantasy/Barbarian.js'
-import { OrcAI } from '/utils/characters/fantasy/Orc.js'
-import { OrcOgreAI } from '/utils/characters/fantasy/OrcOgre.js'
+import { BarbarianPlayer } from '/utils/actors/fantasy/Barbarian.js'
+import { OrcAI } from '/utils/actors/fantasy/Orc.js'
+import { OrcOgreAI } from '/utils/actors/fantasy/OrcOgre.js'
 
 const mapSize = 100
 const enemyClasses = [OrcAI, OrcOgreAI]

@@ -2,7 +2,7 @@ import { scene, camera, renderer, clock } from '/utils/scene.js'
 import { createSpiralStairs } from '/utils/geometry/towers.js'
 import { createGround } from '/utils/ground.js'
 import { dirLight, hemLight } from '/utils/light.js'
-import { SorceressPlayer } from '/utils/characters/fantasy/Sorceress.js'
+import { SorceressPlayer } from '/utils/actors/fantasy/Sorceress.js'
 
 hemLight()
 dirLight({ intensity: 1.5 })
