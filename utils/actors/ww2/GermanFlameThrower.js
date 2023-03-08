@@ -23,12 +23,18 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/flame-gun/model.fbx', sc
 
 const sharedProps = { mesh, animations, animDict, rifle, speed: 1.8, attackStyle: 'LOOP' }
 
+const createThrust = () => {
+  const thrust = new Thrust()
+  thrust.mesh.translateY(1.2)
+  thrust.mesh.translateZ(-1.4)
+  thrust.mesh.rotation.x = Math.PI * .5
+  return thrust
+}
+
 export class GermanFlameThrowerPlayer extends Player {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
-    this.thrust = new Thrust()
-    this.thrust.mesh.translateY(1)
-    this.thrust.mesh.rotation.x = Math.PI * .5
+    this.thrust = createThrust()
     this.add(this.thrust.mesh)
   }
 
@@ -42,13 +48,10 @@ export class GermanFlameThrowerPlayer extends Player {
   }
 }
 
-
 export class GermanFlameThrowerAI extends AI {
   constructor(props = {}) {
     super({ ...sharedProps, attackDistance: 14, ...props })
-    this.thrust = new Thrust()
-    this.thrust.mesh.translateY(1)
-    this.thrust.mesh.rotation.x = Math.PI * .5
+    this.thrust = createThrust()
     this.add(this.thrust.mesh)
   }
 

@@ -16,6 +16,7 @@ npx live-server
 
 - FPS / Savo
   - praviti pauzu između attackLoop: zalediti zadnji kadar ili stanje nišanjenja između
+  - probati domaće čestice za bacač plamena
   - neki efekat iz cevi mitraljesca kad puca
   - isključiti input slušanje za enter i ostalo što ne treba
   - ispraviti nazi agenta?
