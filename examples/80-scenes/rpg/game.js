@@ -6,9 +6,9 @@ import { sample, getAllCoords, putOnGround } from '/utils/helpers.js'
 import { BarbarianPlayer } from '/utils/characters/fantasy/Barbarian.js'
 import { OrcAI } from '/utils/characters/fantasy/Orc.js'
 import { OrcOgreAI } from '/utils/characters/fantasy/OrcOgre.js'
-import { FlamingoAI } from '/utils/characters/animals/Flamingo.js'
-import { CloudAI } from '/utils/characters/animals/Cloud.js'
-import { ZappelinAI } from '/utils/characters/animals/Zappelin.js'
+import { FlamingoAI } from '/utils/characters/Flamingo.js'
+import { CloudAI } from '/utils/characters/Cloud.js'
+import { ZappelinAI } from '/utils/characters/Zappelin.js'
 import { loadModel } from '/utils/loaders.js'
 
 const mapSize = 400

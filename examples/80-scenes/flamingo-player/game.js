@@ -3,10 +3,9 @@ import { createHillyTerrain } from '/utils/ground.js'
 import { createTreesOnTerrain } from '/utils/geometry/trees.js'
 import { createSun } from '/utils/light.js'
 import { sample, getAllCoords } from '/utils/helpers.js'
-import { BarbarianPlayer } from '/utils/characters/fantasy/Barbarian.js'
 import { OrcAI } from '/utils/characters/fantasy/Orc.js'
 import { OrcOgreAI } from '/utils/characters/fantasy/OrcOgre.js'
-import { FlamingoAI, FlamingoPlayer } from '/utils/characters/animals/Flamingo.js'
+import { FlamingoAI, FlamingoPlayer } from '/utils/characters/Flamingo.js'
 
 const mapSize = 200
 const coords = getAllCoords({ mapSize: mapSize * .9, fieldSize: 5 })
