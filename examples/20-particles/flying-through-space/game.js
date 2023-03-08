@@ -4,13 +4,13 @@ import { Stars } from '/utils/classes/Particles.js'
 
 scene.background = new THREE.Color(0x000000)
 
-const stars = new Stars()
-scene.add(stars.mesh)
+const particles = new Stars()
+scene.add(particles.mesh)
 
 /* LOOP */
 
 void function render() {
   requestAnimationFrame(render)
-  stars.update()
+  particles.update()
   renderer.render(scene, camera)
 }()

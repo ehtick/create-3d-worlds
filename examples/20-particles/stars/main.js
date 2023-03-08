@@ -4,8 +4,8 @@ import Particles from '/utils/classes/Particles.js'
 renderer.setClearColor(0x000000)
 createOrbitControls()
 
-const stars = new Particles()
-scene.add(stars.mesh)
+const particles = new Particles()
+scene.add(particles.mesh)
 
 /* LOOP */
 

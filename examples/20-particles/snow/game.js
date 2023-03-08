@@ -5,13 +5,13 @@ import { Snow } from '/utils/classes/Particles.js'
 hemLight()
 renderer.setClearColor(0x000000)
 
-const snow = new Snow()
-scene.add(snow.mesh)
+const particles = new Snow()
+scene.add(particles.mesh)
 
 /* LOOP */
 
 void function animate() {
-  snow.update()
+  particles.update()
   renderer.render(scene, camera)
   requestAnimationFrame(animate)
 }()
