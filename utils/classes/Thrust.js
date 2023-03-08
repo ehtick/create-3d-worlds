@@ -2,10 +2,11 @@
 import * as THREE from 'three'
 import { material } from '/utils/shaders/thrust.js'
 
+const lerp = (t, a, b) => a + t * (b - a)
+
 class LinearSpline {
-  constructor(lerp) {
+  constructor() {
     this.points = []
-    this.lerp = lerp
   }
 
   addPoint(t, d) {
@@ -25,7 +26,7 @@ class LinearSpline {
 
     if (p1 == p2) return this.points[p1][1]
 
-    return this.lerp(
+    return lerp(
       (t - this.points[p1][0]) / (this.points[p2][0] - this.points[p1][0]),
       this.points[p1][1],
       this.points[p2][1]
@@ -34,14 +35,14 @@ class LinearSpline {
 }
 
 export default class Thrust {
-  constructor(smokeUp = false) {
+  constructor(dirUp = false) {
     this.t = 0.0
     this.particles = []
     this.geometry = new THREE.BufferGeometry()
     this.mesh = new THREE.Points(this.geometry, material)
-    if (smokeUp) this.mesh.rotateX(Math.PI)
+    if (dirUp) this.mesh.rotateX(Math.PI)
 
-    this.spline = new LinearSpline((t, a, b) => a + t * (b - a))
+    this.spline = new LinearSpline()
     this.spline.addPoint(0.0, .5)
     this.spline.addPoint(0.25, 2.5)
     this.spline.addPoint(.5, .5)
@@ -78,7 +79,7 @@ export default class Thrust {
 
     const positions = []
     const sizes = []
-    const colours = []
+    const colors = []
 
     for (const p of this.particles) {
       const t = 1.0 - p.life / p.maxLife
@@ -88,13 +89,13 @@ export default class Thrust {
       const currentSize = p.size * this.spline.get(t)
 
       positions.push(p.position.x, p.position.y, p.position.z)
-      colours.push(p.colour.r, p.colour.g, p.colour.b, p.alpha)
+      colors.push(p.colour.r, p.colour.g, p.colour.b, p.alpha)
       sizes.push(currentSize)
     }
 
     this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
     this.geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1))
-    this.geometry.setAttribute('colour', new THREE.Float32BufferAttribute(colours, 4))
+    this.geometry.setAttribute('colour', new THREE.Float32BufferAttribute(colors, 4))
   }
 
   clear() {

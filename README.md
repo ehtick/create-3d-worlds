@@ -15,8 +15,8 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
-  - ako je moguće praviti pauzu između attackLoop, zalediti zadnji kadar? ili stanje nišanjenja između
-  - čestice iz cevi mitraljesca kad puca
+  - praviti pauzu između attackLoop: zalediti zadnji kadar ili stanje nišanjenja između
+  - neki efekat iz cevi mitraljesca kad puca
   - isključiti input slušanje za enter i ostalo što ne treba
   - ispraviti nazi agenta?
   - ako je neprijatelj mrtav izbaciti ga iz računjanja (distanceTo, blizina...)
@@ -28,7 +28,7 @@ npx live-server
   - opciono neprijatelje zombije?
 
 - RPG / Fantasy
-  - bacanje magije
+  - bacanje magije (pogledati i shadere)
   - slona 
   - karakter dolazi do kuće i ulazi (vidi house model primer)
   - uzima predmete (50-rad-sa-modelima/80-uzimanje-predmeta/)
