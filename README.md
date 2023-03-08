@@ -26,6 +26,7 @@ npx live-server
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
   - opciono neprijatelje zombije?
+  - spojiti sa fps-graffiti?
 
 - RPG / Fantasy
   - bacanje magije (pogledati i shadere)
@@ -34,6 +35,12 @@ npx live-server
   - uzima predmete (50-rad-sa-modelima/80-uzimanje-predmeta/)
   - ranjena varvarka puzi do nekog cilja? ili obrisati wounded
   - kad je dugo idle da se kamera okreće oko glave
+
+- Adventure / Avatar
+  - merge stairway-girl, stairway-to-heaven, tower-of-babel, random-boxes?
+
+- Space / Sletanje
+  - domaće čestice za Lander
 
 - Svemir 
   - dodati model ring space-arcology
@@ -48,13 +55,14 @@ npx live-server
 - Zeppelin
   - umesto createChaseCamera koristiti 3rd person?
 
-- 1943
+- Aircraft / 1943
   - dodati izbor aviona
   - dodati drveće
   - dodati objekte
   - pucanje i eksplozije
+  - spojiti sa airplane?
 
-- Tenk (Vozilo)
+- Tenk / Vozilo
   - tenk da se trese kada ide
   - vozilo da se okreću točkovi kada ide
   - ispitati modele, jel moguće upravljati točkovima, kupolom ili nečim
