@@ -5,14 +5,14 @@ import { Snow } from '/utils/classes/Particles.js'
 createOrbitControls()
 hemLight()
 
-const snow = new Snow({ file: 'smoke.png', size: 5, num: 200, minRange: 1, maxRange: 3 })
+const snow = new Snow({ file: 'smoke.png', size: 9, num: 100, minRange: 1, maxRange: 3 })
 scene.add(snow.mesh)
 snow.mesh.rotateX(Math.PI)
 
 /* LOOP */
 
 void function animate() {
-  snow.update({ rotateY: .007, min: -3, max: 3, minVelocity: .02, maxVelocity: .04 })
+  snow.update({ rotateY: .009, min: -9, max: 3, minVelocity: .02, maxVelocity: .05 })
   renderer.render(scene, camera)
   requestAnimationFrame(animate)
 }()
