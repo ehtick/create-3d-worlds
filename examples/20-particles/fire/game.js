@@ -1,11 +1,11 @@
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 import { hemLight } from '/utils/light.js'
-import { Snow } from '/utils/classes/Particles.js'
+import { Rain } from '/utils/classes/Particles.js'
 
 createOrbitControls()
 hemLight()
 
-const snow = new Snow({ file: 'fire.png', size: 30, num: 100, minRange: 1, maxRange: 3 })
+const snow = new Rain({ file: 'fire.png', size: 30, num: 100, minRange: 1, maxRange: 3, color: 0xffffff })
 scene.add(snow.mesh)
 snow.mesh.rotateX(Math.PI)
 
