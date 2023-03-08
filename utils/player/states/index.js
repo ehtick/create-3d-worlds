@@ -9,7 +9,7 @@ import JumpFlyState from './JumpFlyState.js'
 import FlyState from './FlyState.js'
 import FallState from './FallState.js'
 import WoundedState from './WoundedState.js'
-import LoopState from './LoopState.js'
+import AttackLoopState from './AttackLoopState.js'
 import DeathState from './DeathState.js'
 import AttackOnceState from './AttackOnceState.js'
 
@@ -56,7 +56,7 @@ const chooseJumpState = jumpStyle => {
 export function getPlayerState(name, jumpStyle, attackStyle) {
   if (name === 'jump') return chooseJumpState (jumpStyle)
   if (name === 'attack' || name === 'attack2') {
-    if (attackStyle === 'LOOP') return LoopState
+    if (attackStyle === 'LOOP') return AttackLoopState
     if (attackStyle === 'ONCE') return AttackOnceState
   }
   return playerStates[name] || SpecialState

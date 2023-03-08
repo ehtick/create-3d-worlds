@@ -26,8 +26,22 @@ const sharedProps = { mesh, animations, animDict, rifle, speed: 1.8, attackStyle
 export class GermanFlameThrowerPlayer extends Player {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
+    this.thrust = new Thrust()
+    this.thrust.mesh.translateY(1)
+    this.thrust.mesh.rotation.x = Math.PI * .5
+    this.add(this.thrust.mesh)
+  }
+
+  attackUpdate(delta) {
+    this.thrust.addParticles(delta)
+  }
+
+  update(delta) {
+    super.update(delta)
+    this.thrust.updateParticles(delta)
   }
 }
+
 
 export class GermanFlameThrowerAI extends AI {
   constructor(props = {}) {
