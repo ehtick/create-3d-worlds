@@ -69,6 +69,10 @@ export default class Particles {
     this.mesh = createParticles(params)
   }
 
+  get particles() {
+    return this.mesh
+  }
+
   reset({ pos = [0, 0, 0], unitAngle = 1, color } = {}) {
     const { mesh } = this
     this.t = 0
@@ -96,7 +100,7 @@ export default class Particles {
     const { position } = mesh.geometry.attributes
 
     const vertex = new THREE.Vector3()
-    for (let i = 0, l = position.count; i < l; i ++) {
+    for (let i = 0, l = position.count; i < l; i++) {
       vertex.fromBufferAttribute(position, i)
       vertex.multiplyScalar(scalar)
       vertex.y -= gravity
@@ -136,26 +140,26 @@ export class Stars extends Particles {
 export class Rain extends Particles {
   constructor({ file = 'raindrop.png', num = 10000, size = .2, opacity = .7, minRange = 10, maxRange = 100, color = 0xDEF4FC } = {}) {
     super({ file, num, size, opacity, minRange, maxRange, color, blending: THREE.NormalBlending })
+
     this.audio = new Audio('/assets/sounds/rain.mp3')
     this.audio.volume = config.volume
     this.audio.loop = true
-
     if (input.touched) this.audio.play()
   }
 
-  update({ min = 0, max = 200, minVelocity = 2, maxVelocity = 4, ...rest } = {}) {
+  update({ min = 0, max = 200, minVelocity = 2, maxVelocity = 4, rotateY, ...rest } = {}) {
     super.update({ min, max, axis: 1, minVelocity, maxVelocity, ...rest })
+    if (rotateY) this.mesh.rotateY(rotateY)
   }
 }
 
 export class Snow extends Rain {
-  constructor({ file = 'snowflake.png', size = 5, minRange = 50, maxRange = 500, color = 0xffffff, ...rest } = {}) {
-    super({ file, size, color, minRange, maxRange, ...rest })
+  constructor({ file = 'snowflake.png', size = 5, color = 0xffffff, ...rest } = {}) {
+    super({ file, size, color, ...rest })
   }
 
-  update({ rotateY = .003, min = -300, max = 300, ...rest } = {}) {
-    super.update({ min, max, ...rest })
-    this.mesh.rotateY(rotateY)
+  update(params = {}) {
+    super.update({ rotateY: .003, ...params })
   }
 }
 
