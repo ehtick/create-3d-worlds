@@ -2,7 +2,7 @@ import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
 import { meshFromMatrix } from '/utils/mazes.js'
 import { createGround } from '/utils/ground.js'
 import { hemLight } from '/utils/light.js'
-import matrix from '/data/small-map.js'
+import matrix from '/utils/data/small-map.js'
 
 hemLight()
 

@@ -5,7 +5,7 @@ import { OrbitControls } from '/node_modules/three/examples/jsm/controls/OrbitCo
 import { createSkySphere } from './geometry.js'
 import { createGround } from './ground.js'
 import { hemLight, createSun } from './light.js'
-import { baseCommands } from '/data/commands.js'
+import { baseCommands } from '/utils/data/commands.js'
 
 export const clock = new THREE.Clock()
 

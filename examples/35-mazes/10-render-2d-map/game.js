@@ -1,4 +1,4 @@
-import matrix from '/data/small-map.js'
+import matrix from '/utils/data/small-map.js'
 import Tilemap from '/utils/classes/Tilemap.js'
 import Player2D from '/utils/classes/2d/Player2D.js'
 import Map2DRenderer from '/utils/classes/2d/Map2DRenderer.js'
