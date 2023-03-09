@@ -1,7 +1,7 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import Thrust from '/utils/classes/Thrust.js'
+import Particles from '/utils/classes/Particles.js'
 
 const animDict = {
   idle: 'Machine Gun Idle',
@@ -21,46 +21,37 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/flame-gun/model.fbx', sc
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict, rifle, speed: 1.8, attackStyle: 'LOOP' }
+const sharedProps = { mesh, animations, animDict, rifle, speed: 1.8, attackStyle: 'LOOP', attackDistance: 9 }
 
-const createThrust = () => {
-  const thrust = new Thrust()
-  thrust.mesh.translateY(1.2)
-  thrust.mesh.translateZ(-1.4)
-  thrust.mesh.rotation.x = Math.PI * .5
-  return thrust
+const createFlame = () => {
+  const particles = new Particles({ file: 'fire.png', size: 5, num: 50, minRadius: 0, maxRadius: .5, color: 0xffffff })
+  particles.mesh.rotateX(Math.PI)
+  particles.mesh.visible = false
+  particles.mesh.translateY(-1.2)
+  return particles
 }
 
 export class GermanFlameThrowerPlayer extends Player {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
-    this.thrust = createThrust()
-    this.add(this.thrust.mesh)
+    this.particles = createFlame()
+    this.add(this.particles.mesh)
   }
 
-  attackUpdate(delta) {
-    this.thrust.addParticles(delta)
-  }
-
-  update(delta) {
-    super.update(delta)
-    this.thrust.updateParticles(delta)
+  attackUpdate() {
+    this.particles.mesh.visible = true
+    this.particles.update({ min: 1.5, max: this.attackDistance, axis: 2, minVelocity: .1, maxVelocity: .2 })
   }
 }
 
 export class GermanFlameThrowerAI extends AI {
   constructor(props = {}) {
     super({ ...sharedProps, attackDistance: 14, ...props })
-    this.thrust = createThrust()
-    this.add(this.thrust.mesh)
+    this.particles = createFlame()
+    this.add(this.particles.mesh)
   }
 
   attackUpdate(delta) {
-    this.thrust.addParticles(delta)
-  }
-
-  update(delta) {
-    super.update(delta)
-    this.thrust.updateParticles(delta)
+    this.particles.addParticles(delta)
   }
 }

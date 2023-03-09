@@ -5,7 +5,7 @@ import { Rain } from '/utils/classes/Particles.js'
 hemLight()
 renderer.setClearColor(0x000000)
 
-const particles = new Rain({ color: 0x9999ff, size: 2, minRange: 50, maxRange: 500, })
+const particles = new Rain({ color: 0x9999ff, size: 2, minRadius: 50, maxRadius: 500, })
 scene.add(particles.mesh)
 
 /* LOOP */

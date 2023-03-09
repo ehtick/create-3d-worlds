@@ -20,7 +20,7 @@ function addVelocity({ geometry, min = .5, max = 3 } = {}) {
   geometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 1))
 }
 
-function createParticles({ num = 10000, file = 'ball.png', color, size = .5, opacity = 1, unitAngle = 1, minRange = 100, maxRange = 1000, blending = THREE.AdditiveBlending } = {}) {
+function createParticles({ num = 10000, file = 'ball.png', color, size = .5, opacity = 1, unitAngle = 1, minRadius = 100, maxRadius = 1000, blending = THREE.AdditiveBlending } = {}) {
   const geometry = new THREE.BufferGeometry()
   const positions = []
   const colors = []
@@ -29,7 +29,7 @@ function createParticles({ num = 10000, file = 'ball.png', color, size = .5, opa
     const vertex = new THREE.Vector3(
       randFloat(-unitAngle, unitAngle), randFloat(-unitAngle, unitAngle), randFloat(-unitAngle, unitAngle)
     )
-    const scalar = randFloat(minRange, maxRange)
+    const scalar = randFloat(minRadius, maxRadius)
     vertex.multiplyScalar(scalar)
     const { x, y, z } = vertex
     positions.push(x, y, z)
@@ -138,8 +138,8 @@ export class Stars extends Particles {
 }
 
 export class Rain extends Particles {
-  constructor({ file = 'raindrop.png', num = 10000, size = .2, opacity = .7, minRange = 10, maxRange = 100, color = 0xDEF4FC } = {}) {
-    super({ file, num, size, opacity, minRange, maxRange, color, blending: THREE.NormalBlending })
+  constructor({ file = 'raindrop.png', num = 10000, size = .2, opacity = .7, minRadius = 10, maxRadius = 100, color = 0xDEF4FC } = {}) {
+    super({ file, num, size, opacity, minRadius, maxRadius, color, blending: THREE.NormalBlending })
 
     this.audio = new Audio('/assets/sounds/rain.mp3')
     this.audio.volume = config.volume

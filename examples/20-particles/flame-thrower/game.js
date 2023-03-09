@@ -5,7 +5,7 @@ import Particles from '/utils/classes/Particles.js'
 createOrbitControls()
 scene.background = new THREE.Color(0x000000)
 
-const particles = new Particles({ file: 'fire.png', size: 10, num: 100, minRange: .5, maxRange: 1, color: 0xffffff })
+const particles = new Particles({ file: 'fire.png', size: 10, num: 100, minRadius: 0, maxRadius: .75, color: 0xffffff })
 particles.mesh.rotateX(Math.PI)
 scene.add(particles.mesh)
 
@@ -13,6 +13,6 @@ scene.add(particles.mesh)
 
 void function render() {
   requestAnimationFrame(render)
-  particles.update({ min: -5, max: 5, axis: 2, minVelocity: .1, maxVelocity: .25 })
+  particles.update({ min: -5, max: 5, axis: 2, minVelocity: .1, maxVelocity: .2 })
   renderer.render(scene, camera)
 }()

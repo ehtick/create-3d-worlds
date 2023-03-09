@@ -5,7 +5,7 @@ import { Rain } from '/utils/classes/Particles.js'
 createOrbitControls()
 hemLight()
 
-const particles = new Rain({ file: 'smoke.png', size: 9, num: 100, minRange: 1, maxRange: 3, color: 0x999999 })
+const particles = new Rain({ file: 'smoke.png', size: 9, num: 100, minRadius: 1, maxRadius: 3, color: 0x999999 })
 scene.add(particles.mesh)
 particles.mesh.rotateX(Math.PI)
 

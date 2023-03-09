@@ -11,6 +11,7 @@ npx live-server
 
 ## TODO
 
+- refaktoristi čestice da koriste delta vreme?
 
 ### Scenes & examples
 
