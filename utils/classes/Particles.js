@@ -118,10 +118,13 @@ export default class Particles {
     velocity.array.forEach((vel, i) => {
       const index = 3 * i + axis
       const currentPos = position.array[index]
+
       if (axis === 1) // move on y axis
         position.array[index] = currentPos < min ? max : currentPos - vel
+
       if (axis === 2) // move on z axis
         position.array[index] = currentPos > max ? min : currentPos + vel
+
     })
 
     position.needsUpdate = true
