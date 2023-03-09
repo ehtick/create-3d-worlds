@@ -11,8 +11,8 @@ npx live-server
 
 ## TODO
 
-- hendlovati kada igrač nema attack2
 - refaktoristi čestice da koriste delta vreme?
+- obrisati Thrust
 - dodati scenu kao parametar za actore i ostalo?
 
 ### Scenes & examples
@@ -40,9 +40,6 @@ npx live-server
 
 - Adventure / Avatar
   - merge stairway-girl, stairway-to-heaven, tower-of-babel, random-boxes?
-
-- Space / Sletanje
-  - domaće čestice za Lander
 
 - Svemir 
   - dodati model ring space-arcology

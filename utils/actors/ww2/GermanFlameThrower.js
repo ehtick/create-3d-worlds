@@ -46,9 +46,10 @@ export class GermanFlameThrowerPlayer extends Player {
     super.update(delta)
     if (this.particles.mesh.material.opacity <= 0) return
 
+    this.particles.update({ max: this.attackDistance, loop: !this.shouldFadeOut })
+
     if (this.shouldFadeOut)
       this.particles.mesh.material.opacity -= .06
-    this.particles.update({ max: this.attackDistance })
   }
 }
 
@@ -74,8 +75,9 @@ export class GermanFlameThrowerAI extends AI {
     super.update(delta)
     if (this.particles.mesh.material.opacity <= 0) return
 
+    this.particles.update({ max: this.attackDistance, loop: !this.shouldFadeOut })
+
     if (this.shouldFadeOut)
       this.particles.mesh.material.opacity -= .06
-    this.particles.update({ max: this.attackDistance })
   }
 }

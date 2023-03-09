@@ -110,7 +110,7 @@ export default class Particles {
     position.needsUpdate = true
   }
 
-  update({ min = -500, max = 500, axis = 2, minVelocity = .5, maxVelocity = 3, pos } = {}) {
+  update({ min = -500, max = 500, axis = 2, minVelocity = .5, maxVelocity = 3, loop = true, pos } = {}) {
     const { geometry } = this.mesh
     if (!geometry.attributes.velocity) addVelocity({ geometry, min: minVelocity, max: maxVelocity })
     const { position, velocity } = geometry.attributes
@@ -120,11 +120,10 @@ export default class Particles {
       const currentPos = position.array[index]
 
       if (axis === 1) // move on y axis
-        position.array[index] = currentPos < min ? max : currentPos - vel
+        position.array[index] = (loop && currentPos < min) ? max : currentPos - vel
 
       if (axis === 2) // move on z axis
-        position.array[index] = currentPos > max ? min : currentPos + vel
-
+        position.array[index] = (loop && currentPos > max) ? min : currentPos + vel
     })
 
     position.needsUpdate = true
