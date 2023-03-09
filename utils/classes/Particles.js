@@ -190,3 +190,14 @@ export class FlameThrower extends Particles {
     super.update({ min: 0, max: 8, axis: 2, minVelocity: 5, maxVelocity: 10, ...params })
   }
 }
+
+export class Smoke extends Particles {
+  constructor({ file = 'smoke.png', size = 9, num = 100, minRadius = 1, maxRadius = 3, color = 0x999999, blending = THREE.NormalBlending, ...rest } = {}) {
+    super({ num, file, size, minRadius, maxRadius, color, blending, ...rest })
+    this.mesh.rotateX(Math.PI)
+  }
+
+  update(params = {}) {
+    super.update({ rotateY: .009, min: -9, max: 3, minVelocity: 2, maxVelocity: 5, axis: 1, ...params })
+  }
+}

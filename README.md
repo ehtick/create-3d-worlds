@@ -15,6 +15,7 @@ Particles
   - obrisati Thrust
   - dodati delta u expand()
   - rename scalar param
+  - Sneg da nasleđuje Particles
 
 - dodati scenu kao parametar za actore i ostalo?
 
