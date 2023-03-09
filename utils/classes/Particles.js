@@ -171,3 +171,16 @@ export class Explosion extends Particles {
     super({ num, file, size, unitAngle, ...rest })
   }
 }
+
+export class FlameThrower extends Particles {
+  constructor({ file = 'fire.png', size = 5, num = 50, minRadius = 0, maxRadius = .5, color = 0xffffff, ...rest } = {}) {
+    super({ num, file, size, minRadius, maxRadius, color, ...rest })
+    this.mesh.rotateX(Math.PI)
+    this.mesh.translateY(-1.2)
+    this.mesh.translateZ(1.75)
+  }
+
+  update(params = {}) {
+    super.update({ min: 0, max: 8, axis: 2, minVelocity: .05, maxVelocity: .25, ...params })
+  }
+}

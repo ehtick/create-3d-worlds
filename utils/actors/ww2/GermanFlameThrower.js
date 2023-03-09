@@ -1,7 +1,7 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import Particles from '/utils/classes/Particles.js'
+import { FlameThrower } from '/utils/classes/Particles.js'
 
 const animDict = {
   idle: 'Machine Gun Idle',
@@ -23,23 +23,16 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/flame-gun/model.fbx', sc
 
 const sharedProps = { mesh, animations, animDict, rifle, speed: 1.8, attackStyle: 'LOOP', attackDistance: 6 }
 
-const createFlame = () => {
-  const particles = new Particles({ file: 'fire.png', size: 5, num: 50, minRadius: 0, maxRadius: .5, color: 0xffffff })
-  particles.mesh.rotateX(Math.PI)
-  particles.mesh.translateY(-1.2)
-  particles.mesh.translateZ(1.75)
-  particles.mesh.material.opacity = 0
-  return particles
-}
-
 export class GermanFlameThrowerPlayer extends Player {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
-    this.particles = createFlame()
+    this.particles = new FlameThrower()
+    this.particles.mesh.material.opacity = 0
     this.add(this.particles.mesh)
   }
 
   startAttack() {
+    super.startAttack()
     this.particles.mesh.material.opacity = 1
     this.shouldFadeOut = false
   }
@@ -54,14 +47,15 @@ export class GermanFlameThrowerPlayer extends Player {
 
     if (this.shouldFadeOut)
       this.particles.mesh.material.opacity -= .06
-    this.particles.update({ min: 0, max: this.attackDistance, axis: 2, minVelocity: .05, maxVelocity: .25 })
+    this.particles.update({ max: this.attackDistance })
   }
 }
 
 export class GermanFlameThrowerAI extends AI {
   constructor(props = {}) {
     super({ ...sharedProps, attackDistance: 14, ...props })
-    this.particles = createFlame()
+    this.particles = new FlameThrower()
+    this.particles.mesh.material.opacity = 0
     this.add(this.particles.mesh)
   }
 

@@ -15,7 +15,7 @@ export default class AIAttackLoopState extends State {
     super.enter(oldState)
     if (this.action) this.transitFrom(oldAction, .5)
     this.actor.mixer.addEventListener('loop', this.onLoop)
-    this.actor.startHit()
+    this.actor.startAttack()
   }
 
   cleanup() {
@@ -23,7 +23,7 @@ export default class AIAttackLoopState extends State {
   }
 
   onLoop() {
-    this.actor.startHit('player')
+    this.actor.startAttack()
 
     if (this.shouldFinish) {
       this.cleanup()
@@ -32,9 +32,8 @@ export default class AIAttackLoopState extends State {
     }
   }
 
-  update(delta) {
+  update() {
     const { actor } = this
-    if (actor.updateAttack) actor.updateAttack(delta)
 
     if (actor.distancToTarget > actor.attackDistance)
       this.shouldFinish = true
@@ -42,5 +41,6 @@ export default class AIAttackLoopState extends State {
 
   exit() {
     this.cleanup()
+    if (this.actor.endAttack) this.actor.endAttack()
   }
 }
