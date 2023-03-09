@@ -19,14 +19,11 @@ const { mesh, animations } = await loadModel({ file: 'german-machine-gunner.fbx'
 
 const { mesh: rifle } = await loadModel({ file: 'weapon/flame-gun/model.fbx', scale: .75 })
 
-/* EXTENDED CLASSES */
-
-const sharedProps = { mesh, animations, animDict, rifle, speed: 1.8, attackStyle: 'LOOP', attackDistance: 7 }
+/* SHARED METHODS */
 
 const constructor = self => {
   self.particles = new FlameThrower()
   self.particles.mesh.material.opacity = 0
-  self.particles.mesh.raycast = false
   self.add(self.particles.mesh)
 }
 
@@ -47,6 +44,10 @@ const update = (self, delta) => {
   if (self.shouldFadeOut)
     self.particles.mesh.material.opacity -= .03
 }
+
+/* EXTENDED CLASSES */
+
+const sharedProps = { mesh, animations, animDict, rifle, speed: 1.8, attackStyle: 'LOOP', attackDistance: 7 }
 
 export class GermanFlameThrowerPlayer extends Player {
   constructor(props = {}) {
