@@ -1,4 +1,3 @@
-import * as THREE from 'three'
 import { scene, renderer, camera, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
@@ -10,7 +9,7 @@ createOrbitControls()
 camera.position.z = 20
 
 scene.add(createSun())
-scene.add(createGround({ size: 50 }))
+scene.add(createGround({ size: 50, circle: true }))
 
 const xRadius = 40, yRadius = 15
 

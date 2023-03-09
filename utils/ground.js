@@ -34,7 +34,8 @@ export function createGroundMaterial({ color = 0x509f53, file, repeat } = {}) {
   return material
 }
 
-export function crateGroundGeometry({ size, segments = 32, circle = true }) {
+export function crateGroundGeometry({ size, circle = true, segments = circle ? 32 : 1 }) {
+  console.log(circle)
   const geometry = circle
     ? new THREE.CircleGeometry(size, segments)
     : new THREE.PlaneGeometry(size, size, segments, segments)
@@ -45,7 +46,7 @@ export function crateGroundGeometry({ size, segments = 32, circle = true }) {
 
 export function createGround({ size = 1000, color, circle, file, repeat = size / 8 } = {}) {
   const material = createGroundMaterial({ file, color, repeat })
-  const geometry = crateGroundGeometry({ size, circle, segments: 1 })
+  const geometry = crateGroundGeometry({ size, circle })
 
   const mesh = new THREE.Mesh(geometry, material)
   mesh.receiveShadow = true
