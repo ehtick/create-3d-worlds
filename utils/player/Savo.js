@@ -66,13 +66,13 @@ export default class Savo extends Player {
 
     for (let i = 0; i < shoots; i++) setTimeout(() => {
       const intersects = getCameraIntersects(this.camera, this.solids)
+        .filter(x => x.object.type != 'Points') // x.object.name != 'decal'
       if (!intersects.length) return
 
-      const { point, object } = intersects.find(x => x.object.name != 'decal')
+      const { point, object } = intersects[0]
       const isEnemy = belongsTo(object, 'enemy')
 
-      const decalColor = isEnemy ? 0x8a0303 : 0x000000
-      shootDecals(intersects[0], { color: decalColor })
+      if (!isEnemy) shootDecals(intersects[0], { color: 0x000000 })
 
       const ricochetColor = isEnemy ? 0x8a0303 : 0xcccccc
       this.ricochet.reset({ pos: point, unitAngle: 0.2, color: ricochetColor })

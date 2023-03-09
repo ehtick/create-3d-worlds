@@ -21,13 +21,14 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/flame-gun/model.fbx', sc
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict, rifle, speed: 1.8, attackStyle: 'LOOP', attackDistance: 6 }
+const sharedProps = { mesh, animations, animDict, rifle, speed: 1.8, attackStyle: 'LOOP', attackDistance: 7 }
 
 export class GermanFlameThrowerPlayer extends Player {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
     this.particles = new FlameThrower()
     this.particles.mesh.material.opacity = 0
+    this.particles.mesh.raycast = false
     this.add(this.particles.mesh)
   }
 
@@ -53,13 +54,28 @@ export class GermanFlameThrowerPlayer extends Player {
 
 export class GermanFlameThrowerAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, attackDistance: 14, ...props })
+    super({ ...sharedProps, ...props })
     this.particles = new FlameThrower()
     this.particles.mesh.material.opacity = 0
     this.add(this.particles.mesh)
   }
 
-  updateAttack(delta) {
-    this.particles.addParticles(delta)
+  startAttack() {
+    super.startAttack()
+    this.particles.mesh.material.opacity = 1
+    this.shouldFadeOut = false
+  }
+
+  endAttack() {
+    this.shouldFadeOut = true
+  }
+
+  update(delta) {
+    super.update(delta)
+    if (this.particles.mesh.material.opacity <= 0) return
+
+    if (this.shouldFadeOut)
+      this.particles.mesh.material.opacity -= .06
+    this.particles.update({ max: this.attackDistance })
   }
 }

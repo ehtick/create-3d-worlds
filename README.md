@@ -13,15 +13,16 @@ npx live-server
 
 - hendlovati kada igrač nema attack2
 - refaktoristi čestice da koriste delta vreme?
+- dodati scenu kao parametar za actore i ostalo?
 
 ### Scenes & examples
 
 - FPS / Savo
-  - probati domaće čestice za bacač plamena
-  - neki efekat iz cevi mitraljesca kad puca
+  - BUG: igrač udara u plamen
   - isključiti input slušanje za enter i ostalo što ne treba
-  - ispraviti nazi agenta?
   - ako je neprijatelj mrtav izbaciti ga iz računjanja (distanceTo, blizina...)
+    - izbacivati mrtve iz solids?
+  - ispraviti nazi agenta?
   - zamračiti nebo i naglasiti kišu i munje
   - dodati modele vozila i kuca
   - dodati tenk kako prolazi
