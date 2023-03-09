@@ -20,7 +20,7 @@ scene.add(createLampposts({ mapSize, numLampposts: 10 }))
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   renderer.render(scene, camera)
 }()

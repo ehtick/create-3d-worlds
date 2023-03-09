@@ -40,8 +40,8 @@ scene.add(chassisMesh, ...tank.wheelMeshes)
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   tank.update()
   cameraControls.update(tank.chassisMesh)
   const dt = clock.getDelta()

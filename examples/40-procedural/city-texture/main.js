@@ -20,8 +20,8 @@ scene.add(createCity({ mapSize, numBuildings: 10000, rotateEvery: 2, enlargeEver
 
 /* INIT */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   controls.update()
   renderer.render(scene, camera)
 }()

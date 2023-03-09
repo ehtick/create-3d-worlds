@@ -8,8 +8,8 @@ const geometry = new THREE.BoxGeometry()
 const box = new THREE.Mesh(geometry, material)
 scene.add(box)
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   box.rotation.y += 0.01
   renderer.render(scene, camera)
 }()

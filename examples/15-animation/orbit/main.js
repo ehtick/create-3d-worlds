@@ -11,8 +11,8 @@ const orbitRadius = 10
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   tick += 0.03
 
   const x = Math.cos(tick) * orbitRadius * 1.5

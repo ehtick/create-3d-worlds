@@ -24,8 +24,8 @@ for (let i = 0; i < 7; i++) {
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   const delta = clock.getDelta()
 
   player.update()

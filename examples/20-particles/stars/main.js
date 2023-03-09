@@ -9,7 +9,7 @@ scene.add(particles.mesh)
 
 /* LOOP */
 
-void function animate() {
+void function loop() {
   renderer.render(scene, camera)
-  requestAnimationFrame(animate)
+  requestAnimationFrame(loop)
 }()

@@ -14,7 +14,7 @@ const barrel = await loadModel({ file: 'airship/aerial-screw/model.fbx', scale: 
 
 scene.add(barrel.mesh)
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   renderer.render(scene, camera)
 }()

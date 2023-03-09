@@ -12,8 +12,8 @@ document.onmousemove = function(e) {
   mouseX = e.pageX
 }
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   material.uniforms.u_time.value += mouseX * 0.0005
   renderer.render(scene, camera)
 }()

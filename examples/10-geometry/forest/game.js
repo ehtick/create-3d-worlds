@@ -11,8 +11,8 @@ scene.add(createTrees())
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   controls.update()
   renderer.render(scene, camera)
 }()

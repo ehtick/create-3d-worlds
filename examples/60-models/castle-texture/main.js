@@ -27,7 +27,7 @@ scene.add(mesh)
 
 /** FUNKCIJE **/
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   renderer.render(scene, camera)
 }()

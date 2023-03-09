@@ -26,8 +26,8 @@ function rotateCamera() {
 
 // LOOP
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   rotateCamera()
   const delta = clock.getDelta()
   if (mixer) mixer.update(delta)

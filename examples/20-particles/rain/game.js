@@ -10,8 +10,8 @@ scene.add(particles.mesh)
 
 /* LOOP */
 
-void function animate() {
+void function loop() {
   particles.update({ min: -300, max: 300 })
   renderer.render(scene, camera)
-  requestAnimationFrame(animate)
+  requestAnimationFrame(loop)
 }()

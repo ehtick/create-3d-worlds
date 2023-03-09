@@ -11,8 +11,8 @@ particles.mesh.rotateX(Math.PI)
 
 /* LOOP */
 
-void function animate() {
-  particles.update({ rotateY: .009, min: -9, max: 3, minVelocity: .02, maxVelocity: .05 })
+void function loop() {
+  particles.update({ rotateY: .009, min: -9, max: 3, minVelocity: 2, maxVelocity: 5 })
   renderer.render(scene, camera)
-  requestAnimationFrame(animate)
+  requestAnimationFrame(loop)
 }()

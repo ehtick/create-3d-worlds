@@ -62,8 +62,8 @@ npcs.push(airship)
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
 
   const delta = clock.getDelta()
   player.update(delta)

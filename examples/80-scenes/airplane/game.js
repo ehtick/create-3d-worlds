@@ -29,8 +29,8 @@ avion.addSolids(terrain)
 
 /* UPDATE */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   avion.update()
   renderer.render(scene, camera)
 }()

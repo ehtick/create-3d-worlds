@@ -11,8 +11,8 @@ scene.add(box)
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   const time = clock.getElapsedTime()
 
   material.uniforms.time.value = time * 3

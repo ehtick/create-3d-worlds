@@ -13,7 +13,7 @@ const barrel = await loadModel({ file: 'weapon/rifle.fbx', size: 1, fixColors: t
 
 scene.add(barrel.mesh)
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   renderer.render(scene, camera)
 }()

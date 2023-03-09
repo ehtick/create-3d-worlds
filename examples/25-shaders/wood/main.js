@@ -13,8 +13,8 @@ scene.add(light)
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   mesh.rotation.x += 0.005
   mesh.rotation.y += 0.01
   renderer.render(scene, camera)

@@ -110,7 +110,7 @@ export default class Particles {
     position.needsUpdate = true
   }
 
-  update({ min = -500, max = 500, axis = 2, minVelocity = .5, maxVelocity = 3, loop = true, pos } = {}) {
+  update({ delta = 1 / 60, min = -500, max = 500, axis = 2, minVelocity = 50, maxVelocity = 300, loop = true, pos } = {}) {
     const { geometry } = this.mesh
     if (!geometry.attributes.velocity) addVelocity({ geometry, min: minVelocity, max: maxVelocity })
     const { position, velocity } = geometry.attributes
@@ -120,10 +120,10 @@ export default class Particles {
       const currentPos = position.array[index]
 
       if (axis === 1) // move on y axis
-        position.array[index] = (loop && currentPos < min) ? max : currentPos - vel
+        position.array[index] = (loop && currentPos < min) ? max : (currentPos - vel * delta)
 
       if (axis === 2) // move on z axis
-        position.array[index] = (loop && currentPos > max) ? min : currentPos + vel
+        position.array[index] = (loop && currentPos > max) ? min : (currentPos + vel * delta)
     })
 
     position.needsUpdate = true
@@ -149,7 +149,7 @@ export class Rain extends Particles {
     if (input.touched) this.audio.play()
   }
 
-  update({ min = 0, max = 200, minVelocity = 2, maxVelocity = 4, rotateY, ...rest } = {}) {
+  update({ min = 0, max = 200, minVelocity = 120, maxVelocity = 240, rotateY, ...rest } = {}) {
     super.update({ min, max, axis: 1, minVelocity, maxVelocity, ...rest })
     if (rotateY) this.mesh.rotateY(rotateY)
   }
@@ -180,6 +180,6 @@ export class FlameThrower extends Particles {
   }
 
   update(params = {}) {
-    super.update({ min: 0, max: 8, axis: 2, minVelocity: .05, maxVelocity: .25, ...params })
+    super.update({ min: 0, max: 8, axis: 2, minVelocity: 5, maxVelocity: 10, ...params })
   }
 }

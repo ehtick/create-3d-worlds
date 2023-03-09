@@ -11,7 +11,7 @@ npx live-server
 
 ## TODO
 
-- refaktoristi čestice da koriste delta vreme?
+- BUG: GermanFlameThrowerAI u fps sceni pravi bug
 - obrisati Thrust
 - dodati scenu kao parametar za actore i ostalo?
 

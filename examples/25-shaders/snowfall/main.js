@@ -7,8 +7,8 @@ const geometry = new THREE.PlaneGeometry(2, 2)
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
-void function animate(delta) {
-  requestAnimationFrame(animate)
+void function loop(delta) {
+  requestAnimationFrame(loop)
   material.uniforms.u_time.value = delta * 0.0005
   renderer.render(scene, camera)
 }()

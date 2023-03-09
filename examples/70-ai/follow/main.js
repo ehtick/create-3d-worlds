@@ -29,8 +29,8 @@ npcs.forEach(npc => npc.addSolids(solids))
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   const delta = clock.getDelta()
 
   player.update(delta)

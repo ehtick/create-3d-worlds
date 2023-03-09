@@ -32,8 +32,8 @@ const chaseCam = createChaseCamera(mesh)
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   const delta = clock.getDelta()
   zeppelin.update(delta)
   chaseCam()

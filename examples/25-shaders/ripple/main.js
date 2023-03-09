@@ -8,8 +8,8 @@ const geometry = new THREE.PlaneGeometry(2, 1.5)
 const plane = new THREE.Mesh(geometry, material)
 scene.add(plane)
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
 
   uniforms.u_time.value += clock.getDelta()
   renderer.render(scene, camera)

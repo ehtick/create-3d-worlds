@@ -33,8 +33,8 @@ const effect = new OutlineEffect(renderer, { defaultThickness: 0.003 })
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   const timer = Date.now() * 0.0002
   controls.update()
 

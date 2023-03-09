@@ -9,7 +9,7 @@ scene.add(plane)
 
 camera.position.set(0, 0, 1)
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   renderer.render(scene, camera)
 }()

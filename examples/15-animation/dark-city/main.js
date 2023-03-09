@@ -51,8 +51,8 @@ grow()
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   TWEEN.update()
   renderer.render(scene, camera)
 }()

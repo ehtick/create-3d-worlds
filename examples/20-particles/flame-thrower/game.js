@@ -12,6 +12,6 @@ scene.add(particles.mesh)
 
 void function render() {
   requestAnimationFrame(render)
-  particles.update({ min: -5, max: 5, minVelocity: .1, maxVelocity: .2 })
+  particles.update({ min: -5, max: 5, minVelocity: 10, maxVelocity: 20 })
   renderer.render(scene, camera)
 }()

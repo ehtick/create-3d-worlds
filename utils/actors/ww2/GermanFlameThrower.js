@@ -39,10 +39,10 @@ const endAttack = self => {
   self.shouldFadeOut = true
 }
 
-const update = self => {
+const update = (self, delta) => {
   if (self.particles.mesh.material.opacity <= 0) return
 
-  self.particles.update({ max: self.attackDistance, loop: !self.shouldFadeOut })
+  self.particles.update({ delta, max: self.attackDistance, loop: !self.shouldFadeOut })
 
   if (self.shouldFadeOut)
     self.particles.mesh.material.opacity -= .03
@@ -65,7 +65,7 @@ export class GermanFlameThrowerPlayer extends Player {
 
   update(delta) {
     super.update(delta)
-    update(this)
+    update(this, delta)
   }
 }
 
@@ -86,6 +86,6 @@ export class GermanFlameThrowerAI extends AI {
 
   update(delta) {
     super.update(delta)
-    update(this)
+    update(this, delta)
   }
 }

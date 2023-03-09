@@ -14,8 +14,8 @@ scene.add(box)
 const light = new THREE.AmbientLight(0x404040)
 scene.add(light)
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   box.rotation.x += 0.005
   box.rotation.y += 0.01
   renderer.render(scene, camera)

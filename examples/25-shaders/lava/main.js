@@ -11,8 +11,8 @@ scene.add(mesh)
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   uniforms.time.value += 0.8 * clock.getDelta()
   renderer.render(scene, camera)
 }()

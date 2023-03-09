@@ -24,8 +24,8 @@ for (let i = 0; i < 10; i++) {
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   const delta = clock.getDelta()
 
   npcs.forEach(ai => ai.update(delta))

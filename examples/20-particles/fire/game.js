@@ -11,9 +11,9 @@ scene.add(particles.mesh)
 
 /* LOOP */
 
-void function animate() {
-  particles.update({ rotateY: .009, min: -8, max: 4, minVelocity: .015, maxVelocity: .05 })
+void function loop() {
+  particles.update({ rotateY: .009, min: -8, max: 4, minVelocity: 1.5, maxVelocity: 5 })
 
   renderer.render(scene, camera)
-  requestAnimationFrame(animate)
+  requestAnimationFrame(loop)
 }()

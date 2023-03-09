@@ -45,8 +45,8 @@ scene.add(chassisMesh, ...tank.wheelMeshes)
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   tank.update()
   leaveDecals({ ground, scene, vehicle: tank.vehicle, body: tank.body, wheelMeshes: tank.wheelMeshes })
   cameraControls.update(tank.chassisMesh)

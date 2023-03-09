@@ -13,8 +13,8 @@ avatar.addSolids(trees)
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   const delta = clock.getDelta()
   avatar.update(delta)
   renderer.render(scene, camera)

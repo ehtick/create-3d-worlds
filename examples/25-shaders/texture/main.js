@@ -12,7 +12,7 @@ scene.add(cube)
 
 new OrbitControls(camera, renderer.domElement)
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   renderer.render(scene, camera)
 }()

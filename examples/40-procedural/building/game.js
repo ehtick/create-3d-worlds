@@ -11,8 +11,8 @@ scene.add(createMoon({ position: [50, 50, 50], r: 1 }))
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   controls.update()
   renderer.render(scene, camera)
 }()

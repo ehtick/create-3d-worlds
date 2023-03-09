@@ -18,8 +18,8 @@ teapot.material.uniforms.uMaterialColor.value = new THREE.Color(0x427062)
 
 /* LOOP */
 
-void function animate() {
-  requestAnimationFrame(animate)
+void function loop() {
+  requestAnimationFrame(loop)
   sun.position.set(40 * Math.cos(time), 75, 40 * Math.sin(time))
   teapot.material.uniforms.uLightPos.value = sun.position
   time += 0.01
