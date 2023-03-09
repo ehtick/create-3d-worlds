@@ -35,7 +35,6 @@ export function createGroundMaterial({ color = 0x509f53, file, repeat } = {}) {
 }
 
 export function crateGroundGeometry({ size, circle = true, segments = circle ? 32 : 1 }) {
-  console.log(circle)
   const geometry = circle
     ? new THREE.CircleGeometry(size, segments)
     : new THREE.PlaneGeometry(size, size, segments, segments)
