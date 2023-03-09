@@ -23,61 +23,69 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/flame-gun/model.fbx', sc
 
 const sharedProps = { mesh, animations, animDict, rifle, speed: 1.8, attackStyle: 'LOOP', attackDistance: 7 }
 
+const constructor = self => {
+  self.particles = new FlameThrower()
+  self.particles.mesh.material.opacity = 0
+  self.particles.mesh.raycast = false
+  self.add(self.particles.mesh)
+}
+
+const startAttack = self => {
+  self.particles.mesh.material.opacity = 1
+  self.shouldFadeOut = false
+}
+
+const endAttack = self => {
+  self.shouldFadeOut = true
+}
+
+const update = self => {
+  if (self.particles.mesh.material.opacity <= 0) return
+
+  self.particles.update({ max: self.attackDistance, loop: !self.shouldFadeOut })
+
+  if (self.shouldFadeOut)
+    self.particles.mesh.material.opacity -= .03
+}
+
 export class GermanFlameThrowerPlayer extends Player {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
-    this.particles = new FlameThrower()
-    this.particles.mesh.material.opacity = 0
-    this.particles.mesh.raycast = false
-    this.add(this.particles.mesh)
+    constructor(this)
   }
 
   startAttack() {
     super.startAttack()
-    this.particles.mesh.material.opacity = 1
-    this.shouldFadeOut = false
+    startAttack(this)
   }
 
   endAttack() {
-    this.shouldFadeOut = true
+    endAttack(this)
   }
 
   update(delta) {
     super.update(delta)
-    if (this.particles.mesh.material.opacity <= 0) return
-
-    this.particles.update({ max: this.attackDistance, loop: !this.shouldFadeOut })
-
-    if (this.shouldFadeOut)
-      this.particles.mesh.material.opacity -= .06
+    update(this)
   }
 }
 
 export class GermanFlameThrowerAI extends AI {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
-    this.particles = new FlameThrower()
-    this.particles.mesh.material.opacity = 0
-    this.add(this.particles.mesh)
+    constructor(this)
   }
 
   startAttack() {
     super.startAttack()
-    this.particles.mesh.material.opacity = 1
-    this.shouldFadeOut = false
+    startAttack(this)
   }
 
   endAttack() {
-    this.shouldFadeOut = true
+    endAttack(this)
   }
 
   update(delta) {
     super.update(delta)
-    if (this.particles.mesh.material.opacity <= 0) return
-
-    this.particles.update({ max: this.attackDistance, loop: !this.shouldFadeOut })
-
-    if (this.shouldFadeOut)
-      this.particles.mesh.material.opacity -= .06
+    update(this)
   }
 }
