@@ -5,13 +5,13 @@ import { Snow } from '/utils/classes/Particles.js'
 hemLight()
 renderer.setClearColor(0x000000)
 
-const particles = new Snow({ size: 7, minRadius: 50, maxRadius: 500 })
+const particles = new Snow()
 scene.add(particles.mesh)
 
 /* LOOP */
 
 void function loop() {
-  particles.update({ min: -100, max: 100, minVelocity: 100, maxVelocity: 300 })
+  particles.update()
   renderer.render(scene, camera)
   requestAnimationFrame(loop)
 }()

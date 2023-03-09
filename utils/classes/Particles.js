@@ -61,10 +61,8 @@ function createParticles({ num = 10000, file = 'ball.png', color, size = .5, opa
   return new THREE.Points(geometry, material)
 }
 
-/* BASE CLASS */
-
 /**
- * Particles
+ * Particles base class
  * constructor(): creates sphere full of particles
  * expand(): expands particles from center according to unitAngle and scalar
  * update(): moves particles vertically or horizontally
@@ -116,7 +114,7 @@ export default class Particles {
     position.needsUpdate = true
   }
 
-  update({ delta = 1 / 60, min = -500, max = 500, axis = 2, minVelocity = 50, maxVelocity = 300, loop = true, pos } = {}) {
+  update({ delta = 1 / 60, min = -500, max = 500, axis = 2, minVelocity = 50, maxVelocity = 300, loop = true, pos, rotateY } = {}) {
     const { geometry } = this.mesh
     if (!geometry.attributes.velocity) addVelocity({ geometry, minVelocity, maxVelocity })
     const { position, velocity } = geometry.attributes
@@ -134,6 +132,7 @@ export default class Particles {
 
     position.needsUpdate = true
     if (pos) this.mesh.position.set(pos.x, 0, pos.z) // follow player
+    if (rotateY) this.mesh.rotateY(rotateY)
   }
 }
 
@@ -155,20 +154,18 @@ export class Rain extends Particles {
     if (input.touched) this.audio.play()
   }
 
-  update({ min = 0, max = 200, minVelocity = 120, maxVelocity = 240, rotateY, ...rest } = {}) {
+  update({ min = 0, max = 200, minVelocity = 120, maxVelocity = 240, ...rest } = {}) {
     super.update({ min, max, axis: 1, minVelocity, maxVelocity, ...rest })
-    if (rotateY) this.mesh.rotateY(rotateY)
   }
 }
 
-// TODO: extends Particles directly
-export class Snow extends Rain {
-  constructor({ file = 'snowflake.png', size = 5, color = 0xffffff, ...rest } = {}) {
-    super({ file, size, color, ...rest })
+export class Snow extends Particles {
+  constructor(params = {}) {
+    super({ file: 'snowflake.png', color: 0xffffff, size: 7, minRadius: 50, maxRadius: 500, ...params })
   }
 
   update(params = {}) {
-    super.update({ rotateY: .003, ...params })
+    super.update({ axis: 1, rotateY: .007, min: -100, max: 100, minVelocity: 50, maxVelocity: 150, ...params })
   }
 }
 
