@@ -13,10 +13,10 @@ const setPosition = (mesh, pos) => {
     mesh.position.copy(pos)
 }
 
-function addVelocity({ geometry, min = .5, max = 3 } = {}) {
+function addVelocity({ geometry, minVelocity = .5, maxVelocity = 3 } = {}) {
   const velocities = []
   for (let i = 0; i < geometry.attributes.position.count; i++)
-    velocities[i] = randFloat(min, max)
+    velocities[i] = randFloat(minVelocity, maxVelocity)
   geometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 1))
 }
 
@@ -63,6 +63,12 @@ function createParticles({ num = 10000, file = 'ball.png', color, size = .5, opa
 
 /* BASE CLASS */
 
+/**
+ * Particles
+ * constructor(): creates sphere full of particles
+ * expand(): expands particles from center according to unitAngle and scalar
+ * update(): moves particles vertically or horizontally
+ */
 export default class Particles {
   constructor(params) {
     this.t = 0
@@ -112,17 +118,17 @@ export default class Particles {
 
   update({ delta = 1 / 60, min = -500, max = 500, axis = 2, minVelocity = 50, maxVelocity = 300, loop = true, pos } = {}) {
     const { geometry } = this.mesh
-    if (!geometry.attributes.velocity) addVelocity({ geometry, min: minVelocity, max: maxVelocity })
+    if (!geometry.attributes.velocity) addVelocity({ geometry, minVelocity, maxVelocity })
     const { position, velocity } = geometry.attributes
 
     velocity.array.forEach((vel, i) => {
       const index = 3 * i + axis
       const currentPos = position.array[index]
 
-      if (axis === 1) // move on y axis
+      if (axis === 1) // y: vertical axis
         position.array[index] = (loop && currentPos < min) ? max : (currentPos - vel * delta)
 
-      if (axis === 2) // move on z axis
+      if (axis === 2) // z: horizontal axis
         position.array[index] = (loop && currentPos > max) ? min : (currentPos + vel * delta)
     })
 
@@ -155,6 +161,7 @@ export class Rain extends Particles {
   }
 }
 
+// TODO: extends Particles directly
 export class Snow extends Rain {
   constructor({ file = 'snowflake.png', size = 5, color = 0xffffff, ...rest } = {}) {
     super({ file, size, color, ...rest })

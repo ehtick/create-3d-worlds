@@ -11,7 +11,11 @@ npx live-server
 
 ## TODO
 
-- obrisati Thrust
+Particles
+  - obrisati Thrust
+  - dodati delta u expand()
+  - rename scalar param
+
 - dodati scenu kao parametar za actore i ostalo?
 
 ### Scenes & examples
