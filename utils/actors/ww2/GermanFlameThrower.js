@@ -21,13 +21,14 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/flame-gun/model.fbx', sc
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict, rifle, speed: 1.8, attackStyle: 'LOOP', attackDistance: 9 }
+const sharedProps = { mesh, animations, animDict, rifle, speed: 1.8, attackStyle: 'LOOP', attackDistance: 6 }
 
 const createFlame = () => {
   const particles = new Particles({ file: 'fire.png', size: 5, num: 50, minRadius: 0, maxRadius: .5, color: 0xffffff })
   particles.mesh.rotateX(Math.PI)
-  particles.mesh.visible = false
   particles.mesh.translateY(-1.2)
+  particles.mesh.translateZ(1.75)
+  particles.mesh.material.opacity = 0
   return particles
 }
 
@@ -39,15 +40,21 @@ export class GermanFlameThrowerPlayer extends Player {
   }
 
   startAttack() {
-    this.particles.mesh.visible = true
-  }
-
-  updateAttack() {
-    this.particles.update({ min: 1.5, max: this.attackDistance, axis: 2, minVelocity: .1, maxVelocity: .2 })
+    this.particles.mesh.material.opacity = 1
+    this.shouldFadeOut = false
   }
 
   endAttack() {
-    this.particles.mesh.visible = false
+    this.shouldFadeOut = true
+  }
+
+  update(delta) {
+    super.update(delta)
+    if (this.particles.mesh.material.opacity <= 0) return
+
+    if (this.shouldFadeOut)
+      this.particles.mesh.material.opacity -= .06
+    this.particles.update({ min: 0, max: this.attackDistance, axis: 2, minVelocity: .05, maxVelocity: .25 })
   }
 }
 

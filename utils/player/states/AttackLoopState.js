@@ -11,7 +11,9 @@ export default class AttackLoopState extends State {
   update(delta) {
     const { actor } = this
 
-    if (actor.updateAttack) actor.updateAttack(delta)
+    this.actor.updateTurn(delta)
+
+    /* TRANSIT */
 
     if (!actor.input.attack && !actor.input.attack2)
       actor.setState(this.prevOrIdle)

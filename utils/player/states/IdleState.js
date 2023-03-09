@@ -16,6 +16,8 @@ export default class IdleState extends State {
   update(delta) {
     this.actor.updateTurn(delta)
 
+    /* TRANSIT */
+
     if (this.actor.input.up || this.actor.input.down)
       this.actor.setState('walk')
 
