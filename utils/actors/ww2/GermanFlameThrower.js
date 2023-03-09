@@ -38,9 +38,16 @@ export class GermanFlameThrowerPlayer extends Player {
     this.add(this.particles.mesh)
   }
 
-  attackUpdate() {
+  startAttack() {
     this.particles.mesh.visible = true
+  }
+
+  updateAttack() {
     this.particles.update({ min: 1.5, max: this.attackDistance, axis: 2, minVelocity: .1, maxVelocity: .2 })
+  }
+
+  endAttack() {
+    this.particles.mesh.visible = false
   }
 }
 
@@ -51,7 +58,7 @@ export class GermanFlameThrowerAI extends AI {
     this.add(this.particles.mesh)
   }
 
-  attackUpdate(delta) {
+  updateAttack(delta) {
     this.particles.addParticles(delta)
   }
 }

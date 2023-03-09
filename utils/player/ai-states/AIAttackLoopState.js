@@ -34,7 +34,7 @@ export default class AIAttackLoopState extends State {
 
   update(delta) {
     const { actor } = this
-    if (actor.attackUpdate) actor.attackUpdate(delta)
+    if (actor.updateAttack) actor.updateAttack(delta)
 
     if (actor.distancToTarget > actor.attackDistance)
       this.shouldFinish = true

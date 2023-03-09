@@ -37,6 +37,9 @@ export default class WalkState extends State {
     if (actor.input.attack)
       actor.setState('attack')
 
+    if (this.input.attack2)
+      this.actor.setState('attack2')
+
     if (actor.input.run)
       actor.setState('run')
 

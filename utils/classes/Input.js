@@ -129,6 +129,10 @@ class Input {
     return this.pressed.Enter
   }
 
+  get attack2() {
+    return this.pressed.ShiftRight
+  }
+
   get backspace() {
     return this.pressed.Backspace
   }

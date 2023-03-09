@@ -11,6 +11,7 @@ npx live-server
 
 ## TODO
 
+- hendlovati kada igrač nema attack2
 - refaktoristi čestice da koriste delta vreme?
 
 ### Scenes & examples
