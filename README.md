@@ -18,7 +18,6 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
-  - BUG: igrač udara u plamen
   - isključiti input slušanje za enter i ostalo što ne treba
   - ako je neprijatelj mrtav izbaciti ga iz računjanja (distanceTo, blizina...)
     - izbacivati mrtve iz solids?

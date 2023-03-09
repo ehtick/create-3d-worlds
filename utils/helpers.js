@@ -129,14 +129,13 @@ export const adjustHeight = mesh => mesh.translateY(getHeight(mesh) / 2)
 /**
    * Add solid objects for player to collide
    * @param {array} oldSolids pass by reference
-   * @param {any} newSolids mesh group, array or a single mesh
+   * @param {array or mesh} newSolids
    */
 export const addSolids = (oldSolids, ...newSolids) => {
   const pushUnique = obj => {
     if (!oldSolids.includes(obj)) oldSolids.push(obj)
   }
   newSolids.forEach(solid => {
-    // if (solid?.type == 'Group' && solid.children.length) oldSolids.push(...solid.children)
     if (Array.isArray(solid)) solid.forEach(pushUnique)
     else pushUnique(solid)
   })
@@ -197,9 +196,11 @@ export function similarColor(color, range = .25) {
 
 /* RAYCAST */
 
-export const getIntersects = (raycaster, target = defaultScene) => Array.isArray(target)
-  ? raycaster.intersectObjects(target)
-  : raycaster.intersectObject(target)
+export const getIntersects = (raycaster, target = defaultScene) => (
+  Array.isArray(target)
+    ? raycaster.intersectObjects(target)
+    : raycaster.intersectObject(target)
+).filter(x => x.object.type != 'Points')
 
 const distanceTo = ({ pos, solids }, direction) => {
   if (!pos || !solids.length) return Infinity

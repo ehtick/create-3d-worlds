@@ -65,8 +65,7 @@ export default class Savo extends Player {
     this.audio.play()
 
     for (let i = 0; i < shoots; i++) setTimeout(() => {
-      const intersects = getCameraIntersects(this.camera, this.solids)
-        .filter(x => x.object.type != 'Points') // x.object.name != 'decal'
+      const intersects = getCameraIntersects(this.camera, this.solids) // .filter(x => x.object.name != 'decal')
       if (!intersects.length) return
 
       const { point, object } = intersects[0]
