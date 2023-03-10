@@ -87,6 +87,6 @@ export default class Lander extends Sprite {
 
   update(delta) {
     super.update(delta)
-    this.particles.update({ delta, max: 3, shouldFadeOut: this.shouldFadeOut })
+    this.particles.update({ delta, max: 3, loop: !this.shouldFadeOut })
   }
 }
