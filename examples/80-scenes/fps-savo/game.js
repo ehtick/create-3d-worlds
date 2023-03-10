@@ -2,7 +2,7 @@ import { scene, renderer, camera, clock, createSkyBox } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 import { sample } from '/utils/helpers.js'
 import Tilemap from '/utils/classes/Tilemap.js'
-import { nemesis } from '/utils/data/maps.js'
+import { smallMap } from '/utils/data/maps.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
 import { Rain } from '/utils/classes/Particles.js'
 import Savo from '/utils/player/Savo.js'
@@ -16,7 +16,7 @@ const enemyClasses = [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachine
 const light = hemLight({ intensity: .75 })
 scene.background = createSkyBox({ folder: 'skybox1' })
 
-const tilemap = new Tilemap(nemesis, 20)
+const tilemap = new Tilemap(smallMap, 20)
 const coords = tilemap.getEmptyCoords()
 
 scene.add(createGround({ file: 'terrain/ground.jpg' }))
@@ -28,7 +28,7 @@ player.position.copy(coords.pop())
 scene.add(player.mesh)
 
 const enemies = []
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 20; i++) {
   const EnemyClass = sample(enemyClasses)
   const enemy = new EnemyClass({ coords, target: player.mesh })
   enemies.push(enemy)

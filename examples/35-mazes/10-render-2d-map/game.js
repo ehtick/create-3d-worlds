@@ -1,9 +1,9 @@
-import matrix from '/utils/data/small-map.js'
+import { smallMap } from '/utils/data/maps.js'
 import Tilemap from '/utils/classes/Tilemap.js'
 import Player2D from '/utils/classes/2d/Player2D.js'
 import Map2DRenderer from '/utils/classes/2d/Map2DRenderer.js'
 
-const tilemap = new Tilemap(matrix, 30)
+const tilemap = new Tilemap(smallMap, 30)
 const coords = tilemap.getEmptyCoords(false)
 const [x, y] = coords.pop()
 

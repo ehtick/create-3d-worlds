@@ -2,7 +2,7 @@ import { createGround } from '/utils/ground.js'
 import { meshFromMatrix } from '/utils/mazes.js'
 import { scene, renderer, camera, clock } from '/utils/scene.js'
 import Avatar from '/utils/player/Avatar.js'
-import matrix from '/utils/data/small-map.js'
+import { smallMap } from '/utils/data/maps.js'
 import { hemLight } from '/utils/light.js'
 
 hemLight()
@@ -11,7 +11,7 @@ const avatar = new Avatar({ size: 1, skin: 'lava', camera })
 avatar.position.set(12, 0, 12)
 
 const floor = createGround({ file: 'terrain/ground.jpg' })
-const walls = meshFromMatrix({ matrix, size: 4 })
+const walls = meshFromMatrix({ matrix: smallMap, size: 4 })
 
 scene.add(avatar.mesh, floor, walls)
 

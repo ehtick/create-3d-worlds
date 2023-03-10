@@ -11,10 +11,11 @@ npx live-server
 
 ## TODO
 
+- pokušati optimizaciju učitavanja animacija
+
 ### Scenes & examples
 
 - FPS / Savo
-  - naglasiti kišu i munje
   - izabrati mapu
   - dodati modele vozila i kuca
   - dodati tenk kako prolazi
