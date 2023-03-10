@@ -5,13 +5,13 @@ import { Rain } from '/utils/classes/Particles.js'
 hemLight()
 renderer.setClearColor(0x000000)
 
-const particles = new Rain({ num: 10000, opacity: .7, color: 0x9999ff, size: 2, minRadius: 50, maxRadius: 500 })
+const particles = new Rain({ num: 1000, opacity: .7, color: 0x9999ff, size: 1, minRadius: 5, maxRadius: 100 })
 scene.add(particles.mesh)
 
 /* LOOP */
 
 void function loop() {
-  particles.update({ minVelocity: 120, maxVelocity: 240, min: -300, max: 300 })
+  particles.update({ minVelocity: 120, maxVelocity: 240, min: -100, max: 200 })
   renderer.render(scene, camera)
   requestAnimationFrame(loop)
 }()
