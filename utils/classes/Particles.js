@@ -180,13 +180,13 @@ export class Flame extends Particles {
     super({ num, file, size, minRadius, maxRadius, color, ...rest })
   }
 
-  update({ min = 0, max = 8, axis = 2, minVelocity = 5, maxVelocity = 10, loop, ...rest } = {}) {
+  update({ delta, min = 0, max = 8, axis = 2, minVelocity = 5, maxVelocity = 10, loop, ...rest } = {}) {
     if (this.mesh.material.opacity <= 0) return
 
-    super.update({ min, max, axis, minVelocity, maxVelocity, loop, ...rest })
+    super.update({ delta, min, max, axis, minVelocity, maxVelocity, loop, ...rest })
 
     if (!loop)
-      this.mesh.material.opacity -= .03
+      this.mesh.material.opacity -= 1.75 * delta
   }
 }
 

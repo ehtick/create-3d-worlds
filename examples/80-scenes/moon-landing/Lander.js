@@ -1,4 +1,3 @@
-
 import Sprite from './Sprite.js'
 import input from '/utils/classes/Input.js'
 import { Flame } from '/utils/classes/Particles.js'
@@ -75,8 +74,9 @@ export default class Lander extends Sprite {
 
     if (this.failure) {
       this.mesh.rotation.z = Math.PI * .5
-      this.addThrust(dt, Math.PI * .5, [0, -1, 0])
-    }
+      this.addThrust(Math.PI * .5, [0, 1.25, 0])
+    } else
+      this.clearThrust()
   }
 
   showStats(element) {

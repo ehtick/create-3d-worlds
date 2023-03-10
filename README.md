@@ -12,7 +12,6 @@ npx live-server
 ## TODO
 
 Particles
-  - obrisati Thrust
   - dodati delta u expand()
   - rename scalar param
 

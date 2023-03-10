@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { randomGray, getHeight } from './helpers.js'
+import { randomGray } from './helpers.js'
 import { material as skyMaterial } from '/utils/shaders/gradient-sky.js'
 
 const { randFloat, randFloatSpread } = THREE.MathUtils
@@ -18,8 +18,6 @@ export function createBox({ size = 1, width = size, height = size, depth = size,
   const material = new THREE.MeshPhongMaterial(options)
   const mesh = new THREE.Mesh(geometry, material)
   mesh.translateY(height / 2)
-  // mesh.updateMatrix()
-  // mesh.geometry.applyMatrix4(mesh.matrix)
 
   if (pos) mesh.position.copy(pos)
   if (quat) mesh.quaternion.copy(quat)
