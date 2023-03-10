@@ -112,7 +112,7 @@ export async function loadFbx(params) {
   })
 
   if (texture) {
-    const map = await textureLoader.loadAsync(`/assets/models/${texture}`)
+    const map = await textureLoader.loadAsync(`/assets/textures/${texture}`)
     model.traverse(child => {
       if (child.isMesh) child.material.map = map
     })

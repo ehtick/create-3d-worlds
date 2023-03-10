@@ -13,7 +13,7 @@ import { GermanFlameThrowerAI } from '/utils/actors/ww2/GermanFlameThrower.js'
 import { createCrate, createRustyBarrel, createMetalBarrel } from '/utils/geometry.js'
 import { loadModel } from '/utils/loaders.js'
 
-const enemyClasses = [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
+const enemyClasses = [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
 
 const light = hemLight({ intensity: .75 })
 scene.background = createSkyBox({ folder: 'skybox1' })
@@ -31,8 +31,7 @@ const solids = [walls]
 
 /* ACTORS */
 
-const player = new Savo({ camera })
-player.position.copy(coords.pop())
+const player = new Savo({ camera, coords })
 scene.add(player.mesh)
 
 const enemies = []
@@ -45,16 +44,18 @@ for (let i = 0; i < 20; i++) {
 
 /* OBJECTS */
 
-const { mesh: bunker } = await loadModel({ file: 'building/bunker.fbx', size: 2.5 })
+const { mesh: tank } = await loadModel({ file: 'tank/renault-ft.fbx', texture: 'metal/metal01.jpg', size: 2.5 })
+tank.position.copy(coords.pop())
+solids.push(tank)
+
+const { mesh: bunker } = await loadModel({ file: 'building/bunker.fbx', texture: 'terrain/concrete.jpg', size: 2.5 })
 bunker.position.copy(coords.pop())
 solids.push(bunker)
-
-const createObject = [createCrate, createRustyBarrel, createMetalBarrel]
 
 for (let i = 0; i < 5; i++) {
   const coord = coords.pop()
   for (let j = -1; j < 2; j++) {
-    const object = sample(createObject)()
+    const object = sample([createCrate, createRustyBarrel, createMetalBarrel])()
     object.position.copy(coord)
     object.translateX(j)
     player.addSolids(object)
