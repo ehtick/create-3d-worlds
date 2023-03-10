@@ -87,12 +87,6 @@ export default class Lander extends Sprite {
 
   update(delta) {
     super.update(delta)
-
-    if (this.particles.mesh.material.opacity <= 0) return
-
-    this.particles.update({ delta, max: 3, loop: !this.shouldFadeOut })
-
-    if (this.shouldFadeOut)
-      this.particles.mesh.material.opacity -= .03
+    this.particles.update({ delta, max: 3, shouldFadeOut: this.shouldFadeOut })
   }
 }

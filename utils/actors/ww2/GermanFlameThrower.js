@@ -41,12 +41,7 @@ const endAttack = self => {
 }
 
 const update = (self, delta) => {
-  if (self.particles.mesh.material.opacity <= 0) return
-
   self.particles.update({ delta, max: self.attackDistance, loop: !self.shouldFadeOut })
-
-  if (self.shouldFadeOut)
-    self.particles.mesh.material.opacity -= .03
 }
 
 /* EXTENDED CLASSES */
