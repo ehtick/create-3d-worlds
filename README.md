@@ -14,7 +14,7 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
-  - zamračiti nebo i naglasiti kišu i munje
+  - naglasiti kišu i munje
   - izabrati mapu
   - dodati modele vozila i kuca
   - dodati tenk kako prolazi

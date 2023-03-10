@@ -134,7 +134,7 @@ export default class Particles {
     })
 
     position.needsUpdate = true
-    if (pos) this.mesh.position.set(pos.x, 0, pos.z) // follow player
+    if (pos) this.mesh.position.set(pos.x, pos.y, pos.z) // follow player
     if (rotateY) this.mesh.rotateY(rotateY)
   }
 }
@@ -148,7 +148,7 @@ export class Stars extends Particles {
 }
 
 export class Rain extends Particles {
-  constructor({ file = 'raindrop.png', num = 10000, size = .2, opacity = .7, minRadius = 10, maxRadius = 100, color = 0xDEF4FC } = {}) {
+  constructor({ file = 'raindrop.png', num = 1000, size = .1, opacity = .75, minRadius = 1.5, maxRadius = 5, color = 0xDEF4FC } = {}) {
     super({ file, num, size, opacity, minRadius, maxRadius, color, blending: THREE.NormalBlending })
 
     this.audio = new Audio('/assets/sounds/rain.mp3')
@@ -157,7 +157,7 @@ export class Rain extends Particles {
     if (input.touched) this.audio.play()
   }
 
-  update({ min = 0, max = 200, minVelocity = 120, maxVelocity = 240, ...rest } = {}) {
+  update({ min = 0, max = 50, minVelocity = 20, maxVelocity = 60, ...rest } = {}) {
     super.update({ min, max, axis: 1, minVelocity, maxVelocity, ...rest })
   }
 }

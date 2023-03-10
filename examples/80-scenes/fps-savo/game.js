@@ -6,8 +6,6 @@ import { nemesis } from '/utils/data/maps.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
 import { Rain } from '/utils/classes/Particles.js'
 import Savo from '/utils/player/Savo.js'
-// import { GermanSoldierAI } from '/utils/actors/ww2/GermanSoldier.js'
-// import { NaziAgentAI } from '/utils/actors/ww2/NaziAgent.js'
 import { GermanMachineGunnerAI } from '/utils/actors/ww2/GermanMachineGunner.js'
 import { SSSoldierAI } from '/utils/actors/ww2/SSSoldier.js'
 import { NaziOfficerAI } from '/utils/actors/ww2/NaziOfficer.js'
@@ -15,10 +13,10 @@ import { GermanFlameThrowerAI } from '/utils/actors/ww2/GermanFlameThrower.js'
 
 const enemyClasses = [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
 
-const light = hemLight()
-scene.background = createSkyBox({ folder: 'skybox4' })
+const light = hemLight({ intensity: .75 })
+scene.background = createSkyBox({ folder: 'skybox1' })
 
-const tilemap = new Tilemap(nemesis, 10)
+const tilemap = new Tilemap(nemesis, 20)
 const coords = tilemap.getEmptyCoords()
 
 scene.add(createGround({ file: 'terrain/ground.jpg' }))
@@ -30,7 +28,7 @@ player.position.copy(coords.pop())
 scene.add(player.mesh)
 
 const enemies = []
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 10; i++) {
   const EnemyClass = sample(enemyClasses)
   const enemy = new EnemyClass({ coords, target: player.mesh })
   enemies.push(enemy)
