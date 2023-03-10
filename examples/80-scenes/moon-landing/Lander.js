@@ -8,8 +8,8 @@ export default class Lander extends Sprite {
   constructor(mesh) {
     super(mesh)
     this.fuel = 2000
-    this.thrust = new Thrust()
-    this.mesh.add(this.thrust.mesh)
+    this.particles = new Thrust()
+    this.mesh.add(this.particles.mesh)
     this.thrustCleared = false
     this.failure = false
   }
@@ -45,14 +45,14 @@ export default class Lander extends Sprite {
 
   addThrust(dt, angle, pos) {
     this.clearThrust()
-    this.thrust.mesh.rotation.z = angle
-    this.thrust.mesh.position.set(...pos)
-    this.thrust.addParticles(dt)
+    this.particles.mesh.rotation.z = angle
+    this.particles.mesh.position.set(...pos)
+    this.particles.addParticles(dt)
   }
 
   clearThrust() {
     if (this.thrustCleared) return
-    this.thrust.clear()
+    this.particles.clear()
     this.thrustCleared = true
   }
 
@@ -89,6 +89,6 @@ export default class Lander extends Sprite {
 
   update(dt) {
     super.update(dt)
-    this.thrust.updateParticles(dt)
+    this.particles.updateParticles(dt)
   }
 }

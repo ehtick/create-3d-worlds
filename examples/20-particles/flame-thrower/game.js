@@ -1,11 +1,11 @@
 import * as THREE from 'three'
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { FlameThrower } from '/utils/classes/Particles.js'
+import { Flame } from '/utils/classes/Particles.js'
 
 createOrbitControls()
 scene.background = new THREE.Color(0x000000)
 
-const particles = new FlameThrower({ size: 10, num: 100, minRadius: 0, maxRadius: .75 })
+const particles = new Flame({ size: 10, num: 100, minRadius: 0, maxRadius: .75 })
 scene.add(particles.mesh)
 
 /* LOOP */

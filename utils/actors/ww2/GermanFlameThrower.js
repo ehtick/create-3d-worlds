@@ -1,7 +1,7 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
-import { FlameThrower } from '/utils/classes/Particles.js'
+import { Flame } from '/utils/classes/Particles.js'
 
 const animDict = {
   idle: 'Machine Gun Idle',
@@ -22,7 +22,7 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/flame-gun/model.fbx', sc
 /* SHARED METHODS */
 
 const constructor = self => {
-  self.particles = new FlameThrower()
+  self.particles = new Flame()
   self.particles.mesh.material.opacity = 0
   self.add(self.particles.mesh)
 }
