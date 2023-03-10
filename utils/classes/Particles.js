@@ -29,8 +29,8 @@ function createParticles({ num = 10000, file = 'ball.png', color, size = .5, opa
     const vertex = new THREE.Vector3(
       randFloat(-unitAngle, unitAngle), randFloat(-unitAngle, unitAngle), randFloat(-unitAngle, unitAngle)
     )
-    const scalar = randFloat(minRadius, maxRadius)
-    vertex.multiplyScalar(scalar)
+    const velocity = randFloat(minRadius, maxRadius)
+    vertex.multiplyScalar(velocity)
     const { x, y, z } = vertex
     positions.push(x, y, z)
     if (!color) {
@@ -62,10 +62,7 @@ function createParticles({ num = 10000, file = 'ball.png', color, size = .5, opa
 }
 
 /**
- * Particles base class
- * constructor(): creates sphere full of particles
- * expand(): expands particles from center according to unitAngle and scalar
- * update(): moves particles vertically or horizontally
+ * Particles base class, creates particles in sphere space
  */
 export default class Particles {
   constructor(params) {
@@ -93,7 +90,10 @@ export default class Particles {
 
   }
 
-  expand({ scalar = 1.1, maxRounds = 50, gravity = 0 } = {}) { // scalar < 1 reverses direction
+  /**
+   * expands particles from center according to unitAngle and velocity
+   */
+  expand({ velocity = 1.1, maxRounds = 50, gravity = 0 } = {}) { // velocity < 1 reverses direction
     const { mesh } = this
     if (++this.t > maxRounds) {
       mesh.visible = false
@@ -106,7 +106,7 @@ export default class Particles {
     const vertex = new THREE.Vector3()
     for (let i = 0, l = position.count; i < l; i++) {
       vertex.fromBufferAttribute(position, i)
-      vertex.multiplyScalar(scalar)
+      vertex.multiplyScalar(velocity)
       vertex.y -= gravity
       position.setXYZ(i, vertex.x, vertex.y, vertex.z)
     }
@@ -114,6 +114,9 @@ export default class Particles {
     position.needsUpdate = true
   }
 
+  /**
+   * moves particles vertically or horizontally according to axis
+   */
   update({ delta = 1 / 60, min = -500, max = 500, axis = 2, minVelocity = 50, maxVelocity = 300, loop = true, pos, rotateY } = {}) {
     const { geometry } = this.mesh
     if (!geometry.attributes.velocity) addVelocity({ geometry, minVelocity, maxVelocity })

@@ -35,7 +35,7 @@ void function loop() {
   fpsRenderer.renderTarget()
   fpsRenderer.drawWeapon(time)
 
-  ricochet.expand({ scalar: 1.2, maxRounds: 5, gravity: .02 })
+  ricochet.expand({ velocity: 1.2, maxRounds: 5, gravity: .02 })
 }()
 
 const city = await createGraffitiCity({ scene, mapSize })

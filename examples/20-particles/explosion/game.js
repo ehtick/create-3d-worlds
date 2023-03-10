@@ -11,7 +11,7 @@ scene.add(explosion.mesh)
 
 void function render() {
   renderer.render(scene, camera)
-  explosion.expand({ scalar: 1.1 })
+  explosion.expand({ velocity: 1.1 })
   requestAnimationFrame(render)
 }()
 

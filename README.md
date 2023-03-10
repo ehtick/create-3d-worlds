@@ -11,10 +11,6 @@ npx live-server
 
 ## TODO
 
-Particles
-  - dodati delta u expand()
-  - rename scalar param
-
 - dodati scenu kao parametar za actore i ostalo?
 
 ### Scenes & examples
