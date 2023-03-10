@@ -319,7 +319,7 @@ export function createCity({
 
   for (let i = 0; i < numBuildings; i++) {
     const color = colorParams ? randomGrayish(colorParams) : new THREE.Color(0x000000)
-    const [x, z] = coords.pop()
+    const { x, z } = coords.pop()
 
     const rotY = shouldRotate(rotateEvery, i) ? Math.random() * Math.PI : 0
     const bWidth = shouldEnlarge(enlargeEvery, i)
@@ -363,7 +363,7 @@ export async function createGraffitiCity({ mapSize, coords = getAllCoords({ mapS
   group.add(trees)
 
   for (let i = 0; i < 50; i++) {
-    const [x, z] = coords.pop()
+    const { x, z } = coords.pop()
     const building = await createGraffitiBuilding({ x, z })
     group.add(building)
   }
@@ -408,7 +408,7 @@ function createLamppost({ x = 0, z = 0, height = 20 } = {}) {
 export function createLampposts({ mapSize = 200, coords = getAllCoords({ mapSize }), numLampposts = 10, height } = {}) {
   const group = new THREE.Group()
   for (let i = 0; i < numLampposts; i++) {
-    const [x, z] = coords.pop()
+    const { x, z } = coords.pop()
     const lamppost = createLamppost({ x, z, height })
     group.add(lamppost)
   }
@@ -419,7 +419,7 @@ export function createCityLights({ mapSize, coords = getAllCoords({ mapSize }), 
   const group = new THREE.Group()
   for (let i = 0; i < numLights; i++) {
     const light = new THREE.SpotLight(0xF5F5DC)
-    const [x, z] = coords.pop()
+    const { x, z } = coords.pop()
     light.position.set(x, height, z)
     light.castShadow = true
     group.add(light)

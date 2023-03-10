@@ -16,8 +16,7 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
-  - izabrati mapu
-  - dodati modele vozila i kuca
+  - dodati modele vozila, zgrada i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag

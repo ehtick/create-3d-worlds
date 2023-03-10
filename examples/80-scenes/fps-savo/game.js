@@ -23,6 +23,11 @@ scene.add(createGround({ file: 'terrain/ground.jpg' }))
 const walls = tilemap.meshFromMatrix({ texture: 'terrain/concrete.jpg' })
 scene.add(walls)
 
+const rain = new Rain()
+scene.add(rain.mesh)
+
+/* ACTORS */
+
 const player = new Savo({ camera })
 player.position.copy(coords.pop())
 scene.add(player.mesh)
@@ -39,9 +44,6 @@ const enemyMeshes = enemies.map(e => e.mesh)
 player.addSolids([walls, ...enemyMeshes])
 
 enemies.forEach(enemy => enemy.addSolids([walls, ...enemyMeshes]))
-
-const rain = new Rain()
-scene.add(rain.mesh)
 
 /* LOOP */
 
