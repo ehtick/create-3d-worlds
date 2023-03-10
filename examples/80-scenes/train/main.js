@@ -1,7 +1,7 @@
 import { scene, renderer, camera, clock, createOrbitControls } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import Thrust from '/utils/classes/Thrust.js'
+import { Smoke } from '/utils/classes/Particles.js'
 import { followPath, createEllipse, createRailroadTracks } from '/utils/path.js'
 import { loadModel } from '/utils/loaders.js'
 
@@ -24,9 +24,10 @@ const { mesh: locomotive, mixer } = await loadModel({
 })
 scene.add(locomotive)
 
-const thrust = new Thrust(true)
-thrust.mesh.position.set(0, 1.5, 1.5)
-locomotive.add(thrust.mesh)
+const particles = new Smoke(true)
+particles.mesh.position.set(0, 1.5, 1.25)
+particles.mesh.rotateX(-.2)
+locomotive.add(particles.mesh)
 
 const tracks = createRailroadTracks(path, 200)
 scene.add(...tracks)
@@ -39,7 +40,7 @@ void function loop() {
   const elapsedTime = clock.getElapsedTime()
 
   followPath({ path, mesh: locomotive, elapsedTime, speed: .025, y: .75 })
-  thrust.update(delta * .5, { velocity: [0, -14, 5] })
+  particles.update({ delta })
   mixer.update(delta * 15)
 
   renderer.render(scene, camera)
