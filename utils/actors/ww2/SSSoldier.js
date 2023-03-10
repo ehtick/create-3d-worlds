@@ -22,14 +22,14 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/rifle.fbx', scale: 1.33,
 
 const sharedProps = { mesh, animations, animDict, rifle, speed: 1.75 }
 
-export class NaziPlayer extends Player {
+export class SSSoldierPlayer extends Player {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
     this.mesh.translateY(.1)
   }
 }
 
-export class NaziAI extends AI {
+export class SSSoldierAI extends AI {
   constructor(props = {}) {
     super({ ...sharedProps, attackDistance: 10, ...props })
     this.mesh.translateY(.1)

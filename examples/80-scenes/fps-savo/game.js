@@ -6,19 +6,19 @@ import { nemesis } from '/utils/data/maps.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
 import { Rain } from '/utils/classes/Particles.js'
 import Savo from '/utils/player/Savo.js'
-import { GermanSoldierAI } from '/utils/actors/ww2/GermanSoldier.js'
+// import { GermanSoldierAI } from '/utils/actors/ww2/GermanSoldier.js'
+// import { NaziAgentAI } from '/utils/actors/ww2/NaziAgent.js'
 import { GermanMachineGunnerAI } from '/utils/actors/ww2/GermanMachineGunner.js'
-import { NaziAI } from '/utils/actors/ww2/Nazi.js'
-import { NaziAgentAI } from '/utils/actors/ww2/NaziAgent.js'
+import { SSSoldierAI } from '/utils/actors/ww2/SSSoldier.js'
 import { NaziOfficerAI } from '/utils/actors/ww2/NaziOfficer.js'
 import { GermanFlameThrowerAI } from '/utils/actors/ww2/GermanFlameThrower.js'
 
-const enemyClasses = [GermanFlameThrowerAI, GermanSoldierAI, GermanMachineGunnerAI, NaziAI, GermanSoldierAI, GermanMachineGunnerAI, NaziAI, NaziAgentAI, NaziOfficerAI]
+const enemyClasses = [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
 
 const light = hemLight()
 scene.background = createSkyBox({ folder: 'skybox4' })
 
-const tilemap = new Tilemap(nemesis, 20)
+const tilemap = new Tilemap(nemesis, 10)
 const coords = tilemap.getEmptyCoords()
 
 scene.add(createGround({ file: 'terrain/ground.jpg' }))

@@ -1,12 +1,12 @@
 import { scene, renderer, camera, createOrbitControls, clock } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { NaziPlayer } from '/utils/actors/ww2/Nazi.js'
+import { SSSoldierPlayer } from '/utils/actors/ww2/SSSoldier.js'
 
 scene.add(createSun())
 scene.add(createGround({ size: 100 }))
 
-const player = new NaziPlayer()
+const player = new SSSoldierPlayer()
 scene.add(player.mesh)
 
 const controls = createOrbitControls()

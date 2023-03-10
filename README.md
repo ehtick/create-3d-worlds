@@ -11,8 +11,6 @@ npx live-server
 
 ## TODO
 
-- dodati scenu kao parametar za actore i ostalo?
-
 ### Scenes & examples
 
 - FPS / Savo
@@ -27,6 +25,7 @@ npx live-server
     - možda da se kursor pomera na ondrag
   - opciono neprijatelje zombije?
   - spojiti sa fps-graffiti?
+  - izabrati mapu
 
 - RPG / Fantasy
   - bacanje magije (pogledati i shadere)
