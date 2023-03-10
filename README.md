@@ -14,25 +14,22 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
-  - ako je neprijatelj mrtav izbaciti ga iz računjanja (distanceTo, blizina...)
-    - izbacivati mrtve iz solids?
-  - ispraviti nazi agenta?
   - zamračiti nebo i naglasiti kišu i munje
+  - izabrati mapu
   - dodati modele vozila i kuca
   - dodati tenk kako prolazi
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
   - opciono neprijatelje zombije?
   - spojiti sa fps-graffiti?
-  - izabrati mapu
 
 - RPG / Fantasy
   - da se ai ne približavaju previše
   - bacanje magije (pogledati i shadere)
   - slona 
+  - dodati mač?
   - karakter dolazi do kuće i ulazi (vidi house model primer)
   - uzima predmete (50-rad-sa-modelima/80-uzimanje-predmeta/)
-  - ranjena varvarka puzi do nekog cilja? ili obrisati wounded
   - kad je dugo idle da se kamera okreće oko glave
 
 - Adventure / Avatar

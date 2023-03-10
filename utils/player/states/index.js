@@ -8,7 +8,6 @@ import JumpState from './JumpState.js'
 import JumpFlyState from './JumpFlyState.js'
 import FlyState from './FlyState.js'
 import FallState from './FallState.js'
-import WoundedState from './WoundedState.js'
 import AttackLoopState from './AttackLoopState.js'
 import DeathState from './DeathState.js'
 import AttackOnceState from './AttackOnceState.js'
@@ -29,7 +28,6 @@ const playerStates = {
   run: RunState,
   jump: FlyState,
   fall: FallState,
-  wounded: WoundedState,
   death: DeathState,
 }
 

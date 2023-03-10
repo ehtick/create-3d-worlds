@@ -11,7 +11,6 @@ const animDict = {
   attack2: 'Mma Kick',
   special: 'Standing 2H Magic Attack 05',
   pain: 'Standing React Large From Right',
-  wounded: 'Zombie Crawl',
   death: 'Falling Back Death',
 }
 
@@ -26,6 +25,14 @@ const sharedProps = { mesh, animations, animDict, jumpStyle: 'FLY_JUMP', maxJump
 export class BarbarianPlayer extends Player {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
+  }
+
+  checkHit() {
+    if (this.currentState.name.includes('attack')) {
+      this.hitAmount = 0
+      return
+    }
+    super.checkHit()
   }
 }
 

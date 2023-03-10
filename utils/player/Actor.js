@@ -12,7 +12,7 @@ const { randInt } = MathUtils
 /**
  * Base abstract class for AI and Player, handles movement, animations...
  * @param animDict: maps finite state to animation
- ** anim keys: idle, walk, run, jump, fall, attack, attack2, special, pain, wounded, death
+ ** anim keys: idle, walk, run, jump, fall, attack, attack2, special, pain, death
  */
 export default class Actor {
   constructor({
@@ -90,6 +90,10 @@ export default class Actor {
 
   get hitAmount() {
     return this.mesh.userData.hitAmount
+  }
+
+  set hitAmount(hitAmount) {
+    this.mesh.userData.hitAmount = hitAmount
   }
 
   get height() {
