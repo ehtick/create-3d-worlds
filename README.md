@@ -18,6 +18,7 @@ npx live-server
 - FPS / Savo
   - dodati modele vozila, zgrada i kuca
   - dodati tenk kako prolazi
+  - srediti savo pain, dodati krv / crveno, more shake
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
   - opciono neprijatelje zombije?

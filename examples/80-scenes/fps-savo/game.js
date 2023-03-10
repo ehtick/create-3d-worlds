@@ -11,6 +11,7 @@ import { SSSoldierAI } from '/utils/actors/ww2/SSSoldier.js'
 import { NaziOfficerAI } from '/utils/actors/ww2/NaziOfficer.js'
 import { GermanFlameThrowerAI } from '/utils/actors/ww2/GermanFlameThrower.js'
 import { createCrate, createRustyBarrel, createMetalBarrel } from '/utils/geometry.js'
+import { loadModel } from '/utils/loaders.js'
 
 const enemyClasses = [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
 
@@ -44,11 +45,14 @@ for (let i = 0; i < 20; i++) {
 
 /* OBJECTS */
 
+const { mesh: bunker } = await loadModel({ file: 'building/bunker.fbx', size: 2.5 })
+bunker.position.copy(coords.pop())
+solids.push(bunker)
+
 const createObject = [createCrate, createRustyBarrel, createMetalBarrel]
 
 for (let i = 0; i < 5; i++) {
   const coord = coords.pop()
-
   for (let j = -1; j < 2; j++) {
     const object = sample(createObject)()
     object.position.copy(coord)
@@ -60,6 +64,7 @@ for (let i = 0; i < 5; i++) {
 
 player.addSolids(solids)
 enemies.forEach(enemy => enemy.addSolids(solids))
+
 scene.add(...solids)
 
 /* LOOP */
