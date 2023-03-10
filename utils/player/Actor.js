@@ -36,7 +36,6 @@ export default class Actor {
     this.shouldRaycastGround = shouldRaycastGround
     this.attackDistance = attackDistance
     this.actions = {}
-    this.untouchable = false
 
     if (animations?.length && animDict) {
       this.setupMixer(animations, animDict)
@@ -251,7 +250,7 @@ export default class Actor {
 
   checkHit() {
     const { userData } = this.mesh
-    if (!userData.hitAmount || this.untouchable) return
+    if (!userData.hitAmount) return
 
     const newAmount = this.energy - userData.hitAmount
     this.energy = newAmount > 0 ? newAmount : 0

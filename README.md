@@ -14,7 +14,6 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
-  - isključiti input slušanje za enter i ostalo što ne treba
   - ako je neprijatelj mrtav izbaciti ga iz računjanja (distanceTo, blizina...)
     - izbacivati mrtve iz solids?
   - ispraviti nazi agenta?
@@ -28,6 +27,7 @@ npx live-server
   - izabrati mapu
 
 - RPG / Fantasy
+  - da se ai ne približavaju previše
   - bacanje magije (pogledati i shadere)
   - slona 
   - karakter dolazi do kuće i ulazi (vidi house model primer)
