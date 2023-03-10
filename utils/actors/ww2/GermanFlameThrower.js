@@ -23,6 +23,8 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/flame-gun/model.fbx', sc
 
 const constructor = self => {
   self.particles = new Flame()
+  self.particles.mesh.translateY(-1.2)
+  self.particles.mesh.translateZ(1.75)
   self.particles.mesh.material.opacity = 0
   self.add(self.particles.mesh)
 }

@@ -179,8 +179,6 @@ export class Flame extends Particles {
   constructor({ file = 'fire.png', size = 5, num = 50, minRadius = 0, maxRadius = .5, color = 0xffffff, ...rest } = {}) {
     super({ num, file, size, minRadius, maxRadius, color, ...rest })
     this.mesh.rotateX(Math.PI)
-    this.mesh.translateY(-1.2)
-    this.mesh.translateZ(1.75)
   }
 
   update(params = {}) {
