@@ -7,7 +7,7 @@ import { shootDecals } from '/utils/decals.js'
 import Particles from '/utils/classes/Particles.js'
 import config from '/config.js'
 import input from '/utils/classes/Input.js'
-import { jumpStyles } from '/utils/constants.js'
+import { jumpStyles, attackStyles } from '/utils/constants.js'
 
 const { randInt } = MathUtils
 
@@ -17,6 +17,7 @@ export default class Savo extends Player {
   } = {}) {
     super({
       jumpStyle: jumpStyles.FLY,
+      attackStyle: attackStyles.LOOP,
       ...params
     })
     this.mouseSensitivity = .05
