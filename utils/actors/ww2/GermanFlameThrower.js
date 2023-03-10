@@ -22,11 +22,13 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/flame-gun/model.fbx', sc
 /* SHARED METHODS */
 
 const constructor = self => {
-  self.particles = new Flame()
-  self.particles.mesh.translateY(-1.2)
-  self.particles.mesh.translateZ(1.75)
-  self.particles.mesh.material.opacity = 0
-  self.add(self.particles.mesh)
+  const particles = new Flame()
+  particles.mesh.rotateX(Math.PI)
+  particles.mesh.translateY(-1.2)
+  particles.mesh.translateZ(1.75)
+  particles.mesh.material.opacity = 0
+  self.particles = particles
+  self.add(particles.mesh)
 }
 
 const startAttack = self => {

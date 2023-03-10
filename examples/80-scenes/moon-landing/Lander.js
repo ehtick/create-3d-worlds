@@ -1,29 +1,29 @@
 
 import Sprite from './Sprite.js'
 import input from '/utils/classes/Input.js'
-import Thrust from '/utils/classes/Thrust.js'
+import { Flame } from '/utils/classes/Particles.js'
 import { getSize } from '/utils/helpers.js'
 
 export default class Lander extends Sprite {
   constructor(mesh) {
     super(mesh)
     this.fuel = 2000
-    this.particles = new Thrust()
+    this.particles = new Flame()
+    this.particles.mesh.rotateX(Math.PI * .5)
+    this.particles.mesh.material.opacity = 0
     this.mesh.add(this.particles.mesh)
-    this.thrustCleared = false
     this.failure = false
   }
 
   handleInput(dt) {
     if (!this.falling) return
 
-    if (!input.keyPressed)
-      this.thrustCleared = false
+    if (!input.keyPressed) this.clearThrust()
 
     if (this.fuel < 1) return
 
     if (input.down) {
-      this.addThrust(dt, 0, [0, -1, 0])
+      this.addThrust(0, [0, -1, 0])
       this.addVector(Math.PI / 2, .09 * dt)
       this.fuel--
     }
@@ -31,29 +31,27 @@ export default class Lander extends Sprite {
     if (this.fuel < .5) return
 
     if (input.left) {
-      this.addThrust(dt, -Math.PI * .5, [-1, 1, 0])
+      this.addThrust(-Math.PI * .5, [-1.75, 1.5, 0])
       this.addVector(0, .1 * dt)
       this.fuel -= 0.5
     }
 
     if (input.right) {
-      this.addThrust(dt, Math.PI * .5, [1, 1, 0])
+      this.addThrust(Math.PI * .5, [1.75, 1.5, 0])
       this.addVector(Math.PI, .1 * dt)
       this.fuel -= 0.5
     }
   }
 
-  addThrust(dt, angle, pos) {
-    this.clearThrust()
-    this.particles.mesh.rotation.z = angle
+  addThrust(angle, pos) {
+    this.particles.mesh.rotation.y = angle
     this.particles.mesh.position.set(...pos)
-    this.particles.addParticles(dt)
+    this.particles.mesh.material.opacity = 1
+    this.shouldFadeOut = false
   }
 
   clearThrust() {
-    if (this.thrustCleared) return
-    this.particles.clear()
-    this.thrustCleared = true
+    this.shouldFadeOut = true
   }
 
   isSameHeight(platform) {
@@ -87,8 +85,14 @@ export default class Lander extends Sprite {
     element.innerHTML = html
   }
 
-  update(dt) {
-    super.update(dt)
-    this.particles.updateParticles(dt)
+  update(delta) {
+    super.update(delta)
+
+    if (this.particles.mesh.material.opacity <= 0) return
+
+    this.particles.update({ delta, max: 3, loop: !this.shouldFadeOut })
+
+    if (this.shouldFadeOut)
+      this.particles.mesh.material.opacity -= .03
   }
 }
