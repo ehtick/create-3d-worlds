@@ -6,9 +6,15 @@ const { randFloat, randFloatSpread } = THREE.MathUtils
 
 const textureLoader = new THREE.TextureLoader()
 
+const updateHeight = (mesh, h) => {
+  mesh.translateY(h * .5)
+  mesh.updateMatrix()
+  mesh.geometry.applyMatrix4(mesh.matrix)
+}
+
 /* BOXES */
 
-export function createBox({ size = 1, width = size, height = size, depth = size, file, bumpFile, color = randomGray(), castShadow = true, receiveShadow = true, pos, quat } = {}) {
+export function createBox({ size = 1, width = size, height = size, depth = size, file, bumpFile, color = randomGray(), castShadow = true, receiveShadow = true, fixHeight = false, pos, quat } = {}) {
   const geometry = new THREE.BoxGeometry(width, height, depth)
   const options = {
     map: file ? textureLoader.load(`/assets/textures/${file}`) : null,
@@ -17,7 +23,9 @@ export function createBox({ size = 1, width = size, height = size, depth = size,
   }
   const material = new THREE.MeshPhongMaterial(options)
   const mesh = new THREE.Mesh(geometry, material)
-  mesh.translateY(height / 2)
+
+  if (fixHeight) updateHeight(mesh, height)
+  else mesh.translateY(height / 2)
 
   if (pos) mesh.position.copy(pos)
   if (quat) mesh.quaternion.copy(quat)
@@ -30,13 +38,16 @@ export function createBox({ size = 1, width = size, height = size, depth = size,
 export const createPlayerBox = params => {
   const mesh = createBox({ height: 1.78, width: .4, depth: .4, ...params })
   mesh.name = 'player'
+
   mesh.updateMatrix()
   mesh.geometry.applyMatrix4(mesh.matrix)
+
   mesh.visible = false
   return mesh
 }
 
-export const createCrate = ({ size, file = 'crate.gif' } = {}) => createBox({ size, file })
+export const createCrate = ({ file = 'crate.gif', fixHeight = true, ...params } = {}) =>
+  createBox({ file, fixHeight, ...params })
 
 export const createBumpBox = ({ size, file = 'walls/bricks.jpg', bumpFile = 'walls/bricks-gray.jpg' } = {}) =>
   createBox({ size, file, bumpFile })
@@ -140,7 +151,7 @@ export function createSkySphere({ r = 4000, color1 = 0x0077ff, color2 = 0xffffff
 
 /* BARRELS */
 
-export function createBarrel({ r = .4, height = 1, segments = 32, file = 'metal/rust.jpg', topFile = 'barrel/rust-top.jpg' } = {}) {
+export function createRustyBarrel({ r = .4, height = 1, segments = 32, file = 'metal/rust.jpg', topFile = 'barrel/rust-top.jpg' } = {}) {
   const geometry = new THREE.CylinderGeometry(r, r, height, segments)
   const sideMaterial = new THREE.MeshPhongMaterial({
     map: textureLoader.load(`/assets/textures/${file}`),
@@ -155,11 +166,14 @@ export function createBarrel({ r = .4, height = 1, segments = 32, file = 'metal/
   const materials = [
     sideMaterial,
     topMaterial,
-    topMaterial, // bottomMaterial
+    topMaterial, // bottom
   ]
-  const cylinder = new THREE.Mesh(geometry, materials)
-  return cylinder
+  const mesh = new THREE.Mesh(geometry, materials)
+  updateHeight(mesh, height)
+  return mesh
 }
+
+export const createMetalBarrel = () => createRustyBarrel({ file: 'barrel/metal-barrel-side.jpg', topFile: 'metal/metal01.jpg' })
 
 export function createWoodBarrel({ r = .4, R = .5, h = 1 } = {}) {
   const geometry = new THREE.CylinderGeometry(1, 1, 2, 24, 32)
@@ -189,9 +203,12 @@ export function createWoodBarrel({ r = .4, R = .5, h = 1 } = {}) {
   const materials = [
     sideMaterial,
     topMaterial,
-    topMaterial, // bottomMaterial
+    topMaterial, // bottom
   ]
-  return new THREE.Mesh(geometry, materials)
+
+  const mesh = new THREE.Mesh(geometry, materials)
+  updateHeight(mesh, h)
+  return mesh
 }
 
 /* STRUCTURES */

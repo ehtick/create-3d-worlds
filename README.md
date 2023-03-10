@@ -22,6 +22,7 @@ npx live-server
     - možda da se kursor pomera na ondrag
   - opciono neprijatelje zombije?
   - spojiti sa fps-graffiti?
+  - probati bez skybox
 
 - RPG / Fantasy
   - da se ai ne približavaju previše

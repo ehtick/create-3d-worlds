@@ -10,6 +10,7 @@ import { GermanMachineGunnerAI } from '/utils/actors/ww2/GermanMachineGunner.js'
 import { SSSoldierAI } from '/utils/actors/ww2/SSSoldier.js'
 import { NaziOfficerAI } from '/utils/actors/ww2/NaziOfficer.js'
 import { GermanFlameThrowerAI } from '/utils/actors/ww2/GermanFlameThrower.js'
+import { createCrate, createRustyBarrel, createMetalBarrel } from '/utils/geometry.js'
 
 const enemyClasses = [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
 
@@ -21,10 +22,11 @@ const coords = tilemap.getEmptyCoords()
 
 scene.add(createGround({ file: 'terrain/ground.jpg' }))
 const walls = tilemap.meshFromMatrix({ texture: 'terrain/concrete.jpg' })
-scene.add(walls)
 
 const rain = new Rain()
 scene.add(rain.mesh)
+
+const solids = [walls]
 
 /* ACTORS */
 
@@ -37,13 +39,28 @@ for (let i = 0; i < 20; i++) {
   const EnemyClass = sample(enemyClasses)
   const enemy = new EnemyClass({ coords, target: player.mesh })
   enemies.push(enemy)
-  scene.add(enemy.mesh)
+  solids.push(enemy.mesh)
 }
 
-const enemyMeshes = enemies.map(e => e.mesh)
-player.addSolids([walls, ...enemyMeshes])
+/* OBJECTS */
 
-enemies.forEach(enemy => enemy.addSolids([walls, ...enemyMeshes]))
+const createObject = [createCrate, createRustyBarrel, createMetalBarrel]
+
+for (let i = 0; i < 5; i++) {
+  const coord = coords.pop()
+
+  for (let j = -1; j < 2; j++) {
+    const object = sample(createObject)()
+    object.position.copy(coord)
+    object.translateX(j)
+    player.addSolids(object)
+    solids.push(object)
+  }
+}
+
+player.addSolids(solids)
+enemies.forEach(enemy => enemy.addSolids(solids))
+scene.add(...solids)
 
 /* LOOP */
 
