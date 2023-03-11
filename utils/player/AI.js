@@ -79,6 +79,24 @@ export default class AI extends Actor {
     return (this.targetInRange && this.lookingAtTarget) || (this.targetInRange * .3) // feel if too close
   }
 
+  /* ANIMS */
+
+  setupMixer(animations, animDict) {
+    const { actions } = this
+    super.setupMixer(animations, animDict)
+    walkAnims.forEach(name => {
+      if (!actions[name]) actions[name] = actions.walk
+    })
+    runAnims.forEach(name => {
+      if (!actions[name]) actions[name] = actions.run
+    })
+  }
+
+  randomizeAction() {
+    if (!this.action) return
+    this.action.time = Math.random() * this.action.getClip().duration
+  }
+
   /* UTILS */
 
   addSolids(solids) {
@@ -115,24 +133,6 @@ export default class AI extends Actor {
     super.startAttack(name)
   }
 
-  /* ANIMS */
-
-  setupMixer(animations, animDict) {
-    const { actions } = this
-    super.setupMixer(animations, animDict)
-    walkAnims.forEach(name => {
-      if (!actions[name]) actions[name] = actions.walk
-    })
-    runAnims.forEach(name => {
-      if (!actions[name]) actions[name] = actions.run
-    })
-  }
-
-  randomizeAction() {
-    if (!this.action) return
-    this.action.time = Math.random() * this.action.getClip().duration
-  }
-
   /* UPDATE */
 
   checkTarget() {
@@ -141,17 +141,7 @@ export default class AI extends Actor {
   }
 
   updateMove(delta, reaction = reactions.TURN_SMOOTH) {
-    if (this.directionBlocked(dir.forward))
-      if (reaction == reactions.BOUNCE) this.bounce()
-      else if (reaction == reactions.TURN_SMOOTH) this.turnSmooth()
-      else if (reaction == reactions.STEP_OFF) this.stepOff(delta * 2.5)
-      else if (reaction == reactions.STOP) return
-
-    this.handleRoughTerrain(Math.abs(this.acceleration) * delta)
-
-    this.velocity.z += -this.acceleration * delta
-    this.velocity.z *= (1 - this.drag)
-    this.mesh.translateZ(this.velocity.z)
+    super.updateMove(delta, reaction)
   }
 
   update(delta) {
