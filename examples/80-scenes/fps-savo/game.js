@@ -4,7 +4,6 @@ import { sample } from '/utils/helpers.js'
 import Tilemap from '/utils/classes/Tilemap.js'
 import { smallMap } from '/utils/data/maps.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
-import { createCrate, createRustyBarrel, createMetalBarrel } from '/utils/geometry.js'
 import { loadModel } from '/utils/loaders.js'
 import { Rain } from '/utils/classes/Particles.js'
 import Savo from '/utils/player/Savo.js'
@@ -14,7 +13,7 @@ import { SSSoldierAI } from '/utils/actors/ww2/SSSoldier.js'
 import { NaziOfficerAI } from '/utils/actors/ww2/NaziOfficer.js'
 import { GermanFlameThrowerAI } from '/utils/actors/ww2/GermanFlameThrower.js'
 
-const enemyClasses = [GermanFlameThrowerAI]// [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
+const enemyClasses = [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
 
 const light = hemLight({ intensity: .75 })
 scene.background = createSkyBox({ folder: 'skybox1' })
@@ -45,26 +44,16 @@ for (let i = 0; i < 20; i++) {
 
 /* OBJECTS */
 
-const tank = new TankAI({ coords, baseState: 'patrol', patrolDistance: 30 })
+const tank = new TankAI({ coords })
 solids.push(tank.mesh)
 
 const { mesh: bunker } = await loadModel({ file: 'building/bunker.fbx', texture: 'terrain/concrete.jpg', size: 2.5 })
 bunker.position.copy(coords.pop())
 solids.push(bunker)
 
-for (let i = 0; i < 5; i++) {
-  const coord = coords.pop()
-  for (let j = -1; j < 2; j++) {
-    const object = sample([createCrate, createRustyBarrel, createMetalBarrel])()
-    object.position.copy(coord)
-    object.translateX(j)
-    player.addSolids(object)
-    solids.push(object)
-  }
-}
-
 player.addSolids(solids)
 enemies.forEach(enemy => enemy.addSolids(solids))
+tank.addSolids([walls, bunker])
 
 scene.add(...solids)
 

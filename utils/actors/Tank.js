@@ -18,7 +18,7 @@ export class TankPlayer extends Player {
 
 export class TankAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, ...props })
+    super({ ...sharedProps, baseState: 'patrol', patrolDistance: 30, ...props })
   }
 
   turnSmooth() {
