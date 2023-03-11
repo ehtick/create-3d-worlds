@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
+import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 
 import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
@@ -348,9 +349,13 @@ export default class Actor {
     this.updateGround()
     this.currentState.update(delta)
     this.mixer?.update(delta)
-    if (this.rifle) this.updateRifle()
+
     this.checkHit()
+
+    if (this.rifle) this.updateRifle()
     if (this.outOfBounds) this.bounce()
     if (this.thirdPersonCamera) this.updateCamera(delta)
+
+    TWEEN.update()
   }
 }

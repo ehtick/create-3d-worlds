@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { scene as defaultScene, camera as defaultCamera } from '/utils/scene.js'
 import { dir } from '/utils/constants.js'
+import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js'
 
 const { randFloat, randFloatSpread } = THREE.MathUtils
 const raycaster = new THREE.Raycaster()
@@ -298,10 +299,13 @@ export function shakeCamera(camera, range = .1, callback) {
   const offsetZ = randFloat(-range, range)
   camera.position.add(new THREE.Vector3(offsetX, offsetY, offsetZ))
 
-  setTimeout(() => {
-    camera.position.copy(cameraPosition)
+  const tween = new TWEEN.Tween(camera.position)
+    .to(cameraPosition, range * 1000)
+    .start()
+
+  tween.onComplete(() => {
     if (callback) callback()
-  }, range * 1000)
+  })
 }
 
 export function createChaseCamera(mesh, camera = defaultCamera) {

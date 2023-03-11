@@ -12,16 +12,17 @@ npx live-server
 ## TODO
 
 - pokušati optimizaciju učitavanja animacija
+- proveriti 3rd cameru
 
 ### Scenes & examples
 
 - FPS / Savo
-  - srediti savo pain, dodati krv / crveno, more shake
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
   - opciono neprijatelje zombije?
   - spojiti sa fps-graffiti?
   - probati bez skybox
+  - BUG: ai prolaze kroz zidove
 
 - RPG / Fantasy
   - srediti borbu, previše promašuje
