@@ -75,10 +75,10 @@ export default class State {
 
   /* AI HELPERS */
 
-  turnEvery(interval, angle = Math.PI / 2) {
+  turnEvery(interval, angle = Math.PI / 2, duration = 1000) {
     if (Date.now() - this.last >= interval) {
       new TWEEN.Tween(this.actor.mesh.rotation)
-        .to({ y: randFloat(-angle, angle) }, 1000)
+        .to({ y: randFloat(-angle, angle) }, duration)
         .start()
       this.last = Date.now()
     }

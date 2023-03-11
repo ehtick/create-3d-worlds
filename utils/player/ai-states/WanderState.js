@@ -13,7 +13,9 @@ export default class WanderState extends WalkState {
   update(delta) {
     const { actor } = this
 
-    this.turnEvery(this.interval)
+    const angle = actor.constructor.name == 'TankAI' ? Math.PI / 8 : Math.PI / 2
+    this.turnEvery(this.interval, angle, 2500)
+
     actor.updateMove(delta)
 
     if (actor.mesh.userData.hitAmount)

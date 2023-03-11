@@ -38,7 +38,7 @@ scene.add(player.mesh)
 const enemies = []
 for (let i = 0; i < 20; i++) {
   const EnemyClass = sample(enemyClasses)
-  const enemy = new EnemyClass({ coords }) // , target: player.mesh
+  const enemy = new EnemyClass({ coords, baseState: 'patrol', patrolDistance: 30 }) // , target: player.mesh
   enemies.push(enemy)
   solids.push(enemy.mesh)
 }

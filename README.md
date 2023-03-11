@@ -11,6 +11,7 @@ npx live-server
 
 ## TODO
 
+- tenk: proveriti da li zrak kreće iz centra tela
 - pokušati optimizaciju učitavanja animacija
 - BUG: igrač ne može da naskače na stvari u pokretu (zepelin, tank...)
 

@@ -4,7 +4,7 @@ import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js
 import { Input } from '/utils/classes/Input.js'
 import Actor from './Actor.js'
 import { getAIState } from './states/index.js'
-import { jumpStyles, attackStyles, baseAiStates, pursueStates, reactions } from '/utils/constants.js'
+import { jumpStyles, attackStyles, baseAiStates, pursueStates, reactions, dir } from '/utils/constants.js'
 
 const { randFloatSpread } = MathUtils
 
@@ -96,7 +96,7 @@ export default class AI extends Actor {
     this.mesh.rotateY(Math.PI)
   }
 
-  turnSmooth(angle = Math.PI, duration = 500) {
+  turnSmooth(angle = Math.PI, duration = 2500) {
     new TWEEN.Tween(this.mesh.rotation)
       .to({ y: this.mesh.rotation.y + angle }, duration)
       .start()
@@ -140,8 +140,18 @@ export default class AI extends Actor {
       this.target = null
   }
 
-  updateMove(delta, reaction = reactions.BOUNCE) {
-    super.updateMove(delta, reaction)
+  updateMove(delta, reaction = reactions.TURN_SMOOTH) {
+    if (this.directionBlocked(dir.forward))
+      if (reaction == reactions.BOUNCE) this.bounce()
+      else if (reaction == reactions.TURN_SMOOTH) this.turnSmooth()
+      else if (reaction == reactions.STEP_OFF) this.stepOff(delta * 2.5)
+      else if (reaction == reactions.STOP) return
+
+    this.handleRoughTerrain(Math.abs(this.acceleration) * delta)
+
+    this.velocity.z += -this.acceleration * delta
+    this.velocity.z *= (1 - this.drag)
+    this.mesh.translateZ(this.velocity.z)
   }
 
   update(delta) {
