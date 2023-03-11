@@ -96,9 +96,9 @@ export default class AI extends Actor {
     this.mesh.rotateY(Math.PI)
   }
 
-  turnSmooth(angle = Math.PI) {
+  turnSmooth(angle = Math.PI, duration = 500) {
     new TWEEN.Tween(this.mesh.rotation)
-      .to({ y: this.mesh.rotation.y + angle }, 500)
+      .to({ y: this.mesh.rotation.y + angle }, duration)
       .start()
   }
 

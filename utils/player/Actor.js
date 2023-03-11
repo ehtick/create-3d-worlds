@@ -1,4 +1,4 @@
-import { Vector3, AnimationMixer, Box3, MOUSE, MathUtils } from 'three'
+import * as THREE from 'three'
 import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 
 import { createOrbitControls } from '/utils/scene.js'
@@ -7,7 +7,7 @@ import { addSolids, getGroundY, getSize, directionBlocked, getMesh, putOnGround,
 import { dir, RIGHT_ANGLE, reactions } from '/utils/constants.js'
 import { createPlayerBox } from '/utils/geometry.js'
 
-const { randInt } = MathUtils
+const { randInt } = THREE.MathUtils
 
 /**
  * Base abstract class for AI and Player, handles movement, animations...
@@ -25,7 +25,7 @@ export default class Actor {
     this.solids = []
     this.groundY = 0
     this.gravity = gravity
-    this.velocity = new Vector3()
+    this.velocity = new THREE.Vector3()
     this.fallLimit = fallLimit
     this.jumpStyle = jumpStyle
     this.maxJumpTime = maxJumpTime
@@ -50,7 +50,7 @@ export default class Actor {
       // camera.updateProjectionMatrix()
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, height: this.height })
       this.controls = createOrbitControls()
-      this.controls.mouseButtons = { RIGHT: MOUSE.ROTATE }
+      this.controls.mouseButtons = { RIGHT: THREE.MOUSE.ROTATE }
     }
 
     if (solids) {
@@ -60,7 +60,7 @@ export default class Actor {
 
     if (mapSize) {
       const halfMap = mapSize / 2
-      this.boundaries = new Box3(new Vector3(-halfMap, 0, -halfMap), new Vector3(halfMap, 0, halfMap))
+      this.boundaries = new THREE.Box3(new THREE.Vector3(-halfMap, 0, -halfMap), new THREE.Vector3(halfMap, 0, halfMap))
     }
 
     this.setState('idle')
@@ -148,7 +148,7 @@ export default class Actor {
   /* ANIMATIONS */
 
   setupMixer(animations, animDict) {
-    this.mixer = new AnimationMixer(getMesh(this.mesh))
+    this.mixer = new THREE.AnimationMixer(getMesh(this.mesh))
     for (const key in animDict) {
       const clip = animations.find(anim => anim.name == animDict[key])
       this.actions[key] = this.mixer.clipAction(clip)
@@ -208,7 +208,7 @@ export default class Actor {
   }
 
   turn(angle) {
-    this.mesh.rotateOnAxis(new Vector3(0, 1, 0), angle)
+    this.mesh.rotateOnAxis(new THREE.Vector3(0, 1, 0), angle)
   }
 
   bounce(angle = Math.PI) {
@@ -247,7 +247,7 @@ export default class Actor {
   /* UPDATES */
 
   updateRifle() {
-    const pos = new Vector3()
+    const pos = new THREE.Vector3()
     this.leftHand.getWorldPosition(pos)
     this.rifle.lookAt(pos)
   }
@@ -332,7 +332,7 @@ export default class Actor {
     const { lookAt } = this.thirdPersonCamera
 
     if (this.input.pressed.mouse2)
-      this.controls.target = new Vector3(x, y + lookAt[1], z)
+      this.controls.target = new THREE.Vector3(x, y + lookAt[1], z)
     else
       this.thirdPersonCamera.update(delta)
   }

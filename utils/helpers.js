@@ -250,9 +250,9 @@ export const raycast = (mesh, solids, dir, height, rayLength) => {
 
 export const directionBlocked = (mesh, solids, currDir) => {
   if (!mesh || !solids.length || !currDir) return false
-  const height = getHeight(mesh)
-  const rayLength = currDir == dir.forward ? height * .5 : height
-  const intersects = raycast(mesh, solids, currDir, height, rayLength)
+  const { y, z } = getSize(mesh)
+  const rayLength = currDir == dir.forward ? z : y
+  const intersects = raycast(mesh, solids, currDir, y, rayLength)
   return intersects.length > 0
 }
 

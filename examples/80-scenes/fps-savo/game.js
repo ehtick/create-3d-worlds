@@ -10,10 +10,11 @@ import { GermanMachineGunnerAI } from '/utils/actors/ww2/GermanMachineGunner.js'
 import { SSSoldierAI } from '/utils/actors/ww2/SSSoldier.js'
 import { NaziOfficerAI } from '/utils/actors/ww2/NaziOfficer.js'
 import { GermanFlameThrowerAI } from '/utils/actors/ww2/GermanFlameThrower.js'
+import { TankAI } from '/utils/actors/Tank.js'
 import { createCrate, createRustyBarrel, createMetalBarrel } from '/utils/geometry.js'
 import { loadModel } from '/utils/loaders.js'
 
-const enemyClasses = [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
+const enemyClasses = [TankAI]//[GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
 
 const light = hemLight({ intensity: .75 })
 scene.background = createSkyBox({ folder: 'skybox1' })
@@ -37,16 +38,15 @@ scene.add(player.mesh)
 const enemies = []
 for (let i = 0; i < 20; i++) {
   const EnemyClass = sample(enemyClasses)
-  const enemy = new EnemyClass({ coords, target: player.mesh })
+  const enemy = new EnemyClass({ coords }) // , target: player.mesh
   enemies.push(enemy)
   solids.push(enemy.mesh)
 }
 
 /* OBJECTS */
 
-const { mesh: tank } = await loadModel({ file: 'tank/renault-ft.fbx', texture: 'metal/metal01.jpg', size: 2.5 })
-tank.position.copy(coords.pop())
-solids.push(tank)
+const tank = new TankAI({ coords })
+solids.push(tank.mesh)
 
 const { mesh: bunker } = await loadModel({ file: 'building/bunker.fbx', texture: 'terrain/concrete.jpg', size: 2.5 })
 bunker.position.copy(coords.pop())
@@ -76,7 +76,8 @@ void function loop() {
 
   player.update(delta)
   enemies.forEach(enemy => enemy.update(delta))
-  rain.update({ pos: player.position })
+  rain.update({ delta, pos: player.position })
+  tank.update(delta)
 
   if (Math.random() > .997) lightningStrike(light)
 

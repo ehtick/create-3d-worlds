@@ -12,10 +12,12 @@ npx live-server
 ## TODO
 
 - pokušati optimizaciju učitavanja animacija
+- BUG: igrač ne može da naskače na stvari u pokretu (zepelin, tank...)
 
 ### Scenes & examples
 
 - FPS / Savo
+  - napraviti tank ai
   - dodati tenk kako prolazi
   - srediti savo pain, dodati krv / crveno, more shake
   - odlučiti između pointer lock i Savo kontrola
