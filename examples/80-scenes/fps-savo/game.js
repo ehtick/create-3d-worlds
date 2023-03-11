@@ -14,7 +14,7 @@ import { TankAI } from '/utils/actors/Tank.js'
 import { createCrate, createRustyBarrel, createMetalBarrel } from '/utils/geometry.js'
 import { loadModel } from '/utils/loaders.js'
 
-const enemyClasses = [TankAI]//[GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
+const enemyClasses = [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
 
 const light = hemLight({ intensity: .75 })
 scene.background = createSkyBox({ folder: 'skybox1' })
@@ -38,14 +38,14 @@ scene.add(player.mesh)
 const enemies = []
 for (let i = 0; i < 20; i++) {
   const EnemyClass = sample(enemyClasses)
-  const enemy = new EnemyClass({ coords, baseState: 'patrol', patrolDistance: 30 }) // , target: player.mesh
+  const enemy = new EnemyClass({ coords, target: player.mesh })
   enemies.push(enemy)
   solids.push(enemy.mesh)
 }
 
 /* OBJECTS */
 
-const tank = new TankAI({ coords })
+const tank = new TankAI({ coords, baseState: 'patrol', patrolDistance: 30 })
 solids.push(tank.mesh)
 
 const { mesh: bunker } = await loadModel({ file: 'building/bunker.fbx', texture: 'terrain/concrete.jpg', size: 2.5 })

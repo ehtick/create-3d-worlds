@@ -11,14 +11,11 @@ npx live-server
 
 ## TODO
 
-- refactor findGroundRecursive
 - pokušati optimizaciju učitavanja animacija
 
 ### Scenes & examples
 
 - FPS / Savo
-  - da igrač može da naskače na tenk u pokretu
-  - dodati tenk kako prolazi
   - srediti savo pain, dodati krv / crveno, more shake
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
@@ -27,6 +24,7 @@ npx live-server
   - probati bez skybox
 
 - RPG / Fantasy
+  - srediti borbu, previše promašuje
   - da se ai ne približavaju previše
   - bacanje magije (pogledati i shadere)
   - slona 
