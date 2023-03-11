@@ -200,7 +200,7 @@ export const getIntersects = (raycaster, target = defaultScene) => (
   Array.isArray(target)
     ? raycaster.intersectObjects(target)
     : raycaster.intersectObject(target)
-).filter(x => x.object.type != 'Points')
+).filter(x => x.object.type != 'Points') // ignore particles
 
 const distanceTo = ({ pos, solids }, direction) => {
   if (!pos || !solids.length) return Infinity
@@ -222,10 +222,10 @@ export function findGround({ solids, pos, y = 200 }) {
   const origin = { x: pos.x, y: pos.y + y, z: pos.z }
   raycaster.set(origin, dir.down)
   const intersects = getIntersects(raycaster, solids)
-  return intersects?.[0]?.point
+  return intersects?.[0]
 }
 
-export const getGroundY = ({ solids, pos, y }) => findGround({ solids, pos, y })?.y || 0
+export const getGroundY = ({ solids, pos, y }) => findGround({ solids, pos, y })?.point?.y || 0
 
 export const putOnGround = (mesh, solids, adjustment = 0) => {
   mesh.position.y = getGroundY({ solids, pos: mesh.position }) + adjustment
@@ -235,7 +235,7 @@ export const putOnGround = (mesh, solids, adjustment = 0) => {
 export const findGroundRecursive = (terrain, size, counter = 0) => {
   const coord = randomInSquare(size)
   const intersect = findGround({ solids: terrain, pos: coord, y: 200 })
-  if (intersect && intersect.y > 0) return intersect
+  if (intersect?.point?.y > 0) return intersect.point
   if (counter > 5) return null
   return findGroundRecursive(terrain, size, counter + 1)
 }

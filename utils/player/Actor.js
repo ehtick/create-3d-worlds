@@ -3,7 +3,7 @@ import { clone } from '/node_modules/three/examples/jsm/utils/SkeletonUtils.js'
 
 import { createOrbitControls } from '/utils/scene.js'
 import ThirdPersonCamera from '/utils/classes/ThirdPersonCamera.js'
-import { addSolids, getGroundY, getSize, directionBlocked, getMesh, putOnGround, raycast, getParent, belongsTo } from '/utils/helpers.js'
+import { addSolids, findGround, getSize, directionBlocked, getMesh, putOnGround, raycast, getParent, belongsTo } from '/utils/helpers.js'
 import { dir, RIGHT_ANGLE, reactions } from '/utils/constants.js'
 import { createPlayerBox } from '/utils/geometry.js'
 
@@ -317,7 +317,9 @@ export default class Actor {
     const { mesh, solids } = this
     if (!solids || !this.shouldRaycastGround) return
 
-    this.groundY = getGroundY({ pos: mesh.position, solids, y: this.height })
+    const intersect = findGround({ pos: mesh.position, solids, y: this.height })
+
+    this.groundY = intersect ? intersect.point.y : 0
   }
 
   applyGravity(delta) {

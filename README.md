@@ -11,13 +11,13 @@ npx live-server
 
 ## TODO
 
+- refactor findGroundRecursive
 - pokušati optimizaciju učitavanja animacija
 
 ### Scenes & examples
 
 - FPS / Savo
   - da igrač može da naskače na tenk u pokretu
-  - napraviti tank ai
   - dodati tenk kako prolazi
   - srediti savo pain, dodati krv / crveno, more shake
   - odlučiti između pointer lock i Savo kontrola
