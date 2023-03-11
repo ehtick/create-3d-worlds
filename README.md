@@ -11,13 +11,12 @@ npx live-server
 
 ## TODO
 
-- tenk: proveriti da li zrak kreće iz centra tela
 - pokušati optimizaciju učitavanja animacija
-- BUG: igrač ne može da naskače na stvari u pokretu (zepelin, tank...)
 
 ### Scenes & examples
 
 - FPS / Savo
+  - da igrač može da naskače na tenk u pokretu
   - napraviti tank ai
   - dodati tenk kako prolazi
   - srediti savo pain, dodati krv / crveno, more shake
@@ -59,11 +58,14 @@ npx live-server
   - pucanje i eksplozije
   - spojiti sa airplane?
 
-- Tenk / Vozilo
+- Tenk
+  - koristiti TankPlayer
   - tenk da se trese kada ide
+  - ide kroz ratnu scenu (spaljene zgrade) i ruši stvari
+
+- Vozilo
   - vozilo da se okreću točkovi kada ide
   - ispitati modele, jel moguće upravljati točkovima, kupolom ili nečim
-  - ide kroz ratnu scenu (spaljene zgrade) i ruši stvari
 
 - Endless runner
   - probati skejtera
