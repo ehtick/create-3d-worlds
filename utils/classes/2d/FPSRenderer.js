@@ -14,6 +14,11 @@ export default class FPSRenderer extends Canvas {
     this.targetY = targetY
   }
 
+  drawPain() {
+    this.ctx.fillStyle = 'rgba(255, 0, 0, 0.5)'
+    this.ctx.fillRect(0, 0, this.width, this.height)
+  }
+
   drawWeapon(elapsedTime) {
     this.handleLoad(this.weaponImg, this.weaponSrc, 'drawWeaponOnLoad', elapsedTime)
   }

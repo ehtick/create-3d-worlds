@@ -89,7 +89,12 @@ export default class Savo extends Player {
   }
 
   checkHit() {
-    if (this.hitAmount) shakeCamera(this.camera, this.hitAmount * .005)
+    if (this.hitAmount) {
+      this.shouldDrawPain = true
+      shakeCamera(this.camera, this.hitAmount * .005, () => {
+        this.shouldDrawPain = false
+      })
+    }
     super.checkHit()
   }
 
@@ -103,6 +108,8 @@ export default class Savo extends Player {
       this.fpsRenderer.clear()
       this.fpsRenderer.drawFixedTarget()
     }
+
+    if (this.shouldDrawPain) this.fpsRenderer.drawPain()
 
     if (!this.mousemove) this.lookAtFront()
   }
