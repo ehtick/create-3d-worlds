@@ -12,7 +12,6 @@ npx live-server
 ## TODO
 
 - pokušati optimizaciju učitavanja animacija
-- BUG: ai prolaze kroz zidove
 
 ### Scenes & examples
 
@@ -24,8 +23,6 @@ npx live-server
 
 - FPS / Zombie
   - BUG: duh je nedodirljiv (prska krv ali ne umire)
-  - BUG: zombi pandur secka na hit
-  - BUG: attackDistance negde manje od direction blocked?
   - da bude na groblju
   - probati sneg
 

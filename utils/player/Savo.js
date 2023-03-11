@@ -91,7 +91,7 @@ export default class Savo extends Player {
   painEffect() {
     this.shouldDrawPain = true
     shakeCamera(this.camera, this.hitAmount * .005, () => {
-      this.shouldDrawPain = false
+      this.shouldDrawPain = this.energy <= 0
     })
   }
 
@@ -105,13 +105,14 @@ export default class Savo extends Player {
       super.update(delta)
       this.time += (input.run ? delta * 2 : delta)
       this.fpsRenderer.render(this.time)
-      this.ricochet.expand({ velocity: 1.2, maxRounds: 5, gravity: .02 })
     } else {
       this.fpsRenderer.clear()
       this.fpsRenderer.drawFixedTarget()
     }
 
-    if (this.shouldDrawPain || this.energy <= 0) this.fpsRenderer.drawPain()
+    this.ricochet.expand({ velocity: 1.2, maxRounds: 5, gravity: .02 })
+
+    if (this.shouldDrawPain) this.fpsRenderer.drawPain()
 
     if (!this.mousemove) this.lookAtFront()
   }
