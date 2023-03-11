@@ -12,17 +12,16 @@ npx live-server
 ## TODO
 
 - pokušati optimizaciju učitavanja animacija
-- proveriti 3rd cameru
 
 ### Scenes & examples
 
 - FPS / Savo
-  - odlučiti između pointer lock i Savo kontrola
-    - možda da se kursor pomera na ondrag
   - opciono neprijatelje zombije?
   - spojiti sa fps-graffiti?
   - probati bez skybox
   - BUG: ai prolaze kroz zidove
+  - odlučiti između pointer lock i Savo kontrola
+    - možda da se kursor pomera na ondrag
 
 - RPG / Fantasy
   - srediti borbu, previše promašuje
@@ -36,6 +35,7 @@ npx live-server
 
 - Adventure / Avatar
   - merge stairway-girl, stairway-to-heaven, tower-of-babel, random-boxes?
+  - proveriti 3rd cameru za letenje
 
 - Svemir 
   - dodati model ring space-arcology

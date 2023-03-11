@@ -14,7 +14,7 @@ const animDict = {
 
 /* LOADING */
 
-const { mesh, animations } = await loadModel({ file: 'nazi-agent.fbx', prefix: 'character/soldier/', animDict, angle: Math.PI, fixColors: true, size: 1.8 })
+const { mesh, animations } = await loadModel({ file: 'nazi-agent.fbx', prefix: 'character/soldier/', animDict, angle: Math.PI + .3, fixColors: true, size: 1.8 })
 
 const { mesh: pistol } = await loadModel({ file: 'weapon/luger/model.fbx', scale: .18 })
 
@@ -31,10 +31,5 @@ export class NaziAgentPlayer extends Player {
 export class NaziAgentAI extends AI {
   constructor(props = {}) {
     super({ ...sharedProps, attackDistance: 10, ...props })
-  }
-
-  lookAtTarget() {
-    super.lookAtTarget()
-    // this.mesh.rotateY(Math.PI / 32)
   }
 }
