@@ -1,10 +1,9 @@
-import { scene, renderer, camera, clock, createSkyBox } from '/utils/scene.js'
+import { scene, renderer, camera, clock, setBackground } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 import { sample } from '/utils/helpers.js'
 import Tilemap from '/utils/classes/Tilemap.js'
 import { smallMap } from '/utils/data/maps.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
-import { loadModel } from '/utils/loaders.js'
 import { Rain } from '/utils/classes/Particles.js'
 import Savo from '/utils/player/Savo.js'
 
@@ -18,8 +17,8 @@ import { ZombieGuardAI } from '/utils/actors/horror/ZombieGuard.js'
 
 const enemyClasses = [GhostAI, GothGirlAI, ZombieBarefootAI, ZombieCopAI, ZombieDoctorCrawlAI, ZombieDoctorAI, ZombieGuardAI]
 
+setBackground(0x000000)
 const light = hemLight({ intensity: .75 })
-scene.background = createSkyBox({ folder: 'skybox1' })
 
 const tilemap = new Tilemap(smallMap, 20)
 const coords = tilemap.getEmptyCoords()

@@ -1,4 +1,4 @@
-import { scene, renderer, camera, clock, createSkyBox } from '/utils/scene.js'
+import { scene, renderer, camera, clock, setBackground } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 import { sample } from '/utils/helpers.js'
 import Tilemap from '/utils/classes/Tilemap.js'
@@ -16,7 +16,7 @@ import { GermanFlameThrowerAI } from '/utils/actors/ww2/GermanFlameThrower.js'
 const enemyClasses = [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
 
 const light = hemLight({ intensity: .75 })
-scene.background = createSkyBox({ folder: 'skybox1' })
+setBackground(0x0c1445)
 
 const tilemap = new Tilemap(smallMap, 20)
 const coords = tilemap.getEmptyCoords()

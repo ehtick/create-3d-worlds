@@ -12,13 +12,13 @@ npx live-server
 ## TODO
 
 - pokušati optimizaciju učitavanja animacija
+- BUG: ai prolaze kroz zidove
 
 ### Scenes & examples
 
 - FPS / Savo
+  - da munja osvetljava i nebo (menjati privremeno boju pozadine u belu?)
   - spojiti sa fps-graffiti?
-  - probati bez skybox
-  - BUG: ai prolaze kroz zidove
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
 
@@ -27,6 +27,7 @@ npx live-server
   - BUG: zombi pandur secka na hit
   - BUG: attackDistance negde manje od direction blocked?
   - da bude na groblju
+  - probati sneg
 
 - RPG / Fantasy
   - srediti borbu, previše promašuje
