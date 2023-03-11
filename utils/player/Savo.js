@@ -89,7 +89,7 @@ export default class Savo extends Player {
   }
 
   checkHit() {
-    if (this.hitAmount) shakeCamera(this.camera, this.hitAmount * .001)
+    if (this.hitAmount) shakeCamera(this.camera, this.hitAmount * .005)
     super.checkHit()
   }
 

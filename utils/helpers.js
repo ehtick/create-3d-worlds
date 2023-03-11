@@ -290,15 +290,15 @@ export const addTexture = ({ mesh, file = 'terrain/concrete.jpg', repeat = 1 } =
 
 /* CAMERA */
 
-export function shakeCamera(camera, offset = .03) {
+export function shakeCamera(camera, range = .1) {
   const cameraPosition = new THREE.Vector3().copy(camera.position)
 
-  const offsetX = randFloat(-offset, offset)
-  const offsetY = randFloat(-offset, offset)
-  const offsetZ = randFloat(-offset, offset)
+  const offsetX = randFloat(-range, range)
+  const offsetY = randFloat(-range, range)
+  const offsetZ = randFloat(-range, range)
   camera.position.add(new THREE.Vector3(offsetX, offsetY, offsetZ))
 
-  setTimeout(() => camera.position.copy(cameraPosition), offset * 300)
+  setTimeout(() => camera.position.copy(cameraPosition), range * 1000)
 }
 
 export function createChaseCamera(mesh, camera = defaultCamera) {
