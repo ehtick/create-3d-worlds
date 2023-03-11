@@ -238,11 +238,11 @@ export default class Actor {
     const object = this.raycast()
     if (!belongsTo(object, name)) return
 
-    const halfAction = this.action.getClip().duration * 500
+    const timeToHit = this.action ? this.action.getClip().duration * 500 : 500
 
     setTimeout(() => {
       this.hit(getParent(object, name))
-    }, halfAction)
+    }, timeToHit)
   }
 
   /* UPDATES */

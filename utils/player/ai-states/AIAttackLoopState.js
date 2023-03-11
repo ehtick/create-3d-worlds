@@ -8,7 +8,7 @@ export default class AIAttackLoopState extends State {
       ? Math.random() > .5 ? actions.attack : actions.attack2
       : actions.attack
     this.onLoop = this.onLoop.bind(this)
-    this.shouldFinish = false
+    this.shouldFinishAttack = false
   }
 
   enter(oldState, oldAction) {
@@ -25,10 +25,10 @@ export default class AIAttackLoopState extends State {
   onLoop() {
     this.actor.startAttack()
 
-    if (this.shouldFinish) {
+    if (this.shouldFinishAttack) {
       this.cleanup()
       this.actor.setState(this.prevOrIdle)
-      this.shouldFinish = false
+      this.shouldFinishAttack = false // reset value
     }
   }
 
@@ -36,7 +36,7 @@ export default class AIAttackLoopState extends State {
     const { actor } = this
 
     if (actor.distancToTarget > actor.attackDistance)
-      this.shouldFinish = true
+      this.shouldFinishAttack = true
   }
 
   exit() {

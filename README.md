@@ -16,12 +16,17 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
-  - opciono neprijatelje zombije?
   - spojiti sa fps-graffiti?
   - probati bez skybox
   - BUG: ai prolaze kroz zidove
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
+
+- FPS / Zombie
+  - BUG: duh je nedodirljiv (prska krv ali ne umire)
+  - BUG: zombi pandur secka na hit
+  - BUG: attackDistance negde manje od direction blocked?
+  - da bude na groblju
 
 - RPG / Fantasy
   - srediti borbu, previše promašuje

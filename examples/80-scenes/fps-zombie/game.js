@@ -4,17 +4,19 @@ import { sample } from '/utils/helpers.js'
 import Tilemap from '/utils/classes/Tilemap.js'
 import { smallMap } from '/utils/data/maps.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
-import { createCrate, createRustyBarrel, createMetalBarrel } from '/utils/geometry.js'
 import { loadModel } from '/utils/loaders.js'
 import { Rain } from '/utils/classes/Particles.js'
 import Savo from '/utils/player/Savo.js'
-import { TankAI } from '/utils/actors/Tank.js'
-import { GermanMachineGunnerAI } from '/utils/actors/ww2/GermanMachineGunner.js'
-import { SSSoldierAI } from '/utils/actors/ww2/SSSoldier.js'
-import { NaziOfficerAI } from '/utils/actors/ww2/NaziOfficer.js'
-import { GermanFlameThrowerAI } from '/utils/actors/ww2/GermanFlameThrower.js'
 
-const enemyClasses = [GermanFlameThrowerAI]// [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
+import { GhostAI } from '/utils/actors/horror/Ghost.js'
+import { GothGirlAI } from '/utils/actors/horror/GothGirl.js'
+import { ZombieBarefootAI } from '/utils/actors/horror/ZombieBarefoot.js'
+import { ZombieCopAI } from '/utils/actors/horror/ZombieCop.js'
+import { ZombieDoctorCrawlAI } from '/utils/actors/horror/ZombieDoctorCrawl.js'
+import { ZombieDoctorAI } from '/utils/actors/horror/ZombieDoctor.js'
+import { ZombieGuardAI } from '/utils/actors/horror/ZombieGuard.js'
+
+const enemyClasses = [GhostAI, GothGirlAI, ZombieBarefootAI, ZombieCopAI, ZombieDoctorCrawlAI, ZombieDoctorAI, ZombieGuardAI]
 
 const light = hemLight({ intensity: .75 })
 scene.background = createSkyBox({ folder: 'skybox1' })
@@ -43,26 +45,6 @@ for (let i = 0; i < 20; i++) {
   solids.push(enemy.mesh)
 }
 
-/* OBJECTS */
-
-const tank = new TankAI({ coords, baseState: 'patrol', patrolDistance: 30 })
-solids.push(tank.mesh)
-
-const { mesh: bunker } = await loadModel({ file: 'building/bunker.fbx', texture: 'terrain/concrete.jpg', size: 2.5 })
-bunker.position.copy(coords.pop())
-solids.push(bunker)
-
-for (let i = 0; i < 5; i++) {
-  const coord = coords.pop()
-  for (let j = -1; j < 2; j++) {
-    const object = sample([createCrate, createRustyBarrel, createMetalBarrel])()
-    object.position.copy(coord)
-    object.translateX(j)
-    player.addSolids(object)
-    solids.push(object)
-  }
-}
-
 player.addSolids(solids)
 enemies.forEach(enemy => enemy.addSolids(solids))
 
@@ -77,7 +59,6 @@ void function loop() {
   player.update(delta)
   enemies.forEach(enemy => enemy.update(delta))
   rain.update({ delta, pos: player.position })
-  tank.update(delta)
 
   if (Math.random() > .997) lightningStrike(light)
 
