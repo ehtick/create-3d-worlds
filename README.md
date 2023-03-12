@@ -17,10 +17,11 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
+  - BUG: shake kamera ne radi sa pointer lock
+  - BUG: ne ostavlja decals na bunkeru
+  - BUG: ai prolaze kroz zidove, možda problem reactions.STEP_OFF
+    - rešenje: da STEP_OFF bude samo kad udaraju u neprijatelje? inače bounce
   - spojiti sa fps-graffiti?
-  - odlučiti između pointer lock i Savo kontrola
-    - možda da se kursor pomera na ondrag
-  - BUG: kamera se nakon treska ne vrati na mesto (možda nije bitno sa pointer controls)
   - srediti lavirinte i izabrati neki
 
 - FPS / Horror

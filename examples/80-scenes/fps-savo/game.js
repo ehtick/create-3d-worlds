@@ -3,7 +3,7 @@ import { createGround } from '/utils/ground.js'
 import { sample } from '/utils/helpers.js'
 import Tilemap from '/utils/classes/Tilemap.js'
 import { smallMap } from '/utils/data/maps.js'
-import { hemLight, lightningStrike } from '/utils/light.js'
+import { hemLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { Snow } from '/utils/classes/Particles.js'
 import Savo from '/utils/player/Savo.js'
@@ -15,7 +15,7 @@ import { GermanFlameThrowerAI } from '/utils/actors/ww2/GermanFlameThrower.js'
 
 const enemyClasses = [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
 
-const light = hemLight({ intensity: .75 })
+hemLight({ intensity: .75 })
 setBackground(0x070b34)
 
 const tilemap = new Tilemap(smallMap, 20)
@@ -31,7 +31,7 @@ const solids = [walls]
 
 /* ACTORS */
 
-const player = new Savo({ camera, coords })
+const player = new Savo({ camera, coords, mousemove: true })
 scene.add(player.mesh)
 
 const enemies = []
@@ -61,14 +61,23 @@ scene.add(...solids)
 
 void function loop() {
   requestAnimationFrame(loop)
+  renderer.render(scene, camera)
+  if (!document.pointerLockElement) return
+
   const delta = clock.getDelta()
 
   player.update(delta)
   enemies.forEach(enemy => enemy.update(delta))
   rain.update({ delta, pos: player.position })
   tank.update(delta)
-
-  if (Math.random() > .997) lightningStrike(light)
-
-  renderer.render(scene, camera)
 }()
+
+/* EVENTS */
+
+const instructions = document.querySelector('#instructions')
+
+instructions.addEventListener('click', () => document.body.requestPointerLock())
+
+document.addEventListener('pointerlockchange', () => {
+  instructions.style.display = document.pointerLockElement ? 'none' : '-webkit-box'
+})

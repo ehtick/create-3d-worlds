@@ -1,7 +1,7 @@
 import { MathUtils } from 'three'
 import Player from '/utils/player/Player.js'
 import { camera as defaultCamera } from '/utils/scene.js'
-import { normalizeMouse, getCameraIntersects, getScene, belongsTo, getParent, shakeCamera } from '/utils/helpers.js'
+import { getCameraIntersects, getScene, belongsTo, getParent, shakeCamera } from '/utils/helpers.js'
 import FPSRenderer from '/utils/classes/2d/FPSRenderer.js'
 import { shootDecals } from '/utils/decals.js'
 import Particles from '/utils/classes/Particles.js'
@@ -19,7 +19,7 @@ export default class Savo extends Player {
       jumpStyle: jumpStyles.FLY,
       ...params
     })
-    this.mouseSensitivity = .05
+    this.mouseSensitivity = .002
     this.mousemove = mousemove
     this.rifleBurst = rifleBurst
     this.time = 0
@@ -52,10 +52,9 @@ export default class Savo extends Player {
   }
 
   onMouseMove(e) {
-    const { x, y } = normalizeMouse(e)
-    this.mesh.rotateY(-x * this.mouseSensitivity)
-    this.camera.rotateX(y * this.mouseSensitivity)
-    this.camera.rotation.x = Math.max(-0.1, Math.min(Math.PI / 4, this.camera.rotation.x))
+    this.mesh.rotateY(-e.movementX * this.mouseSensitivity)
+    this.camera.rotateX(-e.movementY * this.mouseSensitivity)
+    this.camera.rotation.x = Math.max(-0.1, Math.min(Math.PI / 8, this.camera.rotation.x))
   }
 
   shoot() {
