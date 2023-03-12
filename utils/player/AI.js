@@ -4,7 +4,7 @@ import { TWEEN } from '/node_modules/three/examples/jsm/libs/tween.module.min.js
 import { Input } from '/utils/classes/Input.js'
 import Actor from './Actor.js'
 import { getAIState } from './states/index.js'
-import { jumpStyles, attackStyles, baseAiStates, pursueStates, reactions } from '/utils/constants.js'
+import { jumpStyles, attackStyles, baseAiStates, pursueStates } from '/utils/constants.js'
 
 const { randFloatSpread } = MathUtils
 
@@ -138,10 +138,6 @@ export default class AI extends Actor {
   checkTarget() {
     if (this?.target?.userData?.energy <= 0)
       this.target = null
-  }
-
-  updateMove(delta, reaction = reactions.TURN_SMOOTH) {
-    super.updateMove(delta, reaction)
   }
 
   update(delta) {

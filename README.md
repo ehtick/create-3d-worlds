@@ -18,12 +18,11 @@ npx live-server
 
 - FPS / Savo
   - aI: ako je attackDistance manji od širine meša, povećati
-  - srediti shake kamera
+  - dodati čučanje
   - BUG: ne ostavlja decals na bunkeru
-  - BUG: ai prolaze kroz zidove, možda problem reactions.STEP_OFF
-    - rešenje: da STEP_OFF bude samo kad udaraju u neprijatelje? inače bounce
   - spojiti sa fps-graffiti?
-  - srediti lavirinte i izabrati neki
+  - pogledati lavirinte i izabrati neki
+  - rename Savo to FPSPlayer
 
 - FPS / Horror
   - scena groblje

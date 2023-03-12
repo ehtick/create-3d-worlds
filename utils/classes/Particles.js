@@ -164,7 +164,7 @@ export class Rain extends Particles {
 
 export class Snow extends Particles {
   constructor(params = {}) {
-    super({ file: 'snowflake.png', num: 1000, color: 0xffffff, size: .2, opacity: .6, minRadius: .5, maxRadius: 50, ...params })
+    super({ file: 'snowflake.png', num: 1000, color: 0xffffff, size: .3, opacity: .6, minRadius: 1.5, maxRadius: 50, ...params })
   }
 
   update(params = {}) {

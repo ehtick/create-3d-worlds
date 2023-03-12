@@ -280,7 +280,7 @@ export default class Actor {
     this.bounce() // implement in children classes
   }
 
-  updateMove(delta, reaction) {
+  updateMove(delta, reaction = reactions.BOUNCE) {
     const direction = this.input.up ? dir.forward : dir.backward
     if (this.directionBlocked(direction))
       if (reaction == reactions.BOUNCE) this.bounce()

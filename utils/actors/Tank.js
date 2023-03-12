@@ -1,6 +1,7 @@
 import Player from '/utils/player/Player.js'
 import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
+import { reactions } from '/utils/constants.js'
 
 /* LOADING */
 
@@ -23,5 +24,9 @@ export class TankAI extends AI {
 
   turnSmooth() {
     super.turnSmooth(Math.PI, 2500)
+  }
+
+  updateMove(delta, reaction = reactions.TURN_SMOOTH) {
+    super.updateMove(delta, reaction)
   }
 }
