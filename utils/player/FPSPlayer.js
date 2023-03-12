@@ -83,7 +83,7 @@ export default class FPSPlayer extends Player {
     this.ricochet.reset({ pos: point, unitAngle: 0.2, color: ricochetColor })
     scene.add(this.ricochet.mesh)
 
-    shakeCamera(this.camera, 0.7, null, true)
+    shakeCamera(this.camera, .3, null, true)
   }
 
   fire() {
