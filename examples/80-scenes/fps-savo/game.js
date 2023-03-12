@@ -16,7 +16,7 @@ import { GermanFlameThrowerAI } from '/utils/actors/ww2/GermanFlameThrower.js'
 const enemyClasses = [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
 
 const light = hemLight({ intensity: .75 })
-setBackground(0x000000)
+setBackground(0x070b34)
 
 const tilemap = new Tilemap(smallMap, 20)
 const coords = tilemap.getEmptyCoords()

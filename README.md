@@ -21,6 +21,7 @@ npx live-server
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
   - BUG: kamera se nakon treska ne vrati na mesto (možda nije bitno sa pointer controls)
+  - srediti lavirinte i izabrati neki
 
 - FPS / Horror
   - scena groblje
