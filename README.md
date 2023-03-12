@@ -17,12 +17,10 @@ npx live-server
 ### Scenes & examples
 
 - FPS / FPSPlayer
-  - mesh.userData da nosi boju rikošeta (tenk rđa, čovek krv, zid sivo...)
   - dodati čučanje
   - BUG: ne ostavlja decals na bunkeru
   - spojiti sa fps-graffiti?
   - pogledati lavirinte i izabrati neki
-  - rename FPSPlayer to FPSPlayer
 
 - FPS / Horror
   - scena groblje

@@ -17,11 +17,12 @@ const { randInt } = THREE.MathUtils
  */
 export default class Actor {
   constructor({
-    mesh = createPlayerBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, mapSize, coords, attackDistance,
+    mesh = createPlayerBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, mapSize, coords, attackDistance, hitColor = 0x8a0303, energy = 100
   }) {
     this.mesh = clone(mesh)
-    this.mesh.userData.energy = 100
     this.mesh.userData.hitAmount = 0
+    this.mesh.userData.energy = energy
+    this.mesh.userData.hitColor = hitColor
     this.speed = speed
     this.solids = []
     this.groundY = 0
@@ -36,7 +37,6 @@ export default class Actor {
     this.getState = getState
     this.shouldRaycastGround = shouldRaycastGround
     this.attackDistance = this.depth > attackDistance ? Math.ceil(this.depth) : attackDistance
-    // console.log(this.constructor.name, 'attackDistance:', this.attackDistance, 'depth:', this.depth)
 
     this.actions = {}
 

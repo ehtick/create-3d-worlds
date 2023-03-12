@@ -13,13 +13,14 @@ const { randInt } = MathUtils
 
 export default class FPSPlayer extends Player {
   constructor({
-    mousemove = false, camera = defaultCamera, rifleBurst = false, ...params
+    camera = defaultCamera,
+    mouseSensitivity = .002,
+    mousemove = false,
+    rifleBurst = false,
+    ...rest
   } = {}) {
-    super({
-      jumpStyle: jumpStyles.FLY,
-      ...params
-    })
-    this.mouseSensitivity = .002
+    super({ jumpStyle: jumpStyles.FLY, ...rest })
+    this.mouseSensitivity = mouseSensitivity
     this.mousemove = mousemove
     this.rifleBurst = rifleBurst
     this.time = 0
@@ -67,25 +68,25 @@ export default class FPSPlayer extends Player {
     this.audio.play()
 
     for (let i = 0; i < shoots; i++) setTimeout(() => {
-      const intersects = getCameraIntersects(this.camera, this.solids) // .filter(x => x.object.name != 'decal')
+      const intersects = getCameraIntersects(this.camera, this.solids)
       if (!intersects.length) return
 
       const { point, object } = intersects[0]
+      shootDecals(intersects[0], { color: 0x000000 })
+      let ricochetColor = 0xcccccc
+
       const isEnemy = belongsTo(object, 'enemy')
+      if (isEnemy) {
+        const mesh = getParent(object, 'enemy')
+        mesh.userData.hitAmount = randInt(35, 55)
+        ricochetColor = mesh.userData.hitColor
+      }
 
-      if (!isEnemy) shootDecals(intersects[0], { color: 0x000000 })
-
-      const ricochetColor = isEnemy ? 0x8a0303 : 0xcccccc
       this.ricochet.reset({ pos: point, unitAngle: 0.2, color: ricochetColor })
       const scene = getScene(object)
       scene.add(this.ricochet.mesh)
 
-      if (isEnemy) {
-        const mesh = getParent(object, 'enemy')
-        mesh.userData.hitAmount = randInt(35, 55)
-      }
-
-      this.time -= .5 // recoil
+      this.time -= .5 // move gun
     }, i * 100)
   }
 
