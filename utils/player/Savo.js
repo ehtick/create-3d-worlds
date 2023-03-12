@@ -59,7 +59,7 @@ export default class Savo extends Player {
   }
 
   shoot() {
-    if (this.energy <= 0) return
+    if (this.isDead) return
 
     const shoots = this.rifleBurst ? 5 : 1
     this.audio.currentTime = 0
@@ -91,7 +91,7 @@ export default class Savo extends Player {
   painEffect() {
     this.shouldDrawPain = true
     shakeCamera(this.camera, this.hitAmount * .005, () => {
-      this.shouldDrawPain = this.energy <= 0
+      this.shouldDrawPain = this.isDead // true only if dead
     })
   }
 

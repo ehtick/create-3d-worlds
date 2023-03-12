@@ -24,4 +24,12 @@ export class GhostAI extends AI {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
   }
+
+  checkHit() {
+    super.checkHit()
+    if (this.isDead) {
+      this.mesh.rotateY(.15)
+      this.mesh.translateY(.03)
+    }
+  }
 }

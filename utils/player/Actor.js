@@ -97,6 +97,10 @@ export default class Actor {
     this.mesh.userData.hitAmount = hitAmount
   }
 
+  get isDead() {
+    return this.energy <= 0
+  }
+
   get height() {
     return getSize(this.mesh, 'y')
   }
@@ -261,7 +265,7 @@ export default class Actor {
     this.energy = newAmount > 0 ? newAmount : 0
     userData.hitAmount = 0
 
-    if (this.energy <= 0)
+    if (this.isDead)
       this.setState('death')
     else
       this.setState('pain')
