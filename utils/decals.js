@@ -39,15 +39,10 @@ export function shootDecals(intersect, { scene, color } = {}) {
 
   const geometry = new DecalGeometry(object, point, helper.rotation, size)
   const material = decalMaterial.clone()
-  if (color !== undefined) material.color = new THREE.Color(color)
+  if (color !== undefined) // it can be 0
+    material.color = new THREE.Color(color)
   const decal = new THREE.Mesh(geometry, material)
-  decal.name = 'decal'
-
-  if (scene) scene.add(decal)
-  else {
-    decal.position.sub(object.position)
-    object.add(decal)
-  }
+  scene.add(decal)
 }
 
 /* CAR TRACKS */

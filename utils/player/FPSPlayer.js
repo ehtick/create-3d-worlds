@@ -69,17 +69,18 @@ export default class FPSPlayer extends Player {
     if (!intersects.length) return
 
     const { point, object } = intersects[0]
-    shootDecals(intersects[0], { color: 0x000000 })
+    const scene = getScene(object)
+
     let ricochetColor = 0xcccccc
 
     if (belongsTo(object, 'enemy')) {
       const mesh = getParent(object, 'enemy')
       mesh.userData.hitAmount = randInt(35, 55)
       ricochetColor = mesh.userData.hitColor
-    }
+    } else
+      shootDecals(intersects[0], { scene, color: 0x000000 })
 
     this.ricochet.reset({ pos: point, unitAngle: 0.2, color: ricochetColor })
-    const scene = getScene(object)
     scene.add(this.ricochet.mesh)
 
     shakeCamera(this.camera, 0.14)
