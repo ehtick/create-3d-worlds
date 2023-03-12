@@ -35,7 +35,9 @@ export default class Actor {
     this.input = input
     this.getState = getState
     this.shouldRaycastGround = shouldRaycastGround
-    this.attackDistance = attackDistance
+    this.attackDistance = this.depth > attackDistance ? Math.ceil(this.depth) : attackDistance
+    // console.log(this.constructor.name, 'attackDistance:', this.attackDistance, 'depth:', this.depth)
+
     this.actions = {}
 
     if (animations?.length && animDict) {
@@ -103,6 +105,10 @@ export default class Actor {
 
   get height() {
     return getSize(this.mesh, 'y')
+  }
+
+  get depth() {
+    return getSize(this.mesh, 'z')
   }
 
   get heightDifference() {

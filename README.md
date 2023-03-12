@@ -17,7 +17,8 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
-  - aI: ako je attackDistance manji od širine meša, povećati
+  - aI: ako je attackDistance manji od širine mesha, povećati attackDistance
+  - mesh.userData da nosi boju rikošeta (tenk rđa, čovek krv, zid sivo...)
   - dodati čučanje
   - BUG: ne ostavlja decals na bunkeru
   - spojiti sa fps-graffiti?

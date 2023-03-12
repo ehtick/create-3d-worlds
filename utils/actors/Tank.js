@@ -9,7 +9,7 @@ const { mesh } = await loadModel({ file: 'tank/renault-ft.fbx', texture: 'metal/
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, speed: 2 }
+const sharedProps = { mesh, speed: 2, attackDistance: 15 }
 
 export class TankPlayer extends Player {
   constructor(props = {}) {

@@ -44,7 +44,7 @@ for (let i = 0; i < 20; i++) {
 
 /* OBJECTS */
 
-const tank = new TankAI({ coords })
+const tank = new TankAI({ coords, target: player.mesh })
 solids.push(tank.mesh)
 
 const { mesh: bunker } = await loadModel({ file: 'building/bunker.fbx', texture: 'terrain/concrete.jpg', size: 2.5 })

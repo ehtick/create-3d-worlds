@@ -7,28 +7,28 @@ export default class AIAttackLoopState extends State {
     this.action = actions.attack2
       ? Math.random() > .5 ? actions.attack : actions.attack2
       : actions.attack
-    this.onLoop = this.onLoop.bind(this)
+    this.attackAgain = this.attackAgain.bind(this)
     this.shouldFinishAttack = false
   }
 
   enter(oldState, oldAction) {
     super.enter(oldState)
-    if (this.action) this.transitFrom(oldAction, .5)
-    this.actor.mixer.addEventListener('loop', this.onLoop)
     this.actor.startAttack()
+
+    if (this.actor.mixer) {
+      if (this.action) this.transitFrom(oldAction, .5)
+      this.actor.mixer.addEventListener('loop', this.attackAgain)
+    } else
+      this.myInterval = setInterval(() => this.attackAgain(), 3000)
   }
 
-  cleanup() {
-    this.actor.mixer.removeEventListener('loop', this.onLoop)
-  }
-
-  onLoop() {
+  attackAgain() {
     this.actor.startAttack()
 
     if (this.shouldFinishAttack) {
       this.cleanup()
       this.actor.setState(this.prevOrIdle)
-      this.shouldFinishAttack = false // reset value
+      this.shouldFinishAttack = false // reset to init value
     }
   }
 
@@ -37,6 +37,11 @@ export default class AIAttackLoopState extends State {
 
     if (actor.distancToTarget > actor.attackDistance)
       this.shouldFinishAttack = true
+  }
+
+  cleanup() {
+    this.actor?.mixer?.removeEventListener('loop', this.attackAgain)
+    if (this.myInterval) clearInterval(this.myInterval)
   }
 
   exit() {
