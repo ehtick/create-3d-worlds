@@ -15,7 +15,7 @@ import { ZombieDoctorCrawlAI } from '/utils/actors/horror/ZombieDoctorCrawl.js'
 import { ZombieDoctorAI } from '/utils/actors/horror/ZombieDoctor.js'
 import { ZombieGuardAI } from '/utils/actors/horror/ZombieGuard.js'
 
-const enemyClasses = [GhostAI, GothGirlAI, ZombieBarefootAI, ZombieCopAI, ZombieDoctorCrawlAI, ZombieDoctorAI, ZombieGuardAI]
+const enemyClasses =  [GhostAI]//[GhostAI, GothGirlAI, ZombieBarefootAI, ZombieCopAI, ZombieDoctorCrawlAI, ZombieDoctorAI, ZombieGuardAI]
 
 setBackground(0x000000)
 const light = hemLight({ intensity: .75 })

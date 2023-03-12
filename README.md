@@ -12,18 +12,19 @@ npx live-server
 ## TODO
 
 - pokušati optimizaciju učitavanja animacija
+  - da učitava samo prvu koja je baseState, nakon toga po potrebi
 
 ### Scenes & examples
 
-- FPS / WW2
+- FPS / Savo
+  - BUG: kamera se nakon treska ne vrati na mesto
   - da munja osvetljava i nebo (menjati privremeno boju pozadine u belu?)
   - spojiti sa fps-graffiti?
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
 
 - FPS / Horror
-  - duh da ne bude solid i da nema solids
-  - scena na groblju
+  - scena groblje
 
 - RPG / Fantasy
   - srediti borbu, previše promašuje

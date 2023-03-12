@@ -18,11 +18,19 @@ export class GhostPlayer extends Player {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
   }
+
+  directionBlocked() {
+    return false
+  }
 }
 
 export class GhostAI extends AI {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
+  }
+
+  directionBlocked() {
+    return false
   }
 
   checkHit() {
