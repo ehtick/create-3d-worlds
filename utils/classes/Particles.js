@@ -168,7 +168,7 @@ export class Snow extends Particles {
   }
 
   update(params = {}) {
-    super.update({ axis: 1, rotateY: .009, min: 0, max: 20, minVelocity: 3, maxVelocity: 9, ...params })
+    super.update({ axis: 1, rotateY: .009, min: -5, max: 15, minVelocity: 3, maxVelocity: 9, ...params })
   }
 }
 

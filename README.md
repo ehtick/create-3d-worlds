@@ -17,7 +17,6 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
-  - da munja osvetljava i nebo (menjati privremeno boju pozadine u belu?)
   - spojiti sa fps-graffiti?
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag

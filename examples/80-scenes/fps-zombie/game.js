@@ -17,7 +17,7 @@ import { ZombieGuardAI } from '/utils/actors/horror/ZombieGuard.js'
 
 const enemyClasses = [GhostAI, GothGirlAI, ZombieBarefootAI, ZombieCopAI, ZombieDoctorCrawlAI, ZombieDoctorAI, ZombieGuardAI]
 
-setBackground(0x000000)
+setBackground(0x070b34)
 const light = hemLight({ intensity: .75 })
 
 const tilemap = new Tilemap(smallMap, 20)

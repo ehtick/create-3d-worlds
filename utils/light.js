@@ -6,6 +6,8 @@ import { mapRange } from './helpers.js'
 
 const { randInt } = THREE.MathUtils
 
+let oldIntensity, oldBackground
+
 /* LIGHTS */
 
 export function dirLight({
@@ -77,15 +79,25 @@ export const createMoon = ({
   position = [50, 100, 50], color = 0xFFF8DE, planetColor = 0xF6F1D5, r = 4, ...rest
 } = {}) => createSun({ position, color, planetColor, r, ...rest })
 
-export function lightningStrike(light) {
+export function lightningStrike(light, scene = defaultScene) {
+  if (!oldIntensity) oldIntensity = light.intensity
+  if (!oldBackground) oldBackground = new THREE.Color(scene.background)
+
   const audio = new Audio('/assets/sounds/thunder.mp3')
 
   const distance = randInt(100, 3000)
   audio.volume = mapRange(distance, 3000, 100, config.volume / 4, config.volume)
   light.intensity = mapRange(distance, 3000, 100, 1.2, 2)
 
+  const newColor = new THREE.Color().lerpColors(
+    oldBackground, new THREE.Color(0xFFFFFF), light.intensity - 1
+  )
+
+  scene.background = newColor
+
   setTimeout(() => {
-    light.intensity = 1
+    light.intensity = oldIntensity
+    scene.background = oldBackground
   }, 500)
 
   setTimeout(() => {
