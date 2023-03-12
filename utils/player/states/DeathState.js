@@ -6,8 +6,10 @@ export default class DeathState extends SpecialState {
     if (!this.actor.mixer) return
 
     const active = this.actor.mixer._actions.filter(action => action.isRunning())
-    if (active.length > 1)
+
+    if (!this.action || active.length > 1)
       this.actor.mixer.stopAllAction()
+
     super.enter(oldState, oldAction)
   }
 

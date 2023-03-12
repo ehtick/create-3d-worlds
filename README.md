@@ -15,16 +15,17 @@ npx live-server
 
 ### Scenes & examples
 
-- FPS / Savo
+- FPS / WW2
+  - probati sneg
   - da munja osvetljava i nebo (menjati privremeno boju pozadine u belu?)
   - spojiti sa fps-graffiti?
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
 
-- FPS / Zombie
-  - BUG: duh je nedodirljiv (prska krv ali ne umire)
-  - da bude na groblju
-  - probati sneg
+- FPS / Horror
+  - duh nema death animaciju, da se zaledi ili zavrti i ode u nebo
+  - duh da ne bude solid i da nema solids
+  - scena na groblju
 
 - RPG / Fantasy
   - srediti borbu, previše promašuje
