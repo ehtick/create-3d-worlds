@@ -300,7 +300,7 @@ export default class Actor {
 
   updateTurn(delta) {
     if (!delta) return
-    const angle = RIGHT_ANGLE * delta // 90 degrees per second
+    const angle = (this.input.run ? RIGHT_ANGLE : RIGHT_ANGLE * .75) * delta // angle per second
 
     if (this.input.left)
       this.turn(angle)

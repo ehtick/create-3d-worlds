@@ -17,11 +17,11 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
-  - BUG: kamera se nakon treska ne vrati na mesto
   - da munja osvetljava i nebo (menjati privremeno boju pozadine u belu?)
   - spojiti sa fps-graffiti?
   - odlučiti između pointer lock i Savo kontrola
     - možda da se kursor pomera na ondrag
+  - BUG: kamera se nakon treska ne vrati na mesto (možda nije bitno sa pointer controls)
 
 - FPS / Horror
   - scena groblje

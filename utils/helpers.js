@@ -292,7 +292,7 @@ export const addTexture = ({ mesh, file = 'terrain/concrete.jpg', repeat = 1 } =
 /* CAMERA */
 
 export function shakeCamera(camera, range = .1, callback) {
-  const cameraPosition = new THREE.Vector3().copy(camera.position)
+  const oldPosition = new THREE.Vector3().copy(camera.position)
 
   const offsetX = randFloat(-range, range)
   const offsetY = randFloat(-range, range)
@@ -300,7 +300,7 @@ export function shakeCamera(camera, range = .1, callback) {
   camera.position.add(new THREE.Vector3(offsetX, offsetY, offsetZ))
 
   const tween = new TWEEN.Tween(camera.position)
-    .to(cameraPosition, range * 1000)
+    .to(oldPosition, range * 1000)
     .start()
 
   tween.onComplete(() => {
