@@ -24,6 +24,7 @@ export default class Savo extends Player {
     this.rifleBurst = rifleBurst
     this.time = 0
     this.energy = 200
+    this.hurting = false
 
     const file = rifleBurst ? 'rifle-burst' : 'rifle'
     this.audio = new Audio(`/assets/sounds/${file}.mp3`)
@@ -38,7 +39,7 @@ export default class Savo extends Player {
     this.ricochet = new Particles({ num: 100, size: .05, unitAngle: 0.2 })
 
     document.body.addEventListener('click', () => this.shoot())
-    if (mousemove) document.addEventListener('mousemove', e => this.onMouseMove(e))
+    if (mousemove) document.addEventListener('mousemove', e => this.moveCursor(e))
   }
 
   get cameraTarget() {
@@ -51,7 +52,8 @@ export default class Savo extends Player {
     this.camera.lookAt(this.cameraTarget)
   }
 
-  onMouseMove(e) {
+  moveCursor(e) {
+    if (this.hurting || this.isDead) return
     this.mesh.rotateY(-e.movementX * this.mouseSensitivity)
     this.camera.rotateX(-e.movementY * this.mouseSensitivity)
     this.camera.rotation.x = Math.max(-0.1, Math.min(Math.PI / 8, this.camera.rotation.x))
@@ -88,9 +90,9 @@ export default class Savo extends Player {
   }
 
   painEffect() {
-    this.shouldDrawPain = true
-    shakeCamera(this.camera, this.hitAmount * .005, () => {
-      this.shouldDrawPain = this.isDead // true only if dead
+    this.hurting = true
+    shakeCamera(this.camera, this.hitAmount * .009, () => {
+      this.hurting = this.isDead // true only if dead
     })
   }
 
@@ -111,7 +113,7 @@ export default class Savo extends Player {
 
     this.ricochet.expand({ velocity: 1.2, maxRounds: 5, gravity: .02 })
 
-    if (this.shouldDrawPain) this.fpsRenderer.drawPain()
+    if (this.hurting) this.fpsRenderer.drawPain()
 
     if (!this.mousemove) this.lookAtFront()
   }

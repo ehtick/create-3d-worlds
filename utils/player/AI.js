@@ -129,7 +129,7 @@ export default class AI extends Actor {
 
   startAttack(name = 'player') {
     this.lookAtTarget()
-    this.mesh.rotateY(randFloatSpread(Math.PI / 8))
+    this.mesh.rotateY(randFloatSpread(Math.PI / 16))
     super.startAttack(name)
   }
 

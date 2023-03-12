@@ -17,7 +17,8 @@ npx live-server
 ### Scenes & examples
 
 - FPS / Savo
-  - BUG: shake kamera ne radi sa pointer lock
+  - aI: ako je attackDistance manji od širine meša, povećati
+  - srediti shake kamera
   - BUG: ne ostavlja decals na bunkeru
   - BUG: ai prolaze kroz zidove, možda problem reactions.STEP_OFF
     - rešenje: da STEP_OFF bude samo kad udaraju u neprijatelje? inače bounce
