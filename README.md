@@ -23,7 +23,6 @@ npx live-server
     - možda da se kursor pomera na ondrag
 
 - FPS / Horror
-  - duh nema death animaciju, da se zaledi ili zavrti i ode u nebo
   - duh da ne bude solid i da nema solids
   - scena na groblju
 

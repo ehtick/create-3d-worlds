@@ -15,6 +15,5 @@ export default class DeathState extends SpecialState {
 
   onFinish() {
     this.cleanup()
-    this.actor.updatable = false
   }
 }
