@@ -5,7 +5,7 @@ import { Snow } from '/utils/classes/Particles.js'
 hemLight()
 renderer.setClearColor(0x000000)
 
-const particles = new Snow({ size: 7, minRadius: 50, maxRadius: 500 })
+const particles = new Snow({ num: 10000, size: 7, minRadius: 50, maxRadius: 500 })
 scene.add(particles.mesh)
 
 /* LOOP */

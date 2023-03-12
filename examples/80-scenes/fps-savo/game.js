@@ -5,7 +5,7 @@ import Tilemap from '/utils/classes/Tilemap.js'
 import { smallMap } from '/utils/data/maps.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
-import { Rain } from '/utils/classes/Particles.js'
+import { Snow } from '/utils/classes/Particles.js'
 import Savo from '/utils/player/Savo.js'
 import { TankAI } from '/utils/actors/Tank.js'
 import { GermanMachineGunnerAI } from '/utils/actors/ww2/GermanMachineGunner.js'
@@ -24,7 +24,7 @@ const coords = tilemap.getEmptyCoords()
 scene.add(createGround({ file: 'terrain/ground.jpg' }))
 const walls = tilemap.meshFromMatrix({ texture: 'terrain/concrete.jpg' })
 
-const rain = new Rain()
+const rain = new Snow()
 scene.add(rain.mesh)
 
 const solids = [walls]
