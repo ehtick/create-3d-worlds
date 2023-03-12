@@ -15,13 +15,13 @@ export default class FPSPlayer extends Player {
   constructor({
     camera = defaultCamera,
     mouseSensitivity = .002,
-    mousemove = false,
+    useMouse = false,
     rifleBurst = false,
     ...rest
   } = {}) {
     super({ jumpStyle: jumpStyles.FLY, ...rest })
     this.mouseSensitivity = mouseSensitivity
-    this.mousemove = mousemove
+    this.useMouse = useMouse
     this.rifleBurst = rifleBurst
     this.time = 0
     this.energy = 200
@@ -33,24 +33,28 @@ export default class FPSPlayer extends Player {
 
     this.fpsRenderer = new FPSRenderer()
     this.camera = camera
-    camera.position.set(0, this.height * .8, this.height / 4)
+    camera.position.set(0, this.cameraHeight, this.height / 4)
     camera.rotation.set(0, 0, 0)
     this.mesh.add(camera)
 
     this.ricochet = new Particles({ num: 100, size: .05, unitAngle: 0.2 })
 
-    document.body.addEventListener('click', () => this.shoot())
-    if (mousemove) document.addEventListener('mousemove', e => this.moveCursor(e))
+    document.body.addEventListener('click', () => this.fire())
+    if (useMouse) document.addEventListener('mousemove', e => this.moveCursor(e))
+  }
+
+  get cameraHeight() {
+    return this.height * .8
   }
 
   get cameraTarget() {
     const pos = this.mesh.position.clone()
-    pos.y += this.height * .8
+    pos.y += this.cameraHeight
     return pos
   }
 
-  lookAtFront() {
-    this.camera.lookAt(this.cameraTarget)
+  updateCamera() {
+    if (!this.useMouse) this.camera.lookAt(this.cameraTarget)
   }
 
   moveCursor(e) {
@@ -61,33 +65,35 @@ export default class FPSPlayer extends Player {
   }
 
   shoot() {
+    const intersects = getCameraIntersects(this.camera, this.solids)
+    if (!intersects.length) return
+
+    const { point, object } = intersects[0]
+    shootDecals(intersects[0], { color: 0x000000 })
+    let ricochetColor = 0xcccccc
+
+    if (belongsTo(object, 'enemy')) {
+      const mesh = getParent(object, 'enemy')
+      mesh.userData.hitAmount = randInt(35, 55)
+      ricochetColor = mesh.userData.hitColor
+    }
+
+    this.ricochet.reset({ pos: point, unitAngle: 0.2, color: ricochetColor })
+    const scene = getScene(object)
+    scene.add(this.ricochet.mesh)
+
+    shakeCamera(this.camera, 0.14)
+  }
+
+  fire() {
     if (this.isDead) return
 
-    const shoots = this.rifleBurst ? 5 : 1
     this.audio.currentTime = 0
     this.audio.play()
 
-    for (let i = 0; i < shoots; i++) setTimeout(() => {
-      const intersects = getCameraIntersects(this.camera, this.solids)
-      if (!intersects.length) return
-
-      const { point, object } = intersects[0]
-      shootDecals(intersects[0], { color: 0x000000 })
-      let ricochetColor = 0xcccccc
-
-      const isEnemy = belongsTo(object, 'enemy')
-      if (isEnemy) {
-        const mesh = getParent(object, 'enemy')
-        mesh.userData.hitAmount = randInt(35, 55)
-        ricochetColor = mesh.userData.hitColor
-      }
-
-      this.ricochet.reset({ pos: point, unitAngle: 0.2, color: ricochetColor })
-      const scene = getScene(object)
-      scene.add(this.ricochet.mesh)
-
-      this.time -= .5 // move gun
-    }, i * 100)
+    const shoots = this.rifleBurst ? 5 : 1
+    for (let i = 0; i < shoots; i++)
+      setTimeout(() => this.shoot(), i * 100)
   }
 
   painEffect() {
@@ -116,6 +122,6 @@ export default class FPSPlayer extends Player {
 
     if (this.hurting) this.fpsRenderer.drawPain()
 
-    if (!this.mousemove) this.lookAtFront()
+    this.updateCamera()
   }
 }

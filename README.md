@@ -17,10 +17,11 @@ npx live-server
 ### Scenes & examples
 
 - FPS / FPSPlayer
-  - dodati čučanje
   - BUG: ne ostavlja decals na bunkeru
+  - pomeriti pointer lock logiku u FPSPlayer (proslediti DOM element kao param?)
   - spojiti sa fps-graffiti?
   - pogledati lavirinte i izabrati neki
+  - srediti audio
 
 - FPS / Horror
   - scena groblje

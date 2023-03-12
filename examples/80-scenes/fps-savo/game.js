@@ -24,14 +24,14 @@ const coords = tilemap.getEmptyCoords()
 scene.add(createGround({ file: 'terrain/ground.jpg' }))
 const walls = tilemap.meshFromMatrix({ texture: 'terrain/concrete.jpg' })
 
-const rain = new Snow()
-scene.add(rain.mesh)
+const show = new Snow()
+scene.add(show.mesh)
 
 const solids = [walls]
 
 /* ACTORS */
 
-const player = new FPSPlayer({ camera, coords, mousemove: true })
+const player = new FPSPlayer({ camera, coords, useMouse: true })
 scene.add(player.mesh)
 
 const enemies = []
@@ -44,7 +44,7 @@ for (let i = 0; i < 20; i++) {
 
 /* OBJECTS */
 
-const tank = new TankAI({ coords, target: player.mesh })
+const tank = new TankAI({ coords })
 solids.push(tank.mesh)
 
 const { mesh: bunker } = await loadModel({ file: 'building/bunker.fbx', texture: 'terrain/concrete.jpg', size: 2.5 })
@@ -68,7 +68,7 @@ void function loop() {
 
   player.update(delta)
   enemies.forEach(enemy => enemy.update(delta))
-  rain.update({ delta, pos: player.position })
+  show.update({ delta, pos: player.position })
   tank.update(delta)
 }()
 
