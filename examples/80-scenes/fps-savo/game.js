@@ -31,7 +31,7 @@ const solids = [walls]
 
 /* ACTORS */
 
-const player = new FPSPlayer({ camera, coords, useMouse: true })
+const player = new FPSPlayer({ camera, coords, pointerLockId: 'instructions' })
 scene.add(player.mesh)
 
 const enemies = []
@@ -72,12 +72,3 @@ void function loop() {
   tank.update(delta)
 }()
 
-/* EVENTS */
-
-const instructions = document.querySelector('#instructions')
-
-instructions.addEventListener('click', () => document.body.requestPointerLock())
-
-document.addEventListener('pointerlockchange', () => {
-  instructions.style.display = document.pointerLockElement ? 'none' : '-webkit-box'
-})

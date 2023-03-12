@@ -17,8 +17,6 @@ npx live-server
 ### Scenes & examples
 
 - FPS / FPSPlayer
-  - pomeriti pointer lock logiku u FPSPlayer (proslediti DOM element kao param?)
-    - da ne mrda ekran kada je pauziran pointer lock
   - spojiti sa fps-graffiti?
   - pogledati lavirinte i izabrati neki
   - srediti audio

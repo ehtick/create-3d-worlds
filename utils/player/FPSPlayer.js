@@ -15,13 +15,13 @@ export default class FPSPlayer extends Player {
   constructor({
     camera = defaultCamera,
     mouseSensitivity = .002,
-    useMouse = false,
     rifleBurst = false,
+    pointerLockId,
     ...rest
   } = {}) {
     super({ jumpStyle: jumpStyles.FLY, ...rest })
     this.mouseSensitivity = mouseSensitivity
-    this.useMouse = useMouse
+    this.pointerLockId = pointerLockId
     this.rifleBurst = rifleBurst
     this.time = 0
     this.energy = 200
@@ -40,7 +40,17 @@ export default class FPSPlayer extends Player {
     this.ricochet = new Particles({ num: 100, size: .05, unitAngle: 0.2 })
 
     document.body.addEventListener('click', () => this.fire())
-    if (useMouse) document.addEventListener('mousemove', e => this.moveCursor(e))
+
+    if (pointerLockId) {
+      const domElement = document.getElementById(pointerLockId)
+      domElement.addEventListener('click', () => document.body.requestPointerLock())
+
+      document.addEventListener('pointerlockchange', () => {
+        domElement.style.display = document.pointerLockElement ? 'none' : 'block'
+      })
+
+      document.addEventListener('mousemove', e => this.moveCursor(e))
+    }
   }
 
   get cameraHeight() {
@@ -54,11 +64,12 @@ export default class FPSPlayer extends Player {
   }
 
   updateCamera() {
-    if (!this.useMouse) this.camera.lookAt(this.cameraTarget)
+    if (!this.pointerLockId) this.camera.lookAt(this.cameraTarget)
   }
 
   moveCursor(e) {
-    if (this.hurting || this.isDead) return
+    if (this.hurting || this.isDead || !document.pointerLockElement) return
+
     this.mesh.rotateY(-e.movementX * this.mouseSensitivity)
     this.camera.rotateX(-e.movementY * this.mouseSensitivity)
     this.camera.rotation.x = Math.max(-0.1, Math.min(Math.PI / 8, this.camera.rotation.x))
