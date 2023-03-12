@@ -5,7 +5,7 @@ import Tilemap from '/utils/classes/Tilemap.js'
 import { smallMap } from '/utils/data/maps.js'
 import { hemLight, lightningStrike } from '/utils/light.js'
 import { Rain } from '/utils/classes/Particles.js'
-import Savo from '/utils/player/Savo.js'
+import FPSPlayer from '/utils/player/FPSPlayer.js'
 
 import { GhostAI } from '/utils/actors/horror/Ghost.js'
 import { GothGirlAI } from '/utils/actors/horror/GothGirl.js'
@@ -33,7 +33,7 @@ const solids = [walls]
 
 /* ACTORS */
 
-const player = new Savo({ camera, coords })
+const player = new FPSPlayer({ camera, coords })
 scene.add(player.mesh)
 
 const enemies = []

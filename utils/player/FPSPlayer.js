@@ -11,7 +11,7 @@ import { jumpStyles } from '/utils/constants.js'
 
 const { randInt } = MathUtils
 
-export default class Savo extends Player {
+export default class FPSPlayer extends Player {
   constructor({
     mousemove = false, camera = defaultCamera, rifleBurst = false, ...params
   } = {}) {

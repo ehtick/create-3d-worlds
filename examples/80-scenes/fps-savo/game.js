@@ -6,7 +6,7 @@ import { smallMap } from '/utils/data/maps.js'
 import { hemLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { Snow } from '/utils/classes/Particles.js'
-import Savo from '/utils/player/Savo.js'
+import FPSPlayer from '/utils/player/FPSPlayer.js'
 import { TankAI } from '/utils/actors/Tank.js'
 import { GermanMachineGunnerAI } from '/utils/actors/ww2/GermanMachineGunner.js'
 import { SSSoldierAI } from '/utils/actors/ww2/SSSoldier.js'
@@ -31,7 +31,7 @@ const solids = [walls]
 
 /* ACTORS */
 
-const player = new Savo({ camera, coords, mousemove: true })
+const player = new FPSPlayer({ camera, coords, mousemove: true })
 scene.add(player.mesh)
 
 const enemies = []
