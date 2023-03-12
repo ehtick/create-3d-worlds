@@ -37,6 +37,7 @@ export default class Actor {
     this.shouldRaycastGround = shouldRaycastGround
     this.attackDistance = attackDistance
     this.actions = {}
+    this.updatable = true
 
     if (animations?.length && animDict) {
       this.setupMixer(animations, animDict)
@@ -350,6 +351,8 @@ export default class Actor {
   }
 
   update(delta = 1 / 60) {
+    if (!this.updatable) return
+
     this.updateGround()
     this.currentState.update(delta)
     this.mixer?.update(delta)
