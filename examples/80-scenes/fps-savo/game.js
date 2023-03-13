@@ -63,7 +63,6 @@ void function loop() {
   requestAnimationFrame(loop)
   renderer.render(scene, camera)
   if (!document.pointerLockElement) return
-
   const delta = clock.getDelta()
 
   player.update(delta)

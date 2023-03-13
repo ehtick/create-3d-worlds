@@ -17,7 +17,9 @@ npx live-server
 ### Scenes & examples
 
 - FPS / FPSPlayer
-  - spojiti sa fps-graffiti?
+  - spojiti fps-graffiti
+    - dodati neprijatelje
+  - pokušati igrač model i pointer lock
   - pogledati lavirinte i izabrati neki
   - srediti audio
 
