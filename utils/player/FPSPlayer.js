@@ -113,7 +113,7 @@ export default class FPSPlayer extends Player {
   painEffect() {
     this.hurting = true
     shakeCamera(this.camera, this.hitAmount * .009, () => {
-      this.hurting = this.isDead // true only if dead
+      this.hurting = this.isDead // hurting if dead
     })
   }
 
