@@ -1,4 +1,3 @@
-import { MathUtils } from 'three'
 import Player from '/utils/player/Player.js'
 import { camera as defaultCamera } from '/utils/scene.js'
 import { getCameraIntersects, getScene, belongsTo, getParent, shakeCamera } from '/utils/helpers.js'
@@ -9,8 +8,6 @@ import config from '/config.js'
 import input from '/utils/classes/Input.js'
 import { jumpStyles } from '/utils/constants.js'
 
-const { randInt } = MathUtils
-
 export default class FPSPlayer extends Player {
   constructor({
     camera = defaultCamera,
@@ -19,12 +16,12 @@ export default class FPSPlayer extends Player {
     pointerLockId,
     ...rest
   } = {}) {
-    super({ jumpStyle: jumpStyles.FLY, ...rest })
+    super({ attackDistance: 100, jumpStyle: jumpStyles.FLY, ...rest })
     this.mouseSensitivity = mouseSensitivity
     this.pointerLockId = pointerLockId
     this.rifleBurst = rifleBurst
     this.time = 0
-    this.energy = 200
+    this.energy = 100
     this.hurting = false
 
     const file = rifleBurst ? 'rifle-burst' : 'rifle'
@@ -41,7 +38,7 @@ export default class FPSPlayer extends Player {
 
     this.ricochet = new Particles({ num: 100, size: .05, unitAngle: 0.2 })
 
-    // document.body.addEventListener('click', () => this.fire())
+    if (!this.mixer) document.body.addEventListener('click', () => this.attackAction())
 
     if (pointerLockId) {
       const domElement = document.getElementById(pointerLockId)
@@ -78,15 +75,12 @@ export default class FPSPlayer extends Player {
   }
 
   attackAction() {
-    // if (this.isDead) return
     this.audio.currentTime = 0
     this.audio.play()
 
     const shoots = this.rifleBurst ? 5 : 1
     for (let i = 0; i < shoots; i++)
       setTimeout(() => this.shoot(), i * 100)
-
-    super.attackAction() // TODO: staviti u loop?
   }
 
   shoot() {
@@ -100,7 +94,7 @@ export default class FPSPlayer extends Player {
 
     if (belongsTo(object, 'enemy')) {
       const mesh = getParent(object, 'enemy')
-      mesh.userData.hitAmount = randInt(35, 55)
+      this.hit(mesh)
       ricochetColor = mesh.userData.hitColor
     } else
       shootDecals(intersects[0], { scene, color: 0x000000 })
@@ -114,7 +108,7 @@ export default class FPSPlayer extends Player {
   painEffect() {
     this.hurting = true
     shakeCamera(this.camera, this.hitAmount * .009, () => {
-      this.hurting = this.isDead // hurting if dead
+      this.hurting = this.isDead // red screen if dead
     })
   }
 
@@ -124,21 +118,21 @@ export default class FPSPlayer extends Player {
   }
 
   update(delta) {
-    if (this.energy > 0) {
+    if (this.isAlive) {
       super.update(delta)
       this.time += (input.run ? delta * 2 : delta)
       if (this.mixer)
         this.fpsRenderer.renderTarget(this.time)
-      else
+      if (!this.mixer)
         this.fpsRenderer.render(this.time)
-    } else {
-      this.fpsRenderer.clear()
-      this.fpsRenderer.drawFixedTarget()
     }
 
-    this.ricochet.expand({ velocity: 1.2, maxRounds: 5, gravity: .02 })
+    if (this.isDead)
+      this.fpsRenderer.clear()
 
     if (this.hurting) this.fpsRenderer.drawPain()
+
+    this.ricochet.expand({ velocity: 1.2, maxRounds: 5, gravity: .02 })
 
     this.updateCamera()
   }

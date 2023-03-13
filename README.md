@@ -17,10 +17,10 @@ npx live-server
 ### Scenes & examples
 
 - FPS / FPSPlayer
+  - da ne puca prvi pucanj kad klikće pointer lock element
   - fps-graffiti 
     - pucanje na enter i na miša
     - da puška prati miša
-    - dodati neprijatelje
   - pogledati lavirinte i izabrati neki
   - srediti audio
 

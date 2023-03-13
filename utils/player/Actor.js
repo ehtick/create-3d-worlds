@@ -103,6 +103,10 @@ export default class Actor {
     return this.energy <= 0
   }
 
+  get isAlive() {
+    return !this.isDead
+  }
+
   get height() {
     return getSize(this.mesh, 'y')
   }
