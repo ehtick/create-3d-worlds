@@ -61,9 +61,9 @@ export default class FPSRenderer extends Canvas {
     this.draw(this.targetImg, 0.5, this.targetY)
   }
 
-  renderTarget() {
+  renderTarget(elapsedTime) {
     this.clear()
-    this.handleLoad(this.targetImg, targetSrc, 'drawFixedTarget')
+    this.drawTarget(elapsedTime)
   }
 
   render(elapsedTime = time += .016) {
