@@ -3,9 +3,9 @@ import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
 
 export const animDict = {
-  idle: 'Rifle Idle',
+  idle: 'Rifle Aiming Idle', // Rifle Idle
   walk: 'Walking', // Rifle Walk
-  run: 'Rifle Run',
+  run: 'Rifle Run Aim', // Rifle Run
   jump: 'Jump Forward',
   attack: 'Firing Rifle',
   attack2: 'Fire Rifle Crouch',

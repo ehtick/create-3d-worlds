@@ -33,7 +33,9 @@ export default class FPSPlayer extends Player {
 
     this.fpsRenderer = new FPSRenderer()
     this.camera = camera
-    camera.position.set(0, this.cameraHeight, this.height / 4)
+    const cameraX = this.mixer ? -.05 : 0
+    const cameraZ = this.mixer ? -.25 : this.height / 4
+    camera.position.set(cameraX, this.cameraHeight, cameraZ)
     camera.rotation.set(0, 0, 0)
     this.mesh.add(camera)
 
@@ -54,7 +56,7 @@ export default class FPSPlayer extends Player {
   }
 
   get cameraHeight() {
-    return this.height * .8
+    return this.height * .82
   }
 
   get cameraTarget() {
@@ -94,7 +96,7 @@ export default class FPSPlayer extends Player {
     this.ricochet.reset({ pos: point, unitAngle: 0.2, color: ricochetColor })
     scene.add(this.ricochet.mesh)
 
-    shakeCamera(this.camera, .3, null, true)
+    if (!this.mixer) shakeCamera(this.camera, .3, null, true)
   }
 
   fire() {
@@ -124,7 +126,10 @@ export default class FPSPlayer extends Player {
     if (this.energy > 0) {
       super.update(delta)
       this.time += (input.run ? delta * 2 : delta)
-      this.fpsRenderer.render(this.time)
+      if (this.mixer)
+        this.fpsRenderer.renderTarget(this.time)
+      else
+        this.fpsRenderer.render(this.time)
     } else {
       this.fpsRenderer.clear()
       this.fpsRenderer.drawFixedTarget()
