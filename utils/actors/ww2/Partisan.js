@@ -1,6 +1,7 @@
-import Player from '/utils/player/Player.js'
-import AI from '/utils/player/AI.js'
 import { loadModel } from '/utils/loaders.js'
+import AI from '/utils/player/AI.js'
+import Player from '/utils/player/Player.js'
+import FPSPlayer from '/utils/player/FPSPlayer.js'
 
 export const animDict = {
   idle: 'Rifle Aiming Idle', // Rifle Idle
@@ -24,14 +25,20 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/rifle-berthier/model.fbx
 
 const sharedProps = { mesh, animations, animDict, rifle }
 
+export class PartisanAI extends AI {
+  constructor(props = {}) {
+    super({ ...sharedProps, attackDistance: 10, ...props })
+  }
+}
+
 export class PartisanPlayer extends Player {
   constructor(props = {}) {
     super({ ...sharedProps, ...props })
   }
 }
 
-export class PartisanAI extends AI {
+export class PartisanFPSPlayer extends FPSPlayer {
   constructor(props = {}) {
-    super({ ...sharedProps, attackDistance: 10, ...props })
+    super({ ...sharedProps, ...props })
   }
 }
