@@ -17,10 +17,9 @@ npx live-server
 ### Scenes & examples
 
 - FPS / FPSPlayer
-  - pucanje na enter
-  - da puška prati miša
-  - rename fire to startAttack? 
-  - spojiti fps-graffiti
+  - fps-graffiti 
+    - pucanje na enter i na miša
+    - da puška prati miša
     - dodati neprijatelje
   - pogledati lavirinte i izabrati neki
   - srediti audio

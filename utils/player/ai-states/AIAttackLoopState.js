@@ -13,7 +13,7 @@ export default class AIAttackLoopState extends State {
 
   enter(oldState, oldAction) {
     super.enter(oldState)
-    this.actor.startAttack()
+    this.actor.attackAction()
 
     if (this.actor.mixer) {
       if (this.action) this.transitFrom(oldAction, .5)
@@ -23,7 +23,7 @@ export default class AIAttackLoopState extends State {
   }
 
   attackAgain() {
-    this.actor.startAttack()
+    this.actor.attackAction()
 
     if (this.shouldFinishAttack) {
       this.cleanup()

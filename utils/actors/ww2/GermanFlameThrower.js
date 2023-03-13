@@ -31,7 +31,7 @@ const constructor = self => {
   self.add(particles.mesh)
 }
 
-const startAttack = self => {
+const attackAction = self => {
   self.particles.mesh.material.opacity = 1
   self.shouldFadeOut = false
 }
@@ -54,9 +54,9 @@ export class GermanFlameThrowerPlayer extends Player {
     constructor(this)
   }
 
-  startAttack() {
-    super.startAttack()
-    startAttack(this)
+  attackAction() {
+    super.attackAction()
+    attackAction(this)
   }
 
   endAttack() {
@@ -75,9 +75,9 @@ export class GermanFlameThrowerAI extends AI {
     constructor(this)
   }
 
-  startAttack() {
-    super.startAttack()
-    startAttack(this)
+  attackAction() {
+    super.attackAction()
+    attackAction(this)
   }
 
   endAttack() {

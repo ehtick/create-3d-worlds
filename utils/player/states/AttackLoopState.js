@@ -5,7 +5,7 @@ export default class AttackLoopState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState)
     if (this.action) this.transitFrom(oldAction, .5)
-    this.actor.startAttack()
+    this.actor.attackAction()
   }
 
   update(delta) {

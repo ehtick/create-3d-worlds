@@ -41,7 +41,7 @@ export default class FPSPlayer extends Player {
 
     this.ricochet = new Particles({ num: 100, size: .05, unitAngle: 0.2 })
 
-    document.body.addEventListener('click', () => this.fire())
+    // document.body.addEventListener('click', () => this.fire())
 
     if (pointerLockId) {
       const domElement = document.getElementById(pointerLockId)
@@ -77,6 +77,18 @@ export default class FPSPlayer extends Player {
     this.camera.rotation.x = Math.max(-0.1, Math.min(Math.PI / 8, this.camera.rotation.x))
   }
 
+  attackAction() {
+    // if (this.isDead) return
+    this.audio.currentTime = 0
+    this.audio.play()
+
+    const shoots = this.rifleBurst ? 5 : 1
+    for (let i = 0; i < shoots; i++)
+      setTimeout(() => this.shoot(), i * 100)
+
+    super.attackAction() // TODO: staviti u loop?
+  }
+
   shoot() {
     const intersects = getCameraIntersects(this.camera, this.solids)
     if (!intersects.length) return
@@ -97,17 +109,6 @@ export default class FPSPlayer extends Player {
     scene.add(this.ricochet.mesh)
 
     if (!this.mixer) shakeCamera(this.camera, .3, null, true)
-  }
-
-  fire() {
-    if (this.isDead) return
-
-    this.audio.currentTime = 0
-    this.audio.play()
-
-    const shoots = this.rifleBurst ? 5 : 1
-    for (let i = 0; i < shoots; i++)
-      setTimeout(() => this.shoot(), i * 100)
   }
 
   painEffect() {

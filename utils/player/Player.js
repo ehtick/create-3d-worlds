@@ -26,8 +26,8 @@ export default class Player extends Actor {
     super.updateMove(delta, reaction)
   }
 
-  startAttack(name = 'enemy') {
-    super.startAttack(name)
+  attackAction(name = 'enemy') {
+    super.attackAction(name)
   }
 
   hit(mesh, range = [35, 55]) {
