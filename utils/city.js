@@ -3,12 +3,11 @@ import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/Buf
 import { randomGrayish, getAllCoords, sample, mapRange, maxItems } from '/utils/helpers.js'
 import { createTrees } from '/utils/geometry/trees.js'
 import { createFloor } from '/utils/ground.js'
+import { slogans } from '/utils/data/graffiti.js'
 
 const { randInt, randFloat } = THREE.MathUtils
 
-const basicMaterial = new THREE.MeshStandardMaterial({
-  vertexColors: true,
-})
+const basicMaterial = new THREE.MeshStandardMaterial({ vertexColors: true })
 
 /* TEXTURES */
 
@@ -45,70 +44,6 @@ export function createBuildingTexture({ night = false, wallColor = night ? '#151
   return texture
 }
 
-const slogans = [
-  `BE REALISTIC
-  DEMAND THE IMPOSSIBLE!`,
-  `THE BARRICADE BLOCKS THE
-  STREET BUT OPENS THE WAY`,
-  'READ LESS - LIVE MORE',
-  `NO REPLASTERING,
-  THE STRUCTURE IS ROTTEN`,
-  `WE WILL CLAIM NOTHING
-  WE WILL ASK FOR NOTHING
-  WE WILL TAKE, WE WILL OCCUPY!`,
-  `DON\`T NEGOTIATE WITH BOSSES
-  ABOLISH THEM!`,
-  `NEITHER GOD
-  NOR MASTER!`,
-  `RUN COMRADE, 
-  THE OLD WORLD
-  IS BEHIND YOU!`,
-  'POETRY IS IN THE STREET',
-  `ART IS DEAD! 
-  DON\`T CONSUME ITS CORPSE`,
-  `POWER TO THE
-  IMAGINATION!`,
-  `THE ECONOMY IS SUFFERING
-  LET IT DIE`,
-  'ABOLISH ALIENATION!',
-  'NEVER WORK!',
-  `BELOW THE COBBLESTONES
-  IS THE BEACH!`,
-  `IT IS FORBIDDEN
-  TO FORBID!`,
-  `FREEDOM IS THE CRIME
-  THAT CONTAINS ALL CRIMES;
-  IT IS OUR ABSOLUTE WEAPON!`,
-  `CONSUME LESS
-  YOU'LL LIVE MORE`,
-  'LIVE WITHOUT DEAD TIME!',
-  `I TAKE MY DESIRES FOR REALITY
-  BECAUSE I BELIEVE
-  IN THE REALITY OF MY DESIRES`,
-  'ALREADY 10 DAYS OF HAPPINESS',
-  'DOWN WITH THE STATE!',
-  'POLITICS IS IN THE STREETS',
-  'LABOR UNIONS ARE WHOREHOUSES',
-  'CONCRETE BREEDS APATHY',
-  'YOU WILL END UP DYING OF COMFORT',
-  `THOSE WHO LACK IMAGINATION
-  CANNOT IMAGINE WHAT IS LACKING`,
-  `A COP SLEEPS INSIDE
-  EACH ONE OF US.
-  WE MUST KILL HIM.`,
-  `CAN YOU BELIEVE
-  THAT SOME PEOPLE
-  ARE STILL CHRISTIANS?`,
-  `COMMODITIES ARE 
-  THE OPIUM OF THE PEOPLE`,
-  `THE FUTURE WILL ONLY CONTAIN
-  WHAT WE PUT INTO IT NOW`
-]
-
-const banksy = [
-  'anarchy.jpg', 'change.png', 'cleaning.jpg', 'cop.jpg', 'flower.jpg', 'heart.png', 'monaliza.png', 'bomb.jpg', 'cops.jpg', 'peace.jpg', 'kids.jpg', 'airplanes.jpg'
-]
-
 const webFonts = ['Arial', 'Verdana', 'Trebuchet MS', 'Brush Script MT', 'Brush Script MT']
 const fontWeights = ['normal', 'bold', 'lighter']
 const fontColors = ['red', 'pink', 'teal', 'black', '#222222', 'green', 'purple']
@@ -122,30 +57,6 @@ const getStroke = color => {
   const colors = fontColors.filter(c => c !== color)
   return sample(colors)
 }
-
-function drawImageScaled(img, ctx) {
-  const { canvas } = ctx
-  const hRatio = canvas.width / img.width
-  const vRatio = canvas.height / img.height
-  const ratio = Math.min(hRatio, vRatio)
-  const centerShift_x = (canvas.width - img.width * ratio) / 2
-  const centerShift_y = (canvas.height - img.height * ratio) / 2
-  ctx.drawImage(img, 0, 0, img.width, img.height,
-    centerShift_x, centerShift_y, img.width * ratio, img.height * ratio)
-}
-
-/**
- * TODO: create building with banksy art
- *
-  const banksyIndex = 0
-  if (Math.random() > .66) {
-    // graffiti image
-    const img = new Image()
-    img.src = `/assets/images/banksy/${banksy[banksyIndex++ % banksy.length]}`
-    await new Promise(resolve => img.addEventListener('load', resolve))
-    drawImageScaled(img, ctx)
-  }
- */
 
 export function createGraffitiTexture({
   width = 128, height = 256, background = 'gray', color = sample(fontColors), text = sample(slogans), fontWeight = sample(fontWeights), fontSize = mapRange(text.length, minLength, maxLength, width * .075, width * .025), fontFamily = sample(webFonts), x = width * 0.5, y = height * mapRange(text.length, minLength, maxLength, .9, .7), stroke = getStroke(color)
