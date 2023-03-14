@@ -18,8 +18,6 @@ npx live-server
 
 - FPS / FPSPlayer
   - BUG: da ne puca prvi pucanj kad klikne pointer lock element
-    - BUG: savo mrtav puca
-  - BUG: mrtav prekida render, model treba da padne
   - da puška prati miša
   - pogledati lavirinte i izabrati neki
   - srediti audio

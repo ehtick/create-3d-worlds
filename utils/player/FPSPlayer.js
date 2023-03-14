@@ -38,8 +38,6 @@ export default class FPSPlayer extends Player {
 
     this.ricochet = new Particles({ num: 100, size: .05, unitAngle: 0.2 })
 
-    if (!this.mixer) document.body.addEventListener('click', () => this.attackAction())
-
     if (pointerLockId) {
       const domElement = document.getElementById(pointerLockId)
       domElement.addEventListener('click', () => document.body.requestPointerLock())
