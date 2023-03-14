@@ -14,6 +14,7 @@ npx live-server
 ### Scenes & examples
 
 - FPS / FPSPlayer
+  - dodati grafite na zidove ako može ne async
   - pogledati lavirinte i izabrati neki
   - srediti audio
 
