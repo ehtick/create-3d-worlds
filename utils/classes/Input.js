@@ -129,6 +129,10 @@ class Input {
     return this.pressed.Enter
   }
 
+  set attack(bool) {
+    this.pressed.Enter = bool
+  }
+
   get attack2() {
     return this.pressed.ShiftRight
   }

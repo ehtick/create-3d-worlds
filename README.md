@@ -17,10 +17,10 @@ npx live-server
 ### Scenes & examples
 
 - FPS / FPSPlayer
-  - da ne puca prvi pucanj kad klikće pointer lock element
-  - fps-graffiti 
-    - pucanje na enter i na miša
-    - da puška prati miša
+  - BUG: da ne puca prvi pucanj kad klikne pointer lock element
+    - BUG: savo mrtav puca
+  - BUG: mrtav prekida render, model treba da padne
+  - da puška prati miša
   - pogledati lavirinte i izabrati neki
   - srediti audio
 
@@ -84,6 +84,7 @@ npx live-server
 
 ### Polishing
 
+- optimizovati modele https://github.com/donmccurdy/glTF-Transform
 - obrisati sve što nije modularno
 - dodati svuda toon-shader gde se slaže
   https://www.maya-ndljk.com/blog/threejs-basic-toon-shader
