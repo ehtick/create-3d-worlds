@@ -151,7 +151,7 @@ export function createSimpleFir({ size = 12, x = 0, y = 0, z = 0 } = {}) {
 
 /* FACTORIES */
 
-export function createTrees({ mapSize = 100, size = 5, n = maxItems(mapSize, size) / 4, nFirTrees = 0, coords = getAllCoords({ mapSize, fieldSize: size }) } = {}) {
+export function createTrees({ mapSize = 100, size = 4, n = maxItems(mapSize, size) / 4, nFirTrees = 0, coords = getAllCoords({ mapSize, fieldSize: size }) } = {}) {
   const group = new THREE.Group()
   for (let i = 0; i < n; i++) {
     const { x, z } = coords.pop()

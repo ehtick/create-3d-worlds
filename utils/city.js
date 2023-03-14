@@ -356,7 +356,7 @@ export const createNightCity = ({ addWindows = true, colorParams = null, numLamp
 
 export async function createGraffitiCity({ mapSize, coords = getAllCoords({ mapSize }), nTrees = 20, nFirTrees = 10 } = {}) {
   const group = new THREE.Group()
-  const floor = createFloor({ size: mapSize * 1.2 }) // color: 0x509f53
+  const floor = createFloor({ size: mapSize * 1.2, color: 0x509f53 })
   group.add(floor)
 
   const trees = createTrees({ coords, n: nTrees, nFirTrees })

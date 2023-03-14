@@ -11,14 +11,9 @@ npx live-server
 
 ## TODO
 
-- pokušati optimizaciju učitavanja animacija
-  - da učitava samo prvu koja je baseState, nakon toga po potrebi
-
 ### Scenes & examples
 
 - FPS / FPSPlayer
-  - BUG: da ne puca prvi pucanj kad klikne pointer lock element
-  - da puška prati miša
   - pogledati lavirinte i izabrati neki
   - srediti audio
 

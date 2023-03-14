@@ -3,7 +3,7 @@ import { camera, scene, renderer, clock } from '/utils/scene.js'
 import { createMoon } from '/utils/light.js'
 import { createGraffitiCity } from '/utils/city.js'
 import { getAllCoords } from '/utils/helpers.js'
-import { PartisanFPSPlayer } from '/utils/actors/ww2/Partisan.js'
+import FPSPlayer from '/utils/player/FPSPlayer.js'
 import { SSSoldierAI } from '/utils/actors/ww2/SSSoldier.js'
 
 const mapSize = 200
@@ -15,14 +15,14 @@ scene.background = new THREE.Color(0x070b34)
 
 /* PLAYER */
 
-const player = new PartisanFPSPlayer({ camera, coords, pointerLockId: 'instructions' })
+const player = new FPSPlayer({ camera, coords, mapSize, pointerLockId: 'instructions' })
 scene.add(player.mesh)
 
 const solids = []
 
 const enemies = []
 for (let i = 0; i < 10; i++) {
-  const enemy = new SSSoldierAI({ coords, target: player.mesh })
+  const enemy = new SSSoldierAI({ coords, mapSize, target: player.mesh })
   enemies.push(enemy)
   solids.push(enemy.mesh)
   scene.add(enemy.mesh)
