@@ -100,7 +100,7 @@ export default class FPSPlayer extends Player {
     this.ricochet.reset({ pos: point, unitAngle: 0.2, color: ricochetColor })
     scene.add(this.ricochet.mesh)
 
-    if (!this.mixer) shakeCamera(this.camera, .3, null, true)
+    this.time += 5
   }
 
   painEffect() {
