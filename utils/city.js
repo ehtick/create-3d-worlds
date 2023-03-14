@@ -127,16 +127,27 @@ function drawImageScaled(img, ctx) {
   const { canvas } = ctx
   const hRatio = canvas.width / img.width
   const vRatio = canvas.height / img.height
-  const ratio = Math.min (hRatio, vRatio)
+  const ratio = Math.min(hRatio, vRatio)
   const centerShift_x = (canvas.width - img.width * ratio) / 2
   const centerShift_y = (canvas.height - img.height * ratio) / 2
   ctx.drawImage(img, 0, 0, img.width, img.height,
     centerShift_x, centerShift_y, img.width * ratio, img.height * ratio)
 }
 
-let banksyIndex = 0
+/**
+ * TODO: create building with banksy art
+ *
+  const banksyIndex = 0
+  if (Math.random() > .66) {
+    // graffiti image
+    const img = new Image()
+    img.src = `/assets/images/banksy/${banksy[banksyIndex++ % banksy.length]}`
+    await new Promise(resolve => img.addEventListener('load', resolve))
+    drawImageScaled(img, ctx)
+  }
+ */
 
-export async function createGraffitiTexture({
+export function createGraffitiTexture({
   width = 128, height = 256, background = 'gray', color = sample(fontColors), text = sample(slogans), fontWeight = sample(fontWeights), fontSize = mapRange(text.length, minLength, maxLength, width * .075, width * .025), fontFamily = sample(webFonts), x = width * 0.5, y = height * mapRange(text.length, minLength, maxLength, .9, .7), stroke = getStroke(color)
 } = {}) {
   const canvas = document.createElement('canvas')
@@ -148,15 +159,6 @@ export async function createGraffitiTexture({
   ctx.fillRect(0, 0, width, height)
 
   if (Math.random() > .66) {
-    // graffiti image
-    const img = new Image()
-    img.src = `/assets/images/banksy/${banksy[banksyIndex++ % banksy.length]}`
-    await new Promise(resolve => img.addEventListener('load', resolve))
-    drawImageScaled(img, ctx)
-  }
-
-  if (Math.random() > .1) {
-    // graffiti text
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
     ctx.fillStyle = color
@@ -175,11 +177,10 @@ export async function createGraffitiTexture({
       }
     }
   }
-  // reset transformation to the identity matrix
+  // reset transformation to identity matrix
   ctx.setTransform(1, 0, 0, 1, 0, 0)
 
-  const texture = new THREE.CanvasTexture(canvas)
-  return texture
+  return new THREE.CanvasTexture(canvas)
 }
 
 /* WINDOWS */
@@ -189,7 +190,7 @@ function createWindow(windowWidth, windowHeight) {
   const color = getWindowColor()
 
   const colors = []
-  for (let i = 0, l = geometry.attributes.position.count; i < l; i ++)
+  for (let i = 0, l = geometry.attributes.position.count; i < l; i++)
     colors.push(color.r, color.g, color.b)
 
   geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
@@ -251,7 +252,7 @@ export function createBuildingGeometry({
 
   if (color?.isColor) { // is THREE.Color
     const colors = []
-    for (let i = 0, l = geometry.attributes.position.count; i < l; i ++)
+    for (let i = 0, l = geometry.attributes.position.count; i < l; i++)
       colors.push(color.r, color.g, color.b)
     geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
   }
@@ -278,7 +279,7 @@ export function createBuilding(params = {}) {
   return new THREE.Mesh(geometry, material)
 }
 
-export async function createGraffitiBuilding(params = {}) {
+export function createGraffitiBuilding(params = {}) {
   const { color, chance = .25, ...rest } = params
   const geometry = createBuildingGeometry(rest)
   const { width, height } = geometry.parameters
@@ -290,7 +291,7 @@ export async function createGraffitiBuilding(params = {}) {
 
     if (i !== 2 && i !== 3)  // not top and bottom
       if (Math.random() < chance)
-        materialParams.map = await createGraffitiTexture({
+        materialParams.map = createGraffitiTexture({
           background: new THREE.Color(color).getStyle(), width: width * 12, height: height * 12
         })
       else
@@ -354,7 +355,7 @@ export function createCity({
 export const createNightCity = ({ addWindows = true, colorParams = null, numLampposts = 15, ...rest } = {}) =>
   createCity({ addWindows, colorParams, numLampposts, ...rest })
 
-export async function createGraffitiCity({ mapSize, coords = getAllCoords({ mapSize }), nTrees = 20, nFirTrees = 10 } = {}) {
+export function createGraffitiCity({ mapSize, coords = getAllCoords({ mapSize }), nTrees = 20, nFirTrees = 10 } = {}) {
   const group = new THREE.Group()
   const floor = createFloor({ size: mapSize * 1.2, color: 0x509f53 })
   group.add(floor)
@@ -364,7 +365,7 @@ export async function createGraffitiCity({ mapSize, coords = getAllCoords({ mapS
 
   for (let i = 0; i < 50; i++) {
     const { x, z } = coords.pop()
-    const building = await createGraffitiBuilding({ x, z })
+    const building = createGraffitiBuilding({ x, z })
     group.add(building)
   }
   return group

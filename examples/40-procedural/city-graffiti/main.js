@@ -11,7 +11,7 @@ camera.lookAt(scene.position)
 
 scene.add(createSun({ position: [50, 100, 50] }))
 
-const city = await createGraffitiCity({ scene, mapSize })
+const city = createGraffitiCity({ scene, mapSize })
 scene.add(city)
 
 /* LOOP */

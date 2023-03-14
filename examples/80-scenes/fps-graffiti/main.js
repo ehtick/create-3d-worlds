@@ -40,7 +40,7 @@ void function loop() {
   enemies.forEach(enemy => enemy.update(delta))
 }()
 
-const city = await createGraffitiCity({ scene, mapSize, coords })
+const city = createGraffitiCity({ scene, mapSize, coords })
 scene.add(city)
 
 player.addSolids(city, enemies.map(e => e.mesh))
