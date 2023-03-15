@@ -18,18 +18,18 @@ scene.add(light2)
 const floor = createGround()
 scene.add(floor)
 
-const warehouse = createTexturedBuilding({ frontFile: 'warehouse.jpg', backFile: 'warehouse.jpg', topFile: 'terrain/concrete.jpg', bumpScale: .03 })
+const warehouse = createTexturedBuilding({ frontFile: 'buildings/warehouse.jpg', backFile: 'buildings/warehouse.jpg', topFile: 'terrain/concrete.jpg', bumpScale: .03 })
 scene.add(warehouse)
 warehouse.translateX(-2)
 
-const warRuin = createTexturedBuilding({ width: 1.2, frontFile: 'ruin-01.jpg', backFile: 'ruin-02.jpg', rightFile: 'ruin-03.jpg', leftFile: 'ruin-04.jpg', topFile: 'terrain/beton-krater.jpg', bumpScale: .03 })
+const warRuin = createTexturedBuilding({ width: 1.2, frontFile: 'buildings/ruin-01.jpg', backFile: 'buildings/ruin-02.jpg', rightFile: 'buildings/ruin-03.jpg', leftFile: 'buildings/ruin-04.jpg', topFile: 'terrain/beton-krater.jpg', bumpScale: .03 })
 scene.add(warRuin)
 
-const airport = createTexturedBuilding({ frontFile: 'airport.png', backFile: 'airport.png', rightFile: 'airport-side.png', leftFile: 'airport-side.png', topFile: 'terrain/beton.gif', bumpScale: .01 })
+const airport = createTexturedBuilding({ frontFile: 'buildings/airport.png', backFile: 'buildings/airport.png', rightFile: 'buildings/airport-side.png', leftFile: 'buildings/airport-side.png', topFile: 'terrain/beton.gif', bumpScale: .01 })
 scene.add(airport)
 airport.translateZ(-1.5)
 
-const ruin = createTexturedBuilding({ width: 1.5, frontFile: 'ruin-front.jpg', backFile: 'ruin-back.jpg', rightFile: 'ruin-side.jpg', leftFile: 'ruin-side.jpg', bumpScale: .02 })
+const ruin = createTexturedBuilding({ width: 1.5, frontFile: 'buildings/ruin-front.jpg', backFile: 'buildings/ruin-back.jpg', rightFile: 'buildings/ruin-side.jpg', leftFile: 'buildings/ruin-side.jpg', bumpScale: .02 })
 scene.add(ruin)
 ruin.translateX(2)
 

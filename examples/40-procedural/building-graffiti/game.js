@@ -11,11 +11,11 @@ scene.add(createFloor())
 
 const building = createGraffitiBuilding({ chance: .66 })
 scene.add(building)
-building.translateX(2)
+building.translateX(10)
 
 const artBuilding = createTexturedBuilding({ frontFile: 'warehouse.jpg', backFile: 'warehouse.jpg', topFile: 'terrain/concrete.jpg', bumpScale: .03 })
 scene.add(artBuilding)
-artBuilding.translateX(-2)
+artBuilding.translateX(-10)
 
 /* LOOP */
 
