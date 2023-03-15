@@ -1,5 +1,5 @@
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { createGraffitiBuilding, createTexturedBuilding } from '/utils/city.js'
+import { createGraffitiBuilding } from '/utils/city.js'
 import { createSun } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 
@@ -11,11 +11,6 @@ scene.add(createFloor())
 
 const building = createGraffitiBuilding({ chance: .66 })
 scene.add(building)
-building.translateX(20)
-
-const artBuilding = createTexturedBuilding({ width: 20, height: 10, depth: 10, frontFile: 'buildings/warehouse.jpg', backFile: 'buildings/warehouse.jpg', topFile: 'terrain/concrete.jpg', bumpScale: .03 })
-scene.add(artBuilding)
-artBuilding.translateX(-20)
 
 /* LOOP */
 

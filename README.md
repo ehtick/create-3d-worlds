@@ -11,10 +11,13 @@ npx live-server
 
 ## TODO
 
+- srediti zgrade
+  - problem?: createTexturedBuilding automatski pravi levu i desnu teksturu smanjenjem prednje na pola, ako nedostaju; dodati flag da to radi?
+  - create building with banksy art
+
 ### Scenes & examples
 
 - FPS / FPSPlayer
-  - create building with banksy art
   - pogledati lavirinte i izabrati neki
   - srediti audio
 

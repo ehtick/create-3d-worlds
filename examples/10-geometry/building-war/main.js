@@ -20,7 +20,7 @@ const warehouse = createTexturedBuilding({ width: 20, height: 10, depth: 10, fro
 scene.add(warehouse)
 warehouse.translateX(-20)
 
-const warehouse2 = createTexturedBuilding({ width: 20, height: 10, depth: 20, frontFile: 'buildings/warehouse.jpg', backFile: 'buildings/warehouse.jpg', topFile: 'terrain/concrete.jpg', bumpScale: .03 })
+const warehouse2 = createTexturedBuilding({ width: 20, height: 10, depth: 20, frontFile: 'buildings/warehouse.jpg', backFile: 'buildings/warehouse.jpg', leftFile: 'buildings/warehouse.jpg', rightFile: 'buildings/warehouse.jpg', topFile: 'terrain/concrete.jpg', bumpScale: .03 })
 scene.add(warehouse2)
 warehouse2.translateZ(20)
 
