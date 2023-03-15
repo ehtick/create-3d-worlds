@@ -12,12 +12,12 @@ function createTexturedBuilding({ width = 2, height = 1, depth = width, color = 
   const maps = textures.map(t => textureLoader.load(t))
 
   const materials = [
-    new THREE.MeshPhongMaterial({ map: maps[0] }), // right
-    new THREE.MeshPhongMaterial({ map: maps[1] }), // left
-    new THREE.MeshPhongMaterial({ color, map: maps[2] }), // top
-    new THREE.MeshBasicMaterial({ color }), // bottom
-    new THREE.MeshPhongMaterial({ map: maps[3] }), // front
-    new THREE.MeshPhongMaterial({ map: maps[4] }), // back
+    new THREE.MeshPhongMaterial({ map: maps[0] }),                // right
+    new THREE.MeshPhongMaterial({ map: maps[1] || maps[0] }),     // left
+    new THREE.MeshPhongMaterial({ color, map: maps[2] || null }), // top
+    new THREE.MeshBasicMaterial({ color }),                       // bottom
+    new THREE.MeshPhongMaterial({ map: maps[3] }),                // front
+    new THREE.MeshPhongMaterial({ map: maps[4] || maps[3] }),     // back
   ]
 
   const mesh = new THREE.Mesh(geometry, materials)
@@ -26,7 +26,7 @@ function createTexturedBuilding({ width = 2, height = 1, depth = width, color = 
 }
 
 const controls = createOrbitControls()
-camera.position.set(0, 25, 50)
+camera.position.set(0, 15, 30)
 
 scene.add(createSun({ position: [50, 100, 50] }))
 scene.add(createFloor())
