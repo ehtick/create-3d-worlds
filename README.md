@@ -12,9 +12,9 @@ npx live-server
 ## TODO
 
 - srediti zgrade
-  - problem?: createTexturedBuilding automatski pravi levu i desnu teksturu smanjenjem prednje na pola, ako nedostaju; dodati flag da to radi?
   - create building with banksy art
-  - istražiti shader texture
+  - reuse createTexturedBuilding za ostale zgrade
+  - probati shader texture
 
 ### Scenes & examples
 
@@ -99,6 +99,7 @@ npx live-server
 - dodati preloader po potrebi
 - reuse main loop?
   - pauzirati scenu na tab unfocus
+- sve dobro dokumentovati
 
 ### Publish
 - srediti root-relativne linkove da rade u podfolderu

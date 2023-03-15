@@ -4,15 +4,12 @@ import { createBuildingTexture } from '/utils/city.js'
 import { createSun } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 
-function createTexturedBuilding({ width = 2, height = 1, depth = width, color = 0x999999, path = '/assets/textures/', textures = [] } = {}) {
+function createTexturedBuilding({ width = 2, height = 1, depth = width, color = 0x999999, path = '/assets/textures/', textures = [], defaultMap = createBuildingTexture() } = {}) {
   const textureLoader = new THREE.TextureLoader()
   textureLoader.setPath(path)
-  const geometry = new THREE.BoxGeometry(width, height, depth)
-
-  const defaultMap = createBuildingTexture()
   const maps = textures.map(t => textureLoader.load(t))
-  // maps[0].repeat.set(1.25, 1.25)
 
+  const geometry = new THREE.BoxGeometry(width, height, depth)
   const materials = [
     new THREE.MeshPhongMaterial({ map: maps[0] || defaultMap }),  // 0: right
     new THREE.MeshPhongMaterial({ map: maps[1] || defaultMap }),  // 1: left
