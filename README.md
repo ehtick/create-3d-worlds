@@ -14,6 +14,7 @@ npx live-server
 - srediti zgrade
   - problem?: createTexturedBuilding automatski pravi levu i desnu teksturu smanjenjem prednje na pola, ako nedostaju; dodati flag da to radi?
   - create building with banksy art
+  - istražiti shader texture
 
 ### Scenes & examples
 
