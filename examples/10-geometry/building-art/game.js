@@ -9,13 +9,17 @@ function createTexturedBuilding({ width = 2, height = 1, depth = width, color = 
   textureLoader.setPath('/assets/textures/')
   const geometry = new THREE.BoxGeometry(width, height, depth)
 
+  const maps = []
+  for (let i = 0; i < textures.length; i++)
+    maps[i] = textureLoader.load(textures[i])
+
   const materials = [
-    new THREE.MeshPhongMaterial({ map: textureLoader.load(textures[0]) }), // right
-    new THREE.MeshPhongMaterial({ map: textureLoader.load(textures[1]) }), // left
-    new THREE.MeshPhongMaterial({ color, map: textureLoader.load(textures[2]) }), // top
+    new THREE.MeshPhongMaterial({ map: maps[0] }), // right
+    new THREE.MeshPhongMaterial({ map: maps[1] }), // left
+    new THREE.MeshPhongMaterial({ color, map: maps[2] }), // top
     new THREE.MeshBasicMaterial({ color }), // bottom
-    new THREE.MeshPhongMaterial({ map: textureLoader.load(textures[3]) }), // front
-    new THREE.MeshPhongMaterial({ map: textureLoader.load(textures[4]) }), // back
+    new THREE.MeshPhongMaterial({ map: maps[3] }), // front
+    new THREE.MeshPhongMaterial({ map: maps[4] }), // back
   ]
 
   const mesh = new THREE.Mesh(geometry, materials)
