@@ -156,10 +156,10 @@ function createWindows(bWidth, bHeight) {
 /* BUILDING */
 
 export function createBuildingGeometry({
-  color = randomGrayish({ min: .3, max: .6 }), width = randInt(10, 20), height = randInt(width, width * 4), x = 0, z = 0, y = height * .5, addWindows = false, rotY = 0,
+  color = randomGrayish({ min: .3, max: .6 }), width = randInt(10, 20), height = randInt(width, width * 4), depth = width, x = 0, z = 0, y = height * .5, addWindows = false, rotY = 0,
 } = {}) {
 
-  const geometry = new THREE.BoxGeometry(width, height, width)
+  const geometry = new THREE.BoxGeometry(width, height, depth)
 
   if (color?.isColor) { // is THREE.Color
     const colors = []
@@ -190,7 +190,7 @@ export function createBuilding(params = {}) {
   return new THREE.Mesh(geometry, material)
 }
 
-export function createTexturedBuilding({ width = 2, height = 1, depth = 1, color = 0x999999, frontFile, backFile, rightFile, leftFile, topFile, bumpScale = .015 } = {}) {
+export function createTexturedBuilding({ width = 2, height = 1, depth = width, color = 0x999999, frontFile, backFile, rightFile, leftFile, topFile, bumpScale = .015 } = {}) {
   const textureLoader = new THREE.TextureLoader()
 
   const geometry = new THREE.BoxGeometry(width, height, depth)
