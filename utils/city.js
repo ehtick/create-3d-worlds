@@ -192,17 +192,18 @@ export function createBuilding(params = {}) {
 
 export function createTexturedBuilding({ width = 2, height = 1, depth = width, color = 0x999999, frontFile, backFile, rightFile, leftFile, topFile, bumpScale = .015 } = {}) {
   const textureLoader = new THREE.TextureLoader()
+  textureLoader.setPath('/assets/textures/')
 
   const geometry = new THREE.BoxGeometry(width, height, depth)
-  const frontTexture = textureLoader.load(`/assets/textures/${frontFile}`)
-  const backTexture = textureLoader.load(`/assets/textures/${backFile}`)
-  const rightTexture = textureLoader.load(`/assets/textures/${rightFile || backFile}`)
+  const frontTexture = textureLoader.load(frontFile)
+  const backTexture = textureLoader.load(backFile)
+  const rightTexture = textureLoader.load(rightFile || backFile)
 
   if (!rightFile) rightTexture.repeat.set(.5, 1)
-  const leftTexture = textureLoader.load(`/assets/textures/${leftFile || frontFile}`)
+  const leftTexture = textureLoader.load(leftFile || frontFile)
   if (!leftFile) leftTexture.repeat.set(.5, 1)
 
-  const topTexture = textureLoader.load(`/assets/textures/${topFile || 'terrain/rocks.jpg'}`)
+  const topTexture = textureLoader.load(topFile || 'terrain/rocks.jpg')
 
   const materials = [
     new THREE.MeshPhongMaterial({ map: rightTexture, bumpMap: rightTexture, bumpScale }),
