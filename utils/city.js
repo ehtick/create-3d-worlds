@@ -7,6 +7,7 @@ import { slogans } from '/utils/data/graffiti.js'
 
 const { randInt, randFloat } = THREE.MathUtils
 
+const textureLoader = new THREE.TextureLoader()
 const basicMaterial = new THREE.MeshStandardMaterial({ vertexColors: true })
 
 /* TEXTURES */
@@ -190,6 +191,33 @@ export function createBuilding(params = {}) {
   return new THREE.Mesh(geometry, material)
 }
 
+export function createTexturedBuilding({ width = 2, height = 1, depth = width, color = 0x999999, path = '/assets/textures/', files = [], defaultFile, sideHalf = false } = {}) {
+
+  const loadTexture = (file, half) => {
+    const texture = textureLoader.load(path + file)
+    if (half) texture.repeat.set(.5, 1)
+    return texture
+  }
+
+  const getDefault = half => defaultFile ? loadTexture(defaultFile, half) : createBuildingTexture()
+
+  const maps = files.map((file, i) => loadTexture(file, sideHalf && (i == 0 || i == 1)))
+
+  const geometry = createBuildingGeometry({ width, height, depth })
+  const materials = [
+    new THREE.MeshPhongMaterial({ map: maps[0] || getDefault(sideHalf) }),  // 0: right
+    new THREE.MeshPhongMaterial({ map: maps[1] || getDefault(sideHalf) }),  // 1: left
+    new THREE.MeshPhongMaterial({ color, map: maps[2] || null }),           // 2: top
+    new THREE.MeshBasicMaterial({ color }),                                 // bottom
+    new THREE.MeshPhongMaterial({ map: maps[3] || getDefault() }),          // 3: front
+    new THREE.MeshPhongMaterial({ map: maps[4] || getDefault() }),          // 4: back
+  ]
+
+  const mesh = new THREE.Mesh(geometry, materials)
+  return mesh
+}
+
+/*
 export function createTexturedBuilding({ width = 2, height = 1, depth = width, color = 0x999999, frontFile, backFile, rightFile, leftFile, topFile, bumpScale = .015 } = {}) {
   const textureLoader = new THREE.TextureLoader()
   textureLoader.setPath('/assets/textures/')
@@ -217,6 +245,7 @@ export function createTexturedBuilding({ width = 2, height = 1, depth = width, c
   mesh.translateY(height / 2)
   return mesh
 }
+*/
 
 export function createGraffitiBuilding(params = {}) {
   const { color, chance = .25, ...rest } = params

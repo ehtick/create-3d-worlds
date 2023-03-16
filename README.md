@@ -12,8 +12,9 @@ npx live-server
 ## TODO
 
 - srediti zgrade
-  - create building with banksy art
   - reuse createTexturedBuilding za ostale zgrade
+    - omogućiti da se bira default map
+    - uvesti skaliranje stranica?
   - probati shader texture
 
 ### Scenes & examples
