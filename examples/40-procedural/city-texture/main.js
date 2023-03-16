@@ -1,4 +1,3 @@
-// http://learningthreejs.com/blog/2013/08/02/how-to-do-a-procedural-city-in-100lines/
 import * as THREE from 'three'
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'

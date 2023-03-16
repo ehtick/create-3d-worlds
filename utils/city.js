@@ -25,6 +25,7 @@ const getWindowColor = ({ chance = .5 } = {}) => {
   return new THREE.Color(randColor)
 }
 
+// https://www.25yearsofprogramming.com/threejs-tutorials/how-to-do-a-procedural-city-in-100-lines.html
 export function createBuildingTexture({ night = false, wallColor = night ? '#151515' : '#FFFFFF' } = {}) {
   const canvas = document.createElement('canvas')
   canvas.width = 32
