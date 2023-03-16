@@ -12,7 +12,7 @@ npx live-server
 ## TODO
 
 - srediti zgrade
-  - reuse createTexturedBuilding u grafiti city
+  - srediti createGraffitiTexture (izbaciti rozu, stroke, ukinuti parametre?)
   - random banksy art (spojiti sa grafitima)
   - probati shader texture
 

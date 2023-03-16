@@ -224,34 +224,6 @@ export function createTexturedBuilding({ width, height, depth = width, color = 0
   return mesh
 }
 
-export function createGraffitiBuilding(params = {}) {
-  const { color, chance = .25, ...rest } = params
-  const geometry = createBuildingGeometry(rest)
-  const { width, height } = geometry.parameters
-  const materials = []
-
-  for (let i = 0; i < 6; i++) {
-    const materialParams = { vertexColors: !color }
-    if (color) materialParams.color = color
-
-    if (i !== 2 && i !== 3)  // not top and bottom
-      if (Math.random() < chance)
-        materialParams.map = createGraffitiTexture({
-          background: new THREE.Color(color).getStyle(), width: width * 12, height: height * 12
-        })
-      else
-        materialParams.map = createBuildingTexture()
-
-    const material = new THREE.MeshLambertMaterial(materialParams)
-    materials.push(material)
-  }
-
-  const mesh = new THREE.Mesh(geometry, materials)
-  mesh.castShadow = true
-  mesh.receiveShadow = true
-  return mesh
-}
-
 /* CITY */
 
 const shouldRotate = (rotateEvery, i) => rotateEvery && i % rotateEvery == 0
@@ -310,7 +282,7 @@ export function createGraffitiCity({ mapSize, coords = getAllCoords({ mapSize })
 
   for (let i = 0; i < 50; i++) {
     const { x, z } = coords.pop()
-    const building = createGraffitiBuilding({ x, z })
+    const building = createTexturedBuilding({ graffitiChance: .5, x, z })
     group.add(building)
   }
   return group
