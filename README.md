@@ -12,7 +12,7 @@ npx live-server
 ## TODO
 
 - srediti zgrade
-  - srediti createGraffitiTexture (izbaciti rozu, stroke, ukinuti parametre?)
+  - srediti createGraffitiTexture (izbaciti rozu, stroke?)
   - random banksy art (spojiti sa grafitima)
   - probati shader texture
 
