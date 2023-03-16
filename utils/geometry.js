@@ -1,10 +1,16 @@
 import * as THREE from 'three'
-import { randomGray, translateY } from './helpers.js'
+import { randomGray } from './helpers.js'
 import { material as skyMaterial } from '/utils/shaders/gradient-sky.js'
 
 const { randFloat, randFloatSpread } = THREE.MathUtils
 
 const textureLoader = new THREE.TextureLoader()
+
+const translateY = (mesh, h) => {
+  mesh.translateY(h * .5)
+  mesh.updateMatrix()
+  mesh.geometry.applyMatrix4(mesh.matrix)
+}
 
 /* BOXES */
 
