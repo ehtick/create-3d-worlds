@@ -12,7 +12,6 @@ scene.add(createSun())
 const floor = createGround()
 scene.add(floor)
 
-// TODO: color
 const building = createTexturedBuilding({ width: 20, height: 10, depth: 10, defaultFile: 'buildings/building-back.png', files: [0, 0, 0, 'buildings/building-front.png'], sideHalf: true, color: 0xC2B99D })
 scene.add(building)
 building.translateX(-30)

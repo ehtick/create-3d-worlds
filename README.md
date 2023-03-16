@@ -12,9 +12,7 @@ npx live-server
 ## TODO
 
 - srediti zgrade
-  - reuse createTexturedBuilding za ostale zgrade
-    - omogućiti da se bira default map
-    - uvesti skaliranje stranica?
+  - tjun art i grafiti zgradu
   - probati shader texture
 
 ### Scenes & examples
