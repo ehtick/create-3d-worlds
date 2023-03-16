@@ -11,23 +11,19 @@ scene.add(createSun())
 const floor = createGround()
 scene.add(floor)
 
-// topFile: 'terrain/concrete.jpg'
-const warehouse = createTexturedBuilding({ width: 20, height: 10, depth: 10, defaultFile: 'buildings/warehouse.jpg', sideHalf: true })
+const warehouse = createTexturedBuilding({ width: 20, height: 10, depth: 10, defaultFile: 'buildings/warehouse.jpg', files: [null, null, 'terrain/concrete.jpg'], sideHalf: true })
 
 scene.add(warehouse)
 warehouse.translateX(-20)
 
-// topFile: 'terrain/concrete.jpg'
-const warehouse2 = createTexturedBuilding({ width: 20, height: 10, depth: 20, defaultFile: 'buildings/warehouse.jpg' })
+const warehouse2 = createTexturedBuilding({ width: 20, height: 10, depth: 20, defaultFile: 'buildings/warehouse.jpg', files: [null, null, 'terrain/concrete.jpg'] })
 scene.add(warehouse2)
 warehouse2.translateZ(20)
 
-// topFile: 'terrain/beton-krater.jpg'
-const warRuin = createTexturedBuilding({ width: 12, height: 10, depth: 10, defaultFile: 'buildings/ruin-01.jpg', sideHalf: true })
+const warRuin = createTexturedBuilding({ width: 12, height: 10, depth: 10, defaultFile: 'buildings/ruin-01.jpg', files: [null, null, 'terrain/beton-krater.jpg'], sideHalf: true })
 scene.add(warRuin)
 
-// topFile: 'terrain/beton.gif'
-const airport = createTexturedBuilding({ width: 20, height: 10, depth: 10, defaultFile: 'buildings/airport.png', sideHalf: true })
+const airport = createTexturedBuilding({ width: 20, height: 10, depth: 10, defaultFile: 'buildings/airport.png', files: [null, null, 'terrain/beton.gif'], sideHalf: true })
 scene.add(airport)
 airport.translateZ(-15)
 

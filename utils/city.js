@@ -201,7 +201,7 @@ export function createTexturedBuilding({ width = 2, height = 1, depth = width, c
 
   const getDefault = half => defaultFile ? loadTexture(defaultFile, half) : createBuildingTexture()
 
-  const maps = files.map((file, i) => loadTexture(file, sideHalf && (i == 0 || i == 1)))
+  const maps = files.map((file, i) => file ? loadTexture(file, sideHalf && (i == 0 || i == 1)) : null)
 
   const geometry = createBuildingGeometry({ width, height, depth })
   const materials = [
