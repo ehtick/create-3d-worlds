@@ -52,18 +52,11 @@ export function createBuildingTexture({ night = false, wallColor = night ? '#151
 }
 
 const webFonts = ['Arial', 'Verdana', 'Trebuchet MS', 'Brush Script MT', 'Brush Script MT']
-const fontWeights = ['normal', 'bold', 'lighter']
-const fontColors = ['red', 'pink', 'teal', 'black', '#222222', 'green', 'purple']
+const fontColors = ['red', 'blue', 'black', '#222222', 'green', 'purple']
 
 const sloganLengths = slogans.map(s => s.length)
 const minLength = Math.min(...sloganLengths),
   maxLength = Math.max(...sloganLengths)
-
-const getStroke = color => {
-  if (Math.random() < .5) return undefined
-  const colors = fontColors.filter(c => c !== color)
-  return sample(colors)
-}
 
 export function createGraffitiTexture({
   buildingWidth,
@@ -72,15 +65,13 @@ export function createGraffitiTexture({
   color = sample(fontColors),
   text = sample(slogans),
   fontFamily = sample(webFonts),
-  fontWeight = sample(fontWeights),
 } = {}) {
   const width = buildingWidth * 12
   const height = buildingHeight * 12
 
   const fontSize = mapRange(text.length, minLength, maxLength, width * .075, width * .025)
-  const stroke = getStroke(color)
   const x = width * 0.5
-  const y = height * mapRange(text.length, minLength, maxLength, .9, .7)
+  const y = height * mapRange(text.length, minLength, maxLength, .9, .8)
 
   const canvas = document.createElement('canvas')
   canvas.width = width
@@ -93,21 +84,13 @@ export function createGraffitiTexture({
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
   ctx.fillStyle = color
-  ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`
-  if (stroke) ctx.strokeStyle = stroke
+  ctx.font = `bold ${fontSize}px ${fontFamily}`
 
   const lines = text.split('\n')
   for (let i = 0; i < lines.length; i++) {
     ctx.rotate(Math.random() > .4 ? randFloat(-.05, .05) : 0)
-    ctx.fillText(lines[i], x, y + (i * fontSize))
-
-    if (stroke) {
-      ctx.rotate(Math.random() > .4 ? randFloat(-.01, .01) : 0)
-      ctx.translate(Math.random(), Math.random())
-      ctx.strokeText(lines[i], x, y + (i * fontSize))
-    }
+    ctx.fillText(lines[i], x, y + (i * (fontSize + 2)))
   }
-
   ctx.setTransform(1, 0, 0, 1, 0, 0) // reset to identity matrix
 
   return new THREE.CanvasTexture(canvas)
