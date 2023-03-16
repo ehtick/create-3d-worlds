@@ -9,7 +9,7 @@ camera.position.set(0, 15, 30)
 scene.add(createSun({ position: [50, 100, 50] }))
 scene.add(createFloor())
 
-const artBuilding = createTexturedBuilding({ width: 20, height: 15, depth: 10, files: ['banksy/flower.jpg'] })
+const artBuilding = createTexturedBuilding({ width: 20, height: 15, depth: 10, files: ['banksy/flower.jpg'], graffitiChance: .5 })
 scene.add(artBuilding)
 
 /* LOOP */

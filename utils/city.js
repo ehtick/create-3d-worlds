@@ -76,27 +76,25 @@ export function createGraffitiTexture({
   ctx.fillStyle = background
   ctx.fillRect(0, 0, width, height)
 
-  if (Math.random() > .66) {
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    ctx.fillStyle = color
-    ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`
-    if (stroke) ctx.strokeStyle = stroke
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  ctx.fillStyle = color
+  ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`
+  if (stroke) ctx.strokeStyle = stroke
 
-    const lines = text.split('\n')
-    for (let i = 0; i < lines.length; i++) {
-      ctx.rotate(Math.random() > .4 ? randFloat(-.05, .05) : 0)
-      ctx.fillText(lines[i], x, y + (i * fontSize))
+  const lines = text.split('\n')
+  for (let i = 0; i < lines.length; i++) {
+    ctx.rotate(Math.random() > .4 ? randFloat(-.05, .05) : 0)
+    ctx.fillText(lines[i], x, y + (i * fontSize))
 
-      if (stroke) {
-        ctx.rotate(Math.random() > .4 ? randFloat(-.01, .01) : 0)
-        ctx.translate(Math.random(), Math.random())
-        ctx.strokeText(lines[i], x, y + (i * fontSize))
-      }
+    if (stroke) {
+      ctx.rotate(Math.random() > .4 ? randFloat(-.01, .01) : 0)
+      ctx.translate(Math.random(), Math.random())
+      ctx.strokeText(lines[i], x, y + (i * fontSize))
     }
   }
-  // reset transformation to identity matrix
-  ctx.setTransform(1, 0, 0, 1, 0, 0)
+
+  ctx.setTransform(1, 0, 0, 1, 0, 0) // reset to identity matrix
 
   return new THREE.CanvasTexture(canvas)
 }
@@ -197,18 +195,22 @@ export function createBuilding(params = {}) {
   return new THREE.Mesh(geometry, material)
 }
 
-export function createTexturedBuilding({ width = 2, height = 1, depth = width, color = 0x999999, path = '/assets/textures/', files = [], defaultFile, halfOnSides = false } = {}) {
+export function createTexturedBuilding({ width, height, depth = width, color = 0x999999, path = '/assets/textures/', files = [], defaultFile, halfOnSides = false, graffitiChance = 0, ...rest } = {}) {
+  const geometry = createBuildingGeometry({ width, height, depth, ...rest })
 
   const getDefaultTexture = half => defaultFile
     ? loadTexture(path + defaultFile, half)
-    : createBuildingTexture()
+    : Math.random() < graffitiChance
+      ? createGraffitiTexture({
+        background: new THREE.Color(color).getStyle(), width: geometry.parameters.width * 12, height: geometry.parameters.height * 12
+      })
+      : createBuildingTexture()
 
   const maps = files.map((file, i) => file
     ? loadTexture(path + file, halfOnSides && (i == 0 || i == 1))  // right || left
     : null
   )
 
-  const geometry = createBuildingGeometry({ width, height, depth })
   const materials = [
     new THREE.MeshPhongMaterial({ map: maps[0] || getDefaultTexture(halfOnSides) }),  // 0: right
     new THREE.MeshPhongMaterial({ map: maps[1] || getDefaultTexture(halfOnSides) }),  // 1: left

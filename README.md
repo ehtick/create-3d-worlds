@@ -12,7 +12,8 @@ npx live-server
 ## TODO
 
 - srediti zgrade
-  - merge createTexturedBuilding i createGraffitiBuilding
+  - reuse createTexturedBuilding u grafiti city
+  - random banksy art (spojiti sa grafitima)
   - probati shader texture
 
 ### Scenes & examples
