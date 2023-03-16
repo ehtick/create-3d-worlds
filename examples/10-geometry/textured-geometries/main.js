@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { camera, scene, renderer, createOrbitControls } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
-import { createCrate, createRustyBarrel, createWoodBarrel } from '/utils/geometry.js'
+import { createCrate, createRustyBarrel, createWoodBarrel, createBox } from '/utils/geometry.js'
 import { createMoon } from '/utils/geometry/planets.js'
 
 createOrbitControls()
@@ -28,6 +28,10 @@ scene.add(moon)
 const crate = createCrate()
 crate.position.set(0, 0, 0)
 scene.add(crate)
+
+const box = createBox({ file: 'walls/stonetiles.jpg', normalFile: 'walls/stonetiles_n.jpg' })
+box.position.set(0, 0, 2)
+scene.add(box)
 
 const rustBarrel = createRustyBarrel()
 rustBarrel.position.set(1.2, 0, 0)

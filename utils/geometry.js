@@ -6,7 +6,7 @@ const { randFloat, randFloatSpread } = THREE.MathUtils
 
 const textureLoader = new THREE.TextureLoader()
 
-const updateHeight = (mesh, h) => {
+const translateY = (mesh, h) => {
   mesh.translateY(h * .5)
   mesh.updateMatrix()
   mesh.geometry.applyMatrix4(mesh.matrix)
@@ -14,17 +14,18 @@ const updateHeight = (mesh, h) => {
 
 /* BOXES */
 
-export function createBox({ size = 1, width = size, height = size, depth = size, file, bumpFile, color = randomGray(), castShadow = true, receiveShadow = true, fixHeight = false, pos, quat } = {}) {
+export function createBox({ size = 1, width = size, height = size, depth = size, file, bumpFile, normalFile, color = randomGray(), castShadow = true, receiveShadow = true, updateHeight = true, pos, quat } = {}) {
   const geometry = new THREE.BoxGeometry(width, height, depth)
   const options = {
     map: file ? textureLoader.load(`/assets/textures/${file}`) : null,
     color: !file ? color : null,
     bumpMap: bumpFile ? textureLoader.load(`/assets/textures/${bumpFile}`) : null,
+    normalMap: normalFile ? textureLoader.load(`/assets/textures/${normalFile}`) : null,
   }
   const material = new THREE.MeshPhongMaterial(options)
   const mesh = new THREE.Mesh(geometry, material)
 
-  if (fixHeight) updateHeight(mesh, height)
+  if (updateHeight) translateY(mesh, height)
   else mesh.translateY(height / 2)
 
   if (pos) mesh.position.copy(pos)
@@ -46,8 +47,8 @@ export const createPlayerBox = params => {
   return mesh
 }
 
-export const createCrate = ({ file = 'crate.gif', fixHeight = true, ...params } = {}) =>
-  createBox({ file, fixHeight, ...params })
+export const createCrate = ({ file = 'crate.gif', updateHeight = true, ...params } = {}) =>
+  createBox({ file, updateHeight, ...params })
 
 export const createBumpBox = ({ size, file = 'walls/bricks.jpg', bumpFile = 'walls/bricks-gray.jpg' } = {}) =>
   createBox({ size, file, bumpFile })
@@ -144,7 +145,7 @@ export function createRustyBarrel({ r = .4, height = 1, segments = 32, file = 'm
     topMaterial, // bottom
   ]
   const mesh = new THREE.Mesh(geometry, materials)
-  updateHeight(mesh, height)
+  translateY(mesh, height)
   return mesh
 }
 
@@ -182,7 +183,7 @@ export function createWoodBarrel({ r = .4, R = .5, h = 1 } = {}) {
   ]
 
   const mesh = new THREE.Mesh(geometry, materials)
-  updateHeight(mesh, h)
+  translateY(mesh, h)
   return mesh
 }
 
