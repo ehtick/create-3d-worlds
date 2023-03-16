@@ -3,7 +3,7 @@ import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/Buf
 import { randomGrayish, getAllCoords, sample, mapRange, maxItems } from '/utils/helpers.js'
 import { createTrees } from '/utils/geometry/trees.js'
 import { createFloor } from '/utils/ground.js'
-import { slogans } from '/utils/data/graffiti.js'
+import { slogans, banksyArt } from '/utils/data/graffiti.js'
 
 const { randInt, randFloat } = THREE.MathUtils
 
@@ -219,6 +219,12 @@ export function createTexturedBuilding({ width, height, depth = width, color = 0
   const mesh = new THREE.Mesh(geometry, materials)
   return mesh
 }
+
+export const createGraffitiBuilding = param =>
+  createTexturedBuilding({ graffitiChance: .5, ...param })
+
+export const createArtBuilding = param =>
+  createGraffitiBuilding({ files: ['banksy/' + sample(banksyArt)], ...param })
 
 /* CITY */
 

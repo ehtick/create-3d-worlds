@@ -12,7 +12,6 @@ npx live-server
 ## TODO
 
 - srediti zgrade
-  - random banksy art (spojiti sa grafitima)
   - probati shader texture
 
 ### Scenes & examples
