@@ -66,14 +66,28 @@ const getStroke = color => {
 }
 
 export function createGraffitiTexture({
-  width = 128, height = 256, background = 'gray', color = sample(fontColors), text = sample(slogans), fontWeight = sample(fontWeights), fontSize = mapRange(text.length, minLength, maxLength, width * .075, width * .025), fontFamily = sample(webFonts), x = width * 0.5, y = height * mapRange(text.length, minLength, maxLength, .9, .7), stroke = getStroke(color)
+  buildingWidth,
+  buildingHeight,
+  background = 0x999999,
+  color = sample(fontColors),
+  text = sample(slogans),
+  fontFamily = sample(webFonts),
+  fontWeight = sample(fontWeights),
 } = {}) {
+  const width = buildingWidth * 12
+  const height = buildingHeight * 12
+
+  const fontSize = mapRange(text.length, minLength, maxLength, width * .075, width * .025)
+  const stroke = getStroke(color)
+  const x = width * 0.5
+  const y = height * mapRange(text.length, minLength, maxLength, .9, .7)
+
   const canvas = document.createElement('canvas')
   canvas.width = width
   canvas.height = height
   const ctx = canvas.getContext('2d')
 
-  ctx.fillStyle = background
+  ctx.fillStyle = new THREE.Color(background).getStyle() // to css color string
   ctx.fillRect(0, 0, width, height)
 
   ctx.textAlign = 'center'
@@ -197,13 +211,12 @@ export function createBuilding(params = {}) {
 
 export function createTexturedBuilding({ width, height, depth = width, color = 0x999999, path = '/assets/textures/', files = [], defaultFile, halfOnSides = false, graffitiChance = 0, ...rest } = {}) {
   const geometry = createBuildingGeometry({ width, height, depth, ...rest })
+  const { width: buildingWidth, height: buildingHeight } = geometry.parameters
 
   const getDefaultTexture = half => defaultFile
     ? loadTexture(path + defaultFile, half)
     : Math.random() < graffitiChance
-      ? createGraffitiTexture({
-        background: new THREE.Color(color).getStyle(), width: geometry.parameters.width * 12, height: geometry.parameters.height * 12
-      })
+      ? createGraffitiTexture({ background: color, buildingWidth, buildingHeight })
       : createBuildingTexture()
 
   const maps = files.map((file, i) => file
