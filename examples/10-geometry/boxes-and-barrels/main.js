@@ -1,21 +1,24 @@
-import * as THREE from 'three'
 import { camera, scene, renderer, createOrbitControls } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 import { createCrate, createRustyBarrel, createWoodBarrel, createBox } from '/utils/geometry.js'
 import { createMoon } from '/utils/geometry/planets.js'
+import { createSun } from '/utils/light.js'
 
 createOrbitControls()
-
-const light = new THREE.PointLight(0xffffff)
-light.position.set(0, 15, 10)
-scene.add(light)
-const light2 = new THREE.AmbientLight(0x444444)
-scene.add(light2)
-
-/* GEOMETRIES */
+scene.add(createSun())
 
 const floor = createGround()
 scene.add(floor)
+
+/* GEOMETRIES */
+
+const cube = createBox({ file: 'walls/bricks.jpg' })
+cube.position.set(-1, 0, -2)
+scene.add(cube)
+
+const bumpCube = createBox({ file: 'walls/bricks.jpg', bumpFile: 'walls/bricks-gray.jpg' })
+bumpCube.position.set(1, 0, -2)
+scene.add(bumpCube)
 
 const barrel = createWoodBarrel({ r: .4, height: 1 })
 barrel.position.set(-2.4, 0, 0)

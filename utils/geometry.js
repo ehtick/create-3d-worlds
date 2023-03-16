@@ -1,16 +1,10 @@
 import * as THREE from 'three'
-import { randomGray } from './helpers.js'
+import { randomGray, translateY } from './helpers.js'
 import { material as skyMaterial } from '/utils/shaders/gradient-sky.js'
 
 const { randFloat, randFloatSpread } = THREE.MathUtils
 
 const textureLoader = new THREE.TextureLoader()
-
-const translateY = (mesh, h) => {
-  mesh.translateY(h * .5)
-  mesh.updateMatrix()
-  mesh.geometry.applyMatrix4(mesh.matrix)
-}
 
 /* BOXES */
 
@@ -49,9 +43,6 @@ export const createPlayerBox = params => {
 
 export const createCrate = ({ file = 'crate.gif', updateHeight = true, ...params } = {}) =>
   createBox({ file, updateHeight, ...params })
-
-export const createBumpBox = ({ size, file = 'walls/bricks.jpg', bumpFile = 'walls/bricks-gray.jpg' } = {}) =>
-  createBox({ size, file, bumpFile })
 
 export function createJumpBoard({ width = 8, height = 4, depth = 10, y = -1.5 } = {}) {
   const jumpBoard = createBox({ width, height, depth })
@@ -146,6 +137,7 @@ export function createRustyBarrel({ r = .4, height = 1, segments = 32, file = 'm
   ]
   const mesh = new THREE.Mesh(geometry, materials)
   translateY(mesh, height)
+  mesh.castShadow = mesh.receiveShadow = true
   return mesh
 }
 
@@ -183,6 +175,7 @@ export function createWoodBarrel({ r = .4, R = .5, h = 1 } = {}) {
   ]
 
   const mesh = new THREE.Mesh(geometry, materials)
+  mesh.castShadow = mesh.receiveShadow = true
   translateY(mesh, h)
   return mesh
 }

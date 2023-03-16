@@ -166,6 +166,12 @@ export const findChild = (parent, name) => {
   return found
 }
 
+export const translateY = (mesh, h = getHeight(mesh)) => {
+  mesh.translateY(h * .5)
+  mesh.updateMatrix()
+  mesh.geometry.applyMatrix4(mesh.matrix)
+}
+
 /* COLORS */
 
 export const randomColor = () => new THREE.Color(Math.random() * 0xffffff)
