@@ -9,7 +9,7 @@ camera.position.set(0, 25, 50)
 scene.add(createSun({ position: [50, 100, 50] }))
 scene.add(createFloor())
 
-const building = createTexturedBuilding({ graffitiChance: .5 })
+const building = createTexturedBuilding({ graffitiChance: 1 })
 
 scene.add(building)
 

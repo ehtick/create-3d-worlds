@@ -74,21 +74,21 @@ export function createGraffitiTexture({
   fontFamily = sample(webFonts),
   fontWeight = sample(fontWeights),
 } = {}) {
-  const canvasWidth = buildingWidth * 12
-  const canvasHeight = buildingHeight * 12
+  const width = buildingWidth * 12
+  const height = buildingHeight * 12
 
-  const fontSize = mapRange(text.length, minLength, maxLength, canvasWidth * .075, canvasWidth * .025)
+  const fontSize = mapRange(text.length, minLength, maxLength, width * .075, width * .025)
   const stroke = getStroke(color)
-  const x = canvasHeight * 0.5
-  const y = canvasHeight * mapRange(text.length, minLength, maxLength, .9, .7)
+  const x = width * 0.5
+  const y = height * mapRange(text.length, minLength, maxLength, .9, .7)
 
   const canvas = document.createElement('canvas')
-  canvas.width = canvasHeight
-  canvas.height = canvasHeight
+  canvas.width = width
+  canvas.height = height
   const ctx = canvas.getContext('2d')
 
   ctx.fillStyle = new THREE.Color(background).getStyle() // to css color string
-  ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+  ctx.fillRect(0, 0, width, height)
 
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
