@@ -12,17 +12,15 @@ scene.add(createSun())
 const floor = createGround()
 scene.add(floor)
 
-// backFile: 'buildings/building-back.png'
-const building = createTexturedBuilding({ width: 20, height: 10, depth: 10, defaultFile: 'buildings/building-front.png', color: 0xC2B99D })
+// TODO: color
+const building = createTexturedBuilding({ width: 20, height: 10, depth: 10, defaultFile: 'buildings/building-back.png', files: [0, 0, 0, 'buildings/building-front.png'], sideHalf: true, color: 0xC2B99D })
 scene.add(building)
 building.translateX(-30)
 
-// backFile: 'buildings/building-blue-back.png'
-const greenBlue = createTexturedBuilding({ width: 20, height: 10, depth: 10, defaultFile: 'buildings/building-blue-front.png' })
+const greenBlue = createTexturedBuilding({ width: 20, height: 10, depth: 10, defaultFile: 'buildings/building-blue-back.png', files: [0, 0, 0, 'buildings/building-blue-front.png'], sideHalf: true })
 scene.add(greenBlue)
 
-// backFile: 'buildings/building-green-back.png',
-const greenBuilding = createTexturedBuilding({ width: 20, height: 10, depth: 10, defaultFile: 'buildings/building-green-front.png', color: 0xB1AFAB })
+const greenBuilding = createTexturedBuilding({ width: 20, height: 10, depth: 10, defaultFile: 'buildings/building-green-back.png', files: [0, 0, 0, 'buildings/building-green-front.png'], sideHalf: true, color: 0xB1AFAB })
 scene.add(greenBuilding)
 greenBuilding.translateX(30)
 
