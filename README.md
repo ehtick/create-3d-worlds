@@ -12,6 +12,7 @@ npx live-server
 ## TODO
 
 - srediti zgrade
+  - menjati stranu sa art slikom
   - probati shader texture
 
 ### Scenes & examples
