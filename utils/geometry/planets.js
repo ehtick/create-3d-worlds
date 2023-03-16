@@ -18,15 +18,6 @@ export function createEarth({ r = 15, segments = 64 } = {}) {
   return mesh
 }
 
-export function createEarthClouds({ r = 15.2, segments = 64 } = {}) {
-  const map = textureLoader.load('fair_clouds_4k.png')
-  const material = new THREE.MeshPhongMaterial({ map, transparent: true })
-
-  const geometry = new THREE.SphereGeometry(r, segments, segments)
-  const clouds = new THREE.Mesh(geometry, material)
-  return clouds
-}
-
 /* MOON */
 
 export const createMoon = ({ r = 2, segments = 32 } = {}) =>

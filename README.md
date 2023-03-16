@@ -11,8 +11,8 @@ npx live-server
 
 ## TODO
 
-- srediti zgrade
-  - probati shader texture
+- geometrija
+  - pogledati matrix-transformations
 
 ### Scenes & examples
 

@@ -1,16 +1,23 @@
 import { camera, scene, renderer, createOrbitControls } from '/utils/scene.js'
-import { createEarth, createEarthClouds } from '/utils/geometry/planets.js'
+import { createEarth, createSaturn, createMoon } from '/utils/geometry/planets.js'
 import { dirLight } from '/utils/light.js'
 
 dirLight({ position: [100, 10, -50] })
 renderer.setClearColor(0x000000)
 
 const controls = createOrbitControls()
-camera.position.set(40, 0, 0)
 
-const earth = createEarth({ r: 15 })
-const clouds = createEarthClouds({ r: 15.2 })
-scene.add(earth, clouds)
+const earth = createEarth({ r: 5 })
+earth.translateX(-10)
+scene.add(earth)
+
+const saturn = createSaturn()
+saturn.translateX(10)
+scene.add(saturn)
+
+const moon = createMoon({ r: .5 })
+moon.position.set(-1.2, .5, 0)
+scene.add(moon)
 
 /* LOOP */
 
@@ -20,7 +27,6 @@ void function render() {
   controls.update()
 
   earth.rotation.y += rotationSpeed
-  clouds.rotation.y += rotationSpeed * 1.1
 
   renderer.render(scene, camera)
   requestAnimationFrame(render)
