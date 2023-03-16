@@ -1,5 +1,5 @@
 import { scene, camera, renderer, createOrbitControls } from '/utils/scene.js'
-import { createGraffitiBuilding, createArtBuilding } from '/utils/city.js'
+import { createTexturedBuilding, createGraffitiBuilding, createArtBuilding } from '/utils/city.js'
 import { createSun } from '/utils/light.js'
 import { createFloor } from '/utils/ground.js'
 
@@ -15,7 +15,10 @@ building.translateX(20)
 const building2 = createArtBuilding()
 building2.translateX(-20)
 
-scene.add(building, building2)
+const building3 = createTexturedBuilding()
+building3.translateZ(10)
+
+scene.add(building, building2, building3)
 
 /* LOOP */
 

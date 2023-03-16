@@ -1,47 +1,6 @@
 import * as THREE from 'three'
-import { DEGREE, RIGHT_ANGLE } from '/utils/constants.js'
+import { RIGHT_ANGLE } from '/utils/constants.js'
 import { centerMesh, adjustHeight, randomGray } from '/utils/helpers.js'
-
-/*  AIRPLANE */
-
-export function createAirplane() {
-  const airplane = new THREE.Object3D()
-  const material = new THREE.MeshPhongMaterial({ shininess: 100 })
-
-  const nose = new THREE.Mesh(new THREE.SphereGeometry(15, 32, 16), material)
-  nose.rotation.x = RIGHT_ANGLE
-  nose.scale.y = 3
-  nose.position.y = 0
-  nose.position.z = 70
-  airplane.add(nose)
-
-  const body = new THREE.Mesh(new THREE.CylinderGeometry(15, 15, 180, 32), material)
-  body.rotation.x = RIGHT_ANGLE
-  body.position.y = 0
-  body.position.z = -20
-  airplane.add(body)
-
-  const wing = new THREE.Mesh(new THREE.CylinderGeometry(20, 20, 250, 32), material)
-  wing.scale.x = 0.2
-  wing.rotation.z = RIGHT_ANGLE
-  wing.position.y = 5
-  airplane.add(wing)
-
-  const tailWing = new THREE.Mesh(new THREE.CylinderGeometry(15, 15, 100, 32), material)
-  tailWing.scale.x = 0.2
-  tailWing.rotation.z = RIGHT_ANGLE
-  tailWing.position.y = 5
-  tailWing.position.z = -90
-  airplane.add(tailWing)
-
-  const tail = new THREE.Mesh(new THREE.CylinderGeometry(10, 15, 40, 32), material)
-  tail.scale.x = 0.15
-  tail.rotation.x = -10 * DEGREE
-  tail.position.y = 20
-  tail.position.z = -96
-  airplane.add(tail)
-  return airplane
-}
 
 /*  LOCOMOTIVE */
 
