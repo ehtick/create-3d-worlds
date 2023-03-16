@@ -223,8 +223,15 @@ export function createTexturedBuilding({ width, height, depth = width, color = 0
 export const createGraffitiBuilding = param =>
   createTexturedBuilding({ graffitiChance: .5, ...param })
 
-export const createArtBuilding = param =>
-  createGraffitiBuilding({ files: ['banksy/' + sample(banksyArt)], ...param })
+export const createArtBuilding = param => {
+  // return array with a file at random index
+  const getFiles = () => {
+    const files = []
+    files[sample([0, 1, 3, 4])] = 'banksy/' + sample(banksyArt)
+    return files
+  }
+  return createGraffitiBuilding({ files: getFiles(), ...param })
+}
 
 /* CITY */
 
@@ -271,8 +278,9 @@ export function createCity({
   return city
 }
 
-export const createNightCity = ({ addWindows = true, colorParams = null, numLampposts = 15, ...rest } = {}) =>
-  createCity({ addWindows, colorParams, numLampposts, ...rest })
+export const createNightCity = ({ addWindows = true, colorParams = null, numLampposts = 15, ...rest } = {}) => createCity({ addWindows, colorParams, numLampposts, ...rest })
+
+export const createTexturedCity = param => createCity({ numBuildings: 10000, rotateEvery: 2, enlargeEvery: 10, map: createBuildingTexture(), colorParams: { colorful: .035, max: 1 }, ...param })
 
 export function createGraffitiCity({ mapSize, coords = getAllCoords({ mapSize }), nTrees = 20, nFirTrees = 10 } = {}) {
   const group = new THREE.Group()
@@ -284,7 +292,7 @@ export function createGraffitiCity({ mapSize, coords = getAllCoords({ mapSize })
 
   for (let i = 0; i < 50; i++) {
     const { x, z } = coords.pop()
-    const building = createArtBuilding({ x, z })
+    const building = Math.random() > .10 ? createGraffitiBuilding({ x, z }) : createArtBuilding({ x, z })
     group.add(building)
   }
   return group
