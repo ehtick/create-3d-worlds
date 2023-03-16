@@ -12,7 +12,7 @@ npx live-server
 ## TODO
 
 - srediti zgrade
-  - tjun art i grafiti zgradu
+  - merge createTexturedBuilding i createGraffitiBuilding
   - probati shader texture
 
 ### Scenes & examples

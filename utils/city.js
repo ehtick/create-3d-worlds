@@ -7,8 +7,14 @@ import { slogans } from '/utils/data/graffiti.js'
 
 const { randInt, randFloat } = THREE.MathUtils
 
-const textureLoader = new THREE.TextureLoader()
 const basicMaterial = new THREE.MeshStandardMaterial({ vertexColors: true })
+const textureLoader = new THREE.TextureLoader()
+
+const loadTexture = (filepath, halfWidth) => {
+  const texture = textureLoader.load(filepath)
+  if (halfWidth) texture.repeat.set(.5, 1)
+  return texture
+}
 
 /* TEXTURES */
 
@@ -191,26 +197,25 @@ export function createBuilding(params = {}) {
   return new THREE.Mesh(geometry, material)
 }
 
-export function createTexturedBuilding({ width = 2, height = 1, depth = width, color = 0x999999, path = '/assets/textures/', files = [], defaultFile, sideHalf = false } = {}) {
+export function createTexturedBuilding({ width = 2, height = 1, depth = width, color = 0x999999, path = '/assets/textures/', files = [], defaultFile, halfOnSides = false } = {}) {
 
-  const loadTexture = (file, half) => {
-    const texture = textureLoader.load(path + file)
-    if (half) texture.repeat.set(.5, 1)
-    return texture
-  }
+  const getDefaultTexture = half => defaultFile
+    ? loadTexture(path + defaultFile, half)
+    : createBuildingTexture()
 
-  const getDefault = half => defaultFile ? loadTexture(defaultFile, half) : createBuildingTexture()
-
-  const maps = files.map((file, i) => file ? loadTexture(file, sideHalf && (i == 0 || i == 1)) : null)
+  const maps = files.map((file, i) => file
+    ? loadTexture(path + file, halfOnSides && (i == 0 || i == 1))  // right || left
+    : null
+  )
 
   const geometry = createBuildingGeometry({ width, height, depth })
   const materials = [
-    new THREE.MeshPhongMaterial({ map: maps[0] || getDefault(sideHalf) }),  // 0: right
-    new THREE.MeshPhongMaterial({ map: maps[1] || getDefault(sideHalf) }),  // 1: left
-    new THREE.MeshPhongMaterial({ color, map: maps[2] || null }),           // 2: top
-    new THREE.MeshBasicMaterial({ color }),                                 // bottom
-    new THREE.MeshPhongMaterial({ map: maps[3] || getDefault() }),          // 3: front
-    new THREE.MeshPhongMaterial({ map: maps[4] || getDefault() }),          // 4: back
+    new THREE.MeshPhongMaterial({ map: maps[0] || getDefaultTexture(halfOnSides) }),  // 0: right
+    new THREE.MeshPhongMaterial({ map: maps[1] || getDefaultTexture(halfOnSides) }),  // 1: left
+    new THREE.MeshPhongMaterial({ color, map: maps[2] || null }),                     // 2: top
+    new THREE.MeshBasicMaterial({ color }),                                           // no bottom
+    new THREE.MeshPhongMaterial({ map: maps[3] || getDefaultTexture() }),             // 3: front
+    new THREE.MeshPhongMaterial({ map: maps[4] || getDefaultTexture() }),             // 4: back
   ]
 
   const mesh = new THREE.Mesh(geometry, materials)
