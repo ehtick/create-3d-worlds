@@ -21,9 +21,9 @@ export default class Avatar extends Player {
     })
   }
 
-  walkAnim(running = false) {
+  walkAnim(name) {
     const r = this.height * .5
-    const speedFactor = running ? 9 : 6
+    const speedFactor = name === 'run' ? 9 : 6
     const elapsed = Math.sin(clock.getElapsedTime() * speedFactor) * r
     updateAvatar(this.mesh, elapsed)
   }
@@ -38,10 +38,8 @@ export default class Avatar extends Player {
     super.update(delta)
     const { name } = this.currentState
 
-    if (name === 'walk')
-      this.walkAnim()
-    else if (name === 'run')
-      this.walkAnim(true)
+    if (name === 'walk' || name === 'run')
+      this.walkAnim(name)
     else if (this.input.space)
       this.jumpAnim()
     else
