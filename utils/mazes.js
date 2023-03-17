@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
-import { centerGeometry, randomGrayish, getTexture, shuffle } from '/utils/helpers.js'
+import { centerGeometry, randomGrayish, getTexture } from '/utils/helpers.js'
 import { createBuildingGeometry } from '/utils/city.js'
 import chroma from '/libs/chroma.js'
 
@@ -45,15 +45,6 @@ export const cellToPos = (matrix, cell, size = 1) => {
 }
 
 export const firstCellPos = (matrix, size) => cellToPos(matrix, [1, 1], size)
-
-export function getEmptyFields(matrix) {
-  const fields = []
-  matrix.forEach((row, y) => row.forEach((field, x) => {
-    if (!field) fields.push([x, y])
-  }))
-  shuffle(fields)
-  return fields
-}
 
 /* MESH FROM MATRIX */
 
