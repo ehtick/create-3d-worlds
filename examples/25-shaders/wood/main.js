@@ -1,21 +1,18 @@
 import * as THREE from 'three'
-import { camera, scene, renderer } from '/utils/scene.js'
+import { camera, scene, renderer, createOrbitControls } from '/utils/scene.js'
 import { material } from '/utils/shaders/wood.js'
 
+const controls = createOrbitControls()
 camera.position.set(0, 0, 2)
 
 const geometry = new THREE.BoxGeometry()
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
-const light = new THREE.AmbientLight(0x404040)
-scene.add(light)
-
 /* LOOP */
 
 void function loop() {
   requestAnimationFrame(loop)
-  mesh.rotation.x += 0.005
-  mesh.rotation.y += 0.01
+  controls.update()
   renderer.render(scene, camera)
 }()

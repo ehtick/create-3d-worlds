@@ -1,11 +1,12 @@
 import * as THREE from 'three'
-import { scene, camera, renderer, clock } from '/utils/scene.js'
+import { scene, camera, renderer, clock, createOrbitControls } from '/utils/scene.js'
 import { material, uniforms } from '/utils/shaders/ripple.js'
 
-camera.position.set(0, 0, 1)
+createOrbitControls()
 
-const geometry = new THREE.PlaneGeometry(2, 1.5)
+const geometry = new THREE.PlaneGeometry(10, 10)
 const plane = new THREE.Mesh(geometry, material)
+plane.rotateX(-Math.PI * 0.5)
 scene.add(plane)
 
 void function loop() {
