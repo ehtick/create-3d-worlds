@@ -49,8 +49,6 @@ export default class Actor {
     if (coords) this.position.copy(coords.pop())
 
     if (camera) {
-      // camera.near = 1.5
-      // camera.updateProjectionMatrix()
       this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, height: this.height })
       this.controls = createOrbitControls()
       this.controls.mouseButtons = { RIGHT: THREE.MOUSE.ROTATE }
@@ -69,7 +67,7 @@ export default class Actor {
     this.setState('idle')
   }
 
-  /* GETTERS */
+  /* GETTERS & SETTERS */
 
   get position() {
     return this.mesh.position
@@ -145,6 +143,12 @@ export default class Actor {
       || this.position.x <= this.boundaries.min.x
       || this.position.z >= this.boundaries.max.z
       || this.position.z <= this.boundaries.min.z
+  }
+
+  set cameraNear(num) {
+    const { camera } = this.thirdPersonCamera
+    camera.near = num
+    camera.updateProjectionMatrix()
   }
 
   /* STATE MACHINE */

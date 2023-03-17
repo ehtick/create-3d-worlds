@@ -18,6 +18,7 @@ lavirinti:
 - isprobati šejdere i texture
 - kod piramida podići tlo
 - kod zidina različitu visinu
+- pronaći najbolju texturu za grad, iskoristiti postojeće zgrade?
 
 - FPS / FPSPlayer
   - dodati lavirint umesto statične mape
