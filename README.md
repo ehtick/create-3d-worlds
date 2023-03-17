@@ -14,6 +14,7 @@ npx live-server
 ### Scenes & examples
 
 - FPS / FPSPlayer
+  - ukinuti Tilemap klasu?
   - pogledati lavirinte i izabrati neki
   - srediti audio
 

@@ -1,14 +1,4 @@
-import { randomMatrix, meshFromMatrix } from '/utils/mazes.js'
-import { shuffle } from '/utils/helpers.js'
-
-function getEmptyFields(matrix) {
-  const fields = []
-  matrix.forEach((row, y) => row.forEach((field, x) => {
-    if (!field) fields.push([x, y])
-  }))
-  shuffle(fields)
-  return fields
-}
+import { randomMatrix, meshFromMatrix, getEmptyFields } from '/utils/mazes.js'
 
 export default class Tilemap {
   constructor(matrix = randomMatrix(), cellSize = 20, origin) {

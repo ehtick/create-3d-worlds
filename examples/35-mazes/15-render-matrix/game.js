@@ -6,8 +6,6 @@ import { smallMap } from '/utils/data/maps.js'
 
 hemLight()
 
-camera.position.set(0, 7, 10)
-
 scene.add(createGround({ file: 'terrain/ground.jpg', size: 100 }))
 
 const map = meshFromMatrix({ matrix: smallMap, texture: 'terrain/concrete.jpg' })
