@@ -17,7 +17,7 @@ lavirinti:
 - pregledati lavirinte
 - isprobati šejdere i texture
 - kod piramida podići tlo
-- kod zidina različitu visinu
+- kod zidina različitu visinu, kao minas-tirith
 - pronaći najbolju texturu za grad, iskoristiti postojeće zgrade?
 
 - FPS / FPSPlayer

@@ -260,6 +260,6 @@ export function meshFromPolarGrid({ grid, connect = createPipe, color = 'gray', 
 
 export const polarMazePipes = ({ grid, ...params }) => meshFromPolarGrid({ grid, connect: createPipe, color: 'gray', ...params })
 
-export const polarMazeCity = ({ grid, ...params }) => meshFromPolarGrid({ grid, connect: createCityWall, color: 'white', ...params })
+export const polarMazeCity = ({ grid, ...params }) => meshFromPolarGrid({ grid, connect: createCityWall, color: 0xbbbbbb, ...params })
 
 export const polarMazeRuins = ({ grid, ...params }) => meshFromPolarGrid({ grid, connect: (p1, p2) => createCityWall(p1, p2, false), color: 'white', ...params })

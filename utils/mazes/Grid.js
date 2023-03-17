@@ -90,6 +90,7 @@ export default class Grid {
     return list
   }
 
+  // remove deadends
   braid(percent = 0.5) {
     const { deadends } = this
     shuffle(deadends)
