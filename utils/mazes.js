@@ -81,15 +81,14 @@ const createBoxGeometry = ({ size, height, maxHeight, texture }) => {
   return geometry
 }
 
-export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size, texture, bumpFile, normalFile, calcHeight = randomHeight, material, city = false, colorParams } = {}) {
+export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size, texture, bumpFile, normalFile, calcHeight = randomHeight, material, city = false } = {}) {
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
     if (val > 0) {
       const height = maxHeight ? calcHeight(row, j, i, size, maxHeight) : randInt(size, size * 4)
-      const buildingColor = colorParams ? randomGrayish(colorParams) : new THREE.Color(0x000000)
       const block = city
-        ? createBuildingGeometry({ width: size, height, color: buildingColor })
+        ? createBuildingGeometry({ width: size, height })
         : createBoxGeometry({ size, height, maxHeight, texture })
       block.translate(i * size, city ? 0 : height * .5, j * size)
       geometries.push(block)
@@ -116,8 +115,6 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = 
 }
 
 export const cityFromMatrix = params => meshFromMatrix({ city: true, maxHeight: 0, ...params })
-
-export const colorfulCityFromMatrix = params => cityFromMatrix({ colorParams: { min: 0, max: .1, colorful: .1 }, ...params })
 
 export const pyramidFromMatrix = (
   { matrix, size = 1, maxHeight = size * matrix.length * .33, ...params } = {}

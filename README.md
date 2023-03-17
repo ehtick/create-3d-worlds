@@ -14,11 +14,12 @@ npx live-server
 ### Scenes & examples
 
 lavirinti:
-- pregledati lavirinte
 - isprobati šejdere i texture
 - kod piramida podići tlo
-- kod zidina različitu visinu, kao minas-tirith
-- pronaći najbolju texturu za grad, iskoristiti postojeće zgrade?
+- zidine: 
+  - različitu visinu, kao minas-tirith
+  - probati razne blokove
+- grad: pronaći najbolju texturu, probati standardnu
 
 - FPS / FPSPlayer
   - dodati lavirint umesto statične mape
