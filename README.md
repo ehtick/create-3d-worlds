@@ -13,7 +13,7 @@ npx live-server
 
 ### Scenes & examples
 
-lavirinti:
+Lavirinti:
 - isprobati šejdere i texture
 - kod piramida podići tlo
 - zidine: 
@@ -51,6 +51,9 @@ lavirinti:
     - sletanje na mesec (textured moon)
   - dodati proceduralnu planetu http://colordodge.com/ProceduralPlanet/?seed=Ridi%20Genow
   - mozda iskoristiti astronauta da luta po planeti https://codepen.io/b29/pen/LoaRKx
+
+Spomenici
+  - napraviti scenu sa jugoslovenskim spomenicima
 
 - Zeppelin
   - umesto createChaseCamera koristiti 3rd person?
