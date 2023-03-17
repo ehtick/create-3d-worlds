@@ -81,7 +81,7 @@ const createBoxGeometry = ({ size, height, maxHeight, texture }) => {
   return geometry
 }
 
-export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size, texture, calcHeight = randomHeight, material, city = false, colorParams } = {}) {
+export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size, texture, bumpFile, normalFile, calcHeight = randomHeight, material, city = false, colorParams } = {}) {
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
@@ -107,7 +107,9 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = 
 
   const options = {
     vertexColors: !texture,
-    map: texture ? textureLoader.load(`/assets/textures/${texture}`) : null
+    map: texture ? textureLoader.load(`/assets/textures/${texture}`) : null,
+    bumpMap: bumpFile ? textureLoader.load(`/assets/textures/${bumpFile}`) : null,
+    normalMap: normalFile ? textureLoader.load(`/assets/textures/${normalFile}`) : null,
   }
   const mesh = new THREE.Mesh(geometry, material || new THREE.MeshPhongMaterial(options))
   return mesh

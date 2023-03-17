@@ -13,9 +13,14 @@ npx live-server
 
 ### Scenes & examples
 
+lavirinti:
+- pregledati lavirinte
+- isprobati šejdere i texture
+- kod piramida podići tlo
+- kod zidina različitu visinu
+
 - FPS / FPSPlayer
-  - ukinuti Tilemap klasu?
-  - pogledati lavirinte i izabrati neki
+  - dodati lavirint umesto statične mape
   - srediti audio
 
 - FPS / Horror
