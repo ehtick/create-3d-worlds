@@ -11,9 +11,6 @@ npx live-server
 
 ## TODO
 
-- move matrix-transformations to ucimo-threejs
-- pregledati shadere i pronaći im namenu
-
 ### Scenes & examples
 
 - FPS / FPSPlayer
