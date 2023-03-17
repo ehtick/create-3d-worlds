@@ -11,8 +11,8 @@ npx live-server
 
 ## TODO
 
-- geometrija
-  - pogledati matrix-transformations
+- move matrix-transformations to ucimo-threejs
+- pregledati shadere i pronaći im namenu
 
 ### Scenes & examples
 
