@@ -1,13 +1,13 @@
 import * as THREE from 'three'
-import { camera, scene, renderer } from '/utils/scene.js'
+import { camera, scene, renderer, createOrbitControls } from '/utils/scene.js'
 import { material } from '/utils/shaders/marble.js'
 
-const geometry = new THREE.PlaneGeometry(2, 2)
+createOrbitControls()
 
+const geometry = new THREE.PlaneGeometry(10, 10)
 const plane = new THREE.Mesh(geometry, material)
+plane.rotateX(-Math.PI * 0.5)
 scene.add(plane)
-
-camera.position.set(0, 0, 1)
 
 void function loop() {
   requestAnimationFrame(loop)
