@@ -15,7 +15,7 @@ const matrix = huntAndKillMatrix(12)
 const maze = pyramidFromMatrix({ matrix, size, texture: 'walls/mayan.jpg' })
 scene.add(maze)
 
-const player = new Avatar({ size: .5 })
+const player = new Avatar({ size: .5, camera })
 scene.add(player.mesh)
 player.addSolids(maze)
 putInMaze(player.mesh, matrix, size)

@@ -14,8 +14,12 @@ npx live-server
 ### Scenes & examples
 
 Lavirinti:
-- isprobati šejdere i texture
-- kod piramida podići tlo
+- isprobati šejdere:
+  - dobri: golden-flow, led
+  - bug: lightning-led ne radi, belo umesto crnih polja
+- piramida:
+  - izabrati texturu
+  - podići tlo
 - zidine: 
   - različitu visinu, kao minas-tirith
   - probati razne blokove
