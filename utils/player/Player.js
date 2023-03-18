@@ -23,12 +23,6 @@ export default class Player extends Actor {
     if (useJoystick) this.input.joystick = new JoyStick()
   }
 
-  set cameraNear(num) {
-    const { camera } = this.thirdPersonCamera
-    camera.near = num
-    camera.updateProjectionMatrix()
-  }
-
   updateMove(delta, reaction = reactions.STOP) {
     super.updateMove(delta, reaction)
   }

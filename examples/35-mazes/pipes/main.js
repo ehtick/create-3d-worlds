@@ -19,7 +19,6 @@ const maze = polarMazePipes({ grid, cellSize: 5 })
 scene.add(maze)
 
 const player = new Avatar({ size: .5, camera, solids: maze })
-player.cameraNear = .5
 scene.add(player.mesh)
 
 /* LOOP */

@@ -21,6 +21,9 @@ export default class ThirdPersonCamera {
 
     this.camera.position.copy(calc(mesh, offset))
     this.camera.lookAt(calc(mesh, lookAt))
+
+    this.camera.near = .5
+    this.camera.updateProjectionMatrix()
   }
 
   updatePosition() {
