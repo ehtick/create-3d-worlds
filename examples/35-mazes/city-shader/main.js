@@ -1,14 +1,16 @@
-import { scene, renderer, camera } from '/utils/scene.js'
+import { scene, renderer, camera, setBackground } from '/utils/scene.js'
 import { createFloor } from '/utils/ground.js'
 import { meshFromMatrix, putInMaze } from '/utils/mazes.js'
 import { aldousBroderMatrix } from '/utils/mazes/algorithms.js'
 import Avatar from '/utils/player/Avatar.js'
-import { material } from '/utils/shaders/windows.js'
 import { hemLight } from '/utils/light.js'
+import { material, uniforms } from '/utils/shaders/lightning-led.js'
 
 const size = 3
 
 hemLight()
+setBackground(0)
+
 scene.add(createFloor())
 
 const matrix = aldousBroderMatrix(10)
@@ -22,8 +24,9 @@ putInMaze(player.mesh, matrix, size)
 
 /* LOOP */
 
-void function gameLoop() {
-  requestAnimationFrame(gameLoop)
+void function loop(time) {
+  requestAnimationFrame(loop)
+  uniforms.iTime.value = time * 0.0006
   player.update()
   renderer.render(scene, camera)
 }()

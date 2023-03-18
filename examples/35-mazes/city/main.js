@@ -30,8 +30,8 @@ scene.add(floor, streetLights)
 
 /* LOOP */
 
-void function gameLoop() {
-  requestAnimationFrame(gameLoop)
+void function loop() {
+  requestAnimationFrame(loop)
   controls.update()
   renderer.render(scene, camera)
 }()

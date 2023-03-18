@@ -10,8 +10,8 @@ player.add(camera)
 
 /* LOOP */
 
-void function gameLoop() {
-  requestAnimationFrame(gameLoop)
+void function loop() {
+  requestAnimationFrame(loop)
   const delta = clock.getDelta()
   player.update(delta)
   renderer.render(scene, camera)

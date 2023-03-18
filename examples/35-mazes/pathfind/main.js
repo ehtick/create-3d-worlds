@@ -20,8 +20,8 @@ scene.add(maze)
 
 /* LOOP */
 
-void function gameLoop() {
-  requestAnimationFrame(gameLoop)
+void function loop() {
+  requestAnimationFrame(loop)
   controls.update()
   renderer.render(scene, camera)
 }()

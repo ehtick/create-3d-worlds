@@ -24,8 +24,8 @@ scene.add(player.mesh)
 
 /* LOOP */
 
-void function gameLoop() {
-  requestAnimationFrame(gameLoop)
+void function loop() {
+  requestAnimationFrame(loop)
   player.update()
   renderer.render(scene, camera)
 }()

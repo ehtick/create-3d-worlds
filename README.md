@@ -14,9 +14,9 @@ npx live-server
 ### Scenes & examples
 
 Lavirinti:
-- isprobati šejdere:
-  - dobri: golden-flow, led
-  - bug: lightning-led ne radi, belo umesto crnih polja
+- šejderi:
+  - napraviti shader za tlo (prapraviti marble?)
+  - dobri, iskoristiti: golden-flow, led, wood
 - piramida:
   - izabrati texturu
   - podići tlo
@@ -45,6 +45,7 @@ Lavirinti:
 - Adventure / Avatar
   - merge stairway-girl, stairway-to-heaven, tower-of-babel, random-boxes?
   - proveriti 3rd cameru za letenje
+  - avatar previše ide strafe?
 
 - Svemir 
   - dodati model ring space-arcology

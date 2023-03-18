@@ -1,3 +1,4 @@
+// must have html body { background: black } to work
 import * as THREE from 'three'
 
 const loader = new THREE.TextureLoader()

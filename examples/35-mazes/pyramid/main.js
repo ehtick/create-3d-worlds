@@ -31,8 +31,8 @@ putInMaze(player.mesh, matrix, size)
 
 /* LOOP */
 
-void function gameLoop() {
-  requestAnimationFrame(gameLoop)
+void function loop() {
+  requestAnimationFrame(loop)
   player.update()
   renderer.render(scene, camera)
 }()

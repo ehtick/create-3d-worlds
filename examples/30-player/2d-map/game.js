@@ -12,8 +12,8 @@ const mapRenderer = new Map2DRenderer(tilemap)
 
 /* LOOP */
 
-void function gameLoop() {
-  requestAnimationFrame(gameLoop)
+void function loop() {
+  requestAnimationFrame(loop)
   player.update()
   mapRenderer.drawMap()
   mapRenderer.draw2DPlayer(player)
