@@ -46,6 +46,7 @@ Lavirinti:
   - merge stairway-girl, stairway-to-heaven, tower-of-babel, random-boxes?
   - proveriti 3rd cameru za letenje
   - avatar previše ide strafe?
+  - avatar zapinje uzbrdo (minas tirit maze)
 
 - Svemir 
   - dodati model ring space-arcology

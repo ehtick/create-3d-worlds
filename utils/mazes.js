@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import * as BufferGeometryUtils from '/node_modules/three/examples/jsm/utils/BufferGeometryUtils.js'
-import { centerGeometry, randomGrayish, getTexture } from '/utils/helpers.js'
-import { createBuildingGeometry } from '/utils/city.js'
+import { centerGeometry, getTexture } from '/utils/helpers.js'
+import { createBuildingTexture, createBuildingGeometry } from '/utils/city.js'
 import chroma from '/libs/chroma.js'
 
 const { Vector2, Vector3 } = THREE
@@ -81,7 +81,7 @@ const createBoxGeometry = ({ size, height, maxHeight, texture }) => {
   return geometry
 }
 
-export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size, texture, bumpFile, normalFile, calcHeight = randomHeight, material, city = false } = {}) {
+export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size, texture, bumpFile, calcHeight = randomHeight, material, city = false, cityTexture = false } = {}) {
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (!val) return
@@ -106,19 +106,18 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = 
 
   const options = {
     vertexColors: !texture,
-    map: texture ? textureLoader.load(`/assets/textures/${texture}`) : null,
+    map: cityTexture ? createBuildingTexture() : texture ? textureLoader.load(`/assets/textures/${texture}`) : null,
     bumpMap: bumpFile ? textureLoader.load(`/assets/textures/${bumpFile}`) : null,
-    normalMap: normalFile ? textureLoader.load(`/assets/textures/${normalFile}`) : null,
   }
   const mesh = new THREE.Mesh(geometry, material || new THREE.MeshPhongMaterial(options))
   return mesh
 }
 
-export const cityFromMatrix = params => meshFromMatrix({ city: true, maxHeight: 0, ...params })
+export const cityFromMatrix = params =>
+  meshFromMatrix({ city: true, maxHeight: 0, cityTexture: true, ...params })
 
-export const pyramidFromMatrix = (
-  { matrix, size = 1, maxHeight = size * matrix.length * .33, ...params } = {}
-) => meshFromMatrix({ matrix, size, maxHeight, calcHeight: pyramidHeight, ...params })
+export const pyramidFromMatrix = ({ matrix, size = 1, maxHeight = size * matrix.length * .33, ...params } = {}) =>
+  meshFromMatrix({ matrix, size, maxHeight, calcHeight: pyramidHeight, ...params })
 
 export function putInMaze(mesh, matrix, size) {
   const { x, z } = firstCellPos(matrix, size)
@@ -205,7 +204,7 @@ export function meshFromGrid({ grid, cellSize = 10, connect = createRandomWall, 
 
 /* MESH FROM POLAR GRID */
 
-export function meshFromPolarGrid({ grid, connect = createPipe, color = 'gray', cellSize = 10 } = {}) {
+export function meshFromPolarGrid({ grid, connect = createPipe, color = 'gray', cellSize = 10, texture } = {}) {
   const center = 0
   const geometries = []
 
@@ -250,13 +249,16 @@ export function meshFromPolarGrid({ grid, connect = createPipe, color = 'gray', 
 
   const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries)
   geometry.translate(0, .5, 0)
-  const material = new THREE.MeshLambertMaterial({ color })
+  const material = new THREE.MeshLambertMaterial({
+    color,
+    map: texture ? getTexture({ file: texture }) : null
+  })
   const mesh = new THREE.Mesh(geometry, material)
   return mesh
 }
 
 export const polarMazePipes = ({ grid, ...params }) => meshFromPolarGrid({ grid, connect: createPipe, color: 'gray', ...params })
 
-export const polarMazeCity = ({ grid, ...params }) => meshFromPolarGrid({ grid, connect: createCityWall, color: 0xbbbbbb, ...params })
+export const polarMazeCity = ({ grid, ...params }) => meshFromPolarGrid({ grid, connect: createCityWall, color: 0xffffff, ...params })
 
 export const polarMazeRuins = ({ grid, ...params }) => meshFromPolarGrid({ grid, connect: (p1, p2) => createCityWall(p1, p2, false), color: 'white', ...params })

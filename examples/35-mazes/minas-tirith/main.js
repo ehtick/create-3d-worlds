@@ -2,7 +2,7 @@ import { polarMazeCity } from '/utils/mazes.js'
 import PolarGrid from '/utils/mazes/PolarGrid.js'
 import { recursiveBacktracker } from '/utils/mazes/algorithms.js'
 import { scene, createToonRenderer, camera } from '/utils/scene.js'
-import { createSun, hemLight, ambLight } from '/utils/light.js'
+import { createSun, ambLight } from '/utils/light.js'
 import { createHill } from '/utils/ground.js'
 import Avatar from '/utils/player/Avatar.js'
 
@@ -13,8 +13,7 @@ const groundSize = gridSize * cellSize
 const hill = createHill(groundSize * 2.05)
 scene.add(hill)
 
-hemLight({ intensity: .5 })
-ambLight({ intensity: .5 })
+ambLight({ intensity: .6 })
 const sun = createSun()
 sun.position.set(50, 150, 200)
 scene.add(sun)
@@ -22,7 +21,7 @@ scene.add(sun)
 const grid = new PolarGrid(gridSize)
 recursiveBacktracker(grid)
 
-const maze = polarMazeCity({ grid })
+const maze = polarMazeCity({ grid, texture: 'terrain/snow.jpg' })
 scene.add(maze)
 
 const player = new Avatar({ size: .5, camera, solids: [maze, hill] })

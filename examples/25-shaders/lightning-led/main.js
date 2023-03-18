@@ -13,8 +13,7 @@ scene.add(cube)
 
 void function loop(time) {
   requestAnimationFrame(loop)
-  time *= 0.001
 
-  uniforms.iTime.value = time
+  uniforms.iTime.value = time * 0.001
   renderer.render(scene, camera)
 }()
