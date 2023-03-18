@@ -17,8 +17,9 @@ const maze = pyramidFromMatrix({ matrix, size, texture: 'walls/mayan.jpg' })
 scene.add(maze)
 
 const player = new Avatar({ size: .5, camera, solids: maze })
-scene.add(player.mesh)
+player.cameraNear = .5
 putInMaze(player.mesh, matrix, size)
+scene.add(player.mesh)
 
 /* LOOP */
 

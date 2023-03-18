@@ -11,16 +11,14 @@ npx live-server
 
 ## TODO
 
-- https://www.shadertoy.com/view/mdy3R1
-
 ### Scenes & examples
 
 Maze:
 - piramida:
-  - podići tlo
+  - podići tlo (kao minas tirit)
 - cevi:
   - ograničiti skok avataru
-- probati neke igrače u svaki lavirint
+- probati igrače u svaki lavirint
 
 - FPS / FPSPlayer
   - dodati lavirint umesto statične mape
@@ -40,7 +38,6 @@ Maze:
 
 - Adventure / Avatar
   - merge stairway-girl, stairway-to-heaven, tower-of-babel, random-boxes?
-  - proveriti 3rd cameru za letenje
   - avatar previše ide strafe?
   - avatar zapinje uzbrdo (minas tirit maze)
 

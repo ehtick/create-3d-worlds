@@ -145,12 +145,6 @@ export default class Actor {
       || this.position.z <= this.boundaries.min.z
   }
 
-  set cameraNear(num) {
-    const { camera } = this.thirdPersonCamera
-    camera.near = num
-    camera.updateProjectionMatrix()
-  }
-
   /* STATE MACHINE */
 
   setState(name) {
