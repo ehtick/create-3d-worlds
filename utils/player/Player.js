@@ -18,6 +18,7 @@ export default class Player extends Actor {
   }) {
     super({ input, jumpStyle, getState, shouldRaycastGround, attackDistance, ...params })
     this.name = 'player'
+    this.shouldUpdateCamera = Boolean(this.thirdPersonCamera)
 
     if (useJoystick) this.input.joystick = new JoyStick()
   }
@@ -32,5 +33,13 @@ export default class Player extends Actor {
 
   hit(mesh, range = [35, 55]) {
     super.hit(mesh, range)
+  }
+
+  update(delta) {
+    super.update(delta)
+    if (this.shouldUpdateCamera) {
+      this.thirdPersonCamera.updatePosition()
+      this.shouldUpdateCamera = false
+    }
   }
 }

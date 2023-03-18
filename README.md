@@ -11,18 +11,16 @@ npx live-server
 
 ## TODO
 
+- https://www.shadertoy.com/view/mdy3R1
+
 ### Scenes & examples
 
 Maze:
-- šejderi:
-  - napraviti shader za tlo (prapraviti marble?)
 - piramida:
-  - izabrati texturu
   - podići tlo
-  - srediti uletanje kamere
 - cevi:
   - ograničiti skok avataru
-- probati igrače u svaki lavirint
+- probati neke igrače u svaki lavirint
 
 - FPS / FPSPlayer
   - dodati lavirint umesto statične mape
@@ -39,7 +37,6 @@ Maze:
   - dodati mač?
   - karakter dolazi do kuće i ulazi (vidi house model primer)
   - uzima predmete (50-rad-sa-modelima/80-uzimanje-predmeta/)
-  - kad je dugo idle da se kamera okreće oko glave
 
 - Adventure / Avatar
   - merge stairway-girl, stairway-to-heaven, tower-of-babel, random-boxes?

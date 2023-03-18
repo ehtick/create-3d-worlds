@@ -1,7 +1,7 @@
 // https://codepen.io/nik-lever/pen/gEoaez
 import THREE from '/libs/shader-includes.js'
 
-const vshader = /* glsl */`
+const vertexShader = /* glsl */`
   varying vec3 v_position;
 
   void main() {
@@ -10,7 +10,7 @@ const vshader = /* glsl */`
     gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
   }
 `
-const fshader = /* glsl */`
+const fragmentShader = /* glsl */`
   varying vec3 v_position;
   #include <noise>
 
@@ -31,18 +31,7 @@ const fshader = /* glsl */`
   }
 `
 
-export const uniforms = {
-  u_resolution: { value: new THREE.Vector2() },
-  u_LightColor: { value: new THREE.Color(0xbb905d) },
-  u_DarkColor: { value: new THREE.Color(0x7d490b) },
-  u_Frequency: { value: 2.0 },
-  u_NoiseScale: { value: 6.0 },
-  u_RingScale: { value: 0.6 },
-  u_Contrast: { value: 4.0 },
-}
-
 export const material = new THREE.ShaderMaterial({
-  uniforms,
-  vertexShader: vshader,
-  fragmentShader: fshader
+  vertexShader,
+  fragmentShader
 })

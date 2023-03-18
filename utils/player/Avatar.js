@@ -6,6 +6,7 @@ import { jumpStyles } from '/utils/constants.js'
 export default class Avatar extends Player {
   constructor({ skin = skins.STONE, size = 1, ...params } = {}) {
     super({ mesh: createAvatar({ skin, r: size }), speed: size * 6, jumpStyle: jumpStyles.FLY, ...params })
+    this.skin = skin
     this.limbs = [
       this.mesh.getObjectByName('leftHand'), this.mesh.getObjectByName('rightHand'),
       this.mesh.getObjectByName('leftLeg'), this.mesh.getObjectByName('rightLeg')
@@ -45,6 +46,6 @@ export default class Avatar extends Player {
     else
       this.idleAnim(true)
 
-    uniforms.time.value += 0.8 * delta // for lava skin only
+    if (this.skin == skins.LAVA) uniforms.time.value += 0.8 * delta
   }
 }

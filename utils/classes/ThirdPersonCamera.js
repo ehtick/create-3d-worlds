@@ -23,12 +23,15 @@ export default class ThirdPersonCamera {
     this.camera.lookAt(calc(mesh, lookAt))
   }
 
+  updatePosition() {
+    this.camera.position.copy(calc(this.mesh, this.offset))
+  }
+
   update(delta) {
     this.currentPosition.copy(this.camera.position)
-    const newLookAt = [...this.lookAt]
 
     const idealPosition = calc(this.mesh, this.offset)
-    const idealLookAt = calc(this.mesh, newLookAt)
+    const idealLookAt = calc(this.mesh, this.lookAt)
 
     const t = this.speed * delta * (input.run ? 2 : 1)
     this.currentPosition.lerp(idealPosition, t)
