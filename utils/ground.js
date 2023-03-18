@@ -3,6 +3,7 @@ import { SimplexNoise } from '/node_modules/three/examples/jsm/math/SimplexNoise
 import { getTexture, similarColor } from '/utils/helpers.js'
 import chroma from '/libs/chroma.js'
 import { material as lavaMaterial } from '/utils/shaders/lava.js'
+import { material as marble } from '/utils/shaders/marble.js'
 
 const { randFloat } = THREE.MathUtils
 const simplex = new SimplexNoise()
@@ -54,6 +55,21 @@ export function createGround({ size = 1000, color, circle, file, repeat = size /
 
 export function createFloor({ color = 0x808080, circle = false, ...rest } = {}) {
   return createGround({ color, circle, ...rest })
+}
+
+/* SHADER MATERIALS */
+
+export function createLava({ size = 100 } = {}) {
+  const geometry = new THREE.CircleGeometry(size)
+  geometry.rotateX(- Math.PI / 2)
+  return new THREE.Mesh(geometry, lavaMaterial)
+}
+
+export function createMarble({ size = 100 } = {}) {
+  const geometry = new THREE.PlaneGeometry(size, size)
+  const mesh = new THREE.Mesh(geometry, marble)
+  mesh.rotateX(-Math.PI * 0.5)
+  return mesh
 }
 
 /* NOISE HELPERS */
@@ -197,14 +213,6 @@ export const createWater = ({ size = 1200, segments = 20, opacity = .6, file = '
   mesh.receiveShadow = true
   mesh.name = 'water'
   return mesh
-}
-
-/* LAVA */
-
-export function createLava({ size = 100 } = {}) {
-  const geometry = new THREE.CircleGeometry(size)
-  geometry.rotateX(- Math.PI / 2)
-  return new THREE.Mesh(geometry, lavaMaterial)
 }
 
 /* WAVE */

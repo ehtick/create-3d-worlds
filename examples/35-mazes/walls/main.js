@@ -12,7 +12,7 @@ scene.add(createGround())
 camera.position.set(0, 7, 10)
 const controls = createOrbitControls()
 
-const maze = meshFromMatrix({ matrix, texture: 'walls/stonetiles.jpg' })
+const maze = meshFromMatrix({ matrix, texture: 'walls/stonetiles.jpg', maxHeight: 2 })
 scene.add(maze)
 
 /* LOOP */

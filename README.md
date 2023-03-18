@@ -13,17 +13,16 @@ npx live-server
 
 ### Scenes & examples
 
-Lavirinti:
+Maze:
 - šejderi:
   - napraviti shader za tlo (prapraviti marble?)
-  - dobri, iskoristiti: golden-flow, led, wood
 - piramida:
   - izabrati texturu
   - podići tlo
-- zidine: 
-  - različitu visinu, kao minas-tirith
-  - probati razne blokove
-- grad: pronaći najbolju texturu, probati standardnu
+  - srediti uletanje kamere
+- cevi:
+  - ograničiti skok avataru
+- probati igrače u svaki lavirint
 
 - FPS / FPSPlayer
   - dodati lavirint umesto statične mape
