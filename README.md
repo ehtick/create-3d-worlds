@@ -15,6 +15,10 @@ npx live-server
 
 ### Scenes & examples
 
+Avatar: 
+- srediti jump speed naviše
+- kamera u padu da gleda naniže
+
 Maze:
 - probati igrače u lavirint
 

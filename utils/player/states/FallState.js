@@ -17,7 +17,7 @@ export default class FallState extends State {
     actor.applyGravity(delta)
     actor.applyVelocityY()
 
-    if (actor.jumpStyle === jumpStyles.FLY && actor.input.up)
+    if ([jumpStyles.FLY, jumpStyles.FLY_JUMP].includes(actor.jumpStyle) && actor.input.up)
       actor.updateMove(delta)
 
     /* TRANSIT */

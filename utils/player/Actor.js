@@ -17,7 +17,7 @@ const { randInt } = THREE.MathUtils
  */
 export default class Actor {
   constructor({
-    mesh = createPlayerBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 2, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, mapSize, coords, attackDistance, hitColor = 0x8a0303, energy = 100
+    mesh = createPlayerBox(), animations, animDict, camera, input, solids, gravity = .7, jumpStyle, speed = 2, jumpForce = gravity * 1.66, maxJumpTime = 17, fallLimit = gravity * 20, drag = 0.5, getState, shouldRaycastGround, rifle, pistol, mapSize, coords, attackDistance, hitColor = 0x8a0303, energy = 100
   }) {
     this.mesh = clone(mesh)
     this.mesh.userData.hitAmount = 0

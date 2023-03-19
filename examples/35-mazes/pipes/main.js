@@ -19,7 +19,7 @@ const maze = polarMazePipes({ grid, cellSize: 5 })
 scene.add(maze)
 
 const player = new Avatar({ size: .4, camera, solids: maze, jumpStyle: 'FLY_JUMP', maxJumpTime: 30 })
-player.cameraControls.distance = 2
+player.cameraControls.distance = 2.5
 scene.add(player.mesh)
 
 /* LOOP */
