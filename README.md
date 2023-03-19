@@ -24,6 +24,7 @@ Maze:
   - scena groblje
 
 - RPG / Fantasy
+  - bug: ostaje raskečena nakon skoka (držati spejs i pustiti pred tlo)
   - srediti borbu, previše promašuje
   - da se ai ne približavaju previše
   - bacanje magije (pogledati i shadere)

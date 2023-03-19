@@ -9,9 +9,8 @@ export default class FlyState extends State {
   }
 
   get longFalling() {
-    return this.actor.jumpStyle === jumpStyles.FLY
-        && this.jumpTime > 20
-        && !this.input.space
+    return (this.actor.jumpStyle === jumpStyles.FLY_JUMP || this.actor.jumpStyle === jumpStyles.FLY && !this.input.space)
+        && this.jumpTime > 10
         && this.actor.velocity.y <= 0
   }
 
