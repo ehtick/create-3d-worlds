@@ -36,8 +36,12 @@ export default class ThirdPersonCamera {
     this.offset[2] = x
   }
 
-  updatePosition() {
-    this.camera.position.copy(calc(this.mesh, this.offset))
+  alignCamera() {
+    this.currentPosition = calc(this.mesh, this.offset)
+    this.currentLookat = calc(this.mesh, this.lookAt)
+
+    this.camera.position.copy(this.currentPosition)
+    this.camera.lookAt(this.currentLookat)
   }
 
   update(delta, stateName) {

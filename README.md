@@ -24,7 +24,6 @@ Maze:
   - scena groblje
 
 - RPG / Fantasy
-  - prespora ulazna kamera, srediti
   - srediti borbu, previše promašuje
   - da se ai ne približavaju previše
   - bacanje magije (pogledati i shadere)

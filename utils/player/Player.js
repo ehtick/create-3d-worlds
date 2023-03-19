@@ -18,7 +18,7 @@ export default class Player extends Actor {
   }) {
     super({ input, jumpStyle, getState, shouldRaycastGround, attackDistance, ...params })
     this.name = 'player'
-    this.shouldUpdateCamera = Boolean(this.cameraControls)
+    this.shouldAlignCamera = Boolean(this.cameraControls)
 
     if (useJoystick) this.input.joystick = new JoyStick()
   }
@@ -37,9 +37,9 @@ export default class Player extends Actor {
 
   update(delta) {
     super.update(delta)
-    if (this.shouldUpdateCamera) {
-      this.cameraControls.updatePosition()
-      this.shouldUpdateCamera = false
+    if (this.shouldAlignCamera) {
+      this.cameraControls.alignCamera()
+      this.shouldAlignCamera = false
     }
   }
 }
