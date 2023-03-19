@@ -26,10 +26,10 @@ const getWindowColor = ({ chance = .5 } = {}) => {
 }
 
 // https://www.25yearsofprogramming.com/threejs-tutorials/how-to-do-a-procedural-city-in-100-lines.html
-export function createBuildingTexture({ night = false, wallColor = night ? '#151515' : '#FFFFFF' } = {}) {
+export function createBuildingTexture({ night = false, wallColor = night ? '#151515' : '#FFFFFF', width = 32, height = 64 } = {}) {
   const canvas = document.createElement('canvas')
-  canvas.width = 32
-  canvas.height = 64
+  canvas.width = width
+  canvas.height = height
   const context = canvas.getContext('2d')
   context.fillStyle = wallColor
   context.fillRect(0, 0, canvas.width, canvas.height)
@@ -195,13 +195,13 @@ export function createBuilding(params = {}) {
 
 export function createTexturedBuilding({ width, height, depth = width, color = 0x999999, path = '/assets/textures/', files = [], defaultFile, halfOnSides = false, graffitiChance = 0, ...rest } = {}) {
   const geometry = createBuildingGeometry({ width, height, depth, ...rest })
-  const { width: buildingWidth, height: buildingHeight } = geometry.parameters
+  const { width: buildingWidth, height: buildingHeight } = geometry.parameters // could be random values
 
   const getTexture = half => defaultFile
     ? loadTexture(path + defaultFile, half)
     : Math.random() < graffitiChance
       ? createGraffitiTexture({ background: color, buildingWidth, buildingHeight })
-      : createBuildingTexture()
+      : createBuildingTexture({ width: buildingWidth, height: buildingHeight })
 
   const textures = files.map((file, i) => file
     ? loadTexture(path + file, halfOnSides && (i == 0 || i == 1))  // right || left

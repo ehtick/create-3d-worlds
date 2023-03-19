@@ -12,7 +12,6 @@ npx live-server
 ## TODO
 
 - partizan: 
- - srediti bacanje bombe (da ne vuče pušku)
  - crveni arrow helper za raycast kad puca?
 
 ### Scenes & examples
@@ -140,36 +139,9 @@ Ako je teren jednobojan, bez svetla, uraditi:
 geometry.computeVertexNormals()
 ```
 
-## 3D models pipeline
-
-- rigmodels: export as obj
-- blender: import obj, move height, rotate left 90?, export as fbx
-- mixamo: import and add animations
-
 ## Documentation
 
 All libraries in `/libs` folder are updated manually to support ES6 export.
-
-### OrbitControls
-
-Prevent OrbitControls bellow ground:
-
-```js
-controls.maxPolarAngle = Math.PI / 2 - 0.1
-```
-
-### updateMatrix
-
-https://stackoverflow.com/questions/27022160/
-
-Default order of transform: scale, rotate, translate (Three.js ignores order in code?)
-
-If we want to apply multiple transform:
-
-```js
-gameObj.matrix = new THREE.Matrix4(....) // with params
-gameObj.matrixAutoUpdate = false // don't use internal transform system
-```
 
 ### Ammo Physics
 
