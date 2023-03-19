@@ -11,10 +11,12 @@ npx live-server
 
 ## TODO
 
+- partizan: srediti bacanje bombe (da ne vuče pušku)
+
 ### Scenes & examples
 
 Maze:
-- probati igrače u svaki lavirint
+- probati igrače u lavirint
 
 - FPS / FPSPlayer
   - dodati lavirint umesto statične mape
