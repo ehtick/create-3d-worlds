@@ -14,11 +14,6 @@ npx live-server
 ### Scenes & examples
 
 Maze:
-- cevi:
-  - odaljiti kameru avataru
-  - ograničiti skok avataru
-- piramida
-  - da ostane blizu kamera avataru
 - probati igrače u svaki lavirint
 
 - FPS / FPSPlayer

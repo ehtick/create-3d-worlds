@@ -18,7 +18,7 @@ recursiveBacktracker(grid)
 const maze = polarMazePipes({ grid, cellSize: 5 })
 scene.add(maze)
 
-const player = new Avatar({ size: .4, camera, solids: maze })
+const player = new Avatar({ size: .4, camera, solids: maze, jumpStyle: 'FLY_JUMP' })
 player.cameraControls.distance = 2
 scene.add(player.mesh)
 
