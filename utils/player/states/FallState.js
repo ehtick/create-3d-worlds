@@ -4,9 +4,9 @@ import State from './State.js'
 export default class FallState extends State {
   enter(oldState, oldAction) {
     super.enter(oldState, oldAction)
-    if (this.actor.thirdPersonCamera) {
-      this.initCameraSpeed = this.actor.thirdPersonCamera.speed
-      this.actor.thirdPersonCamera.speed = this.initCameraSpeed * 3
+    if (this.actor.cameraControls) {
+      this.initCameraSpeed = this.actor.cameraControls.speed
+      this.actor.cameraControls.speed = this.initCameraSpeed * 3
     }
   }
 
@@ -32,7 +32,7 @@ export default class FallState extends State {
   }
 
   exit() {
-    if (this.actor.thirdPersonCamera)
-      this.actor.thirdPersonCamera.speed = this.initCameraSpeed
+    if (this.actor.cameraControls)
+      this.actor.cameraControls.speed = this.initCameraSpeed
   }
 }

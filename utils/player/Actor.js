@@ -49,9 +49,9 @@ export default class Actor {
     if (coords) this.position.copy(coords.pop())
 
     if (camera) {
-      this.thirdPersonCamera = new ThirdPersonCamera({ camera, mesh: this.mesh, height: this.height })
-      this.controls = createOrbitControls()
-      this.controls.mouseButtons = { RIGHT: THREE.MOUSE.ROTATE }
+      this.cameraControls = new ThirdPersonCamera({ camera, mesh: this.mesh, height: this.height })
+      this.orbitControls = createOrbitControls()
+      this.orbitControls.mouseButtons = { RIGHT: THREE.MOUSE.ROTATE }
     }
 
     if (solids) {
@@ -349,12 +349,12 @@ export default class Actor {
 
   updateCamera(delta) {
     const { x, y, z } = this.mesh.position
-    const { lookAt } = this.thirdPersonCamera
+    const { lookAt } = this.cameraControls
 
     if (this.input.pressed.mouse2)
-      this.controls.target = new THREE.Vector3(x, y + lookAt[1], z)
+      this.orbitControls.target = new THREE.Vector3(x, y + lookAt[1], z)
     else
-      this.thirdPersonCamera.update(delta, this.currentState.name)
+      this.cameraControls.update(delta, this.currentState.name)
   }
 
   update(delta = 1 / 60) {
@@ -366,7 +366,7 @@ export default class Actor {
 
     if (this.rifle) this.updateRifle()
     if (this.outOfBounds) this.bounce()
-    if (this.thirdPersonCamera) this.updateCamera(delta)
+    if (this.cameraControls) this.updateCamera(delta)
 
     TWEEN.update()
   }
