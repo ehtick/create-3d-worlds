@@ -4,13 +4,16 @@ import Player from '/utils/player/Player.js'
 import FPSPlayer from '/utils/player/FPSPlayer.js'
 
 export const animDict = {
-  idle: 'Rifle Aiming Idle', // Rifle Idle
-  walk: 'Walking', // Rifle Walk
-  run: 'Rifle Run Aim', // Rifle Run
+  idle: 'Rifle Idle',
+  // idle: 'Rifle Aiming Idle',
+  walk: 'Rifle Walk',
+  // walk: 'Walking',
+  run: 'Rifle Run',
+  // run: 'Rifle Run Aim',
   jump: 'Jump Forward',
   attack: 'Firing Rifle',
   attack2: 'Fire Rifle Crouch',
-  special: 'Toss Grenade',
+  // special: 'Toss Grenade',
   pain: 'Reaction',
   death: 'Dying',
 }

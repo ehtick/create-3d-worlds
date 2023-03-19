@@ -11,13 +11,11 @@ npx live-server
 
 ## TODO
 
-- partizan: srediti bacanje bombe (da ne vuče pušku)
+- partizan: 
+ - srediti bacanje bombe (da ne vuče pušku)
+ - crveni arrow helper za raycast kad puca?
 
 ### Scenes & examples
-
-Avatar: 
-- srediti jump speed naviše
-- kamera u padu da gleda naniže
 
 Maze:
 - probati igrače u lavirint
