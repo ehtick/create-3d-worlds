@@ -20,7 +20,7 @@ const { mesh, animations } = await loadModel({ prefix: 'character/barbarian/', f
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict, jumpStyle: 'FLY_JUMP', maxJumpTime: 15 }
+const sharedProps = { mesh, animations, animDict, jumpStyle: 'FLY_JUMP', maxJumpTime: 18 }
 
 export class BarbarianPlayer extends Player {
   constructor(props = {}) {

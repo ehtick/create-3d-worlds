@@ -14,8 +14,8 @@ const speedFactor = state => {
 
 export default class ThirdPersonCamera {
   constructor({ camera, mesh, height = 2, speed = 2,
-    offset = [0, height * .75, height * 1.75],
-    lookAt = [0, height * .75, 0],
+    offset = [0, height * .95, height * 1.75],
+    lookAt = [0, height * 1.15, 0],
   }) {
     this.mesh = mesh
     this.camera = camera

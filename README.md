@@ -36,6 +36,7 @@ Maze:
   - merge stairway-girl, stairway-to-heaven, tower-of-babel, random-boxes?
   - avatar previše ide strafe?
   - avatar zapinje uzbrdo (minas tirit maze)
+  - dodati DOUBLE_JUMP
 
 - Svemir 
   - dodati model ring space-arcology
