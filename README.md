@@ -14,10 +14,9 @@ npx live-server
 ### Scenes & examples
 
 Maze:
-- piramida:
-  - podići tlo (kao minas tirit)
 - cevi:
   - ograničiti skok avataru
+- približiti kameru avataru
 - probati igrače u svaki lavirint
 
 - FPS / FPSPlayer

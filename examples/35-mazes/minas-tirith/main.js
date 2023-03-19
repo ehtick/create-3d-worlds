@@ -8,14 +8,13 @@ import Avatar from '/utils/player/Avatar.js'
 
 const gridSize = 20
 const cellSize = 10
-const groundSize = gridSize * cellSize
+const citySize = gridSize * cellSize
 
-const hill = createHill(groundSize * 2.05)
+const hill = createHill(citySize * 2.05, 164)
 scene.add(hill)
 
 ambLight({ intensity: .6 })
-const sun = createSun()
-sun.position.set(50, 150, 200)
+const sun = createSun({ position: [50, 150, 200] })
 scene.add(sun)
 
 const grid = new PolarGrid(gridSize)
@@ -26,10 +25,8 @@ scene.add(maze)
 
 const player = new Avatar({ size: .5, camera, solids: [maze, hill] })
 scene.add(player.mesh)
-const x = cellSize * .5
-const z = -groundSize - cellSize
-player.position.set(x, 0, z)
-player.mesh.lookAt(0, 0, -groundSize * 2)
+player.position.set(cellSize * .5, 0, -citySize - cellSize)
+player.mesh.lookAt(0, 0, -citySize * 2)
 
 const renderer = createToonRenderer()
 
