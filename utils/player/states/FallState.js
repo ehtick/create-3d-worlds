@@ -25,8 +25,10 @@ export default class FallState extends State {
     if (actor.jumpStyle === jumpStyles.FLY && this.input.space)
       actor.setState('jump')
 
-    if (!actor.inAir)
+    if (!actor.inAir) {
+      actor.velocity.y = 0
       actor.setState('idle')
+    }
   }
 
   exit() {

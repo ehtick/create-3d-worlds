@@ -1,14 +1,14 @@
 /* credit to simon dev */
 import * as THREE from 'three'
-import input from '/utils/classes/Input.js'
 
 const calc = (mesh, pos) => new THREE.Vector3(...pos)
   .applyQuaternion(mesh.quaternion)
   .add(mesh.position)
 
 const speedFactor = state => {
-  if (state == 'jump' || state == 'fall') return 2
+  if (state == 'fall') return 2
   if (state == 'run') return 1.5
+  if (state == 'jump') return 1.25
   return 1
 }
 
@@ -30,6 +30,10 @@ export default class ThirdPersonCamera {
 
     // this.camera.near = .5
     // this.camera.updateProjectionMatrix()
+  }
+
+  set distance(x) {
+    this.offset[2] = x
   }
 
   updatePosition() {

@@ -47,10 +47,8 @@ export default class FlyState extends State {
 
     /* TRANSIT */
 
-    if (actor.velocity.y <= 0 && !actor.inAir) {
-      actor.velocity.y = 0
-      actor.setState(this.prevState) // bez prevState brlja aktivne animacije
-    }
+    if (!this.input.space && actor.velocity.y <= 0)
+      actor.setState('fall')
   }
 
   exit() {
