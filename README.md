@@ -14,9 +14,11 @@ npx live-server
 ### Scenes & examples
 
 Maze:
+- piramida
+  - da ostane blizu kamera avataru
 - cevi:
   - ograničiti skok avataru
-- približiti kameru avataru
+  - odaljiti kameru avataru
 - probati igrače u svaki lavirint
 
 - FPS / FPSPlayer
@@ -27,6 +29,7 @@ Maze:
   - scena groblje
 
 - RPG / Fantasy
+  - prespora ulazna kamera, srediti
   - srediti borbu, previše promašuje
   - da se ai ne približavaju previše
   - bacanje magije (pogledati i shadere)
@@ -86,6 +89,7 @@ Spomenici
 
 ### Polishing
 
+- prebaciti ThirdPersonCamera na Player?
 - optimizovati modele https://github.com/donmccurdy/glTF-Transform
 - obrisati sve što nije modularno
 - dodati svuda toon-shader gde se slaže

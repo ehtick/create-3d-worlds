@@ -16,7 +16,7 @@ const animDict = {
 
 /* LOADING */
 
-const { mesh, animations } = await loadModel({ prefix: 'character/barbarian/', file: 'model.fbx', angle: Math.PI, fixColors: true, animDict })
+const { mesh, animations } = await loadModel({ prefix: 'character/barbarian/', file: 'model.fbx', angle: Math.PI, fixColors: true, animDict, size: 1.78 })
 
 /* EXTENDED CLASSES */
 
@@ -28,6 +28,7 @@ export class BarbarianPlayer extends Player {
   }
 
   checkHit() {
+    // untouchable during attack
     if (this.currentState.name.includes('attack')) {
       this.hitAmount = 0
       return

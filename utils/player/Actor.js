@@ -354,7 +354,7 @@ export default class Actor {
     if (this.input.pressed.mouse2)
       this.controls.target = new THREE.Vector3(x, y + lookAt[1], z)
     else
-      this.thirdPersonCamera.update(delta)
+      this.thirdPersonCamera.update(delta, this.currentState.name)
   }
 
   update(delta = 1 / 60) {

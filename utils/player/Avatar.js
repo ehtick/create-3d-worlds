@@ -8,9 +8,12 @@ export default class Avatar extends Player {
     super({ mesh: createAvatar({ skin, r: size }), speed: size * 6, jumpStyle: jumpStyles.FLY, ...params })
     this.skin = skin
     this.limbs = [
-      this.mesh.getObjectByName('leftHand'), this.mesh.getObjectByName('rightHand'),
-      this.mesh.getObjectByName('leftLeg'), this.mesh.getObjectByName('rightLeg')
+      this.mesh.getObjectByName('leftHand'),
+      this.mesh.getObjectByName('rightHand'),
+      this.mesh.getObjectByName('leftLeg'),
+      this.mesh.getObjectByName('rightLeg')
     ]
+    this.thirdPersonCamera.speed = 4
   }
 
   idleAnim() {
