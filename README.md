@@ -11,9 +11,6 @@ npx live-server
 
 ## TODO
 
-- partizan: 
- - crveni arrow helper za raycast kad puca?
-
 ### Scenes & examples
 
 Maze:

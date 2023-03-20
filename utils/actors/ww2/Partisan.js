@@ -26,11 +26,11 @@ const { mesh: rifle } = await loadModel({ file: 'weapon/rifle-berthier/model.fbx
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict, rifle }
+const sharedProps = { mesh, animations, animDict, rifle, attackDistance: 50 }
 
 export class PartisanAI extends AI {
   constructor(props = {}) {
-    super({ ...sharedProps, attackDistance: 10, ...props })
+    super({ ...sharedProps, ...props })
   }
 }
 

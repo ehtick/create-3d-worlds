@@ -12,7 +12,7 @@ export default class WalkState extends State {
     super.enter(oldState)
     if (!this.actions.walk) return
 
-    if (this.prevState === 'run') this.syncLegs()
+    // if (this.prevState === 'run') this.syncLegs()
 
     this.transitFrom(oldAction, chooseDuration(oldState.name))
 
