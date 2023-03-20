@@ -4,25 +4,27 @@ import { recursiveDivision } from '/utils/mazes/algorithms.js'
 import { meshFromGrid } from '/utils/mazes.js'
 import { hemLight } from '/utils/light.js'
 import { createDunes } from '/utils/ground.js'
+import { WitchPlayer } from '/utils/actors/fantasy/Witch.js'
 
 hemLight()
 
-camera.position.set(0, 7, 10)
-const controls = createOrbitControls()
-
-const grid = new Grid(10)
+const grid = new Grid(15)
 recursiveDivision(grid)
-const mesh = meshFromGrid({ grid })
-scene.add(mesh)
+const maze = meshFromGrid({ grid })
+scene.add(maze)
 
-scene.add(createDunes())
+const dunes = createDunes()
+scene.add(dunes)
 
 const renderer = createToonRenderer()
+
+const player = new WitchPlayer({ camera, solids: [dunes, maze] })
+scene.add(player.mesh)
 
 /* LOOP */
 
 void function loop() {
   requestAnimationFrame(loop)
-  controls.update()
+  player.update()
   renderer.render(scene, camera)
 }()

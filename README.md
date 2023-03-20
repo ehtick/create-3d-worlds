@@ -14,7 +14,7 @@ npx live-server
 ### Scenes & examples
 
 Maze:
-- probati igrače u lavirint
+  - da se neki lavirinti vide iz vazduha kamerom
 
 - FPS / FPSPlayer
   - dodati lavirint umesto statične mape
