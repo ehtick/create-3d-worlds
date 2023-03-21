@@ -12,13 +12,16 @@ import { GermanMachineGunnerAI } from '/utils/actors/ww2/GermanMachineGunner.js'
 import { SSSoldierAI } from '/utils/actors/ww2/SSSoldier.js'
 import { NaziOfficerAI } from '/utils/actors/ww2/NaziOfficer.js'
 import { GermanFlameThrowerAI } from '/utils/actors/ww2/GermanFlameThrower.js'
+import { truePrimsMatrix } from '/utils/mazes/algorithms.js'
+
+const matrix = truePrimsMatrix(10)
 
 const enemyClasses = [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
 
 hemLight({ intensity: .75 })
 setBackground(0x070b34)
 
-const tilemap = new Tilemap(smallMap, 20)
+const tilemap = new Tilemap(matrix, 10)
 const coords = tilemap.getEmptyCoords()
 
 scene.add(createGround({ file: 'terrain/ground.jpg' }))

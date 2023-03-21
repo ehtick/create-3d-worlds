@@ -15,8 +15,9 @@ npx live-server
 
 - da se neke lepe scene vide iz vazduha kamerom
 
-- FPS / FPSPlayer
-  - dodati lavirint umesto statične mape
+- FPS / Savo
+  - dodati izlaz iz lavirinta
+  - pozicionirati igrača na najdalju tačku od izlaza
   - srediti audio
 
 - FPS / Horror
@@ -84,6 +85,7 @@ Spomenici
 
 ### Polishing
 
+- probati dinamički import, učitavati neprijatelje (i objekte) tek kad su blizu
 - prebaciti ThirdPersonCamera na Player?
 - optimizovati modele https://github.com/donmccurdy/glTF-Transform
 - obrisati sve što nije modularno
