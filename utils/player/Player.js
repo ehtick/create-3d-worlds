@@ -15,7 +15,7 @@ export default class Player extends Actor {
     shouldRaycastGround = true,
     attackDistance = 1.5,
     ...params
-  }) {
+  } = {}) {
     super({ input, jumpStyle, getState, shouldRaycastGround, attackDistance, ...params })
     this.name = 'player'
     this.shouldAlignCamera = Boolean(this.cameraControls)
