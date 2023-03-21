@@ -25,9 +25,7 @@ scene.add(maze)
 const player = new Player({ solids: maze })
 player.mesh.visible = true
 
-// TODO: tilemap.gridToPos()
-const cell = tilemap.fromGridCell(0, 0)
-const pos = tilemap.fieldToPosition(cell)
+const pos = tilemap.gridCellToPosition(0, 0)
 player.position.copy(pos)
 
 scene.add(player.mesh)

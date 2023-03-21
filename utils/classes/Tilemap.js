@@ -10,6 +10,12 @@ function getEmptyFields(matrix) {
   return fields
 }
 
+function gridCellToField(row, column) {
+  const translate = i => 2 * i + 1
+  const y = translate(row), x = translate(column)
+  return [y, x]
+}
+
 export default class Tilemap {
   constructor(matrix = randomMatrix(), cellSize = 20, origin) {
     const defaultOrigin = {
@@ -20,14 +26,6 @@ export default class Tilemap {
     this.cellSize = cellSize
     this.mapSize = (matrix.length - 1) * cellSize
     this.origin = origin ? origin : defaultOrigin
-  }
-
-  // 0 -> 1
-  // 1 -> 3
-  fromGridCell(row, column) {
-    const translate = i => 2 * i + 1
-    const y = translate(row), x = translate(column)
-    return [y, x]
   }
 
   getRelativePos(player) {
@@ -41,6 +39,11 @@ export default class Tilemap {
     const posX = x * this.cellSize + this.origin.x
     const posZ = z * this.cellSize + this.origin.z
     return { x: posX + this.cellSize / 2, y: 0, z: posZ + this.cellSize / 2 }
+  }
+
+  gridCellToPosition(row, column) {
+    const cell = gridCellToField(row, column)
+    return this.fieldToPosition(cell)
   }
 
   // TODO: remove?
