@@ -120,7 +120,7 @@ export default class FPSPlayer extends Player {
     super.update(delta)
 
     if (this.isAlive) {
-      this.time += (input.run ? delta * 2 : delta)
+      this.time += (input.run ? delta * this.runCoefficient : delta)
       if (this.mixer)
         this.fpsRenderer.renderTarget(this.time)
       if (!this.mixer)

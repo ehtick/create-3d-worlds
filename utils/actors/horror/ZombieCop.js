@@ -18,7 +18,7 @@ const { mesh, animations } = await loadModel({ file: 'zombie-cop.fbx', prefix: '
 
 /* EXTENDED CLASSES */
 
-const sharedProps = { mesh, animations, animDict, speed: .5 }
+const sharedProps = { mesh, animations, animDict, speed: .5, runCoefficient: 8 }
 
 export class ZombieCopPlayer extends Player {
   constructor(props = {}) {
