@@ -22,6 +22,14 @@ export default class Tilemap {
     this.origin = origin ? origin : defaultOrigin
   }
 
+  // 0 -> 1
+  // 1 -> 3
+  fromGridCell(row, column) {
+    const translate = i => 2 * i + 1
+    const y = translate(row), x = translate(column)
+    return [y, x]
+  }
+
   getRelativePos(player) {
     return {
       x: (player.x - this.origin.x) / this.mapSize,
@@ -35,6 +43,7 @@ export default class Tilemap {
     return { x: posX + this.cellSize / 2, y: 0, z: posZ + this.cellSize / 2 }
   }
 
+  // TODO: remove?
   getFieldValue(x, y) {
     x = Math.floor(x) // eslint-disable-line no-param-reassign
     y = Math.floor(y) // eslint-disable-line no-param-reassign

@@ -17,8 +17,9 @@ npx live-server
 ### Scenes & examples
 
 - Maze
-  - BUG: cell(0, 0) za render je zid, a za toString i distance gornji levi ugao
-    - grid[0, 0] != matrix[0, 0]
+  - grid[0, 0] != matrix[0, 0], pronaći način prevođenja?
+  - srediti crtanje početka puta kada je rastojanje -0; razlikovanje pomoću Object.is(0, -0)
+  - terminologija: matrix u tilemap, kako onda Tilemap klasu
   - isprobati dodavnje igrača u first_cell i putanju do drugog kraja
   - samo opciono crtati razdaljinu
 

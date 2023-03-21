@@ -9,6 +9,46 @@ export default class Grid {
     this.configure_cells()
   }
 
+  get size() {
+    return this.rows * this.columns
+  }
+
+  set distances(distances = this.middle_cell.distances) {
+    this._distances = distances
+    const [_, maximum] = distances.max()
+    this.maximum = maximum
+  }
+
+  get distances() {
+    return this._distances
+  }
+
+  get first_cell() {
+    return this.cell(0, 0)
+  }
+
+  get middle_cell() {
+    return this.cell(Math.floor(this.rows / 2), Math.floor(this.columns / 2))
+  }
+
+  get last_cell() {
+    return this.cell(this.rows - 1, this.columns - 1)
+  }
+
+  get random_cell() {
+    const row = Math.floor(Math.random() * this.rows)
+    const column = Math.floor(Math.random() * this.grid[row].length)
+    return this.cell(row, column)
+  }
+
+  get deadends() {
+    const list = []
+    for (const cell of this.each_cell())
+      if (cell.links_length == 1)
+        list.push(cell)
+    return list
+  }
+
   prepare_grid() {
     this.grid = new Array(this.rows)
     for (let i = 0; i < this.rows; i += 1) {
@@ -48,46 +88,6 @@ export default class Grid {
     for (const row of this.grid)
       for (const cell of row)
         if (cell) yield cell
-  }
-
-  get size() {
-    return this.rows * this.columns
-  }
-
-  set distances(distances = this.middle_cell.distances) {
-    this._distances = distances
-    const [_, maximum] = distances.max()
-    this.maximum = maximum
-  }
-
-  get distances() {
-    return this._distances
-  }
-
-  get first_cell() {
-    return this.cell(0, 0)
-  }
-
-  get middle_cell() {
-    return this.cell(Math.floor(this.rows / 2), Math.floor(this.columns / 2))
-  }
-
-  get last_cell() {
-    return this.cell(this.rows - 1, this.columns - 1)
-  }
-
-  get random_cell() {
-    const row = Math.floor(Math.random() * this.rows)
-    const column = Math.floor(Math.random() * this.grid[row].length)
-    return this.cell(row, column)
-  }
-
-  get deadends() {
-    const list = []
-    for (const cell of this.each_cell())
-      if (cell.links_length == 1)
-        list.push(cell)
-    return list
   }
 
   // remove deadends
@@ -141,7 +141,7 @@ export default class Grid {
       const bottom = [1]
       for (const cell of row) {
         if (!cell) continue
-        const val = -this.distances?.get(cell)
+        const val = -this.distances?.get(cell) // minus sign because positive integers are for textures
         const east_boundary = cell.linked(cell.east) ? 0 : 1
         top.push(val, east_boundary)
         const south_boundary = cell.linked(cell.south) ? 0 : 1

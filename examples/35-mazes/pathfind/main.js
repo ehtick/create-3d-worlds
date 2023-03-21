@@ -7,12 +7,10 @@ import Player from '/utils/player/Player.js'
 import { createGround } from '/utils/ground.js'
 import Tilemap from '/utils/classes/Tilemap.js'
 
-const grid = new Grid(10)
+const grid = new Grid(4)
 truePrims(grid)
 grid.distances = grid.cell(0, 0).distances.path_to(grid.last_cell)
 const matrix = grid.toMatrix()
-
-console.log(grid.toString())
 
 hemLight()
 scene.add(createGround())
@@ -27,8 +25,10 @@ scene.add(maze)
 const player = new Player({ solids: maze })
 player.mesh.visible = true
 
-const firstPos = tilemap.fieldToPosition([0, 0])
-player.position.copy(firstPos)
+// TODO: tilemap.gridToPos()
+const cell = tilemap.fromGridCell(0, 0)
+const pos = tilemap.fieldToPosition(cell)
+player.position.copy(pos)
 
 scene.add(player.mesh)
 
