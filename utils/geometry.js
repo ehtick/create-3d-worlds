@@ -36,14 +36,14 @@ export function createBox({ size = 1, width = size, height = size, depth = size,
   return mesh
 }
 
-export const createPlayerBox = params => {
+export const createPlayerBox = ({ visible = false, ...params} = {}) => {
   const mesh = createBox({ height: 1.78, width: .4, depth: .4, ...params })
   mesh.name = 'player'
 
-  mesh.updateMatrix()
-  mesh.geometry.applyMatrix4(mesh.matrix)
+  // mesh.updateMatrix()
+  // mesh.geometry.applyMatrix4(mesh.matrix)
 
-  mesh.visible = false
+  mesh.visible = visible
   return mesh
 }
 

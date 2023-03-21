@@ -11,9 +11,16 @@ npx live-server
 
 ## TODO
 
+- da player box bude vidljiva ako nema drugi mesh
+- da se neke lepe scene vide iz vazduha kamerom
+
 ### Scenes & examples
 
-- da se neke lepe scene vide iz vazduha kamerom
+- Maze
+  - BUG: cell(0, 0) za render je zid, a za toString i distance gornji levi ugao
+    - grid[0, 0] != matrix[0, 0]
+  - isprobati dodavnje igrača u first_cell i putanju do drugog kraja
+  - samo opciono crtati razdaljinu
 
 - FPS / Savo
   - dodati izlaz iz lavirinta

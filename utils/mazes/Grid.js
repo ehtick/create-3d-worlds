@@ -1,4 +1,4 @@
-import { shuffle } from './utils.js'
+import { shuffle } from '/utils/helpers.js'
 import Cell from './Cell.js'
 
 export default class Grid {
@@ -135,7 +135,7 @@ export default class Grid {
   }
 
   toMatrix() {
-    const matrix = [[...Array(this.columns * 2 + 1).keys()].map(() => 1)]
+    const matrix = [[...Array(this.columns * 2 + 1).keys()].map(() => 1)] // build first row
     for (const row of this.grid) {
       const top = [1]
       const bottom = [1]

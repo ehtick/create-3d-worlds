@@ -2,7 +2,6 @@ import { scene, renderer, camera, clock, setBackground } from '/utils/scene.js'
 import { createGround } from '/utils/ground.js'
 import { sample } from '/utils/helpers.js'
 import Tilemap from '/utils/classes/Tilemap.js'
-import { smallMap } from '/utils/data/maps.js'
 import { hemLight } from '/utils/light.js'
 import { loadModel } from '/utils/loaders.js'
 import { Snow } from '/utils/classes/Particles.js'
@@ -12,9 +11,14 @@ import { GermanMachineGunnerAI } from '/utils/actors/ww2/GermanMachineGunner.js'
 import { SSSoldierAI } from '/utils/actors/ww2/SSSoldier.js'
 import { NaziOfficerAI } from '/utils/actors/ww2/NaziOfficer.js'
 import { GermanFlameThrowerAI } from '/utils/actors/ww2/GermanFlameThrower.js'
-import { truePrimsMatrix } from '/utils/mazes/algorithms.js'
 
-const matrix = truePrimsMatrix(10)
+import Grid from '/utils/mazes/Grid.js'
+import { truePrims } from '/utils/mazes/algorithms.js'
+
+const grid = new Grid(10)
+truePrims(grid)
+grid.distances = grid.first_cell.distances.path_to(grid.last_cell)
+const matrix = grid.toMatrix()
 
 const enemyClasses = [GermanFlameThrowerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, GermanMachineGunnerAI, SSSoldierAI, SSSoldierAI, SSSoldierAI, NaziOfficerAI]
 
