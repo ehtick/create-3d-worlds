@@ -17,11 +17,11 @@ npx live-server
 ### Scenes & examples
 
 - Maze
-  - grid[0, 0] != matrix[0, 0], pronaći način prevođenja?
+  - proveriti cellToPos i ostalo u mazes.js
   - srediti crtanje početka puta kada je rastojanje -0; razlikovanje pomoću Object.is(0, -0)
-  - terminologija: matrix u tilemap, kako onda Tilemap klasu
   - isprobati dodavnje igrača u first_cell i putanju do drugog kraja
   - samo opciono crtati razdaljinu
+  - terminologija: matrix u tilemap, kako onda Tilemap klasu
 
 - FPS / Savo
   - dodati izlaz iz lavirinta

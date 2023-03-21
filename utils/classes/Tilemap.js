@@ -17,15 +17,14 @@ function gridCellToField(row, column) {
 }
 
 export default class Tilemap {
-  constructor(matrix = randomMatrix(), cellSize = 20, origin) {
-    const defaultOrigin = {
-      x: -matrix[0].length * cellSize / 2,
-      z: -matrix.length * cellSize / 2
-    }
+  constructor(matrix = randomMatrix(), cellSize = 20) {
     this.matrix = matrix
     this.cellSize = cellSize
     this.mapSize = (matrix.length - 1) * cellSize
-    this.origin = origin ? origin : defaultOrigin
+    this.origin = {
+      x: -matrix[0].length * cellSize / 2,
+      z: -matrix.length * cellSize / 2
+    }
   }
 
   getRelativePos(player) {
@@ -56,7 +55,7 @@ export default class Tilemap {
   }
 
   meshFromMatrix(params = {}) {
-    return meshFromMatrix({ matrix: this.matrix, size: this.cellSize, origin: this.origin, ...params })
+    return meshFromMatrix({ matrix: this.matrix, size: this.cellSize, ...params })
   }
 
   getEmptyCoords(toPosition = true) {

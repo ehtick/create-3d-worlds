@@ -33,7 +33,6 @@ export function randomMatrix(size = 10, wallPercent = .3) {
   return matrix
 }
 
-// only if origin is {0, 0}
 export const cellToPos = (matrix, cell, size = 1) => {
   const origin = {
     x: size * matrix.length / 2,
