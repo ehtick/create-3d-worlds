@@ -11,9 +11,6 @@ npx live-server
 
 ## TODO
 
-- player box: 
-  - da prednja strana bude različita
-
 ### Scenes & examples
 
 - Maze

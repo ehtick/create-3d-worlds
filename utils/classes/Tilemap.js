@@ -1,4 +1,4 @@
-import { randomMatrix, meshFromMatrix } from '/utils/mazes.js'
+import { randomMatrix, meshFromMatrix, fieldToPosition } from '/utils/mazes.js'
 import { shuffle } from '/utils/helpers.js'
 
 function getEmptyFields(matrix) {
@@ -22,19 +22,13 @@ export default class Tilemap {
     this.mapSize = (matrix.length - 1) * cellSize
   }
 
-  fieldToPosition([x, z]) {
-    this.origin = {
-      x: this.matrix[0].length / 2 * this.cellSize,
-      z: this.matrix.length / 2 * this.cellSize
-    }
-    const posX = x * this.cellSize - this.origin.x + this.cellSize / 2
-    const posZ = z * this.cellSize - this.origin.z + this.cellSize / 2
-    return { x: posX, y: 0, z: posZ }
+  fieldToPosition(field) {
+    return fieldToPosition (this.matrix, field, this.cellSize)
   }
 
   gridCellToPosition(row, column) {
-    const cell = gridCellToField(row, column)
-    return this.fieldToPosition(cell)
+    const field = gridCellToField(row, column)
+    return this.fieldToPosition(field)
   }
 
   meshFromMatrix(params = {}) {
