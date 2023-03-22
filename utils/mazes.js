@@ -35,12 +35,8 @@ export function randomMatrix(size = 10, wallPercent = .3) {
 
 export const fieldToPosition = (matrix, field, cellSize = 1) => {
   const [x, z] = field
-  const origin = {
-    x: matrix[0].length / 2 * cellSize,
-    z: matrix.length / 2 * cellSize
-  }
-  const posX = x * cellSize - origin.x + cellSize / 2
-  const posZ = z * cellSize - origin.z + cellSize / 2
+  const posX = x * cellSize - matrix[0].length / 2 * cellSize + cellSize / 2
+  const posZ = z * cellSize - matrix.length / 2 * cellSize + cellSize / 2
   return { x: posX, y: 0, z: posZ }
 }
 
