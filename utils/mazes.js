@@ -132,9 +132,7 @@ function createPipe(p1, p2) {
   return geometry
 }
 
-function createWall(p1, p2) {
-  const width = randFloat(2, 4)
-  const height = randFloat(2, 8)
+function createWall(p1, p2, width = randFloat(2, 4), height = randFloat(2, 8)) {
   const depth = p1.distanceTo(p2)
   const geometry = new THREE.BoxGeometry(width, height, depth)
   geometry.translate(0, height / 2, depth / 2)
@@ -142,6 +140,8 @@ function createWall(p1, p2) {
   turnTo(geometry, p1, p2)
   return geometry
 }
+
+const createStraightWall = (p1, p2) => createWall(p1, p2, 2, 4)
 
 function createCityWall(p1, p2) {
   const distanceToCenter = new Vector2(0, 0).distanceTo(new Vector2(p1.x, p1.z))

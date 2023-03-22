@@ -1,4 +1,5 @@
 import { shuffle } from '/utils/helpers.js'
+import { meshFromGrid } from '/utils/mazes.js'
 import Cell from './Cell.js'
 
 export default class Grid {
@@ -156,5 +157,9 @@ export default class Grid {
     // matrix[0][1] = 0 // enter in first row
     matrix[matrix.length - 1][matrix.length - 2] = 0 // remove last wall
     return matrix
+  }
+
+  toMesh(params = {}) {
+    return meshFromGrid({ grid: this, ...params })
   }
 }
