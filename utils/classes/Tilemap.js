@@ -22,21 +22,21 @@ export default class Tilemap {
     this.cellSize = cellSize
     this.mapSize = (matrix.length - 1) * cellSize
     this.origin = {
-      x: -matrix[0].length * cellSize / 2,
-      z: -matrix.length * cellSize / 2
+      x: matrix[0].length * cellSize / 2,
+      z: matrix.length * cellSize / 2
     }
   }
 
   getRelativePos(player) {
     return {
-      x: (player.x - this.origin.x) / this.mapSize,
-      y: (player.z - this.origin.z) / this.mapSize
+      x: (player.x + this.origin.x) / this.mapSize,
+      y: (player.z + this.origin.z) / this.mapSize
     }
   }
 
   fieldToPosition([x, z]) {
-    const posX = x * this.cellSize + this.origin.x
-    const posZ = z * this.cellSize + this.origin.z
+    const posX = x * this.cellSize - this.origin.x
+    const posZ = z * this.cellSize - this.origin.z
     return { x: posX + this.cellSize / 2, y: 0, z: posZ + this.cellSize / 2 }
   }
 
