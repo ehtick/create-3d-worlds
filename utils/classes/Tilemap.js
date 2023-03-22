@@ -3,8 +3,8 @@ import { shuffle } from '/utils/helpers.js'
 
 function getEmptyFields(matrix) {
   const fields = []
-  matrix.forEach((row, rowI) => row.forEach((field, colI) => {
-    if (!field) fields.push([colI, rowI])
+  matrix.forEach((row, z) => row.forEach((value, x) => {
+    if (value < 1) fields.push([z, x])
   }))
   shuffle(fields)
   return fields

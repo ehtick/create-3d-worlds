@@ -14,7 +14,6 @@ npx live-server
 ### Scenes & examples
 
 - Maze
-  - ujednačiti sve koordinate u Tilemap [row, col]
   - terminologija: matrix u tilemap, kako onda Tilemap klasu
   - isprobati dodavnje igrača u first_cell i putanju do drugog kraja
   - napraviti par prostih primera iz ptičje perspektive, nalik 2D
