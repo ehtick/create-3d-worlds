@@ -13,9 +13,7 @@ npx live-server
 
 ### Scenes & examples
 
-Maze:
-  - da se neki lavirinti vide iz vazduha kamerom
-  - menjanje kamere?
+- da se neke lepe scene vide iz vazduha kamerom
 
 - FPS / FPSPlayer
   - dodati lavirint umesto statične mape
