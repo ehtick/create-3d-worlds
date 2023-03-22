@@ -31,14 +31,6 @@ export default class Canvas extends HTMLCanvasElement {
     return this.getContext('2d')
   }
 
-  hide() {
-    this.style.display = 'none'
-  }
-
-  show() {
-    this.style.display = 'block'
-  }
-
   clear() {
     this.ctx.clearRect(0, 0, this.width, this.height)
   }

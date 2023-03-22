@@ -18,12 +18,13 @@ npx live-server
 
 - Maze
   - proveriti cellToPos i ostalo u mazes.js
-  - srediti crtanje početka puta kada je rastojanje -0; razlikovanje pomoću Object.is(0, -0)
+  - crtati početak najkraće putanje (-0); razlikovanje pomoću Object.is(0, -0)
   - isprobati dodavnje igrača u first_cell i putanju do drugog kraja
   - samo opciono crtati razdaljinu
   - terminologija: matrix u tilemap, kako onda Tilemap klasu
 
 - FPS / Savo
+  - merge Canvas i FPSRenderer
   - dodati izlaz iz lavirinta
   - pozicionirati igrača na najdalju tačku od izlaza
   - srediti audio

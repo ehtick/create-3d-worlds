@@ -12,8 +12,7 @@ function getEmptyFields(matrix) {
 
 function gridCellToField(row, column) {
   const translate = i => 2 * i + 1
-  const y = translate(row), x = translate(column)
-  return [y, x]
+  return [translate(row), translate(column)]
 }
 
 export default class Tilemap {
@@ -24,13 +23,6 @@ export default class Tilemap {
     this.origin = {
       x: matrix[0].length * cellSize / 2,
       z: matrix.length * cellSize / 2
-    }
-  }
-
-  getRelativePos(player) {
-    return {
-      x: (player.x + this.origin.x) / this.mapSize,
-      y: (player.z + this.origin.z) / this.mapSize
     }
   }
 
