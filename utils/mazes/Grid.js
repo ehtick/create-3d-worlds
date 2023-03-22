@@ -1,5 +1,5 @@
 import { shuffle } from '/utils/helpers.js'
-import { meshFromGrid } from '/utils/mazes.js'
+import { meshFromGrid, fieldToPosition } from '/utils/mazes.js'
 import Cell from './Cell.js'
 
 export default class Grid {
@@ -161,5 +161,12 @@ export default class Grid {
 
   toMesh(params = {}) {
     return meshFromGrid({ grid: this, ...params })
+  }
+
+  // NOTICE: works only for field = [0, 0], because walls are random size
+  fieldToPosition(field, cellSize = 10) {
+    const matrix = Array(this.rows)
+    matrix[0] = Array(this.columns)
+    return fieldToPosition(matrix, field, cellSize)
   }
 }

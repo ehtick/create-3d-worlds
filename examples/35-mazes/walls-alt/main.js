@@ -13,7 +13,10 @@ recursiveBacktracker(grid)
 const maze = grid.toMesh({ texture: 'walls/stonetiles.jpg' })
 scene.add(maze)
 
+const pos = grid.fieldToPosition([0, 0])
+
 const player = new SorceressPlayer({ camera, solids: maze })
+player.position.copy(pos)
 scene.add(player.mesh)
 
 /* LOOP */

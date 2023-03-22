@@ -14,7 +14,7 @@ npx live-server
 ### Scenes & examples
 
 - Maze
-  - uporediti razliku meshFromGrid i meshFromMatrix na maze primerima
+  - testirati fieldToPosition sa ne-kvadratom
   - terminologija: matrix u tilemap, kako onda Tilemap klasu
   - isprobati dodavnje igrača u first_cell i putanju do drugog kraja
   - napraviti par prostih primera iz ptičje perspektive, nalik 2D
