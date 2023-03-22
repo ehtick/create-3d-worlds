@@ -15,10 +15,10 @@ npx live-server
 
 - Maze
   - uporediti razliku meshFromGrid i meshFromMatrix na maze primerima
-  - presporo: 35-mazes/pathfind ?
   - terminologija: matrix u tilemap, kako onda Tilemap klasu
   - isprobati dodavnje igrača u first_cell i putanju do drugog kraja
   - napraviti par prostih primera iz ptičje perspektive, nalik 2D
+    - probati ortagonalnu kameru
 
 - FPS / Savo
   - dodati izlaz iz lavirinta

@@ -132,10 +132,9 @@ function createPipe(p1, p2) {
   return geometry
 }
 
-function createCityWall(p1, p2, castle = true) {
-  const distanceToCenter = new Vector2(0, 0).distanceTo(new Vector2(p1.x, p1.z))
+function createWall(p1, p2) {
   const width = randFloat(2, 4)
-  const height = castle ? (21 - distanceToCenter / 10) * 5 : randFloat(2, 8)
+  const height = randFloat(2, 8)
   const depth = p1.distanceTo(p2)
   const geometry = new THREE.BoxGeometry(width, height, depth)
   geometry.translate(0, height / 2, depth / 2)
@@ -144,9 +143,19 @@ function createCityWall(p1, p2, castle = true) {
   return geometry
 }
 
-const createRandomWall = (p1, p2) => createCityWall(p1, p2, false)
+function createCityWall(p1, p2) {
+  const distanceToCenter = new Vector2(0, 0).distanceTo(new Vector2(p1.x, p1.z))
+  const width = randFloat(2, 4)
+  const height = (21 - distanceToCenter / 10) * 5
+  const depth = p1.distanceTo(p2)
+  const geometry = new THREE.BoxGeometry(width, height, depth)
+  geometry.translate(0, height / 2, depth / 2)
 
-export function meshFromGrid({ grid, cellSize = 10, connect = createRandomWall, color = 'white', texture } = {}) {
+  turnTo(geometry, p1, p2)
+  return geometry
+}
+
+export function meshFromGrid({ grid, cellSize = 10, connect = createWall, color = 'white', texture } = {}) {
   const geometries = []
 
   for (const row of grid.grid)
@@ -248,4 +257,4 @@ export const polarMazePipes = ({ grid, ...params }) => meshFromPolarGrid({ grid,
 
 export const polarMazeCity = ({ grid, ...params }) => meshFromPolarGrid({ grid, connect: createCityWall, color: 0xffffff, ...params })
 
-export const polarMazeRuins = ({ grid, ...params }) => meshFromPolarGrid({ grid, connect: (p1, p2) => createCityWall(p1, p2, false), color: 'white', ...params })
+export const polarMazeRuins = ({ grid, ...params }) => meshFromPolarGrid({ grid, connect: createWall, color: 'white', ...params })
