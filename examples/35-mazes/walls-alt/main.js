@@ -10,12 +10,12 @@ createOrbitControls()
 scene.add(createSun())
 scene.add(createGround())
 
-const grid = new Grid(10, 30)
+const grid = new Grid(5, 10)
 recursiveBacktracker(grid)
 const maze = grid.toMesh({ texture: 'walls/stonetiles.jpg' })
 scene.add(maze)
 
-const pos = grid.fieldToPosition([0, 29])
+const pos = grid.cellToPosition([0, 9])
 
 const player = new SorceressPlayer({ solids: maze })
 player.position.copy(pos)

@@ -163,8 +163,8 @@ export default class Grid {
     return meshFromGrid({ grid: this, ...params })
   }
 
-  // NOTICE: works only for field = [0, 0], because walls are random size
-  fieldToPosition(field, cellSize = 10) {
+  // maybe not working properly because of random size walls
+  cellToPosition(field, cellSize = 10) {
     const matrix = Array(this.rows)
     matrix[0] = Array(this.columns)
     return fieldToPosition(matrix, field, cellSize)

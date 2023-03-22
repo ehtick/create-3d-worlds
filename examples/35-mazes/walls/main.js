@@ -14,7 +14,7 @@ const matrix = recursiveBacktrackerMatrix(5, 10)
 const maze = meshFromMatrix({ matrix, texture: 'walls/stonetiles.jpg', size: 3, maxHeight: 6 })
 scene.add(maze)
 
-const pos = fieldToPosition(matrix, [1, 1], 3)
+const pos = fieldToPosition(matrix, [1, 19], 3)
 const player = new SorceressPlayer({ solids: maze })
 player.position.copy(pos)
 scene.add(player.mesh)
