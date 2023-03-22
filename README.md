@@ -15,6 +15,7 @@ npx live-server
 
 Maze:
   - da se neki lavirinti vide iz vazduha kamerom
+  - menjanje kamere?
 
 - FPS / FPSPlayer
   - dodati lavirint umesto statične mape
