@@ -68,7 +68,7 @@ const createBoxGeometry = ({ size, height, maxHeight, texture }) => {
   return geometry
 }
 
-export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size, texture, bumpFile, calcHeight = randomHeight, material, city = false, cityTexture = false } = {}) {
+export function meshFromMatrix({ matrix, size = 1, maxHeight = size, texture, bumpFile, calcHeight = randomHeight, material, city = false, cityTexture = false, renderPath = false } = {}) {
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
     if (Object.is(val, 0)) return
@@ -79,7 +79,7 @@ export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = 
         : createBoxGeometry({ size, height, maxHeight, texture })
       block.translate(i * size, city ? 0 : height * .5, j * size)
       geometries.push(block)
-    } else {
+    } else if (renderPath) {
       // render path if exists
       const ball = new THREE.SphereGeometry(size * .1)
       ball.translate(i * size, size * .05, j * size)

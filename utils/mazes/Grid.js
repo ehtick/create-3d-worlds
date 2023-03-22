@@ -142,7 +142,7 @@ export default class Grid {
       for (const cell of row) {
         if (!cell) continue
         const val = this.distances?.get(cell) !== undefined
-          ? -this.distances?.get(cell) // minus sign because positive integers are for textures
+          ? -this.distances?.get(cell) // minus, because positive integers are for textures
           : 0
         const east_boundary = cell.linked(cell.east) ? 0 : 1
         top.push(val, east_boundary)
@@ -155,7 +155,6 @@ export default class Grid {
     }
     // matrix[0][1] = 0 // enter in first row
     matrix[matrix.length - 1][matrix.length - 2] = 0 // remove last wall
-    console.log(matrix)
     return matrix
   }
 }

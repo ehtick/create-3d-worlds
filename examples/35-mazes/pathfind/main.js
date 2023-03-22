@@ -18,7 +18,7 @@ camera.position.set(0, 7, 10)
 const controls = createOrbitControls()
 
 const tilemap = new Tilemap(matrix, 1)
-const maze = tilemap.meshFromMatrix({ matrix })
+const maze = tilemap.meshFromMatrix({ matrix, renderPath: true })
 scene.add(maze)
 
 const player = new Player({ solids: maze })
