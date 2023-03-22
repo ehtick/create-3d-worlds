@@ -10,10 +10,7 @@ function getEmptyFields(matrix) {
   return fields
 }
 
-function gridCellToField(row, column) {
-  const translate = i => 2 * i + 1
-  return [translate(row), translate(column)]
-}
+const gridCellToField = (row, column) => [row, column].map(i => 2 * i + 1)
 
 export default class Tilemap {
   constructor(matrix = randomMatrix(), cellSize = 20) {
@@ -23,20 +20,18 @@ export default class Tilemap {
   }
 
   fieldToPosition(field) {
-    return fieldToPosition (this.matrix, field, this.cellSize)
+    return fieldToPosition(this.matrix, field, this.cellSize)
   }
 
   gridCellToPosition(row, column) {
-    const field = gridCellToField(row, column)
-    return this.fieldToPosition(field)
+    return this.fieldToPosition(gridCellToField(row, column))
   }
 
   meshFromMatrix(params = {}) {
     return meshFromMatrix({ matrix: this.matrix, size: this.cellSize, ...params })
   }
 
-  getEmptyCoords(toPosition = true) {
-    const fields = getEmptyFields(this.matrix)
-    return toPosition ? fields.map(field => this.fieldToPosition(field)) : fields
+  getEmptyCoords() {
+    return getEmptyFields(this.matrix).map(field => this.fieldToPosition(field))
   }
 }
