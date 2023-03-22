@@ -45,15 +45,6 @@ export default class Tilemap {
     return this.fieldToPosition(cell)
   }
 
-  // TODO: remove?
-  getFieldValue(x, y) {
-    x = Math.floor(x) // eslint-disable-line no-param-reassign
-    y = Math.floor(y) // eslint-disable-line no-param-reassign
-    if (x < 0 || x >= this.matrix[0].length || y < 0 || y >= this.matrix.length)
-      return -1
-    return this.matrix[y][x]
-  }
-
   meshFromMatrix(params = {}) {
     return meshFromMatrix({ matrix: this.matrix, size: this.cellSize, ...params })
   }
