@@ -14,15 +14,6 @@ const textureLoader = new THREE.TextureLoader()
 
 /* HELPERS */
 
-export const getMapPosition = ({ obj, map, cellSize }) => {
-  const mapWidth = map.length
-  const mapHeight = map[0].length
-  return {
-    x: Math.floor((obj.x + cellSize * .5) / cellSize + mapHeight * .5),
-    z: Math.floor((obj.z + cellSize * .5) / cellSize + mapWidth * .5)
-  }
-}
-
 export function randomMatrix(size = 10, wallPercent = .3) {
   const matrix = []
   for (let y = 0; y < size; y++) {
@@ -80,7 +71,7 @@ const createBoxGeometry = ({ size, height, maxHeight, texture }) => {
 export function meshFromMatrix({ matrix = randomMatrix(), size = 1, maxHeight = size, texture, bumpFile, calcHeight = randomHeight, material, city = false, cityTexture = false } = {}) {
   const geometries = []
   matrix.forEach((row, j) => row.forEach((val, i) => {
-    if (!val) return
+    if (Object.is(val, 0)) return
     if (val > 0) {
       const height = maxHeight ? calcHeight(row, j, i, size, maxHeight) : randInt(size, size * 4)
       const block = city

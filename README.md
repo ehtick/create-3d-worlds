@@ -14,9 +14,9 @@ npx live-server
 ### Scenes & examples
 
 - Maze
-  - proveriti mazes.js, merge cellToPos i fieldToPosition
   - crtati početak najkraće putanje (-0); razlikovanje pomoću Object.is(0, -0)
   - samo opciono crtati razdaljinu
+  - uporediti razliku meshFromGrid i meshFromMatrix na maze primerima
   - presporo: 35-mazes/pathfind ?
   - terminologija: matrix u tilemap, kako onda Tilemap klasu
   - isprobati dodavnje igrača u first_cell i putanju do drugog kraja
