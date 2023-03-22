@@ -36,7 +36,7 @@ export function createBox({ size = 1, width = size, height = size, depth = size,
   return mesh
 }
 
-export const createPlayerBox = ({ visible = false, ...params} = {}) => {
+export const createPlayerBox = ({ visible = true, ...params } = {}) => {
   const mesh = createBox({ height: 1.78, width: .4, depth: .4, ...params })
   mesh.name = 'player'
 

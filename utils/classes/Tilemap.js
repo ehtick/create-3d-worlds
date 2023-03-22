@@ -27,9 +27,9 @@ export default class Tilemap {
       x: this.matrix[0].length / 2 * this.cellSize,
       z: this.matrix.length / 2 * this.cellSize
     }
-    const posX = x * this.cellSize - this.origin.x
-    const posZ = z * this.cellSize - this.origin.z
-    return { x: posX + this.cellSize / 2, y: 0, z: posZ + this.cellSize / 2 }
+    const posX = x * this.cellSize - this.origin.x + this.cellSize / 2
+    const posZ = z * this.cellSize - this.origin.z + this.cellSize / 2
+    return { x: posX, y: 0, z: posZ }
   }
 
   gridCellToPosition(row, column) {

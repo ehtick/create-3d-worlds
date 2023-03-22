@@ -12,19 +12,17 @@ npx live-server
 ## TODO
 
 - player box: 
-  - da bude vidljiva ako nema drugi mesh
   - da prednja strana bude različita
-- da se neke lepe scene vide iz vazduha kamerom
 
 ### Scenes & examples
 
 - Maze
-  - presporo: 35-mazes/pathfind/
-  - proveriti cellToPos i ostalo u mazes.js
+  - proveriti mazes.js, merge cellToPos i fieldToPosition
   - crtati početak najkraće putanje (-0); razlikovanje pomoću Object.is(0, -0)
-  - isprobati dodavnje igrača u first_cell i putanju do drugog kraja
   - samo opciono crtati razdaljinu
+  - presporo: 35-mazes/pathfind ?
   - terminologija: matrix u tilemap, kako onda Tilemap klasu
+  - isprobati dodavnje igrača u first_cell i putanju do drugog kraja
 
 - FPS / Savo
   - dodati izlaz iz lavirinta

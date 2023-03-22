@@ -33,13 +33,13 @@ export function randomMatrix(size = 10, wallPercent = .3) {
   return matrix
 }
 
-export const cellToPos = (matrix, cell, size = 1) => {
+export const cellToPos = (matrix, cell, cellSize = 1) => {
   const origin = {
-    x: size * matrix.length / 2,
-    z: size * matrix[0].length / 2
+    x: cellSize * matrix.length / 2,
+    z: cellSize * matrix[0].length / 2
   }
-  const x = -origin.x + cell[0] * size + size / 2
-  const z = -origin.z + cell[1] * size + size / 2
+  const x = -origin.x + cell[0] * cellSize + cellSize / 2
+  const z = -origin.z + cell[1] * cellSize + cellSize / 2
   return { x, z }
 }
 

@@ -7,6 +7,7 @@ import Particles from '/utils/classes/Particles.js'
 import config from '/config.js'
 import input from '/utils/classes/Input.js'
 import { jumpStyles } from '/utils/constants.js'
+import { createPlayerBox } from '/utils/geometry.js'
 
 export default class FPSPlayer extends Player {
   constructor({
@@ -17,6 +18,7 @@ export default class FPSPlayer extends Player {
     ...rest
   } = {}) {
     super({ attackDistance: 100, jumpStyle: jumpStyles.FLY, ...rest })
+    this.mesh = createPlayerBox({ visible: false })
     this.mouseSensitivity = mouseSensitivity
     this.pointerLockId = pointerLockId
     this.rifleBurst = rifleBurst
