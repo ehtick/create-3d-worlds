@@ -1,22 +1,47 @@
-import Canvas from './Canvas.js'
 import input from '../Input.js'
 
 const targetSrc = '/assets/images/crosshair.png'
 
+const style = `
+  background-color: transparent;
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+`
+
 let time = 0
 
-export default class FPSRenderer extends Canvas {
+export default class FPSRenderer extends HTMLCanvasElement {
   constructor({ weaponSrc = '/assets/images/savo-big.png', targetY = 0.5 } = {}) {
     super()
+    this.width = window.innerWidth
+    this.height = window.innerHeight
+    this.style = style
+    document.body.appendChild(this)
+
     this.weaponSrc = weaponSrc
     this.weaponImg = new Image()
     this.targetImg = new Image()
     this.targetY = targetY
+
+    window.addEventListener('resize', () => {
+      this.width = window.innerWidth
+      this.height = window.innerHeight
+    })
+  }
+
+  get ctx() {
+    return this.getContext('2d')
+  }
+
+  clear() {
+    this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
   }
 
   drawPain() {
     this.ctx.fillStyle = 'rgba(255, 0, 0, 0.4)'
-    this.ctx.fillRect(0, 0, this.width, this.height)
+    this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight)
   }
 
   drawWeapon(elapsedTime) {

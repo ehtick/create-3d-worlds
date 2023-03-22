@@ -17,6 +17,7 @@ npx live-server
 ### Scenes & examples
 
 - Maze
+  - presporo: 35-mazes/pathfind/
   - proveriti cellToPos i ostalo u mazes.js
   - crtati početak najkraće putanje (-0); razlikovanje pomoću Object.is(0, -0)
   - isprobati dodavnje igrača u first_cell i putanju do drugog kraja
@@ -24,7 +25,6 @@ npx live-server
   - terminologija: matrix u tilemap, kako onda Tilemap klasu
 
 - FPS / Savo
-  - merge Canvas i FPSRenderer
   - dodati izlaz iz lavirinta
   - pozicionirati igrača na najdalju tačku od izlaza
   - srediti audio
