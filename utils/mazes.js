@@ -38,8 +38,8 @@ export const cellToPos = (matrix, cell, size = 1) => {
     x: size * matrix.length / 2,
     z: size * matrix[0].length / 2
   }
-  const x = -origin.x + cell[0] * size + size * .5
-  const z = -origin.z + cell[1] * size + size * .5
+  const x = -origin.x + cell[0] * size + size / 2
+  const z = -origin.z + cell[1] * size + size / 2
   return { x, z }
 }
 

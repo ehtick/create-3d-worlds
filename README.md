@@ -11,7 +11,9 @@ npx live-server
 
 ## TODO
 
-- da player box bude vidljiva ako nema drugi mesh
+- player box: 
+  - da bude vidljiva ako nema drugi mesh
+  - da prednja strana bude različita
 - da se neke lepe scene vide iz vazduha kamerom
 
 ### Scenes & examples

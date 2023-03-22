@@ -20,13 +20,13 @@ export default class Tilemap {
     this.matrix = matrix
     this.cellSize = cellSize
     this.mapSize = (matrix.length - 1) * cellSize
-    this.origin = {
-      x: matrix[0].length * cellSize / 2,
-      z: matrix.length * cellSize / 2
-    }
   }
 
   fieldToPosition([x, z]) {
+    this.origin = {
+      x: this.matrix[0].length / 2 * this.cellSize,
+      z: this.matrix.length / 2 * this.cellSize
+    }
     const posX = x * this.cellSize - this.origin.x
     const posZ = z * this.cellSize - this.origin.z
     return { x: posX + this.cellSize / 2, y: 0, z: posZ + this.cellSize / 2 }
