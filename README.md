@@ -11,13 +11,12 @@ npx live-server
 
 ## TODO
 
+thirdPcamera to FollowCamera
+
 ### Scenes & examples
 
 - Maze
-  - terminologija: matrix u tilemap, kako onda Tilemap klasu
-  - isprobati dodavnje igrača u first_cell i putanju do drugog kraja
-  - napraviti par prostih primera iz ptičje perspektive, nalik 2D
-    - probati ortagonalnu kameru
+  - walls i walls-alt: dodati menjanje kamere
 
 - FPS / Savo
   - dodati izlaz iz lavirinta

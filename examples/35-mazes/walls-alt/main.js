@@ -1,11 +1,9 @@
 import Grid from '/utils/mazes/Grid.js'
 import { recursiveBacktracker } from '/utils/mazes/algorithms.js'
-import { scene, renderer, camera, createOrbitControls } from '/utils/scene.js'
+import { scene, renderer, camera } from '/utils/scene.js'
 import { createSun } from '/utils/light.js'
 import { createGround } from '/utils/ground.js'
-import { SorceressPlayer } from '/utils/actors/fantasy/Sorceress.js'
-
-createOrbitControls()
+import Avatar from '/utils/player/Avatar.js'
 
 scene.add(createSun())
 scene.add(createGround())
@@ -17,7 +15,8 @@ scene.add(maze)
 
 const pos = grid.cellToPosition([0, 9])
 
-const player = new SorceressPlayer({ solids: maze })
+const player = new Avatar({ camera, solids: maze, size: 1.5 })
+player.cameraControls.offset = [0, 30, 0]
 player.position.copy(pos)
 scene.add(player.mesh)
 

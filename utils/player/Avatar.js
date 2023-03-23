@@ -13,8 +13,10 @@ export default class Avatar extends Player {
       this.mesh.getObjectByName('leftLeg'),
       this.mesh.getObjectByName('rightLeg')
     ]
-    this.cameraControls.speed = 4
-    this.cameraControls.distance = 2.5
+    if (this.cameraControls) {
+      this.cameraControls.speed = 4
+      this.cameraControls.distance = 2.5
+    }
   }
 
   idleAnim() {

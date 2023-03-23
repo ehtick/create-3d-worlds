@@ -19,7 +19,7 @@ scene.add(dunes)
 const renderer = createToonRenderer()
 
 const player = new WitchPlayer({ camera, solids: [dunes, maze] })
-player.cameraControls.offset = [0, 12, 0]
+// player.cameraControls.offset = [0, 50, 0]
 
 scene.add(player.mesh)
 
