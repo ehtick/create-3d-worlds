@@ -17,8 +17,12 @@ export default class FPSPlayer extends Player {
     pointerLockId,
     ...rest
   } = {}) {
-    super({ attackDistance: 100, jumpStyle: jumpStyles.FLY, ...rest })
-    this.mesh = createPlayerBox({ visible: false })
+    super({
+      mesh: createPlayerBox({ visible: false }),
+      jumpStyle: jumpStyles.FLY,
+      attackDistance: 100,
+      ...rest,
+    })
     this.mouseSensitivity = mouseSensitivity
     this.pointerLockId = pointerLockId
     this.rifleBurst = rifleBurst
